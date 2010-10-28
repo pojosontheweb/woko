@@ -11,6 +11,7 @@ import net.sourceforge.stripes.controller.LifecycleStage
 import net.sourceforge.stripes.action.ActionBeanContext
 import woko2.util.WLogger
 import woko2.facets.ResolutionFacet
+import woko2.facets.FacetNotFoundException
 
 @UrlBinding('/{facetName}/{className}/{key}')
 class WokoActionBean implements ActionBean {
@@ -64,16 +65,11 @@ class WokoActionBean implements ActionBean {
       targetObjectClass = object.getClass()
     } else {
       targetObjectClass = objectStore.getMappedClass(className);
-      // fallback to new Object() if nothing else available
-      if (targetObjectClass==null) {
-        object = new Object()
-        targetObjectClass = Object.class
-      }
     }
     def f = woko.getFacet(facetName, req, object, targetObjectClass)
     if (!f) {
       def username = woko.getUsername(req)
-      throw new IllegalStateException("Facet $facetName not found for user $username, className $className, key $key.")
+      throw new FacetNotFoundException(facetName, className, key, username)
     }
     if (!f instanceof ResolutionFacet) {
       throw new IllegalStateException("Facet $facet does not implement ResolutionFacet.")
@@ -85,7 +81,7 @@ class WokoActionBean implements ActionBean {
 
   @DefaultHandler
   Resolution execute() {
-    Resolution result = facet.getResolution()
+    Resolution result = facet.getResolution(context)
     if (result==null) {
       throw new IllegalStateException("Execution of facet $facet returned null !")
     }

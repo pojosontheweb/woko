@@ -6,7 +6,7 @@ class InMemoryObjectStore implements ObjectStore {
 
   def objects = new HashMap<String,Map<String,Object>>()
 
-  private void addObject(String className, String key, def obj) {
+  public void addObject(String className, String key, def obj) {
     def objectsForClass = objects[className]
     if (objectsForClass==null) {
       objectsForClass = new HashMap<String,Object>()
@@ -60,6 +60,9 @@ class InMemoryObjectStore implements ObjectStore {
   }
 
   def Class<?> getMappedClass(String className) {
+    if (className==null) {
+      return null
+    }
     try {
       return Class.forName(className)
     } catch(ClassNotFoundException e) {

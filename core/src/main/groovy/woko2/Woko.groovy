@@ -21,7 +21,7 @@ abstract class Woko {
 
   protected final WLogger logger = WLogger.getLogger(getClass())
 
-  private static final String CTX_KEY = 'woko'
+  public static final String CTX_KEY = 'woko'
 
   private final UserManager userManager;
   private final ObjectStore objectStore;
