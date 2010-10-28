@@ -19,16 +19,14 @@ class Save extends BaseResolutionFacet {
   Resolution getResolution(ActionBeanContext abc) {
     doSave(abc)
     return new RedirectResolution(
-            Util.facetUrl(
-                    context.woko,
+            context.woko.facetUrl(
                     FacetConstants.edit,
                     context.targetObject))
   }
 
-  protected void doSave(c) {
-    ActionBeanContext abc = c.wokoActionBean.context
+  protected void doSave(abc) {
     abc.messages << new SimpleMessage('Object saved')
-    c.woko.objectStore.save(c.object)
+    context.woko.objectStore.save(context.targetObject)
   }
 
 }

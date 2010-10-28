@@ -102,7 +102,7 @@ Initializing...
   protected void doClose() {}
 
   def getFacet(String name, HttpServletRequest request, Object targetObject, Class targetObjectClass) {
-    logger.debug("Trying to get facet $name for target object $targetObject...")
+    logger.debug("Trying to get facet $name for target object $targetObject, targetObjectClass $targetObjectClass...")
     String username = getUsername(request);
     List<String> roles
     if (username==null) {

@@ -10,13 +10,14 @@ import woko2.Woko
 import woko2.facets.FacetNotFoundException
 import woko2.facets.builtin.developer.View
 import javax.servlet.ServletException
+import woko2.facets.builtin.developer.Save
 
 class CrudRoundtripTests extends TestCase {
 
   Woko createWoko(String username) {
     Woko inMem = new InMemoryWoko([Woko.ROLE_GUEST]).setUsernameResolutionStrategy(new DummyURS(username:username))
     InMemoryObjectStore inMemObjectStore = inMem.objectStore
-    inMemObjectStore.addObject('Book', '1', new Book([name:'Moby Dick',nbPages:123]))
+    inMemObjectStore.addObject('Book', '1', new Book([_id:'1',name:'Moby Dick',nbPages:123]))
     return inMem
   }
 
@@ -33,6 +34,10 @@ class CrudRoundtripTests extends TestCase {
   }
 
   private WokoActionBean trip(String username, String facetName, String className, String key) {
+    return trip(username, facetName, className, key, null)
+  }
+
+  private WokoActionBean trip(String username, String facetName, String className, String key, Map params) {
     def c = createMockServletContext(username)
     StringBuilder url = new StringBuilder('/').append(facetName)
     if (className) {
@@ -44,6 +49,11 @@ class CrudRoundtripTests extends TestCase {
       url << key
     }
     MockRoundtrip t = new MockRoundtrip(c, url.toString())
+    if (params) {
+      params.each { k,v ->
+        t.addParameter(k,v)
+      }
+    }
     t.execute()
     WokoActionBean ab = t.getActionBean(WokoActionBean.class)
     assert ab
@@ -77,6 +87,12 @@ class CrudRoundtripTests extends TestCase {
   void testDeveloperViewBook() {
     WokoActionBean ab = trip('wdevel', 'view','Book', '1')
     assert ab.facet.getClass() == View.class
+  }
+
+  void testDeveloperSaveBook() {
+    WokoActionBean ab = trip('wdevel', 'save','Book', '1', ['object.name':'New name'])
+    assert ab.facet.getClass() == Save.class
+    assert ab.object.name=='New name'
   }
 
 }
