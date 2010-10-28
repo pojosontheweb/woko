@@ -56,7 +56,7 @@ class InMemoryObjectStore implements ObjectStore {
       }
     }
     // static
-    return obj.getClass().getName()
+    return obj.getClass().getSimpleName()
   }
 
   def Class<?> getMappedClass(String className) {

@@ -11,6 +11,7 @@ import woko2.facets.FacetNotFoundException
 import woko2.facets.builtin.developer.View
 import javax.servlet.ServletException
 import woko2.facets.builtin.developer.Save
+import woko2.facets.builtin.developer.Delete
 
 class CrudRoundtripTests extends TestCase {
 
@@ -94,5 +95,12 @@ class CrudRoundtripTests extends TestCase {
     assert ab.facet.getClass() == Save.class
     assert ab.object.name=='New name'
   }
+
+  void testDeveloperDeleteBook() {
+    WokoActionBean ab = trip('wdevel', 'delete','Book', '1', ['facet.confirm':'true'])
+    assert ab.facet.getClass() == Delete.class
+    assert ab.facet.context.woko.objectStore.load('Book', '1') == null
+  }
+
 
 }
