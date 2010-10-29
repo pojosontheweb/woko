@@ -12,8 +12,8 @@ import net.sourceforge.stripes.action.ActionBeanContext
 @FacetKey(name='delete', profileId='developer')
 class Delete extends BaseResolutionFacet {
 
-  boolean confirm = false
-  boolean cancel = false
+  String confirm
+  String cancel 
 
   Delete() {
     acceptNullTargetObject = false

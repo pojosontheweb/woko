@@ -3,4 +3,4 @@
 <%@ attribute name="var" required="true" type="java.lang.String" rtexprvalue="false" %>
 <%@ variable name-from-attribute="var" alias="daClass" scope="AT_END" %>
 <%@ attribute name="object" required="true" type="java.lang.Object" %>
-<c:set var="daClass"><%=Woko.getWoko(application).getObjectStore().getClassName(object)%></c:set>
+<c:set var="daClass"><%=Woko.getWoko(application).getObjectStore().getClassMapping(object.getClass())%></c:set>

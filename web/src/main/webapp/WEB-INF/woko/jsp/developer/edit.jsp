@@ -6,6 +6,7 @@
 <html>
   <head><title>Woko - ${renderTitle.title} (editing)</title></head>
   <body>
-        TODO
+    <w:includeFacet facetName="renderLinksEdit" targetObject="${o}"/>
+    <w:includeFacet facetName="renderObjectEdit" targetObject="${o}"/>
   </body>
 </html>
