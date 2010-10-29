@@ -11,12 +11,15 @@ class Util {
     }
   }
 
-  static List<String> getPropertyNames(obj) {
+  static List<String> getPropertyNames(obj, List<String> exclusions) {
     // use stripes reflect utils
     PropertyDescriptor[] descriptors = ReflectUtil.getPropertyDescriptors(obj.getClass())
     def res = []
     descriptors.each { PropertyDescriptor pd ->
-      res << pd.name
+      def name = pd.name
+      if (!exclusions.contains(name)) {
+        res << pd.name        
+      }
     }
     return res
   }

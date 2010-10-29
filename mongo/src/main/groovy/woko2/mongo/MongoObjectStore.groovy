@@ -2,7 +2,8 @@ package woko2.mongo
 
 import woko2.persistence.ObjectStore
 
-class MongoObjectStore implements ObjectStore {
+class MongoObjectStore { 
+//implements ObjectStore {
 
   private final WokoMongo wokoMongo
 

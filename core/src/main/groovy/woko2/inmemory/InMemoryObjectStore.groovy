@@ -7,7 +7,7 @@ class InMemoryObjectStore implements ObjectStore {
   def objects = new HashMap<String,Map<String,Object>>()
 
   public void addObject(def obj) {
-    assert obj
+    assert obj != null
     String className = getClassMapping(obj.getClass())
     String key = getKey(obj)
     def objectsForClass = objects[className]
@@ -40,12 +40,12 @@ class InMemoryObjectStore implements ObjectStore {
   }
 
   def save(obj) {
-    assert obj
+    assert obj != null
     addObject obj
   }
 
   String getKey(obj) {
-    assert obj
+    assert obj != null
     try {
       def id = obj._id
       if (id==null) {
@@ -53,7 +53,7 @@ class InMemoryObjectStore implements ObjectStore {
       }
       return id.toString()
     } catch(MissingPropertyException e) {
-      throw new IllegalStateException("Unable to get id for object $obj : no _id property found.")
+      return null
     }
   }
 
@@ -73,9 +73,9 @@ class InMemoryObjectStore implements ObjectStore {
   }
 
   def delete(obj) {
-    assert obj
+    assert obj != null
     String key = getKey(obj)
-    assert key
+    assert key != null
     String className = getClassMapping(obj.getClass())
     assert className
     def objectsForClass = objects[className]

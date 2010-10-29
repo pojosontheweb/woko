@@ -6,5 +6,8 @@ class MyBook {
   String _id
   int nbPages
   Date creationTime = new Date()
+  List<MyBook> listOfMe = [this, this, this]
+  MyBook me = this
+  List<String> listOfStrings = ["abd", "ddd"]
   
 }
