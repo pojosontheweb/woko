@@ -12,6 +12,7 @@ import net.sourceforge.jfacets.annotations.AnnotatedFacetDescriptorManager
 import woko2.facets.WokoFacetContextFactory
 import woko2.users.UsernameResolutionStrategy
 import woko2.users.RemoteUserStrategy
+import woko2.facets.FacetNotFoundException
 
 abstract class Woko {
 
@@ -101,6 +102,14 @@ Initializing...
 
   protected void doClose() {}
 
+  def getFacet(String name, HttpServletRequest request, Object targetObject, Class targetObjectClass, boolean throwIfNotFound) {
+    def f = getFacet(name, request, targetObject, targetObjectClass)
+    if (f==null && throwIfNotFound) {
+      throw new FacetNotFoundException(name, targetObjec, targetObjectClass, getUsername(request))
+    }
+    return f
+  }
+
   def getFacet(String name, HttpServletRequest request, Object targetObject, Class targetObjectClass) {
     logger.debug("Trying to get facet $name for target object $targetObject, targetObjectClass $targetObjectClass...")
     String username = getUsername(request);
@@ -127,7 +136,8 @@ Initializing...
       logger.debug("Trying role : $role")
       def facet = jFacets.getFacet(name, role, targetObject, targetObjectClass)
       if (facet) {
-        logger.debug("Facet found, returning $facet")
+        request.setAttribute(name, facet)
+        logger.debug("Facet found and bound to request, returning $facet")
         return facet
       }
     }

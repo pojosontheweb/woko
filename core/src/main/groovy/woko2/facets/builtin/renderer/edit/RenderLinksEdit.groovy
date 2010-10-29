@@ -1,9 +1,9 @@
 package woko2.facets.builtin.renderer.edit
 
 import woko2.Woko
-import woko2.facets.builtin.renderer.view.RenderLinks
+import woko2.facets.builtin.all.RenderLinksImpl
 
-class RenderLinksEdit extends RenderLinks {
+class RenderLinksEdit extends RenderLinksImpl {
 
   def execute(context) {
     def links = []

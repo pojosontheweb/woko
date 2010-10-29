@@ -8,7 +8,6 @@ abstract class WokoInitListener implements ServletContextListener {
 
   void contextInitialized(ServletContextEvent e) {
     def woko = createWoko()
-    woko.init()
     e.servletContext.setAttribute Woko.CTX_KEY, woko
   }
 

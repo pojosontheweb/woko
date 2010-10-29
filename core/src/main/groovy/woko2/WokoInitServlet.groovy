@@ -6,7 +6,7 @@ abstract class WokoInitServlet extends HttpServlet {
 
   def void init() {
     super.init()
-    def w = createWoko().init()    
+    def w = createWoko()   
     servletContext.setAttribute Woko.CTX_KEY, w
   }
 

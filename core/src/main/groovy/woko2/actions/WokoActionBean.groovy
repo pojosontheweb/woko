@@ -75,8 +75,7 @@ class WokoActionBean implements ActionBean {
       throw new IllegalStateException("Facet $facet does not implement ResolutionFacet.")
     }
     facet = (ResolutionFacet)f
-    context.request.setAttribute(facetName, facet);
-    logger.debug "facet $facet loaded and bound to request"
+    logger.debug "facet $facet loaded"
   }
 
   @DefaultHandler

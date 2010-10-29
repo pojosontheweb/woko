@@ -1,6 +1,8 @@
 package woko2.facets.builtin.renderer.view
 
-class RenderPropertyValuePrimitiveTypes extends RenderPropertyValue {
+import woko2.facets.builtin.all.RenderPropertyValueImpl
+
+class RenderPropertyValuePrimitiveTypes extends RenderPropertyValueImpl {
 
   boolean matches(context) {
     return context?.object instanceof String ||

@@ -25,4 +25,12 @@ abstract class BaseFacet implements IFacet, IInstanceFacet {
     return true
   }
 
+  protected String computeJspPathFromFacetDescriptor() {
+    return new StringBuilder('/WEB-INF/woko/jsp/').
+      append(context.facetDescriptor.profileId).
+      append('/').
+      append(context.facetDescriptor.name).
+      append(".jsp")
+  }
+
 }

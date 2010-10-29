@@ -6,8 +6,7 @@ import woko2.Woko
 class InMemoryWokoInitServlet extends WokoInitServlet {
 
   Woko createWoko() {
-    return new InMemoryWoko()
+    return new InMemoryWoko([Woko.ROLE_GUEST])
   }
-
 
 }

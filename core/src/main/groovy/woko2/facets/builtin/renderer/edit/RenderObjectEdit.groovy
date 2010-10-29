@@ -1,7 +1,7 @@
 package woko2.facets.builtin.renderer.edit
 
-import woko2.facets.builtin.renderer.view.RenderObject
+import woko2.facets.builtin.all.RenderObjectImpl
 
-class RenderObjectEdit extends RenderObject {
+class RenderObjectEdit extends RenderObjectImpl {
 
 }

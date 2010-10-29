@@ -2,6 +2,7 @@ package woko2.util
 
 import net.sourceforge.stripes.util.ReflectUtil
 import java.beans.PropertyDescriptor
+import javax.servlet.http.HttpServletRequest
 
 class Util {
 
@@ -11,9 +12,9 @@ class Util {
     }
   }
 
-  static def getPropertyNames(obj) {
+  static List<String> getPropertyNames(obj) {
     if (obj instanceof Map) {
-      return obj.keySet()
+      return new ArrayList(obj.keySet())
     }
     // use stripes reflect utils
     PropertyDescriptor[] descriptors = ReflectUtil.getPropertyDescriptors(obj.getClass())
@@ -37,6 +38,14 @@ class Util {
       }
     }
     return sb.toString()
+  }
+
+  public static Class<?> getPropertyType(Class owningObjectClass, String propertyName) {
+    PropertyDescriptor pd = ReflectUtil.getPropertyDescriptor(owningObjectClass, propertyName)
+    if (pd==null) {
+      return null
+    }
+    return pd.getPropertyType()
   }
 
 }

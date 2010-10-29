@@ -7,11 +7,7 @@ import net.sourceforge.stripes.action.ActionBeanContext
 abstract class BaseForwardResolutionFacet extends BaseResolutionFacet {
   
   String getPath() {
-    return new StringBuilder('/WEB-INF/woko/jsp/').
-      append(context.facetDescriptor.profileId).
-      append('/').
-      append(context.facetName).
-      append(".jsp")
+    return computeJspPathFromFacetDescriptor()
   }
 
   def Resolution getResolution(ActionBeanContext abc) {

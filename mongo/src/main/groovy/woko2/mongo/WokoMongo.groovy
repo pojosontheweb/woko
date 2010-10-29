@@ -5,7 +5,7 @@ import woko2.Woko
 import woko2.users.UserManager
 import woko2.persistence.ObjectStore
 
-class WokoMongo extends Woko {
+class WokoMongo { //+extends Woko {
 
   private GMongo mongo
   private def db

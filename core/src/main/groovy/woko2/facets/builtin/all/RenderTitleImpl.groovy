@@ -1,27 +1,27 @@
-package woko2.facets.builtin.renderer.view
+package woko2.facets.builtin.all
 
-import woko2.facets.builtin.renderer.BaseRendererFacet
+import woko2.facets.BaseFragmentFacet
+import net.sourceforge.jfacets.annotations.FacetKey
 
-class RenderTitle extends BaseRendererFacet {
-
-  private def createTitleResult(title) {
-    return createResult([title:title,showTitle:true])
-  }
-
-  def execute(context) {
-    def o = context.object
-    assert o
+@FacetKey(name='renderTitle', profileId='all')
+class RenderTitleImpl extends BaseFragmentFacet implements RenderTitle {
+               
+  String getTitle() {
+    def o = context.targetObject
+    if (o==null) {
+      return 'null'
+    }
     def propNames = ['title', 'name', 'id', '_id']
     if (o instanceof Map) {
       for (String s : propNames) {
         if (o.containsKey(s)) {
-          return createTitleResult(o[s])
+          return o[s]
         }
       }
     } else {
       for (String s : propNames) {
         try {
-          return createTitleResult(o[s])
+          return o[s]
         } catch(MissingPropertyException) {
           // do nothing
         }
@@ -34,11 +34,9 @@ class RenderTitle extends BaseRendererFacet {
     def className = objectStore.getClassName(o)
     def key = objectStore.getKey(o)
     if (className && key) {
-      return createTitleResult("$key@$className")
+      return "$key@$className"
     }
-    def res = createTitleResult(o.toString())
-    logger.debug("Returning $res")
-    return res    
+    return o.toString()
   }
 
 }

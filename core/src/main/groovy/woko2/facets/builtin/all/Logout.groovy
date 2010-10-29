@@ -2,7 +2,6 @@ package woko2.facets.builtin.all
 
 import net.sourceforge.jfacets.annotations.FacetKey
 import woko2.facets.FacetConstants
-import woko2.Woko
 import woko2.facets.BaseResolutionFacet
 import net.sourceforge.stripes.action.Resolution
 import net.sourceforge.stripes.action.ActionBeanContext

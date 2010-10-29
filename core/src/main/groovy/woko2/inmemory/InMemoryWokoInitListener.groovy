@@ -6,7 +6,7 @@ import woko2.Woko
 class InMemoryWokoInitListener extends WokoInitListener {
 
   Woko createWoko() {
-    return new InMemoryWoko()
+    return new InMemoryWoko([Woko.ROLE_GUEST])
   }
 
 

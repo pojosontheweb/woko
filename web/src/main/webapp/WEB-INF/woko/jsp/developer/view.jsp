@@ -1,10 +1,12 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="w" tagdir="/WEB-INF/tags/woko" %>
-<w:facet object="${actionBean.object}" facetName="renderTitle"/>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<c:set var="o" value="${actionBean.object}"/>
+<w:facet targetObject="${o}" facetName="renderTitle" var="rt"/>
 <html>
-  <head><title>Woko - ${renderTitleResult.title}</title></head>
+  <head><title>Woko - ${rt.title}</title></head>
   <body>
-    <w:includeFacet facetName="renderLinks" object="${actionBean.object}"/>
-    <w:includeFacet facetName="renderObject" object="${actionBean.object}"/>
+    <w:includeFacet facetName="renderLinks" targetObject="${o}"/>
+    <w:includeFacet facetName="renderObject" targetObject="${o}"/>
   </body>
 </html>

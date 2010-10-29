@@ -8,4 +8,12 @@ class FacetNotFoundException extends RuntimeException {
             ', key=' + key +
             ', username=' + username)
   }
+
+  FacetNotFoundException(String facetName, Object targetObject, Class targetObjectClass, String username) {
+    super('Facet not found, facetName=' + facetName +
+            ', targetObject=' + targetObject +
+            ', targetObjectClass=' + targetObjectClass +
+            ', username=' + username)
+  }
+
 }
