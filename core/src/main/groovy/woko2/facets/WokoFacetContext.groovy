@@ -9,7 +9,12 @@ class WokoFacetContext extends DefaultFacetContext {
 
   private Woko woko
 
-  def WokoFacetContext(String facetName, IProfile profile, Object targetObject, FacetDescriptor facetDescriptor, Woko woko) {
+  def WokoFacetContext(
+      String facetName,
+      IProfile profile,
+      Object targetObject,
+      FacetDescriptor facetDescriptor,
+      Woko woko) {
     super(facetName, profile, targetObject, facetDescriptor)
     this.woko = woko
   }

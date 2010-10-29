@@ -6,7 +6,10 @@ class InMemoryObjectStore implements ObjectStore {
 
   def objects = new HashMap<String,Map<String,Object>>()
 
-  public void addObject(String className, String key, def obj) {
+  public void addObject(def obj) {
+    assert obj
+    String className = getClassMapping(obj.getClass())
+    String key = getKey(obj)
     def objectsForClass = objects[className]
     if (objectsForClass==null) {
       objectsForClass = new HashMap<String,Object>()
@@ -16,20 +19,29 @@ class InMemoryObjectStore implements ObjectStore {
   }
 
   def load(String className, String key) {
-    def objectsForClass = objects[className]
-    if (objectsForClass==null) {
+    if (className==null) {
       return null
+    } else {
+      if (key==null) {
+        // create object from class
+        Class mappedClass = getMappedClass(className);
+        if (mappedClass) {
+          return mappedClass.newInstance()
+        }
+        return null
+      } else {
+        def objectsForClass = objects[className]
+        if (objectsForClass==null) {
+          return null
+        }
+        return objectsForClass[key]
+      }
     }
-    return objectsForClass[key]      
   }
 
   def save(obj) {
     assert obj
-    String key = getKey(obj)
-    assert key
-    String className = getClassName(obj)
-    assert className
-    addObject className, key, obj
+    addObject obj
   }
 
   String getKey(obj) {
@@ -45,18 +57,8 @@ class InMemoryObjectStore implements ObjectStore {
     }
   }
 
-  def String getClassName(obj) {
-    assert obj
-    if (obj instanceof Map) {
-      // dynamic
-      try {
-        return obj._type
-      } catch(MissingPropertyException e) {
-        throw new IllegalStateException("Unable to get className for $obj : it's dynamic, but has no _type property.")
-      }
-    }
-    // static
-    return obj.getClass().getSimpleName()
+  def String getClassMapping(Class<?> clazz) {
+    return clazz.getName()
   }
 
   def Class<?> getMappedClass(String className) {
@@ -66,7 +68,7 @@ class InMemoryObjectStore implements ObjectStore {
     try {
       return Class.forName(className)
     } catch(ClassNotFoundException e) {
-      return Map.class
+      return null
     }
   }
 
@@ -74,7 +76,7 @@ class InMemoryObjectStore implements ObjectStore {
     assert obj
     String key = getKey(obj)
     assert key
-    String className = getClassName(obj)
+    String className = getClassMapping(obj.getClass())
     assert className
     def objectsForClass = objects[className]
     if (objectsForClass) {

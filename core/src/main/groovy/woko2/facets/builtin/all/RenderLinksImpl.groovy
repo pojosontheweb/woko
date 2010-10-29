@@ -5,7 +5,7 @@ import woko2.facets.BaseFragmentFacet
 import net.sourceforge.jfacets.annotations.FacetKey
 import woko2.facets.FacetConstants
 
-@FacetKey(name='renderTitle', profileId='all')
+@FacetKey(name='renderLinks', profileId='all')
 class RenderLinksImpl extends BaseFragmentFacet implements RenderLinks {
 
   def getLinks() {
@@ -17,14 +17,14 @@ class RenderLinksImpl extends BaseFragmentFacet implements RenderLinks {
     // display edit link if object can be edited
     def editFacet = woko.getFacet(FacetConstants.edit, request, o, oc)
     if (editFacet) {
-      String className = woko.objectStore.getClassName(o)
+      String className = woko.objectStore.getClassMapping(oc)
       String key = woko.objectStore.getKey(o)
       links << [href:"edit/$className/$key",text:'edit']
     }
 
     def deleteFacet = woko.getFacet(FacetConstants.delete, request, o, oc)
     if (deleteFacet) {
-      String className = woko.objectStore.getClassName(o)
+      String className = woko.objectStore.getClassMapping(oc)
       String key = woko.objectStore.getKey(o)
       links << [href:"delete/$className/$key",text:'delete']
     }

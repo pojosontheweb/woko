@@ -10,7 +10,7 @@ public interface ObjectStore {
 
   String getKey(obj)
 
-  String getClassName(obj)
+  String getClassMapping(Class<?> clazz)
 
   Class<?> getMappedClass(String className)
 

@@ -33,7 +33,7 @@ class Delete extends BaseResolutionFacet {
       return new RedirectResolution("/${FacetConstants.home}")
     }
     // not confirmed, we display the confirm screen
-    return new ForwardResolution('/WEB-INF/jsp/developer/confirmDelete.jsp')
+    return new ForwardResolution('/WEB-INF/woko/jsp/developer/confirmDelete.jsp')
   }
 
 }

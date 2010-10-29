@@ -14,10 +14,10 @@ class RenderPropertiesImpl extends BaseFragmentFacet implements RenderProperties
   void setContext(IFacetContext iFacetContext) {
     super.setContext(iFacetContext)
     def obj = context.targetObject
-    propertyNames = Util.getPropertyNames(obj)
+    propertyNames = Util.getPropertyNames(obj)    
     propertyValues = new HashMap<String,Object>()
     for (String pName : propertyNames) {
-      propertyValues[pName] = obj[pName]
+      propertyValues.put(pName, Util.getPropertyValue(obj, pName))
     }
   }
 

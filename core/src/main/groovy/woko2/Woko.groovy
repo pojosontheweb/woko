@@ -132,6 +132,9 @@ Initializing...
       logger.debug("No object or class provided, defaulting to Object.class")
       targetObjectClass = Object.class
     }
+    if (targetObjectClass==null) {
+      targetObjectClass = targetObject.getClass()
+    }
     for (String role : roles) {
       logger.debug("Trying role : $role")
       def facet = jFacets.getFacet(name, role, targetObject, targetObjectClass)
@@ -150,7 +153,7 @@ Initializing...
   }
 
   String facetUrl(String facetName, Object obj) {
-    def className = objectStore.getClassName(obj)
+    def className = objectStore.getClassMapping(obj.getClass())
     def id = objectStore.getKey(obj)
     return "/$facetName/$className/$id"
   }

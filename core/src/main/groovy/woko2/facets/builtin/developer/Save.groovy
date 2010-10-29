@@ -10,6 +10,7 @@ import woko2.facets.FacetConstants
 import woko2.Woko
 import woko2.facets.BaseResolutionFacet
 import net.sourceforge.stripes.action.Resolution
+import net.sourceforge.jfacets.IFacetContext
 
 @FacetKey(name='save', profileId='developer')
 class Save extends BaseResolutionFacet {

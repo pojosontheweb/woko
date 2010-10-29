@@ -6,4 +6,9 @@ import woko2.facets.BaseForwardResolutionFacet
 @FacetKey(name='edit', profileId='developer')
 class Edit extends BaseForwardResolutionFacet {
 
+  Edit() {
+    acceptNullTargetObject = false
+  }
+
+
 }

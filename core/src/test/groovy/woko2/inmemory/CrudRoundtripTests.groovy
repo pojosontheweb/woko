@@ -18,7 +18,7 @@ class CrudRoundtripTests extends TestCase {
   Woko createWoko(String username) {
     Woko inMem = new InMemoryWoko([Woko.ROLE_GUEST]).setUsernameResolutionStrategy(new DummyURS(username:username))
     InMemoryObjectStore inMemObjectStore = inMem.objectStore
-    inMemObjectStore.addObject('Book', '1', new Book([_id:'1',name:'Moby Dick',nbPages:123]))
+    inMemObjectStore.addObject(new Book([_id:'1',name:'Moby Dick',nbPages:123]))
     return inMem
   }
 
@@ -78,7 +78,7 @@ class CrudRoundtripTests extends TestCase {
   }
 
   void testGuestViewBook() {
-    assertFacetNotFound(null, 'view', 'Book', '1')
+    assertFacetNotFound(null, 'view', 'woko2.inmemory.Book', '1')
   }
 
   void testDeveloperViewNoObject() {
@@ -86,20 +86,20 @@ class CrudRoundtripTests extends TestCase {
   }
 
   void testDeveloperViewBook() {
-    WokoActionBean ab = trip('wdevel', 'view','Book', '1')
+    WokoActionBean ab = trip('wdevel', 'view','woko2.inmemory.Book', '1')
     assert ab.facet.getClass() == View.class
   }
 
-  void testDeveloperSaveBook() {
-    WokoActionBean ab = trip('wdevel', 'save','Book', '1', ['object.name':'New name'])
+  void testDeveloperUpdateBook() {
+    WokoActionBean ab = trip('wdevel', 'save','woko2.inmemory.Book', '1', ['object.name':'New name'])
     assert ab.facet.getClass() == Save.class
     assert ab.object.name=='New name'
   }
 
   void testDeveloperDeleteBook() {
-    WokoActionBean ab = trip('wdevel', 'delete','Book', '1', ['facet.confirm':'true'])
+    WokoActionBean ab = trip('wdevel', 'delete','woko2.inmemory.Book', '1', ['facet.confirm':'true'])
     assert ab.facet.getClass() == Delete.class
-    assert ab.facet.context.woko.objectStore.load('Book', '1') == null
+    assert ab.facet.context.woko.objectStore.load('woko2.inmemory.Book', '1') == null
   }
 
 

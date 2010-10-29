@@ -2,7 +2,6 @@ package woko2.util
 
 import net.sourceforge.stripes.util.ReflectUtil
 import java.beans.PropertyDescriptor
-import javax.servlet.http.HttpServletRequest
 
 class Util {
 
@@ -13,9 +12,6 @@ class Util {
   }
 
   static List<String> getPropertyNames(obj) {
-    if (obj instanceof Map) {
-      return new ArrayList(obj.keySet())
-    }
     // use stripes reflect utils
     PropertyDescriptor[] descriptors = ReflectUtil.getPropertyDescriptors(obj.getClass())
     def res = []
@@ -23,6 +19,14 @@ class Util {
       res << pd.name
     }
     return res
+  }
+
+  static Object getPropertyValue(Object obj, String propertyName) {
+    try {
+      return obj[propertyName]
+    } catch(MissingPropertyException e) {
+      throw new IllegalStateException("Property $propertyName doesn't existy on object $obj ! Make sure your renderProperties facet doesn't return incorrect property names.")
+    }
   }
 
   static String firstCharLowerCase(String s) {
