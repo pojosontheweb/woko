@@ -23,7 +23,8 @@
         <module>core</module>
         <module>web</module>
         <module>container-auth</module>
-        <module>mongo</module>
+        <module>builtin-auth</module>
+        <module>hibernate</module>
     </modules>
     <build>
         <plugins>

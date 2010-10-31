@@ -1,0 +1,25 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.rvkb.woko</groupId>
+        <artifactId>woko-parent</artifactId>
+        <version>2.0</version>
+    </parent>
+    <artifactId>builtin-auth</artifactId>
+    <name>Woko - builtin auth</name>
+    <packaging>war</packaging>
+    <dependencies>
+        <dependency>
+            <groupId>com.rvkb.woko</groupId>
+            <artifactId>core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.rvkb.woko</groupId>
+            <artifactId>web</artifactId>
+            <version>${project.version}</version>
+            <type>war</type>
+        </dependency>
+    </dependencies>
+</project>
