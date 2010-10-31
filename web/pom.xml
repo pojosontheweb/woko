@@ -6,13 +6,13 @@
         <artifactId>woko-parent</artifactId>
         <version>2.0</version>
     </parent>
-    <artifactId>web</artifactId>
+    <artifactId>woko-web</artifactId>
     <name>Woko - web</name>
     <packaging>war</packaging>
     <dependencies>
         <dependency>
             <groupId>com.rvkb.woko</groupId>
-            <artifactId>core</artifactId>
+            <artifactId>woko-core</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

@@ -6,18 +6,18 @@
         <artifactId>woko-parent</artifactId>
         <version>2.0</version>
     </parent>
-    <artifactId>builtin-auth</artifactId>
+    <artifactId>woko-builtin-auth</artifactId>
     <name>Woko - builtin auth</name>
     <packaging>war</packaging>
     <dependencies>
         <dependency>
             <groupId>com.rvkb.woko</groupId>
-            <artifactId>core</artifactId>
+            <artifactId>woko-core</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>com.rvkb.woko</groupId>
-            <artifactId>web</artifactId>
+            <artifactId>woko-web</artifactId>
             <version>${project.version}</version>
             <type>war</type>
         </dependency>
