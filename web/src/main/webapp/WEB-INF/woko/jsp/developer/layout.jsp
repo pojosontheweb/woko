@@ -17,7 +17,7 @@
             <div id="wrap">
                 <div id="header-space">
                     <div id="logo">
-                        <img src="${pageContext.request.contextPath}/woko/css/lithium/assets/logo.png" alt="logo">
+                        <img src="${pageContext.request.contextPath}/woko/woko-logo.png" alt="logo">
                     </div>
                     <div id="company-name">Woko</div>
                     <div id="tagline">
