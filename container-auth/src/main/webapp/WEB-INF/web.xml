@@ -27,6 +27,7 @@
             <param-name>Extension.Packages</param-name>
             <param-value>
                 woko2.actions
+                woko2.hibernate
             </param-value>
         </init-param>
     </filter>
@@ -53,8 +54,14 @@
 
     <listener>
         <display-name>WokoInitListener</display-name>
-        <listener-class>woko2.inmemory.InMemoryWokoInitListener</listener-class>
+        <!--listener-class>woko2.inmemory.InMemoryWokoInitListener</listener-class-->
+        <listener-class>woko2.hibernate.HibernateInMemWokoInitListener</listener-class>
     </listener>
+
+    <context-param>
+        <param-name>Woko.Hibernate.Packages</param-name>
+        <param-value>test</param-value>
+    </context-param>
 
 <!-- security roles for our tests -->
 

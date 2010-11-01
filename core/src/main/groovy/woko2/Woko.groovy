@@ -14,7 +14,7 @@ import woko2.users.UsernameResolutionStrategy
 import woko2.users.RemoteUserStrategy
 import woko2.facets.FacetNotFoundException
 
-abstract class Woko {
+class Woko {
 
   static final String ROLE_ALL = 'all'
   static final String ROLE_GUEST = 'guest'

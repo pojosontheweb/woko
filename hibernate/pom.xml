@@ -19,6 +19,27 @@
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-annotations</artifactId>
             <version>3.4.0.GA</version>
-        </dependency>        
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>1.5.2</version>
+        </dependency>
+        <dependency>
+            <groupId>hsqldb</groupId>
+            <artifactId>hsqldb</artifactId>
+            <version>1.8.0.7</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+           <groupId>javassist</groupId>
+           <artifactId>javassist</artifactId>
+           <version>3.4.GA</version>
+       </dependency>
+       <dependency>
+           <groupId>org.hibernate</groupId>
+           <artifactId>hibernate-cglib-repack</artifactId>
+           <version>2.1_3</version>
+       </dependency>
     </dependencies>
 </project>

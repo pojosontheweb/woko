@@ -7,30 +7,44 @@ import woko2.util.WLogger
 import org.hibernate.cfg.AnnotationConfiguration
 import net.sourceforge.stripes.util.ResolverUtil
 import org.hibernate.annotations.Entity
+import org.hibernate.cfg.Configuration
+import org.hibernate.metadata.ClassMetadata
+import org.hibernate.Transaction
 
 class HibernateStore implements ObjectStore {
 
   private static final WLogger log = WLogger.getLogger(HibernateStore.class)
 
-  private final PrimaryKeyConverter primaryKeyConverter
+  private final HibernatePrimaryKeyConverter primaryKeyConverter
   private final SessionFactory sessionFactory
   private List<Class<?>> mappedClasses;
 
   HibernateStore(List<String> packageNames) {
     log.info("Creating with package names : $packageNames")
-    this.sessionFactory = createSessionFactory(packageNames)
-    this.primaryKeyConverter = createPrimaryKeyConverter()
+    Configuration cfg = createConfiguration(packageNames)
+    log.info("Configuration created, building session factory...")
+    sessionFactory = cfg.configure('/hibernate.cfg.xml').buildSessionFactory()
+    log.info("Created session factory : " + sessionFactory)
+    primaryKeyConverter = createPrimaryKeyConverter()
+    log.info("Created PK converter : " + primaryKeyConverter)
+    int nbClasses = mappedClasses.size()
+    if (nbClasses) {
+      log.info("${mappedClasses.size()} persistent class(es) added.")
+    } else {
+      log.warn("No mapped classes found for packages $packageNames. Make sure your @Entity classes are in these packages.")
+    }
   }
 
   SessionFactory getSessionFactory() {
     return sessionFactory
   }
 
-  protected PrimaryKeyConverter createPrimaryKeyConverter() {
-    return new PrimaryKeyConverter()
+  protected HibernatePrimaryKeyConverter createPrimaryKeyConverter() {
+    return new HibernatePrimaryKeyConverter()
   }
 
-  protected SessionFactory createSessionFactory(List<String> packageNames) {
+  protected Configuration createConfiguration(List<String> packageNames) {
+    mappedClasses = []
     if (packageNames==null) {
         packageNames = ['model']
     }
@@ -44,13 +58,9 @@ class HibernateStore implements ObjectStore {
     for (Class<?> clazz : resolverUtil.getClasses()) {
         cfg.addAnnotatedClass(clazz)
         mappedClasses.add(clazz)
-        log.info("Class $clazz added to config")
+        log.info("  * $clazz added to config")
     }
-    cfg = cfg.configure()
-    log.info("Configuration created, building session factory...")
-    SessionFactory sf = cfg.buildSessionFactory()
-    log.info("Created session factory : " + sf)
-    return sf
+    return cfg
   }
 
   Session getSession() {
@@ -58,6 +68,7 @@ class HibernateStore implements ObjectStore {
   }
 
   def load(String className, String key) {
+    log.debug("Loading object for className $className, key=$key")
     if (className==null && key==null) {
       return null
     }
@@ -65,11 +76,18 @@ class HibernateStore implements ObjectStore {
     if (mappedClass==null) {
       return null
     }
-    def id = primaryKeyConverter.convert(key, mappedClass)
+    Class<?> keyType = getPrimaryKeyClass(mappedClass)
+    if (keyType==null) {
+      return null
+    }
+    def id = primaryKeyConverter.convert(key, keyType)
     if (id==null) {
       return null
     }
-    return session.load(mappedClass, id)
+    Session s = getSession()
+    Transaction tx = s.getTransaction()
+    log.debug("Using transaction $tx")
+    return s.get(mappedClass, id)
   }
 
   def save(Object obj) {
@@ -120,7 +138,6 @@ class HibernateStore implements ObjectStore {
       return Class.forName(className)
     } catch(ClassNotFoundException e) {
       // lookup simple name
-      List<Class<?>> mappedClasses = HibernateInterceptor.getMappedClasses()
       for (Class<?> clazz : mappedClasses) {
         String simpleName = clazz.getSimpleName()
         if (simpleName.equals(className)) {
@@ -128,6 +145,16 @@ class HibernateStore implements ObjectStore {
         }
       }
       return null
+    }
+  }
+
+  public Class<?> getPrimaryKeyClass(Class<?> entityClass) {
+    ClassMetadata cm = sessionFactory.getClassMetadata(entityClass)
+    if (cm==null) {
+      // default to String
+      return String.class
+    } else {
+      return cm.identifierType.returnedClass
     }
   }
 

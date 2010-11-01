@@ -21,5 +21,10 @@
             <version>${project.version}</version>
             <type>war</type>
         </dependency>
+        <dependency>
+            <groupId>com.rvkb.woko</groupId>
+            <artifactId>woko-hibernate</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 </project>

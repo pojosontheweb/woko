@@ -6,9 +6,16 @@ import javax.servlet.ServletContext
 
 abstract class WokoInitListener implements ServletContextListener {
 
+  private ServletContext servletContext
+
+  ServletContext getServletContext() {
+    return servletContext
+  }
+
   void contextInitialized(ServletContextEvent e) {
+    servletContext = e.servletContext
     def woko = createWoko()
-    e.servletContext.setAttribute Woko.CTX_KEY, woko
+    servletContext.setAttribute Woko.CTX_KEY, woko
   }
 
   void contextDestroyed(ServletContextEvent e) {
