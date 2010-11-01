@@ -2,10 +2,12 @@ package test
 
 import javax.persistence.Entity
 import javax.persistence.Id
+import javax.validation.constraints.NotNull
 
 @Entity
 class MyBook {
 
+  @NotNull
   String name
 
   @Id

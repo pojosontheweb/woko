@@ -27,6 +27,7 @@ class SaveImpl extends BaseResolutionFacet implements Save {
         doSave(abc)
       } else {
         logger.debug("Validate facet raised validation errors, not saving")
+        return abc.getSourcePageResolution()
       }
     } else {
       logger.debug("No validation facet found, saving...")
