@@ -3,8 +3,8 @@
 <%@ page import="woko2.facets.WokoFacetContext" %>
 <%@ page import="woko2.persistence.ObjectStore" %>
 <%@ page import="woko2.Woko" %>
-<%@ page import="woko2.facets.FacetConstants" %>
 <%@ page import="woko2.facets.builtin.all.RenderTitle" %>
+<%@ page import="woko2.facets.builtin.View" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
     RenderPropertyValue renderPropertyValue = (RenderPropertyValue)request.getAttribute("renderPropertyValue");
@@ -28,9 +28,9 @@
             String key = os.getKey(propertyValue);
             if (key!=null) {
                 // we have a className and a key, can the user view the object ?
-                if (woko.getFacet(FacetConstants.view, request, propertyValue, propertyClass)!=null) {
+                if (woko.getFacet(View.name, request, propertyValue, propertyClass)!=null) {
                     href = request.getContextPath() + "/view/" + propertyClassName + "/" + key;
-                    RenderTitle rt = (RenderTitle)woko.getFacet(FacetConstants.renderTitle, request, propertyValue, propertyClass, true);
+                    RenderTitle rt = (RenderTitle)woko.getFacet(RenderTitle.name, request, propertyValue, propertyClass, true);
                     linkTitle = rt.getTitle();
                 }
             }

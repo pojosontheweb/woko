@@ -6,9 +6,10 @@ import net.sourceforge.stripes.action.Resolution
 import net.sourceforge.stripes.action.ActionBeanContext
 import net.sourceforge.stripes.action.RedirectResolution
 import net.sourceforge.stripes.action.SimpleMessage
+import woko2.facets.builtin.Login
 
 @FacetKey(name='login', profileId='all')
-class Login extends BaseResolutionFacet {
+class LoginImpl extends BaseResolutionFacet implements Login {
 
   def Resolution getResolution(ActionBeanContext abc) {
     abc.messages.add(new SimpleMessage("You have been logged in"))

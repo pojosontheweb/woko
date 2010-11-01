@@ -3,7 +3,8 @@ package woko2.facets.builtin.all
 import woko2.Woko
 import woko2.facets.BaseFragmentFacet
 import net.sourceforge.jfacets.annotations.FacetKey
-import woko2.facets.FacetConstants
+import woko2.facets.builtin.Edit
+import woko2.facets.builtin.Delete
 
 @FacetKey(name='renderLinks', profileId='all')
 class RenderLinksImpl extends BaseFragmentFacet implements RenderLinks {
@@ -15,14 +16,14 @@ class RenderLinksImpl extends BaseFragmentFacet implements RenderLinks {
     def oc = context.targetObject.getClass()
 
     // display edit link if object can be edited
-    def editFacet = woko.getFacet(FacetConstants.edit, request, o, oc)
+    def editFacet = woko.getFacet(Edit.name, request, o, oc)
     if (editFacet) {
       String className = woko.objectStore.getClassMapping(oc)
       String key = woko.objectStore.getKey(o)
       links << [href:"edit/$className/$key",text:'edit']
     }
 
-    def deleteFacet = woko.getFacet(FacetConstants.delete, request, o, oc)
+    def deleteFacet = woko.getFacet(Delete.name, request, o, oc)
     if (deleteFacet) {
       String className = woko.objectStore.getClassMapping(oc)
       String key = woko.objectStore.getKey(o)

@@ -4,7 +4,6 @@
 <%@ page import="woko2.persistence.ObjectStore" %>
 <%@ page import="java.util.Collection" %>
 <%@ page import="woko2.Woko" %>
-<%@ page import="woko2.facets.FacetConstants" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%
@@ -23,7 +22,7 @@
             for (Object elem : propertyValue) {
                 // reuse viewPropertyValue on element
                 RenderPropertyValue nested = (RenderPropertyValue)woko.getFacet(
-                        FacetConstants.renderPropertyValue,
+                        RenderPropertyValue.name,
                         request,
                         elem,
                         elem==null ? null : elem.getClass());

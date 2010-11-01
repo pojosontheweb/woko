@@ -6,12 +6,12 @@ import net.sourceforge.stripes.action.SimpleMessage
 import net.sourceforge.stripes.action.RedirectResolution
 import woko2.util.WLogger
 import net.sourceforge.jfacets.annotations.FacetKey
-import woko2.facets.FacetConstants
 
 import woko2.facets.BaseResolutionFacet
 import net.sourceforge.stripes.action.Resolution
 import woko2.facets.builtin.Validate
 import woko2.facets.builtin.Save
+import woko2.facets.builtin.Edit
 
 @FacetKey(name='save', profileId='developer')
 class SaveImpl extends BaseResolutionFacet implements Save {
@@ -20,7 +20,7 @@ class SaveImpl extends BaseResolutionFacet implements Save {
 
   Resolution getResolution(ActionBeanContext abc) {
     // try to find a validation facet for the object
-    Validate validateFacet = (Validate)context.woko.getFacet(FacetConstants.validate, abc.request, context.targetObject, context.targetObject.getClass())
+    Validate validateFacet = (Validate)context.woko.getFacet(Validate.name, abc.request, context.targetObject, context.targetObject.getClass())
     if (validateFacet!=null) {
       logger.debug("Validation facet found, validating before saving...")
       if (validateFacet.validate(abc)) {
@@ -34,7 +34,7 @@ class SaveImpl extends BaseResolutionFacet implements Save {
     }
     return new RedirectResolution(
             context.woko.facetUrl(
-                    FacetConstants.edit,
+                    Edit.name,
                     context.targetObject))
   }
 
