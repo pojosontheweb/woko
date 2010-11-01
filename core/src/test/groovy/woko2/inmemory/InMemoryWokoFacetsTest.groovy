@@ -5,7 +5,7 @@ import woko2.facets.builtin.all.Logout
 import woko2.Woko
 import net.sourceforge.stripes.mock.MockHttpServletRequest
 import woko2.facets.FacetConstants
-import woko2.facets.builtin.developer.View
+import woko2.facets.builtin.developer.ViewImpl
 
 class InMemoryWokoFacetsTest extends TestCase {
 
@@ -54,7 +54,7 @@ class InMemoryWokoFacetsTest extends TestCase {
   }
 
   void testViewDevelDummyObject() {
-    assertFacetClass(View.class, FacetConstants.view, 'wdevel', [foo:'bar'])
+    assertFacetClass(ViewImpl.class, FacetConstants.view, 'wdevel', [foo:'bar'])
   }  
 
 }

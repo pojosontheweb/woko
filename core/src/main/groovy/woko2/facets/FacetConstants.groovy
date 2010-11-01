@@ -8,6 +8,7 @@ public interface FacetConstants {
   public static final String edit = 'edit'
   public static final String delete = 'delete'
   public static final String save = 'save'
+  public static final String validate = 'validate'
   public static final String logout = 'logout'
 
   public static final String renderTitle = 'renderTitle'
@@ -16,6 +17,7 @@ public interface FacetConstants {
   public static final String renderProperties = 'renderProperties'
   public static final String renderPropertyName = 'renderPropertyName'
   public static final String renderPropertyValue = 'renderPropertyValue'
+
 
 
 }

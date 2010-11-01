@@ -8,14 +8,15 @@ import net.sourceforge.jfacets.annotations.FacetKey
 import woko2.facets.FacetConstants
 import net.sourceforge.stripes.action.Resolution
 import net.sourceforge.stripes.action.ActionBeanContext
+import woko2.facets.builtin.Delete
 
 @FacetKey(name='delete', profileId='developer')
-class Delete extends BaseResolutionFacet {
+class DeleteImpl extends BaseResolutionFacet implements Delete {
 
   String confirm
   String cancel 
 
-  Delete() {
+  DeleteImpl() {
     acceptNullTargetObject = false
   }
 

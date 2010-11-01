@@ -8,10 +8,10 @@ import net.sourceforge.stripes.mock.MockRoundtrip
 import woko2.actions.WokoActionBean
 import woko2.Woko
 import woko2.facets.FacetNotFoundException
-import woko2.facets.builtin.developer.View
+import woko2.facets.builtin.developer.ViewImpl
 import javax.servlet.ServletException
-import woko2.facets.builtin.developer.Save
-import woko2.facets.builtin.developer.Delete
+import woko2.facets.builtin.developer.SaveImpl
+import woko2.facets.builtin.developer.DeleteImpl
 
 class CrudRoundtripTests extends TestCase {
 
@@ -87,18 +87,18 @@ class CrudRoundtripTests extends TestCase {
 
   void testDeveloperViewBook() {
     WokoActionBean ab = trip('wdevel', 'view','woko2.inmemory.Book', '1')
-    assert ab.facet.getClass() == View.class
+    assert ab.facet.getClass() == ViewImpl.class
   }
 
   void testDeveloperUpdateBook() {
     WokoActionBean ab = trip('wdevel', 'save','woko2.inmemory.Book', '1', ['object.name':'New name'])
-    assert ab.facet.getClass() == Save.class
+    assert ab.facet.getClass() == SaveImpl.class
     assert ab.object.name=='New name'
   }
 
   void testDeveloperDeleteBook() {
     WokoActionBean ab = trip('wdevel', 'delete','woko2.inmemory.Book', '1', ['facet.confirm':'true'])
-    assert ab.facet.getClass() == Delete.class
+    assert ab.facet.getClass() == DeleteImpl.class
     assert ab.facet.context.woko.objectStore.load('woko2.inmemory.Book', '1') == null
   }
 

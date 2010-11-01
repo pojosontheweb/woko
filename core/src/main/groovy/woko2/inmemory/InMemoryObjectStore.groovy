@@ -2,7 +2,7 @@ package woko2.inmemory
 
 import woko2.persistence.ObjectStore
 
-class InMemoryObjectStore implements ObjectStore {
+class InMemoryObjectStore implements ObjectStore {  
 
   def objects = new HashMap<String,Map<String,Object>>()
 
