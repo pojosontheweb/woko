@@ -2,7 +2,7 @@ package test
 
 import javax.persistence.Entity
 import javax.persistence.Id
-import javax.validation.constraints.NotNull
+import org.hibernate.validator.NotNull
 
 @Entity
 class MyBook {

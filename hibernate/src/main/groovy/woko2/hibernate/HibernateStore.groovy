@@ -101,7 +101,9 @@ class HibernateStore implements ObjectStore {
     Session s = getSession()
     Transaction tx = s.getTransaction()
     log.debug("Using transaction $tx")
-    return s.get(mappedClass, id)
+    def o = s.get(mappedClass, id)
+    s.setReadOnly(o, true) // needed to avoid dirty checking
+    return o
   }
 
   def save(Object obj) {

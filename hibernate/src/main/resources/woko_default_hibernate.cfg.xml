@@ -15,5 +15,12 @@
         <property name="cache.provider_class">org.hibernate.cache.NoCacheProvider</property>
         <property name="show_sql">true</property>
         <property name="hbm2ddl.auto">update</property>
+        <!-- other configuration -->
+        <event type="pre-update">
+          <listener class="org.hibernate.validator.event.ValidateEventListener"/>
+        </event>
+        <event type="pre-insert">
+          <listener class="org.hibernate.validator.event.ValidateEventListener"/>
+        </event>
     </session-factory>
 </hibernate-configuration>

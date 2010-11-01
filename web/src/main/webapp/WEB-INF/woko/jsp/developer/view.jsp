@@ -5,9 +5,12 @@
 <c:set var="o" value="${actionBean.object}"/>
 <w:facet facetName="layout" targetObject="${o}"/>
 <w:facet targetObject="${o}" facetName="renderTitle"/>
-<s:layout-render name="${layout.layoutPath}" layout="${layout}" pageTitle="${renderTitle.title}">
+<c:set var="pageTitle" value="${renderTitle.title}"/>
+<s:layout-render name="${layout.layoutPath}" layout="${layout}" pageTitle="${pageTitle}">
+    <s:layout-component name="sidebarLinks">
+        <w:includeFacet facetName="renderLinks" targetObject="${o}"/>        
+    </s:layout-component>
     <s:layout-component name="body">
-        <w:includeFacet facetName="renderLinks" targetObject="${o}"/>
         <w:includeFacet facetName="renderObject" targetObject="${o}"/>
     </s:layout-component>
 </s:layout-render>

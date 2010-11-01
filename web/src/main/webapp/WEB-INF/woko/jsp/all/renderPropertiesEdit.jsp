@@ -25,9 +25,9 @@
         formUrl += "/" + key;
     }
 %>
-<div class="wokoProperties">
+<div class="wokoPropertiesEdit">
     <s:form action="<%=formUrl%>">
-        <table border="1">
+        <table>
             <tbody>
             <%
                 for (String pName : propertyNames) {
@@ -61,8 +61,8 @@
             <%
                 }
             %>
+                <tr><td class="wokoButtonRow" colspan="2"><s:submit name="save"/></td></tr>
             </tbody>
         </table>
-        <s:submit name="save"/>
     </s:form>
 </div>

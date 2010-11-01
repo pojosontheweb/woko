@@ -8,7 +8,7 @@
         <h1>Please log-in</h1>
           <form method="POST" action="j_security_check">
               <div>
-                  <table width="100%" border="1" bgcolor="#e9e9e9">
+                  <table>
                       <tbody>
                           <tr>
                               <td align="right">Username</td>

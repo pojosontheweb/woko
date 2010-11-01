@@ -119,10 +119,10 @@ Initializing...
       logger.debug("Username not supplied, using fallback roles : $fallbackRoles")
     } else {
       roles = userManager.getRoles(username)
+      if (!roles) {
+        roles = fallbackRoles
+      }
       logger.debug("Using roles $roles found for user $username")
-    }
-    if (!roles) {
-      throw new IllegalStateException("No roles obtained for user $username ! Please make sure that the user manager returns appropriate roles for the user, or that the fallback roles are ok.")
     }
     if (!roles.contains(ROLE_ALL)) {
       roles = new ArrayList(roles)

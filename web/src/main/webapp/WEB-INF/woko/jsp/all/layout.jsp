@@ -37,7 +37,11 @@
                 <s:errors/>
                 <s:messages/>
             </div>
+            <div id="navigation">
+                <w:includeFacet facetName="navBar" targetObject="${layout.context.targetObject}"/>
+            </div>
             <div id="content">
+                <s:layout-component name="sidebarLinks"/>
                 <s:layout-component name="body"/>
             </div>
         </body>

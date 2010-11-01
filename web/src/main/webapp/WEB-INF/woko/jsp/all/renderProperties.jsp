@@ -19,7 +19,7 @@
     Object owningObject = fctx.getTargetObject();
 %>
 <div class="wokoProperties">
-    <table border="1">
+    <table>
         <tbody>
         <%
             for (String pName : propertyNames) {

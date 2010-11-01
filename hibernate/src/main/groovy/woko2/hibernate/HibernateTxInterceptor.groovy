@@ -48,7 +48,7 @@ class HibernateTxInterceptor implements Interceptor {
           tx.commit()
         } catch(Exception e) {
           log.error("Commit error : $e", e)
-          throw new RuntimeException(e)
+          throw e
         }
       }
     }

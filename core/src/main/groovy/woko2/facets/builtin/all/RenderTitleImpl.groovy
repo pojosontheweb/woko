@@ -32,7 +32,7 @@ class RenderTitleImpl extends BaseFragmentFacet implements RenderTitle {
     // nothing matched, compute a meaningful title
     def objectStore = context?.woko?.objectStore
     assert objectStore
-    def className = objectStore.getClassName(o)
+    def className = objectStore.getClassMapping(o.getClass())
     def key = objectStore.getKey(o)
     if (className && key) {
       return "$key@$className"

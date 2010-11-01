@@ -2,3 +2,15 @@ input.error {
     color: #B72222;
     background-color: yellow;
 }
+
+.wokoProperties th {
+    text-align: right;
+}
+
+.wokoProperties td {
+    border-bottom: 1px solid #d3d3d3;
+}
+
+.wokoButtonRow {
+    text-align: right;
+}

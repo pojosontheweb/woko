@@ -6,8 +6,10 @@
 <w:facet facetName="layout" targetObject="${o}"/>
 <w:facet targetObject="${o}" facetName="renderTitle"/>
 <s:layout-render name="${layout.layoutPath}" layout="${layout}" pageTitle="${renderTitle.title}">
-    <s:layout-component name="body">
+    <s:layout-component name="sidebarLinks">
         <w:includeFacet facetName="renderLinksEdit" targetObject="${o}"/>
+    </s:layout-component>
+    <s:layout-component name="body">
         <w:includeFacet facetName="renderObjectEdit" targetObject="${o}"/>
     </s:layout-component>
 </s:layout-render>
