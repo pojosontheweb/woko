@@ -76,12 +76,19 @@ class HibernateStore implements ObjectStore {
     if (mappedClass==null) {
       return null
     }
+    if (key==null) {
+      // create transient instance
+      return mappedClass.newInstance()
+    }
+
     Class<?> keyType = getPrimaryKeyClass(mappedClass)
     if (keyType==null) {
+      log.warn("Unable to get key type for mappedClass $mappedClass")
       return null
     }
     def id = primaryKeyConverter.convert(key, keyType)
     if (id==null) {
+      log.warn("Converted key $key to null, unable to load any object")
       return null
     }
     Session s = getSession()

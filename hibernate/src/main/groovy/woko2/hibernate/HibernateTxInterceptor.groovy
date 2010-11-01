@@ -24,24 +24,27 @@ class HibernateTxInterceptor implements Interceptor {
     return hs.sessionFactory
   }
 
+  private Transaction getTx(ExecutionContext c) {
+    return getSessionFactory(c).currentSession.transaction
+  }
+
   Resolution intercept(ExecutionContext context) throws Exception {
     LifecycleStage stage = context.lifecycleStage
     if (stage==LifecycleStage.RequestInit) {
-      log.debug("Request init: Starting new Hibernate Transaction...")
+
       Transaction tx = getSessionFactory(context).
               getCurrentSession().
               beginTransaction()
-      log.debug("... Started transaction : $tx")
+      log.debug("Started transaction : $tx")
+
     } else if (stage.equals(LifecycleStage.RequestComplete)) {
-      log.debug("Request complete : Commiting transaction...")
-      Transaction tx = getSessionFactory(context).
-              getCurrentSession().
-              getTransaction()
+
+      Transaction tx = getTx(context)
       if (tx==null) {
-        log.debug("... no transaction found, nothing to do.")
+        log.debug("No transaction found, nothing to do.")
       } else {
         try {
-          log.debug("  * Commiting tx $tx")
+          log.debug("Commiting transaction $tx")
           tx.commit()
         } catch(Exception e) {
           log.error("Commit error : $e", e)
@@ -50,7 +53,21 @@ class HibernateTxInterceptor implements Interceptor {
       }
     }
 
-    return context.proceed();
+    try {
+      return context.proceed();
+    } catch(Exception e) {
+      log.error("Exception while proceeding with context, rollbacking transaction if any, exception will be rethrown", e)
+      Transaction tx = getTx(context)
+      if (tx) {
+        try {
+          tx.rollback()
+        } catch(Exception e2) {
+          log.error("Exception while rollbacking : $e2", e2)
+        }
+      }
+      // re-throw exception
+      throw e
+    }
   }
 
 }
