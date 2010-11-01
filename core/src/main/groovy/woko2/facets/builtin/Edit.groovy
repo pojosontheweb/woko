@@ -6,4 +6,6 @@ public interface Edit extends ResolutionFacet {
 
   static String name = 'edit'
 
+  String getFragmentPath()
+
 }

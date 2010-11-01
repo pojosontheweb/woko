@@ -12,6 +12,7 @@ import net.sourceforge.stripes.action.Resolution
 import woko2.facets.builtin.Validate
 import woko2.facets.builtin.Save
 import woko2.facets.builtin.Edit
+import net.sourceforge.stripes.action.ForwardResolution
 
 @FacetKey(name='save', profileId='developer')
 class SaveImpl extends BaseResolutionFacet implements Save {
@@ -27,7 +28,9 @@ class SaveImpl extends BaseResolutionFacet implements Save {
         doSave(abc)
       } else {
         logger.debug("Validate facet raised validation errors, not saving")
-        return abc.getSourcePageResolution()
+        // forward to the edit fragment
+        Edit editFacet = (Edit)context.woko.getFacet(Edit.name, abc.request, context.targetObject, context.targetObject.getClass(), true)
+        return new ForwardResolution(editFacet.getFragmentPath())
       }
     } else {
       logger.debug("No validation facet found, saving...")

@@ -19,8 +19,11 @@
     Object owningObject = fctx.getTargetObject();
     ObjectStore os = woko.getObjectStore();
     String mappedClassName = os.getClassMapping(owningObject.getClass());
+    String formUrl = "/save/" + mappedClassName;
     String key = os.getKey(owningObject);
-    String formUrl = "/save/" + mappedClassName + "/" + key;
+    if (key!=null) {
+        formUrl += "/" + key;
+    }
 %>
 <div class="wokoProperties">
     <s:form action="<%=formUrl%>">
