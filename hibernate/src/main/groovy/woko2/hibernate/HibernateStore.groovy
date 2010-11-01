@@ -13,6 +13,8 @@ import org.hibernate.Transaction
 
 class HibernateStore implements ObjectStore {
 
+  public static final String DEFAULT_HIBERNATE_CFG_XML = "/woko_default_hibernate.cfg.xml"
+
   private static final WLogger log = WLogger.getLogger(HibernateStore.class)
 
   private final HibernatePrimaryKeyConverter primaryKeyConverter
@@ -23,7 +25,12 @@ class HibernateStore implements ObjectStore {
     log.info("Creating with package names : $packageNames")
     Configuration cfg = createConfiguration(packageNames)
     log.info("Configuration created, building session factory...")
-    sessionFactory = cfg.configure('/hibernate.cfg.xml').buildSessionFactory()
+    URL u = getClass().getResource('/hibernate.cfg.xml')
+    if (u==null) {
+      log.warn("Using default hibernate settings from $DEFAULT_HIBERNATE_CFG_XML : in-memory hsql. Add your own hibernate.cfg.xml to the classpath to change the settings.")
+      u = getClass().getResource(DEFAULT_HIBERNATE_CFG_XML)
+    }
+    sessionFactory = cfg.configure(u).buildSessionFactory()
     log.info("Created session factory : " + sessionFactory)
     primaryKeyConverter = createPrimaryKeyConverter()
     log.info("Created PK converter : " + primaryKeyConverter)
