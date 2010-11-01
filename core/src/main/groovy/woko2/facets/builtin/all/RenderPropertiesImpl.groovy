@@ -4,6 +4,7 @@ import woko2.util.Util
 import net.sourceforge.jfacets.annotations.FacetKey
 import woko2.facets.BaseFragmentFacet
 import net.sourceforge.jfacets.IFacetContext
+import woko2.facets.builtin.RenderProperties
 
 @FacetKey(name='renderProperties', profileId='all')
 class RenderPropertiesImpl extends BaseFragmentFacet implements RenderProperties {

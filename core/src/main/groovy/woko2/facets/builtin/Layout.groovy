@@ -1,8 +1,10 @@
-package woko2.facets.builtin.all
+package woko2.facets.builtin
 
 import net.sourceforge.jfacets.IFacet
 
 interface Layout extends IFacet {
+
+  static String name = 'layout'
 
   String getAppTitle()
 

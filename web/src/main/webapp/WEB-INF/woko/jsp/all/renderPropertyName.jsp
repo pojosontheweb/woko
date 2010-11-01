@@ -1,5 +1,5 @@
 <%@ page import="woko2.facets.WokoFacetContext" %>
-<%@ page import="woko2.facets.builtin.all.RenderPropertyName" %>
+<%@ page import="woko2.facets.builtin.RenderPropertyName" %>
 <%@ page import="woko2.util.Util" %>
 <%@ page import="woko2.Woko" %>
 <%@ page import="woko2.persistence.ObjectStore" %>

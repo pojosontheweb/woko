@@ -5,6 +5,7 @@ import woko2.Woko
 import woko2.facets.BaseFragmentFacet
 import woko2.facets.builtin.View
 import woko2.facets.builtin.Delete
+import woko2.facets.builtin.RenderLinks
 
 @FacetKey(name='renderLinksEdit', profileId='all')
 class RenderLinksEditImpl extends BaseFragmentFacet implements RenderLinks {

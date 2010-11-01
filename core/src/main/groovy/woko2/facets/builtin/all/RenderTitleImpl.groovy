@@ -2,6 +2,7 @@ package woko2.facets.builtin.all
 
 import woko2.facets.BaseFragmentFacet
 import net.sourceforge.jfacets.annotations.FacetKey
+import woko2.facets.builtin.RenderTitle
 
 @FacetKey(name='renderTitle', profileId='all')
 class RenderTitleImpl extends BaseFragmentFacet implements RenderTitle {
