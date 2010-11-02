@@ -3,22 +3,22 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="s" uri="http://stripes.sourceforge.net/stripes.tld" %>
 <w:facet facetName="layout"/>
-<s:layout-render name="${layout.layoutPath}" layout="${layout}" pageTitle="Find objects">
+<s:layout-render name="${layout.layoutPath}" layout="${layout}" pageTitle="Create object">
     <s:layout-component name="sidebarLinks">
         <ul class="menu">
             <li><a href="#">Help</a></li>
         </ul>
     </s:layout-component>
     <s:layout-component name="body">
-        <h1>Find objects by class</h1>
+        <h1>Create a new object</h1>
         <p>
-            Select the name of the class and submit :
+            Select the the class of the object to create, and submit :
         </p>
-        <s:form action="/list">
+        <s:form action="/save">
             <s:select name="className">
-                <s:options-collection collection="${find.mappedClasses}"/>
+                <s:options-collection collection="${create.mappedClasses}"/>
             </s:select>
-            <s:submit name="find"/>
+            <s:submit name="create"/>
         </s:form>
     </s:layout-component>
 </s:layout-render>
