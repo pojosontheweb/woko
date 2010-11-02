@@ -30,7 +30,7 @@ class RenderObjectJsonImpl extends BaseFacet implements RenderObjectJson {
     }
     def propNamesAndValues = renderProperties.getPropertyValues()
     propNamesAndValues.each { k,v ->
-      def jsonValue = propertyToJson(request, v)
+      def jsonValue = propertyToJson(request, o, k, v)
       logger.debug("Converted prop $k to json $jsonValue")
       result.put(k, jsonValue)
     }
@@ -52,16 +52,21 @@ class RenderObjectJsonImpl extends BaseFacet implements RenderObjectJson {
     return result
   }
 
-  def Object propertyToJson(HttpServletRequest request, Object value) {
+  def Object propertyToJson(HttpServletRequest request, Object owner, String propertyName, Object value) {
     if (value==null) {
       return null
     }
-    RenderPropertyValueJson rpvj = (RenderPropertyValueJson)context.woko.getFacet(RenderPropertyValueJson.name, request, value)
+    // try name-specific first
+    RenderPropertyValueJson rpvj = (RenderPropertyValueJson)context.woko.getFacet(RenderPropertyValueJson.name + "_$propertyName", request, owner)
+    if (rpvj==null) {
+      // type-specific
+      rpvj = (RenderPropertyValueJson)context.woko.getFacet(RenderPropertyValueJson.name, request, value)
+    }
     if (rpvj==null) {
       // default to toString()
       return value.toString()
     }
-    return rpvj.propertyToJson(request)
+    return rpvj.propertyToJson(request, value)
   }
 
 }

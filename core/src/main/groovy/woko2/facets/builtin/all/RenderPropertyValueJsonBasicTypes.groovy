@@ -15,9 +15,9 @@ keys=[
 ])
 class RenderPropertyValueJsonBasicTypes extends BaseFacet implements RenderPropertyValueJson {
 
-  Object propertyToJson(HttpServletRequest request) {
+  Object propertyToJson(HttpServletRequest request, Object propertyValue) {
     // catch-all : return the target object itself
-    return context.targetObject
+    return propertyValue
   }
 
 

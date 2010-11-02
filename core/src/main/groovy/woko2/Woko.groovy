@@ -56,16 +56,16 @@ class Woko {
   }
 
   private final Woko init() {
+    logger.info("Initializing Woko...")
+    initJFacets()
+    customInit()
     logger.info """
 __       __     _  __
 \\ \\  _  / /___ | |/ / ___
  \\ \\/ \\/ // o \\|   K /   \\
-  \\__W__/ \\___/|_|\\_\\\\_o_/
-
-Initializing...
+  \\__W__/ \\___/|_|\\_\\\\_o_/  2.0
+             POJOs on the Web !
 """
-    initJFacets()
-    customInit()
     logger.info "Woko is ready :"
     logger.info " * userManager : $userManager"
     logger.info " * objectStore : $objectStore"

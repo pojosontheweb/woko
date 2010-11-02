@@ -8,9 +8,8 @@ import javax.servlet.http.HttpServletRequest
 @FacetKey(name='renderPropertyValueJson', profileId='all', targetObjectType=Class.class)
 class RenderPropertyValueJsonClass extends BaseFacet implements RenderPropertyValueJson {
 
-  def Object propertyToJson(HttpServletRequest request) {
-    Class c = context.targetObject
-    return context.woko.objectStore.getClassMapping(c)
+  def Object propertyToJson(HttpServletRequest request, Object propertyValue) {
+    return context.woko.objectStore.getClassMapping(propertyValue)
   }
 
 

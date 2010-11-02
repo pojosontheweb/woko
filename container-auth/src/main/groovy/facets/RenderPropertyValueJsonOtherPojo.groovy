@@ -10,8 +10,8 @@ import org.json.JSONObject
 @FacetKey(name='renderPropertyValueJson', profileId='all', targetObjectType=OtherPojo.class)
 class RenderPropertyValueJsonOtherPojo extends BaseFacet implements RenderPropertyValueJson {
 
-  def Object propertyToJson(HttpServletRequest request) {
-    OtherPojo op = context.targetObject
+  def Object propertyToJson(HttpServletRequest request, Object propertyValue) {
+    OtherPojo op = propertyValue
     JSONObject res = new JSONObject()
     res.put('name', op.foo)
   }

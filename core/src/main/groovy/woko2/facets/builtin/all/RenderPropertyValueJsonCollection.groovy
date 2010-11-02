@@ -12,10 +12,9 @@ class RenderPropertyValueJsonCollection extends BaseFacet implements RenderPrope
 
   private static final WLogger logger = WLogger.getLogger(RenderPropertyValueJsonCollection.class)
 
-  Object propertyToJson(HttpServletRequest request) {
-    def o = context.targetObject
+  Object propertyToJson(HttpServletRequest request, Object propertyValue) {
     JSONArray arr = new JSONArray()
-    o.each { item ->
+    propertyValue.each { item ->
       logger.debug("converting collection item $item to json...")
       if (item==null) {
         arr.put(null)
@@ -25,7 +24,7 @@ class RenderPropertyValueJsonCollection extends BaseFacet implements RenderPrope
         logger.debug("... no renderPropertyValueJson facet found for collection item, adding null")
         arr.put(null)
       } else {
-        def json = rpvj.propertyToJson(request)
+        def json = rpvj.propertyToJson(request, item)
         logger.debug("... converted item $item to $json")
         arr.put(json)
       }            
