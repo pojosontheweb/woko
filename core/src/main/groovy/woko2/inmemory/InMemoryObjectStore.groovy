@@ -1,9 +1,10 @@
 package woko2.inmemory
 
 import woko2.persistence.ObjectStore
+import woko2.persistence.ResultIterator
 
-class InMemoryObjectStore implements ObjectStore {  
-
+class InMemoryObjectStore implements ObjectStore {
+  
   def objects = new HashMap<String,Map<String,Object>>()
 
   public void addObject(def obj) {
@@ -84,6 +85,20 @@ class InMemoryObjectStore implements ObjectStore {
     }
     return null
   }
+
+  ResultIterator list(String className, Integer start, Integer limit) {
+    throw new UnsupportedOperationException()
+  }
+
+  List getMappedClasses() {
+    def res = []
+    objects.each {k,v ->
+      res << k
+    }
+    return res
+  }
+
+
 
 
 }

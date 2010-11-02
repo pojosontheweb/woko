@@ -10,6 +10,9 @@ import org.hibernate.annotations.Entity
 import org.hibernate.cfg.Configuration
 import org.hibernate.metadata.ClassMetadata
 import org.hibernate.Transaction
+import woko2.persistence.ResultIterator
+import woko2.persistence.ListResultIterator
+import org.hibernate.Criteria
 
 class HibernateStore implements ObjectStore {
 
@@ -121,7 +124,7 @@ class HibernateStore implements ObjectStore {
     return obj
   }
 
-  def String getKey(Object obj) {
+  String getKey(Object obj) {
     if (obj==null) {
       return null
     }
@@ -132,7 +135,7 @@ class HibernateStore implements ObjectStore {
     return k.toString()
   }
 
-  def String getClassMapping(Class<?> clazz) {
+  String getClassMapping(Class<?> clazz) {
     // is the class persistent ?
     def classMetadata = sessionFactory.getClassMetadata(clazz)
     if (classMetadata==null) {
@@ -144,7 +147,7 @@ class HibernateStore implements ObjectStore {
     }
   }
 
-  def Class<?> getMappedClass(String className) {
+  Class<?> getMappedClass(String className) {
     if (className==null) {
       return null
     }
@@ -163,7 +166,7 @@ class HibernateStore implements ObjectStore {
     }
   }
 
-  public Class<?> getPrimaryKeyClass(Class<?> entityClass) {
+  Class<?> getPrimaryKeyClass(Class<?> entityClass) {
     ClassMetadata cm = sessionFactory.getClassMetadata(entityClass)
     if (cm==null) {
       // default to String
@@ -171,6 +174,31 @@ class HibernateStore implements ObjectStore {
     } else {
       return cm.identifierType.returnedClass
     }
+  }
+
+  ResultIterator list(String className, Integer start, Integer limit) {
+    Class clazz = getMappedClass(className)
+    int s = start==null ? 0 : start
+    int l = limit==null ? -1 : limit
+    if (clazz==null) {
+      return new ListResultIterator([], start, limit, 0)
+    } else {
+      Criteria crit = session.createCriteria(clazz).setFirstResult(s)
+      if (l!=-1) {
+        crit.setMaxResults(l)
+      }
+      List objects = crit.list()
+
+      // compute total count
+      String mappedClassName = getClassMapping(clazz)
+      int count = session.createQuery("select count(*) from $mappedClassName").list().get(0)
+
+      return new ListResultIterator(objects, s, l, count)
+    }
+  }
+
+  List<Class<?>> getMappedClasses() {
+    return Collections.unmodifiableList(mappedClasses)
   }
 
 
