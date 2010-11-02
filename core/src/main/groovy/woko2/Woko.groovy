@@ -13,6 +13,7 @@ import woko2.facets.WokoFacetContextFactory
 import woko2.users.UsernameResolutionStrategy
 import woko2.users.RemoteUserStrategy
 import woko2.facets.FacetNotFoundException
+import net.sourceforge.jfacets.IFacetDescriptorManager
 
 class Woko {
 
@@ -27,6 +28,7 @@ class Woko {
   private final UserManager userManager;
   private final ObjectStore objectStore;
   private final List<String> fallbackRoles;
+  private final IFacetDescriptorManager facetDescriptorManager;
   private UsernameResolutionStrategy usernameResolutionStrategy = new RemoteUserStrategy()
 
   static Woko getWoko(ServletContext ctx) {
@@ -35,11 +37,22 @@ class Woko {
 
   protected JFacets jFacets;
 
-  Woko(ObjectStore objectStore, UserManager userManager, List<String> fallbackRoles) {
+  Woko(ObjectStore objectStore, UserManager userManager, List<String> fallbackRoles, IFacetDescriptorManager facetDescriptorManager) {
     this.objectStore = objectStore;
     this.userManager = userManager;
     this.fallbackRoles = Collections.unmodifiableList(fallbackRoles);
+    this.facetDescriptorManager = facetDescriptorManager;
     init()
+  }
+
+  private static IFacetDescriptorManager createDefaultFdm() {
+    AnnotatedFacetDescriptorManager a = new AnnotatedFacetDescriptorManager(['woko2.facets.builtin', 'facets'])
+    a.initialize()
+    return a
+  }
+
+  Woko(ObjectStore objectStore, UserManager userManager, List<String> fallbackRoles) {
+    this(objectStore, userManager, fallbackRoles, createDefaultFdm())
   }
 
   private final Woko init() {
@@ -65,14 +78,12 @@ Initializing...
   protected void initJFacets() {
     logger.info("Initializing JFacets...")
     def profileRepository = new WokoProfileRepository(userManager)
-    AnnotatedFacetDescriptorManager facetDescriptorManager = new AnnotatedFacetDescriptorManager(['woko2.facets.builtin'])
-    facetDescriptorManager.initialize()
     def facetContextFactory = new WokoFacetContextFactory(this)
     jFacets = new JFacetsBuilder(profileRepository, facetDescriptorManager).
                 setFacetContextFactory(facetContextFactory).
                 build()
     def descriptors = jFacets.facetRepository.facetDescriptorManager.descriptors;
-    logger.info("${descriptors.length} descriptors loaded :")
+    logger.info("${descriptors.length} facets found :")
     descriptors.each { d ->
       logger.info("  * $d.name, $d.profileId, $d.targetObjectType -> $d.facetClass")
     }
@@ -102,10 +113,14 @@ Initializing...
 
   protected void doClose() {}
 
+  def getFacet(String name, HttpServletRequest request, Object targetObject) {
+    return getFacet(name, request, targetObject, null)
+  }
+
   def getFacet(String name, HttpServletRequest request, Object targetObject, Class targetObjectClass, boolean throwIfNotFound) {
     def f = getFacet(name, request, targetObject, targetObjectClass)
     if (f==null && throwIfNotFound) {
-      throw new FacetNotFoundException(name, targetObjec, targetObjectClass, getUsername(request))
+      throw new FacetNotFoundException(name, targetObject, targetObjectClass, getUsername(request))
     }
     return f
   }

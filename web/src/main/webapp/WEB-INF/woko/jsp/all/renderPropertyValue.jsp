@@ -25,19 +25,20 @@
     if (propertyMappedClassName!=null) {
         propertyClassName = propertyMappedClassName;
         if (propertyValue!=null) {
+            RenderTitle rt = (RenderTitle)woko.getFacet(RenderTitle.name, request, propertyValue, propertyClass, true);
+            linkTitle = rt.getTitle();
             String key = os.getKey(propertyValue);
             if (key!=null) {
                 // we have a className and a key, can the user view the object ?
                 if (woko.getFacet(View.name, request, propertyValue, propertyClass)!=null) {
                     href = request.getContextPath() + "/view/" + propertyClassName + "/" + key;
-                    RenderTitle rt = (RenderTitle)woko.getFacet(RenderTitle.name, request, propertyValue, propertyClass, true);
-                    linkTitle = rt.getTitle();
                 }
             }
         }
     } else {
         propertyClassName = propertyClass.getName();
     }
+    Object propertyValueStr = linkTitle!=null ? linkTitle : propertyValue;
 %>
 <span class="wokoPropertyValue">
     <span class="<%=propertyName%> <%=propertyClassName%>">
@@ -46,7 +47,7 @@
                 <a href="<%=href%>"><c:out value="<%=linkTitle%>"/></a>
             </c:when>
             <c:otherwise>
-                <c:out value="<%=propertyValue%>"/>
+                <c:out value="<%=propertyValueStr%>"/>
             </c:otherwise>
         </c:choose>
     </span>
