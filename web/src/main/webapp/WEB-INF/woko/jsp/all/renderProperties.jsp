@@ -11,7 +11,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="s" uri="http://stripes.sourceforge.net/stripes.tld" %>
 <%
-    RenderProperties renderProperties = (RenderProperties)request.getAttribute("renderProperties");
+    RenderProperties renderProperties = (RenderProperties)request.getAttribute(RenderProperties.name);
     List<String> propertyNames = renderProperties.getPropertyNames();
     Map<String,Object> propertyValues = renderProperties.getPropertyValues();
     WokoFacetContext fctx = (WokoFacetContext)renderProperties.getContext();
@@ -26,7 +26,7 @@
                 Object pVal = propertyValues.get(pName);
 
                 RenderPropertyName renderPropertyName =
-                    (RenderPropertyName)woko.getFacet("renderPropertyName", request, owningObject, owningObject.getClass(), true);
+                    (RenderPropertyName)woko.getFacet(RenderPropertyName.name, request, owningObject, owningObject.getClass(), true);
                 renderPropertyName.setPropertyName(pName);
                 String pNameFragmentPath = renderPropertyName.getFragmentPath(request);
 

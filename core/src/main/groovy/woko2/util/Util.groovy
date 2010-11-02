@@ -5,6 +5,7 @@ import java.beans.PropertyDescriptor
 import javax.servlet.http.HttpServletRequest
 import woko2.Woko
 import woko2.facets.builtin.RenderPropertyValue
+import woko2.facets.builtin.RenderPropertyValueEdit
 
 class Util {
 
@@ -58,19 +59,37 @@ class Util {
     return pd.getPropertyType()
   }
 
-  static RenderPropertyValue getRenderPropValueFacet(Woko woko, HttpServletRequest request, Object owningObject, String propertyName, Object propertyValue) {
-    // try name override first
-    RenderPropertyValue renderPropertyValue = (RenderPropertyValue)woko.getFacet(RenderPropertyValue.name + "_" + propertyName, request, owningObject);
+  private static RenderPropertyValue getRenderFacet(String facetName, Woko woko, HttpServletRequest request, Object owningObject, String propertyName, Object propertyValue, boolean throwIfNotFound) {
+    RenderPropertyValue renderPropertyValue = (RenderPropertyValue)woko.getFacet(facetName + "_" + propertyName, request, owningObject);
     if (renderPropertyValue==null) {
       Class<?> pClass = propertyValue!=null ? propertyValue.getClass() : Util.getPropertyType(owningObject.getClass(), propertyName)
       renderPropertyValue =
-            (RenderPropertyValue)woko.getFacet(RenderPropertyValue.name, request, propertyValue, pClass, true)
+            (RenderPropertyValue)woko.getFacet(facetName, request, propertyValue, pClass, throwIfNotFound)
     } else {
-        request.setAttribute(RenderPropertyValue.name, renderPropertyValue)
+        request.setAttribute(facetName, renderPropertyValue)
+    }
+    if (renderPropertyValue!=null) {
+      renderPropertyValue.setPropertyValue(propertyValue)
+      renderPropertyValue.setOwningObject(owningObject)
+      renderPropertyValue.setPropertyName(propertyName)      
+    }
+    return renderPropertyValue
+  }
+
+  static RenderPropertyValue getRenderPropValueFacet(Woko woko, HttpServletRequest request, Object owningObject, String propertyName, Object propertyValue) {
+    return getRenderFacet('renderPropertyValue', woko, request, owningObject, propertyName, propertyValue, true)
+  }
+
+  static RenderPropertyValue getRenderPropValueEditFacet(Woko woko, HttpServletRequest request, Object owningObject, String propertyName, Object propertyValue) {
+    String fName = 'renderPropertyValueEdit' // RenderPropertyValue.name returns 'renderPropertyValue' ???
+    RenderPropertyValue renderPropertyValue = getRenderFacet(fName, woko, request, owningObject, propertyName, propertyValue, false)
+    if (renderPropertyValue==null) {
+        renderPropertyValue = getRenderFacet(RenderPropertyValue.name, woko, request, owningObject, propertyName, propertyValue, true)
     }
     renderPropertyValue.setPropertyValue(propertyValue)
-    renderPropertyValue.setOwningObject(owningObject)
-    renderPropertyValue.setPropertyName(propertyName)
+    renderPropertyValue.setOwningObject(owningObject);
+    renderPropertyValue.setPropertyName(propertyName);
+    request.setAttribute(fName, renderPropertyValue)    
     return renderPropertyValue
   }
 

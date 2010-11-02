@@ -1,13 +1,12 @@
-<%@ page import="woko2.facets.builtin.RenderPropertyValue" %>
 <%@ page import="woko2.util.Util" %>
 <%@ page import="woko2.facets.WokoFacetContext" %>
 <%@ page import="woko2.persistence.ObjectStore" %>
-<%@ page import="woko2.facets.builtin.RenderPropertyValueEdit" %>
+<%@ page import="woko2.facets.builtin.RenderPropertyValue" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="s" uri="http://stripes.sourceforge.net/stripes.tld" %>
 <%
-    RenderPropertyValue renderPropertyValue = (RenderPropertyValue)request.getAttribute(RenderPropertyValueEdit.name);
+    RenderPropertyValue renderPropertyValue = (RenderPropertyValue)request.getAttribute("renderPropertyValueEdit");
     WokoFacetContext fctx = (WokoFacetContext)renderPropertyValue.getContext();
     ObjectStore os = fctx.getWoko().getObjectStore();
     String propertyName = renderPropertyValue.getPropertyName();
@@ -18,6 +17,7 @@
 <span class="wokoPropertyValueEdit">
     <span class="<%=propertyName%> <%=propertyClassName%>">
         <s:text name="<%=fullFieldName%>"/>
+        page(s)
     </span>
 </span>
 

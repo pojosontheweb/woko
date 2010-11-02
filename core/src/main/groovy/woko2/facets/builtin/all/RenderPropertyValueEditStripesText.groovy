@@ -3,6 +3,7 @@ package woko2.facets.builtin.all
 import net.sourceforge.jfacets.annotations.FacetKey
 import javax.servlet.http.HttpServletRequest
 import net.sourceforge.jfacets.annotations.FacetKeyList
+import woko2.facets.builtin.RenderPropertyValueEdit
 
 @FacetKeyList(
   keys=[
@@ -10,7 +11,7 @@ import net.sourceforge.jfacets.annotations.FacetKeyList
     @FacetKey(name='renderPropertyValueEdit', profileId='all', targetObjectType=Date.class),
     @FacetKey(name='renderPropertyValueEdit', profileId='all', targetObjectType=Number.class)
   ])
-class RenderPropertyValueEditStripesText extends RenderPropertyValueImpl {
+class RenderPropertyValueEditStripesText extends RenderPropertyValueImpl implements RenderPropertyValueEdit {
 
   def String getFragmentPath(HttpServletRequest request) {
     super.getFragmentPath(request)

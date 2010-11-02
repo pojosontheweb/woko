@@ -34,24 +34,11 @@
                     Object pVal = propertyValues.get(pName);
 
                     RenderPropertyName renderPropertyName =
-                        (RenderPropertyName)woko.getFacet("renderPropertyName", request, owningObject, owningObject.getClass(), true);
+                        (RenderPropertyName)woko.getFacet(RenderPropertyName.name, request, owningObject, owningObject.getClass(), true);
                     renderPropertyName.setPropertyName(pName);
                     String pNameFragmentPath = renderPropertyName.getFragmentPath(request);
 
-                    Class<?> pClass;
-                    if (pVal!=null) {
-                        pClass = pVal.getClass();
-                    } else {
-                        // get class from property descriptor
-                        pClass = Util.getPropertyType(owningObject.getClass(), pName);
-                    }
-                    RenderPropertyValue editPropertyValue =
-                        (RenderPropertyValue)woko.getFacet("renderPropertyValueEdit", request, pVal, pClass);
-                    if (editPropertyValue==null) {
-                        editPropertyValue = (RenderPropertyValue)woko.getFacet("renderPropertyValue", request, pVal, pClass);
-                    }
-                    editPropertyValue.setOwningObject(owningObject);
-                    editPropertyValue.setPropertyName(pName);
+                    RenderPropertyValue editPropertyValue = Util.getRenderPropValueEditFacet(woko, request, owningObject, pName, pVal);
                     String pValFragmentPath = editPropertyValue.getFragmentPath(request);
             %>
             <tr>
