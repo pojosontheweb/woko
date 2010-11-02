@@ -16,30 +16,14 @@
         </ul>
     </s:layout-component>
     <s:layout-component name="body">
-        <h1>Find objects</h1>
+        <h1>Find objects by class</h1>
         <p>
-            This page allows to find objects from the ObjectStore. It allows to find by type, or by passing a
-            native query. The results returned depend on the store implementation.
-        </p>
-        <p>
-            Store used : <strong><%=store.getClass()%></strong>
-        </p>
-        <h2>Find by class</h2>
-        <p>
-            Type the name of the class (e.g. <i>Book</i>) and submit :
+            Select the name of the class and submit :
         </p>
         <s:form action="/list">
             <s:select name="className">
                 <s:options-collection collection="${find.mappedClasses}"/>
             </s:select>
-            <s:submit name="find"/>
-        </s:form>
-        <h2>Find by query</h2>
-        <p>
-            Type the native query (e.g. HQL if you use hibernate) and submit :
-        </p>
-        <s:form action="/query">
-            <s:textarea name="query"/>
             <s:submit name="find"/>
         </s:form>
     </s:layout-component>
