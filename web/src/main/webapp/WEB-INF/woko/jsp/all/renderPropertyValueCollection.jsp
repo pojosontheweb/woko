@@ -21,13 +21,7 @@
         <%
             for (Object elem : propertyValue) {
                 // reuse viewPropertyValue on element
-                RenderPropertyValue nested = (RenderPropertyValue)woko.getFacet(
-                        RenderPropertyValue.name,
-                        request,
-                        elem,
-                        elem==null ? null : elem.getClass());
-                nested.setOwningObject(owningObject);
-                nested.setPropertyName(propertyName);
+                RenderPropertyValue nested = Util.getRenderPropValueFacet(woko, request, owningObject, propertyName, elem);                
         %>
             <div class="wokoCollectionItem">
                 <jsp:include page="<%=nested.getFragmentPath(request)%>"/>

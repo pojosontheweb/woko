@@ -30,17 +30,7 @@
                 renderPropertyName.setPropertyName(pName);
                 String pNameFragmentPath = renderPropertyName.getFragmentPath(request);
 
-                Class<?> pClass;
-                if (pVal!=null) {
-                    pClass = pVal.getClass();
-                } else {
-                    // get class from property descriptor
-                    pClass = Util.getPropertyType(owningObject.getClass(), pName);
-                }
-                RenderPropertyValue renderPropertyValue =
-                    (RenderPropertyValue)woko.getFacet("renderPropertyValue", request, pVal, pClass, true);
-                renderPropertyValue.setOwningObject(owningObject);
-                renderPropertyValue.setPropertyName(pName);
+                RenderPropertyValue renderPropertyValue = Util.getRenderPropValueFacet(woko, request, owningObject, pName, pVal);
                 String pValFragmentPath = renderPropertyValue.getFragmentPath(request);
         %>
         <tr>

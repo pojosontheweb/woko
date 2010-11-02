@@ -9,5 +9,6 @@ class RenderPropertyValueImpl extends BaseFragmentFacet implements RenderPropert
 
   Object owningObject
   String propertyName
+  Object propertyValue
 
 }
