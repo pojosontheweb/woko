@@ -1,12 +1,12 @@
 package woko2.persistence
 
-class ListResultIterator<T> implements ResultIterator<T> {
+class ListResultIterator implements ResultIterator {
 
   private final int start
   private final int limit
   private final int totalSize
   private final List objects
-  private final Iterator<T> delegate
+  private final Iterator delegate
 
   def ListResultIterator(List objects, int start, int limit, int totalSize) {
     this.objects = Collections.unmodifiableList(objects)
@@ -16,7 +16,7 @@ class ListResultIterator<T> implements ResultIterator<T> {
     delegate = objects.iterator()
   }
 
-  T next() {
+  Object next() {
     return delegate.next()
   }
 

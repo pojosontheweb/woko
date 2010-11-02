@@ -15,6 +15,8 @@ class MyBook {
   
   int nbPages
   Date creationTime = new Date()
+
+  /*
   transient List<MyBook> listOfMe = [this, this, this]
   transient MyBook me = this
   transient List<String> listOfStrings = ["abd", "ddd"]
@@ -24,5 +26,6 @@ class MyBook {
 
   transient OtherPojo2 otherPojo2 = new OtherPojo2()
   transient List<OtherPojo2> otherPojos2 = [new OtherPojo2()]
+  */
   
 }

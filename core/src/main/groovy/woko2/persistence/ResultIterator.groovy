@@ -1,8 +1,8 @@
 package woko2.persistence
 
-public interface ResultIterator<T> {
+public interface ResultIterator {
 
-  T next()
+  Object next()
 
   boolean hasNext()
 

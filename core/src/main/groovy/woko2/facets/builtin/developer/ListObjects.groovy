@@ -8,7 +8,7 @@ import woko2.persistence.ListResultIterator
 import woko2.facets.BaseForwardResolutionFacet
 
 @FacetKey(name='list', profileId='developer')
-class List extends BaseForwardResolutionFacet {
+class ListObjects extends BaseForwardResolutionFacet {
 
   Integer start = 0
   Integer limit = 10

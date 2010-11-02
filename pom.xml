@@ -40,6 +40,9 @@
                 <groupId>org.codehaus.groovy.maven</groupId>
                 <artifactId>gmaven-plugin</artifactId>
                 <version>1.0</version>
+                <configuration>
+                    <verbose>true</verbose>
+                </configuration>
                 <executions>
                     <execution>
                         <goals>
