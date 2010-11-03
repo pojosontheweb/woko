@@ -1,18 +1,15 @@
 package woko2.facets.builtin.developer
 
-import net.sourceforge.jfacets.annotations.FacetKey
+import woko2.facets.BaseForwardResolutionFacet
+import woko2.persistence.ResultIterator
 import net.sourceforge.stripes.action.Resolution
 import net.sourceforge.stripes.action.ActionBeanContext
-import woko2.persistence.ResultIterator
-import woko2.persistence.ListResultIterator
-import woko2.facets.BaseForwardResolutionFacet
 
-@FacetKey(name='list', profileId='developer')
-class ListObjects extends BaseForwardResolutionFacet {
+abstract class BaseResultFacet extends BaseForwardResolutionFacet {
 
   Integer resultsPerPage = 10
   Integer p = 1
-  private String className
+  String className
 
   private ResultIterator resultIterator
 
@@ -30,13 +27,10 @@ class ListObjects extends BaseForwardResolutionFacet {
     resultsPerPage = resultsPerPage==null ? 10 : resultsPerPage
     int start = (p-1) * resultsPerPage
     int limit = resultsPerPage
-
-    if (className==null) {
-      resultIterator = new ListResultIterator([], start, limit, 0)
-    } else {
-      resultIterator = context.woko.objectStore.list(className, start, limit)
-    }
+    resultIterator = createResultIterator(abc, start, limit)
     return super.getResolution(abc)
   }
+
+  protected abstract ResultIterator createResultIterator(ActionBeanContext abc, int start, int limit)
 
 }

@@ -1,4 +1,4 @@
-<%@ page import="woko2.facets.builtin.developer.ListObjects" %>
+<%@ page import="woko2.facets.builtin.developer.ListImpl" %>
 <%@ page import="woko2.persistence.ResultIterator" %>
 <%@ page import="woko2.facets.builtin.RenderTitle" %>
 <%@ page import="woko2.Woko" %>
@@ -17,7 +17,7 @@
     <s:layout-component name="body">
         <%
             Woko woko = Woko.getWoko(application);
-            ListObjects list = (ListObjects)request.getAttribute("list");
+            ListImpl list = (ListImpl)request.getAttribute("list");
             String className = list.getClassName();
             ResultIterator results = list.getResults();
             int totalSize = results.getTotalSize();
