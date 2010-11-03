@@ -21,11 +21,52 @@
             String className = list.getClassName();
             ResultIterator results = list.getResults();
             int totalSize = results.getTotalSize();
-            int start = results.getStart();
-            int limit = results.getLimit();
+            int p = list.getP();
+            int resultsPerPage = list.getResultsPerPage();
+            int nbPages = totalSize / resultsPerPage + 1;
         %>
         <h1><c:out value="<%=totalSize%>"/> object(s) found for class <c:out value="<%=className%>"/></h1>
-        <p>Displaying <c:out value="<%=start%>"/> to <c:out value="<%=start + limit - 1%>"/> :</p>
+        <div id="wokoPaginationSettings">
+            <s:form action="/list">
+                <s:hidden name="className"/>
+                <s:hidden name="facet.p"/>
+                Showing
+                <s:select name="facet.resultsPerPage" onchange="this.form.submit()">
+                    <s:option value="10">10</s:option>
+                    <s:option value="25">25</s:option>
+                    <s:option value="50">50</s:option>
+                    <s:option value="100">100</s:option>
+                    <s:option value="500">500</s:option>
+                    <s:option value="1000">1000</s:option>
+                </s:select>
+                objects / page
+            </s:form>
+        </div>
+        <%
+            if (nbPages>1) {
+        %>
+            <div class="wokoPagination">
+                <%
+                    for (int i=0;i<nbPages;i++) {
+                        if (i==p) {
+                %>
+                    <span class="wokoCurrentPage"><%=i+1%></span>
+
+                <%      } else { %>
+                    <span><a href="${pageContext.request.contextPath}/list/<%=className%>?facet.p=<%=i%>&facet.resultsPerPage=<%=resultsPerPage%>"><%=i+1%></a></span>
+                <%
+                        }
+                        if (i<nbPages-1) {
+                %>
+                |
+                <%
+                        }
+                    }
+                %>
+            </div>
+        <%
+            }
+        %>
         <ul>
             <%
               while (results.hasNext()) {
@@ -61,6 +102,7 @@
               }
             %>
         </ul>
+
         
 
     </s:layout-component>

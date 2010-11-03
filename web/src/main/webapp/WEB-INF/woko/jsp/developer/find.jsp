@@ -14,11 +14,10 @@
         <p>
             Select the name of the class and submit :
         </p>
-        <s:form action="/list">
-            <s:select name="className">
-                <s:options-collection collection="${find.mappedClasses}"/>
-            </s:select>
-            <s:submit name="find"/>
-        </s:form>
+        <ul>
+            <c:forEach items="${find.mappedClasses}" var="className">
+                <li><a href="${pageContext.request.contextPath}/list/${className}">${className}</a></li>    
+            </c:forEach>
+        </ul>
     </s:layout-component>
 </s:layout-render>

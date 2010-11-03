@@ -39,3 +39,7 @@ table.wokoFacets tr.odd {
     padding-top: 256px;
     font-size: 0.8em;
 }
+
+.wokoCurrentPage {
+    font-weight: bolder;
+}

@@ -317,25 +317,8 @@ img.float-left {
 	padding: 2px;
 }
 
-/* Footer */
-
-#footer {
-	background: #999999;
-	height: 25px;
-	padding-top: 5px;
-	border-top: 5px solid #666666;
-	color: #fff;
-	font-size: 12px;
-	text-align: center;
-}
-
-#footer a {
-	color: #000;
-}
-
 .clearfix {
 	clear:both;
 	overflow: hidden;
 }
-
 

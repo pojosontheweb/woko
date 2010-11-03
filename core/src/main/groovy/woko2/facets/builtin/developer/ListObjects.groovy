@@ -10,8 +10,8 @@ import woko2.facets.BaseForwardResolutionFacet
 @FacetKey(name='list', profileId='developer')
 class ListObjects extends BaseForwardResolutionFacet {
 
-  Integer start = 0
-  Integer limit = 10
+  Integer resultsPerPage = 10
+  Integer p = 0
   private String className
 
   private ResultIterator resultIterator
@@ -26,15 +26,17 @@ class ListObjects extends BaseForwardResolutionFacet {
 
   def Resolution getResolution(ActionBeanContext abc) {
     className = abc.request.getParameter('className')
+    p = p==null ? 0 : p
+    resultsPerPage = resultsPerPage==null ? 10 : resultsPerPage
+    int start = p * resultsPerPage
+    int limit = resultsPerPage
+
     if (className==null) {
-      resultIterator = new ListResultIterator([], start==null ? 0 : start, limit==null ? -1 : limit, 0)
+      resultIterator = new ListResultIterator([], start, limit, 0)
     } else {
       resultIterator = context.woko.objectStore.list(className, start, limit)
     }
     return super.getResolution(abc)
   }
-
-  
-
 
 }
