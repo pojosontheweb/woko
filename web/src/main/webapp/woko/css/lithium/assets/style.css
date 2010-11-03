@@ -50,21 +50,16 @@ h3 {
 
 
 #logo {
-	padding-top: 12px;
-	float: right;
-}
-
-#company-name {
-	font-size: 28px;
-	padding-top: 28px;
-	font-weight: bold;
-	color: #fff;
+    position: absolute;
+    top: 8px;
+	left: 10px;
 }
 
 #tagline {
-	color: #ccc;
+    position: absolute;
+    top: 56px;
+	left: 10px;
 	font-size: 12px;
-	padding-top: 3px;
 }
 
 /* Navigation Bar */
@@ -257,7 +252,6 @@ ul span, ol span {
 	width: 180px;
 	float: right;
 	font-size: 14px;
-	border-bottom: dotted 2px #D7D7D7;
 }
 
 #sidebar h1 {
@@ -276,13 +270,11 @@ ul span, ol span {
 	padding: 5px 5px 0 10px;
 	margin: 0px;
 	/* background: url(side-footer.png) bottom no-repeat; */
-	padding-bottom: 28px;
 }
 
 
 #sidebar ul.menu {
 	list-style: none;
-	text-decoration: none;
 	margin : 3px 0 2px 0;
 	padding: 0;
 }
@@ -290,7 +282,6 @@ ul span, ol span {
 #sidebar ul.menu li {
 	padding : 2px 0 0px 5px;
 	margin : 0 0 0 2px;
-	border-bottom: 1px dotted #ccc;
 }
 
 #sidebar ul.menu li:hover {
@@ -298,9 +289,7 @@ ul span, ol span {
 }
 
 #sidebar ul.menu a {
-	text-decoration : none;
 	background-image : none;
-	color: #333;
 }
 
 

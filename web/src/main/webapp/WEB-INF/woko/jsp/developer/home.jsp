@@ -10,7 +10,7 @@
         <ul class="menu">
             <li><a href="${pageContext.request.contextPath}/find">Find Objects</a></li>
             <li><a href="${pageContext.request.contextPath}/create">Create new Object</a></li>
-            <li><a href="${pageContext.request.contextPath}/studio">Manage Facets</a></li>
+            <li><a href="${pageContext.request.contextPath}/studio">Woko Studio</a></li>
             <li><a href="${pageContext.request.contextPath}/logout">Logout</a></li>
         </ul>
     </s:layout-component>

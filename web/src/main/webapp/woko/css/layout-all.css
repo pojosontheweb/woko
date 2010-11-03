@@ -17,25 +17,25 @@ input.error {
 
 table.wokoFacets {
     width: 100%;
-    border-bottom: 1px solid black;
-    border-top: 1px solid black;
-    border-right: 1px solid black;
+    border: 1px solid #d3d3d3;
 }
 
 table.wokoFacets th {
     font-size: 0.9em;
     background-color: #d3d3d3;
-    border-left: 1px solid black;
 }
 
 table.wokoFacets td {
-    font-size: 0.8em;
-    border-top: 1px solid black;
-    border-left: 1px solid black;
+    font-size: 0.7em;
     padding-left: 4px;
     padding-right: 4px;
 }
 
 table.wokoFacets tr.odd {
     background-color: #efefef;
+}
+
+.poweredBy {
+    padding-top: 256px;
+    font-size: 0.8em;
 }

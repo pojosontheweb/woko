@@ -21,14 +21,14 @@ class RenderLinksImpl extends BaseFragmentFacet implements RenderLinks {
     if (editFacet) {
       String className = woko.objectStore.getClassMapping(oc)
       String key = woko.objectStore.getKey(o)
-      links << [href:"edit/$className/$key",text:'edit']
+      links << [href:"edit/$className/$key",text:'Edit']
     }
 
     def deleteFacet = woko.getFacet(Delete.name, request, o, oc)
     if (deleteFacet) {
       String className = woko.objectStore.getClassMapping(oc)
       String key = woko.objectStore.getKey(o)
-      links << [href:"delete/$className/$key",text:'delete']
+      links << [href:"delete/$className/$key",text:'Delete']
     }
     return links
   }

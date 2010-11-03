@@ -17,9 +17,8 @@
             <div id="wrap">
                 <div id="header-space">
                     <div id="logo">
-                        <img src="${pageContext.request.contextPath}/woko/woko-logo.png" alt="logo">
+                        <img src="${pageContext.request.contextPath}/woko/woko-logo-small.png" alt="logo">
                     </div>
-                    <div id="company-name">Woko</div>
                     <div id="tagline">
                         You are not authenticated -
                         <a href="${pageContext.request.contextPath}/login">log-in</a>
@@ -34,8 +33,11 @@
                     <div id="sidebar">
                         <div id="left-sbar">
                         <div class="widgetspace">
-                          <h1>Sidebar Links</h1>
+                          <h1>Actions</h1>
                           <s:layout-component name="sidebarLinks"/>
+                          <div class="poweredBy">
+                              Powered by <a href="#">Woko</a>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -48,7 +50,6 @@
             </div>
             <div class="clearfix"></div>
             <div id="divider-line"></div>
-            <div id="footer"> &copy; 2010 <strong>Woko</strong> | Web Design by: <a href="http://www.themebin.com/">ThemeBin</a> </div>                    
         </body>
     </html>
 </s:layout-definition>

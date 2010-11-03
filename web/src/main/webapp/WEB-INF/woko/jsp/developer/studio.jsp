@@ -19,8 +19,8 @@
         <h1>Woko Studio</h1>
         <h2>Configured components</h2>
         <ul>
-            <li>Object Store : <strong><%=woko.getObjectStore()%></strong></li>
-            <li>User Manager : <strong><%=woko.getUserManager()%></strong></li>
+            <li>Object Store : <strong><%=woko.getObjectStore().getClass().getName()%></strong></li>
+            <li>User Manager : <strong><%=woko.getUserManager().getClass().getName()%></strong></li>
             <li>Fallback Roles : <strong><%=woko.getFallbackRoles()%></strong></li>
         </ul>
         <h2>Registered Facets</h2>
