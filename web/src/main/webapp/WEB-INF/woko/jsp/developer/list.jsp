@@ -29,7 +29,7 @@
         <div id="wokoPaginationSettings">
             <s:form action="/list">
                 <s:hidden name="className"/>
-                <s:hidden name="facet.p"/>
+                <input type="hidden"name="facet.p" value="1"/>
                 Showing
                 <s:select name="facet.resultsPerPage" onchange="this.form.submit()">
                     <s:option value="10">10</s:option>
@@ -47,16 +47,16 @@
         %>
             <div class="wokoPagination">
                 <%
-                    for (int i=0;i<nbPages;i++) {
+                    for (int i=1;i<nbPages+1;i++) {
                         if (i==p) {
                 %>
-                    <span class="wokoCurrentPage"><%=i+1%></span>
+                    <span class="wokoCurrentPage"><%=i%></span>
 
                 <%      } else { %>
-                    <span><a href="${pageContext.request.contextPath}/list/<%=className%>?facet.p=<%=i%>&facet.resultsPerPage=<%=resultsPerPage%>"><%=i+1%></a></span>
+                    <span><a href="${pageContext.request.contextPath}/list/<%=className%>?facet.p=<%=i%>&facet.resultsPerPage=<%=resultsPerPage%>"><%=i%></a></span>
                 <%
                         }
-                        if (i<nbPages-1) {
+                        if (i<nbPages) {
                 %>
                 |
                 <%

@@ -11,7 +11,7 @@ import woko2.facets.BaseForwardResolutionFacet
 class ListObjects extends BaseForwardResolutionFacet {
 
   Integer resultsPerPage = 10
-  Integer p = 0
+  Integer p = 1
   private String className
 
   private ResultIterator resultIterator
@@ -26,9 +26,9 @@ class ListObjects extends BaseForwardResolutionFacet {
 
   def Resolution getResolution(ActionBeanContext abc) {
     className = abc.request.getParameter('className')
-    p = p==null ? 0 : p
+    p = p==null ? 1 : p
     resultsPerPage = resultsPerPage==null ? 10 : resultsPerPage
-    int start = p * resultsPerPage
+    int start = (p-1) * resultsPerPage
     int limit = resultsPerPage
 
     if (className==null) {
