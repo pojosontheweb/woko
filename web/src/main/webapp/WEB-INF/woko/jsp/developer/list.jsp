@@ -76,12 +76,13 @@
                   String title = renderTitle!=null ? renderTitle.getTitle() : result.toString();
                   // compute link if view facet is available
                   String href = null;
+                  String resultKey = woko.getObjectStore().getKey(result);
                   if (woko.getFacet("view", request, result)!=null) {
-                      String resultKey = woko.getObjectStore().getKey(result);
                       href = request.getContextPath() + "/view/" + className + "/" + resultKey;
                   }
             %>
                   <li>
+                      <%=resultKey%> - 
             <%
                   if (href!=null) {
             %>
@@ -97,6 +98,7 @@
             <%
                   }
             %>
+                      (<%=className%>)
                   </li>
             <%
               }
