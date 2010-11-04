@@ -10,6 +10,12 @@
         </ul>
     </s:layout-component>
     <s:layout-component name="body">
+        <h1>Full text search</h1>
+        <s:form action="/search">
+            Enter your query and submit :
+            <s:text name="facet.query"/>
+            <s:submit name="search"/>
+        </s:form>
         <h1>Find objects by class</h1>
         <p>
             Select the name of the class and submit :

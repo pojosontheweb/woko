@@ -133,14 +133,26 @@ class HibernateStore implements ObjectStore {
     if (obj==null) {
       return null
     }
-    def k = primaryKeyConverter.getPrimaryKeyValue(sessionFactory, obj)
+    def k = primaryKeyConverter.getPrimaryKeyValue(sessionFactory, obj, deproxify(obj.getClass()))
     if (k==null) {
       return null
     }
     return k.toString()
   }
 
+  private Class<?> deproxify(Class<?> clazz) {
+    // deproxify if needed
+    String className = clazz.getName()
+    int i = className.indexOf('_$$_javassist')
+    if (i!=-1) {
+      className = className.substring(0, i)
+      return Class.forName(className)
+    }
+    return clazz
+  }
+
   String getClassMapping(Class<?> clazz) {
+    clazz = deproxify(clazz)
     // is the class persistent ?
     def classMetadata = sessionFactory.getClassMetadata(clazz)
     if (classMetadata==null) {

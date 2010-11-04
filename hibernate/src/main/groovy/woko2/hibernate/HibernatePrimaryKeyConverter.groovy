@@ -42,8 +42,7 @@ class HibernatePrimaryKeyConverter {
     return result
   }
 
-  public Serializable getPrimaryKeyValue(SessionFactory sessionFactory, Object entity) {
-    Class<?> entityClass = entity.getClass()
+  public Serializable getPrimaryKeyValue(SessionFactory sessionFactory, Object entity, Class<?> entityClass) {
     ClassMetadata cm = sessionFactory.getClassMetadata(entityClass);
     if (cm == null) {
       return null
