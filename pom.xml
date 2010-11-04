@@ -30,7 +30,6 @@
         <module>web</module>
         <module>builtin-auth</module>
         <module>hibernate</module>
-        <module>webtests</module>
     </modules>
     <build>
         <plugins>
@@ -62,4 +61,12 @@
             </plugin>
         </plugins>        
     </build>
+    <profiles>
+        <profile>
+            <id>webtests</id>
+            <modules>
+                <module>webtests</module>
+            </modules>
+        </profile>
+    </profiles>
 </project>
