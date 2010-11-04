@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<book>
+  <bookinfo>
+    <title>Woko User Manual</title>
+
+    <author>
+      <firstname>Remi</firstname>
+
+      <surname>Vankeisbelck</surname>
+
+      <affiliation>
+        <orgname>remi@rvkb.com</orgname>
+      </affiliation>
+    </author>
+
+    <pubdate></pubdate>
+  </bookinfo>
+
+  <chapter>
+    <title>What is Woko ?</title>
+
+    <section>
+      <para>Woko is a <emphasis role="bold">Full-Stack Web Framework for the
+      Java Platform</emphasis> that aims to put your POJOs on the Web for
+      nothing (or almost !). It bundles several technologies together and adds
+      some sugar to them to allow fast, consistent and fun development of JEE
+      compatible webapps. The main idea behind Woko is "do more with less" :
+      it provides some plumbing for the most common features needed in webapp
+      development, including :</para>
+
+      <itemizedlist>
+        <listitem>
+          <para>Persistence and Full Text Search</para>
+        </listitem>
+
+        <listitem>
+          <para>Users and Roles (Security and User-profiling)</para>
+        </listitem>
+
+        <listitem>
+          <para>MVC (URLs, Forms, Data binding &amp; Validation, Templating,
+          ...)</para>
+        </listitem>
+
+        <listitem>
+          <para>RPC-like APIs</para>
+        </listitem>
+      </itemizedlist>
+
+      <para>Woko is <emphasis role="bold">Domain Driven</emphasis> : it uses
+      metadata whenever possible in order to provide as much as it can out of
+      the box. You write the Domain Classes, and Woko manages most of the
+      recurrent issues for you, from the persistence layer up to the
+      browser.</para>
+
+      <para>Last, Woko is <emphasis role="bold">Iterative</emphasis> : it
+      provides various extension points that allow you to change the default
+      behavior without overwriting code, through its powerful facets system.
+      </para>
+    </section>
+  </chapter>
+
+  <chapter>
+    <title>Tutorial</title>
+
+    <para>Explain how to install / configure, and to run a first project, with
+    full defaults</para>
+
+    <para></para>
+  </chapter>
+
+  <chapter>
+    <title>Architecture</title>
+
+    <para>Woko uses three main components to make everything work :</para>
+
+    <itemizedlist>
+      <listitem>
+        <para>User Manager : manages the Users and Roles of the
+        application</para>
+      </listitem>
+
+      <listitem>
+        <para>Object Store : handles the persistence (and indexation) of
+        Domain Objects</para>
+      </listitem>
+
+      <listitem>
+        <para>Facet Manager : manages the Facets of the application</para>
+      </listitem>
+    </itemizedlist>
+
+    <para>These components are defined as interfaces : different
+    implementations can be used for different situations/platforms (e.g.
+    HibernateStore for Domain Objects persisting in Hibernate), and you can
+    implement your own to suit your own needs (e.g. write a User Manager that
+    grabs the users/roles from your LDAP).</para>
+
+    <para>When the application starts-up, depending on your configuration,
+    these components are "injected" to Woko and used in order to serve the
+    requests.</para>
+
+    <sect1>
+      <title>Request Processing Lifecycle </title>
+
+      <para>Woko processes incoming HTTP requests following a well-defined
+      lifecycle :</para>
+
+      <orderedlist>
+        <listitem>
+          <para><emphasis role="bold">Request Handling</emphasis> : the HTTP
+          request is handled by the MVC controller (WokoActionBean). It must
+          contain at least the facet name, and possibly a class name and a
+          key. The pattern goes like :
+          <literal>http://wwwmyco.com/myapp/&lt;facet_name&gt;[/&lt;className[/&lt;key&gt;]]</literal>.
+          Typical Woko urls look like :</para>
+
+          <itemizedlist>
+            <listitem>
+              <para><literal>http://www.myco.com/myapp/view/Book/1</literal></para>
+            </listitem>
+
+            <listitem>
+              <para><literal>http://www.myco.com/myapp/list/Book</literal></para>
+            </listitem>
+
+            <listitem>
+              <para><literal>http://www.myco.com/myapp/home</literal></para>
+            </listitem>
+          </itemizedlist>
+        </listitem>
+
+        <listitem>
+          <para><emphasis role="bold">Target Object Loading</emphasis> : the
+          target object is loaded from the Object Store if needed (using the
+          <literal>className</literal> and <literal>key</literal> parameters).
+          </para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis role="bold">Resolution Facet Loading</emphasis> :
+          the target Resolution Facet is retrieved (using the
+          <literal>facetName</literal> parameter) for the target object.
+          Resolution Facets are specific facets that act as controllers : they
+          are meant to respond to HTTP requests. If the Resolution Facet is
+          not found for supplied parameters, a 404 is returned.</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis role="bold">Facet Execution</emphasis> : the target
+          Resolution Facet is invoked, producing the HTTP response.</para>
+        </listitem>
+      </orderedlist>
+
+      <para>This lifecycle is common to all requests handled by Woko. It's a
+      bit more "high level" than the regular MVC, as we have the "meta
+      controller" (WokoActionBean) that loads the target object and the actual
+      controller (the Resolution Facet), but otherwise it's just the same.
+      </para>
+    </sect1>
+
+    <sect1>
+      <title>Users and Roles</title>
+
+      <para>Woko relies on an implementation of UserManager that is injected
+      via configuration. The contract of the UserManager is the strict minimum
+      needed in order to have all the facet mechanism working. Woko needs to
+      know only a few things in order to handle all the facet mechanism. The
+      UserManager should just be able to :</para>
+
+      <itemizedlist>
+        <listitem>
+          <para>authenticate users of the app</para>
+        </listitem>
+
+        <listitem>
+          <para>provide the list of roles owned by the users of the app</para>
+        </listitem>
+      </itemizedlist>
+
+      <para>With this, Woko can log your users in and manage the facets for
+      them. </para>
+    </sect1>
+
+    <sect1>
+      <title>Object Store</title>
+
+      <para>The Object Store is responsible of persisting the Domain Objects
+      of the application. It basically handles CRUD operations, as well as
+      full-text search. </para>
+    </sect1>
+
+    <sect1>
+      <title>Resolution Facets</title>
+
+      <para>Resolution facets are Woko's controllers : they are meant to
+      respond to HTTP requests. When a request is handled by Woko, this one
+      delegates the processing to a Resolution Facet that is in charge of
+      creating the response. Woko ships with built-in Resolution Facets for
+      CRUD operations and other default features. </para>
+    </sect1>
+
+    <sect1>
+      <title>Object Renderer and Fragment Facets</title>
+
+      <para>Woko displays your POJOs (read/write) dynamically using the Object
+      Renderer. It's basically a composition of facets, java reflection and
+      JSP fragments (Fragment Facets) that act together in order to render any
+      Java Object as HTML, showing their properties read-only (view) or
+      read/write (edit). The renderer includes out of the box support for
+      basic property types (e.g. Strings or Numbers) as well as relations,
+      allowing to navigate in the object graph. Like the rest of Woko, the
+      Object Renderer is meant to be extended : you can supply your own
+      Fragment Facets in order to display parts (or all) of your own Domain
+      Objects as you want for the various roles of your application.</para>
+    </sect1>
+  </chapter>
+
+  <chapter>
+    <title>Configuration</title>
+
+    <para>How to initialize Woko (WokoInitListener)</para>
+  </chapter>
+</book>
