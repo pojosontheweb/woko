@@ -13,6 +13,11 @@ import org.hibernate.Transaction
 import woko2.persistence.ResultIterator
 import woko2.persistence.ListResultIterator
 import org.hibernate.Criteria
+import org.hibernate.search.Search
+import org.hibernate.search.FullTextSession
+import org.hibernate.Query
+import org.apache.lucene.queryParser.QueryParser
+import org.apache.lucene.analysis.StopAnalyzer
 
 class HibernateStore implements ObjectStore {
 
@@ -199,6 +204,25 @@ class HibernateStore implements ObjectStore {
 
   List<Class<?>> getMappedClasses() {
     return Collections.unmodifiableList(mappedClasses)
+  }
+
+  ResultIterator search(Object query, Integer start, Integer limit) {
+    int s = start==null ? 0 : start
+    int l = limit==null ? -1 : limit
+    org.apache.lucene.search.Query luceneQuery
+    if (query instanceof String) {
+      org.apache.lucene.queryParser.QueryParser parser = new QueryParser("name", new StopAnalyzer() );
+      luceneQuery = parser.parse((String)query)
+    } else {
+      luceneQuery = (org.apache.lucene.search.Query)query
+    }
+    FullTextSession fullTextSession = Search.getFullTextSession( session );
+    def tq = fullTextSession.createFullTextQuery(luceneQuery).setFirstResult(s)
+    if (l!=-1) {
+      tq.setMaxResults(l)
+    }
+
+    return new ListResultIterator(tq.list(), s, l, tq.resultSize)
   }
 
 

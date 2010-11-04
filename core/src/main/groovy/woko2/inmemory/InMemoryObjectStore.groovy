@@ -98,7 +98,9 @@ class InMemoryObjectStore implements ObjectStore {
     return res
   }
 
-
+  def ResultIterator search(Object query, Integer start, Integer limit) {
+    throw new UnsupportedOperationException("search is not implemented for the in-memory store")
+  }
 
 
 }

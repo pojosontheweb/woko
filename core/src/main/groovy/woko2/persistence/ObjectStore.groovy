@@ -18,4 +18,6 @@ public interface ObjectStore {
 
   List<Class<?>> getMappedClasses()
 
+  ResultIterator search(def query, Integer start, Integer limit)
+
 }
