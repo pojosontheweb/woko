@@ -18,6 +18,8 @@
     <pubdate></pubdate>
   </bookinfo>
 
+  <toc></toc>
+
   <chapter>
     <title>What is Woko ?</title>
 
@@ -57,8 +59,8 @@
 
       <para>Last, Woko is <emphasis role="bold">Iterative</emphasis> : it
       provides various extension points that allow you to change the default
-      behavior without overwriting code, through its powerful facets system.
-      </para>
+      behavior without overwriting code, through its powerful facets
+      system.</para>
     </section>
   </chapter>
 
@@ -69,6 +71,36 @@
     full defaults</para>
 
     <para></para>
+
+    <sect1>
+      <title>Installation and Configuration</title>
+
+      <para></para>
+    </sect1>
+
+    <sect1>
+      <title>Creating Domain Classes</title>
+
+      <para></para>
+    </sect1>
+
+    <sect1>
+      <title>Full Defaults !</title>
+
+      <para></para>
+    </sect1>
+
+    <sect1>
+      <title>Writing Resolution Facets</title>
+
+      <para></para>
+    </sect1>
+
+    <sect1>
+      <title>Customizing the Object Renderer</title>
+
+      <para></para>
+    </sect1>
   </chapter>
 
   <chapter>
@@ -103,7 +135,7 @@
     requests.</para>
 
     <sect1>
-      <title>Request Processing Lifecycle </title>
+      <title>Request Processing Lifecycle</title>
 
       <para>Woko processes incoming HTTP requests following a well-defined
       lifecycle :</para>
@@ -135,8 +167,8 @@
         <listitem>
           <para><emphasis role="bold">Target Object Loading</emphasis> : the
           target object is loaded from the Object Store if needed (using the
-          <literal>className</literal> and <literal>key</literal> parameters).
-          </para>
+          <literal>className</literal> and <literal>key</literal>
+          parameters).</para>
         </listitem>
 
         <listitem>
@@ -157,8 +189,8 @@
       <para>This lifecycle is common to all requests handled by Woko. It's a
       bit more "high level" than the regular MVC, as we have the "meta
       controller" (WokoActionBean) that loads the target object and the actual
-      controller (the Resolution Facet), but otherwise it's just the same.
-      </para>
+      controller (the Resolution Facet), but otherwise it's just the
+      same.</para>
     </sect1>
 
     <sect1>
@@ -181,7 +213,7 @@
       </itemizedlist>
 
       <para>With this, Woko can log your users in and manage the facets for
-      them. </para>
+      them.</para>
     </sect1>
 
     <sect1>
@@ -189,7 +221,7 @@
 
       <para>The Object Store is responsible of persisting the Domain Objects
       of the application. It basically handles CRUD operations, as well as
-      full-text search. </para>
+      full-text search.</para>
     </sect1>
 
     <sect1>
@@ -199,7 +231,7 @@
       respond to HTTP requests. When a request is handled by Woko, this one
       delegates the processing to a Resolution Facet that is in charge of
       creating the response. Woko ships with built-in Resolution Facets for
-      CRUD operations and other default features. </para>
+      CRUD operations and other default features.</para>
     </sect1>
 
     <sect1>
@@ -223,4 +255,16 @@
 
     <para>How to initialize Woko (WokoInitListener)</para>
   </chapter>
+
+  <chapter>
+    <title>Hibernate</title>
+
+    <para></para>
+  </chapter>
+
+  <appendix>
+    <title>Built-in Facets</title>
+
+    <para></para>
+  </appendix>
 </book>
