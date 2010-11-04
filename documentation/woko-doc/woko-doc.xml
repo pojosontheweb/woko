@@ -47,7 +47,7 @@
         </listitem>
 
         <listitem>
-          <para>RPC-like APIs</para>
+          <para>RPC-like APIs (JSON, JavaScript)</para>
         </listitem>
       </itemizedlist>
 
@@ -143,9 +143,9 @@
       <orderedlist>
         <listitem>
           <para><emphasis role="bold">Request Handling</emphasis> : the HTTP
-          request is handled by the MVC controller (WokoActionBean). It must
-          contain at least the facet name, and possibly a class name and a
-          key. The pattern goes like :
+          request is handled by the MVC controller (WokoActionBean). HTTP
+          parameters must contain at least the facet name, and possibly a
+          class name and a key. The pattern goes like :
           <literal>http://wwwmyco.com/myapp/&lt;facet_name&gt;[/&lt;className[/&lt;key&gt;]]</literal>.
           Typical Woko urls look like :</para>
 
@@ -257,13 +257,13 @@
   </chapter>
 
   <chapter>
-    <title>Hibernate</title>
+    <title>Built-in Facets</title>
 
     <para></para>
   </chapter>
 
   <appendix>
-    <title>Built-in Facets</title>
+    <title>Hibernate</title>
 
     <para></para>
   </appendix>
