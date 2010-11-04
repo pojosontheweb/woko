@@ -1,8 +1,6 @@
 package woko2.inmemory
 
-import woko2.users.User
-
-class InMemoryUser implements User {
+class InMemoryUser {
 
   String username
   String password

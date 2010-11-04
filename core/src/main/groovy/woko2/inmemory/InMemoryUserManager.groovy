@@ -1,13 +1,12 @@
 package woko2.inmemory
 
 import woko2.users.UserManager
-import woko2.users.User
 
 class InMemoryUserManager implements UserManager {
 
   def users = new HashMap<String,InMemoryUser>()
 
-  def User getUser(String username) {
+  private def InMemoryUser getUser(String username) {
     return users[username]
   }
 
