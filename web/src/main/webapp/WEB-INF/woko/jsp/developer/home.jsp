@@ -5,7 +5,7 @@
 <c:set var="o" value="${actionBean.object}"/>
 <w:facet facetName="layout" targetObject="${o}"/>
 <w:facet targetObject="${o}" facetName="renderTitle"/>
-<s:layout-render name="${layout.layoutPath}" layout="${layout}" pageTitle="Developer home">
+<s:layout-render name="${layout.layoutPath}" layout="${layout}" pageTitle="home">
     <s:layout-component name="sidebarLinks">
         <ul class="menu">
             <li><a href="${pageContext.request.contextPath}/find">Find Objects</a></li>

@@ -3,7 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="s" uri="http://stripes.sourceforge.net/stripes.tld" %>
 <w:facet facetName="layout"/>
-<s:layout-render name="${layout.layoutPath}" layout="${layout}" pageTitle="Please log in" skipLoginLink="true">
+<s:layout-render name="${layout.layoutPath}" layout="${layout}" pageTitle="Please log-in" skipLoginLink="true">
     <s:layout-component name="body">
         <h1>Please log-in</h1>
           <form method="POST" action="j_security_check">
@@ -19,7 +19,7 @@
                               <td><input type="password" name="j_password"/></td>
                           </tr>
                           <tr>
-                              <td colspan="2"><input type="submit" value="Login"/></td>
+                              <td colspan="2"><input type="submit" value="Login" name="login"/></td>
                           </tr>
                       </tbody>
                   </table>
