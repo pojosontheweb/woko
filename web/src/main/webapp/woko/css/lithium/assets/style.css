@@ -34,6 +34,12 @@ h2 {
 h3 {
 	font-size: 14px;
 }
+
+#wokoSearchBox {
+    position: absolute;
+    top: 18px;
+    right: 10px;
+}
 	
 
 

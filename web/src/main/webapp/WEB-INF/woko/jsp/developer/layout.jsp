@@ -35,6 +35,12 @@
                             </span>
                         </c:if>
                     </div>
+                    <div id="wokoSearchBox">
+                        <s:form action="/search">
+                            <s:text name="facet.query"/>
+                            <s:submit name="search" value="Search"/>
+                        </s:form>
+                    </div>
                 </div>
                 <div id="navbar">
                     <div id="nbar">
