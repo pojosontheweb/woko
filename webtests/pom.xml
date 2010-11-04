@@ -91,7 +91,7 @@
                   <container>
                     <containerId>tomcat6x</containerId>
                     <zipUrlInstaller>
-                      <url>http://mirror.ibcp.fr/pub/apache//tomcat/tomcat-6/v6.0.29/bin/apache-tomcat-6.0.29.zip</url>
+                      <url>http://apache.cict.fr//tomcat/tomcat-6/v6.0.29/bin/apache-tomcat-6.0.29.zip</url>
                       <installDir>${basedir}/target/tomcat6-install</installDir>
                     </zipUrlInstaller>
                   </container>
@@ -99,6 +99,7 @@
                     <home>${project.build.directory}/tomcat6x/container</home>
                     <properties>
                         <cargo.servlet.port>8080</cargo.servlet.port>
+                        <cargo.servlet.users>wdevel:wdevel:developer</cargo.servlet.users>
                     </properties>
                   </configuration>
                 </configuration>
