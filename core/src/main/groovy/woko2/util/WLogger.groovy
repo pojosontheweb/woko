@@ -1,40 +1,39 @@
 package woko2.util
 
+import net.sourceforge.stripes.util.Log
+
 class WLogger {
 
   static WLogger getLogger(Class categoryClass) {
-    return new WLogger(categoryClass.simpleName)
+    return new WLogger(categoryClass)
   }
 
-  private final String category
+  private final Log stripesLog
 
-  public WLogger(String category) {
-    this.category = category
-  }
-
-  long getTime() {
-    return System.currentTimeMillis()
+  public WLogger(Class categoryClass) {
+    this.stripesLog = Log.getInstance(categoryClass)
   }
 
   void debug(msg) {
-    println "$time - [DEBUG][$category] $msg"
+    stripesLog.debug msg
   }
 
   void info(msg) {
-    println "$time - [INFO] [$category] $msg"
+    stripesLog.info msg
   }
 
   void warn(msg) {
-    println "$time - [WARN] [$category] $msg"
+    stripesLog.warn msg
   }
 
   void error(msg) {
-    println "$time - [ERROR][$category] $msg"
+    stripesLog.error msg
   }
 
-  void error(msg,e) {
-    println "$time - [ERROR][$category] $msg"
-    e.printStackTrace()
+  void error(msg,Exception e) {
+    StringWriter sw = new StringWriter()
+    e.printStackTrace(new PrintWriter(sw))
+    stripesLog.error(msg, "\nStack:\n", sw.toString())
   }
 
 }
