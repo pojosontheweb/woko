@@ -25,12 +25,12 @@ class DeleteImpl extends BaseResolutionFacet implements Delete {
     if (cancel) {
       abc.messages.add(new SimpleMessage('Cancelled deletion'))
       return new RedirectResolution(
-              context.woko.facetUrl(
+              facetContext.woko.facetUrl(
                       View.name ,
-                      context.targetObject))
+                      facetContext.targetObject))
     }
     if (confirm) {
-      context.woko.objectStore.delete(context.targetObject)
+      facetContext.woko.objectStore.delete(facetContext.targetObject)
       abc.messages.add(new SimpleMessage('Object deleted'))
       return new RedirectResolution("/${Home.name}")
     }

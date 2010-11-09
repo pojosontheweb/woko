@@ -9,7 +9,7 @@ class Create extends BaseForwardResolutionFacet {
 
   def getMappedClasses() {
     def res = []
-    ObjectStore os = context.woko.objectStore
+    ObjectStore os = facetContext.woko.objectStore
     def mappedClasses = os.getMappedClasses()
     mappedClasses.each { c ->
       res << os.getClassMapping(c)  

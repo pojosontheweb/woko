@@ -14,7 +14,7 @@
     RenderProperties editProperties = (RenderProperties)request.getAttribute("renderPropertiesEdit");
     List<String> propertyNames = editProperties.getPropertyNames();
     Map<String,Object> propertyValues = editProperties.getPropertyValues();
-    WokoFacetContext fctx = (WokoFacetContext)editProperties.getContext();
+    WokoFacetContext fctx = (WokoFacetContext)editProperties.getFacetContext();
     Woko woko = fctx.getWoko();
     Object owningObject = fctx.getTargetObject();
     ObjectStore os = woko.getObjectStore();

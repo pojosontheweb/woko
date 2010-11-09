@@ -26,7 +26,7 @@
                 </div>
                 <div id="navbar">
                     <div id="nbar">
-                        <w:includeFacet facetName="navBar" targetObject="${layout.context.targetObject}"/>
+                        <w:includeFacet facetName="navBar" targetObject="${layout.facetContext.targetObject}"/>
                     </div>
                 </div>
                 <div id="content-wrap">

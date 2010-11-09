@@ -8,7 +8,7 @@ import woko2.facets.builtin.RenderTitle
 class RenderTitleImpl extends BaseFragmentFacet implements RenderTitle {
                
   String getTitle() {
-    def o = context.targetObject
+    def o = facetContext.targetObject
     if (o==null) {
       return 'null'
     }
@@ -37,7 +37,7 @@ class RenderTitleImpl extends BaseFragmentFacet implements RenderTitle {
     }
 
     // nothing matched, compute a meaningful title
-    def objectStore = context?.woko?.objectStore
+    def objectStore = facetContext?.woko?.objectStore
     assert objectStore
     def className = objectStore.getClassMapping(o.getClass())
     def key = objectStore.getKey(o)

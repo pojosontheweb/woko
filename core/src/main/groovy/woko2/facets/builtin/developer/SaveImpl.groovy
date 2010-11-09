@@ -21,7 +21,7 @@ class SaveImpl extends BaseResolutionFacet implements Save {
 
   Resolution getResolution(ActionBeanContext abc) {
     // try to find a validation facet for the object
-    Validate validateFacet = (Validate)context.woko.getFacet(Validate.name, abc.request, context.targetObject, context.targetObject.getClass())
+    Validate validateFacet = (Validate)facetContext.woko.getFacet(Validate.name, abc.request, facetContext.targetObject, facetContext.targetObject.getClass())
     if (validateFacet!=null) {
       logger.debug("Validation facet found, validating before saving...")
       if (validateFacet.validate(abc)) {
@@ -29,7 +29,7 @@ class SaveImpl extends BaseResolutionFacet implements Save {
       } else {
         logger.debug("Validate facet raised validation errors, not saving")
         // forward to the edit fragment
-        Edit editFacet = (Edit)context.woko.getFacet(Edit.name, abc.request, context.targetObject, context.targetObject.getClass(), true)
+        Edit editFacet = (Edit)facetContext.woko.getFacet(Edit.name, abc.request, facetContext.targetObject, facetContext.targetObject.getClass(), true)
         return new ForwardResolution(editFacet.getFragmentPath())
       }
     } else {
@@ -37,13 +37,13 @@ class SaveImpl extends BaseResolutionFacet implements Save {
       doSave(abc)
     }
     return new RedirectResolution(
-            context.woko.facetUrl(
+            facetContext.woko.facetUrl(
                     Edit.name,
-                    context.targetObject))
+                    facetContext.targetObject))
   }
 
   protected void doSave(abc) {
-    context.woko.objectStore.save(context.targetObject)
+    facetContext.woko.objectStore.save(facetContext.targetObject)
     abc.messages << new SimpleMessage('Object saved')
   }
 

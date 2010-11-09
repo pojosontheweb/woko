@@ -7,7 +7,7 @@
 <%@ taglib prefix="s" uri="http://stripes.sourceforge.net/stripes.tld" %>
 <%
     RenderPropertyValue renderPropertyValue = (RenderPropertyValue)request.getAttribute("renderPropertyValueEdit");
-    WokoFacetContext fctx = (WokoFacetContext)renderPropertyValue.getContext();
+    WokoFacetContext fctx = (WokoFacetContext)renderPropertyValue.getFacetContext();
     ObjectStore os = fctx.getWoko().getObjectStore();
     String propertyName = renderPropertyValue.getPropertyName();
     Object owningObject = renderPropertyValue.getOwningObject();

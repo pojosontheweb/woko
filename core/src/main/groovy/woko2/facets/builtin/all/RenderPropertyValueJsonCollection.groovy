@@ -19,7 +19,7 @@ class RenderPropertyValueJsonCollection extends BaseFacet implements RenderPrope
       if (item==null) {
         arr.put(null)
       }
-      RenderPropertyValueJson rpvj = (RenderPropertyValueJson)context.woko.getFacet(RenderPropertyValueJson.name, request, item)
+      RenderPropertyValueJson rpvj = (RenderPropertyValueJson)facetContext.woko.getFacet(RenderPropertyValueJson.name, request, item)
       if (rpvj==null) {
         logger.debug("... no renderPropertyValueJson facet found for collection item, adding null")
         arr.put(null)

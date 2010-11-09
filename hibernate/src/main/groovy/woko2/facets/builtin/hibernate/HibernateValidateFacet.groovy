@@ -18,8 +18,8 @@ class HibernateValidateFacet extends BaseFacet implements Validate {
     // call hibernate validator and translate errors
     boolean hasErrors = false
     def errs = abc.validationErrors
-    ClassValidator validator = new ClassValidator(context.targetObject.getClass())
-    InvalidValue[] invalidValues = validator.getInvalidValues(context.targetObject)
+    ClassValidator validator = new ClassValidator(facetContext.targetObject.getClass())
+    InvalidValue[] invalidValues = validator.getInvalidValues(facetContext.targetObject)
     def ab = abc.request.getAttribute('actionBean')
     def abClass = ab ? ab.getClass() : WokoActionBean.class
     invalidValues.each { v ->

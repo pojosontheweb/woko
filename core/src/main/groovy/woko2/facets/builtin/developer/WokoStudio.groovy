@@ -8,7 +8,7 @@ import net.sourceforge.jfacets.FacetDescriptor
 class WokoStudio extends BaseForwardResolutionFacet {
 
   List<FacetDescriptor> getFacetDescriptors() {
-    def fdm = context.woko.getJFacets().getFacetRepository().getFacetDescriptorManager()
+    def fdm = facetContext.woko.getJFacets().getFacetRepository().getFacetDescriptorManager()
     FacetDescriptor[] descriptors = fdm.descriptors
     return Arrays.asList(descriptors)
   }

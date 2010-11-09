@@ -10,7 +10,7 @@ import net.sourceforge.stripes.action.ActionBeanContext
 class ToString extends BaseResolutionFacet {
 
   Resolution getResolution(ActionBeanContext abc) {
-    return new StreamingResolution('text/plain', context?.targetObject?.toString()) 
+    return new StreamingResolution('text/plain', facetContext?.targetObject?.toString()) 
   }
 
 }

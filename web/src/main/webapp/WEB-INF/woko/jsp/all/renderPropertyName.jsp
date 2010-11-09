@@ -6,7 +6,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
     RenderPropertyName renderPropertyName = (RenderPropertyName)request.getAttribute("renderPropertyName");
-    WokoFacetContext fctx = (WokoFacetContext)renderPropertyName.getContext();
+    WokoFacetContext fctx = (WokoFacetContext)renderPropertyName.getFacetContext();
     Woko woko = fctx.getWoko();
     ObjectStore os = woko.getObjectStore();
     String propertyName = renderPropertyName.getPropertyName();

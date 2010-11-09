@@ -8,7 +8,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
     RenderPropertyValue renderPropertyValue = (RenderPropertyValue)request.getAttribute(RenderPropertyValue.name);
-    WokoFacetContext fctx = (WokoFacetContext)renderPropertyValue.getContext();
+    WokoFacetContext fctx = (WokoFacetContext)renderPropertyValue.getFacetContext();
     Woko woko = fctx.getWoko();
     ObjectStore os = fctx.getWoko().getObjectStore();
     Object propertyValue = fctx.getTargetObject();

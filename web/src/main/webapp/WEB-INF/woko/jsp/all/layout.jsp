@@ -38,7 +38,7 @@
                 <s:messages/>
             </div>
             <div id="navigation">
-                <w:includeFacet facetName="navBar" targetObject="${layout.context.targetObject}"/>
+                <w:includeFacet facetName="navBar" targetObject="${layout.facetContext.targetObject}"/>
             </div>
             <div id="content">
                 <s:layout-component name="sidebarLinks"/>

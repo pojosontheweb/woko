@@ -7,7 +7,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%
     RenderPropertyValue renderPropertyValue = (RenderPropertyValue)request.getAttribute(RenderPropertyValue.name);
-    WokoFacetContext fctx = (WokoFacetContext)renderPropertyValue.getContext();
+    WokoFacetContext fctx = (WokoFacetContext)renderPropertyValue.getFacetContext();
     ObjectStore os = fctx.getWoko().getObjectStore();
     Date propertyValue = (Date)fctx.getTargetObject();
     String propertyName = renderPropertyValue.getPropertyName();

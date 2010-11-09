@@ -6,16 +6,16 @@ import net.sourceforge.jfacets.IInstanceFacet
 
 abstract class BaseFacet implements IFacet, IInstanceFacet {
 
-  private WokoFacetContext context
+  private WokoFacetContext facetContext
 
   boolean acceptNullTargetObject = true
 
-  WokoFacetContext getContext() {
-    return context
+  WokoFacetContext getFacetContext() {
+    return facetContext
   }
 
-  void setContext(IFacetContext iFacetContext) {
-    this.context = (WokoFacetContext)iFacetContext
+  void setFacetContext(IFacetContext iFacetContext) {
+    this.facetContext = (WokoFacetContext)iFacetContext
   }
 
   boolean matchesTargetObject(Object targetObject) {
@@ -27,9 +27,9 @@ abstract class BaseFacet implements IFacet, IInstanceFacet {
 
   protected String computeJspPathFromFacetDescriptor() {
     return new StringBuilder('/WEB-INF/woko/jsp/').
-      append(context.facetDescriptor.profileId).
+      append(facetContext.facetDescriptor.profileId).
       append('/').
-      append(context.facetDescriptor.name).
+      append(facetContext.facetDescriptor.name).
       append(".jsp")
   }
 

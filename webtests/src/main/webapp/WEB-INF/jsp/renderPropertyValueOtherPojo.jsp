@@ -1,1 +1,1 @@
-${renderPropertyValue.context.targetObject.foo}
+${renderPropertyValue.facetContext.targetObject.foo}

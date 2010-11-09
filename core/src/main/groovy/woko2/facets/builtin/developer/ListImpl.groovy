@@ -13,7 +13,7 @@ class ListImpl extends BaseResultFacet implements woko2.facets.builtin.ListObjec
     if (className==null) {
       return new ListResultIterator([], start, limit, 0)
     } else {
-      return context.woko.objectStore.list(className, start, limit)
+      return facetContext.woko.objectStore.list(className, start, limit)
     }
   }
 

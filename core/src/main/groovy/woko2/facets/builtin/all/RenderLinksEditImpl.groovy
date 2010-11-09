@@ -12,9 +12,9 @@ class RenderLinksEditImpl extends BaseFragmentFacet implements RenderLinks {
 
   def getLinks() {
     def links = []
-    Woko woko = context.woko
-    def o = context.targetObject
-    def oc = context.targetObject.getClass()
+    Woko woko = facetContext.woko
+    def o = facetContext.targetObject
+    def oc = facetContext.targetObject.getClass()
 
     // display view link if object can be displayed
     def viewFacet = woko.getFacet(View.name, request, o, oc)

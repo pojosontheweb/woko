@@ -17,7 +17,7 @@ class RenderPropertyValueJsonObject extends BaseFacet implements RenderPropertyV
     JSONObject res = new JSONObject()
     res.put('_object', true)
     Class c = propertyValue.getClass()
-    def os = context.woko.objectStore
+    def os = facetContext.woko.objectStore
     String className = os.getClassMapping(c)
     res.put('_className', className)
     String key = os.getKey(propertyValue)
@@ -26,7 +26,7 @@ class RenderPropertyValueJsonObject extends BaseFacet implements RenderPropertyV
       res.put('_key', key)
     }
 
-    RenderTitle renderTitle = (RenderTitle)context.woko.getFacet(RenderTitle.name, request, propertyValue)
+    RenderTitle renderTitle = (RenderTitle)facetContext.woko.getFacet(RenderTitle.name, request, propertyValue)
     if (renderTitle!=null) {
       res.put("_title", renderTitle.getTitle())
     }

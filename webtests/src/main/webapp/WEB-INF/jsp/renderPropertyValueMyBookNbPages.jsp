@@ -1,1 +1,1 @@
-${renderPropertyValue.context.targetObject.nbPages} page(s)
+${renderPropertyValue.facetContext.targetObject.nbPages} page(s)

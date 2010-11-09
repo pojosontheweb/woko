@@ -16,14 +16,14 @@ class RenderObjectJsonImpl extends BaseFacet implements RenderObjectJson {
   private static final WLogger logger = WLogger.getLogger(RenderObjectJsonImpl.class)
 
   def JSONObject objectToJson(HttpServletRequest request) {
-    def o = context.targetObject
+    def o = facetContext.targetObject
     if (o==null) {
       logger.debug("Object is null, returning null")
       return null
     }
     JSONObject result = new JSONObject()
     // find props to be rendered using renderProperties facet
-    RenderProperties renderProperties = (RenderProperties)context.woko.getFacet(RenderProperties.name, request, o)
+    RenderProperties renderProperties = (RenderProperties)facetContext.woko.getFacet(RenderProperties.name, request, o)
     if (renderProperties==null) {
       logger.warn("No renderProperties facet found for targetObject $o, as a result no props will be serialized.")
       return result
@@ -35,7 +35,7 @@ class RenderObjectJsonImpl extends BaseFacet implements RenderObjectJson {
       result.put(k, jsonValue)
     }
 
-    def os = context.woko.objectStore
+    def os = facetContext.woko.objectStore
     String className = os.getClassMapping(o.getClass())
     result.put("_object", true)
     result.put("_className", className)
@@ -45,7 +45,7 @@ class RenderObjectJsonImpl extends BaseFacet implements RenderObjectJson {
       result.put("_key", key)
     }
 
-    RenderTitle renderTitle = (RenderTitle)context.woko.getFacet(RenderTitle.name, request, o)
+    RenderTitle renderTitle = (RenderTitle)facetContext.woko.getFacet(RenderTitle.name, request, o)
     if (renderTitle!=null) {
       result.put("_title", renderTitle.getTitle())
     }
@@ -57,10 +57,10 @@ class RenderObjectJsonImpl extends BaseFacet implements RenderObjectJson {
       return null
     }
     // try name-specific first
-    RenderPropertyValueJson rpvj = (RenderPropertyValueJson)context.woko.getFacet(RenderPropertyValueJson.name + "_$propertyName", request, owner)
+    RenderPropertyValueJson rpvj = (RenderPropertyValueJson)facetContext.woko.getFacet(RenderPropertyValueJson.name + "_$propertyName", request, owner)
     if (rpvj==null) {
       // type-specific
-      rpvj = (RenderPropertyValueJson)context.woko.getFacet(RenderPropertyValueJson.name, request, value)
+      rpvj = (RenderPropertyValueJson)facetContext.woko.getFacet(RenderPropertyValueJson.name, request, value)
     }
     if (rpvj==null) {
       // default to toString()

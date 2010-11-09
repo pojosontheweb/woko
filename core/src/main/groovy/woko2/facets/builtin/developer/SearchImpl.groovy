@@ -15,7 +15,7 @@ class SearchImpl extends BaseResultFacet implements Search {
     if (query==null) {
       return new ListResultIterator([], start, limit, 0)
     } else {
-      return context.woko.objectStore.search(query, start, limit)
+      return facetContext.woko.objectStore.search(query, start, limit)
     }
   }
 
