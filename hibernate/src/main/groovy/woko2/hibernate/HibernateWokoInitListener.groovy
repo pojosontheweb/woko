@@ -5,6 +5,8 @@ import woko2.Woko
 import woko2.users.UserManager
 import woko2.persistence.ObjectStore
 import woko2.util.WLogger
+import woko2.users.UsernameResolutionStrategy
+import woko2.users.RemoteUserStrategy
 
 abstract class HibernateWokoInitListener extends WokoInitListener {
 
@@ -13,7 +15,7 @@ abstract class HibernateWokoInitListener extends WokoInitListener {
   private static final WLogger logger = WLogger.getLogger(HibernateWokoInitListener.class)
 
   Woko createWoko() {
-    return new Woko(createObjectStore(), createUserManager(), createFallbackRoles())
+    return new Woko(createObjectStore(), createUserManager(), createFallbackRoles(), Woko.createDefaultFacetDescriptorManager(), Woko.createDefaultUsernameResolutionStrategy())
   }
 
   protected List<String> createFallbackRoles() {

@@ -23,7 +23,7 @@
         <dependency>
             <groupId>net.sourceforge.stripes</groupId>
             <artifactId>stripes</artifactId>
-            <version>1.5.4-SNAPSHOT</version>
+            <version>1.5.4</version>
         </dependency>
         <dependency>
             <groupId>net.sourceforge.jfacets</groupId>

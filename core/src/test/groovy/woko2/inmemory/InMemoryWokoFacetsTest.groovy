@@ -11,7 +11,7 @@ import woko2.facets.builtin.all.LogoutImpl
 class InMemoryWokoFacetsTest extends TestCase {
 
   Woko createWoko(String username) {
-    return new InMemoryWoko([Woko.ROLE_GUEST]).setUsernameResolutionStrategy(new DummyURS(username:username))
+    return InMemoryWokoInitListener.doCreateWoko().setUsernameResolutionStrategy(new DummyURS(username:username))
   }
 
   def getFacet(String facetName, String username, Object targetObject) {

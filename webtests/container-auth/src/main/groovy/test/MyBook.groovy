@@ -7,22 +7,22 @@ import org.hibernate.search.annotations.Indexed
 import org.hibernate.search.annotations.DocumentId
 import org.hibernate.search.annotations.Field
 
-@Entity
-@Indexed
+@javax.persistence.Entity
+@org.hibernate.search.annotations.Indexed
 class MyBook {
 
-  @NotNull
-  @Field
+  @org.hibernate.validator.NotNull
+  @org.hibernate.search.annotations.Field
   String name
 
-  @Id
-  @DocumentId
+  @javax.persistence.Id
+  @org.hibernate.search.annotations.DocumentId
   String _id
 
-  @Field
+  @org.hibernate.search.annotations.Field
   int nbPages
 
-  @Field
+  @org.hibernate.search.annotations.Field
   Date creationTime = new Date()
 
   /*

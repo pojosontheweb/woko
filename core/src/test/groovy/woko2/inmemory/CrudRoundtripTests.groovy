@@ -16,7 +16,7 @@ import woko2.facets.builtin.developer.DeleteImpl
 class CrudRoundtripTests extends TestCase {
 
   Woko createWoko(String username) {
-    Woko inMem = new InMemoryWoko([Woko.ROLE_GUEST]).setUsernameResolutionStrategy(new DummyURS(username:username))
+    Woko inMem = InMemoryWokoInitListener.doCreateWoko().setUsernameResolutionStrategy(new DummyURS(username:username))
     InMemoryObjectStore inMemObjectStore = inMem.objectStore
     inMemObjectStore.addObject(new Book([_id:'1',name:'Moby Dick',nbPages:123]))
     return inMem

@@ -29,7 +29,7 @@ class Woko {
   private final ObjectStore objectStore;
   private final List<String> fallbackRoles;
   private final IFacetDescriptorManager facetDescriptorManager;
-  private UsernameResolutionStrategy usernameResolutionStrategy = new RemoteUserStrategy()
+  private final UsernameResolutionStrategy usernameResolutionStrategy;
 
   static Woko getWoko(ServletContext ctx) {
     return (Woko)ctx.getAttribute(CTX_KEY)
@@ -37,22 +37,23 @@ class Woko {
 
   protected JFacets jFacets;
 
-  Woko(ObjectStore objectStore, UserManager userManager, List<String> fallbackRoles, IFacetDescriptorManager facetDescriptorManager) {
+  public Woko(ObjectStore objectStore,UserManager userManager,List<String> fallbackRoles,IFacetDescriptorManager facetDescriptorManager,UsernameResolutionStrategy usernameResolutionStrategy) {
     this.objectStore = objectStore;
     this.userManager = userManager;
     this.fallbackRoles = Collections.unmodifiableList(fallbackRoles);
     this.facetDescriptorManager = facetDescriptorManager;
+    this.usernameResolutionStrategy = usernameResolutionStrategy;
     init()
   }
 
-  private static IFacetDescriptorManager createDefaultFdm() {
+  public static IFacetDescriptorManager createDefaultFacetDescriptorManager() {
     AnnotatedFacetDescriptorManager a = new AnnotatedFacetDescriptorManager(['woko2.facets.builtin', 'facets'])
     a.initialize()
     return a
   }
 
-  Woko(ObjectStore objectStore, UserManager userManager, List<String> fallbackRoles) {
-    this(objectStore, userManager, fallbackRoles, createDefaultFdm())
+  public static UsernameResolutionStrategy createDefaultUsernameResolutionStrategy() {
+    return new RemoteUserStrategy();
   }
 
   private final Woko init() {
