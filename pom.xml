@@ -28,6 +28,7 @@
     <modules>
         <module>core</module>
         <module>web</module>
+        <module>container-auth</module>
         <module>builtin-auth</module>
         <module>hibernate</module>
     </modules>

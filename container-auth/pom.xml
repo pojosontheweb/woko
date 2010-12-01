@@ -6,12 +6,9 @@
         <artifactId>woko-parent</artifactId>
         <version>2.0-SNAPSHOT</version>
     </parent>
-    <artifactId>woko-webtests</artifactId>
-    <name>Woko - web tests</name>
-    <packaging>pom</packaging>
-    <modules>
-        <module>webtests-container-auth</module>
-    </modules>
+    <artifactId>woko-container-auth</artifactId>
+    <name>Woko - container auth</name>
+    <packaging>war</packaging>
     <dependencies>
         <dependency>
             <groupId>com.rvkb.woko</groupId>
@@ -24,23 +21,5 @@
             <version>${project.version}</version>
             <type>war</type>
         </dependency>
-        <dependency>
-            <groupId>com.canoo.webtest</groupId>
-            <artifactId>webtest</artifactId>
-            <version>3.0</version>
-            <scope>test</scope>
-        </dependency>                    
     </dependencies>
-    <build>
-        <plugins>
-            <!-- don't deploy test artifacts in the mvn repo -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-deploy-plugin</artifactId>
-                <configuration>
-                    <skip>true</skip>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>    
 </project>
