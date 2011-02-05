@@ -24,7 +24,7 @@
             int totalSize = results.getTotalSize();
             int p = search.getPage();
             int resultsPerPage = search.getResultsPerPage();
-            int nbPages = totalSize / resultsPerPage + 1;
+            int nbPages = (totalSize / resultsPerPage) + 1;
         %>
         <h1><c:out value="<%=totalSize%>"/> object(s) found</h1>
         <div class="wokoSearchForm">
@@ -33,37 +33,38 @@
                 <s:submit name="search"/>
             </s:form>            
         </div>
-        <div id="wokoPaginationSettings">
-            <s:form action="/list">
-                <s:hidden name="className"/>
-                <input type="hidden"name="facet.page" value="1"/>
-                Showing
-                <s:select name="facet.resultsPerPage" onchange="this.form.submit()">
-                    <s:option value="10">10</s:option>
-                    <s:option value="25">25</s:option>
-                    <s:option value="50">50</s:option>
-                    <s:option value="100">100</s:option>
-                    <s:option value="500">500</s:option>
-                    <s:option value="1000">1000</s:option>
-                </s:select>
-                objects / page
-            </s:form>
-        </div>
         <%
             if (nbPages>1) {
         %>
+            <div id="wokoPaginationSettings">
+                <s:form action="/search">
+                    <s:hidden name="facet.query"/>
+                    <s:hidden name="className"/>
+                    <input type="hidden"name="facet.page" value="1"/>
+                    Showing
+                    <s:select name="facet.resultsPerPage" onchange="this.form.submit()">
+                        <s:option value="10">10</s:option>
+                        <s:option value="25">25</s:option>
+                        <s:option value="50">50</s:option>
+                        <s:option value="100">100</s:option>
+                        <s:option value="500">500</s:option>
+                        <s:option value="1000">1000</s:option>
+                    </s:select>
+                    objects / page
+                </s:form>
+            </div>
             <div class="wokoPagination">
                 <%
-                    for (int i=1;i<nbPages;i++) {
+                    for (int i=1;i<=nbPages;i++) {
                         if (i==p) {
                 %>
                     <span class="wokoCurrentPage"><%=i%></span>
 
                 <%      } else { %>
-                    <span><a href="${pageContext.request.contextPath}/search?facet.query/<%=query%>?facet.page=<%=i%>&facet.resultsPerPage=<%=resultsPerPage%>"><%=i%></a></span>
+                    <span><a href="${pageContext.request.contextPath}/search?facet.query=<%=query%>&facet.page=<%=i%>&facet.resultsPerPage=<%=resultsPerPage%>"><%=i%></a></span>
                 <%
                         }
-                        if (i<nbPages-1) {
+                        if (i<nbPages) {
                 %>
                 |
                 <%

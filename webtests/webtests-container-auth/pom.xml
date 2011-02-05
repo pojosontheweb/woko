@@ -18,7 +18,7 @@
         </dependency>
         <dependency>
             <groupId>com.rvkb.woko</groupId>
-            <artifactId>woko-hibernate</artifactId>
+            <artifactId>woko-compass-hibernate</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>

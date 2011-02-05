@@ -3,18 +3,26 @@ package test
 import javax.persistence.Entity
 import javax.persistence.Id
 import org.hibernate.validator.NotNull
+import org.compass.annotations.SearchableProperty
+import org.compass.annotations.SearchableId
+import org.compass.annotations.Searchable
 
 @Entity
+@Searchable
 class MyBook {
 
   @NotNull
+  @SearchableProperty
   String name
 
   @Id
+  @SearchableId
   String _id
 
+  @SearchableProperty
   int nbPages
 
+  @SearchableProperty
   Date creationTime = new Date()
 
   /*

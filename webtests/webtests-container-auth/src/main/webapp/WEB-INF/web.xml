@@ -54,8 +54,7 @@
 
     <listener>
         <display-name>WokoInitListener</display-name>
-        <!--listener-class>woko2.inmemory.InMemoryWokoInitListener</listener-class-->
-        <listener-class>woko2.hibernate.HibernateInMemWokoInitListener</listener-class>
+        <listener-class>woko2.hbcompass.HibernateCompassInMemWokoInitListener</listener-class>
     </listener>
 
     <context-param>
@@ -85,6 +84,18 @@
         <web-resource-collection>
             <web-resource-name>View</web-resource-name>
             <url-pattern>/view/*</url-pattern>
+            <http-method>GET</http-method>
+            <http-method>POST</http-method>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>developer</role-name>
+        </auth-constraint>
+    </security-constraint>
+
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>Create</web-resource-name>
+            <url-pattern>/create/*</url-pattern>
             <http-method>GET</http-method>
             <http-method>POST</http-method>
         </web-resource-collection>

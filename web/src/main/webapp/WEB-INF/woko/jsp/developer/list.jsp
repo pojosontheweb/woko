@@ -47,7 +47,7 @@
         %>
             <div class="wokoPagination">
                 <%
-                    for (int i=1;i<nbPages;i++) {
+                    for (int i=1;i<=nbPages;i++) {
                         if (i==p) {
                 %>
                     <span class="wokoCurrentPage"><%=i%></span>
@@ -56,7 +56,7 @@
                     <span><a href="${pageContext.request.contextPath}/list/<%=className%>?facet.page=<%=i%>&facet.resultsPerPage=<%=resultsPerPage%>"><%=i%></a></span>
                 <%
                         }
-                        if (i<nbPages-1) {
+                        if (i<nbPages) {
                 %>
                 |
                 <%

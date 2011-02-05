@@ -94,6 +94,18 @@
 
     <security-constraint>
         <web-resource-collection>
+            <web-resource-name>Create</web-resource-name>
+            <url-pattern>/create/*</url-pattern>
+            <http-method>GET</http-method>
+            <http-method>POST</http-method>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>developer</role-name>
+        </auth-constraint>
+    </security-constraint>
+
+    <security-constraint>
+        <web-resource-collection>
             <web-resource-name>Json</web-resource-name>
             <url-pattern>/json/*</url-pattern>
             <http-method>GET</http-method>

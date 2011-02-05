@@ -6,6 +6,8 @@ import org.compass.core.CompassHits
 import org.compass.core.CompassSession
 import org.compass.gps.device.hibernate.embedded.HibernateHelper
 import org.compass.core.Compass
+import org.compass.core.CompassTransaction
+import org.compass.core.CompassHitsOperations
 
 class HibernateCompassStore extends HibernateStore {
 
@@ -28,10 +30,20 @@ class HibernateCompassStore extends HibernateStore {
     }
     start = start==null ? 0 : start
     limit = limit==null ? -1 : limit
-    Compass compass = HibernateHelper.getCompass(sessionFactory);
-    CompassSession session = compass.openSession();
-    CompassHits hits = session.find((String)query)
-    return new CompassResultIterator(hits, start, limit)
+    Compass compass = HibernateHelper.getCompass(sessionFactory)
+    CompassSession session = compass.openSession()
+    CompassTransaction tx = session.beginTransaction()
+    try {
+      CompassHits hits = session.find((String)query)
+      int len = hits.length()
+      int size = limit == -1 ? len - start : limit
+      CompassHitsOperations hitsOps = hits.detach(start, size)
+      tx.commit()
+      return new CompassResultIterator(hitsOps, start, limit, len)
+    } catch(Exception e) {
+      tx.rollback()
+      throw e
+    }
   }
 
 }

@@ -1,31 +1,32 @@
 package woko2.hbcompass
 
 import woko2.persistence.ResultIterator
-import org.compass.core.CompassHits
+import org.compass.core.CompassHitsOperations
+import org.compass.core.CompassHit
 
 class CompassResultIterator implements ResultIterator {
 
-  private final CompassHits compassHits
+  private final CompassHitsOperations compassHits
   private final int start
   private final int limit
-  private int position = 0
+  private final int totalSize
+  private Iterator<CompassHit> iterator
 
-  CompassResultIterator(CompassHits compassHits, int start, int limit) {
+  CompassResultIterator(CompassHitsOperations compassHits, int start, int limit, int totalSize) {
+    compassHits.iterator()
     this.compassHits = compassHits
     this.start = start
     this.limit = limit
-    this.position = this.start
+    this.totalSize = totalSize
+    this.iterator = compassHits.iterator()
   }
 
   Object next() {
-    def res = compassHits.hit(position).getData()
-    position++
-    return res
+    return iterator.next().getData()
   }
 
   boolean hasNext() {
-    def end = limit <= 0 ? compassHits.length() : start + limit
-    return position < end
+    iterator.hasNext()
   }
 
   int getStart() {
@@ -37,7 +38,7 @@ class CompassResultIterator implements ResultIterator {
   }
 
   int getTotalSize() {
-    return compassHits.length()
+    return totalSize
   }
 
 

@@ -125,7 +125,47 @@ class CrudTest extends WebTestBase {
         verifyText 'Object deleted'
       }
     }
+  }
+
+  void testSearch() {
+    webtest('test Search') {
+      login()
+      // create some test books...
+      for (int i=100 ; i<500 ; i++) {
+        goToPage "/save/MyBook?object._id=$i&object.name=Moby test$i"
+        verifyText 'Object saved'
+      }
+
+      // full text search from top-right box
+      setInputField name:'facet.query', value:'moby'
+      clickButton name:'search'
+
+      verifyText '400 object(s) found'
+      verifyXPath xpath: "/html/body/div/div[3]/div[2]/div[3]/span[40]/a" // link to 40th page
+      verifyText 'Moby test100'
+      clickLink label:'2'
+      verifyText 'Moby test110'
+      clickLink label:'40'
+      verifyText 'Moby test499'
+
+      setSelectField name:'facet.resultsPerPage', value:'500'
+      verifyText 'Moby test499'
+      not {
+        verifyXPath xpath:"//div[@class='wokoPagination']"
+      }
+
+      // list
+      goToPage '/search?facet.query=moby'
+      verifyText '400 object(s) found'
+
+      // remove the objects
+      for (int i=100 ; i<500 ; i++) {
+        goToPage "/delete/MyBook?/$i&facet.confirm=true"
+        verifyText 'Object deleted'
+      }
+    }
 
   }
+
 
 }
