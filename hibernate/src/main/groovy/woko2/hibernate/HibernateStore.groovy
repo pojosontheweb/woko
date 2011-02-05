@@ -30,8 +30,9 @@ class HibernateStore implements ObjectStore {
     log.info("Configuration created, building session factory...")
     URL u = getClass().getResource('/hibernate.cfg.xml')
     if (u==null) {
-      log.warn("Using default hibernate settings from $DEFAULT_HIBERNATE_CFG_XML : in-memory hsql. Add your own hibernate.cfg.xml to the classpath to change the settings.")
-      u = getClass().getResource(DEFAULT_HIBERNATE_CFG_XML)
+      String hbCfg = getDefaultHibernateCfgXml()
+      log.warn("Using default hibernate settings from $hbCfg : in-memory hsql. Add your own hibernate.cfg.xml to the classpath to change the settings.")
+      u = getClass().getResource(hbCfg)
     }
     sessionFactory = cfg.configure(u).buildSessionFactory()
     log.info("Created session factory : " + sessionFactory)
@@ -43,6 +44,10 @@ class HibernateStore implements ObjectStore {
     } else {
       log.warn("No mapped classes found for packages $packageNames. Make sure your @Entity classes are in these packages.")
     }
+  }
+
+  protected String getDefaultHibernateCfgXml() {
+    return DEFAULT_HIBERNATE_CFG_XML
   }
 
   SessionFactory getSessionFactory() {
@@ -221,6 +226,11 @@ class HibernateStore implements ObjectStore {
   ResultIterator search(Object query, Integer start, Integer limit) {
     throw new UnsupportedOperationException("Search not implemented in HibernateStore. Override this method to handle full text search.")
   }
+
+  void close() {
+    sessionFactory.close()
+  }
+
 
 
 }

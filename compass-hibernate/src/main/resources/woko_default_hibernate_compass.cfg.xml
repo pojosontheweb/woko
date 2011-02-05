@@ -1,0 +1,44 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+    <session-factory>
+        <property name="connection.driver_class">org.hsqldb.jdbcDriver</property>
+        <property name="connection.url">jdbc:hsqldb:mem:wokodb</property>
+        <property name="connection.username">sa</property>
+        <property name="connection.password"></property>
+        <property name="connection.pool_size">10</property>
+        <property name="dialect">org.hibernate.dialect.HSQLDialect</property>
+        <property name="current_session_context_class">thread</property>
+        <property name="cache.provider_class">org.hibernate.cache.NoCacheProvider</property>
+        <property name="show_sql">true</property>
+        <property name="hbm2ddl.auto">update</property>
+        <property name="compass.engine.connection">ram://index</property>
+        <event type="pre-update">
+            <listener class="org.hibernate.validator.event.ValidateEventListener"/>
+        </event>
+        <event type="pre-insert">
+            <listener class="org.hibernate.validator.event.ValidateEventListener"/>
+        </event>
+        <event type="post-update">
+            <listener class="org.compass.gps.device.hibernate.embedded.CompassEventListener"/>
+        </event>
+        <event type="post-insert">
+            <listener class="org.compass.gps.device.hibernate.embedded.CompassEventListener"/>
+        </event>
+        <event type="post-delete">
+            <listener class="org.compass.gps.device.hibernate.embedded.CompassEventListener"/>
+        </event>
+        <event type="post-collection-recreate">
+            <listener class="org.compass.gps.device.hibernate.embedded.CompassEventListener"/>
+        </event>
+        <event type="post-collection-remove">
+            <listener class="org.compass.gps.device.hibernate.embedded.CompassEventListener"/>
+        </event>
+        <event type="post-collection-update">
+            <listener class="org.compass.gps.device.hibernate.embedded.CompassEventListener"/>
+        </event>
+    </session-factory>
+</hibernate-configuration>

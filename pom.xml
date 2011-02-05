@@ -31,7 +31,7 @@
         <module>container-auth</module>
         <module>builtin-auth</module>
         <module>hibernate</module>
-        <module>compass</module>
+        <module>compass-hibernate</module>
     </modules>
     <build>
         <plugins>
