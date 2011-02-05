@@ -12,7 +12,7 @@ public class AnnotatedAuthenticationInterceptor extends AuthenticationIntercepto
     private static final Log log = Log.getInstance(AnnotatedAuthenticationInterceptor.class);
 
     /**
-     * Uses @ResuiresAuthentication annotation in order to check for authentication
+     * Uses @RequiresAuthentication annotation in order to check for authentication
      * @param executionContext the execution context
      * @return true if passed authentication requires authentication
      */

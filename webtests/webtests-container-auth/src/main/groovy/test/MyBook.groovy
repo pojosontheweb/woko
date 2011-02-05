@@ -3,26 +3,18 @@ package test
 import javax.persistence.Entity
 import javax.persistence.Id
 import org.hibernate.validator.NotNull
-import org.hibernate.search.annotations.Indexed
-import org.hibernate.search.annotations.DocumentId
-import org.hibernate.search.annotations.Field
 
-@javax.persistence.Entity
-@org.hibernate.search.annotations.Indexed
+@Entity
 class MyBook {
 
-  @org.hibernate.validator.NotNull
-  @org.hibernate.search.annotations.Field
+  @NotNull
   String name
 
-  @javax.persistence.Id
-  @org.hibernate.search.annotations.DocumentId
+  @Id
   String _id
 
-  @org.hibernate.search.annotations.Field
   int nbPages
 
-  @org.hibernate.search.annotations.Field
   Date creationTime = new Date()
 
   /*

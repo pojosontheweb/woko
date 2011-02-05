@@ -13,11 +13,6 @@ import org.hibernate.Transaction
 import woko2.persistence.ResultIterator
 import woko2.persistence.ListResultIterator
 import org.hibernate.Criteria
-import org.hibernate.search.Search
-import org.hibernate.search.FullTextSession
-import org.hibernate.Query
-import org.apache.lucene.queryParser.QueryParser
-import org.apache.lucene.analysis.StopAnalyzer
 
 class HibernateStore implements ObjectStore {
 
@@ -27,7 +22,7 @@ class HibernateStore implements ObjectStore {
 
   private final HibernatePrimaryKeyConverter primaryKeyConverter
   private final SessionFactory sessionFactory
-  private List<Class<?>> mappedClasses;
+  private List<Class<?>> mappedClasses
 
   HibernateStore(List<String> packageNames) {
     log.info("Creating with package names : $packageNames")
@@ -218,23 +213,13 @@ class HibernateStore implements ObjectStore {
     return Collections.unmodifiableList(mappedClasses)
   }
 
-  ResultIterator search(Object query, Integer start, Integer limit) {
-    int s = start==null ? 0 : start
-    int l = limit==null ? -1 : limit
-    org.apache.lucene.search.Query luceneQuery
-    if (query instanceof String) {
-      org.apache.lucene.queryParser.QueryParser parser = new QueryParser("name", new StopAnalyzer() );
-      luceneQuery = parser.parse((String)query)
-    } else {
-      luceneQuery = (org.apache.lucene.search.Query)query
-    }
-    FullTextSession fullTextSession = Search.getFullTextSession( session );
-    def tq = fullTextSession.createFullTextQuery(luceneQuery).setFirstResult(s)
-    if (l!=-1) {
-      tq.setMaxResults(l)
-    }
+  protected String[] getIndexedFieldNames() {
+    return indexedFieldNames    
+  }
+  
 
-    return new ListResultIterator(tq.list(), s, l, tq.resultSize)
+  ResultIterator search(Object query, Integer start, Integer limit) {
+    throw new UnsupportedOperationException("Search not implemented in HibernateStore. Override this method to handle full text search.")
   }
 
 

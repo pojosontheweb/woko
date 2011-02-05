@@ -15,37 +15,12 @@
         <property name="cache.provider_class">org.hibernate.cache.NoCacheProvider</property>
         <property name="show_sql">true</property>
         <property name="hbm2ddl.auto">update</property>
-        <property name="hibernate.search.default.directory_provider">org.hibernate.search.store.RAMDirectoryProvider</property> 
-
+        <!-- other configuration -->
         <event type="pre-update">
           <listener class="org.hibernate.validator.event.ValidateEventListener"/>
         </event>
         <event type="pre-insert">
           <listener class="org.hibernate.validator.event.ValidateEventListener"/>
         </event>
-
-        <event type="post-update">
-            <listener class="org.hibernate.search.event.FullTextIndexEventListener"/>
-        </event>
-        <event type="post-insert">
-            <listener class="org.hibernate.search.event.FullTextIndexEventListener"/>
-        </event>
-        <event type="post-delete">
-            <listener class="org.hibernate.search.event.FullTextIndexEventListener"/>
-        </event>
-        <event type="post-collection-recreate">
-            <listener class="org.hibernate.search.event.FullTextIndexEventListener"/>
-        </event>
-        <event type="post-collection-remove">
-            <listener class="org.hibernate.search.event.FullTextIndexEventListener"/>
-        </event>
-        <event type="post-collection-update">
-            <listener class="org.hibernate.search.event.FullTextIndexEventListener"/>
-        </event>
-        <event type="flush">
-            <listener class="org.hibernate.event.def.DefaultFlushEventListener"/>
-            <listener class="org.hibernate.search.event.FullTextIndexEventListener"/>
-        </event>
-
     </session-factory>
 </hibernate-configuration>
