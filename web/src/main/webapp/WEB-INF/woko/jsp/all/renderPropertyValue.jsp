@@ -1,10 +1,10 @@
-<%@ page import="woko2.facets.builtin.RenderPropertyValue" %>
-<%@ page import="woko2.util.Util" %>
-<%@ page import="woko2.facets.WokoFacetContext" %>
-<%@ page import="woko2.persistence.ObjectStore" %>
-<%@ page import="woko2.Woko" %>
-<%@ page import="woko2.facets.builtin.RenderTitle" %>
-<%@ page import="woko2.facets.builtin.View" %>
+<%@ page import="woko.facets.builtin.RenderPropertyValue" %>
+<%@ page import="woko.util.Util" %>
+<%@ page import="woko.facets.WokoFacetContext" %>
+<%@ page import="woko.persistence.ObjectStore" %>
+<%@ page import="woko.Woko" %>
+<%@ page import="woko.facets.builtin.RenderTitle" %>
+<%@ page import="woko.facets.builtin.View" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
     RenderPropertyValue renderPropertyValue = (RenderPropertyValue)request.getAttribute(RenderPropertyValue.name);

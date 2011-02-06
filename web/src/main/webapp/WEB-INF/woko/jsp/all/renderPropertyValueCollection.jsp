@@ -1,9 +1,9 @@
-<%@ page import="woko2.facets.builtin.RenderPropertyValue" %>
-<%@ page import="woko2.util.Util" %>
-<%@ page import="woko2.facets.WokoFacetContext" %>
-<%@ page import="woko2.persistence.ObjectStore" %>
+<%@ page import="woko.facets.builtin.RenderPropertyValue" %>
+<%@ page import="woko.util.Util" %>
+<%@ page import="woko.facets.WokoFacetContext" %>
+<%@ page import="woko.persistence.ObjectStore" %>
 <%@ page import="java.util.Collection" %>
-<%@ page import="woko2.Woko" %>
+<%@ page import="woko.Woko" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%

@@ -20,13 +20,13 @@
         <init-param>
             <param-name>ActionResolver.Packages</param-name>
             <param-value>
-                woko2.actions
+                woko.actions
             </param-value>
         </init-param>
         <init-param>
             <param-name>Extension.Packages</param-name>
             <param-value>
-                woko2.actions
+                woko.actions
             </param-value>
         </init-param>
     </filter>
@@ -52,7 +52,7 @@
 
     <listener>
         <display-name>WokoInitListener</display-name>
-        <listener-class>woko2.inmemory.InMemoryWokoInitListener</listener-class>
+        <listener-class>woko.inmemory.InMemoryWokoInitListener</listener-class>
     </listener>
 
 </web-app>

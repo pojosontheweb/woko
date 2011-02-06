@@ -1,5 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ tag import="woko2.Woko" %>
+<%@ tag import="woko.Woko" %>
 <%@ attribute name="targetObject" required="false" type="java.lang.Object" %>
 <%@ attribute name="targetObjectClass" required="false" type="java.lang.Class" %>
 <%@ attribute name="facetName" required="true" type="java.lang.String" %>

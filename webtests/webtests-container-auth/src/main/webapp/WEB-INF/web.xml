@@ -20,14 +20,14 @@
         <init-param>
             <param-name>ActionResolver.Packages</param-name>
             <param-value>
-                woko2.actions
+                woko.actions
             </param-value>
         </init-param>
         <init-param>
             <param-name>Extension.Packages</param-name>
             <param-value>
-                woko2.actions
-                woko2.hibernate
+                woko.actions
+                woko.hibernate
             </param-value>
         </init-param>
     </filter>
@@ -54,7 +54,7 @@
 
     <listener>
         <display-name>WokoInitListener</display-name>
-        <listener-class>woko2.hbcompass.HibernateCompassInMemWokoInitListener</listener-class>
+        <listener-class>woko.hbcompass.HibernateCompassInMemWokoInitListener</listener-class>
     </listener>
 
     <context-param>

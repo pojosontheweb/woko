@@ -1,8 +1,8 @@
 package test
 
-import woko2.hbcompass.HibernateCompassInMemWokoInitListener
-import woko2.Woko
-import woko2.auth.builtin.SessionUsernameResolutionStrategy
+import woko.hbcompass.HibernateCompassInMemWokoInitListener
+import woko.Woko
+import woko.auth.builtin.SessionUsernameResolutionStrategy
 
 class MyWokoInitListener extends HibernateCompassInMemWokoInitListener {
 

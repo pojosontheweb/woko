@@ -1,6 +1,6 @@
-<%@ page import="woko2.Woko" %>
+<%@ page import="woko.Woko" %>
 <%@ page import="net.sourceforge.jfacets.FacetDescriptor" %>
-<%@ page import="woko2.facets.builtin.developer.WokoStudio" %>
+<%@ page import="woko.facets.builtin.developer.WokoStudio" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="w" tagdir="/WEB-INF/tags/woko" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>

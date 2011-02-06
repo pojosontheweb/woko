@@ -1,8 +1,8 @@
 package facets
 
 import net.sourceforge.jfacets.annotations.FacetKey
-import woko2.facets.builtin.RenderPropertyValueJson
-import woko2.facets.BaseFacet
+import woko.facets.builtin.RenderPropertyValueJson
+import woko.facets.BaseFacet
 import javax.servlet.http.HttpServletRequest
 import org.json.JSONObject
 

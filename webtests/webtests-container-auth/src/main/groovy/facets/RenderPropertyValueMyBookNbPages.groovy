@@ -2,8 +2,8 @@ package facets
 
 import net.sourceforge.jfacets.annotations.FacetKey
 
-import woko2.facets.builtin.RenderPropertyValue
-import woko2.facets.BaseFragmentFacet
+import woko.facets.builtin.RenderPropertyValue
+import woko.facets.BaseFragmentFacet
 import javax.servlet.http.HttpServletRequest
 
 @FacetKey(name='renderPropertyValue_nbPages', profileId='all', targetObjectType=test.MyBook.class)

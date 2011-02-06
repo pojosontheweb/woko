@@ -1,7 +1,7 @@
-<%@ page import="woko2.persistence.ResultIterator" %>
-<%@ page import="woko2.facets.builtin.RenderTitle" %>
-<%@ page import="woko2.Woko" %>
-<%@ page import="woko2.facets.builtin.ListObjects" %>
+<%@ page import="woko.persistence.ResultIterator" %>
+<%@ page import="woko.facets.builtin.RenderTitle" %>
+<%@ page import="woko.Woko" %>
+<%@ page import="woko.facets.builtin.ListObjects" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="w" tagdir="/WEB-INF/tags/woko" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
