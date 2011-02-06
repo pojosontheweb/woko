@@ -39,6 +39,15 @@
 
             html, body { width: 100%; height: 100%;
             margin: 0; }
+
+            .claro {
+                font-family: Geneva, Arial, Helvetica, sans-serif;
+                font-size: 1.0em;
+            }
+
+            body {
+                font: 100%/150% Geneva, Arial, Helvetica, sans-serif;
+            }
         </style>
 
         <script src="http://www.google.com/jsapi"></script>

@@ -12,7 +12,7 @@ class LayoutAll extends BaseFacet implements Layout {
   }
 
   List<String> getCssIncludes() {
-    return ['/woko/css/layout-all.css']
+    return ['/woko/css/layout-all.css', '/woko/css/lithium/assets/style.css']
   }
 
   List<String> getJsIncludes() {

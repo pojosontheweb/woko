@@ -13,38 +13,64 @@
                 <script type="text/javascript" src="${pageContext.request.contextPath}${jsLink}"></script>
             </c:forEach>
             <script type="text/javascript" src="${pageContext.request.contextPath}/woko/js/woko.js"></script>
+            <s:layout-component name="customCss"/>
+            <s:layout-component name="customJs"/>
         </head>
-        <body>
-            <s:layout-component name="banner">
-                <div id="banner">
-                    <h1>${layout.appTitle}</h1>
-                    <c:if test="${skipLoginLink==null}">
-                        <span class="authInfo">
-                            <c:choose>
-                                <c:when test="${username != null}">
-                                    Logged in as <strong>${username}</strong> -
-                                    <a href="${pageContext.request.contextPath}/logout">logout</a>
-                                </c:when>
-                                <c:otherwise>
-                                    You are not authenticated -
-                                    <a href="${pageContext.request.contextPath}/login">log-in</a>
-                                </c:otherwise>
-                            </c:choose>
-                        </span>                        
-                    </c:if>
+        <body class="${bodyClass}">
+            <div id="wrap">
+                <div id="header-space">
+                    <div id="logo">
+                        <img src="${pageContext.request.contextPath}/woko/woko-logo-small.png" alt="logo">
+                    </div>
+                    <div id="tagline">
+                        <c:if test="${skipLoginLink==null}">
+                            <span class="authInfo">
+                                <c:choose>
+                                    <c:when test="${username != null}">
+                                        Logged in as <strong>${username}</strong> -
+                                        <a href="${pageContext.request.contextPath}/logout">logout</a>
+                                    </c:when>
+                                    <c:otherwise>
+                                        You are not authenticated -
+                                        <a href="${pageContext.request.contextPath}/login">log-in</a>
+                                    </c:otherwise>
+                                </c:choose>
+                            </span>
+                        </c:if>
+                    </div>
+                    <div id="wokoSearchBox">
+                        <s:form action="/search">
+                            <s:text name="facet.query"/>
+                            <s:submit name="search" value="Search"/>
+                        </s:form>
+                    </div>
                 </div>
-            </s:layout-component>
-            <div class="messages">
-                <s:errors/>
-                <s:messages/>
+                <div id="navbar">
+                    <div id="nbar">
+                        <w:includeFacet facetName="navBar" targetObject="${layout.facetContext.targetObject}"/>
+                    </div>
+                </div>
+                <div id="content-wrap">
+                    <div id="sidebar">
+                        <div id="left-sbar">
+                        <div class="widgetspace">
+                          <h1>Actions</h1>
+                          <s:layout-component name="sidebarLinks"/>
+                          <div class="poweredBy">
+                              Powered by <a href="#">Woko</a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div id="content">
+                        <s:messages/>
+                        <s:errors/>
+                        <s:layout-component name="body"/>
+                    </div>
+                </div>
             </div>
-            <div id="navigation">
-                <w:includeFacet facetName="navBar" targetObject="${layout.facetContext.targetObject}"/>
-            </div>
-            <div id="content">
-                <s:layout-component name="sidebarLinks"/>
-                <s:layout-component name="body"/>
-            </div>
+            <div class="clearfix"></div>
+            <div id="divider-line"></div>
         </body>
     </html>
 </s:layout-definition>
