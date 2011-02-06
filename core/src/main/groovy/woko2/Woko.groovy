@@ -174,5 +174,9 @@ __       __     _  __
     return "/$facetName/$className/$id"
   }
 
+  UsernameResolutionStrategy getUsernameResolutionStrategy() {
+    return usernameResolutionStrategy
+  }
+
 
 }

@@ -27,7 +27,9 @@
             @import "http://ajax.googleapis.com/ajax/libs/dojo/1.5/dojox/grid/resources/claroGrid.css";
             .dojoxGrid table {
                 margin: 0;
-                font-family:helvetica,arial,sans-serif; font-size:90%;
+            }
+            .dijitContentPane {
+                font-size:0.8em;
             }
             html, body { width: 100%; height: 100%;
             margin: 0; }
@@ -40,7 +42,8 @@
                 dojo.require("dijit.form.Button");
                 dojo.require("dojox.grid.DataGrid");
                 dojo.require("dojox.data.HtmlTableStore");
-
+                dojo.require("dijit.layout.TabContainer");
+                dojo.require("dijit.layout.ContentPane");
                 dojo.addOnLoad(callback);
             }
 
@@ -76,9 +79,7 @@
                     store: store,
                     clientSort: true,
 //                    rowSelector: '20px',
-                    structure: layout,
-                    autoHeight: 20
-
+                    structure: layout
                 },
                 document.createElement('div'));
                 dojo.byId("gridContainer").appendChild(grid.domNode);
@@ -92,14 +93,26 @@
         </script>
 
         <h1>Woko Studio</h1>
-        <h2>Configuration</h2>
-            <ul>
-                <li>Object Store : <strong><%=woko.getObjectStore().getClass().getName()%></strong></li>
-                <li>User Manager : <strong><%=woko.getUserManager().getClass().getName()%></strong></li>
-                <li>Fallback Roles : <strong><%=woko.getFallbackRoles()%></strong></li>
-            </ul>
-        <h2>Facets</h2>
-        <div id="gridContainer" style="width: 100%; height: 400px;"></div>
+
+        <div style="width: 100%; height: 600px">
+            <div dojoType="dijit.layout.TabContainer" style="width: 100%; height: 100%;">
+                <div dojoType="dijit.layout.ContentPane" title="Configuration" selected="true">
+                    <h2>The following components are configured</h2>
+                    <ul>
+                        <li>Object Store : <strong><%=woko.getObjectStore().getClass().getName()%></strong></li>
+                        <li>User Manager : <strong><%=woko.getUserManager().getClass().getName()%></strong></li>
+                        <li>Fallback Roles : <strong><%=woko.getFallbackRoles()%></strong></li>
+                        <li>Username resolution strategy : <strong><%=woko.getUsernameResolutionStrategy()%></strong></li>
+                    </ul>
+                </div>
+                <div dojoType="dijit.layout.ContentPane" title="Facets">
+                    <div id="gridContainer" style="width: 100%; height: 100%;"></div>
+                </div>
+                <div dojoType="dijit.layout.ContentPane" title="Groovy shell">
+                    TODO
+                </div>
+            </div>
+        </div>
         <table id="facetsTable" style="display:none;">
             <thead>
             <tr>
