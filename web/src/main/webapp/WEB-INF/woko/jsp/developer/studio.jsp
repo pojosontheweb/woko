@@ -104,6 +104,7 @@
 
             function execGroovy() {
                 var code = dijit.byId('groovyCode').attr('value');
+                dijit.byId('execute').attr('disabled', true);
                 dojo.xhrPost({
                     url: "${pageContext.request.contextPath}/groovy",
                     handleAs: "json",
@@ -112,10 +113,11 @@
                     },
                     load: function(data) {
                         writeLog(data.log);
-
+                        dijit.byId('execute').attr('disabled', false);
                     },
                     error: function(data) {
                         writeLog("ERROR !");
+                        dijit.byId('execute').attr('disabled', false);
                     }
                 });
             }

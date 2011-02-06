@@ -12,6 +12,7 @@
             <c:forEach items="${layout.jsIncludes}" var="jsLink">
                 <script type="text/javascript" src="${pageContext.request.contextPath}${jsLink}"></script>
             </c:forEach>
+            <script type="text/javascript" src="${pageContext.request.contextPath}/woko/js/woko.js"></script>
         </head>
         <body>
             <div id="wrap">

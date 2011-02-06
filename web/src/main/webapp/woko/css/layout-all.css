@@ -15,22 +15,6 @@ input.error {
     text-align: right;
 }
 
-table.wokoFacets {
-    width: 100%;
-    border: 1px solid #d3d3d3;
-}
-
-table.wokoFacets th {
-    font-size: 0.9em;
-    background-color: #d3d3d3;
-}
-
-table.wokoFacets td {
-    font-size: 0.7em;
-    padding-left: 4px;
-    padding-right: 4px;
-}
-
 table.wokoFacets tr.odd {
     background-color: #efefef;
 }
@@ -40,6 +24,33 @@ table.wokoFacets tr.odd {
     font-size: 0.8em;
 }
 
-.wokoCurrentPage {
-    font-weight: bolder;
+
+ul.messages li, ul.errors li {
+    list-style:none;
 }
+
+ul.messages {
+  border: 1px solid #BBFFBB;
+  background-color: #DDFFDD;
+  color: green;
+  padding: 4px;
+  position: absolute;
+  top: 24px;
+}
+
+.errorsContainer {
+  border: 1px solid #b72222;
+  background-color: #ffcccc;
+  color: #b72222;
+  padding: 4px;
+  padding-left: 16px;
+}
+
+.errorsContainer span {
+    font-weight: bold;
+}
+
+.errorsContainer li {
+    color: #b72222;
+}
+
