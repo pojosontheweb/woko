@@ -12,8 +12,10 @@
             <c:forEach items="${layout.jsIncludes}" var="jsLink">
                 <script type="text/javascript" src="${pageContext.request.contextPath}${jsLink}"></script>
             </c:forEach>
+            <s:layout-component name="customCss"/>
+            <s:layout-component name="customJs"/>
         </head>
-        <body>
+        <body class="${bodyClass}">
             <div id="wrap">
                 <div id="header-space">
                     <div id="logo">
