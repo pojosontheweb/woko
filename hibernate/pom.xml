@@ -2,7 +2,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>com.rvkb.woko</groupId>
+        <groupId>woko</groupId>
         <artifactId>woko-parent</artifactId>
         <version>2.0-SNAPSHOT</version>
     </parent>
@@ -11,7 +11,7 @@
     <name>Woko - hibernate</name>
     <dependencies>
         <dependency>
-            <groupId>com.rvkb.woko</groupId>
+            <groupId>woko</groupId>
             <artifactId>woko-core</artifactId>
             <version>${project.version}</version>
         </dependency>
@@ -37,30 +37,30 @@
             <scope>runtime</scope>
         </dependency>
         <dependency>
-           <groupId>javassist</groupId>
-           <artifactId>javassist</artifactId>
-           <version>3.4.GA</version>
-       </dependency>
-       <dependency>
-           <groupId>org.hibernate</groupId>
-           <artifactId>hibernate-cglib-repack</artifactId>
-           <version>2.1_3</version>
-       </dependency>
+            <groupId>javassist</groupId>
+            <artifactId>javassist</artifactId>
+            <version>3.4.GA</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-cglib-repack</artifactId>
+            <version>2.1_3</version>
+        </dependency>
     </dependencies>
     <repositories>
-            <repository>
-              <id>jboss-public-repository-group</id>
-              <name>JBoss Public Maven Repository Group</name>
-              <url>https://repository.jboss.org/nexus/content/groups/public/</url>
-              <layout>default</layout>
-              <releases>
+        <repository>
+            <id>jboss-public-repository-group</id>
+            <name>JBoss Public Maven Repository Group</name>
+            <url>https://repository.jboss.org/nexus/content/groups/public/</url>
+            <layout>default</layout>
+            <releases>
                 <enabled>true</enabled>
                 <updatePolicy>never</updatePolicy>
-              </releases>
-              <snapshots>
+            </releases>
+            <snapshots>
                 <enabled>true</enabled>
                 <updatePolicy>never</updatePolicy>
-              </snapshots>
-            </repository>
-          </repositories>
+            </snapshots>
+        </repository>
+    </repositories>
 </project>
