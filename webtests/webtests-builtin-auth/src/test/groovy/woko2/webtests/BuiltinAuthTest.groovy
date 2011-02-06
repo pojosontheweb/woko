@@ -1,6 +1,6 @@
 package woko2.webtests
 
-class AuthTest extends WebTestBase {
+class BuiltinAuthTest extends WebTestBase {
 
   void testAuthenticationWithHome() {
     webtest("testAuthenticationWithHome") {
@@ -42,6 +42,18 @@ class AuthTest extends WebTestBase {
         verifyTitle 'Woko - Please log-in'
         verifyText 'Please log-in'
       }
+    }
+  }
+
+  void testRedirectOnProtectedUrl() {
+    webtest("test redirect on authenticated url") {
+      goToPage '/studio'
+      verifyText 'Please log-in'
+      setInputField name:'username', value:'wdevel'
+      setInputField name:'password', value:'wdevel'
+      clickButton name:'login'
+      verifyText 'You have been logged in'
+      verifyText 'Registered Facets'
     }
   }
 

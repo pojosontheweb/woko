@@ -8,7 +8,11 @@
     </parent>
     <artifactId>woko-builtin-auth</artifactId>
     <name>Woko - builtin auth</name>
-    <packaging>war</packaging>
+    <packaging>pom</packaging>
+    <modules>
+        <module>builtin-auth-core</module>
+        <module>builtin-auth-web</module>
+    </modules>
     <dependencies>
         <dependency>
             <groupId>com.rvkb.woko</groupId>

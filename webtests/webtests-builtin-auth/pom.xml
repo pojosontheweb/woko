@@ -12,7 +12,12 @@
     <dependencies>
         <dependency>
             <groupId>com.rvkb.woko</groupId>
-            <artifactId>woko-builtin-auth</artifactId>
+            <artifactId>woko-builtin-auth-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.rvkb.woko</groupId>
+            <artifactId>woko-builtin-auth-web</artifactId>
             <version>${project.version}</version>
             <type>war</type>
         </dependency>

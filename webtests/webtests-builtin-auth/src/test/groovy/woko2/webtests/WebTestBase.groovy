@@ -12,8 +12,8 @@ abstract class WebTestBase extends WebtestCase {
 
   void login() {
     goToPage '/login'
-    ant.setInputField name:'j_username', value:'wdevel'
-    ant.setInputField name:'j_password', value:'wdevel'
+    ant.setInputField name:'username', value:'wdevel'
+    ant.setInputField name:'password', value:'wdevel'
     ant.clickButton name:'login'
     ant.verifyText 'You have been logged in'
   }
