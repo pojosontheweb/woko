@@ -31,6 +31,12 @@
             .dijitContentPane {
                 font-size:0.8em;
             }
+
+            .dijitTextarea {
+                font-size:12pt;
+                font-family: "courier new",sans-serif;
+            }
+
             html, body { width: 100%; height: 100%;
             margin: 0; }
         </style>
@@ -44,6 +50,7 @@
                 dojo.require("dojox.data.HtmlTableStore");
                 dojo.require("dijit.layout.TabContainer");
                 dojo.require("dijit.layout.ContentPane");
+                dojo.require("dijit.form.Textarea");
                 dojo.addOnLoad(callback);
             }
 
@@ -90,6 +97,28 @@
             dojo.config.parseOnLoad = true;
             dojo.config.dojoBlankHtmlUrl = '/blank.html';
             dojo.addOnLoad(loader);
+
+            function writeLog(str) {
+                dijit.byId('log').attr('value', str);
+            }
+
+            function execGroovy() {
+                var code = dijit.byId('groovyCode').attr('value');
+                dojo.xhrPost({
+                    url: "${pageContext.request.contextPath}/groovy",
+                    handleAs: "json",
+                    content : {
+                        "facet.code": code
+                    },
+                    load: function(data) {
+                        writeLog(data.log);
+
+                    },
+                    error: function(data) {
+                        writeLog("ERROR !");
+                    }
+                });
+            }
         </script>
 
         <h1>Woko Studio</h1>
@@ -109,7 +138,22 @@
                     <div id="gridContainer" style="width: 100%; height: 100%;"></div>
                 </div>
                 <div dojoType="dijit.layout.ContentPane" title="Groovy shell">
-                    TODO
+                    <h2>Variables at your disposal</h2>
+                    <ul>
+                        <li><strong>request</strong> (HttpServletRequest)</li>
+                        <li><strong>woko</strong> (Woko)</li>
+                        <li><strong>log(s)</strong> (log function)</li>
+                    </ul>
+                    <h2>Groovy code</h2>
+                    <div dojoType="dijit.form.Textarea" id="groovyCode">Groovy Script here...<script type="dojo/method" event="onClick">
+                            if (!window.clickedAlready) {
+                                window.clickedAlready = true;
+                                this.attr('value', '');
+                            }
+                        </script></div>
+                    <button dojoType="dijit.form.Button" id="execute" onclick="execGroovy();">Execute</button>
+                    <h2>Log</h2>
+                    <div dojoType="dijit.form.Textarea" disabled="true" id="log">Exec log</div>
                 </div>
             </div>
         </div>
