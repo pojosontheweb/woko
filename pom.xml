@@ -29,6 +29,7 @@
         <module>core</module>
         <module>web</module>
         <module>container-auth</module>
+        <module>stripes-auth-plugin</module>
         <module>builtin-auth</module>
         <module>hibernate</module>
         <module>compass-hibernate</module>

@@ -1,6 +1,6 @@
 package net.sourceforge.stripes.auth;
 
-import net.sourceforge.stripes.action.*;
+import net.sourceforge.stripes.action.ActionBean;
 import net.sourceforge.stripes.controller.ExecutionContext;
 import net.sourceforge.stripes.util.Log;
 
@@ -8,7 +8,6 @@ import java.lang.reflect.Method;
 
 public class AnnotatedAuthenticationInterceptor extends AuthenticationInterceptor {
 
-    /** Log instance used to log information from this class. */
     private static final Log log = Log.getInstance(AnnotatedAuthenticationInterceptor.class);
 
     /**

@@ -15,11 +15,5 @@
             <artifactId>woko-core</artifactId>
             <version>${project.version}</version>
         </dependency>
-        <dependency>
-            <groupId>com.rvkb.woko</groupId>
-            <artifactId>woko-web</artifactId>
-            <version>${project.version}</version>
-            <type>war</type>
-        </dependency>
     </dependencies>
 </project>

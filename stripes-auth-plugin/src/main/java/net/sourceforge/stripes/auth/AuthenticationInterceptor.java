@@ -1,6 +1,8 @@
 package net.sourceforge.stripes.auth;
 
-import net.sourceforge.stripes.action.*;
+import net.sourceforge.stripes.action.ActionBeanContext;
+import net.sourceforge.stripes.action.ForwardResolution;
+import net.sourceforge.stripes.action.Resolution;
 import net.sourceforge.stripes.config.ConfigurableComponent;
 import net.sourceforge.stripes.config.Configuration;
 import net.sourceforge.stripes.controller.ExecutionContext;

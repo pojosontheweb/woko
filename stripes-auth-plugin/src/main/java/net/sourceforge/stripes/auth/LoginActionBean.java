@@ -7,14 +7,14 @@ import net.sourceforge.stripes.util.Log;
 
 import javax.servlet.http.HttpServletRequest;
 
-public abstract class LoginActionBean<U> implements ActionBean, AuthConstants {
+public abstract class LoginActionBean<U, C extends ActionBeanContext> implements ActionBean, AuthConstants {
 
     private static final Log log = Log.getInstance(LoginActionBean.class);
     
     public static final String KEY_MSG_LOGIN_FAILED  = "stripes.login.failed";
     public static final String KEY_MSG_LOGIN_SUCCESS  = "stripes.login.success";
 
-    private ActionBeanContext context;
+    private C context;
 
     @Validate(required = true)
     private String username;
@@ -24,12 +24,13 @@ public abstract class LoginActionBean<U> implements ActionBean, AuthConstants {
 
     private String targetUrl;
 
-    public ActionBeanContext getContext() {
+    public C getContext() {
         return context;
     }
 
+    @SuppressWarnings("unchecked")
     public void setContext(ActionBeanContext context) {
-        this.context = context;
+        this.context = (C)context;
     }
 
     public String getPassword() {

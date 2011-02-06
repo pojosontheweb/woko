@@ -11,6 +11,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>webtests-container-auth</module>
+        <module>webtests-builtin-auth</module>
     </modules>
     <dependencies>
         <dependency>

@@ -1,4 +1,4 @@
-package woko2.facets.builtin.all
+package woko2.facets.builtin.containerauth
 
 import net.sourceforge.jfacets.annotations.FacetKey
 import woko2.facets.BaseResolutionFacet

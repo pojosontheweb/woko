@@ -27,7 +27,6 @@
             <param-name>Extension.Packages</param-name>
             <param-value>
                 woko2.actions
-                woko2.hibernate
             </param-value>
         </init-param>
     </filter>

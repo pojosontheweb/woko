@@ -14,19 +14,9 @@ import woko2.facets.ResolutionFacet
 import woko2.facets.FacetNotFoundException
 
 @UrlBinding('/{facetName}/{className}/{key}')
-class WokoActionBean implements ActionBean {
+class WokoActionBean extends BaseActionBean {
 
   private static final WLogger logger = WLogger.getLogger(WokoActionBean.class)
-
-  private WokoActionBeanContext context
-
-  void setContext(ActionBeanContext context) {
-    this.context = (WokoActionBeanContext)context
-  }
-
-  WokoActionBeanContext getContext() {
-    return context
-  }
 
   String className
 

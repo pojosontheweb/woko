@@ -65,8 +65,6 @@ class CrudTest extends WebTestBase {
   // fails because the id is repopulated by Stripes, thereby it's passed
   // and woko tries to load the object instead of creating a new one...
   // maybe we should delegate object creation to a facet in case the loader returns null
-  // TODO rebranch when we know what it's used for !
-  /*
   void testValidationOnSaveWithIdProvided() {
     webtest('Validation on Save with ID provided') {
       login()
@@ -87,7 +85,6 @@ class CrudTest extends WebTestBase {
       goToPage '/delete/MyBook/3?facet.confirm=true'
     }
   }
-  */
 
   void testFindAndList() {
     webtest('test Find and List') {
