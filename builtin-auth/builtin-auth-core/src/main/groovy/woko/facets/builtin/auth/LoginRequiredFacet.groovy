@@ -12,6 +12,7 @@ import net.sourceforge.jfacets.annotations.FacetKeyList
 @FacetKeyList(keys = [
   @FacetKey(name = 'view', profileId='all'),
   @FacetKey(name = 'edit', profileId='all'),
+  @FacetKey(name = 'create', profileId='all'),
   @FacetKey(name = 'delete', profileId='all'),
   @FacetKey(name = 'save', profileId='all'),
   @FacetKey(name = 'json', profileId='all'),

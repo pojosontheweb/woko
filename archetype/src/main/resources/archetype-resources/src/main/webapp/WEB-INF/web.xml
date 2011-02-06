@@ -1,3 +1,6 @@
+#set( $symbol_pound = '#' )
+#set( $symbol_dollar = '$' )
+#set( $symbol_escape = '\' )
 <?xml version="1.0" encoding="UTF-8"?>
 
 <web-app xmlns="http://java.sun.com/xml/ns/j2ee"
@@ -6,8 +9,8 @@
          http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
          version="2.4">
 
-    <description>Woko builtin auth webtests</description>
-    <display-name>Woko builtin auth webtests</display-name>
+    <description>${artifactId}</description>
+    <display-name>${artifactId}</display-name>
 
     <filter>
         <description>
@@ -59,7 +62,7 @@
 
     <context-param>
         <param-name>Woko.Hibernate.Packages</param-name>
-        <param-value>test</param-value>
+        <param-value>${packageInPathFormat}</param-value>
     </context-param>
 
 </web-app>

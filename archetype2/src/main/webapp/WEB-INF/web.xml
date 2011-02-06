@@ -6,8 +6,8 @@
          http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
          version="2.4">
 
-    <description>Woko builtin auth webtests</description>
-    <display-name>Woko builtin auth webtests</display-name>
+    <description>Woko archetype</description>
+    <display-name>Woko archetype</display-name>
 
     <filter>
         <description>
@@ -59,7 +59,7 @@
 
     <context-param>
         <param-name>Woko.Hibernate.Packages</param-name>
-        <param-value>test</param-value>
+        <param-value>model</param-value>
     </context-param>
 
 </web-app>
