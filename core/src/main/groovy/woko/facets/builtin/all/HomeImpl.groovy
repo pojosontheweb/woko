@@ -1,10 +1,10 @@
-package woko.facets.builtin.guest
+package woko.facets.builtin.all
 
 import woko.facets.BaseForwardResolutionFacet
 import net.sourceforge.jfacets.annotations.FacetKey
 import woko.facets.builtin.Home
 
-@FacetKey(name='home', profileId='guest')
+@FacetKey(name='home', profileId='all')
 class HomeImpl extends BaseForwardResolutionFacet implements Home {
 
 }

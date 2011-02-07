@@ -215,7 +215,7 @@ class HibernateStore implements ObjectStore {
     }
   }
 
-  List<Class<?>> getMappedClasses() {
+  List<Class<?>> getMappedClasses() {          
     return Collections.unmodifiableList(mappedClasses)
   }
 
