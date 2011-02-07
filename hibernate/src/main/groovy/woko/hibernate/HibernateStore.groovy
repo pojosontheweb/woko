@@ -205,7 +205,7 @@ class HibernateStore implements ObjectStore {
         crit.setMaxResults(l)
       }
       // TODO optimize with scrollable results ?
-      Iterator objects = crit.list().iterator()
+      List objects = crit.list()
 
       // compute total count
       String mappedClassName = getClassMapping(clazz)
