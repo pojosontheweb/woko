@@ -5,15 +5,17 @@ class ListResultIterator implements ResultIterator {
   private final int start
   private final int limit
   private final int totalSize
-  private final List objects
   private final Iterator delegate
 
   def ListResultIterator(List objects, int start, int limit, int totalSize) {
-    this.objects = Collections.unmodifiableList(objects)
+    this(objects.iterator(), start, limit, totalSize)
+  }
+
+  def ListResultIterator(Iterator objects, int start, int limit, int totalSize) {
     this.start = start
     this.limit = limit
     this.totalSize = totalSize
-    delegate = objects.iterator()
+    delegate = objects
   }
 
   Object next() {
