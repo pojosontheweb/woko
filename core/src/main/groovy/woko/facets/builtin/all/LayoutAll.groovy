@@ -20,7 +20,7 @@ class LayoutAll extends BaseFacet implements Layout {
   }
 
   String getLayoutPath() {
-    return computeJspPathFromFacetDescriptor();
+    return '/WEB-INF/woko/jsp/all/layout.jsp'
   }
 
 

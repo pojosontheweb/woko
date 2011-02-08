@@ -16,7 +16,7 @@ class EditImpl extends BaseFacet implements Edit {
   }
 
   def String getFragmentPath() {
-    return computeJspPathFromFacetDescriptor()
+    return '/WEB-INF/woko/jsp/developer/edit.jsp'
   }
 
   def Resolution getResolution(ActionBeanContext abc) {
