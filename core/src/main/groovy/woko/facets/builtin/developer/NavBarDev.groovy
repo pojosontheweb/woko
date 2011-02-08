@@ -6,4 +6,10 @@ import woko.facets.builtin.NavBar
 
 @FacetKey(name='navBar',profileId='developer')
 class NavBarDev extends BaseFragmentFacet implements NavBar {
+
+  String getPath() {
+    return '/WEB-INF/woko/jsp/developer/navBar.jsp'
+  }
+
+
 }

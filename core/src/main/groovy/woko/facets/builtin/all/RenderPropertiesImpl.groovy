@@ -12,6 +12,10 @@ class RenderPropertiesImpl extends BaseFragmentFacet implements RenderProperties
   List<String> propertyNames
   Map<String,Object> propertyValues
 
+  String getPath() {
+    return '/WEB-INF/woko/jsp/all/renderProperties.jsp'
+  }
+
   void setFacetContext(IFacetContext iFacetContext) {
     super.setFacetContext(iFacetContext)
     def obj = facetContext.targetObject

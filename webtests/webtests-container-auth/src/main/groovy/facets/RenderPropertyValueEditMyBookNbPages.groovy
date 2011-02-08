@@ -13,7 +13,7 @@ class RenderPropertyValueEditMyBookNbPages extends BaseFragmentFacet implements 
   String propertyName
   Object propertyValue
 
-  String getFragmentPath(HttpServletRequest request) {
+  String getPath() {
     return '/WEB-INF/jsp/renderPropertyValueEditMyBookNbPages.jsp'
   }
 

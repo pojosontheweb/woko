@@ -13,8 +13,7 @@ import woko.facets.builtin.RenderPropertyValueEdit
   ])
 class RenderPropertyValueEditStripesText extends RenderPropertyValueImpl implements RenderPropertyValueEdit {
 
-  def String getFragmentPath(HttpServletRequest request) {
-    super.getFragmentPath(request)
+  String getPath() {
     return '/WEB-INF/woko/jsp/all/renderPropertyValueEditStripesText.jsp'
   }
 

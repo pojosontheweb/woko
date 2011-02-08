@@ -10,6 +10,10 @@ import woko.facets.builtin.RenderLinks
 @FacetKey(name='renderLinks', profileId='all')
 class RenderLinksImpl extends BaseFragmentFacet implements RenderLinks {
 
+  String getPath() {
+    return '/WEB-INF/woko/jsp/all/renderLinks.jsp'
+  }
+
   def getLinks() {
     def links = []
     Woko woko = facetContext.woko

@@ -7,4 +7,9 @@ import woko.facets.builtin.RenderObject
 @FacetKey(name='renderObjectEdit', profileId='all')
 class RenderObjectEditImpl extends BaseFragmentFacet implements RenderObject {
 
+  String getPath() {
+    return '/WEB-INF/woko/jsp/all/renderObjectEdit.jsp'
+  }
+
+
 }

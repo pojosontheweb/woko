@@ -13,7 +13,7 @@ class RenderPropertyValueOtherPojo extends BaseFragmentFacet implements RenderPr
   String propertyName
   Object propertyValue
 
-  String getFragmentPath(HttpServletRequest request) {
+  String getPath() {
     return '/WEB-INF/jsp/renderPropertyValueOtherPojo.jsp' 
   }
 

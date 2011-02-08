@@ -9,4 +9,8 @@ class RenderPropertyNameImpl extends BaseFragmentFacet implements RenderProperty
 
   String propertyName
 
+  String getPath() {
+    return '/WEB-INF/woko/jsp/all/renderPropertyName.jsp'
+  }
+
 }

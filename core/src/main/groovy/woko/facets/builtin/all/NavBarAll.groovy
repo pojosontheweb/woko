@@ -6,4 +6,10 @@ import net.sourceforge.jfacets.annotations.FacetKey
 
 @FacetKey(name='navBar',profileId='all')
 class NavBarAll extends BaseFragmentFacet implements NavBar {
+
+  String getPath() {
+    return '/WEB-INF/woko/jsp/all/navBar.jsp'
+  }
+
+
 }

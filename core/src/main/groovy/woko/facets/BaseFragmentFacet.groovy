@@ -8,8 +8,10 @@ abstract class BaseFragmentFacet extends BaseFacet implements FragmentFacet {
 
   def String getFragmentPath(HttpServletRequest request) {
     this.request = request
-    return computeJspPathFromFacetDescriptor()
+    return getPath()
   }
+
+  abstract String getPath()
 
   HttpServletRequest getRequest() {
     return request

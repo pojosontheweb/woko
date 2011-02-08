@@ -6,7 +6,11 @@ import woko.facets.builtin.RenderTitle
 
 @FacetKey(name='renderTitle', profileId='all')
 class RenderTitleImpl extends BaseFragmentFacet implements RenderTitle {
-               
+
+  String getPath() {
+    return '/WEB-INF/woko/jsp/all/renderTitle.jsp'
+  }
+
   String getTitle() {
     def o = facetContext.targetObject
     if (o==null) {
