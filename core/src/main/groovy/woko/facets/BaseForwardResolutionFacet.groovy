@@ -6,9 +6,7 @@ import net.sourceforge.stripes.action.ActionBeanContext
 
 abstract class BaseForwardResolutionFacet extends BaseResolutionFacet {
   
-  String getPath() {
-    return computeJspPathFromFacetDescriptor()
-  }
+  abstract String getPath()
 
   def Resolution getResolution(ActionBeanContext abc) {
     return new ForwardResolution(path)

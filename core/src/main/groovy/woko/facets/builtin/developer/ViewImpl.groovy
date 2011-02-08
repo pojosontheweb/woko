@@ -10,4 +10,8 @@ class ViewImpl extends BaseForwardResolutionFacet implements View {
   ViewImpl() {
     acceptNullTargetObject = false
   }
+
+  String getPath() {
+    return '/WEB-INF/woko/jsp/developer/view.jsp'
+  }
 }

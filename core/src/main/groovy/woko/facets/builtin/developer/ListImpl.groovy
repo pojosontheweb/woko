@@ -9,6 +9,10 @@ import woko.persistence.ListResultIterator
 @FacetKey(name='list', profileId='developer')
 class ListImpl extends BaseResultFacet implements woko.facets.builtin.ListObjects {
 
+  String getPath() {
+    return '/WEB-INF/woko/jsp/developer/list.jsp'
+  }
+
   protected ResultIterator createResultIterator(ActionBeanContext abc, int start, int limit) {
     if (className==null) {
       return new ListResultIterator([], start, limit, 0)

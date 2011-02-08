@@ -11,6 +11,10 @@ class SearchImpl extends BaseResultFacet implements Search {
 
   String query
 
+  String getPath() {
+    return '/WEB-INF/woko/jsp/developer/search.jsp'
+  }
+
   protected ResultIterator createResultIterator(ActionBeanContext abc, int start, int limit) {
     if (query==null) {
       return new ListResultIterator([], start, limit, 0)

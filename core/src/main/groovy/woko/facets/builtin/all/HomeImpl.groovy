@@ -7,4 +7,8 @@ import woko.facets.builtin.Home
 @FacetKey(name='home', profileId='all')
 class HomeImpl extends BaseForwardResolutionFacet implements Home {
 
+  String getPath() {
+    return '/WEB-INF/woko/jsp/all/home.jsp'
+  }
+
 }

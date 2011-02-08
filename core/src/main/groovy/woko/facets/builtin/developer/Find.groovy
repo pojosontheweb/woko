@@ -7,6 +7,10 @@ import woko.persistence.ObjectStore
 @FacetKey(name='find', profileId='developer')
 class Find extends BaseForwardResolutionFacet {
 
+  String getPath() {
+    return '/WEB-INF/woko/jsp/developer/find.jsp'
+  }
+
   def getMappedClasses() {
     def res = []
     ObjectStore os = facetContext.woko.objectStore
