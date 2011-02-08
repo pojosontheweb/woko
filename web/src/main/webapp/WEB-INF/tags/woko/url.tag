@@ -1,5 +1,4 @@
 <%@ tag import="woko.Woko" %>
-<%@ tag import="woko.persistence.ObjectStore" %>
 <%@ tag import="woko.util.LinkUtil" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ attribute name="object" required="true" type="java.lang.Object" %>
