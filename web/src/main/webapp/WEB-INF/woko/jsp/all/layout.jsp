@@ -41,7 +41,7 @@
                     <div id="wokoSearchBox">
                         <s:form action="/search">
                             <s:text name="facet.query"/>
-                            <s:submit name="search" value="Search"/>
+                            <s:submit name="search"/>
                         </s:form>
                     </div>
                 </div>
