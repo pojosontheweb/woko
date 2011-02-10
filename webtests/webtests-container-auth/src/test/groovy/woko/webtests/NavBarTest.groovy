@@ -1,11 +1,5 @@
 package woko.webtests
 
-/**
- * Created by IntelliJ IDEA.
- * User: Alexis Boissonnat - CSTB
- * Date: Feb 8, 2011
- * Time: 2:19:22 PM
-  */
 class NavBarTest extends WebTestBase{
 
   void testNavBarLinks(){
