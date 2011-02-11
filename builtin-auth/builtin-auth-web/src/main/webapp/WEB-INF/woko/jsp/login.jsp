@@ -13,15 +13,15 @@
                       <table>
                           <tbody>
                               <tr>
-                                  <td align="right">Username</td>
+                                  <td align="right"><s:label for="user.username"/> </td>
                                   <td><s:text name="username"/></td>
                               </tr>
                               <tr>
-                                  <td align="right">Password</td>
+                                  <td align="right"><s:label for="user.password"/> </td>
                                   <td><s:password name="password"/></td>
                               </tr>
                               <tr>
-                                  <td colspan="2"><s:submit value="Login" name="login"/></td>
+                                  <td colspan="2"><s:submit name="login"/></td>
                               </tr>
                           </tbody>
                       </table>

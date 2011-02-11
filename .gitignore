@@ -3,3 +3,6 @@
 target
 *.iml
 *~
+
+webtests/webtests-builtin-auth/overlays/
+webtests/webtests-container-auth/overlays/

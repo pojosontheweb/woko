@@ -2,17 +2,21 @@
 <%@ taglib prefix="w" tagdir="/WEB-INF/tags/woko" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="s" uri="http://stripes.sourceforge.net/stripes.tld" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <w:facet facetName="layout"/>
-<s:layout-render name="${layout.layoutPath}" layout="${layout}" pageTitle="Create object">
+
+<fmt:setBundle basename="StripesResources"/>
+<fmt:message var="pageTitle" key="woko.devel.create.pagetitle"/>
+<s:layout-render name="${layout.layoutPath}" layout="${layout}" pageTitle="${pageTitle}">
     <s:layout-component name="sidebarLinks">
         <ul class="menu">
-            <li><a href="#">Help</a></li>
+            <li><a href="#"><fmt:message key="woko.actions.help"/> </a></li>
         </ul>
     </s:layout-component>
     <s:layout-component name="body">
-        <h1>Create a new object</h1>
+        <h1><fmt:message key="woko.devel.create.title"/></h1>
         <p>
-            Select the the class of the object to create, and submit :
+            <fmt:message key="woko.devel.create.description"/>
         </p>
         <s:form action="/save">
             <s:select name="className">

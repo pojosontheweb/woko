@@ -1,7 +1,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="s" uri="http://stripes.sourceforge.net/stripes.tld" %>
 <%@ taglib prefix="w" tagdir="/WEB-INF/tags/woko" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <w:username var="username"/>
+
 <s:layout-definition>
     <html>
         <head>
@@ -41,7 +43,7 @@
                     <div id="wokoSearchBox">
                         <s:form action="/search">
                             <s:text name="facet.query"/>
-                            <s:submit name="search" value="Search"/>
+                            <s:submit name="search"/>
                         </s:form>
                     </div>
                 </div>
