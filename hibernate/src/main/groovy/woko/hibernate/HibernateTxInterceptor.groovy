@@ -55,7 +55,7 @@ class HibernateTxInterceptor implements Interceptor {
         }
       } finally {
         Session s = sessions.get()
-        if (s!=null) {
+        if ( (s!=null) && (s.isOpen()) ){
           s.close()
         }
       }
