@@ -11,11 +11,15 @@ import woko.util.WLogger
 import org.hibernate.SessionFactory
 import woko.Woko
 import org.hibernate.Transaction
+import org.hibernate.Session
 
 @Intercepts([LifecycleStage.RequestInit, LifecycleStage.RequestComplete])
 class HibernateTxInterceptor implements Interceptor {
 
   private static final WLogger log = WLogger.getLogger(HibernateTxInterceptor.class)
+
+  private ThreadLocal<Session> sessions = new ThreadLocal<Session>()
+  private ThreadLocal<Transaction> transactions = new ThreadLocal<Transaction>()
 
   private SessionFactory getSessionFactory(ExecutionContext context) {
     Woko woko = Woko.getWoko(context.actionBeanContext.servletContext)
@@ -23,31 +27,36 @@ class HibernateTxInterceptor implements Interceptor {
     return hs.sessionFactory
   }
 
-  private Transaction getTx(ExecutionContext c) {
-    return getSessionFactory(c).currentSession.transaction
-  }
-
   Resolution intercept(ExecutionContext context) throws Exception {
     LifecycleStage stage = context.lifecycleStage
     if (stage==LifecycleStage.RequestInit) {
 
-      Transaction tx = getSessionFactory(context).
-              getCurrentSession().
-              beginTransaction()
+      Session s = getSessionFactory(context).getCurrentSession()
+      sessions.set(s)
+      Transaction tx = s.beginTransaction()
+      transactions.set(tx)
       log.debug("Started transaction : $tx")
 
     } else if (stage.equals(LifecycleStage.RequestComplete)) {
 
-      Transaction tx = getTx(context)
-      if (tx==null) {
-        log.debug("No transaction found, nothing to do.")
-      } else {
-        try {
-          log.debug("Commiting transaction $tx")
-          tx.commit()
-        } catch(Exception e) {
-          log.error("Commit error : $e", e)
-          throw e
+      try {
+        Transaction tx = transactions.get()
+        if (tx==null) {
+          log.debug("No transaction found, nothing to do.")
+        } else {
+          try {
+            log.debug("Commiting transaction $tx")
+            tx.commit()
+          } catch(Exception e) {
+            log.error("Commit error : $e", e)
+            tx.rollback()
+            throw e
+          }
+        }
+      } finally {
+        Session s = sessions.get()
+        if (s!=null) {
+          s.close()
         }
       }
     }
