@@ -62,7 +62,8 @@
 
     <context-param>
         <param-name>Woko.Hibernate.Packages</param-name>
-        <param-value>${packageInPathFormat}</param-value>
+        <!--<param-value>${packageInPathFormat}</param-value>-->
+        <param-value>${package}</param-value>
     </context-param>
 
 </web-app>
