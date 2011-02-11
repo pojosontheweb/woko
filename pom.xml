@@ -51,7 +51,7 @@
         <module>compass-hibernate</module>
         <module>ri</module>
         <module>archetype</module>
-    </modules>
+  </modules>
     <build>
         <plugins>
             <plugin>
