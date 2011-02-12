@@ -93,10 +93,7 @@ class CrudTest extends WebTestBase {
     webtest('test Find and List') {
       login()
       // create some test books...
-      for (int i=100 ; i<500 ; i++) {
-        goToPage "/save/MyBook?object._id=$i&object.name=Moby$i"
-        verifyText 'Object saved'
-      }
+      goToPage "/createDummyObjects"
 
       // find
       goToPage '/find'
@@ -106,14 +103,14 @@ class CrudTest extends WebTestBase {
 
       verifyText '400 object(s) found for class MyBook'
       verifyXPath xpath: "/html/body/div/div[3]/div[2]/div[2]/span[40]/a" // 40 pages
-      verifyText 'Moby100'
+      verifyText 'Moby test100'
       clickLink label:'2'
-      verifyText 'Moby110'
+      verifyText 'Moby test110'
       clickLink label:'40'
-      verifyText 'Moby499'
+      verifyText 'Moby test499'
 
       setSelectField name:'facet.resultsPerPage', value:'500'
-      verifyText 'Moby499'
+      verifyText 'Moby test499'
       not {
         verifyXPath xpath:"//div[@class='wokoPagination']"
       }
@@ -123,10 +120,7 @@ class CrudTest extends WebTestBase {
       verifyText '400 object(s) found for class MyBook'
 
       // remove the objects
-      for (int i=100 ; i<500 ; i++) {
-        goToPage "/delete/MyBook?/$i&facet.confirm=true"
-        verifyText 'Object deleted'
-      }
+      goToPage "/removeDummyObjects"
     }
   }
 
@@ -134,12 +128,11 @@ class CrudTest extends WebTestBase {
     webtest('test Search') {
       login()
       // create some test books...
-      for (int i=100 ; i<500 ; i++) {
-        goToPage "/save/MyBook?object._id=$i&object.name=Moby test$i"
-        verifyText 'Object saved'
-      }
+      goToPage "/createDummyObjects"
+      verifyText 'all good'
 
       // full text search from top-right box
+      goToPage "/search"
       setInputField name:'facet.query', value:'moby'
       clickButton name:'search'
 
@@ -162,10 +155,7 @@ class CrudTest extends WebTestBase {
       verifyText '400 object(s) found'
 
       // remove the objects
-      for (int i=100 ; i<500 ; i++) {
-        goToPage "/delete/MyBook?/$i&facet.confirm=true"
-        verifyText 'Object deleted'
-      }
+      goToPage "/removeDummyObjects"
     }
 
   }

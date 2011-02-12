@@ -40,7 +40,7 @@ class WokoActionBean extends BaseActionBean {
     className = req.getParameter('className')
     facetName = req.getParameter('facetName')
     if (facetName==null) {
-      facetName = 'view'
+      throw new RuntimeException("facetName parameter not found in request")
     }
     key = req.getParameter('key')
     logger.debug "Loading object for className=$className and key=$key"
