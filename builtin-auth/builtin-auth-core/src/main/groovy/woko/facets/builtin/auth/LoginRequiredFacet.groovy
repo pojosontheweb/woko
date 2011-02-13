@@ -10,16 +10,16 @@ import net.sourceforge.jfacets.annotations.FacetKey
 import net.sourceforge.jfacets.annotations.FacetKeyList
 
 @FacetKeyList(keys = [
-  @FacetKey(name = 'view', profileId='guest'),
-  @FacetKey(name = 'edit', profileId='guest'),
-  @FacetKey(name = 'create', profileId='guest'),
-  @FacetKey(name = 'delete', profileId='guest'),
-  @FacetKey(name = 'save', profileId='guest'),
-  @FacetKey(name = 'json', profileId='guest'),
-  @FacetKey(name = 'find', profileId='guest'),
-  @FacetKey(name = 'list', profileId='guest'),
-  @FacetKey(name = 'search', profileId='guest'),
-  @FacetKey(name = 'studio', profileId='guest')
+  @FacetKey(name = 'view', profileId='all'),
+  @FacetKey(name = 'edit', profileId='all'),
+  @FacetKey(name = 'create', profileId='all'),
+  @FacetKey(name = 'delete', profileId='all'),
+  @FacetKey(name = 'save', profileId='all'),
+  @FacetKey(name = 'json', profileId='all'),
+  @FacetKey(name = 'find', profileId='all'),
+  @FacetKey(name = 'list', profileId='all'),
+  @FacetKey(name = 'search', profileId='all'),
+  @FacetKey(name = 'studio', profileId='all')
 ])
 class LoginRequiredFacet extends BaseResolutionFacet {
 
