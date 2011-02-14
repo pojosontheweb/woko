@@ -7,6 +7,7 @@ import woko.facets.builtin.developer.ViewImpl
 import woko.facets.builtin.View
 import woko.facets.builtin.Logout
 import woko.facets.builtin.all.LogoutImpl
+import javax.servlet.http.HttpServletRequest
 
 class InMemoryWokoFacetsTest extends TestCase {
 
@@ -56,6 +57,6 @@ class InMemoryWokoFacetsTest extends TestCase {
 
   void testViewDevelDummyObject() {
     assertFacetClass(ViewImpl.class, View.name, 'wdevel', [foo:'bar'])
-  }  
+  }
 
 }

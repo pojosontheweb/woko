@@ -12,6 +12,7 @@ import woko.facets.builtin.developer.ViewImpl
 import javax.servlet.ServletException
 import woko.facets.builtin.developer.SaveImpl
 import woko.facets.builtin.developer.DeleteImpl
+import javax.servlet.http.HttpServletRequest
 
 class CrudRoundtripTests extends TestCase {
 
@@ -101,6 +102,14 @@ class CrudRoundtripTests extends TestCase {
     assert ab.facet.getClass() == DeleteImpl.class
     assert ab.facet.context.woko.objectStore.load('woko.inmemory.Book', '1') == null
   }
+
+  void testFacetContextHasRequest() {
+    WokoActionBean ab = trip('wdevel', 'view','woko.inmemory.Book', '1')
+    def f = ab.facet
+    assert f
+    assert f.facetContext.request instanceof HttpServletRequest
+  }
+
 
 
 }
