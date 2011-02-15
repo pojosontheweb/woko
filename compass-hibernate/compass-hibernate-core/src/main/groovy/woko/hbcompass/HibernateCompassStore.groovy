@@ -22,6 +22,9 @@ class HibernateCompassStore extends HibernateStore {
     return DEFAULT_HIBERNATE_CFG_XML
   }
 
+  Compass getCompass() {
+    return HibernateHelper.getCompass(sessionFactory)
+  }
 
   @Override
   ResultIterator search(Object query, Integer start, Integer limit) {
@@ -30,7 +33,6 @@ class HibernateCompassStore extends HibernateStore {
     }
     start = start==null ? 0 : start
     limit = limit==null ? -1 : limit
-    Compass compass = HibernateHelper.getCompass(sessionFactory)
     CompassSession session = compass.openSession()
     CompassTransaction tx = session.beginTransaction()
     try {

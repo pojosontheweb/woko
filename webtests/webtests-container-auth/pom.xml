@@ -18,8 +18,14 @@
         </dependency>
         <dependency>
             <groupId>woko</groupId>
-            <artifactId>woko-compass-hibernate</artifactId>
+            <artifactId>woko-compass-hibernate-core</artifactId>
             <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>woko</groupId>
+            <artifactId>woko-compass-hibernate-web</artifactId>
+            <version>${project.version}</version>
+            <type>war</type>
         </dependency>
     </dependencies>
     <build>
