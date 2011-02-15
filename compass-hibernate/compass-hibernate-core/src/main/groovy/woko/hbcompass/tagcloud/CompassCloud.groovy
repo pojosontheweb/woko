@@ -10,6 +10,22 @@ import org.apache.lucene.index.TermEnum
 
 class CompassCloud {
 
+  protected int computeCategory(int freq) {
+      if (freq==1) {
+          return 1
+      }
+      if (freq < 5) {
+          return 2
+      }
+      if (freq < 10) {
+          return 3
+      }
+      if (freq < 100) {
+          return 4
+      }
+      return 5
+  }
+
   Collection<CompassCloudElem> getCloud(Compass compass) {
     def res = []
     CompassSession session = compass.openSession()
@@ -17,18 +33,27 @@ class CompassCloud {
     try {
       LuceneSearchEngineInternalSearch is = LuceneHelper.getLuceneInternalSearch(session)
       IndexReader reader = is.getReader()
-      TermEnum terms = reader.terms();
+      if (reader==null) {
+          return []
+      }
+      TermEnum terms = reader.terms()
+      def alreadyProcessed = []
       while (terms.next()) {
-        String field = terms.term().field();
-        if (field.startsWith('$') || field.equals("alias")) {
-          continue
-        }
+        String text = terms.term().text().trim()
+        if (!alreadyProcessed.contains(text)) {
+            String field = terms.term().field()
+            if (field.startsWith('$') || field.equals("alias")) {
+              continue
+            }
 //        println "field : $field"
-        int freq = terms.docFreq();
+            int freq = terms.docFreq()
 //        println "freq : $freq"
-        String text = terms.term().text().trim();
+
 //        println "text : $text"
-        res << new CompassCloudElem([term: text, freq:freq])
+            res << new CompassCloudElem([term: text, freq:freq, categ:computeCategory(freq)])
+
+            alreadyProcessed << text
+        }
       }
       tx.commit()
     } catch(Exception e) {

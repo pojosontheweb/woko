@@ -4,5 +4,6 @@ class CompassCloudElem {
 
   String term
   int freq
+  int categ
 
 }
