@@ -9,6 +9,11 @@
     <description>Woko builtin auth webtests</description>
     <display-name>Woko builtin auth webtests</display-name>
 
+    <context-param>
+        <param-name>javax.servlet.jsp.jstl.fmt.localizationContext</param-name>
+        <param-value>WokoResources</param-value>
+    </context-param>
+
     <filter>
         <description>
             Provides essential configuration and request processing services
