@@ -7,11 +7,14 @@
 <%@ taglib prefix="w" tagdir="/WEB-INF/tags/woko" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="s" uri="http://stripes.sourceforge.net/stripes.tld" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <w:facet facetName="layout"/>
-<s:layout-render name="${layout.layoutPath}" layout="${layout}" pageTitle="Object list">
+
+<fmt:message var="pageTitle" key="woko.devel.list.pageTitle"/>
+<s:layout-render name="${layout.layoutPath}" layout="${layout}" pageTitle="${pageTitle}">
     <s:layout-component name="sidebarLinks">
         <ul class="menu">
-            <li><a href="#">Help</a></li>
+            <li><a href="#"><fmt:message key="woko.actions.help"/> </a></li>
         </ul>
 
     </s:layout-component>
@@ -26,12 +29,17 @@
             int resultsPerPage = list.getResultsPerPage();
             int nbPages = totalSize / resultsPerPage + 1;
         %>
-        <h1><c:out value="<%=totalSize%>"/> object(s) found for class <c:out value="<%=className%>"/></h1>
+        <h1>
+            <fmt:message key="woko.devel.list.title">
+                <fmt:param value="<%=totalSize%>"/>
+                <fmt:param value="<%=className%>"/>
+            </fmt:message>
+        </h1>
         <div id="wokoPaginationSettings">
             <s:form action="/list">
                 <s:hidden name="className"/>
                 <input type="hidden"name="facet.page" value="1"/>
-                Showing
+                <fmt:message key="woko.devel.list.showing"/>
                 <s:select name="facet.resultsPerPage" onchange="this.form.submit()">
                     <s:option value="10">10</s:option>
                     <s:option value="25">25</s:option>
@@ -40,7 +48,7 @@
                     <s:option value="500">500</s:option>
                     <s:option value="1000">1000</s:option>
                 </s:select>
-                objects / page
+                <fmt:message key="woko.devel.list.objectPerPage"/>
             </s:form>
         </div>
         <%
