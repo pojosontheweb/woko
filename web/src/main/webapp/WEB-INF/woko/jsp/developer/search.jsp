@@ -7,11 +7,14 @@
 <%@ taglib prefix="w" tagdir="/WEB-INF/tags/woko" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="s" uri="http://stripes.sourceforge.net/stripes.tld" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <w:facet facetName="layout"/>
-<s:layout-render name="${layout.layoutPath}" layout="${layout}" pageTitle="Search results">
+
+<fmt:message var="pageTitle" key="woko.devel.search.pageTitle"/>
+<s:layout-render name="${layout.layoutPath}" layout="${layout}" pageTitle="${pageTitle}">
     <s:layout-component name="sidebarLinks">
         <ul class="menu">
-            <li><a href="#">Help</a></li>
+            <li><a href="#"><fmt:message key="woko.actions.help"/> </a></li>
         </ul>
 
     </s:layout-component>
@@ -26,7 +29,11 @@
             int resultsPerPage = search.getResultsPerPage();
             int nbPages = (totalSize / resultsPerPage) + 1;
         %>
-        <h1><c:out value="<%=totalSize%>"/> object(s) found</h1>
+        <h1>
+            <fmt:message key="woko.devel.search.title">
+                <fmt:param value="<%=totalSize%>"/>
+            </fmt:message>
+        </h1>
         <div class="wokoSearchForm">
             <s:form action="/search" method="GET">
                 <s:text name="facet.query" size="30"/>
@@ -41,7 +48,7 @@
                     <s:hidden name="facet.query"/>
                     <s:hidden name="className"/>
                     <input type="hidden"name="facet.page" value="1"/>
-                    Showing
+                    <fmt:message key="woko.devel.search.showing"/>
                     <s:select name="facet.resultsPerPage" onchange="this.form.submit()">
                         <s:option value="10">10</s:option>
                         <s:option value="25">25</s:option>
@@ -50,7 +57,7 @@
                         <s:option value="500">500</s:option>
                         <s:option value="1000">1000</s:option>
                     </s:select>
-                    objects / page
+                    <fmt:message key="woko.devel.search.objectPerPage"/>
                 </s:form>
             </div>
             <div class="wokoPagination">
