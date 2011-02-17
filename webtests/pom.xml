@@ -12,6 +12,7 @@
     <modules>
         <module>webtests-container-auth</module>
         <module>webtests-builtin-auth</module>
+        <module>webtests-localization</module>
     </modules>
     <dependencies>
         <dependency>
