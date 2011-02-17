@@ -29,12 +29,12 @@
                             <span class="authInfo">
                                 <c:choose>
                                     <c:when test="${username != null}">
-                                        Logged in as <strong>${username}</strong> -
+                                        <fmt:message key="woko.layout.loggedAs"/> <strong>${username}</strong> -
                                         <a href="${pageContext.request.contextPath}/logout">logout</a>
                                     </c:when>
                                     <c:otherwise>
-                                        You are not authenticated -
-                                        <a href="${pageContext.request.contextPath}/login">log-in</a>
+                                        <fmt:message key="woko.layout.notLogged"/>
+                                        <a href="${pageContext.request.contextPath}/login"><fmt:message key="woko.layout.login"/> </a>
                                     </c:otherwise>
                                 </c:choose>
                             </span>
@@ -56,9 +56,10 @@
                     <div id="sidebar">
                         <div id="left-sbar">
                         <div class="widgetspace">
-                          <h1>Actions</h1>
+                          <h1><fmt:message key="woko.layout.actions"/> </h1>
                           <s:layout-component name="sidebarLinks"/>
                           <div class="poweredBy">
+                              <%-- Intentionally not localized (we always use 'Powered by Woko' ) --%>
                               Powered by <a href="#">Woko</a>
                           </div>
                         </div>

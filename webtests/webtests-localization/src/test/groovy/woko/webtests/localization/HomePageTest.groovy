@@ -19,9 +19,6 @@ class HomePageTest extends WebTestBase {
       verifyXPath xpath:"/html/body/div/div[3]/div[1]/div/div/ul/li[1]/a[@href='/woko-webtests/login']"
       verifyXPath xpath:"/html/body/div/div[3]/div[1]/div/div/ul/li[2]/a[@href='http://sourceforge.net/projects/woko']"
 
-      // Verify Search box (on top)
-      checkSearchForm('/home')
-
       // Test Home page UI for Admin user
       login()
 
@@ -32,9 +29,6 @@ class HomePageTest extends WebTestBase {
       clickLink href:'/woko-webtests/home'
       verifyTitle 'Woko - home'
       verifyText 'This is developer home !'
-
-      // Check search input is present
-      checkSearchForm('/home')
 
       // Check Actions
       verifyText 'Actions'
