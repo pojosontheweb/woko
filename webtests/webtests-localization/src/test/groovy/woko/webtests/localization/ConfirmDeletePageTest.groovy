@@ -27,6 +27,9 @@ class ConfirmDeletePageTest extends WebTestBase {
       verifyXPath xpath:"html/body/div/div[3]/div[2]/form/input[1][@name='facet.confirm']"
       verifyXPath xpath:"html/body/div/div[3]/div[2]/form/input[2][@value='Cancel']"
       verifyXPath xpath:"html/body/div/div[3]/div[2]/form/input[2][@name='facet.cancel']"
+
+      // Delete the object to avoid influencing other tests
+      clickButton name:'facet.confirm'
       
     }
   }
