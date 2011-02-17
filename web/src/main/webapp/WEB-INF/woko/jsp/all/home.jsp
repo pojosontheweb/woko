@@ -7,18 +7,18 @@
 <w:facet facetName="layout" targetObject="${o}"/>
 <w:facet targetObject="${o}" facetName="renderTitle"/>
 
-<fmt:message var="pageTitle" key="guest.home.pageTitle"/>
+<fmt:message var="pageTitle" key="woko.guest.home.pageTitle"/>
 <s:layout-render name="${layout.layoutPath}" layout="${layout}" pageTitle="${pageTitle}">
     <s:layout-component name="sidebarLinks">
         <ul class="menu">
-            <li><a href="${pageContext.request.contextPath}/login">Login</a></li>
-            <li><a href="http://sourceforge.net/projects/woko">Woko</a></li>
+            <li><a href="${pageContext.request.contextPath}/login"><fmt:message key="woko.actions.login"/> </a></li>
+            <li><a href="http://sourceforge.net/projects/woko"><fmt:message key="woko.actions.wokoLink"/></a></li>
         </ul>
     </s:layout-component>
     <s:layout-component name="body">
-        <h1>Guest Home</h1>
+        <h1><fmt:message key="woko.guest.home.title"/> </h1>
         <p>
-            This is guest home !
+            <fmt:message key="woko.guest.home.content"/>
         </p>
     </s:layout-component>
 </s:layout-render>

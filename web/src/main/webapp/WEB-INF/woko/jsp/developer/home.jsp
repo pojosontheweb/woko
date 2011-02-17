@@ -2,22 +2,25 @@
 <%@ taglib prefix="w" tagdir="/WEB-INF/tags/woko" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="s" uri="http://stripes.sourceforge.net/stripes.tld" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <c:set var="o" value="${actionBean.object}"/>
 <w:facet facetName="layout" targetObject="${o}"/>
 <w:facet targetObject="${o}" facetName="renderTitle"/>
-<s:layout-render name="${layout.layoutPath}" layout="${layout}" pageTitle="home">
+
+<fmt:message var="pageTitle" key="woko.devel.home.pageTitle"/>
+<s:layout-render name="${layout.layoutPath}" layout="${layout}" pageTitle="${pageTitle}">
     <s:layout-component name="sidebarLinks">
         <ul class="menu">
-            <li><a href="${pageContext.request.contextPath}/find">Find Objects</a></li>
-            <li><a href="${pageContext.request.contextPath}/create">Create new Object</a></li>
-            <li><a href="${pageContext.request.contextPath}/studio">Woko Studio</a></li>
-            <li><a href="${pageContext.request.contextPath}/logout">Logout</a></li>
+            <li><a href="${pageContext.request.contextPath}/find"><fmt:message key="woko.actions.find"/> </a></li>
+            <li><a href="${pageContext.request.contextPath}/create"><fmt:message key="woko.actions.create"/> </a></li>
+            <li><a href="${pageContext.request.contextPath}/studio"><fmt:message key="woko.actions.studio"/> </a></li>
+            <li><a href="${pageContext.request.contextPath}/logout"><fmt:message key="woko.actions.logout"/> </a></li>
         </ul>
     </s:layout-component>
     <s:layout-component name="body">
-        <h1>Developer Home</h1>
+        <h1><fmt:message key="woko.devel.home.title"/> </h1>
         <p>
-            This is developer home !
+            <fmt:message key="woko.devel.home.content"/>
         </p>
     </s:layout-component>
 </s:layout-render>
