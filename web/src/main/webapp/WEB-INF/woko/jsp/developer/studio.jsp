@@ -5,16 +5,18 @@
 <%@ taglib prefix="w" tagdir="/WEB-INF/tags/woko" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="s" uri="http://stripes.sourceforge.net/stripes.tld" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <w:facet facetName="layout"/>
 <%
     Woko woko = Woko.getWoko(application);
 %>
-<s:layout-render name="${layout.layoutPath}" layout="${layout}" pageTitle="Studio" bodyClass="claro">
+<fmt:message var="pageTitle" key="woko.devel.studio.pageTitle"/>
+<s:layout-render name="${layout.layoutPath}" layout="${layout}" pageTitle="${pageTitle}" bodyClass="claro">
 
 
     <s:layout-component name="sidebarLinks">
         <ul class="menu">
-            <li><a href="#">Help</a></li>
+            <li><a href="#"><fmt:message key="woko.actions.help"/> </a></li>
         </ul>
     </s:layout-component>
 
@@ -132,49 +134,49 @@
             }
         </script>
 
-        <h1>Woko Studio</h1>
+        <h1><fmt:message key="woko.devel.studio.title"/></h1>
 
         <div style="width: 100%; height: 600px">
             <div dojoType="dijit.layout.TabContainer" style="width: 100%; height: 100%;">
                 <div dojoType="dijit.layout.ContentPane" title="Configuration" selected="true">
-                    <h2>The following components are configured</h2>
+                    <h2><fmt:message key="woko.devel.studio.config.title"/> </h2>
                     <ul>
-                        <li>Object Store : <strong><%=woko.getObjectStore().getClass().getName()%></strong></li>
-                        <li>User Manager : <strong><%=woko.getUserManager().getClass().getName()%></strong></li>
-                        <li>Fallback Roles : <strong><%=woko.getFallbackRoles()%></strong></li>
-                        <li>Username resolution strategy : <strong><%=woko.getUsernameResolutionStrategy()%></strong></li>
+                        <li><fmt:message key="woko.devel.studio.config.objectStore"/> <strong><%=woko.getObjectStore().getClass().getName()%></strong></li>
+                        <li><fmt:message key="woko.devel.studio.config.userManager"/> <strong><%=woko.getUserManager().getClass().getName()%></strong></li>
+                        <li><fmt:message key="woko.devel.studio.config.fallbackRoles"/> <strong><%=woko.getFallbackRoles()%></strong></li>
+                        <li><fmt:message key="woko.devel.studio.config.userStrategy"/> <strong><%=woko.getUsernameResolutionStrategy()%></strong></li>
                     </ul>
                 </div>
                 <div dojoType="dijit.layout.ContentPane" title="Facets">
                     <div id="gridContainer" style="width: 100%; height: 100%;"></div>
                 </div>
                 <div dojoType="dijit.layout.ContentPane" title="Groovy shell">
-                    <h2>Variables at your disposal</h2>
+                    <h2><fmt:message key="woko.devel.studio.groovy.title"/> </h2>
                     <ul>
-                        <li><strong>request</strong> (HttpServletRequest)</li>
-                        <li><strong>woko</strong> (Woko)</li>
-                        <li><strong>log(s)</strong> (log function)</li>
+                        <li><strong><fmt:message key="woko.devel.studio.groovy.request"/> </strong> <fmt:message key="woko.devel.studio.groovy.requestType"/></li>
+                        <li><strong><fmt:message key="woko.devel.studio.groovy.woko"/></strong> <fmt:message key="woko.devel.studio.groovy.wokoType"/></li>
+                        <li><strong><fmt:message key="woko.devel.studio.groovy.logs"/></strong> <fmt:message key="woko.devel.studio.groovy.logsType"/></li>
                     </ul>
-                    <h2>Groovy code</h2>
-                    <div dojoType="dijit.form.Textarea" id="groovyCode">Groovy Script here...<script type="dojo/method" event="onClick">
+                    <h2><fmt:message key="woko.devel.studio.groovy.code"/> </h2>
+                    <div dojoType="dijit.form.Textarea" id="groovyCode"><fmt:message key="woko.devel.studio.groovy.script"/><script type="dojo/method" event="onClick">
                             if (!window.clickedAlready) {
                                 window.clickedAlready = true;
                                 this.attr('value', '');
                             }
                         </script></div>
-                    <button dojoType="dijit.form.Button" id="execute" onclick="execGroovy();">Execute</button>
-                    <h2>Log</h2>
-                    <div dojoType="dijit.form.Textarea" disabled="true" id="log">Exec log</div>
+                    <button dojoType="dijit.form.Button" id="execute" onclick="execGroovy();"><fmt:message key="woko.devel.studio.groovy.execute"/> </button>
+                    <h2><fmt:message key="woko.devel.studio.log.title"/> </h2>
+                    <div dojoType="dijit.form.Textarea" disabled="true" id="log"><fmt:message key="woko.devel.studio.log.exec"/></div>
                 </div>
             </div>
         </div>
         <table id="facetsTable" style="display:none;">
             <thead>
             <tr>
-                <th>name</th>
-                <th>role</th>
-                <th>targetType</th>
-                <th>facetClass</th>
+                <th><fmt:message key="woko.devel.studio.table.name"/> </th>
+                <th><fmt:message key="woko.devel.studio.table.role"/></th>
+                <th><fmt:message key="woko.devel.studio.table.targetType"/></th>
+                <th><fmt:message key="woko.devel.studio.table.facetClass"/></th>
             </tr>
             </thead>
             <tbody>
