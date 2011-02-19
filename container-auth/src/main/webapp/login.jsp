@@ -4,8 +4,6 @@
 <%@ taglib prefix="s" uri="http://stripes.sourceforge.net/stripes.tld" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <w:facet facetName="layout"/>
-<%-- Use standard jstl to localize form --%>
-<fmt:setBundle basename="StripesResources"/>
 
 <s:layout-render name="${layout.layoutPath}" layout="${layout}" pageTitle="Please log-in" skipLoginLink="true">
     <s:layout-component name="body">
