@@ -2,8 +2,11 @@
 <%@ taglib prefix="w" tagdir="/WEB-INF/tags/woko" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="s" uri="http://stripes.sourceforge.net/stripes.tld" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <w:facet facetName="layout"/>
-<s:layout-render name="${layout.layoutPath}" layout="${layout}" pageTitle="Term Cloud">
+
+<fmt:message var="pageTitle" key="woko.devel.cloud.pageTitle"/>
+<s:layout-render name="${layout.layoutPath}" layout="${layout}" pageTitle="${pageTitle}">
 
     <s:layout-component name="body">
 
@@ -25,7 +28,7 @@
             }
         </style>
 
-        <h1>Compass Term Cloud</h1>
+        <h1><fmt:message key="woko.devel.cloud.title"/></h1>
 
         <w:includeFacet facetName="termCloudFragment" targetObject="${termCloud.cloud}"/>
         
