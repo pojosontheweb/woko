@@ -9,7 +9,7 @@
 <fmt:message var="pageTitle" key="woko.login.pageTitle"/>
 <s:layout-render name="${layout.layoutPath}" layout="${layout}" pageTitle="${pageTitle}" skipLoginLink="true">
     <s:layout-component name="body">
-        <h1>Please log-in</h1>
+        <h1><fmt:message key="woko.login.title"/></h1>
             <s:form beanclass="<%=WokoLogin.class%>">
                 <s:hidden name="targetUrl"/>
                     <div>

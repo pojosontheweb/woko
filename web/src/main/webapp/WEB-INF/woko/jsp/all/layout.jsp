@@ -30,7 +30,7 @@
                                 <c:choose>
                                     <c:when test="${username != null}">
                                         <fmt:message key="woko.layout.loggedAs"/> <strong>${username}</strong> -
-                                        <a href="${pageContext.request.contextPath}/logout">logout</a>
+                                        <a href="${pageContext.request.contextPath}/logout"><fmt:message key="woko.layout.logout"/> </a>
                                     </c:when>
                                     <c:otherwise>
                                         <fmt:message key="woko.layout.notLogged"/>

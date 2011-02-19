@@ -34,6 +34,10 @@
                 woko.actions
             </param-value>
         </init-param>
+        <init-param>
+            <param-name>LocalePicker.Locales</param-name>
+            <param-value>en,fr</param-value>
+        </init-param>
     </filter>
     <filter-mapping>
         <filter-name>StripesFilter</filter-name>
