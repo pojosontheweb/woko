@@ -3,8 +3,11 @@
 <%@ taglib prefix="w" tagdir="/WEB-INF/tags/woko" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="s" uri="http://stripes.sourceforge.net/stripes.tld" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <w:facet facetName="layout"/>
-<s:layout-render name="${layout.layoutPath}" layout="${layout}" pageTitle="Please log-in" skipLoginLink="true">
+
+<fmt:message var="pageTitle" key="woko.login.pageTitle"/>
+<s:layout-render name="${layout.layoutPath}" layout="${layout}" pageTitle="${pageTitle}" skipLoginLink="true">
     <s:layout-component name="body">
         <h1>Please log-in</h1>
             <s:form beanclass="<%=WokoLogin.class%>">
