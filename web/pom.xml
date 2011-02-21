@@ -39,6 +39,17 @@
             <groupId>javax.mail</groupId>
             <artifactId>mail</artifactId>
             <version>1.4.1</version>
-        </dependency>        
+        </dependency>
     </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-war-plugin</artifactId>
+                <configuration>
+                    <!-- This is broken in maven-war-plugin 2.0, works in 2.0.1 -->
+                    <warSourceExcludes>WEB-INF/lib/*.jar</warSourceExcludes>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>

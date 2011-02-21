@@ -45,7 +45,7 @@
         <module>core</module>
         <module>web</module>
         <module>container-auth</module>
-        <module>stripes-auth-plugin</module>
+        <!--module>stripes-auth-plugin</module-->
         <module>builtin-auth</module>
         <module>hibernate</module>
         <module>compass-hibernate</module>
@@ -90,4 +90,11 @@
             </modules>
         </profile>
     </profiles>
+    <distributionManagement>
+        <repository>
+          <id>nexus.ilog</id>
+          <name>ILOG Nexus</name>
+          <url>http://jules.ilogfr-bso.fr.ibm.com:8081/nexus/content/repositories/woko/</url>
+        </repository>
+      </distributionManagement>
 </project>

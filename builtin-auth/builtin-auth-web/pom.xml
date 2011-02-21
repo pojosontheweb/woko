@@ -9,4 +9,15 @@
     <artifactId>woko-builtin-auth-web</artifactId>
     <name>Woko - builtin auth web</name>
     <packaging>war</packaging>
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-war-plugin</artifactId>
+                <configuration>
+                    <!-- This is broken in maven-war-plugin 2.0, works in 2.0.1 -->
+                    <warSourceExcludes>WEB-INF/lib/*.jar</warSourceExcludes>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>
