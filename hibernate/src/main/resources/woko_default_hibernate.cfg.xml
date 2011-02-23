@@ -15,6 +15,8 @@
         <property name="cache.provider_class">org.hibernate.cache.NoCacheProvider</property>
         <property name="show_sql">true</property>
         <property name="hbm2ddl.auto">update</property>
+        <property name="hibernate.transaction.factory_class">org.hibernate.transaction.JDBCTransactionFactory</property>
+        <property name="hibernate.current_session_context_class">thread</property>
         <!-- other configuration -->
         <event type="pre-update">
           <listener class="org.hibernate.validator.event.ValidateEventListener"/>
