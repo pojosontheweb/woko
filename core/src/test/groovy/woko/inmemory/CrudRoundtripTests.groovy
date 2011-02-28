@@ -100,7 +100,7 @@ class CrudRoundtripTests extends TestCase {
   void testDeveloperDeleteBook() {
     WokoActionBean ab = trip('wdevel', 'delete','woko.inmemory.Book', '1', ['facet.confirm':'true'])
     assert ab.facet.getClass() == DeleteImpl.class
-    assert ab.facet.context.woko.objectStore.load('woko.inmemory.Book', '1') == null
+    assert ab.facet.facetContext.woko.objectStore.load('woko.inmemory.Book', '1') == null
   }
 
   void testFacetContextHasRequest() {

@@ -93,7 +93,7 @@ class InMemoryObjectStore implements ObjectStore {
   List getMappedClasses() {
     def res = []
     objects.each {k,v ->
-      res << k
+      res << Class.forName(k)
     }
     return res
   }
