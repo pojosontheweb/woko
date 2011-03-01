@@ -11,18 +11,18 @@
     </properties>
     <dependencies>
         <dependency>
-            <groupId>org.woko</groupId>
+            <groupId>com.rvkb</groupId>
             <artifactId>woko-ri</artifactId>
             <version>${woko.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.woko</groupId>
+            <groupId>com.rvkb</groupId>
             <artifactId>woko-web</artifactId>
             <version>${woko.version}</version>
             <type>war</type>
         </dependency>
         <dependency>
-            <groupId>org.woko</groupId>
+            <groupId>com.rvkb</groupId>
             <artifactId>woko-builtin-auth-web</artifactId>
             <version>${woko.version}</version>
             <type>war</type>
