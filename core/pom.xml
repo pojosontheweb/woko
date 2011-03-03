@@ -11,6 +11,11 @@
     <name>Woko - core</name>    
     <dependencies>
         <dependency>
+            <groupId>org.codehaus.groovy</groupId>
+            <artifactId>groovy</artifactId>
+            <version>1.7.4</version>
+        </dependency>
+        <dependency>
             <groupId>servlets.com</groupId>
             <artifactId>cos</artifactId>
             <version>05Nov2002</version>

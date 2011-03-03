@@ -9,4 +9,11 @@
     <artifactId>woko-builtin-auth-core</artifactId>
     <name>Woko - builtin auth core</name>
     <packaging>jar</packaging>
+    <dependencies>
+        <dependency>
+            <groupId>com.rvkb</groupId>
+            <artifactId>woko-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
 </project>

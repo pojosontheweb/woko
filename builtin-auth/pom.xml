@@ -13,11 +13,4 @@
         <module>builtin-auth-core</module>
         <module>builtin-auth-web</module>
     </modules>
-    <dependencies>
-        <dependency>
-            <groupId>com.rvkb</groupId>
-            <artifactId>woko-core</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-    </dependencies>
 </project>

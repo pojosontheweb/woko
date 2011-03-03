@@ -9,15 +9,12 @@
     <artifactId>woko-compass-hibernate-web</artifactId>
     <packaging>war</packaging>
     <name>Woko - compass and hibernate, web resources</name>
-    <build>
-        <plugins>
-            <plugin>
-                <artifactId>maven-war-plugin</artifactId>
-                <configuration>
-                    <!-- This is broken in maven-war-plugin 2.0, works in 2.0.1 -->
-                    <warSourceExcludes>WEB-INF/lib/*.jar</warSourceExcludes>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
+    <dependencies>
+        <dependency>
+            <groupId>com.rvkb</groupId>
+            <artifactId>woko-compass-hibernate-core</artifactId>
+            <version>${project.version}</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
 </project>

@@ -9,18 +9,6 @@
     <artifactId>woko-compass-hibernate</artifactId>
     <packaging>pom</packaging>
     <name>Woko - compass and hibernate</name>
-    <dependencies>
-        <dependency>
-            <groupId>com.rvkb</groupId>
-            <artifactId>woko-hibernate</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.compass-project</groupId>
-            <artifactId>compass</artifactId>
-            <version>2.2.0</version>
-        </dependency>
-    </dependencies>
     <modules>
         <module>compass-hibernate-core</module>
         <module>compass-hibernate-web</module>
