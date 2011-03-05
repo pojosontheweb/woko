@@ -10,6 +10,7 @@ import net.sourceforge.stripes.controller.LifecycleStage
 import woko.util.WLogger
 import woko.facets.ResolutionFacet
 import woko.facets.FacetNotFoundException
+import net.sourceforge.stripes.validation.ValidationMethod
 
 @UrlBinding('/{facetName}/{className}/{key}')
 class WokoActionBean extends BaseActionBean {
@@ -64,6 +65,13 @@ class WokoActionBean extends BaseActionBean {
     }
     facet = (ResolutionFacet)f
     logger.debug "facet $facet loaded"
+  }
+
+  @ValidationMethod
+  void validateNestedObjects() {
+    // verify validation rules on facet and object
+
+
   }
 
   @DefaultHandler
