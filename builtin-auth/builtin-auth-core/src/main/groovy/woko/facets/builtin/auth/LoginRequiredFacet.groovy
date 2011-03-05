@@ -33,7 +33,7 @@ class LoginRequiredFacet extends BaseResolutionFacet {
     }
     String queryString = request.queryString
     if (queryString!=null) {
-        requestedPage += queryString;
+        requestedPage += "?" + queryString;
     }
     return new ForwardResolution("/login").addParameter("targetUrl", requestedPage);
   }

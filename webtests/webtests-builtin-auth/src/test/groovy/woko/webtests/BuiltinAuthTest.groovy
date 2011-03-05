@@ -57,5 +57,17 @@ class BuiltinAuthTest extends WebTestBase {
     }
   }
 
+  void testLoginRequiredKeepsTargetUrl() {
+    webtest("test redirect on authenticated url keeps target url") {
+      goToPage '/studio?foo=bar'
+      verifyText 'Please log-in'
+      setInputField name:'username', value:'wdevel'
+      setInputField name:'password', value:'wdevel'
+      clickButton name:'login'
+      verifyText 'You have been logged in'
+    }
+
+  }
+
 
 }
