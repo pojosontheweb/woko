@@ -15,10 +15,14 @@ public class NestedValidationMetadataProviderTest extends TestCase {
   }
 
   private void assertOneLevelResult(Map<String,ValidationMetadata> metadata) {
+    assertOneLevelResult(metadata, "myPojo.prop");
+  }
+
+  private void assertOneLevelResult(Map<String,ValidationMetadata> metadata, String expectedKey) {
     assertNotNull(metadata);
     assertEquals(1, metadata.size());
     String key = metadata.keySet().iterator().next();
-    assertEquals("myPojo.prop", key);
+    assertEquals(expectedKey, key);
     ValidationMetadata vm = metadata.get(key);
     assertTrue(vm.required());
   }
@@ -52,5 +56,35 @@ public class NestedValidationMetadataProviderTest extends TestCase {
     assertEquals(0, metadata.size());
   }
 
+  public void testUntypedTwoLevelsNotNull() {
+    MyActionNotTypedNestedNotNull a = new MyActionNotTypedNestedNotNull();
+    assertOneLevelResult(
+        computeMetadata(a),
+        "myPojoNested.myPojo.prop"
+    );
+  }
+
+  public void testUntypedTwoLevelsNull() {
+    MyActionNotTypedNested action = new MyActionNotTypedNested();
+    Map<String,ValidationMetadata> metadata = computeMetadata(action);
+    assertEquals(0, metadata.size());
+  }
+
+  public void testTypedTwoLevelsNotNull() {
+    MyActionTypedNested action = new MyActionTypedNested();
+    action.setMyPojoNested(new MyPojoNested());
+    assertOneLevelResult(
+        computeMetadata(action),
+        "myPojoNested.myPojo.prop"
+    );
+  }
+
+  public void testTypedTwoLevelsNull() {
+    MyActionTypedNested action = new MyActionTypedNested();
+    assertOneLevelResult(
+        computeMetadata(action),
+        "myPojoNested.myPojo.prop"
+    );
+  }
 
 }

@@ -85,6 +85,46 @@ public class NestedValidationMetadataProviderRoundtripTest extends TestCase {
     assertOneValidationError(a, "myPojo.prop");
   }
 
+  public void testTwoLevelsRoundtripTypedNull() throws Exception {
+    MyActionTypedNested a = trip(MyActionTypedNested.class, null);
+    // make sure property has not been bound
+    assertNull(a.getMyPojoNested());
+    // make sure we have a validation error
+    assertOneValidationError(a, "myPojoNested.myPojo.prop");
+  }
 
+  public void testTwoLevelsRoundtripTypedNotNull() throws Exception {
+    // bind a non validated prop in order to create the nested object
+    Map<String,String> params = new HashMap<String,String>();
+    params.put("myPojoNested.otherProp", "foobar");
+    MyActionTypedNested a = trip(MyActionTypedNested.class, params);
+    // make sure property has not been bound
+    assertNull(a.getMyPojoNested().getMyPojo());
+    // make sure binding has worked on non validated prop
+    assertEquals("foobar", a.getMyPojoNested().getOtherProp());
+    // make sure we have a validation error
+    assertOneValidationError(a, "myPojoNested.myPojo.prop");
+  }
+
+  public void testTwoLevelsRoundtripNotTypedNull() throws Exception {
+    MyActionNotTypedNested a = trip(MyActionNotTypedNested.class, null);
+    // make sure property has not been bound
+    assertNull(a.getMyPojoNested());
+    // make sure we have no validation errors (run time type unknow)
+    assertEquals(0, a.getContext().getValidationErrors().size());
+  }
+
+  public void testTwoLevelsRoundtripNotTypedNotNull() throws Exception {
+    Map<String,String> params = new HashMap<String,String>();
+    params.put("myPojoNested.otherProp", "foobar");
+    MyActionNotTypedNestedNotNull a = trip(MyActionNotTypedNestedNotNull.class, params);
+    // make sure property has not been bound
+    MyPojoNested myPojo = (MyPojoNested)a.getMyPojoNested();
+    assertNull(myPojo.getMyPojo());
+    // make sure binding has worked on non validated prop
+    assertEquals("foobar", myPojo.getOtherProp());
+    // make sure we have a validation error
+    assertOneValidationError(a, "myPojoNested.myPojo.prop");
+  }
 
 }

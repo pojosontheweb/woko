@@ -38,7 +38,7 @@ public class NestedValidationMetadataProvider extends DefaultValidationMetadataP
       logger.debug("Unable to find ActionBean for current thread, using static validation only");
     } else {
       logger.debug("Computing dynamic validation metadata for " + actionBean);
-      Map<String, ValidationMetadata> dynamicMetadata = computeBeanMetadata(actionBean);
+      Map<String, ValidationMetadata> dynamicMetadata = computeBeanMetadata(actionBean, actionBean.getClass(), null);
       // append "facet" prefix to the property name
       for (String key : dynamicMetadata.keySet()) {
         ValidationMetadata validationMetadata = dynamicMetadata.get(key);
@@ -49,11 +49,16 @@ public class NestedValidationMetadataProvider extends DefaultValidationMetadataP
     return all;
   }
 
-  protected Map<String, ValidationMetadata> computeBeanMetadata(Object object) {
+  protected Map<String, ValidationMetadata> computeBeanMetadata(Object object, Class<?> objectClass, List<String> propertyPath) {
+    List<String> pp = propertyPath;
+    if (pp==null) {
+      pp = new ArrayList<String>();
+    }
     Map<String, ValidationMetadata> meta = new HashMap<String, ValidationMetadata>();
     Set<String> seen = new HashSet<String>();
     try {
-      for (Class<?> clazz = object.getClass(); clazz != null; clazz = clazz.getSuperclass()) {
+      Class<?> initialClass = object!=null ? object.getClass() : objectClass;
+      for (Class<?> clazz = initialClass; clazz != null; clazz = clazz.getSuperclass()) {
         List<PropertyDescriptor> pds = new ArrayList<PropertyDescriptor>(
             Arrays.asList(ReflectUtil.getPropertyDescriptors(clazz)));
 
@@ -138,21 +143,45 @@ public class NestedValidationMetadataProvider extends DefaultValidationMetadataP
           if (nested != null) {
             Validate[] validates = nested.value();
             if (validates != null && validates.length==0) {
+              StringBuilder propertyFullPath = new StringBuilder();
+              boolean hasPath = false;
+              for (Iterator<String> it = pp.iterator() ; it.hasNext() ; ) {
+                String pathElem = it.next();
+                propertyFullPath.append(pathElem);
+                if (it.hasNext()) {
+                  propertyFullPath.append(".");
+                }
+                hasPath = true;
+              }
+              String pfp = propertyFullPath.toString();
+              if (hasPath) {
+                pfp = pfp + "." + propertyName;
+              } else {
+                pfp = propertyName;
+              }
+
               // found empty @ValidateNestedProperties : grab the first level metadata using
               // default metadata provider, and recurse...
               // we use the run time type if available
               Class<?> propertyType = ReflectUtil.resolvePropertyType(pd);
-              if (accessor!=null) {
-                Object value = accessor.invoke(object);
-                if (value!=null) {
-                  propertyType = value.getClass();
+              Object propertyValue = null;
+              if (object!=null && accessor!=null) {
+                propertyValue = accessor.invoke(object);
+                if (propertyValue!=null) {
+                  propertyType = propertyValue.getClass();
                 }
               }
+              // grab first level metadata
               Map<String,ValidationMetadata> firstLevel = super.getValidationMetadata(propertyType);
               for (String s : firstLevel.keySet()) {
                 ValidationMetadata vm = firstLevel.get(s);
-                meta.put(propertyName + "." + s, vm);
+                meta.put(pfp + "." + s, vm);
               }
+              // recurse
+              List<String> newPropertyPath = new ArrayList<String>(pp);
+              newPropertyPath.add(propertyName);
+              Map<String,ValidationMetadata> childMetadata = computeBeanMetadata(propertyValue, propertyType, newPropertyPath);
+              meta.putAll(childMetadata);
             }
           }
         }
