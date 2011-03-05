@@ -39,7 +39,7 @@ public class NestedValidationMetadataProviderTest extends TestCase {
   }
 
   public void testUntypedOneLevelNotNull() {
-    MyActionNotTyped action = new MyActionNotTyped();
+    MyActionNotTypedNotNull action = new MyActionNotTypedNotNull();
     action.setMyPojo(new MyPojo());
     assertOneLevelResult(
         computeMetadata(action)

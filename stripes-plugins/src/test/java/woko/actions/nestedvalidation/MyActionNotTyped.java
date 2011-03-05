@@ -1,11 +1,8 @@
 package woko.actions.nestedvalidation;
 
-import net.sourceforge.stripes.action.ActionBean;
-import net.sourceforge.stripes.action.ActionBeanContext;
-import net.sourceforge.stripes.action.UrlBinding;
+import net.sourceforge.stripes.action.*;
 import net.sourceforge.stripes.validation.ValidateNestedProperties;
 
-@UrlBinding("my.action")
 public class MyActionNotTyped implements ActionBean {
 
   private ActionBeanContext context;
@@ -27,5 +24,10 @@ public class MyActionNotTyped implements ActionBean {
 
   public void setMyPojo(Object myPojo) {
     this.myPojo = myPojo;
+  }
+
+  @DefaultHandler
+  public Resolution doIt() {
+    return new ForwardResolution("/foo");
   }
 }

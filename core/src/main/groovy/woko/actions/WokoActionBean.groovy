@@ -11,6 +11,7 @@ import woko.util.WLogger
 import woko.facets.ResolutionFacet
 import woko.facets.FacetNotFoundException
 import net.sourceforge.stripes.validation.ValidationMethod
+import net.sourceforge.stripes.validation.ValidateNestedProperties
 
 @UrlBinding('/{facetName}/{className}/{key}')
 class WokoActionBean extends BaseActionBean {
@@ -25,6 +26,8 @@ class WokoActionBean extends BaseActionBean {
   String facetName
 
   private def object
+
+  @ValidateNestedProperties([])
   private ResolutionFacet facet
 
   def getObject() {

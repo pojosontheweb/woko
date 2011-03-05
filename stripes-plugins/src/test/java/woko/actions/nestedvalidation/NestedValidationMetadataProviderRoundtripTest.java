@@ -1,0 +1,90 @@
+package woko.actions.nestedvalidation;
+
+import junit.framework.TestCase;
+import net.sourceforge.stripes.action.ActionBean;
+import net.sourceforge.stripes.controller.DispatcherServlet;
+import net.sourceforge.stripes.controller.StripesFilter;
+import net.sourceforge.stripes.mock.MockRoundtrip;
+import net.sourceforge.stripes.mock.MockServletContext;
+import net.sourceforge.stripes.validation.ValidationErrors;
+import net.sourceforge.stripes.validation.ValidationMetadata;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class NestedValidationMetadataProviderRoundtripTest extends TestCase {
+
+  private MockServletContext createMockServletContext() {
+    Map<String, String> params = new HashMap<String, String>();
+    params.put("ActionResolver.Packages", "woko.actions");
+    params.put("Extension.Packages", "woko.actions");
+    MockServletContext mockServletContext = new MockServletContext("nestedvalidation");
+    mockServletContext.addFilter(StripesFilter.class, "StripesFilter", params);
+    mockServletContext.setServlet(DispatcherServlet.class, "DispatcherServlet", null);
+    return mockServletContext;
+  }
+
+  private <T extends ActionBean> T trip(Class<T> beanClass, Map<String,String> params) throws Exception {
+    MockRoundtrip rt = new MockRoundtrip(createMockServletContext(), beanClass);
+    if (params!=null) {
+      for (String paramName : params.keySet()) {
+        String paramValue = params.get(paramName);
+        rt.addParameter(paramName, paramValue);
+      }
+    }
+    rt.execute();
+    return rt.getActionBean(beanClass);
+
+  }
+
+  private void assertOneValidationError(ActionBean actionBean, String expectedKey) {
+    ValidationErrors errors = actionBean.getContext().getValidationErrors();
+    assertEquals(1, errors.size());
+    assertEquals(expectedKey, errors.keySet().iterator().next());
+  }
+
+  public void testRoundtripTypedNull() throws Exception {
+    MyActionTyped a = trip(MyActionTyped.class, null);
+    // make sure property has not been bound
+    assertNull(a.getMyPojo());
+    // make sure we have a validation error
+    assertOneValidationError(a, "myPojo.prop");
+  }
+
+  public void testRoundtripTypedNotNull() throws Exception {
+    // bind a non validated prop in order to create the nested object
+    Map<String,String> params = new HashMap<String,String>();
+    params.put("myPojo.otherProp", "foobar");
+    MyActionTyped a = trip(MyActionTyped.class, params);
+    // make sure property has not been bound
+    assertNull(a.getMyPojo().getProp());
+    // make sure binding has worked on non validated prop
+    assertEquals("foobar", a.getMyPojo().getOtherProp());
+    // make sure we have a validation error
+    assertOneValidationError(a, "myPojo.prop");
+  }
+
+  public void testRoundtripNotTypedNull() throws Exception {
+    MyActionNotTyped a = trip(MyActionNotTyped.class, null);
+    // make sure property has not been bound
+    assertNull(a.getMyPojo());
+    // make sure we have no validation errors (run time type unknow)
+    assertEquals(0, a.getContext().getValidationErrors().size());
+  }
+
+  public void testRoundtripNotTypedNotNull() throws Exception {
+    Map<String,String> params = new HashMap<String,String>();
+    params.put("myPojo.otherProp", "foobar");
+    MyActionNotTypedNotNull a = trip(MyActionNotTypedNotNull.class, params);
+    // make sure property has not been bound
+    MyPojo myPojo = (MyPojo)a.getMyPojo();
+    assertNull(myPojo.getProp());
+    // make sure binding has worked on non validated prop
+    assertEquals("foobar", myPojo.getOtherProp());
+    // make sure we have a validation error
+    assertOneValidationError(a, "myPojo.prop");
+  }
+
+
+
+}
