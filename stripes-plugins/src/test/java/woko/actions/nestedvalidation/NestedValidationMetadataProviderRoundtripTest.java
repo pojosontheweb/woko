@@ -7,7 +7,6 @@ import net.sourceforge.stripes.controller.StripesFilter;
 import net.sourceforge.stripes.mock.MockRoundtrip;
 import net.sourceforge.stripes.mock.MockServletContext;
 import net.sourceforge.stripes.validation.ValidationErrors;
-import net.sourceforge.stripes.validation.ValidationMetadata;
 
 import java.util.HashMap;
 import java.util.Map;
