@@ -90,11 +90,4 @@
             </modules>
         </profile>
     </profiles>
-    <distributionManagement>
-        <repository>
-          <id>nexus.ilog</id>
-          <name>ILOG Nexus</name>
-          <url>http://jules.ilogfr-bso.fr.ibm.com:8081/nexus/content/repositories/woko/</url>
-        </repository>
-      </distributionManagement>
 </project>
