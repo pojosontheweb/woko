@@ -63,8 +63,8 @@
                     <properties>
                         <cargo.servlet.port>9999</cargo.servlet.port>
                         <cargo.servlet.users>wdevel:wdevel:developer</cargo.servlet.users>						
+						<cargo.container.timeout>600000</cargo.container.timeout>						
                     </properties>
-					<timeout>600000</timeout>
                   </configuration>
                 </configuration>
                 <executions>
