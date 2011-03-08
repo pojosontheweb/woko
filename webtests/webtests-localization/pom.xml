@@ -63,8 +63,7 @@
                     <properties>
                         <cargo.servlet.port>9999</cargo.servlet.port>						
                     </properties>
-					<timeout>600000</timeout>
-                  </configuration>
+				 	        </configuration>
                 </configuration>
                 <executions>
                     <execution>
