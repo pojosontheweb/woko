@@ -51,6 +51,7 @@
         <module>compass-hibernate</module>
         <module>ri</module>
         <module>archetype</module>
+        <module>gitfs</module>
   </modules>
     <build>
         <plugins>
