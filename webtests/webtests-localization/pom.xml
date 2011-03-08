@@ -62,6 +62,7 @@
                   <configuration>
                     <properties>
                         <cargo.servlet.port>9999</cargo.servlet.port>
+						<timeout>600000</timeout>
                     </properties>
                   </configuration>
                 </configuration>
