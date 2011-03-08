@@ -68,9 +68,9 @@
                   </container>
                   <configuration>
                     <properties>
-                        <cargo.servlet.port>9999</cargo.servlet.port>
-						<timeout>600000</timeout>
+                        <cargo.servlet.port>9999</cargo.servlet.port>						
                     </properties>
+					<timeout>600000</timeout>
                   </configuration>
                 </configuration>
                 <executions>
