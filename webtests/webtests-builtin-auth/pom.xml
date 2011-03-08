@@ -68,7 +68,8 @@
                   </container>
                   <configuration>
                     <properties>
-                        <cargo.servlet.port>8080</cargo.servlet.port>
+                        <cargo.servlet.port>9999</cargo.servlet.port>						
+						<cargo.container.timeout>600000</cargo.container.timeout>						
                     </properties>
                   </configuration>
                 </configuration>

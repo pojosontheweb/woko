@@ -61,8 +61,9 @@
                   </container>
                   <configuration>
                     <properties>
-                        <cargo.servlet.port>8080</cargo.servlet.port>
-                        <cargo.servlet.users>wdevel:wdevel:developer</cargo.servlet.users>
+                        <cargo.servlet.port>9999</cargo.servlet.port>
+                        <cargo.servlet.users>wdevel:wdevel:developer</cargo.servlet.users>						
+						<cargo.container.timeout>600000</cargo.container.timeout>						
                     </properties>
                   </configuration>
                 </configuration>
