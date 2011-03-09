@@ -1,9 +1,8 @@
 package com.rvkb.gitfs
 
-class MyGitEntityConverter extends GitEntityConverter<MyGitEntity> {
+class MyGitEntityConverter implements GitEntityConverter {
 
-  @Override
-  MyGitEntity fromStream(InputStream is) {
+  def fromStream(InputStream is) {
     MyGitEntity result = null
     is.withReader { r ->
       def line = r.readLine()
@@ -12,8 +11,7 @@ class MyGitEntityConverter extends GitEntityConverter<MyGitEntity> {
     return result
   }
 
-  @Override
-  void toStream(MyGitEntity entity, OutputStream os) {
+  void toStream(def entity, OutputStream os) {
     os.withWriter { w ->
       w.write(entity.prop)
     }

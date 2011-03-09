@@ -4,8 +4,12 @@ import junit.framework.TestCase
 
 class GitFSTest extends TestCase {
 
+  String getRepoPath() {
+    return System.getProperty("java.io.tmpdir") + File.separator +
+            "myrepo" + System.currentTimeMillis() + "/.git"
+  }
   private GitFS getGfs() {
-    GitFS gfs = new GitFSBuilder("/tmp/myrepo/.git").
+    GitFS gfs = new GitFSBuilder(getRepoPath()).
         setCreateIfEmpty(true).
         build()
     assert gfs != null
@@ -14,7 +18,7 @@ class GitFSTest extends TestCase {
 
   void testRepoIsInitializedWhenEmpty() {
     String str = gfs.doInSession(new UserInfo("foo", "foo@bar.com")) { Session s ->
-      s.readFile(new File('/tmp/myrepo/gitfs.txt')) { InputStream is ->
+      s.readFile(new File(s.getAbsolutePath("gitfs.txt"))) { InputStream is ->
         new InputStreamReader(is).readLine()
       }
     }
@@ -25,31 +29,34 @@ class GitFSTest extends TestCase {
     def ms = System.currentTimeMillis()
     String txt = "this is some text $ms"
     String msg = "commit message $ms"
+    String filePath = null
     WriteResult wr = gfs.doInSession(new UserInfo("foo", "foo@bar.com")) { Session session ->
+      filePath = session.getAbsolutePath("test.txt")
       ByteArrayInputStream bis = new ByteArrayInputStream(txt.getBytes())
-      return session.writeToFile(bis, new File("/tmp/myrepo/test.txt"), msg)
+      return session.writeToFile(bis, new File(filePath), msg)
     }
     assertNotNull wr
     assertEquals msg, wr.message
     assertEquals "foo", wr.userInfo.username
     assertEquals "foo@bar.com", wr.userInfo.email
-    new File("/tmp/myrepo/test.txt").withReader { r ->
+    new File(filePath).withReader { r ->
       assertEquals txt, r.readLine()
     }
   }
 
   void testGetRevisions() {
     def ms = System.currentTimeMillis()
-    String fileName = "/tmp/myrepo/textRevs${ms}.txt"
+    String fileName = "textRevs${ms}.txt"
+    GitFS g = getGfs()
     for (it in 1..10) {
       String txt = "content$it"
-      gfs.doInSession(new UserInfo("foo", "foo@bar.com")) { Session session ->
+      g.doInSession(new UserInfo("foo", "foo@bar.com")) { Session session ->
         ByteArrayInputStream bis = new ByteArrayInputStream(txt.getBytes())
-        return session.writeToFile(bis, new File(fileName), "commit num $it")
+        return session.writeToFile(bis, new File(session.getAbsolutePath(fileName)), "commit num $it")
       }
     }
-    Iterable<Revision> revisions = gfs.doInSession(new UserInfo("foo", "foo@bar.com")) { Session s ->
-      return s.getRevisions(new File(fileName), 100)
+    Iterable<Revision> revisions = g.doInSession(new UserInfo("foo", "foo@bar.com")) { Session s ->
+      return s.getRevisions(new File(s.getAbsolutePath(fileName)), 100)
     }
     int count = 0
     revisions.each {
