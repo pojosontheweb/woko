@@ -18,8 +18,12 @@
     </repository>
   </repositories>
 
-  <!-- Core Library -->
   <dependencies>
+    <dependency>
+      <groupId>com.rvkb</groupId>
+      <artifactId>woko-core</artifactId>
+      <version>${project.version}</version>
+    </dependency>
     <dependency>
         <groupId>org.codehaus.groovy</groupId>
         <artifactId>groovy</artifactId>

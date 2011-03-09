@@ -29,4 +29,8 @@ class GitFS {
     return c.call(session)
   }
 
+  Repository getRepository() {
+    return repository
+  }
+
 }

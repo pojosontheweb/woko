@@ -98,7 +98,7 @@ class Session {
 
   Iterable<Revision> getRevisions(File file, int max) {
     debug("Getting revisions for $file.absolutePath, max=$max")
-    String fileName = file.absolutePath.substring(repoRootPath.absolutePath.length() + 1)
+    String fileName = getRelativePath(file)
     def revs = []
     synchronized(lock) {
       AnyObjectId headID = repository.resolve(Constants.HEAD)
@@ -118,6 +118,18 @@ class Session {
     }
     debug("returning ${revs.size()} revisions")
     return revs
+  }
+
+  File getRepoRootPath() {
+    return repoRootPath
+  }
+
+  String getRelativePath(File file) {
+    return file.absolutePath.substring(repoRootPath.absolutePath.length() + 1)
+  }
+
+  String getAbsolutePath(String relativePath) {
+    return repoRootPath.absolutePath + File.separator + relativePath
   }
 
 }
