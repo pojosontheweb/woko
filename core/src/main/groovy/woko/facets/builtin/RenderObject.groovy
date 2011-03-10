@@ -5,6 +5,4 @@ import net.sourceforge.jfacets.IFacet
 
 public interface RenderObject extends IFacet, FragmentFacet {
 
-  static String name = 'renderObject'  
-
 }

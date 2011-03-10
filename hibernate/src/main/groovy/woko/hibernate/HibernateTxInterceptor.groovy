@@ -3,7 +3,6 @@ package woko.hibernate
 import net.sourceforge.stripes.action.Resolution
 
 import net.sourceforge.stripes.controller.ExecutionContext
-import net.sourceforge.stripes.controller.Interceptor
 import net.sourceforge.stripes.controller.Intercepts
 import net.sourceforge.stripes.controller.LifecycleStage
 
@@ -11,10 +10,9 @@ import woko.util.WLogger
 import org.hibernate.SessionFactory
 import woko.Woko
 import org.hibernate.Transaction
-import org.hibernate.Session
 
 @Intercepts([LifecycleStage.RequestInit, LifecycleStage.RequestComplete])
-class HibernateTxInterceptor implements Interceptor {
+class HibernateTxInterceptor implements net.sourceforge.stripes.controller.Interceptor {
 
   private static final WLogger log = WLogger.getLogger(HibernateTxInterceptor.class)
 

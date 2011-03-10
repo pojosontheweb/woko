@@ -6,8 +6,6 @@ import javax.servlet.http.HttpServletRequest
 
 interface RenderObjectJson extends IFacet {
 
-  static String name = 'renderObjectJson'
-
   JSONObject objectToJson(HttpServletRequest request)
 
 }

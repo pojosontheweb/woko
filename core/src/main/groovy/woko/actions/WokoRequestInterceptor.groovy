@@ -5,10 +5,9 @@ import net.sourceforge.stripes.controller.Intercepts
 import javax.servlet.http.HttpServletRequest
 import net.sourceforge.stripes.controller.ExecutionContext
 import net.sourceforge.stripes.action.Resolution
-import net.sourceforge.stripes.controller.Interceptor
 
 @Intercepts([LifecycleStage.RequestInit, LifecycleStage.RequestComplete])
-class WokoRequestInterceptor implements Interceptor {
+class WokoRequestInterceptor implements net.sourceforge.stripes.controller.Interceptor {
 
   private static ThreadLocal<HttpServletRequest> requests = new ThreadLocal<HttpServletRequest>()
 

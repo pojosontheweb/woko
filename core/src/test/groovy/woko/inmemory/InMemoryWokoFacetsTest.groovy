@@ -4,10 +4,7 @@ import junit.framework.TestCase
 import woko.Woko
 import net.sourceforge.stripes.mock.MockHttpServletRequest
 import woko.facets.builtin.developer.ViewImpl
-import woko.facets.builtin.View
-import woko.facets.builtin.Logout
 import woko.facets.builtin.all.LogoutImpl
-import javax.servlet.http.HttpServletRequest
 
 class InMemoryWokoFacetsTest extends TestCase {
 
@@ -25,38 +22,38 @@ class InMemoryWokoFacetsTest extends TestCase {
   }
 
   void testLogoutNoUserNoObject() {
-    assertFacetClass(LogoutImpl.class, Logout.name, null, null)
+    assertFacetClass(LogoutImpl.class, 'logout', null, null)
   }
 
   void testLogoutNoUserDummyObject() {
-    assertFacetClass(LogoutImpl.class, Logout.name, null, [foo:'bar'])
+    assertFacetClass(LogoutImpl.class, 'logout', null, [foo:'bar'])
   }
 
   void testLogoutDeveloperNoObject() {
-    assertFacetClass(LogoutImpl.class, Logout.name, 'wdevel', null)
+    assertFacetClass(LogoutImpl.class, 'logout', 'wdevel', null)
   }
 
   void testLogoutDeveloperDummyObject() {
-    assertFacetClass(LogoutImpl.class, Logout.name, 'wdevel', [foo:'bar'])
+    assertFacetClass(LogoutImpl.class, 'logout', 'wdevel', [foo:'bar'])
   }
 
   void testViewNoUserNoObject() {
-    def f = getFacet(View.name, null, null)
+    def f = getFacet('view', null, null)
     assert f==null
   }
 
   void testViewNoUserDummyObject() {
-    def f = getFacet(View.name, null, [foo:'bar'])
+    def f = getFacet('view', null, [foo:'bar'])
     assert f==null
   }
 
   void testViewDevelNoObject() {
-    def f = getFacet(View.name, 'wdevel', null)
+    def f = getFacet('view', 'wdevel', null)
     assert f==null
   }
 
   void testViewDevelDummyObject() {
-    assertFacetClass(ViewImpl.class, View.name, 'wdevel', [foo:'bar'])
+    assertFacetClass(ViewImpl.class, 'view', 'wdevel', [foo:'bar'])
   }
 
 }

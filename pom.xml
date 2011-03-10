@@ -64,14 +64,32 @@
                 </configuration>
             </plugin>
             <plugin>
-                <groupId>org.codehaus.groovy.maven</groupId>
+                <groupId>org.codehaus.gmaven</groupId>
                 <artifactId>gmaven-plugin</artifactId>
-                <version>1.0</version>
+                <version>1.2</version>
                 <configuration>
-                    <verbose>true</verbose>
+                    <providerSelection>1.7</providerSelection>
                 </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.codehaus.gmaven.runtime</groupId>
+                        <artifactId>gmaven-runtime-1.7</artifactId>
+                        <version>1.2</version>
+                        <exclusions>
+                          <exclusion>
+                            <groupId>org.codehaus.groovy</groupId>
+                            <artifactId>groovy-all</artifactId>
+                          </exclusion>
+                        </exclusions>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.codehaus.groovy</groupId>
+                        <artifactId>groovy-all</artifactId>
+                        <version>1.7.0</version>
+                    </dependency>
+                </dependencies>
                 <executions>
-                    <execution>
+                     <execution>
                         <goals>
                             <goal>generateStubs</goal>
                             <goal>compile</goal>
@@ -81,7 +99,7 @@
                     </execution>
                 </executions>
             </plugin>
-        </plugins>        
+        </plugins>
     </build>
     <profiles>
         <profile>

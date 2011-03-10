@@ -1,6 +1,5 @@
 package woko.facets.builtin.hibernate
 
-import woko.facets.builtin.Validate
 import woko.facets.BaseFacet
 import net.sourceforge.jfacets.annotations.FacetKey
 import net.sourceforge.stripes.validation.SimpleError
@@ -10,7 +9,7 @@ import org.hibernate.validator.ClassValidator
 import org.hibernate.validator.InvalidValue
 
 @FacetKey(name='validate',profileId='all')
-class HibernateValidateFacet extends BaseFacet implements Validate {
+class HibernateValidateFacet extends BaseFacet implements woko.facets.builtin.Validate {
 
   static final String OBJECT_PREFIX = "object."
 

@@ -4,6 +4,4 @@ import woko.facets.FragmentFacet
 
 public interface NavBar extends FragmentFacet {
 
-  static String name = 'navBar'
-
 }
