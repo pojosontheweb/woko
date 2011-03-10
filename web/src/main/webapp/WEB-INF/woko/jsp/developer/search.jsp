@@ -21,7 +21,7 @@
     <s:layout-component name="body">
         <%
             Woko woko = Woko.getWoko(application);
-            Search search = (Search)request.getAttribute(Search.name);
+            Search search = (Search)request.getAttribute("search");
             ResultIterator results = search.getResults();
             String query = search.getQuery();
             int totalSize = results.getTotalSize();
@@ -87,7 +87,7 @@
               while (results.hasNext()) {
                   Object result = results.next();
                   // compute title
-                  RenderTitle renderTitle = (RenderTitle)woko.getFacet(RenderTitle.name, request, result);
+                  RenderTitle renderTitle = (RenderTitle)woko.getFacet("renderTitle", request, result);
                   String title = renderTitle!=null ? renderTitle.getTitle() : result.toString();
                   // compute link if view facet is available
                   String href = null;

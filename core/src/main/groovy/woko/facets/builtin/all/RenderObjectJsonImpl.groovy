@@ -23,7 +23,7 @@ class RenderObjectJsonImpl extends BaseFacet implements RenderObjectJson {
     }
     JSONObject result = new JSONObject()
     // find props to be rendered using renderProperties facet
-    RenderProperties renderProperties = (RenderProperties)facetContext.woko.getFacet(RenderProperties.name, request, o)
+    RenderProperties renderProperties = (RenderProperties)facetContext.woko.getFacet('renderProperties', request, o)
     if (renderProperties==null) {
       logger.warn("No renderProperties facet found for targetObject $o, as a result no props will be serialized.")
       return result
@@ -45,7 +45,7 @@ class RenderObjectJsonImpl extends BaseFacet implements RenderObjectJson {
       result.put("_key", key)
     }
 
-    RenderTitle renderTitle = (RenderTitle)facetContext.woko.getFacet(RenderTitle.name, request, o)
+    RenderTitle renderTitle = (RenderTitle)facetContext.woko.getFacet('renderTitle', request, o)
     if (renderTitle!=null) {
       result.put("_title", renderTitle.getTitle())
     }
@@ -57,10 +57,10 @@ class RenderObjectJsonImpl extends BaseFacet implements RenderObjectJson {
       return null
     }
     // try name-specific first
-    RenderPropertyValueJson rpvj = (RenderPropertyValueJson)facetContext.woko.getFacet(RenderPropertyValueJson.name + "_$propertyName", request, owner)
+    RenderPropertyValueJson rpvj = (RenderPropertyValueJson)facetContext.woko.getFacet('renderPropertyValue' + "_$propertyName", request, owner)
     if (rpvj==null) {
       // type-specific
-      rpvj = (RenderPropertyValueJson)facetContext.woko.getFacet(RenderPropertyValueJson.name, request, value)
+      rpvj = (RenderPropertyValueJson)facetContext.woko.getFacet('renderPropertyValue', request, value)
     }
     if (rpvj==null) {
       // default to toString()

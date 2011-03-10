@@ -83,7 +83,7 @@ class Util {
     String fName = 'renderPropertyValueEdit' // RenderPropertyValue.name returns 'renderPropertyValue' ???
     RenderPropertyValue renderPropertyValue = getRenderFacet(fName, woko, request, owningObject, propertyName, propertyValue, false)
     if (renderPropertyValue==null) {
-        renderPropertyValue = getRenderFacet(RenderPropertyValue.name, woko, request, owningObject, propertyName, propertyValue, true)
+        renderPropertyValue = getRenderFacet('renderPropertyValue', woko, request, owningObject, propertyName, propertyValue, true)
     }
     renderPropertyValue.setPropertyValue(propertyValue)
     renderPropertyValue.setOwningObject(owningObject);

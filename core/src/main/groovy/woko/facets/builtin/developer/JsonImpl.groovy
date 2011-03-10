@@ -13,7 +13,7 @@ import net.sourceforge.jfacets.annotations.FacetKey
 class JsonImpl extends BaseFacet implements Json {
 
   def Resolution getResolution(ActionBeanContext abc) {
-    RenderObjectJson roj = (RenderObjectJson)facetContext.woko.getFacet(RenderObjectJson.name, abc.request, facetContext.targetObject)
+    RenderObjectJson roj = (RenderObjectJson)facetContext.woko.getFacet('renderObject', abc.request, facetContext.targetObject)
     JSONObject json = roj.objectToJson(abc.request)
     String jsonStr = json.toString()
     return new StreamingResolution('text/json', jsonStr)
