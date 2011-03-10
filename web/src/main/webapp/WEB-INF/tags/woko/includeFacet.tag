@@ -9,5 +9,6 @@
          facetName="${facetName}"/>
 <%
     FragmentFacet ff = (FragmentFacet)request.getAttribute(facetName);
+    String path = ff.getFragmentPath(request);
 %>
-<jsp:include page="<%=ff.getFragmentPath(request)%>"/>
+<jsp:include page="<%=path%>"/>
