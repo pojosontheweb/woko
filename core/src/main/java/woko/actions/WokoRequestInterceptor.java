@@ -2,10 +2,12 @@ package woko.actions;
 
 import net.sourceforge.stripes.action.Resolution;
 import net.sourceforge.stripes.controller.ExecutionContext;
+import net.sourceforge.stripes.controller.Intercepts;
 import net.sourceforge.stripes.controller.LifecycleStage;
 
 import javax.servlet.http.HttpServletRequest;
 
+@Intercepts({LifecycleStage.RequestInit, LifecycleStage.RequestComplete})
 public class WokoRequestInterceptor implements net.sourceforge.stripes.controller.Interceptor {
 
   private static ThreadLocal<HttpServletRequest> requests = new ThreadLocal<HttpServletRequest>();
