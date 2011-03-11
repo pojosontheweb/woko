@@ -9,6 +9,7 @@ import woko.persistence.ObjectStore;
 import woko.util.WLogger;
 
 import java.beans.PropertyDescriptor;
+import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -47,10 +48,15 @@ public class RenderTitleImpl extends BaseFragmentFacet implements RenderTitle {
       for (String s : PROP_NAMES) {
         try {
           PropertyDescriptor pd = ReflectUtil.getPropertyDescriptor(o.getClass(), s);
-          Object obj = pd.getReadMethod().invoke(o);
-          if (obj!=null) {
-            result = obj.toString();
-            break;
+          if (pd!=null) {
+            Method readMethod = pd.getReadMethod();
+            if (readMethod!=null) {
+              Object obj = pd.getReadMethod().invoke(o);
+              if (obj!=null) {
+                result = obj.toString();
+                break;
+              }
+            }
           }
         } catch(Exception e) {
           logger.warn("Error while getting prop value for property '" + s + "' of instance of '" + o.getClass() + "', ignored this property for title", e);
