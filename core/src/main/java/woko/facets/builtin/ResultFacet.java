@@ -1,13 +1,13 @@
-package woko.facets.builtin
+package woko.facets.builtin;
 
-import woko.persistence.ResultIterator
+import woko.persistence.ResultIterator;
 
 public interface ResultFacet {
 
-  ResultIterator getResults()
+  ResultIterator getResults();
 
-  Integer getPage()
+  Integer getPage();
 
-  Integer getResultsPerPage()
+  Integer getResultsPerPage();
   
 }

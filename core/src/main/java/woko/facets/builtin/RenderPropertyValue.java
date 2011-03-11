@@ -1,20 +1,20 @@
-package woko.facets.builtin
+package woko.facets.builtin;
 
-import woko.facets.FragmentFacet
-import net.sourceforge.jfacets.IFacet
+import woko.facets.FragmentFacet;
+import net.sourceforge.jfacets.IFacet;
 
 public interface RenderPropertyValue extends IFacet, FragmentFacet {
 
-  void setOwningObject(Object o)
+  void setOwningObject(Object o);
 
-  Object getOwningObject()
+  Object getOwningObject();
 
-  void setPropertyName(String name)
+  void setPropertyName(String name);
 
-  String getPropertyName()
+  String getPropertyName();
 
-  Object getPropertyValue()
+  Object getPropertyValue();
 
-  void setPropertyValue(Object v)
+  void setPropertyValue(Object v);
 
 }

@@ -1,7 +1,7 @@
-package woko.facets.builtin
+package woko.facets.builtin;
 
-import woko.facets.ResolutionFacet
+import woko.facets.ResolutionFacet;
 
-interface Login extends ResolutionFacet {
+public interface Login extends ResolutionFacet {
 
 }

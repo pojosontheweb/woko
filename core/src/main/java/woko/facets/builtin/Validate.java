@@ -1,9 +1,9 @@
-package woko.facets.builtin
+package woko.facets.builtin;
 
-import net.sourceforge.stripes.action.ActionBeanContext
+import net.sourceforge.stripes.action.ActionBeanContext;
 
 public interface Validate {
 
-  boolean validate(ActionBeanContext abc)
+  boolean validate(ActionBeanContext abc);
 
 }

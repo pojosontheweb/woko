@@ -1,9 +1,9 @@
-package woko.facets.builtin
+package woko.facets.builtin;
 
-import woko.facets.ResolutionFacet
+import woko.facets.ResolutionFacet;
 
-interface Search extends ResolutionFacet, ResultFacet {
+public interface Search extends ResolutionFacet, ResultFacet {
 
-  String getQuery()
+  String getQuery();
 
 }

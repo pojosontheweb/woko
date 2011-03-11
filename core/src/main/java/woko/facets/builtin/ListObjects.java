@@ -1,9 +1,9 @@
-package woko.facets.builtin
+package woko.facets.builtin;
 
-import woko.facets.ResolutionFacet
+import woko.facets.ResolutionFacet;
 
-interface ListObjects extends ResolutionFacet, ResultFacet {
+public interface ListObjects extends ResolutionFacet, ResultFacet {
 
-  String getClassName()
+  String getClassName();
 
 }

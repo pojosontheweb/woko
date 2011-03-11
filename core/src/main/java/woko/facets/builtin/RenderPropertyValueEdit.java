@@ -1,4 +1,4 @@
-package woko.facets.builtin
+package woko.facets.builtin;
 
 public interface RenderPropertyValueEdit extends RenderPropertyValue {
 

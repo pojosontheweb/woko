@@ -1,9 +1,9 @@
-package woko.facets.builtin
+package woko.facets.builtin;
 
-import javax.servlet.http.HttpServletRequest
+import javax.servlet.http.HttpServletRequest;
 
 public interface RenderPropertyValueJson {
 
-  Object propertyToJson(HttpServletRequest request, Object propertyValue)
+  Object propertyToJson(HttpServletRequest request, Object propertyValue);
 
 }

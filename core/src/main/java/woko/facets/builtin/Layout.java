@@ -1,15 +1,17 @@
-package woko.facets.builtin
+package woko.facets.builtin;
 
-import net.sourceforge.jfacets.IFacet
+import net.sourceforge.jfacets.IFacet;
 
-interface Layout extends IFacet {
+import java.util.List;
 
-  String getAppTitle()
+public interface Layout extends IFacet {
 
-  List<String> getCssIncludes()
+  String getAppTitle();
 
-  List<String> getJsIncludes()
+  List<String> getCssIncludes();
 
-  String getLayoutPath()
+  List<String> getJsIncludes();
+
+  String getLayoutPath();
 
 }
