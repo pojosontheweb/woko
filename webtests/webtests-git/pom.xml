@@ -6,27 +6,26 @@
         <artifactId>woko-webtests</artifactId>
         <version>2.0-SNAPSHOT</version>
     </parent>
-    <artifactId>woko-webtests-container-auth</artifactId>
-    <name>Woko - web tests container auth</name>
+    <artifactId>woko-webtests-git</artifactId>
+    <name>Woko - web tests Git</name>
     <packaging>war</packaging>
     <dependencies>
         <dependency>
             <groupId>com.rvkb</groupId>
-            <artifactId>woko-container-auth</artifactId>
-            <version>${project.version}</version>
-            <type>war</type>
-        </dependency>
-        <dependency>
-            <groupId>com.rvkb</groupId>
-            <artifactId>woko-compass-hibernate-core</artifactId>
+            <artifactId>woko-core</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>com.rvkb</groupId>
-            <artifactId>woko-compass-hibernate-web</artifactId>
+            <artifactId>woko-builtin-auth-web</artifactId>
             <version>${project.version}</version>
             <type>war</type>
         </dependency>
+      <dependency>
+          <groupId>com.rvkb</groupId>
+          <artifactId>gitfs</artifactId>
+          <version>${project.version}</version>
+      </dependency>
     </dependencies>
     <build>
         <finalName>woko-webtests</finalName>
@@ -64,11 +63,17 @@
                     <containerId>tomcat6x</containerId>
                       <home>${tomcat6.home}</home>
                       <type>installed</type>
+
+<!--
+                    <zipUrlInstaller>
+                      <url>http://apache.cict.fr//tomcat/tomcat-6/v6.0.29/bin/apache-tomcat-6.0.29.zip</url>
+                      <installDir>${basedir}/target/tomcat6-install</installDir>
+                    </zipUrlInstaller>
+-->
                   </container>
                   <configuration>
                     <properties>
-                        <cargo.servlet.port>9999</cargo.servlet.port>
-                        <cargo.servlet.users>wdevel:wdevel:developer</cargo.servlet.users>						
+                        <cargo.servlet.port>9999</cargo.servlet.port>						
 						<cargo.container.timeout>600000</cargo.container.timeout>						
                     </properties>
                   </configuration>
