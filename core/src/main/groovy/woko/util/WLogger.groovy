@@ -30,6 +30,12 @@ class WLogger {
     stripesLog.error msg
   }
 
+  void warn(msg,Exception e) {
+    StringWriter sw = new StringWriter()
+    e.printStackTrace(new PrintWriter(sw))
+    stripesLog.warn(msg, "\nStack:\n", sw.toString())
+  }
+
   void error(msg,Exception e) {
     StringWriter sw = new StringWriter()
     e.printStackTrace(new PrintWriter(sw))

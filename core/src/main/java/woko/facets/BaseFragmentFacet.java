@@ -13,7 +13,7 @@ public abstract class BaseFragmentFacet extends BaseFacet implements FragmentFac
 
   public abstract String getPath();
 
-  HttpServletRequest getRequest() {
+  public HttpServletRequest getRequest() {
     return request;
   }
 
