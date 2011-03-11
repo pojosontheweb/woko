@@ -75,8 +75,8 @@ public class Woko {
     logger.info("");
     logger.info("__       __     _  __");
     logger.info("\\ \\  _  / /___ | |/ / ___");
-    logger.info("\\ \\/ \\/ // o \\|   K /   \\");
-    logger.info("\\__W__/ \\___/|_|\\_\\\\_o_/  2.0");
+    logger.info(" \\ \\/ \\/ // o \\|   K /   \\");
+    logger.info("  \\__W__/ \\___/|_|\\_\\\\_o_/  2.0");
     logger.info("             POJOs on the Web !");
     logger.info("");
     logger.info("Woko is ready :");
