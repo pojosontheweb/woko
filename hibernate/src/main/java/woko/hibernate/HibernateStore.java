@@ -226,9 +226,9 @@ public class HibernateStore implements ObjectStore {
       // compute total count
       String mappedClassName = getClassMapping(clazz);
       String query = new StringBuilder("select count(*) from ").append(mappedClassName).toString();
-      int count = (Integer)getSession().createQuery(query).list().get(0);
+      Long count = (Long)getSession().createQuery(query).list().get(0);
 
-      return new ListResultIterator(objects, s, l, count);
+      return new ListResultIterator(objects, s, l, count.intValue());
     }
   }
 
