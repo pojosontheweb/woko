@@ -76,7 +76,6 @@ public class HibernateStore implements ObjectStore {
     ResolverUtil<Object> resolverUtil = new ResolverUtil<Object>();
     String[] packages = new String[packageNames.size()];
     packages = packageNames.toArray(packages);
-    resolverUtil.findAnnotated(MappedSuperclass.class, packages);  
     resolverUtil.findAnnotated(Entity.class, packages);
     resolverUtil.findAnnotated(javax.persistence.Entity.class, packages);
     for (Class<?> clazz : resolverUtil.getClasses()) {
