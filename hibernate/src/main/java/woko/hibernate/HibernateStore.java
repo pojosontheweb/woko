@@ -14,6 +14,7 @@ import woko.persistence.ObjectStore;
 import woko.persistence.ResultIterator;
 import woko.util.WLogger;
 
+import javax.persistence.MappedSuperclass;
 import java.io.Serializable;
 import java.net.URL;
 import java.util.ArrayList;
@@ -75,6 +76,7 @@ public class HibernateStore implements ObjectStore {
     ResolverUtil<Object> resolverUtil = new ResolverUtil<Object>();
     String[] packages = new String[packageNames.size()];
     packages = packageNames.toArray(packages);
+    resolverUtil.findAnnotated(MappedSuperclass.class, packages);  
     resolverUtil.findAnnotated(Entity.class, packages);
     resolverUtil.findAnnotated(javax.persistence.Entity.class, packages);
     for (Class<?> clazz : resolverUtil.getClasses()) {
