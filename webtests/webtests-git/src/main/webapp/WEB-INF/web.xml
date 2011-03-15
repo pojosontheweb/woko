@@ -32,7 +32,6 @@
             <param-name>Extension.Packages</param-name>
             <param-value>
                 woko.actions
-                woko.hibernate
             </param-value>
         </init-param>
         <init-param>
@@ -63,12 +62,7 @@
 
     <listener>
         <display-name>WokoInitListener</display-name>
-        <listener-class>woko.ri.RiWokoInitListener</listener-class>
+        <listener-class>gitfs.InitListener</listener-class>
     </listener>
-
-    <context-param>
-        <param-name>Woko.Hibernate.Packages</param-name>
-        <param-value>test</param-value>
-    </context-param>
 
 </web-app>

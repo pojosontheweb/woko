@@ -33,7 +33,12 @@ class GitFSTest extends TestCase {
     WriteResult wr = gfs.doInSession(new UserInfo("foo", "foo@bar.com")) { Session session ->
       filePath = session.getAbsolutePath("test.txt")
       ByteArrayInputStream bis = new ByteArrayInputStream(txt.getBytes())
-      return session.writeToFile(bis, new File(filePath), msg)
+      Reader r = new InputStreamReader(bis)
+      return session.writeToFile(new File(filePath), msg) { OutputStream os ->
+        os.withWriter { w ->
+          w << r
+        }
+      }
     }
     assertNotNull wr
     assertEquals msg, wr.message
@@ -52,7 +57,12 @@ class GitFSTest extends TestCase {
       String txt = "content$it"
       g.doInSession(new UserInfo("foo", "foo@bar.com")) { Session session ->
         ByteArrayInputStream bis = new ByteArrayInputStream(txt.getBytes())
-        return session.writeToFile(bis, new File(session.getAbsolutePath(fileName)), "commit num $it")
+        return session.writeToFile(new File(session.getAbsolutePath(fileName)), "commit num $it") { OutputStream out ->
+          Reader r = new InputStreamReader(bis)
+          out.withWriter { w ->
+            w << r
+          }
+        }
       }
     }
     Iterable<Revision> revisions = g.doInSession(new UserInfo("foo", "foo@bar.com")) { Session s ->

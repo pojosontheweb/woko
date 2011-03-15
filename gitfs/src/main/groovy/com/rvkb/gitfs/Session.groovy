@@ -61,18 +61,26 @@ class Session {
   }
 
   /**
-   * Write to file and commit.
+   * Write to file and commit. Passes an OutputStream to the file to the closure c.
    * @param is
    * @param f
    * @return
    */
-  WriteResult writeToFile(InputStream is, File f, String message) {
-    assert is
+  WriteResult writeToFile(File f, String message, Closure c) {
+    assert f
+    assert c
     // write to file and commit
     synchronized(lock) {
+      if (!f.exists()) {
+        File parent = f.getParentFile()
+        if (!parent.exists()) {
+          parent.mkdirs()
+        }
+        debug("created non existing ${parent.absolutePath}")
+      }
       debug("Writing stream to $f.absolutePath")
-      f.withWriter { out ->
-        out << new InputStreamReader(is)
+      f.withOutputStream { out ->
+        c.call(out)
       }
       debug("Commiting...")
       try {
@@ -85,6 +93,7 @@ class Session {
             setAll(true).
             setMessage(message).
             setAuthor(userInfo.username, userInfo.email).
+            setCommitter(userInfo.username, userInfo.email).
             call()
         debug("... commited $rc")
         return new WriteResult(rc, null)
