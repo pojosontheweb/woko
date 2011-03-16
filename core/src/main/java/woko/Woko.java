@@ -184,13 +184,14 @@ public class Woko {
   public String facetUrl(String facetName, Object obj) {
     String className = objectStore.getClassMapping(obj.getClass());
     String id = objectStore.getKey(obj);
-    return new StringBuilder("/").
+    StringBuilder sb = new StringBuilder("/").
         append(facetName).
         append("/").
-        append(className).
-        append("/").
-        append(id).
-        toString();
+        append(className);
+    if (id!=null) {
+      sb.append("/").append(id);
+    }
+    return sb.toString();
   }
 
   public UsernameResolutionStrategy getUsernameResolutionStrategy() {
