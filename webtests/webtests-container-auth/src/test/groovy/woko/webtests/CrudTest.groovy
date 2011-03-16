@@ -95,32 +95,38 @@ class CrudTest extends WebTestBase {
       // create some test books...
       goToPage "/createDummyObjects"
 
-      // find
-      goToPage '/find'
-      verifyTitle 'Woko - Find objects'
-      verifyText 'Find objects by class'
-      clickLink label:'MyBook'
+      try {
+        // find
+        goToPage '/find'
+        verifyTitle 'Woko - Find objects'
+        verifyText 'Find objects by class'
+        clickLink label:'MyBook'
 
-      verifyText '400 object(s) found for class MyBook'
-      verifyXPath xpath: "/html/body/div/div[3]/div[2]/div[2]/span[40]/a" // 40 pages
-      verifyText 'Moby test100'
-      clickLink label:'2'
-      verifyText 'Moby test110'
-      clickLink label:'40'
-      verifyText 'Moby test499'
+        verifyText '400 object(s) found for class MyBook'
+        verifyXPath xpath: "/html/body/div/div[3]/div[2]/div[2]/span[40]/a" // 40 pages
+        verifyText 'Moby test100'
+        clickLink label:'2'
+        verifyText 'Moby test110'
+        clickLink label:'40'
+        verifyText 'Moby test499'
+        not {
+          // check that we don't have a link to 41st page (should not exist)
+          verifyXPath xpath: '/html/body/div/div[3]/div[2]/div[2]/span[41]/a'
+        }
 
-      setSelectField name:'facet.resultsPerPage', value:'500'
-      verifyText 'Moby test499'
-      not {
-        verifyXPath xpath:"//div[@class='wokoPagination']"
+        setSelectField name:'facet.resultsPerPage', value:'500'
+        verifyText 'Moby test499'
+        not {
+          verifyXPath xpath:"//div[@class='wokoPagination']"
+        }
+
+        // list
+        goToPage '/list/MyBook'
+        verifyText '400 object(s) found for class MyBook'
+      } finally {
+        // remove the objects
+        goToPage "/removeDummyObjects"
       }
-
-      // list
-      goToPage '/list/MyBook'
-      verifyText '400 object(s) found for class MyBook'
-
-      // remove the objects
-      goToPage "/removeDummyObjects"
     }
   }
 
@@ -143,6 +149,9 @@ class CrudTest extends WebTestBase {
       verifyText 'Moby test110'
       clickLink label:'40'
       verifyText 'Moby test499'
+      not {
+        verifyXPath xpath: "/html/body/div/div[3]/div[2]/div[3]/span[41]/a" // link to 41th page should not exist
+      }
 
       setSelectField name:'facet.resultsPerPage', value:'500'
       verifyText 'Moby test499'

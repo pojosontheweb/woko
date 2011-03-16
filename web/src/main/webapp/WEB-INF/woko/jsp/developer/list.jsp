@@ -27,7 +27,10 @@
             int totalSize = results.getTotalSize();
             int p = list.getPage();
             int resultsPerPage = list.getResultsPerPage();
-            int nbPages = totalSize / resultsPerPage + 1;
+            int nbPages = totalSize / resultsPerPage;
+            if (totalSize % resultsPerPage != 0) {
+              nbPages++;
+            }
         %>
         <h1>
             <fmt:message key="woko.devel.list.title">
