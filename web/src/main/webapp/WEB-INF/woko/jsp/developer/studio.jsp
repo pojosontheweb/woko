@@ -173,10 +173,10 @@
         <table id="facetsTable" style="display:none;">
             <thead>
             <tr>
-                <th><fmt:message key="woko.devel.studio.table.name"/> </th>
-                <th><fmt:message key="woko.devel.studio.table.role"/></th>
-                <th><fmt:message key="woko.devel.studio.table.targetType"/></th>
-                <th><fmt:message key="woko.devel.studio.table.facetClass"/></th>
+                <th>name</th>
+                <th>role</th>
+                <th>targetType</th>
+                <th>facetClass</th>
             </tr>
             </thead>
             <tbody>
