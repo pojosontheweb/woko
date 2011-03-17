@@ -71,7 +71,7 @@
 
     <context-param>
         <param-name>Woko.Hibernate.Packages</param-name>
-        <param-value>${package}</param-value>
+        <param-value>${package}.model</param-value>
     </context-param>
 
 </web-app>
