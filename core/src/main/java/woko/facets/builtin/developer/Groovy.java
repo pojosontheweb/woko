@@ -34,7 +34,7 @@ public class Groovy extends BaseResolutionFacet {
     Binding b = new Binding();
     b.setVariable("request", abc.getRequest());
     b.setVariable("woko", getFacetContext().getWoko());
-    b.setVariable("log", new StringBuilder());
+    b.setVariable("log", out);
     GroovyShell shell = new GroovyShell(b);
     long time = System.currentTimeMillis();
     try {
