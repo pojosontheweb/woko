@@ -2,7 +2,7 @@ package woko.webtests
 
 class WokoStudioPageTest extends WebTestBase{
 
-  void testFindPage(){
+  void testStudioPage(){
     webtest('test Woko Studio page'){
       login()
 
@@ -13,10 +13,6 @@ class WokoStudioPageTest extends WebTestBase{
 
       // Check search input is present
       checkSearchForm('/studio')
-
-      // Check actions
-      verifyText 'Actions'
-      verifyXPath xpath:"/html/body/div/div[3]/div[1]/div/div/ul/li/a[@href='#']"
     }
   }
 }

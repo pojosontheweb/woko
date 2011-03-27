@@ -7,11 +7,6 @@
 
 <fmt:message var="pageTitle" key="woko.devel.find.pageTitle"/>
 <s:layout-render name="${layout.layoutPath}" layout="${layout}" pageTitle="${pageTitle}">
-    <s:layout-component name="sidebarLinks">
-        <ul class="menu">
-            <li><a href="#"><fmt:message key="woko.actions.help"/> </a></li>
-        </ul>
-    </s:layout-component>
     <s:layout-component name="body">
         <h1><fmt:message key="woko.devel.find.fullText"/> </h1>
         <s:form action="/search">

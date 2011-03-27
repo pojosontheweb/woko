@@ -133,8 +133,6 @@ h3 {
 }
 
 #content {
-	width: 780px;
-	float: left;
 	font-size: 14px;
 }
 
@@ -148,36 +146,6 @@ h3 {
 	color: #fff;
 	margin-bottom: 30px;
 }
-	
-
-.dated {
-	padding-top: 2px;
-	background: url(calendar.png) left no-repeat;
-	padding-left: 20px;
-	float: left;
-}
-
-.category {
-	background: url(category.png) left no-repeat;
-	padding-left: 20px;
-	margin-left: 10px;
-	float: left;
-	height: 22px;
-}
-
-.author {
-	padding-left: 20px;
-	padding-bottom: 5px;
-	background: url(user.png) no-repeat;
-}
-
-.more {
-	padding-right: 20px;
-	margin-left: 20px;
-	padding-bottom: 2px;
-	background: url(more.png) right no-repeat;
-}
-
 
 /* Forms and Text Fields */
 
@@ -250,58 +218,6 @@ ul span, ol span {
 	color: #333333;
 }
 
-
-
-/* Sidebar */
-
-#sidebar {
-	width: 180px;
-	float: right;
-	font-size: 14px;
-}
-
-#sidebar h1 {
-	font-size: 16px;
-	font-weight: bold;
-	color: #333;
-}
-
-#left-sbar {
-	width: 175px;
-	float: left;
-	border-left: 2px dotted #ccc;
-}
-
-#sidebar .widgetspace {
-	padding: 5px 5px 0 10px;
-	margin: 0px;
-	/* background: url(side-footer.png) bottom no-repeat; */
-}
-
-
-#sidebar ul.menu {
-	list-style: none;
-	margin : 3px 0 2px 0;
-	padding: 0;
-}
-
-#sidebar ul.menu li {
-	padding : 2px 0 0px 5px;
-	margin : 0 0 0 2px;
-}
-
-#sidebar ul.menu li:hover {
-	background: #EBEBEB;
-}
-
-#sidebar ul.menu a {
-	background-image : none;
-}
-
-
-#sidebar ul.menu a:hover {
-}
-
 #divider-line {
 	height: 16px;
 }
@@ -327,4 +243,3 @@ img.float-left {
 	clear:both;
 	overflow: hidden;
 }
-

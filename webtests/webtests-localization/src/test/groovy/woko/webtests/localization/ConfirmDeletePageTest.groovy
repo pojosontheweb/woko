@@ -8,7 +8,7 @@ import woko.webtests.WebTestBase
  */
 class ConfirmDeletePageTest extends WebTestBase {
 
-  void testAuthenticationWithHome() {
+  void testConfirmDelete() {
     webtest("test confimDelete") {
       login()
 
@@ -22,11 +22,11 @@ class ConfirmDeletePageTest extends WebTestBase {
       verifyText 'Please confirm deletion'
       verifyText 'You are about to permanently delete object "Moby". Are you sure ?'
 
-      verifyXPath xpath:"html/body/div/div[3]/div[2]/form[@action='/woko-webtests/delete/MyBook/1']"
-      verifyXPath xpath:"html/body/div/div[3]/div[2]/form/input[1][@value='Delete']"
-      verifyXPath xpath:"html/body/div/div[3]/div[2]/form/input[1][@name='facet.confirm']"
-      verifyXPath xpath:"html/body/div/div[3]/div[2]/form/input[2][@value='Cancel']"
-      verifyXPath xpath:"html/body/div/div[3]/div[2]/form/input[2][@name='facet.cancel']"
+      verifyXPath xpath:"/html/body/div/div[3]/div/form[@action='/woko-webtests/delete/MyBook/1']"
+      verifyXPath xpath:"/html/body/div/div[3]/div/form/input[1][@value='Delete']"
+      verifyXPath xpath:"/html/body/div/div[3]/div/form/input[1][@name='facet.confirm']"
+      verifyXPath xpath:"/html/body/div/div[3]/div/form/input[2][@value='Cancel']"
+      verifyXPath xpath:"/html/body/div/div[3]/div/form/input[2][@name='facet.cancel']"
 
       // Delete the object to avoid influencing other tests
       clickButton name:'facet.confirm'

@@ -12,10 +12,7 @@ class LayoutTest extends WebTestBase {
   void testAuthenticationWithHome() {
     webtest("test layout") {
 
-      // Test Layout for all user
       goToPage '/home'
-      verifyText 'Actions'
-      verifyText 'Powered by'
 
       // For guest user only
       verifyText 'You are not authenticated -'

@@ -9,14 +9,6 @@
 
 <fmt:message var="pageTitle" key="woko.devel.home.pageTitle"/>
 <s:layout-render name="${layout.layoutPath}" layout="${layout}" pageTitle="${pageTitle}">
-    <s:layout-component name="sidebarLinks">
-        <ul class="menu">
-            <li><a href="${pageContext.request.contextPath}/find"><fmt:message key="woko.actions.find"/> </a></li>
-            <li><a href="${pageContext.request.contextPath}/create"><fmt:message key="woko.actions.create"/> </a></li>
-            <li><a href="${pageContext.request.contextPath}/studio"><fmt:message key="woko.actions.studio"/> </a></li>
-            <li><a href="${pageContext.request.contextPath}/logout"><fmt:message key="woko.actions.logout"/> </a></li>
-        </ul>
-    </s:layout-component>
     <s:layout-component name="body">
         <h1><fmt:message key="woko.devel.home.title"/> </h1>
         <p>

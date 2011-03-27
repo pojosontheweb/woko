@@ -18,9 +18,6 @@ class ListPageTest extends WebTestBase {
       verifyText 'Showing'
       verifyText 'objects / page'
 
-      // Actions
-      verifyXPath xpath:"/html/body/div/div[3]/div[1]/div/div/ul/li/a[@href='#']"
-      
     }
   }
 }

@@ -8,7 +8,7 @@ import woko.webtests.WebTestBase
  */
 class SearchPageTest extends WebTestBase {
 
-  void testAuthenticationWithHome() {
+  void testSearchPage() {
     webtest("test Search page") {
       login()
 
@@ -20,9 +20,6 @@ class SearchPageTest extends WebTestBase {
 
       verifyTitle 'Woko - Search results'
       verifyText '0 object(s) found'
-
-      // Actions
-      verifyXPath xpath:"/html/body/div/div[3]/div[1]/div/div/ul/li/a[@href='#']"
 
       // Now fill the search box and test the entire UI
       setInputField name:'facet.query', value:'moby'

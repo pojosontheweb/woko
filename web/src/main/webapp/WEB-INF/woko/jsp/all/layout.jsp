@@ -53,18 +53,6 @@
                     </div>
                 </div>
                 <div id="content-wrap">
-                    <div id="sidebar">
-                        <div id="left-sbar">
-                        <div class="widgetspace">
-                          <h1><fmt:message key="woko.layout.actions"/> </h1>
-                          <s:layout-component name="sidebarLinks"/>
-                          <div class="poweredBy">
-                              <%-- Intentionally not localized (we always use 'Powered by Woko' ) --%>
-                              Powered by <a href="#">Woko</a>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
                     <div id="content">
                         <s:messages/>
                         <s:errors/>

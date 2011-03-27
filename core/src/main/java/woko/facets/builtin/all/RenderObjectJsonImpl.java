@@ -74,10 +74,10 @@ public class RenderObjectJsonImpl extends BaseFacet implements RenderObjectJson 
     WokoFacetContext facetContext = getFacetContext();
     Woko woko = facetContext.getWoko();
     // try name-specific first
-    RenderPropertyValueJson rpvj = (RenderPropertyValueJson)woko.getFacet("renderPropertyValue_" + propertyName, request, owner);
+    RenderPropertyValueJson rpvj = (RenderPropertyValueJson)woko.getFacet("renderPropertyValueJson_" + propertyName, request, owner);
     if (rpvj==null) {
       // type-specific
-      rpvj = (RenderPropertyValueJson)woko.getFacet("renderPropertyValue", request, value);
+      rpvj = (RenderPropertyValueJson)woko.getFacet("renderPropertyValueJson", request, value);
     }
     if (rpvj==null) {
       // default to toString()

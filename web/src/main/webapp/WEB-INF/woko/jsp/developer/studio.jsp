@@ -12,14 +12,6 @@
 %>
 <fmt:message var="pageTitle" key="woko.devel.studio.pageTitle"/>
 <s:layout-render name="${layout.layoutPath}" layout="${layout}" pageTitle="${pageTitle}" bodyClass="claro">
-
-
-    <s:layout-component name="sidebarLinks">
-        <ul class="menu">
-            <li><a href="#"><fmt:message key="woko.actions.help"/> </a></li>
-        </ul>
-    </s:layout-component>
-
     <s:layout-component name="body">
 
         <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/dojo/1.5/dojo/resources/dojo.css">

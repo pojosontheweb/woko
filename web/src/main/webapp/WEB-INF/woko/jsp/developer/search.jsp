@@ -12,12 +12,6 @@
 
 <fmt:message var="pageTitle" key="woko.devel.search.pageTitle"/>
 <s:layout-render name="${layout.layoutPath}" layout="${layout}" pageTitle="${pageTitle}">
-    <s:layout-component name="sidebarLinks">
-        <ul class="menu">
-            <li><a href="#"><fmt:message key="woko.actions.help"/> </a></li>
-        </ul>
-
-    </s:layout-component>
     <s:layout-component name="body">
         <%
             Woko woko = Woko.getWoko(application);

@@ -20,8 +20,8 @@ public class RenderLinksImpl extends BaseFragmentFacet implements RenderLinks {
     return "/WEB-INF/woko/jsp/all/renderLinks.jsp";
   }
 
-  public Object getLinks() {
-    List<Map<String,String>> links = new ArrayList<Map<String, String>>();
+  public List<Link> getLinks() {
+    List<Link> links = new ArrayList<Link>();
     WokoFacetContext facetContext = getFacetContext();
     Woko woko = getFacetContext().getWoko();
     Object o = facetContext.getTargetObject();
@@ -34,19 +34,29 @@ public class RenderLinksImpl extends BaseFragmentFacet implements RenderLinks {
     if (editFacet!=null) {
       String className = store.getClassMapping(oc);
       String key = store.getKey(o);
-      Map<String,String> m = new HashMap<String,String>();
-      m.put("edit/" + className + "/" + key, "Edit");
-      links.add(m);
+      if (key!=null) {
+        links.add(new Link("edit/" + className + "/" + key, "Edit").setCssClass("edit"));
+      }
     }
 
     Object deleteFacet = woko.getFacet("delete", request, o, oc);
     if (deleteFacet!=null) {
       String className = store.getClassMapping(oc);
       String key = store.getKey(o);
-      Map<String,String> m = new HashMap<String,String>();
-      m.put("delete/" + className + "/" + key, "Delete");
-      links.add(m);
+      if (key!=null) {
+        links.add(new Link("delete/" + className + "/" + key, "Delete").setCssClass("delete"));
+      }
     }
+
+    Object jsonFacet = woko.getFacet("json", request, o, oc);
+    if (jsonFacet!=null) {
+      String className = store.getClassMapping(oc);
+      String key = store.getKey(o);
+      if (key!=null) {
+        links.add(new Link("json/" + className + "/" + key, "Json").setCssClass("json"));
+      }
+    }
+
     return links;
   }
 

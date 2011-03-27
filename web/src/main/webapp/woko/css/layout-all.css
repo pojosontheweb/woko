@@ -54,3 +54,40 @@ ul.messages {
     color: #b72222;
 }
 
+ul.wokoObjectLinks {
+  padding-left: 4px;
+  padding-right: 4px;
+  list-style: none;
+  float: right;
+  border-radius: 4px;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  background: white;
+  border: 1px solid #d3d3d3;
+}
+
+/*
+ul.wokoObjectLinks li {
+  display: inline;
+}
+*/
+
+.wokoObjectLinks a {
+  padding-left: 18px;
+}
+
+.wokoObjectLinks .edit {
+  background: url("edit.gif") no-repeat left;
+}
+
+.wokoObjectLinks .close {
+  background: url("close.gif") no-repeat left;
+}
+
+.wokoObjectLinks .delete {
+  background: url("delete.gif") no-repeat left;
+}
+
+.wokoObjectLinks .json {
+  background: url("json.gif") no-repeat left;
+}

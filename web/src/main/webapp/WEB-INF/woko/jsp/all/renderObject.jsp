@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:set var="o" value="${renderObject.facetContext.targetObject}"/>
 <div class="wokoObject">
+    <w:includeFacet targetObject="${o}" facetName="renderLinks"/>
     <w:includeFacet targetObject="${o}" facetName="renderTitle"/>
     <w:includeFacet targetObject="${o}" facetName="renderProperties"/>
 </div>

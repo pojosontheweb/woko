@@ -20,8 +20,8 @@ public class RenderLinksEditImpl extends BaseFragmentFacet implements RenderLink
     return "/WEB-INF/woko/jsp/all/renderLinksEdit.jsp";
   }
 
-  public Object getLinks() {
-    List<Map<String,String>> links = new ArrayList<Map<String, String>>();
+  public List<Link> getLinks() {
+    List<Link> links = new ArrayList<Link>();
     WokoFacetContext  facetContext = getFacetContext();
     Woko woko = getFacetContext().getWoko();
     Object o = facetContext.getTargetObject();
@@ -34,18 +34,18 @@ public class RenderLinksEditImpl extends BaseFragmentFacet implements RenderLink
     if (viewFacet!=null) {
       String className = store.getClassMapping(oc);
       String key = store.getKey(o);
-      Map<String,String> m = new HashMap<String,String>();
-      m.put("view/" + className + "/" + key, "Close editing");
-      links.add(m);
+      if (key!=null) {
+        links.add(new Link("view/" + className + "/" + key, "Close editing").setCssClass("close"));
+      }
     }
 
     Object deleteFacet = woko.getFacet("delete", request, o, oc);
     if (deleteFacet!=null) {
       String className = store.getClassMapping(oc);
       String key = store.getKey(o);
-      Map<String,String> m = new HashMap<String,String>();
-      m.put("delete/" + className + "/" + key, "Delete");
-      links.add(m);
+      if (key!=null) {
+        links.add(new Link("delete/" + className + "/" + key, "Delete").setCssClass("delete"));
+      }
     }
     return links;
   }
