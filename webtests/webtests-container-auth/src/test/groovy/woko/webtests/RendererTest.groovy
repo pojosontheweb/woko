@@ -20,6 +20,16 @@ class RendererTest extends WebTestBase {
     }
   }
 
+  void testFlatLayout() {
+    webtest("test flat layout") {
+      login()
+      goToPage '/save/MyEntity?object.id=1&object.prop1=abc&object.prop2=123'
+
+      goToPage '/view/MyEntity/1'
+      verifyXPath xpath:'/html/body/div/div[3]/div/div/div/div[3]/span/span', text:'.*abc.*', regex:true
+    }
+  }
+
 
 
 }
