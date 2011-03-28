@@ -245,6 +245,4 @@ public class HibernateStore implements ObjectStore {
     sessionFactory.close();
   }
 
-
-
 }

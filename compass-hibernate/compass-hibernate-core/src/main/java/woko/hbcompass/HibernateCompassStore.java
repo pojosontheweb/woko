@@ -46,4 +46,9 @@ public class HibernateCompassStore extends HibernateStore {
     }
   }
 
+  @Override
+  public void close() {
+    getCompass().close();
+    super.close();
+  }
 }

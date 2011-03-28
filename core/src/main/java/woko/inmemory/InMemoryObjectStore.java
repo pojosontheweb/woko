@@ -13,6 +13,10 @@ public class InMemoryObjectStore implements ObjectStore {
 
   Map<String,Map<String,Object>> objects = new HashMap<String,Map<String,Object>>();
 
+  @Override
+  public void close() {
+  }
+
   public void addObject(Object obj) {
     Util.assertArg("obj", obj);
     String className = getClassMapping(obj.getClass());

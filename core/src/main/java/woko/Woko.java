@@ -124,7 +124,9 @@ public class Woko {
     logger.info("Woko has been closed.");
   }
 
-  protected void doClose() {}
+  protected void doClose() {
+    this.getObjectStore().close();
+  }
 
   public Object getFacet(String name, HttpServletRequest request, Object targetObject) {
     return getFacet(name, request, targetObject, null);

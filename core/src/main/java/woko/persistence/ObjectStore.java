@@ -22,4 +22,6 @@ public interface ObjectStore {
 
   ResultIterator search(Object query, Integer start, Integer limit);
 
+  void close();
+
 }

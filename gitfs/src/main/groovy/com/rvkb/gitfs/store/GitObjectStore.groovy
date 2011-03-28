@@ -46,4 +46,8 @@ class GitObjectStore extends FacetedObjectStore {
     return gfs
   }
 
+  void close() {
+  }
+
+
 }
