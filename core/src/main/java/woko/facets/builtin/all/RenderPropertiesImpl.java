@@ -16,8 +16,20 @@ public class RenderPropertiesImpl extends BaseFragmentFacet implements RenderPro
 
   private List<String> propertyNames;
   private Map<String,Object> propertyValues;
+  private boolean useFlatLayout = false;
+
+  public boolean isUseFlatLayout() {
+    return useFlatLayout;
+  }
+
+  public void setUseFlatLayout(boolean useFlatLayout) {
+    this.useFlatLayout = useFlatLayout;
+  }
 
   public String getPath() {
+    if (useFlatLayout) {
+      return "/WEB-INF/woko/jsp/all/renderPropertiesFlatLayout.jsp";
+    }
     return "/WEB-INF/woko/jsp/all/renderProperties.jsp";
   }
 
