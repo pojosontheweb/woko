@@ -9,7 +9,6 @@ import woko.facets.FacetNotFoundException;
 import woko.facets.WokoFacetContextFactory;
 import woko.facets.WokoProfileRepository;
 import woko.persistence.ObjectStore;
-import woko.users.RemoteUserStrategy;
 import woko.users.UserManager;
 import woko.users.UsernameResolutionStrategy;
 import woko.util.WLogger;
@@ -23,15 +22,15 @@ import java.util.List;
 
 public class Woko {
 
+  public static final List<String> DEFAULT_FACET_PACKAGES =
+      Collections.unmodifiableList(Arrays.asList("woko.facets.builtin", "facets"));
+
   public static final String ROLE_ALL = "all";
   public static final String ROLE_GUEST = "guest";
 
-  protected final WLogger logger = WLogger.getLogger(getClass());
+  protected static final WLogger logger = WLogger.getLogger(Woko.class);
 
   public static final String CTX_KEY = "woko";
-
-  private static final List<String> DEFAULT_FACET_PACKAGES =
-      Arrays.asList("woko.facets.builtin", "facets");
 
   private final UserManager userManager;
   private final ObjectStore objectStore;
@@ -56,16 +55,6 @@ public class Woko {
     this.facetDescriptorManager = facetDescriptorManager;
     this.usernameResolutionStrategy = usernameResolutionStrategy;
     init();
-  }
-
-  public static IFacetDescriptorManager createDefaultFacetDescriptorManager() {
-    AnnotatedFacetDescriptorManager a = new AnnotatedFacetDescriptorManager(DEFAULT_FACET_PACKAGES);
-    a.initialize();
-    return a;
-  }
-
-  public static UsernameResolutionStrategy createDefaultUsernameResolutionStrategy() {
-    return new RemoteUserStrategy();
   }
 
   private final Woko init() {
@@ -199,5 +188,13 @@ public class Woko {
   public UsernameResolutionStrategy getUsernameResolutionStrategy() {
     return usernameResolutionStrategy;
   }
+
+  public static IFacetDescriptorManager createFacetDescriptorManager(List<String> packageNames) {
+    logger.info("Creating Annotated Facets, scanning packages : " + packageNames);
+    AnnotatedFacetDescriptorManager a = new AnnotatedFacetDescriptorManager(packageNames);
+    a.initialize();
+    return a;
+  }
+
 
 }

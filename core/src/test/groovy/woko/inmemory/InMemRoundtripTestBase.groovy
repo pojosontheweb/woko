@@ -8,13 +8,24 @@ import woko.actions.WokoActionBean
 import net.sourceforge.stripes.mock.MockRoundtrip
 import javax.servlet.ServletException
 import woko.facets.FacetNotFoundException
+import woko.persistence.ObjectStore
+import woko.users.UserManager
+import woko.WokoInitListener
 
 abstract class InMemRoundtripTestBase extends GroovyTestCase {
 
   Woko createWoko(String username) {
-    Woko inMem = InMemoryWokoInitListener.doCreateWoko().setUsernameResolutionStrategy(new DummyURS(username: username))
-    InMemoryObjectStore inMemObjectStore = inMem.objectStore
-    inMemObjectStore.addObject(new Book([_id: '1', name: 'Moby Dick', nbPages: 123]))
+    InMemoryObjectStore store = new InMemoryObjectStore()
+    store.addObject('1', new Book([_id: '1', name: 'Moby Dick', nbPages: 123]))
+    UserManager userManager = new InMemoryUserManager()
+    userManager.addUser("wdevel", "wdevel", ["developer"])
+    Woko inMem = new Woko(
+        store,
+        userManager,
+        [Woko.ROLE_GUEST],
+        Woko.createFacetDescriptorManager(Woko.DEFAULT_FACET_PACKAGES),
+        new DummyURS(username:username));
+
     return inMem
   }
 

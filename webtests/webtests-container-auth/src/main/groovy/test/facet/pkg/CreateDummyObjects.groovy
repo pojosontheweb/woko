@@ -1,20 +1,19 @@
-package facets
+package test.facet.pkg
 
 import net.sourceforge.jfacets.annotations.FacetKey
-import net.sourceforge.stripes.action.ActionBeanContext
-import net.sourceforge.stripes.action.Resolution
-import net.sourceforge.stripes.action.StreamingResolution
-import test.MyBook
 import woko.facets.BaseResolutionFacet
+import net.sourceforge.stripes.action.Resolution
+import net.sourceforge.stripes.action.ActionBeanContext
+import test.MyBook
+import net.sourceforge.stripes.action.StreamingResolution
 
-@FacetKey(name="removeDummyObjects", profileId="all")
-class RemoveDummyObjects extends BaseResolutionFacet {
+@FacetKey(name="createDummyObjects", profileId="all")
+class CreateDummyObjects extends BaseResolutionFacet {
 
     Resolution getResolution(ActionBeanContext abc) {
         def store = facetContext.woko.objectStore
         for (int i=100 ; i<500 ; i++) {
-            def b = store.load('MyBook', "$i")
-            store.delete(b)
+            store.save(new MyBook([name:"Moby test$i", _id:i]))
         }
         return new StreamingResolution("text/plain", "all good")
     }
