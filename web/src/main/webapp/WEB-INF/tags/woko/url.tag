@@ -4,7 +4,7 @@
 <%@ attribute name="object" required="true" type="java.lang.Object" %>
 <%@ attribute name="facetName" required="false" type="java.lang.String" %>
 <%@ attribute name="var" required="true" type="java.lang.String" rtexprvalue="false" %>
-<%@ variable name-from-attribute="var" alias="daKey" scope="AT_END" %>
+<%@ variable name-from-attribute="var" alias="daLink" scope="AT_END" %>
 <%
     String url = LinkUtil.getUrl(Woko.getWoko(application), object, facetName);
     String path = request.getContextPath();
