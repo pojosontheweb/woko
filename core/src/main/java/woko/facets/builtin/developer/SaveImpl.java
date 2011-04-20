@@ -15,7 +15,8 @@ public class SaveImpl extends BaseResolutionFacet implements Save {
 
   private final static WLogger logger = WLogger.getLogger(SaveImpl.class);
 
-  public Resolution getResolution(ActionBeanContext abc) {
+  public Resolution getResolution() {
+    ActionBeanContext abc = getContext();
     // try to find a validation facet for the object
     WokoFacetContext facetContext = getFacetContext();
     Woko woko = facetContext.getWoko();

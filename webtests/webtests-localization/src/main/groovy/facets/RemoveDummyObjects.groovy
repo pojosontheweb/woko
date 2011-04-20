@@ -9,7 +9,7 @@ import woko.facets.BaseResolutionFacet
 @FacetKey(name="removeDummyObjects", profileId="all")
 class RemoveDummyObjects extends BaseResolutionFacet {
 
-    Resolution getResolution(ActionBeanContext abc) {
+    Resolution getResolution() {
         def store = facetContext.woko.objectStore
         for (int i=10 ; i<60 ; i++) {
             def b = store.load('MyBook', "$i")

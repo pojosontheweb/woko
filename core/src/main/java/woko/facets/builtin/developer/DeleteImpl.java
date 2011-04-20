@@ -33,7 +33,8 @@ public class DeleteImpl extends BaseResolutionFacet implements Delete {
     setAcceptNullTargetObject(false);
   }
 
-  public Resolution getResolution(ActionBeanContext abc) {
+  public Resolution getResolution() {
+    ActionBeanContext abc = getContext();
     if (cancel!=null) {
       WokoFacetContext facetContext = getFacetContext();
       abc.getMessages().add(new SimpleMessage("Cancelled deletion"));

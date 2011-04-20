@@ -27,7 +27,8 @@ public class Groovy extends BaseResolutionFacet {
     this.code = code;
   }
 
-  public Resolution getResolution(ActionBeanContext abc) {
+  public Resolution getResolution() {
+    ActionBeanContext abc = getContext();
     JSONObject result = new JSONObject();
     StringWriter sw = new StringWriter();
     PrintWriter out = new PrintWriter(sw);

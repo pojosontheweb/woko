@@ -1,8 +1,9 @@
 package woko.inmemory
 
 import net.sourceforge.stripes.mock.MockRoundtrip
-import woko.actions.WokoActionBean
 import woko.actions.TestActionBean
+import net.sourceforge.stripes.action.ActionBean
+import facets.TestWithNestedValidation
 
 class NestedValidationRoundtripTests extends InMemRoundtripTestBase {
 
@@ -18,13 +19,13 @@ class NestedValidationRoundtripTests extends InMemRoundtripTestBase {
   }
 
   void testFacetValidation() {
-    WokoActionBean ab = trip('wdevel', 'testMeToo', null, null)
+    def ab = trip(TestWithNestedValidation.class, 'wdevel', 'testMeToo', null, null)
     // assert prop has not been bound
-    assert ab.facet.myProp == null
+    assert ab.myProp == null
     // assert validation error has been added
     def errors = ab.context.validationErrors
     assertEquals('unexpected number of errors', 1, errors.size())
-    assertEquals('Unexpected key for error', 'facet.myProp', errors.keySet().iterator().next())
+    assertEquals('Unexpected key for error', 'myProp', errors.keySet().iterator().next())
   }
 
 }

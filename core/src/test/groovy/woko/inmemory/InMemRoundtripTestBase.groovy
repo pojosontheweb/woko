@@ -4,17 +4,19 @@ import woko.Woko
 import net.sourceforge.stripes.mock.MockServletContext
 import net.sourceforge.stripes.controller.StripesFilter
 import net.sourceforge.stripes.controller.DispatcherServlet
-import woko.actions.WokoActionBean
 import net.sourceforge.stripes.mock.MockRoundtrip
 import javax.servlet.ServletException
 import woko.facets.FacetNotFoundException
+import net.sourceforge.stripes.action.ActionBean
+import woko.facets.ResolutionFacet
+import net.sourceforge.stripes.exception.StripesServletException
 
 abstract class InMemRoundtripTestBase extends GroovyTestCase {
 
   Woko createWoko(String username) {
     Woko inMem = InMemoryWokoInitListener.doCreateWoko().setUsernameResolutionStrategy(new DummyURS(username: username))
     InMemoryObjectStore inMemObjectStore = inMem.objectStore
-    inMemObjectStore.addObject(new Book([_id: '1', name: 'Moby Dick', nbPages: 123]))
+    inMemObjectStore.addObject("1", new Book([_id: '1', name: 'Moby Dick', nbPages: 123]))
     return inMem
   }
 
@@ -30,11 +32,11 @@ abstract class InMemRoundtripTestBase extends GroovyTestCase {
     return mockServletContext;
   }
 
-  WokoActionBean trip(String username, String facetName, String className, String key) {
-    return trip(username, facetName, className, key, null)
+  def trip(Class<? extends ActionBean> expectedClass, String username, String facetName, String className, String key) {
+    return trip(expectedClass, username, facetName, className, key, null)
   }
 
-  WokoActionBean trip(String username, String facetName, String className, String key, Map params) {
+  def trip(Class<? extends ActionBean> expectedClass, String username, String facetName, String className, String key, Map params) {
     def c = createMockServletContext(username)
     StringBuilder url = new StringBuilder('/').append(facetName)
     if (className) {
@@ -52,7 +54,7 @@ abstract class InMemRoundtripTestBase extends GroovyTestCase {
       }
     }
     t.execute()
-    WokoActionBean ab = t.getActionBean(WokoActionBean.class)
+    ActionBean ab = t.getActionBean(expectedClass)
     assert ab
     return ab
   }
@@ -60,11 +62,9 @@ abstract class InMemRoundtripTestBase extends GroovyTestCase {
   void assertFacetNotFound(String username, String facetName, String className, String key) {
     boolean hasThrown = false
     try {
-      trip(username, facetName, className, key)
+      trip(ResolutionFacet.class, username, facetName, className, key)
     } catch (Exception e) {
-      if (e instanceof ServletException) {
-        hasThrown = e.cause instanceof FacetNotFoundException
-      }
+      hasThrown = e instanceof StripesServletException
     }
     assert hasThrown
   }

@@ -37,14 +37,15 @@ public abstract class BaseResultFacet extends BaseForwardResolutionFacet impleme
     return resultIterator;
   }
 
-  public Resolution getResolution(ActionBeanContext abc) {
+  public Resolution getResolution() {
+    ActionBeanContext abc = getContext();
     className = abc.getRequest().getParameter("className");
     page = page==null ? 1 : page;
     resultsPerPage = resultsPerPage==null ? 10 : resultsPerPage;
     int start = (page-1) * resultsPerPage;
     int limit = resultsPerPage;
     resultIterator = createResultIterator(abc, start, limit);
-    return super.getResolution(abc);
+    return super.getResolution();
   }
 
   protected abstract ResultIterator createResultIterator(ActionBeanContext abc, int start, int limit);

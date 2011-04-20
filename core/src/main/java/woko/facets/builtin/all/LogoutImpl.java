@@ -11,7 +11,8 @@ import woko.facets.builtin.Logout;
 @FacetKey(name="logout", profileId="all")
 public class LogoutImpl extends BaseResolutionFacet implements Logout {
 
-  public Resolution getResolution(ActionBeanContext abc) {
+  public Resolution getResolution() {
+    ActionBeanContext abc = getContext();
     abc.getRequest().getSession().invalidate();
     abc.getMessages().add(new SimpleMessage("You have been logged out."));
     return new RedirectResolution("/home");

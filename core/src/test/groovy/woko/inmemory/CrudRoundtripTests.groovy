@@ -1,6 +1,5 @@
 package woko.inmemory
 
-import woko.actions.WokoActionBean
 import woko.facets.builtin.developer.ViewImpl
 import woko.facets.builtin.developer.SaveImpl
 import woko.facets.builtin.developer.DeleteImpl
@@ -21,27 +20,23 @@ class CrudRoundtripTests extends InMemRoundtripTestBase {
   }
 
   void testDeveloperViewBook() {
-    WokoActionBean ab = trip('wdevel', 'view','woko.inmemory.Book', '1')
-    assert ab.facet.getClass() == ViewImpl.class
+    trip(ViewImpl.class, 'wdevel', 'view','woko.inmemory.Book', '1')
   }
 
   void testDeveloperUpdateBook() {
-    WokoActionBean ab = trip('wdevel', 'save','woko.inmemory.Book', '1', ['object.name':'New name'])
-    assert ab.facet.getClass() == SaveImpl.class
-    assert ab.object.name=='New name'
+    def ab = trip(SaveImpl.class, 'wdevel', 'save','woko.inmemory.Book', '1', ['facetContext.targetObject.name':'New name'])
+    assert ab.facetContext.targetObject.name=='New name'
   }
 
   void testDeveloperDeleteBook() {
-    WokoActionBean ab = trip('wdevel', 'delete','woko.inmemory.Book', '1', ['facet.confirm':'true'])
-    assert ab.facet.getClass() == DeleteImpl.class
-    assert ab.facet.facetContext.woko.objectStore.load('woko.inmemory.Book', '1') == null
+    def ab = trip(DeleteImpl.class, 'wdevel', 'delete','woko.inmemory.Book', '1', ['confirm':'true'])
+    assert ab.facetContext.woko.objectStore.load('woko.inmemory.Book', '1') == null
   }
 
   void testFacetContextHasRequest() {
-    WokoActionBean ab = trip('wdevel', 'view','woko.inmemory.Book', '1')
-    def f = ab.facet
-    assert f
-    assert f.facetContext.request instanceof HttpServletRequest
+    def ab = trip(ViewImpl.class, 'wdevel', 'view','woko.inmemory.Book', '1')
+    assert ab
+    assert ab.facetContext.request instanceof HttpServletRequest
   }
 
 

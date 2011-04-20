@@ -10,7 +10,7 @@ import net.sourceforge.stripes.action.StreamingResolution
 @FacetKey(name="createDummyObjects", profileId="all")
 class CreateDummyObjects extends BaseResolutionFacet {
 
-    Resolution getResolution(ActionBeanContext abc) {
+    Resolution getResolution() {
         def store = facetContext.woko.objectStore
         for (int i=100 ; i<500 ; i++) {
             store.save(new MyBook([name:"Moby test$i", _id:i]))
