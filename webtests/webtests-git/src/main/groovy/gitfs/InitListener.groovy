@@ -7,19 +7,24 @@ import com.rvkb.gitfs.store.GitObjectStore
 import com.rvkb.gitfs.GitFS
 import com.rvkb.gitfs.GitFSBuilder
 import woko.auth.builtin.SessionUsernameResolutionStrategy
+import woko.persistence.ObjectStore
+import woko.users.UserManager
+import woko.users.UsernameResolutionStrategy
 
 class InitListener extends WokoInitListener {
 
-  @Override
-  protected Woko createWoko() {
-    InMemoryUserManager um = new InMemoryUserManager();
-    um.addUser("wdevel", "wdevel", Arrays.asList("developer"));
-    return new Woko(
-        new GitObjectStore(new File("/tmp/myrepo/.git"), ['gitfs']),
-        um,
-        Arrays.asList(Woko.ROLE_GUEST),
-        Woko.createDefaultFacetDescriptorManager(),
-        new SessionUsernameResolutionStrategy());
+  @Override protected ObjectStore createObjectStore() {
+    new GitObjectStore(new File("/tmp/myrepo/.git"), ['gitfs'])
+  }
+
+  @Override protected UserManager createUserManager() {
+    InMemoryUserManager um = new InMemoryUserManager()
+    um.addUser("wdevel", "wdevel", ["developer"])
+    return um
+  }
+
+  @Override protected UsernameResolutionStrategy createUsernameResolutionStrategy() {
+    new SessionUsernameResolutionStrategy()
   }
 
 }

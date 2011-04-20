@@ -19,6 +19,7 @@ public class InMemoryObjectStore implements ObjectStore {
 
   public void addObject(String key, Object obj) {
     Util.assertArg("obj", obj);
+    Util.assertArg("key", key);
     String className = getClassMapping(obj.getClass());
     Map<String,Object> objectsForClass = objects.get(className);
     if (objectsForClass==null) {

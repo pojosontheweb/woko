@@ -1,4 +1,4 @@
-package facets
+package test.facet.pkg
 
 import javax.servlet.http.HttpServletRequest
 import net.sourceforge.jfacets.annotations.FacetKey

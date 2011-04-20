@@ -17,10 +17,7 @@ import woko.util.WLogger;
 import javax.persistence.MappedSuperclass;
 import java.io.Serializable;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class HibernateStore implements ObjectStore {
 
@@ -83,6 +80,12 @@ public class HibernateStore implements ObjectStore {
         mappedClasses.add(clazz);
         log.info("  * " + clazz + " added to config");
     }
+    Collections.sort(mappedClasses, new Comparator<Class<?>>() {
+      @Override
+      public int compare(Class<?> aClass, Class<?> aClass1) {
+        return aClass.getSimpleName().compareTo(aClass1.getSimpleName());
+      }
+    });
     return cfg;
   }
 

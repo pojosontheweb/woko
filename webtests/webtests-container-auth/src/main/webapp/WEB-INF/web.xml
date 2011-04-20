@@ -71,6 +71,12 @@
         <param-value>test</param-value>
     </context-param>
 
+  <!-- tests for facet packages init param -->
+    <context-param>
+        <param-name>Woko.Facet.Packages</param-name>
+        <param-value>test.facet.pkg</param-value>
+    </context-param>
+
 <!-- security roles for our tests -->
 
     <security-role>

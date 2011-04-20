@@ -4,6 +4,7 @@ import net.sourceforge.jfacets.annotations.FacetKey;
 import woko.facets.BaseForwardResolutionFacet;
 import woko.persistence.ObjectStore;
 
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +20,9 @@ public class Create extends BaseForwardResolutionFacet {
     ObjectStore os = getFacetContext().getWoko().getObjectStore();
     List<Class<?>> mappedClasses = os.getMappedClasses();
     for (Class<?> c : mappedClasses) {
-      res.add(os.getClassMapping(c));
+      if (!Modifier.isAbstract(c.getModifiers())) {
+        res.add(os.getClassMapping(c));
+      }
     }
     return res;
   }

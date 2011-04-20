@@ -5,11 +5,23 @@ import woko.Woko
 import net.sourceforge.stripes.mock.MockHttpServletRequest
 import woko.facets.builtin.developer.ViewImpl
 import woko.facets.builtin.all.LogoutImpl
+import woko.users.UserManager
 
 class InMemoryWokoFacetsTest extends TestCase {
 
   Woko createWoko(String username) {
-    return InMemoryWokoInitListener.doCreateWoko().setUsernameResolutionStrategy(new DummyURS(username:username))
+    InMemoryObjectStore store = new InMemoryObjectStore()
+    store.addObject('1', new Book([_id: '1', name: 'Moby Dick', nbPages: 123]))
+    UserManager userManager = new InMemoryUserManager()
+    userManager.addUser("wdevel", "wdevel", ["developer"])
+    Woko inMem = new Woko(
+        store,
+        userManager,
+        [Woko.ROLE_GUEST],
+        Woko.createFacetDescriptorManager(Woko.DEFAULT_FACET_PACKAGES),
+        new DummyURS(username:username));
+
+    return inMem
   }
 
   def getFacet(String facetName, String username, Object targetObject) {
