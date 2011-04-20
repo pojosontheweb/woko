@@ -7,6 +7,7 @@ import net.sourceforge.stripes.validation.SimpleError;
 import net.sourceforge.stripes.validation.ValidationErrors;
 import org.hibernate.validator.ClassValidator;
 import org.hibernate.validator.InvalidValue;
+import woko.actions.WokoActionBean;
 import woko.facets.BaseFacet;
 import woko.facets.WokoFacetContext;
 
@@ -24,19 +25,16 @@ public class HibernateValidateFacet extends BaseFacet implements woko.facets.bui
     ClassValidator validator = new ClassValidator(targetObject.getClass());
     InvalidValue[] invalidValues = validator.getInvalidValues(targetObject);
     ActionBean ab = (ActionBean)abc.getRequest().getAttribute("actionBean");
-    Class<? extends ActionBean> abClass = ab!=null ? ab.getClass() : null;
-    if (abClass!=null) {
-      for (InvalidValue v : invalidValues) {
-        hasErrors = true;
-        String fieldName = OBJECT_PREFIX + v.getPropertyPath();
-        SimpleError stripesError = new SimpleError(v.getMessage());
-        stripesError.setFieldName(fieldName);
-        stripesError.setBeanclass(abClass);
-        errs.add(fieldName, stripesError);
-      }
-      return !hasErrors;
+    Class<? extends ActionBean> abClass = ab!=null ? ab.getClass() : WokoActionBean.class;
+    for (InvalidValue v : invalidValues) {
+      hasErrors = true;
+      String fieldName = OBJECT_PREFIX + v.getPropertyPath();
+      SimpleError stripesError = new SimpleError(v.getMessage());
+      stripesError.setFieldName(fieldName);
+      stripesError.setBeanclass(abClass);
+      errs.add(fieldName, stripesError);
     }
-    return true;
+    return !hasErrors;
   }
 
 }

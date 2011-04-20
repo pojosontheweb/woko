@@ -23,8 +23,8 @@ import javax.servlet.http.HttpServletRequest;
 })
 public class LoginRequiredFacet extends BaseResolutionFacet {
 
-  public Resolution getResolution() {
-    HttpServletRequest request = getContext().getRequest();
+  public Resolution getResolution(ActionBeanContext abc) {
+    HttpServletRequest request = abc.getRequest();
     String requestedPage = request.getRequestURI();
     // strip context path if needed
     String contextPath = request.getContextPath();

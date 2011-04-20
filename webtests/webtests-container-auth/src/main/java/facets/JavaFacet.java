@@ -9,7 +9,7 @@ import woko.facets.BaseResolutionFacet;
 @FacetKey(name="javaFacet", profileId = "all")
 public class JavaFacet extends BaseResolutionFacet {
 
-  public Resolution getResolution() {
+  public Resolution getResolution(ActionBeanContext abc) {
     return new StreamingResolution("text/plain", "ok");
   }
 }

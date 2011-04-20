@@ -11,8 +11,8 @@ import woko.facets.builtin.Login;
 @FacetKey(name="login", profileId="all")
 public class LoginImpl extends BaseResolutionFacet implements Login {
 
-  public Resolution getResolution() {
-    getContext().getMessages().add(new SimpleMessage("You have been logged in"));
+  public Resolution getResolution(ActionBeanContext abc) {
+    abc.getMessages().add(new SimpleMessage("You have been logged in"));
     return new RedirectResolution("/home");
   }
 

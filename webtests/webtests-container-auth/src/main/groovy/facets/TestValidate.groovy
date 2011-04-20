@@ -14,8 +14,8 @@ class TestValidate extends BaseResolutionFacet {
   @Validate(required=true)
   String prop
 
-  Resolution getResolution() {
-    context.messages.add(new SimpleMessage("you have entered $prop"))
+  Resolution getResolution(ActionBeanContext abc) {
+    abc.messages.add(new SimpleMessage("you have entered $prop"))
     return new ForwardResolution("/facet-validation-test.jsp")
   }
 

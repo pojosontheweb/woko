@@ -10,7 +10,7 @@ import woko.hbcompass.tagcloud.CompassCloud;
 @FacetKey(name = "termCloud", profileId = "developer")
 public class ViewTermCloud extends BaseResolutionFacet {
 
-    public Resolution getResolution() {
+    public Resolution getResolution(ActionBeanContext abc) {
         return new ForwardResolution("/WEB-INF/woko/jsp/hbcompass/term-cloud.jsp");
     }
 

@@ -4,19 +4,28 @@ import woko.Woko
 import net.sourceforge.stripes.mock.MockServletContext
 import net.sourceforge.stripes.controller.StripesFilter
 import net.sourceforge.stripes.controller.DispatcherServlet
+import woko.actions.WokoActionBean
 import net.sourceforge.stripes.mock.MockRoundtrip
 import javax.servlet.ServletException
 import woko.facets.FacetNotFoundException
-import net.sourceforge.stripes.action.ActionBean
-import woko.facets.ResolutionFacet
-import net.sourceforge.stripes.exception.StripesServletException
+import woko.persistence.ObjectStore
+import woko.users.UserManager
+import woko.WokoInitListener
 
 abstract class InMemRoundtripTestBase extends GroovyTestCase {
 
   Woko createWoko(String username) {
-    Woko inMem = InMemoryWokoInitListener.doCreateWoko().setUsernameResolutionStrategy(new DummyURS(username: username))
-    InMemoryObjectStore inMemObjectStore = inMem.objectStore
-    inMemObjectStore.addObject("1", new Book([_id: '1', name: 'Moby Dick', nbPages: 123]))
+    InMemoryObjectStore store = new InMemoryObjectStore()
+    store.addObject('1', new Book([_id: '1', name: 'Moby Dick', nbPages: 123]))
+    UserManager userManager = new InMemoryUserManager()
+    userManager.addUser("wdevel", "wdevel", ["developer"])
+    Woko inMem = new Woko(
+        store,
+        userManager,
+        [Woko.ROLE_GUEST],
+        Woko.createFacetDescriptorManager(Woko.DEFAULT_FACET_PACKAGES),
+        new DummyURS(username:username));
+
     return inMem
   }
 
@@ -32,11 +41,11 @@ abstract class InMemRoundtripTestBase extends GroovyTestCase {
     return mockServletContext;
   }
 
-  def trip(Class<? extends ActionBean> expectedClass, String username, String facetName, String className, String key) {
-    return trip(expectedClass, username, facetName, className, key, null)
+  WokoActionBean trip(String username, String facetName, String className, String key) {
+    return trip(username, facetName, className, key, null)
   }
 
-  def trip(Class<? extends ActionBean> expectedClass, String username, String facetName, String className, String key, Map params) {
+  WokoActionBean trip(String username, String facetName, String className, String key, Map params) {
     def c = createMockServletContext(username)
     StringBuilder url = new StringBuilder('/').append(facetName)
     if (className) {
@@ -54,7 +63,7 @@ abstract class InMemRoundtripTestBase extends GroovyTestCase {
       }
     }
     t.execute()
-    ActionBean ab = t.getActionBean(expectedClass)
+    WokoActionBean ab = t.getActionBean(WokoActionBean.class)
     assert ab
     return ab
   }
@@ -62,9 +71,11 @@ abstract class InMemRoundtripTestBase extends GroovyTestCase {
   void assertFacetNotFound(String username, String facetName, String className, String key) {
     boolean hasThrown = false
     try {
-      trip(ResolutionFacet.class, username, facetName, className, key)
+      trip(username, facetName, className, key)
     } catch (Exception e) {
-      hasThrown = e instanceof StripesServletException
+      if (e instanceof ServletException) {
+        hasThrown = e.cause instanceof FacetNotFoundException
+      }
     }
     assert hasThrown
   }
