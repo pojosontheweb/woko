@@ -4,6 +4,9 @@ import net.sourceforge.jfacets.annotations.FacetKey;
 import woko.Woko;
 import woko.facets.BaseFragmentFacet;
 import woko.facets.WokoFacetContext;
+import woko.facets.builtin.Delete;
+import woko.facets.builtin.Edit;
+import woko.facets.builtin.Json;
 import woko.facets.builtin.RenderLinks;
 import woko.persistence.ObjectStore;
 
@@ -29,9 +32,9 @@ public class RenderLinksImpl extends BaseFragmentFacet implements RenderLinks {
     HttpServletRequest request = getRequest();
     ObjectStore store = woko.getObjectStore();
 
-    // display edit link if object can be edited
+    // display edit link if object can be edited (use instanceof because could be a login required facet)
     Object editFacet = woko.getFacet("edit", request, o, oc);
-    if (editFacet!=null) {
+    if (editFacet instanceof Edit) {
       String className = store.getClassMapping(oc);
       String key = store.getKey(o);
       if (key!=null) {
@@ -40,7 +43,7 @@ public class RenderLinksImpl extends BaseFragmentFacet implements RenderLinks {
     }
 
     Object deleteFacet = woko.getFacet("delete", request, o, oc);
-    if (deleteFacet!=null) {
+    if (deleteFacet instanceof Delete) {
       String className = store.getClassMapping(oc);
       String key = store.getKey(o);
       if (key!=null) {
@@ -49,7 +52,7 @@ public class RenderLinksImpl extends BaseFragmentFacet implements RenderLinks {
     }
 
     Object jsonFacet = woko.getFacet("json", request, o, oc);
-    if (jsonFacet!=null) {
+    if (jsonFacet instanceof Json) {
       String className = store.getClassMapping(oc);
       String key = store.getKey(o);
       if (key!=null) {
