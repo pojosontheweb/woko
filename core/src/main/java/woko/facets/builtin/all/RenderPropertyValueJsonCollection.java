@@ -24,7 +24,7 @@ public class RenderPropertyValueJsonCollection extends BaseFacet implements Rend
         arr.put(new JSONObject());
       }
       RenderPropertyValueJson rpvj =
-          (RenderPropertyValueJson)getFacetContext().getWoko().getFacet("renderPropertyValue", request, item);
+          (RenderPropertyValueJson)getFacetContext().getWoko().getFacet("renderPropertyValueJson", request, item);
       if (rpvj==null) {
         logger.debug("... no renderPropertyValueJson facet found for collection item, adding empty JSON Object");
         arr.put(new JSONObject());
