@@ -27,7 +27,7 @@ public class AnnotatedAuthenticationInterceptor extends AuthenticationIntercepto
                 Method handler = executionContext.getHandler();
                 if (handler!=null && handler.isAnnotationPresent(RequiresAuthentication.class)) {
                     log.debug("handler ", handler.getName(), " is annotated, authentication required");
-                    return handler.isAnnotationPresent(RequiresAuthentication.class);
+                    return true;
                 }
             }
         }
