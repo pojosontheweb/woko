@@ -1,11 +1,12 @@
 package woko.users;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 public interface UserManager {
 
   List<String> getRoles(String username);
 
-  boolean checkPassword(String username, String password);
+  boolean authenticate(String username, HttpServletRequest request);
 
 }

@@ -19,9 +19,6 @@ public class WokoLogin extends BaseActionBean {
   @Validate(required = true)
   private String username;
 
-  @Validate(required = true)
-  private String password;
-
   private String targetUrl = "/home";
 
   public String getUsername() {
@@ -30,14 +27,6 @@ public class WokoLogin extends BaseActionBean {
 
   public void setUsername(String username) {
     this.username = username;
-  }
-
-  public String getPassword() {
-    return password;
-  }
-
-  public void setPassword(String password) {
-    this.password = password;
   }
 
   public String getTargetUrl() {
@@ -49,7 +38,7 @@ public class WokoLogin extends BaseActionBean {
   }
 
   protected String authenticate() {
-    if (getContext().getWoko().getUserManager().checkPassword(username, password)) {
+    if (getContext().getWoko().getUserManager().authenticate(username, getContext().getRequest())) {
       return username;
     }
     return null;
