@@ -41,6 +41,25 @@ class CrudTest extends WebTestBase {
     }
   }
 
+
+  void test404() {
+    webtest('404') {
+      login()
+      not {
+        goToPage '/idontexist/MyBook/1'
+      }
+      not {
+        goToPage '/view/MyBookZZZ/1'
+      }
+      not {
+        goToPage '/view/MyBook/999999999999'
+      }
+      not {
+        goToPage '/view/MyBookZZZ/99999999'
+      }
+    }
+  }
+
   void testValidationOnSave() {
     webtest('Validation on Save') {
       login()
