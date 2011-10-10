@@ -53,9 +53,9 @@ class RpcTest extends WebTestBase {
             login()
 
             // create a bunch of objects
-//            for (int i=0 ; i<100 ; i++) {
-//                goToPage "/save/MyBook?object._id=${i}&object.name=Moby${i}&object.nbPages=123&isRpc=true"
-//            }
+            for (int i=0 ; i<100 ; i++) {
+                goToPage "/save/MyBook?object._id=${i}&object.name=Moby${i}&object.nbPages=123&isRpc=true"
+            }
 
             // list
             goToPage '/search?facet.query=moby*&isRpc=true'
