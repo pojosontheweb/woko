@@ -32,6 +32,7 @@
             <param-name>Extension.Packages</param-name>
             <param-value>
                 woko.actions
+                net.sourceforge.stripes.rpc
             </param-value>
         </init-param>
         <init-param>

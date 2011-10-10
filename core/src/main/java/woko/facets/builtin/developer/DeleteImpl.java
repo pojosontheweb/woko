@@ -2,10 +2,12 @@ package woko.facets.builtin.developer;
 
 import net.sourceforge.jfacets.annotations.FacetKey;
 import net.sourceforge.stripes.action.*;
+import net.sourceforge.stripes.rpc.RpcResolutionWrapper;
 import woko.Woko;
 import woko.facets.BaseResolutionFacet;
 import woko.facets.WokoFacetContext;
 import woko.facets.builtin.Delete;
+import woko.facets.builtin.Json;
 
 @FacetKey(name="delete", profileId="developer")
 public class DeleteImpl extends BaseResolutionFacet implements Delete {
@@ -33,7 +35,7 @@ public class DeleteImpl extends BaseResolutionFacet implements Delete {
     setAcceptNullTargetObject(false);
   }
 
-  public Resolution getResolution(ActionBeanContext abc) {
+  public Resolution getResolution(final ActionBeanContext abc) {
     if (cancel!=null) {
       WokoFacetContext facetContext = getFacetContext();
       abc.getMessages().add(new SimpleMessage("Cancelled deletion"));
@@ -43,11 +45,17 @@ public class DeleteImpl extends BaseResolutionFacet implements Delete {
                   facetContext.getTargetObject()));
     }
     if (confirm!=null) {
-      WokoFacetContext facetContext = getFacetContext();
-      Woko woko = facetContext.getWoko();
-      woko.getObjectStore().delete(facetContext.getTargetObject());
+      final WokoFacetContext facetContext = getFacetContext();
+      final Woko woko = facetContext.getWoko();
+      final Object targetObject = facetContext.getTargetObject();
+      woko.getObjectStore().delete(targetObject);
       abc.getMessages().add(new SimpleMessage("Object deleted"));
-      return new RedirectResolution("/home");
+      return new RpcResolutionWrapper(new RedirectResolution("/home")) {
+          @Override
+          public Resolution getRpcResolution() {
+              return new StreamingResolution("text/json", "{success:true}");
+          }
+      };
     }
     // not confirmed, we display the confirm screen
     return new ForwardResolution("/WEB-INF/woko/jsp/developer/confirmDelete.jsp");
