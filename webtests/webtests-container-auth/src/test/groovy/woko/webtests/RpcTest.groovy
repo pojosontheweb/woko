@@ -25,5 +25,51 @@ class RpcTest extends WebTestBase {
         }
     }
 
+    void testList() {
+        webtest('test RPC list') {
+            login()
+
+            // create a bunch of objects
+            for (int i=0 ; i<100 ; i++) {
+                goToPage "/save/MyBook?object._id=${i}&object.name=Moby${i}&object.nbPages=123&isRpc=true"
+            }
+
+            // list
+            goToPage '/list/MyBook?isRpc=true'
+            verifyText """"totalSize":100"""
+            verifyText """"start":0"""
+            verifyText """"limit":10"""
+            verifyText """Moby1"""
+
+            // remove all
+            for (int i=0 ; i<100 ; i++) {
+                goToPage "/delete/MyBook/${i}?facet.confirm=true&isRpc=true"
+            }
+        }
+    }
+
+    void testSearch() {
+        webtest('test RPC search') {
+            login()
+
+            // create a bunch of objects
+//            for (int i=0 ; i<100 ; i++) {
+//                goToPage "/save/MyBook?object._id=${i}&object.name=Moby${i}&object.nbPages=123&isRpc=true"
+//            }
+
+            // list
+            goToPage '/search?facet.query=moby*&isRpc=true'
+            verifyText """"totalSize":100"""
+            verifyText """"start":0"""
+            verifyText """"limit":10"""
+            verifyText """Moby1"""
+
+            // remove all
+            for (int i=0 ; i<100 ; i++) {
+                goToPage "/delete/MyBook/${i}?facet.confirm=true&isRpc=true"
+            }
+        }
+    }
+
 
 }

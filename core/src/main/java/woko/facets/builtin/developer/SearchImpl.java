@@ -34,4 +34,6 @@ public class SearchImpl extends BaseResultFacet implements Search {
     }
   }
 
+
+
 }
