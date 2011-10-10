@@ -67,7 +67,7 @@
 
     <listener>
         <display-name>WokoInitListener</display-name>
-        <listener-class>woko.gae.GaeWokoInitListeners</listener-class>
+        <listener-class>${package}.gae.MyGaeInMemoryWokoInitListener</listener-class>
     </listener>
 
     <context-param>
