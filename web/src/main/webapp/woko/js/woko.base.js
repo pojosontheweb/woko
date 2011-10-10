@@ -1,7 +1,12 @@
 // package declaration
 var woko = woko || {};
+woko.util = {};
 
-woko.fade = function(elemId, timeToFade, startFadeAfter) {
+woko.util.isUndefinedOrNull = function(obj) {
+  return obj===null || typeof obj === 'undefined';
+};
+
+woko.util.fade = function(elemId, timeToFade, startFadeAfter) {
     timeToFade = timeToFade || 1000.0;
     setTimeout(function() {
         var element = document.getElementById(elemId);
@@ -26,12 +31,12 @@ woko.fade = function(elemId, timeToFade, startFadeAfter) {
         else {
             element.FadeState = element.FadeState == 2 ? -1 : 1;
             element.FadeTimeLeft = timeToFade;
-            setTimeout("woko.animateFade(" + new Date().getTime() + ",'" + elemId + "', " + timeToFade + ")", 33);
+            setTimeout("woko.util.animateFade(" + new Date().getTime() + ",'" + elemId + "', " + timeToFade + ")", 33);
         }
     }, startFadeAfter || 10);
 };
 
-woko.animateFade = function(lastTick, eid, timeToFade)
+woko.util.animateFade = function(lastTick, eid, timeToFade)
 {
   var curTick = new Date().getTime();
   var elapsedTicks = curTick - lastTick;
@@ -55,5 +60,5 @@ woko.animateFade = function(lastTick, eid, timeToFade)
   element.style.opacity = newOpVal;
   element.style.filter = 'alpha(opacity = ' + (newOpVal*100) + ')';
 
-  setTimeout("woko.animateFade(" + curTick + ",'" + eid + "'," + timeToFade + ")", 33);
+  setTimeout("woko.util.animateFade(" + curTick + ",'" + eid + "'," + timeToFade + ")", 33);
 };

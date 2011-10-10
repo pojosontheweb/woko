@@ -12,6 +12,12 @@
 %>
 <fmt:message var="pageTitle" key="woko.devel.studio.pageTitle"/>
 <s:layout-render name="${layout.layoutPath}" layout="${layout}" pageTitle="${pageTitle}" bodyClass="claro">
+
+    <s:layout-component name="customJs">
+        <script type="text/javascript" src="${pageContext.request.contextPath}/woko/js/woko.base.js"></script>
+        <script type="text/javascript" src="${pageContext.request.contextPath}/woko/js/woko.rpc.js"></script>
+    </s:layout-component>
+
     <s:layout-component name="body">
 
         <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/dojo/1.5/dojo/resources/dojo.css">
