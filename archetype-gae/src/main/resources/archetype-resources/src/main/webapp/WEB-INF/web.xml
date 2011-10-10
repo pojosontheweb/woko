@@ -71,7 +71,7 @@
     </listener>
 
     <context-param>
-        <param-name>Woko.Hibernate.Packages</param-name>
+        <param-name>Woko.Gae.Packages</param-name>
         <param-value>${package}.model</param-value>
     </context-param>
 
