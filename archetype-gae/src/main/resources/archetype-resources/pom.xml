@@ -57,6 +57,11 @@
         </dependency>
         <dependency>
             <groupId>com.rvkb</groupId>
+            <artifactId>woko-gae</artifactId>
+            <version>${woko.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.rvkb</groupId>
             <artifactId>woko-builtin-auth-web</artifactId>
             <version>${woko.version}</version>
             <type>war</type>
