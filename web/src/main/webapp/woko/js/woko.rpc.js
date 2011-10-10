@@ -97,6 +97,37 @@ pkg.Client.prototype.search = function(oArgs) {
   this.invokeFacet(args);
 };
 
+pkg.Client.prototype.save = function(oArgs) {
+  if (u.isUndefinedOrNull(oArgs.obj)) {
+    throw "obj not found in arguments";
+  }
+  var obj = oArgs.obj;
+  var className = oArgs.className || obj._className;
+  if (u.isUndefinedOrNull(className)) {
+    throw "className not found in arguments (not in oArgs, and not in passed obj)";
+  }
+  var key = oArgs.key || obj._id;
+  // create an object to hold the arguments using the "object." prefix
+  var content = oArgs.content || {};
+  var transformedParams = {};
+  for (var p in obj) {
+    if (obj.hasOwnProperty(p)) {
+      transformedParams["object." + p] = obj[p];
+    }
+  }
+  var args = dojo.mixin(oArgs, {
+    className: className,
+    key: key,
+    handleAs: "json",
+    facetName: "save",
+    content: dojo.mixin(content, transformedParams)
+  });
+  if (key) {
+    args.key = key;
+  }
+  this.invokeFacet(args);
+};
+
 
 
 
