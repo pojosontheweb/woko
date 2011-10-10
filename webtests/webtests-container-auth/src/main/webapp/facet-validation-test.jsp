@@ -4,7 +4,7 @@
 <%@ taglib prefix="s" uri="http://stripes.sourceforge.net/stripes.tld" %>
 <html>
 <head>
-
+    <script type="text/javascript" src="${pageContext.request.contextPath}/woko/js/woko.base.js"></script>
 </head>
 <body>
 <h1>facet validation test</h1>
