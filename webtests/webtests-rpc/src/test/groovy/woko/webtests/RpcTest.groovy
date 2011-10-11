@@ -25,8 +25,8 @@ class RpcTest extends WebTestBase {
         }
     }
 
-    void testList() {
-        webtest('test RPC list') {
+    void testListAndSearch() {
+        webtest('test RPC list and search') {
             login()
 
             // create a bunch of objects
@@ -41,23 +41,7 @@ class RpcTest extends WebTestBase {
             verifyText """"limit":10"""
             verifyText """Moby1"""
 
-            // remove all
-            for (int i=0 ; i<100 ; i++) {
-                goToPage "/delete/MyBook/${i}?facet.confirm=true&isRpc=true"
-            }
-        }
-    }
-
-    void testSearch() {
-        webtest('test RPC search') {
-            login()
-
-            // create a bunch of objects
-            for (int i=0 ; i<100 ; i++) {
-                goToPage "/save/MyBook?object._id=${i}&object.name=Moby${i}&object.nbPages=123&isRpc=true"
-            }
-
-            // list
+            // search
             goToPage '/search?facet.query=moby*&isRpc=true'
             verifyText """"totalSize":100"""
             verifyText """"start":0"""
@@ -71,5 +55,19 @@ class RpcTest extends WebTestBase {
         }
     }
 
+    void testJavaScriptAPI() {
+        webtest('test JS api') {
+            login()
+            goToPage("/testRpc.html");
+            retry(maxcount: 10) {
+                verifyText "loaded"
+                verifyText "Save1"
+                verifyText "Reload"
+                verifyText "Save1"
+                verifyText "Deleted"
+                sleep 1
+            }
+        }
+    }
 
 }

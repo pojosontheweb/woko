@@ -16,6 +16,7 @@
         <module>webtests-rpc</module>
         <!--module>webtests-git</module-->
     </modules>
+
     <dependencies>
         <dependency>
             <groupId>com.rvkb</groupId>
