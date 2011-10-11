@@ -8,6 +8,8 @@ import java.util.Arrays;
 
 import woko.inmemory.InMemoryUserManager;
 import woko.users.UserManager;
+import woko.users.UsernameResolutionStrategy;
+import woko.auth.builtin.SessionUsernameResolutionStrategy;
 
 import woko.gae.GaeWokoInitListener;
 
@@ -15,8 +17,13 @@ import woko.gae.GaeWokoInitListener;
 public class MyGaeInMemoryWokoInitListener extends GaeWokoInitListener {
 
     protected UserManager createUserManager() {
-    InMemoryUserManager um = new InMemoryUserManager();
-    um.addUser("wdevel", "wdevel", Arrays.asList("developer"));
-    return um;
-  }
+        InMemoryUserManager um = new InMemoryUserManager();
+        um.addUser("wdevel", "wdevel", Arrays.asList("developer"));
+        return um;
+    }
+
+    @Override
+    protected UsernameResolutionStrategy createUsernameResolutionStrategy() {
+        return new SessionUsernameResolutionStrategy();
+    }
 }
