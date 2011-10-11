@@ -54,6 +54,7 @@
         <module>archetype</module>
         <module>gitfs</module>
         <module>wmaven</module>
+        <module>dojo</module>
     </modules>
     <build>
         <plugins>
