@@ -55,7 +55,7 @@
         <module>gitfs</module>
         <module>wmaven</module>
         <module>dojo</module>
-        <module>woko-archetype-gae</module>
+        <module>archetype-gae</module>
     </modules>
     <build>
         <plugins>
