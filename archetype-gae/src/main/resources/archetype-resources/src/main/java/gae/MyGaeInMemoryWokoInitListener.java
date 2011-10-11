@@ -18,7 +18,7 @@ public class MyGaeInMemoryWokoInitListener extends GaeWokoInitListener {
 
     protected UserManager createUserManager() {
         InMemoryUserManager um = new InMemoryUserManager();
-        um.addUser("wdevel", "wdevel", Arrays.asList("developer"));
+        um.addUser("${woko-developer-username}", "${woko-developer-password}", Arrays.asList("developer"));
         return um;
     }
 

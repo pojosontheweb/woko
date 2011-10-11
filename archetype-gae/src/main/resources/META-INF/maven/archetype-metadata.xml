@@ -23,4 +23,12 @@
             </includes>
         </fileSet>
     </fileSets>
+
+    <requiredProperties>
+
+        <requiredProperty key="woko-developer-username"/>
+
+        <requiredProperty key="woko-developer-password"/>
+
+    </requiredProperties>
 </archetype-descriptor>
