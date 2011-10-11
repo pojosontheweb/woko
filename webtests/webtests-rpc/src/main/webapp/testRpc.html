@@ -1,0 +1,91 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <script type="text/javascript" src="/woko-webtests/js/dojo-1.6.1/dojo-release-1.6.1-src/dojo/dojo.js"></script>
+    <script type="text/javascript" src="/woko-webtests/woko/js/woko.base.js"></script>
+    <script type="text/javascript" src="/woko-webtests/woko/js/woko.rpc.js"></script>
+    <title>Woko AJAX tests</title>
+    <style type="text/css">
+        #loader {
+            border: 1px solid #000000;
+        }
+
+        .loading {
+            background-color: red;
+        }
+
+        .loaded {
+            background-color: green;
+        }
+    </style>
+    <script type="text/javascript">
+        dojo.addOnLoad(function() {
+
+            var log = function(msg) {
+                if (console) {
+                    console.log(msg);
+                    var li = document.createElement('li');
+                    li.innerHTML = msg;
+                    dojo.byId("messages").appendChild(li);
+                }
+            };
+
+            log("doc loaded");
+
+            var cli = new woko.rpc.Client({baseUrl:"/woko-webtests"});
+
+            cli.save({
+                className:"MyBook",
+                obj: {
+                    _id: 1234,
+                    name: "Moby Dick"
+                },
+                load: function(savedBook) {
+                    log(new Date() + " - Save1 : id = " + savedBook._id + " name = " + savedBook.name);
+
+                    // load the saved book
+                    cli.load({
+                        className: "MyBook",
+                        key: 1234,
+                        load: function(loadedBook) {
+                            log(new Date() + " - Reload : id = " + loadedBook._id + " name = " + loadedBook.name);
+
+                            // update a property
+                            loadedBook.nbPages = "123";
+                            loadedBook.name = "tower";
+
+                            // save the book again
+                            cli.save({
+                                obj: loadedBook,
+                                load: function(savedBook2) {
+                                    log(new Date() + " - Save2 : id = " + loadedBook._id + " name = " + loadedBook.name);
+
+                                    // delete the book
+                                    cli.remove({
+                                        obj: savedBook2,
+                                        load: function(result) {
+                                            log(new Date() + " - Deleted : id = " + savedBook2._id + " name = " + savedBook2.name + " (success = " + result.success + ")");
+                                            var loader = dojo.byId("loader");
+                                            loader.innerHTML = "loaded";
+                                            dojo.removeClass(loader, "loading");
+                                            dojo.addClass(loader, "loaded");
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+<h1>Woko AJAX tests</h1>
+
+<div id="loader" class="loading">Loading...</div>
+<ul id="messages">
+</ul>
+</body>
+</html>

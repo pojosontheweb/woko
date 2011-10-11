@@ -33,6 +33,7 @@
             <param-value>
                 woko.actions
                 woko.hibernate
+                net.sourceforge.stripes.rpc
             </param-value>
         </init-param>
         <init-param>

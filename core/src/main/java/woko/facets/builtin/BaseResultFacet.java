@@ -2,10 +2,17 @@ package woko.facets.builtin;
 
 import net.sourceforge.stripes.action.ActionBeanContext;
 import net.sourceforge.stripes.action.Resolution;
-import woko.facets.BaseForwardResolutionFacet;
+import net.sourceforge.stripes.action.StreamingResolution;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import woko.facets.BaseForwardRpcResolutionFacet;
+import woko.facets.WokoFacetContext;
 import woko.persistence.ResultIterator;
 
-public abstract class BaseResultFacet extends BaseForwardResolutionFacet implements ResultFacet {
+import javax.servlet.http.HttpServletRequest;
+
+public abstract class BaseResultFacet extends BaseForwardRpcResolutionFacet implements ResultFacet {
 
   private Integer resultsPerPage = 10;
   private Integer page = 1;
@@ -46,6 +53,35 @@ public abstract class BaseResultFacet extends BaseForwardResolutionFacet impleme
     resultIterator = createResultIterator(abc, start, limit);
     return super.getResolution(abc);
   }
+
+    @Override
+    protected Resolution getRpcResolution(final ActionBeanContext actionBeanContext) {
+        try {
+            ResultIterator resultIterator = getResults();
+            JSONObject r = new JSONObject();
+            r.put("totalSize", resultIterator.getTotalSize());
+            r.put("start", resultIterator.getStart());
+            r.put("limit", resultIterator.getLimit());
+            JSONArray items = new JSONArray();
+            final WokoFacetContext facetContext = getFacetContext();
+            final HttpServletRequest request = actionBeanContext.getRequest();
+            while (resultIterator.hasNext()) {
+                Object o = resultIterator.next();
+                if (o==null) {
+                    items.put((JSONObject)null);
+                } else {
+                    RenderObjectJson roj =
+                    (RenderObjectJson)facetContext.getWoko().getFacet("renderObjectJson", request, o);
+                    JSONObject jo = roj.objectToJson(request);
+                    items.put(jo);
+                }
+            }
+            r.put("items", items);
+            return new StreamingResolution("text/json", r.toString());
+        } catch(JSONException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
   protected abstract ResultIterator createResultIterator(ActionBeanContext abc, int start, int limit);
 

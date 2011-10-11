@@ -12,5 +12,4 @@ public abstract class BaseForwardResolutionFacet extends BaseResolutionFacet {
     return new ForwardResolution(getPath());
   }
 
-
 }
