@@ -61,15 +61,24 @@
                 <configuration>
                     <wait>false</wait>
                   <container>
-					<containerId>tomcat6x</containerId>
-                    <home>${tomcat6.home}</home>
-                    <type>installed</type>
+                    <containerId>tomcat6x</containerId>
+                      <home>${project.build.directory}/extracts/apache-tomcat-6.0.33/apache-tomcat-6.0.33</home>
+                      <zipUrlInstaller>
+                          <url>http://ftp.wayne.edu/apache/tomcat/tomcat-6/v6.0.33/bin/apache-tomcat-6.0.33.zip</url>
+                          <!--
+                            Careful: As described in the ZipUrlInstaller documentation,
+                            Cargo versions older than 1.1.0 accept only installDir, you therefore
+                            need to set installDir instead of downloadDir and extractDir.
+                            -->
+                          <downloadDir>${project.build.directory}/downloads</downloadDir>
+                          <extractDir>${project.build.directory}/extracts</extractDir>
+                      </zipUrlInstaller>
                   </container>
                   <configuration>
                     <properties>
-                        <cargo.servlet.port>9999</cargo.servlet.port>						
+                        <cargo.servlet.port>9999</cargo.servlet.port>
                     </properties>
-				 	        </configuration>
+                  </configuration>
                 </configuration>
                 <executions>
                     <execution>
