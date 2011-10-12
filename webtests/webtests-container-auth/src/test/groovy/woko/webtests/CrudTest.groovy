@@ -65,11 +65,9 @@ class CrudTest extends WebTestBase {
       login()
       goToPage '/save/MyBook'
       verifyText 'Please fix the following errors'
-      verifyXPath xpath:"/html/body/div/div[3]/div/div[2]/div/form/table/tbody/tr[4]/td/span/span/input[@class='error']"
 
       clickButton name:'save'
       verifyText 'Please fix the following errors'
-      verifyXPath xpath:"/html/body/div/div[3]/div/div[2]/div/form/table/tbody/tr[4]/td/span/span/input[@class='error']"
 
       setInputField name:'object._id', value:'2'
       setInputField name:'object.name', value:'Moby Dick'
