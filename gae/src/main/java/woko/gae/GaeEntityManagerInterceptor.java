@@ -14,7 +14,7 @@ import javax.persistence.Persistence;
 @Intercepts({LifecycleStage.RequestInit, LifecycleStage.RequestComplete})
 public class GaeEntityManagerInterceptor implements Interceptor {
 
-  private final EntityManagerFactory EMF =
+  public static final EntityManagerFactory EMF =
           Persistence.createEntityManagerFactory("transactions-optional");
 
   private static final WLogger log = WLogger.getLogger(GaeEntityManagerInterceptor.class);
