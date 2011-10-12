@@ -19,10 +19,10 @@
         <property name="hibernate.current_session_context_class">thread</property>
         <property name="compass.engine.connection">ram://index</property>
         <event type="pre-update">
-            <listener class="org.hibernate.validator.event.ValidateEventListener"/>
+          <listener class="org.hibernate.cfg.beanvalidation.BeanValidationEventListener"/>
         </event>
         <event type="pre-insert">
-            <listener class="org.hibernate.validator.event.ValidateEventListener"/>
+          <listener class="org.hibernate.cfg.beanvalidation.BeanValidationEventListener"/>
         </event>
         <event type="post-update">
             <listener class="org.compass.gps.device.hibernate.embedded.CompassEventListener"/>
