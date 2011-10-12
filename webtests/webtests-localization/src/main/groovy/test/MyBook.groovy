@@ -23,7 +23,6 @@ class MyBook {
     String _id
 
     @SearchableProperty
-    @Min((Long)2)
     int nbPages
 
     @SearchableProperty
