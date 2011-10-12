@@ -14,33 +14,41 @@ import javax.persistence.Persistence;
 @Intercepts({LifecycleStage.RequestInit, LifecycleStage.RequestComplete})
 public class GaeEntityManagerInterceptor implements Interceptor {
 
-  private final EntityManagerFactory EMF =
-          Persistence.createEntityManagerFactory("transactions-optional");
+    public static final EntityManagerFactory EMF =
+            Persistence.createEntityManagerFactory("transactions-optional");
 
-  private static final WLogger log = WLogger.getLogger(GaeEntityManagerInterceptor.class);
+    private static final WLogger log = WLogger.getLogger(GaeEntityManagerInterceptor.class);
 
-  private final static ThreadLocal<EntityManager> EMF_TL = new ThreadLocal<EntityManager>();
+    private final static ThreadLocal<EntityManager> EMF_TL = new ThreadLocal<EntityManager>();
 
-  public static EntityManager getEntityManager() {
-    return EMF_TL.get();
-  }
-
-  public Resolution intercept(ExecutionContext context) throws Exception {
-    LifecycleStage stage = context.getLifecycleStage();
-    if (stage==LifecycleStage.RequestInit) {
-      EntityManager em = EMF.createEntityManager();
-      EMF_TL.set(em);
-      log.debug("Obtained entity manager : " + em);
-    } else if (stage.equals(LifecycleStage.RequestComplete)) {
-      EntityManager em = EMF_TL.get();
-      if (em!=null) {
-        log.debug("Closed entity managed : " + em);
-        em.close();
-      }
-      EMF_TL.remove();
+    public static EntityManager getEntityManager() {
+        return EMF_TL.get();
     }
 
-    return context.proceed();
-  }
+    public static void setEntityManagerForCurrentThread(EntityManager em) {
+        EMF_TL.set(em);
+    }
+
+    public static void clearEntityManagerForCurrentThread() {
+        EMF_TL.remove();
+    }
+
+    public Resolution intercept(ExecutionContext context) throws Exception {
+        LifecycleStage stage = context.getLifecycleStage();
+        if (stage == LifecycleStage.RequestInit) {
+            EntityManager em = EMF.createEntityManager();
+            setEntityManagerForCurrentThread(em);
+            log.debug("Obtained entity manager : " + em);
+        } else if (stage.equals(LifecycleStage.RequestComplete)) {
+            EntityManager em = EMF_TL.get();
+            if (em != null) {
+                log.debug("Closed entity managed : " + em);
+                em.close();
+            }
+            clearEntityManagerForCurrentThread();
+        }
+
+        return context.proceed();
+    }
 
 }
