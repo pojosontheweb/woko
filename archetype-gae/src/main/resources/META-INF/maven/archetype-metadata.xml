@@ -30,5 +30,7 @@
 
         <requiredProperty key="woko-developer-password"/>
 
+        <requiredProperty key="gae-version"/>
+
     </requiredProperties>
 </archetype-descriptor>
