@@ -1,11 +1,17 @@
 package woko.webtests
 
+import org.junit.Test
+import org.junit.runners.JUnit4
+import org.junit.runner.RunWith
+
+@RunWith(JUnit4.class)
 class RpcTest extends WebTestBase {
 
     static final String RESULT_START = """{"_object":true,"_id":"1111","_persistent":true,"_className":"MyBook","_key":"1111","name":"Moby","class":"MyBook","creationTime"""
     static final String RESULT_END = """"_title":"Moby","nbPages":{"nbPagesXXX":123}}"""
 
-    void testCreateGetDelete() {
+    @Test
+    void createGetDelete() {
         webtest('test RPC create / get / delete') {
             login()
 
@@ -25,7 +31,8 @@ class RpcTest extends WebTestBase {
         }
     }
 
-    void testListAndSearch() {
+    @Test
+    void listAndSearch() {
         webtest('test RPC list and search') {
             login()
 
@@ -55,7 +62,8 @@ class RpcTest extends WebTestBase {
         }
     }
 
-    void testJavaScriptAPI() {
+    @Test
+    void javaScriptAPI() {
         webtest('test JS api') {
             login()
             goToPage("/testRpc.html");

@@ -1,8 +1,8 @@
 package woko.util
 
-import junit.framework.TestCase
+import org.junit.Test
 
-class UtilTest extends TestCase {
+class UtilTest {
 
   private void assertProps(o) {
     def pNames = Util.getPropertyNames(o, ['p2'])
@@ -13,6 +13,7 @@ class UtilTest extends TestCase {
     assert !pNames.contains('p2')
   }
 
+  @Test
   void testGetPropertyNamesOnObject() {
     assertProps(new DummyPojo())
   }
