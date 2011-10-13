@@ -75,7 +75,7 @@ public class HibernateValidateFacet extends BaseFacet implements woko.facets.bui
             LocalizableError stripesError = new LocalizableError(getStripesKey(c.getMessageTemplate()), c.getConstraintDescriptor().getAttributes().values().toArray());
             stripesError.setFieldName(fieldName);
             stripesError.setBeanclass(abClass);
-            errs.add(c.getPropertyPath().toString(), stripesError);
+            errs.add(fieldName, stripesError);
         }
         return !hasErrors;
     }
