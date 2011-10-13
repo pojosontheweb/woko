@@ -28,6 +28,11 @@ class RpcTest extends WebTestBase {
             // delete
             goToPage '/delete/MyBook/1111?facet.confirm=true&isRpc=true'
             verifyText "{success:true}"
+
+            // verify /view doesn't work any more
+            not {
+                goToPage '/view/MyBook/1111&isRpc=true'
+            }
         }
     }
 
@@ -37,9 +42,8 @@ class RpcTest extends WebTestBase {
             login()
 
             // create a bunch of objects
-            for (int i=0 ; i<100 ; i++) {
-                goToPage "/save/MyBook?object._id=${i}&object.name=Moby${i}&object.nbPages=123&isRpc=true"
-            }
+            goToPage '/createTestObjects'
+            verifyText 'OK'
 
             // list
             goToPage '/list/MyBook?isRpc=true'
@@ -56,9 +60,8 @@ class RpcTest extends WebTestBase {
             verifyText """Moby1"""
 
             // remove all
-            for (int i=0 ; i<100 ; i++) {
-                goToPage "/delete/MyBook/${i}?facet.confirm=true&isRpc=true"
-            }
+            goToPage '/deleteTestObjects'
+            verifyText 'OK'
         }
     }
 
