@@ -7,6 +7,7 @@
     <artifactId>woko-archetype-heroku</artifactId>
     <packaging>maven-archetype</packaging>
     <name>Woko - Heroku archetype</name>
+    <description>Getting started with Woko and Heroku</description>
 
     <parent>
         <artifactId>woko-parent</artifactId>
