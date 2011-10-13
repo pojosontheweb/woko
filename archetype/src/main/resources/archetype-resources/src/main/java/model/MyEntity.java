@@ -7,7 +7,7 @@ package ${package}.model;
 import org.compass.annotations.Searchable;
 import org.compass.annotations.SearchableId;
 import org.compass.annotations.SearchableProperty;
-import org.hibernate.validator.NotNull;
+import javax.validation.constraints.NotNull;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
