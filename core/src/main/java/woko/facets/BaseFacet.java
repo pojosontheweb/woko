@@ -3,7 +3,11 @@ package woko.facets;
 import net.sourceforge.jfacets.IFacet;
 import net.sourceforge.jfacets.IFacetContext;
 import net.sourceforge.jfacets.IInstanceFacet;
+import woko.Woko;
 import woko.facets.WokoFacetContext;
+import woko.persistence.ObjectStore;
+
+import javax.servlet.http.HttpServletRequest;
 
 public abstract class BaseFacet implements IFacet, IInstanceFacet {
 
@@ -33,5 +37,17 @@ public abstract class BaseFacet implements IFacet, IInstanceFacet {
     }
     return true;
   }
+
+    public Woko getWoko() {
+        return getFacetContext().getWoko();
+    }
+
+    public ObjectStore getObjectStore() {
+        return getWoko().getObjectStore();
+    }
+
+    public HttpServletRequest getRequest() {
+        return facetContext.getRequest();
+    }
 
 }
