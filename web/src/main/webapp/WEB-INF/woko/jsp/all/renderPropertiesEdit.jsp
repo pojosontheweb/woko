@@ -40,10 +40,13 @@
 
                     RenderPropertyValue editPropertyValue = Util.getRenderPropValueEditFacet(woko, request, owningObject, pName, pVal);
                     String pValFragmentPath = editPropertyValue.getFragmentPath(request);
+
+                    String fullFieldName = "object." + pName;
             %>
             <tr>
                 <th><jsp:include page="<%=pNameFragmentPath%>"/></th>
                 <td><jsp:include page="<%=pValFragmentPath%>"/></td>
+                <td><s:errors field="<%=fullFieldName%>"/></td>
             </tr>
             <%
                 }
