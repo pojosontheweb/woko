@@ -142,7 +142,7 @@ public class Woko {
         logger.debug("No roles returned for user '" + username + "', using fallback roles : " + fallbackRoles);
         roles = fallbackRoles;
       }
-      logger.debug("Using roles $roles found for user " + username);
+      logger.debug("Using roles " + roles + " for user " + username);
     }
     if (!roles.contains(ROLE_ALL)) {
       roles = new ArrayList<String>(roles);
