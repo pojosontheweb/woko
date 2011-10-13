@@ -1,6 +1,6 @@
 #set( $symbol_pound = '#' )
-        #set( $symbol_dollar = '$' )
-        #set( $symbol_escape = '\' )
+#set( $symbol_dollar = '$' )
+#set( $symbol_escape = '\' )
 <?xml version="1.0" encoding="UTF-8"?>
 
 <web-app xmlns="http://java.sun.com/xml/ns/j2ee"
@@ -36,7 +36,7 @@
             <param-value>
                 woko.actions
                 woko.hibernate
-                woko.gae
+                net.sourceforge.stripes.rpc
             </param-value>
         </init-param>
          <init-param>
@@ -67,11 +67,11 @@
 
     <listener>
         <display-name>WokoInitListener</display-name>
-        <listener-class>${package}.gae.MyGaeInMemoryWokoInitListener</listener-class>
+        <listener-class>woko.ri.RiWokoInitListener</listener-class>
     </listener>
 
     <context-param>
-        <param-name>Woko.Gae.Packages</param-name>
+        <param-name>Woko.Hibernate.Packages</param-name>
         <param-value>${package}.model</param-value>
     </context-param>
 
