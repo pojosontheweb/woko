@@ -13,13 +13,19 @@
             <directory>src/main/resources</directory>
             <includes>
                 <include>**/*.properties</include>
-                <include>**/*.xml</include>
+                <include>**/*.cfg.xml</include>
             </includes>
         </fileSet>
         <fileSet filtered="true" encoding="UTF-8">
             <directory>src/main/webapp</directory>
             <includes>
                 <include>**/*.xml</include>
+            </includes>
+        </fileSet>
+        <fileSet filtered="true" encoding="UTF-8">
+            <directory></directory>
+            <includes>
+                <include>Procfile</include>
             </includes>
         </fileSet>
     </fileSets>
@@ -30,9 +36,9 @@
         <requiredProperty key="woko-developer-password"/>
 
         <!-- Heroku properties -->
-        <requiredProperty key="postgre.connection.url"/>
-        <requiredProperty key="postgre.connection.username"/>
-        <requiredProperty key="postgre.connection.password"/>
+        <requiredProperty key="postgre-connection-url"/>
+        <requiredProperty key="postgre-connection-username"/>
+        <requiredProperty key="postgre-connection-password"/>
 
     </requiredProperties>
 </archetype-descriptor>
