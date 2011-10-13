@@ -12,12 +12,13 @@
     ObjectStore os = woko.getObjectStore();
     String propertyName = renderPropertyName.getPropertyName();
     Object owningObject = fctx.getTargetObject();
-    String owningClassAsKey = owningObject.getClass().getSimpleName() + "." + propertyName;
+    String objectKey = "object." + propertyName;
+    String propertyLabel = propertyName;
     String propertyClassName = os.getClassMapping(Util.getPropertyType(owningObject.getClass(), propertyName));
 %>
 <span class="wokoPropertyName">
     <span class="<%=propertyName%> <%=propertyClassName%>">
-        <s:label for="<%=owningClassAsKey%>"/>
+        <s:label for="<%=objectKey%>"><%=propertyLabel%></s:label>
     </span>
 </span>
 

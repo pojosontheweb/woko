@@ -1,9 +1,24 @@
 input.error {
     color: #B72222;
     background-color: yellow;
+    border: 2px solid #880000;
 }
 
-.wokoProperties th {
+label.error {
+   color: #B72222;
+}
+
+
+span.error {
+    background: url("error-icon.png") no-repeat scroll 5px 1px transparent;
+    color: #880000;
+    font-size: 0.8em;
+    font-style: italic;
+    padding:2px;
+    padding-left: 22px;
+}
+
+.wokoProperties th, .wokoPropertiesEdit th {
     text-align: right;
 }
 
