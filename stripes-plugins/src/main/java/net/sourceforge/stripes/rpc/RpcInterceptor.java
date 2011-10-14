@@ -60,8 +60,13 @@ public class RpcInterceptor implements Interceptor, ConfigurableComponent {
                     // event already handled, we return the RPC resolution if there's one
                     if (result instanceof RpcResolution) {
                         RpcResolution rpcResolution = (RpcResolution)result;
-                        result = rpcResolution.getRpcResolution();
-                        logger.debug("RPC Resolution found for request ", context.getActionBeanContext().getRequest().getQueryString() + ", returning " + result);
+                        Resolution rpcResult = rpcResolution.getRpcResolution();
+                        if (rpcResult==null) {
+                            logger.warn("RPC request, but rpc resolution is null. Will return the original resolution.");
+                        } else {
+                            result = rpcResult;
+                            logger.debug("RPC Resolution found for request ", context.getActionBeanContext().getRequest().getQueryString() + ", returning " + result);
+                        }
                     } else {
                         // not an RpcResolution, return the regular resolution
                         logger.warn("RPC Resolution not found for request ", context.getActionBeanContext().getRequest().getQueryString() + ", returning original resolution " + result);
