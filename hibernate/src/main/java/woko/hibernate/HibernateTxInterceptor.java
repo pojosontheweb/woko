@@ -37,7 +37,7 @@ public class HibernateTxInterceptor implements net.sourceforge.stripes.controlle
           log.debug("Commiting transaction " + tx);
           tx.commit();
         } catch(Exception e) {
-          log.error("Commit error : $e", e);
+          log.error("Commit error", e);
           tx.rollback();
           throw e;
         }
