@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletRequest;
     @FacetKey(name = "json", profileId = "guest"),
     @FacetKey(name = "find", profileId = "guest"),
     @FacetKey(name = "list", profileId = "guest"),
-    @FacetKey(name = "search", profileId = "guest"),
+    @FacetKey(name = "search", profileId = "all"),
     @FacetKey(name = "studio", profileId = "guest")
 })
 public class LoginRequiredFacet extends BaseResolutionFacet {
