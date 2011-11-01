@@ -7,7 +7,14 @@
 <s:layout-definition>
     <html>
         <head>
-            <title>${layout.appTitle} - ${pageTitle}</title>
+            <c:choose>
+                <c:when test="${not empty pageTitle}">
+                    <title>${layout.appTitle} - ${pageTitle}</title>
+                </c:when>
+                <c:otherwise>
+                    <title>${layout.appTitle}</title>
+                </c:otherwise>
+            </c:choose>
             <c:forEach items="${layout.cssIncludes}" var="cssLink">
                 <link rel="stylesheet" href="${pageContext.request.contextPath}${cssLink}" type="text/css">
             </c:forEach>
