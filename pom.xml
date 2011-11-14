@@ -56,7 +56,8 @@
         <module>wmaven</module>
         <module>dojo</module>
         <module>archetype-gae</module>
-		<module>archetype-heroku</module>
+        <module>archetype-heroku</module>
+        <module>usermanagement</module>
     </modules>
     <build>
         <plugins>

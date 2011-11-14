@@ -6,13 +6,8 @@
          http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
          version="2.4">
 
-    <description>Woko builtin auth webtests</description>
-    <display-name>Woko builtin auth webtests</display-name>
-
-    <context-param>
-        <param-name>javax.servlet.jsp.jstl.fmt.localizationContext</param-name>
-        <param-value>WokoResources</param-value>
-    </context-param>
+    <description>Woko user management example web.xml</description>
+    <display-name>Woko builtin auth</display-name>
 
     <filter>
         <description>
@@ -32,13 +27,8 @@
             <param-name>Extension.Packages</param-name>
             <param-value>
                 woko.actions
-                woko.hibernate
                 net.sourceforge.stripes.rpc
             </param-value>
-        </init-param>
-        <init-param>
-            <param-name>LocalePicker.Locales</param-name>
-            <param-value>en,fr</param-value>
         </init-param>
     </filter>
     <filter-mapping>
@@ -62,17 +52,14 @@
         <dispatcher>FORWARD</dispatcher>
     </filter-mapping>
 
-    <listener>
-        <display-name>WokoInitListener</display-name>
-        <listener-class>woko.ri.RiWokoInitListener</listener-class>
-    </listener>
-
     <context-param>
         <param-name>Woko.Hibernate.Packages</param-name>
-        <param-value>
-            test
-            woko.ext.usermanagement.hibernate
-        </param-value>
+        <param-value>test</param-value>
     </context-param>
+
+    <listener>
+        <display-name>WokoInitListener</display-name>
+        <listener-class>woko.ri.</listener-class>
+    </listener>
 
 </web-app>

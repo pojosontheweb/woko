@@ -47,14 +47,14 @@ class RpcTest extends WebTestBase {
 
             // list
             goToPage '/list/MyBook?isRpc=true'
-            verifyText """"totalSize":100"""
+            verifyText """"totalSize":10"""
             verifyText """"start":0"""
             verifyText """"limit":10"""
             verifyText """Moby1"""
 
             // search
             goToPage '/search?facet.query=moby*&isRpc=true'
-            verifyText """"totalSize":100"""
+            verifyText """"totalSize":10"""
             verifyText """"start":0"""
             verifyText """"limit":10"""
             verifyText """Moby1"""

@@ -23,7 +23,33 @@ public abstract class WokoInitListener implements ServletContextListener {
 
   private ServletContext servletContext;
 
-  public ServletContext getServletContext() {
+    private ObjectStore objectStore;
+    private UserManager userManager;
+    private List<String> fallbackRoles;
+    private IFacetDescriptorManager facetDescriptorManager;
+    private UsernameResolutionStrategy usernameResolutionStrategy;
+
+    public ObjectStore getObjectStore() {
+        return objectStore;
+    }
+
+    public UserManager getUserManager() {
+        return userManager;
+    }
+
+    public List<String> getFallbackRoles() {
+        return fallbackRoles;
+    }
+
+    public IFacetDescriptorManager getFacetDescriptorManager() {
+        return facetDescriptorManager;
+    }
+
+    public UsernameResolutionStrategy getUsernameResolutionStrategy() {
+        return usernameResolutionStrategy;
+    }
+
+    public ServletContext getServletContext() {
     return servletContext;
   }
 
@@ -40,12 +66,17 @@ public abstract class WokoInitListener implements ServletContextListener {
   }
 
   protected Woko createWoko() {
+      objectStore = createObjectStore();
+      userManager = createUserManager();
+      fallbackRoles = createFallbackRoles();
+      facetDescriptorManager = createFacetDescriptorManager();
+      usernameResolutionStrategy = createUsernameResolutionStrategy();
     return new Woko(
-        createObjectStore(),
-        createUserManager(),
-        createFallbackRoles(),
-        createFacetDescriptorManager(),
-        createUsernameResolutionStrategy());
+        objectStore,
+        userManager,
+        fallbackRoles,
+        facetDescriptorManager,
+        usernameResolutionStrategy);
   }
 
   protected List<String> createFallbackRoles() {

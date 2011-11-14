@@ -69,7 +69,10 @@
 
     <context-param>
         <param-name>Woko.Hibernate.Packages</param-name>
-        <param-value>test</param-value>
+        <param-value>
+            test
+            woko.ext.usermanagement.hibernate
+        </param-value>
     </context-param>
 
 </web-app>
