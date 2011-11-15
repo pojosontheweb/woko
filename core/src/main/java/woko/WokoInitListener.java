@@ -108,8 +108,8 @@ public abstract class WokoInitListener implements ServletContextListener {
     String pkgNamesStr = getServletContext().getInitParameter(paramName);
     if (pkgNamesStr==null || pkgNamesStr.equals("")) {
       if (throwIfNotFound) {
-        String msg = "No package names specified. You have to set the context init-param " +
-            paramName + " in web.xml to the list of packages you want to be scanned for pesistent classes.";
+        String msg = "No package names specified. You have to set the context init-param '" +
+            paramName + "' in web.xml to the list of packages you want to be scanned.";
         logger.error(msg);
         throw new IllegalStateException(msg);
       } else {
