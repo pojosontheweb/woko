@@ -5,6 +5,7 @@ import net.sourceforge.jfacets.IFacetDescriptorManager;
 import net.sourceforge.jfacets.JFacets;
 import net.sourceforge.jfacets.JFacetsBuilder;
 import net.sourceforge.jfacets.annotations.AnnotatedFacetDescriptorManager;
+import net.sourceforge.jfacets.annotations.DuplicatedKeyPolicyType;
 import woko.facets.FacetNotFoundException;
 import woko.facets.WokoFacetContextFactory;
 import woko.facets.WokoProfileRepository;
@@ -23,7 +24,7 @@ import java.util.List;
 public class Woko {
 
   public static final List<String> DEFAULT_FACET_PACKAGES =
-      Collections.unmodifiableList(Arrays.asList("woko.facets.builtin", "facets"));
+      Collections.unmodifiableList(Arrays.asList("facets", "woko.facets.builtin"));
 
   public static final String ROLE_ALL = "all";
   public static final String ROLE_GUEST = "guest";
@@ -186,9 +187,9 @@ public class Woko {
 
   public static IFacetDescriptorManager createFacetDescriptorManager(List<String> packageNames) {
     logger.info("Creating Annotated Facets, scanning packages : " + packageNames);
-    AnnotatedFacetDescriptorManager a = new AnnotatedFacetDescriptorManager(packageNames);
-    a.initialize();
-    return a;
+    return new AnnotatedFacetDescriptorManager(packageNames).
+      setDuplicatedKeyPolicy(DuplicatedKeyPolicyType.FirstScannedWins).
+      initialize();
   }
 
 

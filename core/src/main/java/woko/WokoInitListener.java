@@ -84,11 +84,12 @@ public abstract class WokoInitListener implements ServletContextListener {
   }
 
   protected IFacetDescriptorManager createFacetDescriptorManager() {
-    List<String> pkgs = new ArrayList<String>(Woko.DEFAULT_FACET_PACKAGES);
+    List<String> pkgs = new ArrayList<String>();
     List<String> packagesNames = getPackageNamesFromConfig(CTX_PARAM_FACET_PACKAGES, false);
     if (packagesNames!=null && packagesNames.size()>0) {
-      pkgs.addAll(packagesNames);
+       pkgs.addAll(packagesNames);
     }
+    pkgs.addAll(Woko.DEFAULT_FACET_PACKAGES);
     return Woko.createFacetDescriptorManager(pkgs);
   }
 
