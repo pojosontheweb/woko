@@ -102,11 +102,6 @@ public class Woko {
 
   public JFacets getJFacets() { return jFacets; }
 
-  public Woko setUsernameResolutionStrategy(UsernameResolutionStrategy urs) {
-    this.usernameResolutionStrategy = urs;
-    return this;
-  }
-
   public final void close() {
     logger.info("Closing...");
     doClose();
