@@ -1,6 +1,6 @@
 package woko.webtests
 
-class BuiltinAuthTest extends WebTestBase {
+class UsermanagementTest extends WebTestBase {
 
   void testAuthenticationWithHome() {
     webtest("testAuthenticationWithHome") {
