@@ -12,10 +12,6 @@ import woko.facets.builtin.View;
 @FacetKey(name="view", profileId="developer")
 public class ViewImpl extends BaseForwardRpcResolutionFacet implements View {
 
-  public ViewImpl() {
-    setAcceptNullTargetObject(false);
-  }
-
   public String getPath() {
     return "/WEB-INF/woko/jsp/developer/view.jsp";
   }

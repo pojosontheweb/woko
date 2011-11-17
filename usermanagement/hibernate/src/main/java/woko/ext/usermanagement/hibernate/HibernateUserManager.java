@@ -46,6 +46,7 @@ public class HibernateUserManager extends DatabaseUserManager {
 
     @Override
     public ResultIterator<User> listUsers(Integer start, Integer limit) {
+        // TODO invoke store "list"
         Session s = hibernateStore.getSession();
         Criteria crit =  s.createCriteria(getUserClass());
         int st = -1;

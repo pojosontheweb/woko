@@ -75,4 +75,11 @@
         </param-value>
     </context-param>
 
+      <context-param>
+          <param-name>Woko.Facet.Packages</param-name>
+          <param-value>
+              woko.ext.usermanagement.facets
+          </param-value>
+      </context-param>
+
 </web-app>

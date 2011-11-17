@@ -10,10 +10,6 @@ import woko.facets.builtin.Edit;
 @FacetKey(name="edit", profileId="developer")
 public class EditImpl extends BaseFacet implements Edit {
 
-  public EditImpl() {
-    setAcceptNullTargetObject(false);
-  }
-
   public String getFragmentPath() {
     return "/WEB-INF/woko/jsp/developer/edit.jsp";
   }
