@@ -6,7 +6,7 @@ import woko.persistence.ResultIterator;
 
 import java.util.Iterator;
 
-public class CompassResultIterator implements ResultIterator {
+public class CompassResultIterator<T> extends ResultIterator<T> {
 
   private final int start;
   private final int limit;
@@ -20,8 +20,10 @@ public class CompassResultIterator implements ResultIterator {
     this.iterator = compassHits.iterator();
   }
 
-  public Object next() {
-    return iterator.next().getData();
+  public T next() {
+    @SuppressWarnings("unchecked")
+    T next = (T)iterator.next().getData();
+    return next;
   }
 
   public boolean hasNext() {

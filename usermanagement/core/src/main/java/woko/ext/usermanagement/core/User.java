@@ -14,4 +14,6 @@ public interface User {
 
     List<String> getRoles();
 
+    void setRoles(List<String> roles);
+
 }

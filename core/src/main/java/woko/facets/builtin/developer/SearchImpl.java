@@ -26,9 +26,9 @@ public class SearchImpl extends BaseResultFacet implements Search {
     return "/WEB-INF/woko/jsp/developer/search.jsp";
   }
 
-  protected ResultIterator createResultIterator(ActionBeanContext abc, int start, int limit) {
+  protected ResultIterator<?> createResultIterator(ActionBeanContext abc, int start, int limit) {
     if (query==null) {
-      return new ListResultIterator(Collections.emptyList(), start, limit, 0);
+      return new ListResultIterator<Object>(Collections.emptyList(), start, limit, 0);
     } else {
       return getFacetContext().getWoko().getObjectStore().search(query, start, limit);
     }

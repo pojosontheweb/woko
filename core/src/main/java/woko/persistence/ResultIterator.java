@@ -1,15 +1,28 @@
 package woko.persistence;
 
-public interface ResultIterator {
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
-  Object next();
+public abstract class ResultIterator<T> {
 
-  boolean hasNext();
+    public abstract T next();
 
-  int getStart();
+    public abstract boolean hasNext();
 
-  int getLimit();
+    public abstract int getStart();
 
-  int getTotalSize();
+    public abstract int getLimit();
+
+    public abstract int getTotalSize();
+
+    public List<T> toList() {
+        ArrayList<T> result = new ArrayList<T>();
+        while (hasNext()) {
+            result.add(next());
+        }
+        return Collections.unmodifiableList(result);
+    }
 
 }

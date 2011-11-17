@@ -40,16 +40,16 @@ public class HibernateCompassStore extends HibernateStore {
 
     Compass compass = getCompass();
     logger.debug("Querying in template (using compass " + compass + ")");
-    return new CompassTemplate(compass).execute(new CompassCallback<CompassResultIterator>() {
+    return new CompassTemplate(compass).execute(new CompassCallback<CompassResultIterator<?>>() {
       @Override
-      public CompassResultIterator doInCompass(CompassSession session) throws CompassException {
+      public CompassResultIterator<?> doInCompass(CompassSession session) throws CompassException {
         CompassHits hits = session.find((String)query);
         int len = hits.length();
         logger.debug("Query executed, returned " + len + " hit(s)");
         int size = iLimit == -1 ? len - iStart : iLimit;
         CompassHitsOperations hitsOps = hits.detach(iStart, size);
         logger.debug("Hits detached, commiting and returning result iterator");
-        return new CompassResultIterator(hitsOps, iStart, iLimit, len);
+        return new CompassResultIterator<Object>(hitsOps, iStart, iLimit, len);
       }
     });
   }

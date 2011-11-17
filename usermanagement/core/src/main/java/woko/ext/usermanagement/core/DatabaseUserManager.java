@@ -1,5 +1,6 @@
 package woko.ext.usermanagement.core;
 
+import woko.persistence.ResultIterator;
 import woko.users.UserManager;
 import woko.util.Util;
 
@@ -85,4 +86,5 @@ public abstract class DatabaseUserManager implements UserManager {
         return Integer.toString(clearPassword.hashCode());
     }
 
+    public abstract ResultIterator<User> listUsers(Integer start, Integer limit);
 }

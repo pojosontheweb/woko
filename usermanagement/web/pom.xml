@@ -15,5 +15,12 @@
             <artifactId>woko-ri</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.rvkb</groupId>
+            <artifactId>woko-web</artifactId>
+            <version>${project.version}</version>
+            <type>war</type>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 </project>

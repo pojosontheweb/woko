@@ -23,10 +23,10 @@ public class ListImpl extends BaseResultFacet implements woko.facets.builtin.Lis
     return "/WEB-INF/woko/jsp/developer/list.jsp";
   }
 
-  protected ResultIterator createResultIterator(ActionBeanContext abc, int start, int limit) {
+  protected ResultIterator<?> createResultIterator(ActionBeanContext abc, int start, int limit) {
     String className = getClassName();
     if (className==null) {
-      return new ListResultIterator(Collections.emptyList(), start, limit, 0);
+      return new ListResultIterator<Object>(Collections.emptyList(), start, limit, 0);
     } else {
       return getFacetContext().getWoko().getObjectStore().list(className, start, limit);
     }
