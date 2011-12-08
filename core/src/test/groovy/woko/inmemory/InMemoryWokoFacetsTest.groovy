@@ -25,11 +25,11 @@ class InMemoryWokoFacetsTest extends TestCase {
   }
 
   def getFacet(String facetName, String username, Object targetObject) {
-    return createWoko(username).getFacet(facetName, new MockHttpServletRequest('',''), targetObject, targetObject?.getClass())
+    return createWoko(username).getFacet(facetName, new MockHttpServletRequest('',''), targetObject)
   }
 
   void assertFacetClass(Class expectedClass, String facetName, String username, Object targetObject) {
-    def facet = createWoko(username).getFacet(facetName, new MockHttpServletRequest('',''), targetObject, targetObject?.getClass())
+    def facet = createWoko(username).getFacet(facetName, new MockHttpServletRequest('',''), targetObject)
     assert facet?.getClass() == expectedClass
   }
 
