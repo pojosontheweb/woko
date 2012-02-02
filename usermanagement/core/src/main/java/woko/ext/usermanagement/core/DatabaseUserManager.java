@@ -67,7 +67,7 @@ public abstract class DatabaseUserManager implements UserManager {
         return roles;
     }
 
-    protected abstract User getUserByUsername(String username);
+    public abstract User getUserByUsername(String username);
 
     @Override
     public boolean authenticate(String username, HttpServletRequest request) {

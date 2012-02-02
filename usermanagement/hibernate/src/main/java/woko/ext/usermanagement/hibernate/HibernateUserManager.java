@@ -36,7 +36,7 @@ public class HibernateUserManager extends DatabaseUserManager {
     }
 
     @Override
-    protected User getUserByUsername(String username) {
+    public User getUserByUsername(String username) {
         Session s = hibernateStore.getSession();
         List l = s.createCriteria(getUserClass()).add(Restrictions.eq("username", username)).list();
         if (l.size()==0) {
