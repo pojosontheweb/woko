@@ -31,6 +31,10 @@ public class HibernateUserManager extends DatabaseUserManager {
         return userClass;
     }
 
+    public HibernateStore getHibernateStore() {
+        return hibernateStore;
+    }
+
     @Override
     protected User getUserByUsername(String username) {
         Session s = hibernateStore.getSession();

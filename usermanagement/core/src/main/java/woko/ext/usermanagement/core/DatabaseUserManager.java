@@ -22,6 +22,18 @@ public abstract class DatabaseUserManager implements UserManager {
         return this;
     }
 
+    public String getReqParamName() {
+        return reqParamName;
+    }
+
+    public String getwDevelUsername() {
+        return wDevelUsername;
+    }
+
+    public String getwDevelPassword() {
+        return wDevelPassword;
+    }
+
     public DatabaseUserManager setDeveloperUsername(String wDevelUsername) {
         this.wDevelUsername = wDevelUsername;
         return this;
