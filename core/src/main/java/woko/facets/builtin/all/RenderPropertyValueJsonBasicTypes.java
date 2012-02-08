@@ -11,7 +11,6 @@ import java.util.Date;
 @FacetKeyList(
 keys={
   @FacetKey(name="renderPropertyValueJson", profileId="all", targetObjectType=Number.class),
-  @FacetKey(name="renderPropertyValueJson", profileId="all", targetObjectType=Date.class),
   @FacetKey(name="renderPropertyValueJson", profileId="all", targetObjectType=String.class),
   @FacetKey(name="renderPropertyValueJson", profileId="all", targetObjectType=Boolean.class)
 })
