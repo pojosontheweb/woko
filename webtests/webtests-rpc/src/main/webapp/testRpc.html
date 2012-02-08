@@ -70,6 +70,28 @@
                                             loader.innerHTML = "loaded";
                                             dojo.removeClass(loader, "loading");
                                             dojo.addClass(loader, "loaded");
+
+                                            // now try out date conversion
+                                            cli.invokeFacet({
+                                                facetName: "createTowd",
+                                                load: function() {
+                                                    // retrieve the test object
+                                                    cli.load({
+                                                        className:"MyBook",
+                                                        key:332211,
+                                                        load: function(bookWithDate) {
+                                                            var s = bookWithDate.creationTime;
+                                                            var d = woko.rpc.convertDate(s);
+                                                            if (d && typeof d.getMonth === 'function') {
+                                                                // it's a date !
+                                                                log("DateOK");
+                                                            }
+                                                            cli.remove(bookWithDate);
+                                                            log("removedowd");
+                                                        }
+                                                    });
+                                                }
+                                            });
                                         }
                                     });
                                 }

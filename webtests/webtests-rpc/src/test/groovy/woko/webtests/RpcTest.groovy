@@ -76,6 +76,8 @@ class RpcTest extends WebTestBase {
                 verifyText "Reload"
                 verifyText "Save1"
                 verifyText "Deleted"
+                verifyText "DateOK"
+                verifyText "removedowd"
                 sleep 1
             }
         }

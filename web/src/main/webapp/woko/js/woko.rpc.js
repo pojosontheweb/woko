@@ -153,6 +153,28 @@ pkg.Client.prototype.remove = function(oArgs) {
     this.invokeFacet(args);
 };
 
+/**
+ * Used to convert stringified dates, like properties of JSON-ified objects, to real
+ * javascript Date objects.
+ * parameter should be a string like /Date(1328738360294)/ (with the number being the
+ * good old ms/1970 thing).
+ * return null if dateStr is null, not a string, empty string, or an unsupported string format.
+ */
+pkg.convertDate = function(dateStr) {
+    if (!dateStr) {
+        return null;
+    }
+    if (typeof dateStr != 'string') {
+        return null;
+    }
+    if (!dateStr.indexOf("/Date(")==0) {
+        return null;
+    }
+    if (!dateStr.indexOf(")")!=dateStr.length-2) {
+        return null;
+    }
+    return new Date(parseInt(dateStr.substring(6)));
+};
 
 
 
