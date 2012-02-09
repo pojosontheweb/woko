@@ -93,7 +93,7 @@ public class HibernateUserManager extends DatabaseUserManager {
             return null;
         } catch(Exception e) {
             tx.rollback();
-            return null;
+            throw new RuntimeException(e);
         } finally {
             if (session.isOpen()) {
                 session.close();
