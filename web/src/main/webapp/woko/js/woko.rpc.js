@@ -170,7 +170,7 @@ pkg.convertDate = function(dateStr) {
     if (!dateStr.indexOf("/Date(")==0) {
         return null;
     }
-    if (!dateStr.indexOf(")")!=dateStr.length-2) {
+    if (dateStr.indexOf(")/")!=dateStr.length-2) {
         return null;
     }
     return new Date(parseInt(dateStr.substring(6)));

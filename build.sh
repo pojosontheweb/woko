@@ -1,1 +1,1 @@
-mvn clean install -Pwebtests -Dwt.headless=true -Djava.io.tmpdir=/tmp
+mvn clean source:jar install -Pwebtests -Dwt.headless=true -Djava.io.tmpdir=/tmp
