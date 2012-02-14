@@ -73,24 +73,13 @@ public class HibernateUserManager extends DatabaseUserManager {
         return new ListResultIterator<User>(l, st, lm, count.intValue());
     }
 
-    @Override
-    protected User createUser(String username, String password, List<String> roles) {
+    public <RES> RES doInTxWithResult(TxCallbackWithResult<RES> callback) {
         Session session = hibernateStore.getSessionFactory().getCurrentSession();
         Transaction tx = session.beginTransaction();
         try {
-            User u = getUserByUsername(username);
-            if (u==null) {
-                User user = getUserClass().newInstance();
-                user.setUsername(username);
-                user.setPassword(encodePassword(password));
-                ArrayList<String> rolesCopy = new ArrayList<String>(roles);
-                user.setRoles(rolesCopy);
-                hibernateStore.save(user);
-                tx.commit();
-                return user;
-            }
+            RES res = callback.execute(hibernateStore, session);
             tx.commit();
-            return null;
+            return res;
         } catch(Exception e) {
             tx.rollback();
             throw new RuntimeException(e);
@@ -99,5 +88,41 @@ public class HibernateUserManager extends DatabaseUserManager {
                 session.close();
             }
         }
+    }
+
+    public void doInTx(TxCallback callback) {
+        Session session = hibernateStore.getSessionFactory().getCurrentSession();
+        Transaction tx = session.beginTransaction();
+        try {
+            callback.execute(hibernateStore, session);
+            tx.commit();
+        } catch(Exception e) {
+            tx.rollback();
+            throw new RuntimeException(e);
+        } finally {
+            if (session.isOpen()) {
+                session.close();
+            }
+        }
+    }
+
+    @Override
+    protected User createUser(final String username, final String password, final List<String> roles) {
+        return doInTxWithResult(new TxCallbackWithResult<User>() {
+            @Override
+            public User execute(HibernateStore store, Session session) throws Exception {
+                User u = getUserByUsername(username);
+                if (u==null) {
+                    User user = HibernateUserManager.this.getUserClass().newInstance();
+                    user.setUsername(username);
+                    user.setPassword(encodePassword(password));
+                    ArrayList<String> rolesCopy = new ArrayList<String>(roles);
+                    user.setRoles(rolesCopy);
+                    hibernateStore.save(user);
+                    return user;
+                }
+                return u;
+            }
+        });
     }
 }
