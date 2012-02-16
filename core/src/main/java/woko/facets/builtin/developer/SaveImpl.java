@@ -17,6 +17,8 @@ public class SaveImpl extends BaseResolutionFacet implements Save {
 
     private final static WLogger logger = WLogger.getLogger(SaveImpl.class);
 
+    public static final String TARGET_FACET_AFTER_SAVE = "edit";
+
     public Resolution getResolution(final ActionBeanContext abc) {
         // try to find a validation facet for the object
         final WokoFacetContext facetContext = getFacetContext();
@@ -39,7 +41,7 @@ public class SaveImpl extends BaseResolutionFacet implements Save {
             doSave(abc);
         }
 
-        Resolution resolution = new RedirectResolution(woko.facetUrl("edit",targetObject));
+        Resolution resolution = getNonRpcResolution(abc);
 
         return new RpcResolutionWrapper(resolution) {
             @Override
@@ -50,6 +52,15 @@ public class SaveImpl extends BaseResolutionFacet implements Save {
         };
 
 
+    }
+
+    protected Resolution getNonRpcResolution(ActionBeanContext abc) {
+        WokoFacetContext fc = getFacetContext();
+        return new RedirectResolution(fc.getWoko().facetUrl(getTargetFacetAfterSave(),fc.getTargetObject()));
+    }
+
+    protected String getTargetFacetAfterSave() {
+        return TARGET_FACET_AFTER_SAVE;
     }
 
     protected void doSave(ActionBeanContext abc) {
