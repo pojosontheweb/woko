@@ -1,19 +1,30 @@
 var u = woko.util;
 var pkg = woko.rpc = {};
 
-pkg.Client = function(config) {
-    config = config || {};
-    config.baseUrl = config.baseUrl || "";
-    if (u.isUndefinedOrNull(config.baseUrl)) {
+/**
+ * Constructor function for the RPC client.
+ * @param baseUrl the base URL of the webapp (including context path)
+ */
+pkg.Client = function(baseUrl, config) {
+    if (u.isUndefinedOrNull(baseUrl)) {
         throw "baseUrl not found in config object";
     }
-    this.baseUrl = config.baseUrl;
+    this.baseUrl = baseUrl;
+    this.config = config || {};
 };
 
+
 /**
- * Invoke a facet (via XHR)
+ * Invoke a facet (via XHR) with supplied args.
  * @param facetName the name of the facet
- * @param oArgs an object holding the optional arguments (className, key, requestParams, handleAs, onSuccess, onError, isPost)
+ * @param oArgs an object holding the optional arguments
+ * @param oArgs.className {String} the className of the target object if any
+ * @param oArgs.key {String} the key of the target object if any
+ * @param oArgs.content {Object} an object containing request parameters to be sent (key/values)
+ * @param oArgs.handleAs {String} the type of the response as a string ("text" or "json") - defaults to "json"
+ * @param oArgs.onSuccess {Function} the callback to be called if the XHR call was successful (response is passed to the callback)
+ * @param oArgs.onError {Function} the error callback (in case something went wrong during the XHR process)
+ * @param oArgs.isPost {boolean} true if the request has to be POSTed, GET otherwise (defaults to GET)
  */
 pkg.Client.prototype.invokeFacet = function(facetName, oArgs) {
     if (u.isUndefinedOrNull(facetName)) {
@@ -30,11 +41,11 @@ pkg.Client.prototype.invokeFacet = function(facetName, oArgs) {
         url: url,
         content: dojo.mixin(oArgs.content || {}, {isRpc: true})
     };
-    if (oArgs.load) {
-        xhrArgs.load = oArgs.load;
+    if (oArgs.onSuccess) {
+        xhrArgs.load = oArgs.onSuccess;
     }
     xhrArgs.error =
-        oArgs.error ||
+        oArgs.onError ||
             function(err) {
                 throw "error while trying to invoke facet " +
                     facetName + ", className " + oArgs.className +

@@ -33,7 +33,7 @@
 
             log("doc loaded");
 
-            var cli = new woko.rpc.Client({baseUrl:"/woko-webtests"});
+            var cli = new woko.rpc.Client("/woko-webtests");
 
             cli.save({
                 className:"MyBook",
@@ -41,14 +41,14 @@
                     _id: 1234,
                     name: "Moby Dick"
                 },
-                load: function(savedBook) {
+                onSuccess: function(savedBook) {
                     log(new Date() + " - Save1 : id = " + savedBook._id + " name = " + savedBook.name);
 
                     // load the saved book
                     cli.load({
                         className: "MyBook",
                         key: 1234,
-                        load: function(loadedBook) {
+                        onSuccess: function(loadedBook) {
                             log(new Date() + " - Reload : id = " + loadedBook._id + " name = " + loadedBook.name);
 
                             // update a property
@@ -58,13 +58,13 @@
                             // save the book again
                             cli.save({
                                 obj: loadedBook,
-                                load: function(savedBook2) {
+                                onSuccess: function(savedBook2) {
                                     log(new Date() + " - Save2 : id = " + loadedBook._id + " name = " + loadedBook.name);
 
                                     // delete the book
                                     cli.remove({
                                         obj: savedBook2,
-                                        load: function(result) {
+                                        onSuccess: function(result) {
                                             log(new Date() + " - Deleted : id = " + savedBook2._id + " name = " + savedBook2.name + " (success = " + result.success + ")");
                                             var loader = dojo.byId("loader");
                                             loader.innerHTML = "loaded";
@@ -73,20 +73,24 @@
 
                                             // now try out date conversion
                                             cli.invokeFacet("createTowd", {
-                                                load: function() {
+                                                onSuccess: function() {
                                                     // retrieve the test object
                                                     cli.load({
                                                         className:"MyBook",
                                                         key:332211,
-                                                        load: function(bookWithDate) {
+                                                        onSuccess: function(bookWithDate) {
                                                             var s = bookWithDate.creationTime;
                                                             var d = woko.rpc.convertDate(s);
                                                             if (d && typeof d.getMonth === 'function') {
                                                                 // it's a date !
                                                                 log("DateOK");
                                                             }
-                                                            cli.remove(bookWithDate);
-                                                            log("removedowd");
+                                                            cli.remove({
+                                                                obj: bookWithDate,
+                                                                onSuccess: function() {
+                                                                    log("removedowd");
+                                                                }
+                                                            });
                                                         }
                                                     });
                                                 }
