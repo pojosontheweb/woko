@@ -35,12 +35,13 @@
 
             var cli = new woko.rpc.Client("/woko-webtests");
 
-            cli.save({
-                className:"MyBook",
-                obj: {
-                    _id: 1234,
-                    name: "Moby Dick"
-                },
+            var mobyDick = {
+                _id: 1234,
+                _className: "MyBook",
+                name: "Moby Dick"
+            };
+
+            cli.saveObject(mobyDick, {
                 onSuccess: function(savedBook) {
                     log(new Date() + " - Save1 : id = " + savedBook._id + " name = " + savedBook.name);
 
@@ -54,8 +55,7 @@
                             loadedBook.name = "tower";
 
                             // save the book again
-                            cli.save({
-                                obj: loadedBook,
+                            cli.saveObject(loadedBook, {
                                 onSuccess: function(savedBook2) {
                                     log(new Date() + " - Save2 : id = " + loadedBook._id + " name = " + loadedBook.name);
 

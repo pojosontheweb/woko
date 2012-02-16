@@ -96,17 +96,28 @@ pkg.Client.prototype._setPaginationDetails = function(from, to) {
 };
 
 
-pkg.Client.prototype.find = function(oArgs) {
+/**
+ * Find Woko-managed POJOs by invoking the RPC APIs. Returns paginated results.
+ * @param className {String} the class name of the objects to be listed
+ * @param oArgs {Object} an object holding the optional arguments
+ * @param oArgs.resultsPerPage {Number} the number of results to return per page
+ * @param oArgs.page {Number} the number of the page
+ * @param oArgs.content {Object} an object containing request parameters to be sent (key/values)
+ * @param oArgs.handleAs {String} the type of the response as a string ("text" or "json") - defaults to "json"
+ * @param oArgs.onSuccess {Function} the callback to be called if the XHR call was successful (response is passed to the callback)
+ * @param oArgs.onError {Function} the error callback (in case something went wrong during the XHR process)
+ * @param oArgs.isPost {boolean} true if the request has to be POSTed, GET otherwise (defaults to GET)
+ */
+// TODO
+pkg.Client.prototype.findObjects = function(className, oArgs) {
     if (u.isUndefinedOrNull(oArgs.className)) {
         throw "className not found in arguments";
     }
-    var args = dojo.mixin(oArgs, {
-        handleAs: "json"
-    });
     this._setPaginationDetails(oArgs, args);
     this.invokeFacet("list", args);
 };
 
+// TODO
 pkg.Client.prototype.search = function(oArgs) {
     if (u.isUndefinedOrNull(oArgs.query)) {
         throw "query not found in arguments";
@@ -117,14 +128,26 @@ pkg.Client.prototype.search = function(oArgs) {
     this.invokeFacet("search", args);
 };
 
-pkg.Client.prototype.save = function(oArgs) {
-    if (u.isUndefinedOrNull(oArgs.obj)) {
+/**
+ * Updates or saves a Woko-managed POJO by invoking the RPC APIs.
+ * @param obj {Object} an object with all Woko metadata (returned by a previous API call)
+ * @param oArgs {Object} an object holding the arguments
+ * @param oArgs.className {String} the class name of the object to be updated (in case not provided via obj._className)
+ * @param oArgs.key {Object} the key of the object to be updated (necessary for update)
+ * @param oArgs.content {Object} an object containing request parameters to be sent (key/values)
+ * @param oArgs.handleAs {String} the type of the response as a string ("text" or "json") - defaults to "json"
+ * @param oArgs.onSuccess {Function} the callback to be called if the XHR call was successful (response is passed to the callback)
+ * @param oArgs.onError {Function} the error callback (in case something went wrong during the XHR process)
+ * @param oArgs.isPost {boolean} true if the request has to be POSTed, GET otherwise (defaults to POST)
+ */
+pkg.Client.prototype.saveObject = function(obj, oArgs) {
+    if (u.isUndefinedOrNull(obj)) {
         throw "obj not found in arguments";
     }
-    var obj = oArgs.obj;
+    oArgs = oArgs || {};
     var className = oArgs.className || obj._className;
     if (u.isUndefinedOrNull(className)) {
-        throw "className not found in arguments (not in oArgs, and not in passed obj)";
+        throw "className not found in arguments (not in oArgs, and not in passed object's meta-data)";
     }
     // create an object to hold the arguments using the "object." prefix
     var content = oArgs.content || {};
@@ -136,6 +159,7 @@ pkg.Client.prototype.save = function(oArgs) {
     }
     var args = dojo.mixin(oArgs, {
         className: className,
+        isPost: true,
         content: dojo.mixin(content, transformedParams)
     });
     if (oArgs.key) {
