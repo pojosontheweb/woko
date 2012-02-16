@@ -10,8 +10,12 @@ pkg.Client = function(config) {
     this.baseUrl = config.baseUrl;
 };
 
-pkg.Client.prototype.invokeFacet = function(oArgs) {
-    var facetName = oArgs.facetName;
+/**
+ * Invoke a facet (via XHR)
+ * @param facetName the name of the facet
+ * @param oArgs an object holding the optional arguments (className, key, requestParams, handleAs, onSuccess, onError, isPost)
+ */
+pkg.Client.prototype.invokeFacet = function(facetName, oArgs) {
     if (u.isUndefinedOrNull(facetName)) {
         throw "facetName not found in arguments";
     }
@@ -36,7 +40,7 @@ pkg.Client.prototype.invokeFacet = function(oArgs) {
                     facetName + ", className " + oArgs.className +
                     ", key " + oArgs.key;
             };
-    xhrArgs.handleAs = oArgs.handleAs || "text";
+    xhrArgs.handleAs = oArgs.handleAs || "json";
 
     if (oArgs.isPost) {
         dojo.xhrPost(xhrArgs);
@@ -54,10 +58,7 @@ pkg.Client.prototype.load = function(oArgs) {
     if (u.isUndefinedOrNull(key)) {
         throw "key not found in arguments";
     }
-    this.invokeFacet(dojo.mixin(oArgs, {
-        handleAs: "json",
-        facetName: "view"
-    }));
+    this.invokeFacet("view", oArgs);
 };
 
 pkg.Client.prototype._setPaginationDetails = function(from, to) {
@@ -77,24 +78,20 @@ pkg.Client.prototype.find = function(oArgs) {
         throw "className not found in arguments";
     }
     var args = dojo.mixin(oArgs, {
-        handleAs: "json",
-        facetName: "list"
+        handleAs: "json"
     });
     this._setPaginationDetails(oArgs, args);
-    this.invokeFacet(args);
+    this.invokeFacet("list", args);
 };
 
 pkg.Client.prototype.search = function(oArgs) {
     if (u.isUndefinedOrNull(oArgs.query)) {
         throw "query not found in arguments";
     }
-    var args = dojo.mixin(oArgs, {
-        handleAs: "json",
-        facetName: "search"
-    });
+    var args = dojo.mixin(oArgs, {} );
     this._setPaginationDetails(oArgs, args);
     args.content["facet.query"] = oArgs.query;
-    this.invokeFacet(args);
+    this.invokeFacet("search", args);
 };
 
 pkg.Client.prototype.save = function(oArgs) {
@@ -116,14 +113,12 @@ pkg.Client.prototype.save = function(oArgs) {
     }
     var args = dojo.mixin(oArgs, {
         className: className,
-        handleAs: "json",
-        facetName: "save",
         content: dojo.mixin(content, transformedParams)
     });
     if (oArgs.key) {
         args.key = oArgs.key;
     }
-    this.invokeFacet(args);
+    this.invokeFacet("save", args);
 };
 
 pkg.Client.prototype.remove = function(oArgs) {
@@ -146,11 +141,9 @@ pkg.Client.prototype.remove = function(oArgs) {
     var args = dojo.mixin(oArgs, {
         className: className,
         key: key,
-        handleAs: "json",
-        facetName: "delete",
         content: dojo.mixin(content, {"facet.confirm": true})
     });
-    this.invokeFacet(args);
+    this.invokeFacet("delete", args);
 };
 
 /**
@@ -175,8 +168,3 @@ pkg.convertDate = function(dateStr) {
     }
     return new Date(parseInt(dateStr.substring(6)));
 };
-
-
-
-
-

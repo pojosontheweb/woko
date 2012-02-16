@@ -72,8 +72,7 @@
                                             dojo.addClass(loader, "loaded");
 
                                             // now try out date conversion
-                                            cli.invokeFacet({
-                                                facetName: "createTowd",
+                                            cli.invokeFacet("createTowd", {
                                                 load: function() {
                                                     // retrieve the test object
                                                     cli.load({

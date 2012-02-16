@@ -43,7 +43,7 @@ class RpcTest extends WebTestBase {
 
             // create a bunch of objects
             goToPage '/createTestObjects'
-            verifyText 'OK'
+            verifyText '{success:true}'
 
             // list
             goToPage '/list/MyBook?isRpc=true'
@@ -61,7 +61,7 @@ class RpcTest extends WebTestBase {
 
             // remove all
             goToPage '/deleteTestObjects'
-            verifyText 'OK'
+            verifyText '{success:true}'
         }
     }
 
