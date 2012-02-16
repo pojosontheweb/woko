@@ -16,7 +16,7 @@ class CreateTestObjects extends BaseResolutionFacet {
             MyBook book = new MyBook([_id: i, name: "Moby$i", nbPages: 123])
             store.save(book)
         }
-        new StreamingResolution('text/plain', 'OK')
+        new StreamingResolution('text/json', "{success:true}")
     }
 
 

@@ -15,7 +15,7 @@ class DeleteTestObjects extends BaseResolutionFacet {
         while (allBooks.hasNext()) {
             s.delete(allBooks.next())
         }
-        new StreamingResolution('text/plain', 'OK')
+        new StreamingResolution('text/json', "{success:true}")
     }
 
 

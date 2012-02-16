@@ -13,7 +13,7 @@ class CreateTestObjectWithDate extends BaseResolutionFacet {
     Resolution getResolution(ActionBeanContext abc) {
         MyBook b = new MyBook([_id: 332211, name: "foobarbaz", creationTime: new Date()])
         facetContext.woko.objectStore.save(b)
-        return new StreamingResolution("text/plain", "OK")
+        return new StreamingResolution("text/json", "{success:true}")
     }
 
 
