@@ -1,0 +1,92 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <script type="text/javascript" src="/woko-webtests/js/dojo-1.6.1/dojo/dojo.js"></script>
+    <script type="text/javascript" src="/woko-webtests/woko/js/woko.base.js"></script>
+    <script type="text/javascript" src="/woko-webtests/woko/js/woko.rpc.js"></script>
+    <title>Woko AJAX tests</title>
+    <style type="text/css">
+        #loader {
+            border: 1px solid #000000;
+        }
+
+        .loading {
+            background-color: red;
+        }
+
+        .loaded {
+            background-color: green;
+        }
+    </style>
+    <script type="text/javascript">
+        dojo.addOnLoad(function() {
+
+            var log = function(msg) {
+                if (console) {
+                    console.log(msg);
+                    var li = document.createElement('li');
+                    li.innerHTML = msg;
+                    dojo.byId("messages").appendChild(li);
+                }
+            };
+
+            log("doc loaded");
+
+            var cli = new woko.rpc.Client("/woko-webtests");
+
+            cli.invokeFacet("createTestObjects", {
+                onSuccess: function(respCreate) {
+                    log("created test objects");
+                    // test the find function
+                    cli.findObjects("MyBook", {
+                        resultsPerPage: 3,
+                        page: 1,
+                        onSuccess: function(respFind1) {
+                            log("list1 returned " + respFind1.items.length + " items on " + respFind1.totalSize) ;
+
+                            var firstItemId = respFind1.items[0]._id;
+
+                            cli.findObjects("MyBook", {
+                                resultsPerPage: 3,
+                                page: 2,
+                                onSuccess: function(respFind2) {
+                                    log("list2 returned " + respFind2.items.length + " items on " + respFind2.totalSize) ;
+
+                                    var secondItemId = respFind2.items[0]._id;
+
+                                    if (secondItemId===firstItemId) {
+                                        log("ERROR : pages don't seem to scroll !!");
+                                    } else {
+                                        log("test list scroll OK");
+                                    }
+
+                                    cli.invokeFacet("deleteTestObjects", {
+                                        onSuccess: function() {
+                                            log("Removed test objects");
+
+                                            var loader = dojo.byId("loader");
+                                            loader.innerHTML = "loaded";
+                                            dojo.removeClass(loader, "loading");
+                                            dojo.addClass(loader, "loaded");
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    });
+                }
+            });
+
+        });
+    </script>
+</head>
+<body>
+<h1>Woko AJAX Find/Search tests</h1>
+
+
+<div id="loader" class="loading">Loading...</div>
+<ul id="messages">
+</ul>
+</body>
+</html>

@@ -87,11 +87,11 @@ pkg.Client.prototype.loadObject = function(className, key, oArgs) {
 pkg.Client.prototype._setPaginationDetails = function(from, to) {
     if (from.resultsPerPage) {
         to.content = to.content || {};
-        to.content.resultsPerPage = from.resultsPerPage;
+        to.content["facet.resultsPerPage"] = from.resultsPerPage;
     }
     if (from.page) {
         to.content = to.content || {};
-        to.content.page = from.page;
+        to.content["facet.page"] = from.page;
     }
 };
 
@@ -101,53 +101,69 @@ pkg.Client.prototype._setPaginationDetails = function(from, to) {
  * @param className {String} the class name of the objects to be listed
  * @param oArgs {Object} an object holding the optional arguments
  * @param oArgs.resultsPerPage {Number} the number of results to return per page
- * @param oArgs.page {Number} the number of the page
+ * @param oArgs.page {Number} the number of the page (starting from 1)
  * @param oArgs.content {Object} an object containing request parameters to be sent (key/values)
  * @param oArgs.handleAs {String} the type of the response as a string ("text" or "json") - defaults to "json"
  * @param oArgs.onSuccess {Function} the callback to be called if the XHR call was successful (response is passed to the callback)
  * @param oArgs.onError {Function} the error callback (in case something went wrong during the XHR process)
  * @param oArgs.isPost {boolean} true if the request has to be POSTed, GET otherwise (defaults to GET)
  */
-// TODO
 pkg.Client.prototype.findObjects = function(className, oArgs) {
-    if (u.isUndefinedOrNull(oArgs.className)) {
+    if (u.isUndefinedOrNull(className)) {
         throw "className not found in arguments";
     }
-    this._setPaginationDetails(oArgs, args);
-    this.invokeFacet("list", args);
+    oArgs = oArgs || {};
+    oArgs.className = className;
+    this._setPaginationDetails(oArgs, oArgs);
+    this.invokeFacet("list", oArgs);
 };
 
-// TODO
-pkg.Client.prototype.search = function(oArgs) {
-    if (u.isUndefinedOrNull(oArgs.query)) {
+/**
+ * Search for Woko-managed POJOs by invoking the RPC APIs. Returns paginated results.
+ * @param query {String} the query string
+ * @param oArgs {Object} an object holding the optional arguments
+ * @param oArgs.resultsPerPage {Number} the number of results to return per page
+ * @param oArgs.page {Number} the number of the page (starting from 1)
+ * @param oArgs.content {Object} an object containing request parameters to be sent (key/values)
+ * @param oArgs.handleAs {String} the type of the response as a string ("text" or "json") - defaults to "json"
+ * @param oArgs.onSuccess {Function} the callback to be called if the XHR call was successful (response is passed to the callback)
+ * @param oArgs.onError {Function} the error callback (in case something went wrong during the XHR process)
+ * @param oArgs.isPost {boolean} true if the request has to be POSTed, GET otherwise (defaults to GET)
+ */
+pkg.Client.prototype.searchObjects = function(query, oArgs) {
+    if (u.isUndefinedOrNull(query)) {
         throw "query not found in arguments";
     }
-    var args = dojo.mixin(oArgs, {} );
-    this._setPaginationDetails(oArgs, args);
-    args.content["facet.query"] = oArgs.query;
-    this.invokeFacet("search", args);
+    oArgs = oArgs || {};
+    this._setPaginationDetails(oArgs, oArgs);
+    oArgs.content = oArgs.content || {};
+    oArgs.content["facet.query"] = query;
+    this.invokeFacet("search", oArgs);
 };
 
 /**
  * Updates or saves a Woko-managed POJO by invoking the RPC APIs.
- * @param obj {Object} an object with all Woko metadata (returned by a previous API call)
+ * This function can be called in two flavors :
+ * * passing a JS object as oArgs.obj that has been previously returned by 'loadObject' (and thereby containing all metadata required)
+ * * passing a className and key, and submitting parameters as the content
  * @param oArgs {Object} an object holding the arguments
- * @param oArgs.className {String} the class name of the object to be updated (in case not provided via obj._className)
- * @param oArgs.key {Object} the key of the object to be updated (necessary for update)
+ * @param oArgs.obj {Object} the object to be saved with all Woko metadata (returned by a previous API call)
+ * @param oArgs.className {String} the class name of the object to be updated
+ * @param oArgs.key {Object} the key of the object to be updated
  * @param oArgs.content {Object} an object containing request parameters to be sent (key/values)
  * @param oArgs.handleAs {String} the type of the response as a string ("text" or "json") - defaults to "json"
  * @param oArgs.onSuccess {Function} the callback to be called if the XHR call was successful (response is passed to the callback)
  * @param oArgs.onError {Function} the error callback (in case something went wrong during the XHR process)
  * @param oArgs.isPost {boolean} true if the request has to be POSTed, GET otherwise (defaults to POST)
  */
-pkg.Client.prototype.saveObject = function(obj, oArgs) {
-    if (u.isUndefinedOrNull(obj)) {
+pkg.Client.prototype.saveObject = function(oArgs) {
+    if (u.isUndefinedOrNull(oArgs.obj)) {
         throw "obj not found in arguments";
     }
-    oArgs = oArgs || {};
+    var obj = oArgs.obj;
     var className = oArgs.className || obj._className;
     if (u.isUndefinedOrNull(className)) {
-        throw "className not found in arguments (not in oArgs, and not in passed object's meta-data)";
+        throw "className not found in arguments (not in oArgs, and not in passed obj)";
     }
     // create an object to hold the arguments using the "object." prefix
     var content = oArgs.content || {};
@@ -159,7 +175,6 @@ pkg.Client.prototype.saveObject = function(obj, oArgs) {
     }
     var args = dojo.mixin(oArgs, {
         className: className,
-        isPost: true,
         content: dojo.mixin(content, transformedParams)
     });
     if (oArgs.key) {
@@ -168,7 +183,22 @@ pkg.Client.prototype.saveObject = function(obj, oArgs) {
     this.invokeFacet("save", args);
 };
 
-pkg.Client.prototype.remove = function(oArgs) {
+/**
+ * Deletes a Woko-managed POJO by invoking the RPC APIs.
+ * This function can be called in two flavors :
+ * * passing a JS object as oArgs.obj that has been previously returned by 'loadObject' (and thereby containing all metadata required)
+ * * passing a className and key, and submitting parameters as the content
+ * @param oArgs {Object} an object holding the arguments
+ * @param oArgs.obj {Object} the object to be deleted with all Woko metadata (returned by a previous API call)
+ * @param oArgs.className {String} the class name of the object to be updated
+ * @param oArgs.key {Object} the key of the object to be updated
+ * @param oArgs.content {Object} an object containing request parameters to be sent (key/values)
+ * @param oArgs.handleAs {String} the type of the response as a string ("text" or "json") - defaults to "json"
+ * @param oArgs.onSuccess {Function} the callback to be called if the XHR call was successful (response is passed to the callback)
+ * @param oArgs.onError {Function} the error callback (in case something went wrong during the XHR process)
+ * @param oArgs.isPost {boolean} true if the request has to be POSTed, GET otherwise (defaults to POST)
+ */
+pkg.Client.prototype.removeObject = function(oArgs) {
     var obj = oArgs.obj,
         className = oArgs.className,
         key = oArgs.key;

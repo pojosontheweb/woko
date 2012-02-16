@@ -12,9 +12,11 @@ class CreateTestObjects extends BaseResolutionFacet {
 
     Resolution getResolution(ActionBeanContext abc) {
         def store = facetContext.woko.objectStore
-        for (int i=0;i<100;i++) {
-            MyBook book = new MyBook([_id: i, name: "Moby$i", nbPages: 123])
-            store.save(book)
+        if (store.load("MyBook", "0") == null) {
+            for (int i=0;i<100;i++) {
+                MyBook book = new MyBook([_id: i, name: "Moby$i", nbPages: 123])
+                store.save(book)
+            }
         }
         new StreamingResolution('text/json', "{success:true}")
     }

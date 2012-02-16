@@ -80,6 +80,25 @@ class RpcTest extends WebTestBase {
                 verifyText "removedowd"
                 sleep 1
             }
+
+            // TODO those tests are too long : find another testing method !
+            /*
+            goToPage("/testRpcFind.html");
+            retry(maxcount: 10) {
+                println "Trying..."
+                verifyText "list1 returned 3 items on 100"
+                verifyText "list2 returned 3 items on 100"
+                verifyText "test list scroll OK"
+                verifyText "Removed test objects"
+            }
+
+            goToPage("/testRpcSearch.html");
+            retry(maxcount: 200) {
+                verifyText "search returned 1 items on 1"
+                verifyText "Removed test objects"
+                sleep 1000
+            }
+            */
         }
     }
 

@@ -41,7 +41,8 @@
                 name: "Moby Dick"
             };
 
-            cli.saveObject(mobyDick, {
+            cli.saveObject({
+                obj: mobyDick,
                 onSuccess: function(savedBook) {
                     log(new Date() + " - Save1 : id = " + savedBook._id + " name = " + savedBook.name);
 
@@ -55,19 +56,16 @@
                             loadedBook.name = "tower";
 
                             // save the book again
-                            cli.saveObject(loadedBook, {
+                            cli.saveObject({
+                                obj: loadedBook,
                                 onSuccess: function(savedBook2) {
                                     log(new Date() + " - Save2 : id = " + loadedBook._id + " name = " + loadedBook.name);
 
                                     // delete the book
-                                    cli.remove({
+                                    cli.removeObject({
                                         obj: savedBook2,
                                         onSuccess: function(result) {
                                             log(new Date() + " - Deleted : id = " + savedBook2._id + " name = " + savedBook2.name + " (success = " + result.success + ")");
-                                            var loader = dojo.byId("loader");
-                                            loader.innerHTML = "loaded";
-                                            dojo.removeClass(loader, "loading");
-                                            dojo.addClass(loader, "loaded");
 
                                             // now try out date conversion
                                             cli.invokeFacet("createTowd", {
@@ -81,10 +79,16 @@
                                                                 // it's a date !
                                                                 log("DateOK");
                                                             }
-                                                            cli.remove({
+                                                            cli.removeObject({
                                                                 obj: bookWithDate,
                                                                 onSuccess: function() {
                                                                     log("removedowd");
+
+                                                                    var loader = dojo.byId("loader");
+                                                                    loader.innerHTML = "loaded";
+                                                                    dojo.removeClass(loader, "loading");
+                                                                    dojo.addClass(loader, "loaded");
+
                                                                 }
                                                             });
                                                         }
