@@ -11,7 +11,6 @@ public class CompassResultIterator<T> extends ResultIterator<T> {
   private final int start;
   private final int limit;
   private final int totalSize;
-//  private final
   private Iterator<CompassHit> iterator;
 
   public CompassResultIterator(CompassHitsOperations compassHits, int start, int limit, int totalSize) {
