@@ -60,16 +60,28 @@ pkg.Client.prototype.invokeFacet = function(facetName, oArgs) {
     }
 };
 
-pkg.Client.prototype.load = function(oArgs) {
-    var className = oArgs.className;
+/**
+ * Load a Woko-managed POJO by invoking the RPC APIs.
+ * @param className {String} the class name of the target object
+ * @param key {String} the key of the target object
+ * @param oArgs {Object} an object holding the optional arguments
+ * @param oArgs.content {Object} an object containing request parameters to be sent (key/values)
+ * @param oArgs.handleAs {String} the type of the response as a string ("text" or "json") - defaults to "json"
+ * @param oArgs.onSuccess {Function} the callback to be called if the XHR call was successful (response is passed to the callback)
+ * @param oArgs.onError {Function} the error callback (in case something went wrong during the XHR process)
+ * @param oArgs.isPost {boolean} true if the request has to be POSTed, GET otherwise (defaults to GET)
+ */
+pkg.Client.prototype.loadObject = function(className, key, oArgs) {
     if (u.isUndefinedOrNull(className)) {
         throw "className not found in arguments";
     }
-    var key = oArgs.key;
     if (u.isUndefinedOrNull(key)) {
         throw "key not found in arguments";
     }
-    this.invokeFacet("view", oArgs);
+    this.invokeFacet("view", dojo.mixin(oArgs, {
+        className: className,
+        key: key
+    }));
 };
 
 pkg.Client.prototype._setPaginationDetails = function(from, to) {

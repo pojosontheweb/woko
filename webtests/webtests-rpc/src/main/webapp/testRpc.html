@@ -45,9 +45,7 @@
                     log(new Date() + " - Save1 : id = " + savedBook._id + " name = " + savedBook.name);
 
                     // load the saved book
-                    cli.load({
-                        className: "MyBook",
-                        key: 1234,
+                    cli.loadObject("MyBook", 1234, {
                         onSuccess: function(loadedBook) {
                             log(new Date() + " - Reload : id = " + loadedBook._id + " name = " + loadedBook.name);
 
@@ -75,9 +73,7 @@
                                             cli.invokeFacet("createTowd", {
                                                 onSuccess: function() {
                                                     // retrieve the test object
-                                                    cli.load({
-                                                        className:"MyBook",
-                                                        key:332211,
+                                                    cli.loadObject("MyBook", 332211, {
                                                         onSuccess: function(bookWithDate) {
                                                             var s = bookWithDate.creationTime;
                                                             var d = woko.rpc.convertDate(s);
