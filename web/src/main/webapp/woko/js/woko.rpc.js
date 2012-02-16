@@ -39,7 +39,7 @@ pkg.Client.prototype.invokeFacet = function(facetName, oArgs) {
     }
     var xhrArgs = {
         url: url,
-        content: dojo.mixin(oArgs.content || {}, {isRpc: true})
+        content: u.mixin(oArgs.content || {}, {isRpc: true})
     };
     if (oArgs.onSuccess) {
         xhrArgs.load = oArgs.onSuccess;
@@ -54,9 +54,9 @@ pkg.Client.prototype.invokeFacet = function(facetName, oArgs) {
     xhrArgs.handleAs = oArgs.handleAs || "json";
 
     if (oArgs.isPost) {
-        dojo.xhrPost(xhrArgs);
+        u.xhrPost(xhrArgs);
     } else {
-        dojo.xhrGet(xhrArgs);
+        u.xhrGet(xhrArgs);
     }
 };
 
@@ -78,7 +78,7 @@ pkg.Client.prototype.loadObject = function(className, key, oArgs) {
     if (u.isUndefinedOrNull(key)) {
         throw "key not found in arguments";
     }
-    this.invokeFacet("view", dojo.mixin(oArgs, {
+    this.invokeFacet("view", u.mixin(oArgs, {
         className: className,
         key: key
     }));
@@ -173,9 +173,9 @@ pkg.Client.prototype.saveObject = function(oArgs) {
             transformedParams["object." + p] = obj[p];
         }
     }
-    var args = dojo.mixin(oArgs, {
+    var args = u.mixin(oArgs, {
         className: className,
-        content: dojo.mixin(content, transformedParams)
+        content: u.mixin(content, transformedParams)
     });
     if (oArgs.key) {
         args.key = oArgs.key;
@@ -215,10 +215,10 @@ pkg.Client.prototype.removeObject = function(oArgs) {
             " the instance to be deleted";
     }
     var content = oArgs.content || {};
-    var args = dojo.mixin(oArgs, {
+    var args = u.mixin(oArgs, {
         className: className,
         key: key,
-        content: dojo.mixin(content, {"facet.confirm": true})
+        content: u.mixin(content, {"facet.confirm": true})
     });
     this.invokeFacet("delete", args);
 };
