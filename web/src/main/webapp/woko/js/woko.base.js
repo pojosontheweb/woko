@@ -72,7 +72,20 @@ woko.util = {};
     };
 
     u.mixin = function(o1,o2) {
-        u._throwNotImplemented();
+        o1 = o1 || {};
+        o2 = o2 || {};
+        var res = {};
+        for (var p1 in o1) {
+            if (o1.hasOwnProperty(p1) && typeof o1[p1] != 'function') {
+                res[p1] = o1[p1];
+            }
+        }
+        for (var p2 in o2) {
+            if (o2.hasOwnProperty(p2) && typeof o2[p2] != 'function') {
+                res[p2] = o2[p2];
+            }
+        }
+        return res;
     };
 
     u.xhrPost = function(oArgs) {

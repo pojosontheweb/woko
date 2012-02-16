@@ -1,0 +1,124 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <script type="text/javascript" src="/woko-webtests/js/jquery-1.7.1.js"></script>
+    <script type="text/javascript" src="/woko-webtests/woko/js/woko.base.js"></script>
+    <script type="text/javascript" src="/woko-webtests/woko/js/woko.jquery.js"></script>
+    <script type="text/javascript" src="/woko-webtests/woko/js/woko.rpc.js"></script>
+    <title>Woko AJAX JQuery tests</title>
+    <style type="text/css">
+        #loader {
+            border: 1px solid #000000;
+        }
+
+        .loading {
+            background-color: red;
+        }
+
+        .loaded {
+            background-color: green;
+        }
+    </style>
+</head>
+<body>
+<h1>Woko AJAX tests</h1>
+
+<div id="loader" class="loading">Loading...</div>
+<ul id="messages">
+</ul>
+
+    <script type="text/javascript">
+
+        $(document).ready(function() {
+
+
+            var log = function(msg) {
+                if (console) {
+                    console.log(msg);
+                    var li = document.createElement('li');
+                    li.innerHTML = msg;
+
+                    console.log();
+
+                    $('#messages')[0].appendChild(li);
+                }
+            };
+
+            log("doc loaded");
+
+            var cli = new woko.rpc.Client("/woko-webtests");
+
+            var mobyDick = {
+                _id: 1234,
+                _className: "MyBook",
+                name: "Moby Dick"
+            };
+
+            cli.saveObject({
+                obj: mobyDick,
+                onSuccess: function(savedBook) {
+                    log(new Date() + " - Save1 : id = " + savedBook._id + " name = " + savedBook.name);
+
+                    // load the saved book
+                    cli.loadObject("MyBook", 1234, {
+                        onSuccess: function(loadedBook) {
+                            log(new Date() + " - Reload : id = " + loadedBook._id + " name = " + loadedBook.name);
+
+                            // update a property
+                            loadedBook.nbPages = "123";
+                            loadedBook.name = "tower";
+
+                            // save the book again
+                            cli.saveObject({
+                                obj: loadedBook,
+                                onSuccess: function(savedBook2) {
+                                    log(new Date() + " - Save2 : id = " + loadedBook._id + " name = " + loadedBook.name);
+
+                                    // delete the book
+                                    cli.removeObject({
+                                        obj: savedBook2,
+                                        onSuccess: function(result) {
+                                            log(new Date() + " - Deleted : id = " + savedBook2._id + " name = " + savedBook2.name + " (success = " + result.success + ")");
+
+                                            // now try out date conversion
+                                            cli.invokeFacet("createTowd", {
+                                                handleAs: 'text',
+                                                onSuccess: function() {
+                                                    // retrieve the test object
+                                                    cli.loadObject("MyBook", 332211, {
+                                                        onSuccess: function(bookWithDate) {
+                                                            var s = bookWithDate.creationTime;
+                                                            var d = woko.rpc.convertDate(s);
+                                                            if (d && typeof d.getMonth === 'function') {
+                                                                // it's a date !
+                                                                log("DateOK");
+                                                            }
+                                                            cli.removeObject({
+                                                                obj: bookWithDate,
+                                                                onSuccess: function() {
+                                                                    log("removedowd");
+
+                                                                    $("#loader").
+                                                                      removeClass("loading").
+                                                                      addClass("loaded").
+                                                                      html("loaded");
+                                                                }
+                                                            });
+                                                        }
+                                                    });
+                                                }
+                                            });
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>

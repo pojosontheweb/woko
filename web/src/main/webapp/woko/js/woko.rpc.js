@@ -180,6 +180,7 @@ pkg.Client.prototype.saveObject = function(oArgs) {
     if (oArgs.key) {
         args.key = oArgs.key;
     }
+    args.isPost = true;
     this.invokeFacet("save", args);
 };
 

@@ -3,6 +3,7 @@ package woko.webtests
 import org.junit.Test
 import org.junit.runners.JUnit4
 import org.junit.runner.RunWith
+import org.junit.Ignore
 
 @RunWith(JUnit4.class)
 class RpcTest extends WebTestBase {
@@ -66,8 +67,8 @@ class RpcTest extends WebTestBase {
     }
 
     @Test
-    void javaScriptAPI() {
-        webtest('test JS api') {
+    void javaScriptAPIDojo() {
+        webtest('test JS api Dojo') {
             login()
             goToPage("/testRpc.html");
             retry(maxcount: 10) {
@@ -99,6 +100,26 @@ class RpcTest extends WebTestBase {
                 sleep 1000
             }
             */
+        }
+    }
+
+    @Test
+    @Ignore
+    // TODO jquery /webtest issue here...
+    void javaScriptAPIJQuery() {
+        webtest('test JS api JQuery') {
+            login()
+            goToPage("/testRpcJquery.html");
+            retry(maxcount: 50) {
+                verifyText "loaded"
+                verifyText "Save1"
+                verifyText "Reload"
+                verifyText "Save1"
+                verifyText "Deleted"
+                verifyText "DateOK"
+                verifyText "removedowd"
+                sleep 1
+            }
         }
     }
 

@@ -49,7 +49,7 @@ public class DeleteImpl extends BaseResolutionFacet implements Delete {
       return new RpcResolutionWrapper(new RedirectResolution("/home")) {
           @Override
           public Resolution getRpcResolution() {
-              return new StreamingResolution("text/json", "{success:true}");
+              return new StreamingResolution("text/json", "{ \"success\": true }");
           }
       };
     }
