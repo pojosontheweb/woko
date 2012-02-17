@@ -35,7 +35,7 @@ new File('.').eachFileRecurse { f ->
     if (!excluded && fullPath.endsWith(".properties")) {
         for (String s : bundlesMap.keySet()) {
             if (fullPath.endsWith(s)) {
-                t.text = bundlesMap[s]
+                f.text = bundlesMap[s]
                 println "U $fullPath"
                 nbReplaced++
             }
