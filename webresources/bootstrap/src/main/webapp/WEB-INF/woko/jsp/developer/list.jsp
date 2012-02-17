@@ -26,53 +26,32 @@
               nbPages++;
             }
         %>
-        <h1>
+        <h1 class="page-header">
             <fmt:message key="woko.devel.list.title">
                 <fmt:param value="<%=totalSize%>"/>
                 <fmt:param value="<%=className%>"/>
             </fmt:message>
         </h1>
-        <div id="wokoPaginationSettings">
-            <s:form action="/list">
-                <s:hidden name="className"/>
-                <input type="hidden"name="facet.page" value="1"/>
-                <fmt:message key="woko.devel.list.showing"/>
-                <s:select name="facet.resultsPerPage" onchange="this.form.submit()">
-                    <s:option value="10">10</s:option>
-                    <s:option value="25">25</s:option>
-                    <s:option value="50">50</s:option>
-                    <s:option value="100">100</s:option>
-                    <s:option value="500">500</s:option>
-                    <s:option value="1000">1000</s:option>
-                </s:select>
-                <fmt:message key="woko.devel.list.objectPerPage"/>
-            </s:form>
-        </div>
-        <%
-            if (nbPages>1) {
-        %>
-            <div class="wokoPagination">
-                <%
-                    for (int i=1;i<=nbPages;i++) {
-                        if (i==p) {
-                %>
-                    <span class="wokoCurrentPage"><%=i%></span>
 
-                <%      } else { %>
-                    <span><a href="${pageContext.request.contextPath}/list/<%=className%>?facet.page=<%=i%>&facet.resultsPerPage=<%=resultsPerPage%>"><%=i%></a></span>
-                <%
-                        }
-                        if (i<nbPages) {
-                %>
-                |
-                <%
-                        }
-                    }
-                %>
+        <div class="row">
+            <div class="span12">
+                <s:form action="/list" class="form-inline">
+                    <s:hidden name="className"/>
+                    <input type="hidden"name="facet.page" value="1"/>
+                    <fmt:message key="woko.devel.list.showing"/>
+                    <s:select name="facet.resultsPerPage" onchange="this.form.submit()">
+                        <s:option value="10">10</s:option>
+                        <s:option value="25">25</s:option>
+                        <s:option value="50">50</s:option>
+                        <s:option value="100">100</s:option>
+                        <s:option value="500">500</s:option>
+                        <s:option value="1000">1000</s:option>
+                    </s:select>
+                    <fmt:message key="woko.devel.list.objectPerPage"/>
+                </s:form>
             </div>
-        <%
-            }
-        %>
+        </div>
+
         <ul>
             <%
               while (results.hasNext()) {
@@ -112,7 +91,46 @@
             %>
         </ul>
 
-        
+        <%
+            int nbPagesClickable = 10;
+            if (nbPages>1) {
+                int pagerStart = p > nbPagesClickable ? p - (nbPagesClickable-1) : 1;
+                String leftMoveCss = p <= 1 ? "disabled" : "";
+                String leftMoveHref = request.getContextPath() + "/list/" + className +
+                  "?facet.page=" + (p - 1);
+
+                String rightMoveCss = p == nbPages ? "disabled" : "";
+        %>
+            <div class="row-fluid">
+                <div class="span9 pagination">
+                    <ul>
+                        <li class="<%=leftMoveCss%>">
+                            <a href="<%=leftMoveHref%>">«</a>
+                        </li>
+                    <%
+                        for (int i=pagerStart;i<=pagerStart+nbPagesClickable-1;i++) {
+                            String css = "";
+                            if (i==p) {
+                                css = "active";
+                            }
+
+                    %>
+                        <li class="<%=css%>">
+                            <a href="${pageContext.request.contextPath}/list/<%=className%>?facet.page=<%=i%>&facet.resultsPerPage=<%=resultsPerPage%>"><%=i%></a>
+                        </li>
+                    <%
+                        }
+                    %>
+
+                        <li class="<%=rightMoveCss%>">
+                            <a href="${pageContext.request.contextPath}/list/<%=className%>?facet.page=<%=p+1%>&facet.resultsPerPage=<%=resultsPerPage%>">»</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        <%
+            }
+        %>
 
     </s:layout-component>
 </s:layout-render>
