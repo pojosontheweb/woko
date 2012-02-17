@@ -15,6 +15,13 @@
         <module>bootstrap</module>
     </modules>
     <dependencies>
+        <!-- dep on stripes to be able to use the tags and all in ide. provided scope anyway. -->
+        <dependency>
+            <groupId>net.sourceforge.stripes</groupId>
+            <artifactId>stripes</artifactId>
+            <version>${stripes.version}</version>
+            <scope>provided</scope>
+        </dependency>
         <dependency>
             <groupId>servlets.com</groupId>
             <artifactId>cos</artifactId>

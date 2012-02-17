@@ -9,4 +9,12 @@
     <artifactId>woko-web-bootstrap</artifactId>
     <name>Woko - web</name>
     <packaging>war</packaging>
+    <dependencies>
+        <dependency>
+            <groupId>com.rvkb</groupId>
+            <artifactId>woko-web-core</artifactId>
+            <version>${project.version}</version>
+            <type>war</type>
+        </dependency>
+    </dependencies>
 </project>

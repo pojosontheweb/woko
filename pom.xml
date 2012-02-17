@@ -59,6 +59,9 @@
         <module>archetype-heroku</module>
         <module>usermanagement</module>
     </modules>
+    <properties>
+        <stripes.version>1.5.5</stripes.version>
+    </properties>
     <build>
         <plugins>
             <plugin>
