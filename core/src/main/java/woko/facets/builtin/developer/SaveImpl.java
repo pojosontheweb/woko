@@ -66,7 +66,7 @@ public class SaveImpl extends BaseResolutionFacet implements Save {
     protected void doSave(ActionBeanContext abc) {
         WokoFacetContext facetContext = getFacetContext();
         facetContext.getWoko().getObjectStore().save(facetContext.getTargetObject());
-        abc.getMessages().add(new SimpleMessage("Object saved"));
+        abc.getMessages().add(new LocalizableMessage("woko.object.saved"));
     }
 
 }
