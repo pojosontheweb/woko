@@ -44,7 +44,7 @@
     <modules>
         <module>stripes-plugins</module>
         <module>core</module>
-        <module>web</module>
+        <module>webresources</module>
         <module>container-auth</module>
         <module>builtin-auth</module>
         <module>hibernate</module>

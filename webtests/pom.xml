@@ -14,17 +14,10 @@
         <module>webtests-builtin-auth</module>
         <module>webtests-localization</module>
         <module>webtests-rpc</module>
-        <module>webtests-usermanagement</module>
-        <!--module>webtests-git</module-->
+        <!-- module>webtests-usermanagement</module -->
     </modules>
 
     <dependencies>
-        <dependency>
-            <groupId>com.rvkb</groupId>
-            <artifactId>woko-web</artifactId>
-            <version>${project.version}</version>
-            <type>war</type>
-        </dependency>
         <dependency>
             <groupId>com.canoo.webtest</groupId>
             <artifactId>webtest</artifactId>

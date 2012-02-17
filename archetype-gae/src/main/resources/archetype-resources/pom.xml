@@ -68,7 +68,7 @@
         </dependency>
         <dependency>
             <groupId>com.rvkb</groupId>
-            <artifactId>woko-web</artifactId>
+            <artifactId>woko-web-lithium</artifactId>
             <version>${woko.version}</version>
             <type>war</type>
         </dependency>
