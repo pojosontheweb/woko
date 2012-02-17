@@ -8,7 +8,7 @@
 <w:facet targetObject="${o}" facetName="renderTitle"/>
 <s:layout-render name="${layout.layoutPath}" layout="${layout}" pageTitle="${renderTitle.title}">
     <s:layout-component name="body">
-        <h1><fmt:message key="woko.devel.confirmDelete.title"/></h1>
+        <h1 class="page-header"><fmt:message key="woko.devel.confirmDelete.title"/></h1>
         <p>
             <fmt:message key="woko.devel.confirmDelete.question">
                 <fmt:param value="${renderTitle.title}"/>
@@ -22,9 +22,9 @@
             <%--<input type="submit" name="facet.cancel" value="Cancel"/>--%>
         <%--</form>--%>
 
-        <s:form action="${pageContext.request.contextPath}/delete/${className}/${key}">
-            <s:submit name="facet.confirm"/>
-            <s:submit name="facet.cancel"/>
+        <s:form action="${pageContext.request.contextPath}/delete/${className}/${key}" class="form-inline">
+            <s:submit name="facet.confirm" class="btn btn-primary"/>
+            <s:submit name="facet.cancel" class="btn"/>
         </s:form>
 
     </s:layout-component>
