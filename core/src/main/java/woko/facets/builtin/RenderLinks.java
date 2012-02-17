@@ -2,10 +2,12 @@ package woko.facets.builtin;
 
 import woko.facets.FragmentFacet;
 import net.sourceforge.jfacets.IFacet;
+import woko.facets.builtin.all.Link;
 
-// TODO find better : this is really crappy, we don't have typing etc.
+import java.util.List;
+
 public interface RenderLinks extends IFacet, FragmentFacet {
 
-  Object getLinks();
+  List<Link> getLinks();
 
 }

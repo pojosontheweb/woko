@@ -1,4 +1,13 @@
+<%@ page import="woko.Woko" %>
+<%@ page import="woko.facets.builtin.RenderTitle" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="w" tagdir="/WEB-INF/tags/woko" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<h1 class="wokoObjectTitle">${renderTitle.title}</h1>
+<%
+    Woko woko = Woko.getWoko(application);
+    RenderTitle renderTitle = (RenderTitle)request.getAttribute("renderTitle");
+    Object target = renderTitle.getFacetContext().getTargetObject();
+    Class<?> targetClass = target.getClass();
+    String className = woko.getObjectStore().getClassMapping(targetClass);
+%>
+<h1 class="page-header">${renderTitle.title} <small>(<%=className%>)</small></h1>

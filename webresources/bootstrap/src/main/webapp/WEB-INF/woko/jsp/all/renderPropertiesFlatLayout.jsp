@@ -1,9 +1,16 @@
+<%--
+    this is COPIED FROM renderProperties.jsp : there ain't such thing as a flat layout
+    in bootstrap
+    // TODO : clean up this flat layout thing !
+--%>
 <%@ page import="woko.facets.builtin.RenderProperties" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Map" %>
 <%@ page import="woko.facets.WokoFacetContext" %>
 <%@ page import="woko.Woko" %>
 <%@ page import="woko.util.Util" %>
+<%@ page import="woko.facets.builtin.RenderPropertyName" %>
+<%@ page import="woko.persistence.ObjectStore" %>
 <%@ page import="woko.facets.builtin.RenderPropertyValue" %>
 <%@ taglib prefix="w" tagdir="/WEB-INF/tags/woko" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -15,19 +22,27 @@
     WokoFacetContext fctx = (WokoFacetContext)renderProperties.getFacetContext();
     Woko woko = fctx.getWoko();
     Object owningObject = fctx.getTargetObject();
-    String owningObjectClassName = woko.getObjectStore().getClassMapping(owningObject.getClass());
 %>
-<div class="wokoProperties">
-    <%
-      for (String pName : propertyNames) {
-          Object pVal = propertyValues.get(pName);
-          RenderPropertyValue renderPropertyValue = Util.getRenderPropValueFacet(woko, request, owningObject, pName, pVal);
-          String pValFragmentPath = renderPropertyValue.getFragmentPath(request);
-    %>
-      <div class="wokoProperty <%=owningObjectClassName%> <%=pName%>">
-          <jsp:include page="<%=pValFragmentPath%>"/>
-      </div>
-    <%
-      }
-    %>
+<%
+    for (String pName : propertyNames) {
+        Object pVal = propertyValues.get(pName);
+
+        RenderPropertyName renderPropertyName =
+            (RenderPropertyName)woko.getFacet("renderPropertyName", request, owningObject, owningObject.getClass(), true);
+        renderPropertyName.setPropertyName(pName);
+        String pNameFragmentPath = renderPropertyName.getFragmentPath(request);
+
+        RenderPropertyValue renderPropertyValue = Util.getRenderPropValueFacet(woko, request, owningObject, pName, pVal);
+        String pValFragmentPath = renderPropertyValue.getFragmentPath(request);
+%>
+<div class="row-fluid">
+    <div class="span3 wokoPropertyName">
+        <jsp:include page="<%=pNameFragmentPath%>"/>
+    </div>
+    <div class="span9 wokoPropertyValue">
+        <jsp:include page="<%=pValFragmentPath%>"/>
+    </div>
 </div>
+<%
+    }
+%>

@@ -1,76 +1,120 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="s" uri="http://stripes.sourceforge.net/stripes.tld" %>
+<%@ taglib prefix="s" uri="http://stripes.sourceforge.net/stripes-dynattr.tld" %>
 <%@ taglib prefix="w" tagdir="/WEB-INF/tags/woko" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <w:username var="username"/>
 <c:set var="cp" value="${pageContext.request.contextPath}"/>
 <s:layout-definition>
+    <!DOCTYPE html>
     <html>
-        <head>
+    <head>
 
-            <c:choose>
-                <c:when test="${not empty pageTitle}">
-                    <title>${layout.appTitle} - ${pageTitle}</title>
-                </c:when>
-                <c:otherwise>
-                    <title>${layout.appTitle}</title>
-                </c:otherwise>
-            </c:choose>
-            <c:forEach items="${layout.cssIncludes}" var="cssLink">
-                <link rel="stylesheet" href="${cp}${cssLink}" type="text/css">
-            </c:forEach>
-            <c:forEach items="${layout.jsIncludes}" var="jsLink">
-                <script type="text/javascript" src="${cp}${jsLink}"></script>
-            </c:forEach>
-            <s:layout-component name="customCss"/>
-            <s:layout-component name="customJs"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta charset="utf-8">
 
-        </head>
+        <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+        <!--[if lt IE 9]>
+          <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
 
-        <body class="${bodyClass}">
-            <div class="wokoAppTitle">${layout.appTitle}</div>
-            <hr/>
+        <c:choose>
+            <c:when test="${not empty pageTitle}">
+                <title>${layout.appTitle} - ${pageTitle}</title>
+            </c:when>
+            <c:otherwise>
+                <title>${layout.appTitle}</title>
+            </c:otherwise>
+        </c:choose>
+        <c:forEach items="${layout.cssIncludes}" var="cssLink">
+            <link rel="stylesheet" href="${cp}${cssLink}" type="text/css">
+        </c:forEach>
+        <c:forEach items="${layout.jsIncludes}" var="jsLink">
+            <script type="text/javascript" src="${cp}${jsLink}"></script>
+        </c:forEach>
+        <s:layout-component name="customCss"/>
+        <s:layout-component name="customJs"/>
 
-            <c:if test="${skipLoginLink==null}">
-                <div class="wokoAuthInfo">
-                    <c:choose>
-                        <c:when test="${username != null}">
-                            <fmt:message key="woko.layout.loggedAs"/> <strong>${username}</strong> -
-                            <a href="${cp}/logout"><fmt:message key="woko.layout.logout"/> </a>
-                        </c:when>
-                        <c:otherwise>
-                            <fmt:message key="woko.layout.notLogged"/>
-                            <a href="${cp}/login"><fmt:message key="woko.layout.login"/> </a>
-                        </c:otherwise>
-                    </c:choose>
+        <link rel="stylesheet" type="text/css" href="${cp}/bootstrap/css/bootstrap.min.css">
+        <style type="text/css">
+            body {
+                padding-top: 60px;
+                padding-bottom: 40px;
+            }
+
+            .sidebar-nav {
+                padding: 9px 0;
+            }
+        </style>
+        <link rel="stylesheet" type="text/css" href="${cp}/bootstrap/css/bootstrap-responsive.min.css">
+        <link rel="stylesheet" type="text/css" href="${cp}/bootstrap/css/bootstrap-woko.css">
+
+    </head>
+
+    <body>
+    <div class="navbar navbar-fixed-top">
+        <div class="navbar-inner">
+            <div class="container-fluid">
+                <a data-target=".nav-collapse" data-toggle="collapse" class="btn btn-navbar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </a>
+                <a href="#" class="brand">${layout.appTitle}</a>
+
+                <div class="nav-collapse">
+
+                    <ul class="nav nav-pills">
+                        <w:includeFacet facetName="navBar" targetObject="${layout.facetContext.targetObject}"/>
+                    </ul>
+
+                    <p class="navbar-text pull-right">
+                        <c:if test="${skipLoginLink==null}">
+                            <c:choose>
+                                <c:when test="${username != null}">
+                                    <fmt:message key="woko.layout.loggedAs"/> <strong>${username}</strong> -
+                                    <a href="${cp}/logout"><fmt:message key="woko.layout.logout"/> </a>
+                                </c:when>
+                                <c:otherwise>
+                                    <fmt:message key="woko.layout.notLogged"/>
+                                    <a href="${cp}/login"><fmt:message key="woko.layout.login"/> </a>
+                                </c:otherwise>
+                            </c:choose>
+                        </c:if>
+                    </p>
                 </div>
-            </c:if>
-            <hr/>
 
-            <div class="wokoSearchBox">
-                <s:form action="/search">
-                    <s:text name="facet.query"/>
-                    <s:submit name="search"/>
-                </s:form>
+                <c:if test="${not empty username}">
+                    <s:form action="/search" class="navbar-search">
+                        <fmt:message key="search" var="ph"/>
+                        <s:text name="facet.query" class="search-query" placeholder="${ph}"/>
+                    </s:form>
+                </c:if>
+
             </div>
-            <hr/>
+        </div>
+    </div>
 
-            <div class="wokoNavBar">
-                <w:includeFacet facetName="navBar" targetObject="${layout.facetContext.targetObject}"/>
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <s:messages/>
+            <s:errors/>
+            <s:layout-component name="body"/>
+        </div>
+        <hr/>
+        <footer>
+            <div class="container">
+                <div class="pull-right">
+                    Powered by <a href="https://github.com/vankeisb/woko2"><img src="${cp}/woko/woko-logo-small.png"
+                                                                                alt="logo" height="24px"/></a>
+                </div>
             </div>
-            <hr/>
+        </footer>
+    </div>
 
-            <div class="wokoContent">
-                <s:messages/>
-                <s:errors/>
-                <s:layout-component name="body"/>
-            </div>
-            <hr/>
+    <script type="text/javascript" src="${cp}/bootstrap/js/jquery.min.js"></script>
+    <script type="text/javascript" src="${cp}/bootstrap/js/bootstrap.min.js"></script>
 
-            <div class="wokoFooter">
-                <img src="${cp}/woko/woko-logo-small.png" alt="logo"/>Powered by <a href="https://github.com/vankeisb/woko2">Woko</a>
-            </div>
 
-        </body>
+    </body>
     </html>
 </s:layout-definition>

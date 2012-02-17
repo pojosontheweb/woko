@@ -18,28 +18,26 @@
     Woko woko = fctx.getWoko();
     Object owningObject = fctx.getTargetObject();
 %>
-<div class="wokoProperties">
-    <table>
-        <tbody>
-        <%
-            for (String pName : propertyNames) {
-                Object pVal = propertyValues.get(pName);
+<%
+    for (String pName : propertyNames) {
+        Object pVal = propertyValues.get(pName);
 
-                RenderPropertyName renderPropertyName =
-                    (RenderPropertyName)woko.getFacet("renderPropertyName", request, owningObject, owningObject.getClass(), true);
-                renderPropertyName.setPropertyName(pName);
-                String pNameFragmentPath = renderPropertyName.getFragmentPath(request);
+        RenderPropertyName renderPropertyName =
+            (RenderPropertyName)woko.getFacet("renderPropertyName", request, owningObject, owningObject.getClass(), true);
+        renderPropertyName.setPropertyName(pName);
+        String pNameFragmentPath = renderPropertyName.getFragmentPath(request);
 
-                RenderPropertyValue renderPropertyValue = Util.getRenderPropValueFacet(woko, request, owningObject, pName, pVal);
-                String pValFragmentPath = renderPropertyValue.getFragmentPath(request);
-        %>
-        <tr>
-            <th><jsp:include page="<%=pNameFragmentPath%>"/></th>
-            <td><jsp:include page="<%=pValFragmentPath%>"/></td>
-        </tr>
-        <%
-            }
-        %>
-        </tbody>
-    </table>
+        RenderPropertyValue renderPropertyValue = Util.getRenderPropValueFacet(woko, request, owningObject, pName, pVal);
+        String pValFragmentPath = renderPropertyValue.getFragmentPath(request);
+%>
+<div class="row-fluid">
+    <div class="span3">
+        <jsp:include page="<%=pNameFragmentPath%>"/>
+    </div>
+    <div class="span9">
+        <jsp:include page="<%=pValFragmentPath%>"/>
+    </div>
 </div>
+<%
+    }
+%>

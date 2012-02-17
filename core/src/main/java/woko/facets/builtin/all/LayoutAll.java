@@ -12,15 +12,12 @@ import java.util.List;
 @FacetKey(name="layout", profileId="all")
 public class LayoutAll extends BaseFacet implements Layout {
 
-  private static final List<String> CSS_INCLUDES =
-      Arrays.asList("/woko/css/layout-all.css", "/woko/css/lithium/assets/style.css");
-
   public String getAppTitle() {
     return "Woko";
   }
 
   public List<String> getCssIncludes() {
-    return CSS_INCLUDES;
+    return Collections.emptyList();
   }
 
   public List<String> getJsIncludes() {

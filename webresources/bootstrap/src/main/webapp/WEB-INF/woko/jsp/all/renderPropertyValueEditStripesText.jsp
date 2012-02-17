@@ -14,11 +14,8 @@
     Object owningObject = renderPropertyValue.getOwningObject();
     String propertyClassName = os.getClassMapping(Util.getPropertyType(owningObject.getClass(), propertyName));
     String fullFieldName = "object." + propertyName;
+    String className = "input-xlarge wokoPropertyValueEdit " + propertyClassName + "-" + propertyName;
 %>
-<span class="wokoPropertyValueEdit">
-    <span class="<%=propertyName%> <%=propertyClassName%>">
-        <s:text name="<%=fullFieldName%>"/>
-    </span>
-</span>
+<s:text name="<%=fullFieldName%>" class="<%=className%>"/>
 
 

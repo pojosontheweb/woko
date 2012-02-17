@@ -10,9 +10,15 @@
 <fmt:message var="pageTitle" key="woko.guest.home.pageTitle"/>
 <s:layout-render name="${layout.layoutPath}" layout="${layout}" pageTitle="${pageTitle}">
     <s:layout-component name="body">
-        <h1><fmt:message key="woko.guest.home.title"/></h1>
-        <p>
-            <fmt:message key="woko.guest.home.content"/>
-        </p>
+        <div class="row-fluid">
+            <div class="span12">
+                <div class="hero-unit">
+                    <h1><fmt:message key="woko.guest.home.title"/></h1>
+                    <p>
+                        <fmt:message key="woko.guest.home.content"/>
+                    </p>
+                </div>
+            </div>
+        </div>
     </s:layout-component>
 </s:layout-render>

@@ -15,11 +15,8 @@
     String objectKey = "object." + propertyName;
     String propertyLabel = propertyName;
     String propertyClassName = os.getClassMapping(Util.getPropertyType(owningObject.getClass(), propertyName));
+    String labelClass = "control-label wokoPropertyName " + propertyClassName + "-" + propertyName;
 %>
-<span class="wokoPropertyName">
-    <span class="<%=propertyName%> <%=propertyClassName%>">
-        <s:label for="<%=objectKey%>"><%=propertyLabel%></s:label>
-    </span>
-</span>
+<s:label for="<%=objectKey%>" class="<%=labelClass%>"><%=propertyLabel%></s:label>
 
 
