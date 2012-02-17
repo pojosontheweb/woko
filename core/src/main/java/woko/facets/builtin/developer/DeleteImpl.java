@@ -34,7 +34,7 @@ public class DeleteImpl extends BaseResolutionFacet implements Delete {
   public Resolution getResolution(final ActionBeanContext abc) {
     if (cancel!=null) {
       WokoFacetContext facetContext = getFacetContext();
-      abc.getMessages().add(new SimpleMessage("Cancelled deletion"));
+      abc.getMessages().add(new LocalizableMessage("woko.devel.delete.cancel"));
       return new RedirectResolution(
               facetContext.getWoko().facetUrl(
                   "view",
@@ -45,7 +45,7 @@ public class DeleteImpl extends BaseResolutionFacet implements Delete {
       final Woko woko = facetContext.getWoko();
       final Object targetObject = facetContext.getTargetObject();
       woko.getObjectStore().delete(targetObject);
-      abc.getMessages().add(new SimpleMessage("Object deleted"));
+      abc.getMessages().add(new LocalizableMessage("woko.devel.delete.confirm"));
       return new RpcResolutionWrapper(new RedirectResolution("/home")) {
           @Override
           public Resolution getRpcResolution() {
