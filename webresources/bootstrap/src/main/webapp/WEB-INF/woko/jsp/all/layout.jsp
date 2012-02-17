@@ -51,65 +51,67 @@
     </head>
 
     <body>
-    <div class="navbar navbar-fixed-top">
-        <div class="navbar-inner">
-            <div class="container-fluid">
-                <a data-target=".nav-collapse" data-toggle="collapse" class="btn btn-navbar">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </a>
-                <a href="#" class="brand">${layout.appTitle}</a>
+    <div class="wrapper">
+        <div class="navbar navbar-fixed-top">
+            <div class="navbar-inner">
+                <div class="container-fluid">
+                    <a data-target=".nav-collapse" data-toggle="collapse" class="btn btn-navbar">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </a>
+                    <a href="#" class="brand">${layout.appTitle}</a>
 
-                <div class="nav-collapse">
+                    <div class="nav-collapse">
 
-                    <ul class="nav nav-pills">
-                        <w:includeFacet facetName="navBar" targetObject="${layout.facetContext.targetObject}"/>
-                    </ul>
+                        <ul class="nav nav-pills">
+                            <w:includeFacet facetName="navBar" targetObject="${layout.facetContext.targetObject}"/>
+                        </ul>
 
-                    <p class="navbar-text pull-right">
-                        <c:if test="${skipLoginLink==null}">
-                            <c:choose>
-                                <c:when test="${username != null}">
-                                    <fmt:message key="woko.layout.loggedAs"/> <strong>${username}</strong> -
-                                    <a href="${cp}/logout"><fmt:message key="woko.layout.logout"/> </a>
-                                </c:when>
-                                <c:otherwise>
-                                    <fmt:message key="woko.layout.notLogged"/>
-                                    <a href="${cp}/login"><fmt:message key="woko.layout.login"/> </a>
-                                </c:otherwise>
-                            </c:choose>
-                        </c:if>
-                    </p>
-                </div>
+                        <p class="navbar-text pull-right">
+                            <c:if test="${skipLoginLink==null}">
+                                <c:choose>
+                                    <c:when test="${username != null}">
+                                        <fmt:message key="woko.layout.loggedAs"/> <strong>${username}</strong> -
+                                        <a href="${cp}/logout"><fmt:message key="woko.layout.logout"/> </a>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <fmt:message key="woko.layout.notLogged"/>
+                                        <a href="${cp}/login"><fmt:message key="woko.layout.login"/> </a>
+                                    </c:otherwise>
+                                </c:choose>
+                            </c:if>
+                        </p>
+                    </div>
 
-                <c:if test="${not empty username}">
-                    <s:form action="/search" class="navbar-search">
-                        <fmt:message key="search" var="ph"/>
-                        <s:text name="facet.query" class="search-query" placeholder="${ph}"/>
-                    </s:form>
-                </c:if>
+                    <c:if test="${not empty username}">
+                        <s:form action="/search" class="navbar-search">
+                            <fmt:message key="search" var="ph"/>
+                            <s:text name="facet.query" class="search-query" placeholder="${ph}"/>
+                        </s:form>
+                    </c:if>
 
-            </div>
-        </div>
-    </div>
-
-    <div class="container-fluid">
-        <div class="row-fluid">
-            <s:messages/>
-            <s:errors/>
-            <s:layout-component name="body"/>
-        </div>
-        <hr/>
-        <footer>
-            <div class="container">
-                <div class="pull-right">
-                    Powered by <a href="https://github.com/vankeisb/woko2"><img src="${cp}/woko/woko-logo-small.png"
-                                                                                alt="logo" height="24px"/></a>
                 </div>
             </div>
-        </footer>
+        </div>
+
+        <div class="container-fluid">
+            <div class="row-fluid">
+                <s:messages/>
+                <s:errors/>
+                <s:layout-component name="body"/>
+            </div>
+            <div class="push"></div>
+        </div>
     </div>
+    <footer>
+        <div class="container-fluid">
+            <div class="pull-right">
+                Powered by <a href="https://github.com/vankeisb/woko2"><img src="${cp}/woko/woko-logo-small.png"
+                                                                            alt="logo" height="24px"/></a>
+            </div>
+        </div>
+    </footer>
 
     <script type="text/javascript" src="${cp}/bootstrap/js/jquery.min.js"></script>
     <script type="text/javascript" src="${cp}/bootstrap/js/bootstrap.min.js"></script>

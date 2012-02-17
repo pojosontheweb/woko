@@ -2,3 +2,14 @@ label.wokoPropertyName {
     text-align: right;
     font-weight: bold;
 }
+
+footer{
+    height: 80px;
+}
+footer {
+    border-top: solid 1px #CCC;
+    color: #333;
+    color: #333;
+    background: #EEE;
+    padding-top: 10px;
+}
