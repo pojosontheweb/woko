@@ -10,82 +10,12 @@ woko.util = {};
       return obj===null || typeof obj === 'undefined';
     };
 
-    u.fade = function(elemId, timeToFade, startFadeAfter) {
-        timeToFade = timeToFade || 1000.0;
-        setTimeout(function() {
-            var element = document.getElementById(elemId);
-            if (element == null)
-                return;
-
-            if (element.FadeState == null) {
-                if (element.style.opacity == null
-                        || element.style.opacity == ''
-                        || element.style.opacity == '1') {
-                    element.FadeState = 2;
-                }
-                else {
-                    element.FadeState = -2;
-                }
-            }
-
-            if (element.FadeState == 1 || element.FadeState == -1) {
-                element.FadeState = element.FadeState == 1 ? -1 : 1;
-                element.FadeTimeLeft = timeToFade - element.FadeTimeLeft;
-            }
-            else {
-                element.FadeState = element.FadeState == 2 ? -1 : 1;
-                element.FadeTimeLeft = timeToFade;
-                setTimeout("woko.util.animateFade(" + new Date().getTime() + ",'" + elemId + "', " + timeToFade + ")", 33);
-            }
-        }, startFadeAfter || 10);
-    };
-
-    u.animateFade = function(lastTick, eid, timeToFade)
-    {
-      var curTick = new Date().getTime();
-      var elapsedTicks = curTick - lastTick;
-
-      var element = document.getElementById(eid);
-
-      if(element.FadeTimeLeft <= elapsedTicks)
-      {
-        element.style.opacity = element.FadeState == 1 ? '1' : '0';
-        element.style.filter = 'alpha(opacity = '
-            + (element.FadeState == 1 ? '100' : '0') + ')';
-        element.FadeState = element.FadeState == 1 ? 2 : -2;
-        return;
-      }
-
-      element.FadeTimeLeft -= elapsedTicks;
-      var newOpVal = element.FadeTimeLeft/timeToFade;
-      if(element.FadeState == 1)
-        newOpVal = 1 - newOpVal;
-
-      element.style.opacity = newOpVal;
-      element.style.filter = 'alpha(opacity = ' + (newOpVal*100) + ')';
-
-      setTimeout("woko.util.animateFade(" + curTick + ",'" + eid + "'," + timeToFade + ")", 33);
-    };
-
     u._throwNotImplemented = function() {
         throw "function is not implemented by adapter !"
     };
 
     u.mixin = function(o1,o2) {
-        o1 = o1 || {};
-        o2 = o2 || {};
-        var res = {};
-        for (var p1 in o1) {
-            if (o1.hasOwnProperty(p1) && typeof o1[p1] != 'function') {
-                res[p1] = o1[p1];
-            }
-        }
-        for (var p2 in o2) {
-            if (o2.hasOwnProperty(p2) && typeof o2[p2] != 'function') {
-                res[p2] = o2[p2];
-            }
-        }
-        return res;
+        u._throwNotImplemented();
     };
 
     u.xhrPost = function(oArgs) {
