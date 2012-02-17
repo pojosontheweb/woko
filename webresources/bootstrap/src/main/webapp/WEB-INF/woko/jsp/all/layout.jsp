@@ -36,7 +36,7 @@
 
         <link rel="stylesheet" type="text/css" href="${cp}/bootstrap/css/bootstrap.min.css">
         <style type="text/css">
-            body {
+            .main-content {
                 padding-top: 60px;
                 padding-bottom: 40px;
             }
@@ -95,15 +95,18 @@
             </div>
         </div>
 
-        <div class="container-fluid">
-            <div class="row-fluid">
-                <s:messages/>
-                <s:errors/>
-                <s:layout-component name="body"/>
+        <div class="main-content">
+            <div class="container-fluid">
+                <div class="row-fluid">
+                    <s:messages/>
+                    <s:errors/>
+                    <s:layout-component name="body"/>
+                </div>
+                <div class="push"></div>
             </div>
-            <div class="push"></div>
         </div>
     </div>
+
     <footer>
         <div class="container-fluid">
             <div class="pull-right">
