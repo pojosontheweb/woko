@@ -8,15 +8,15 @@
 <fmt:message var="pageTitle" key="woko.devel.create.pageTitle"/>
 <s:layout-render name="${layout.layoutPath}" layout="${layout}" pageTitle="${pageTitle}">
     <s:layout-component name="body">
-        <h1><fmt:message key="woko.devel.create.title"/></h1>
+        <h1 class="page-header"><fmt:message key="woko.devel.create.title"/></h1>
         <p>
             <fmt:message key="woko.devel.create.description"/>
         </p>
-        <s:form action="/save">
+        <s:form action="/save" class="form-inline">
             <s:select name="className">
                 <s:options-collection collection="${create.mappedClasses}"/>
             </s:select>
-            <s:submit name="create"/>
+            <s:submit name="create" class="btn btn-primary"/>
         </s:form>
     </s:layout-component>
 </s:layout-render>
