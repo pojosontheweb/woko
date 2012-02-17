@@ -33,24 +33,26 @@
             </fmt:message>
         </h1>
 
-        <div class="row">
-            <div class="span12">
-                <s:form action="/list" class="form-inline">
-                    <s:hidden name="className"/>
-                    <input type="hidden"name="facet.page" value="1"/>
-                    <fmt:message key="woko.devel.list.showing"/>
-                    <s:select name="facet.resultsPerPage" onchange="this.form.submit()">
-                        <s:option value="10">10</s:option>
-                        <s:option value="25">25</s:option>
-                        <s:option value="50">50</s:option>
-                        <s:option value="100">100</s:option>
-                        <s:option value="500">500</s:option>
-                        <s:option value="1000">1000</s:option>
-                    </s:select>
-                    <fmt:message key="woko.devel.list.objectPerPage"/>
-                </s:form>
+        <c:if test="<%=nbPages>1%>">
+            <div class="row">
+                <div class="span12">
+                    <s:form action="/list" class="form-inline">
+                        <s:hidden name="className"/>
+                        <input type="hidden"name="facet.page" value="1"/>
+                        <fmt:message key="woko.devel.list.showing"/>
+                        <s:select name="facet.resultsPerPage" onchange="this.form.submit()">
+                            <s:option value="10">10</s:option>
+                            <s:option value="25">25</s:option>
+                            <s:option value="50">50</s:option>
+                            <s:option value="100">100</s:option>
+                            <s:option value="500">500</s:option>
+                            <s:option value="1000">1000</s:option>
+                        </s:select>
+                        <fmt:message key="woko.devel.list.objectPerPage"/>
+                    </s:form>
+                </div>
             </div>
-        </div>
+        </c:if>
 
         <ul>
             <%
