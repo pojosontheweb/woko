@@ -17,7 +17,7 @@ locales.each { l ->
 }
 
 
-def excludes = ["bundles", "target", ".git", "overlays"]
+def excludes = ["bundles", "target", ".git", "overlays", "webtests-bootstrap"]
 
 println "Starting crawling files from $root.absolutePath..."
 
