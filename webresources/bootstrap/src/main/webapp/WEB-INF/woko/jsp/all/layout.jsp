@@ -60,7 +60,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </a>
-                    <a href="#" class="brand">${layout.appTitle}</a>
+                    <a href="${cp}" class="brand">${layout.appTitle}</a>
 
                     <div class="nav-collapse">
 
