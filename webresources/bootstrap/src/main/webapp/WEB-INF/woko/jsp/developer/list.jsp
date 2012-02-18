@@ -34,23 +34,21 @@
         </h1>
 
         <c:if test="<%=nbPages>1%>">
-            <div class="row">
-                <div class="span12">
-                    <s:form action="/list" class="form-inline">
-                        <s:hidden name="className"/>
-                        <input type="hidden"name="facet.page" value="1"/>
-                        <fmt:message key="woko.devel.list.showing"/>
-                        <s:select name="facet.resultsPerPage" onchange="this.form.submit()">
-                            <s:option value="10">10</s:option>
-                            <s:option value="25">25</s:option>
-                            <s:option value="50">50</s:option>
-                            <s:option value="100">100</s:option>
-                            <s:option value="500">500</s:option>
-                            <s:option value="1000">1000</s:option>
-                        </s:select>
-                        <fmt:message key="woko.devel.list.objectPerPage"/>
-                    </s:form>
-                </div>
+            <div class="row-fluid">
+                <s:form action="/list" class="form-inline">
+                    <s:hidden name="className"/>
+                    <input type="hidden"name="facet.page" value="1"/>
+                    <fmt:message key="woko.devel.list.showing"/>
+                    <s:select name="facet.resultsPerPage" onchange="this.form.submit()">
+                        <s:option value="10">10</s:option>
+                        <s:option value="25">25</s:option>
+                        <s:option value="50">50</s:option>
+                        <s:option value="100">100</s:option>
+                        <s:option value="500">500</s:option>
+                        <s:option value="1000">1000</s:option>
+                    </s:select>
+                    <fmt:message key="woko.devel.list.objectPerPage"/>
+                </s:form>
             </div>
         </c:if>
 
@@ -104,7 +102,7 @@
                 String rightMoveCss = p == nbPages ? "disabled" : "";
         %>
             <div class="row-fluid">
-                <div class="span9 pagination">
+                <div class="pagination">
                     <ul>
                         <li class="<%=leftMoveCss%>">
                             <a href="<%=leftMoveHref%>">«</a>
