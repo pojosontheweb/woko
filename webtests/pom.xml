@@ -25,6 +25,13 @@
             <version>3.0</version>
             <scope>test</scope>
         </dependency>
+        <!-- override the htmlunit version (jquery doesn't work otherwise) -->
+        <dependency>
+            <groupId>net.sourceforge.htmlunit</groupId>
+            <artifactId>htmlunit</artifactId>
+            <version>2.5</version>
+            <scope>test</scope>
+        </dependency>
       <dependency>
           <groupId>org.codehaus.groovy</groupId>
           <artifactId>groovy</artifactId>

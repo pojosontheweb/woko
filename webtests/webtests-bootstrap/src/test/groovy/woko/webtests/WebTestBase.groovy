@@ -4,7 +4,7 @@ import com.canoo.webtest.WebtestCase
 
 abstract class WebTestBase extends WebtestCase {
 
-  def homeUrl = 'http://localhost:9999/woko-webtests'
+  def homeUrl = 'http://localhost:8080/woko-webtests'
 
   void goToPage(String url) {
     ant.invoke(homeUrl + url)
@@ -26,11 +26,9 @@ abstract class WebTestBase extends WebtestCase {
     goToPage url
 
     // Check search input is present
-    ant.verifyXPath xpath:"/html/body/div/div[1]/div[3]/form[@action='/woko-webtests/search']"
-    ant.verifyXPath xpath:"/html/body/div/div[1]/div[3]/form/input[1][@type='text']"
-    ant.verifyXPath xpath:"/html/body/div/div[1]/div[3]/form/input[1][@name='facet.query']"
-    ant.verifyXPath xpath:"/html/body/div/div[1]/div[3]/form/input[2][@type='submit']"
-    ant.verifyXPath xpath:"/html/body/div/div[1]/div[3]/form/input[2][@name='search']"
+    ant.verifyXPath xpath:"/html/body/div/div/div/div/form[@action='/woko-webtests/search']"
+    ant.verifyXPath xpath:"/html/body/div/div/div/div/form/input[1][@type='text']"
+    ant.verifyXPath xpath:"/html/body/div/div/div/div/form/input[1][@name='facet.query']"
   }
 
 }

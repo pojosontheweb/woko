@@ -37,7 +37,6 @@
     <build>
         <finalName>woko-webtests</finalName>
         <plugins>
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
@@ -51,22 +50,7 @@
                 <configuration>
                     <skip>true</skip>
                 </configuration>
-            </plugin>
-
-            <!-- TODO commented out : webtest doesn't handle jquery apparently :/
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.apache.maven.surefire</groupId>
-                        <artifactId>surefire-junit47</artifactId>
-                        <version>2.8.1</version>
-                    </dependency>
-                </dependencies>
-                <configuration>
-                    <skip>true</skip>
-                </configuration>
+<!--
                 <executions>
                     <execution>
                         <id>surefire-it</id>
@@ -113,9 +97,8 @@
                             <goal>stop</goal>
                         </goals>
                     </execution>
-                </executions>
+                </executions>        -->
             </plugin>
-            -->
         </plugins>
     </build>    
 </project>

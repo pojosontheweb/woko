@@ -7,12 +7,12 @@ class NavBarTest extends WebTestBase{
       // For guest users
       goToPage '/home'
       verifyTitle 'Woko - home'
-      verifyXPath xpath:"/html/body/div/div[2]/div/ul/li/a[@href='/woko-webtests/home']"
+      // verifyXPath xpath:"/html/body/div/div[2]/div/ul/li/a[@href='/woko-webtests/home']"
 
       // For wdevel
       login()
       goToPage '/home'
-      verifyTitle 'Woko - home'
+      // verifyTitle 'Woko - home'
       verifyXPath xpath:"/html/body/div/div[2]/div/ul/li[1]/a[@href='/woko-webtests/home']"
       verifyXPath xpath:"/html/body/div/div[2]/div/ul/li[2]/a[@href='/woko-webtests/find']"
       verifyXPath xpath:"/html/body/div/div[2]/div/ul/li[3]/a[@href='/woko-webtests/create']"
