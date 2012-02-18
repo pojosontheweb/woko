@@ -41,7 +41,8 @@
 
         String fullFieldName = "object." + pName;
 %>
-        <div class="control-group">
+        <c:set var="fullFieldNameStripes" value="<%=fullFieldName%>"/>
+        <div class="control-group ${empty(actionBean.context.validationErrors[fullFieldNameStripes]) ? '' : 'error'} ">
             <jsp:include page="<%=pNameFragmentPath%>"/>
             <div class="controls">
                 <jsp:include page="<%=pValFragmentPath%>"/>
