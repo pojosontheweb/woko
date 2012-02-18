@@ -8,7 +8,7 @@
 <fmt:message var="pageTitle" key="woko.login.pageTitle"/>
 <s:layout-render name="${layout.layoutPath}" layout="${layout}" pageTitle="${pageTitle}" skipLoginLink="true">
     <s:layout-component name="body">
-        <h1>Please log-in</h1>
+        <h1><fmt:message key="woko.login.title"/></h1>
           <form method="POST" action="j_security_check">
               <div>
                   <table>
