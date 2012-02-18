@@ -1,8 +1,3 @@
-label.wokoPropertyName {
-    text-align: right;
-    font-weight: bold;
-}
-
 html, body {
     height: 100%;
 }
@@ -25,4 +20,14 @@ footer {
     color: #333;
     background: #EEE;
     padding-top: 10px;
+}
+
+label.wokoPropertyName {
+    text-align: right;
+    font-weight: bold;
+}
+
+.wokoLinks {
+    position: relative;
+    top: -60px;
 }

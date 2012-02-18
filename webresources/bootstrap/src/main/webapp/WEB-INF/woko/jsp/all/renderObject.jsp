@@ -8,17 +8,17 @@
     Class<?> c = o.getClass();
     String className = Woko.getWoko(application).getObjectStore().getClassMapping(c);
 %>
-<div class="wokoObject <%=className%> span12">
+<div class="wokoObject <%=className%>">
     <div class="row-fluid">
-        <div class="wokoTitle span9">
+        <div class="wokoTitle">
             <w:includeFacet targetObject="<%=o%>" facetName="renderTitle"/>
         </div>
-        <div class="wokoLinks span3">
+        <div class="wokoLinks pull-right">
             <w:includeFacet targetObject="<%=o%>" facetName="renderLinks"/>
         </div>
     </div>
     <div class="row-fluid">
-        <div class="wokoProperties span12">
+        <div class="wokoProperties">
             <w:includeFacet targetObject="<%=o%>" facetName="renderProperties"/>
         </div>
     </div>
