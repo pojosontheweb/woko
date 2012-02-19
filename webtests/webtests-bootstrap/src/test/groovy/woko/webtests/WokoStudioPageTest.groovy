@@ -8,7 +8,7 @@ class WokoStudioPageTest extends WebTestBase{
 
       clickLink label:'woko studio'
 
-      verifyTitle 'Woko - Studio'
+      // verifyTitle 'Woko - Studio'
       verifyText 'Woko Studio'
 
       // Check search input is present
