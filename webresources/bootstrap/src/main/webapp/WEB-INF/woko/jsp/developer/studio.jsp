@@ -27,21 +27,27 @@
             }
 
             $(document).ready(function(){
-                $("form.execGroovy").submit(function(e) {
-                    // Get code
-                    var code = $('#groovyCode').val();
-                    jQuery.ajax({
-                        url:"${cp}/groovy?facet.code="+code,
-                        complete: function(data){
-                            var objJson = JSON.parse(data.responseText);
-                            $('#log').append(replaceAll(objJson.log, '\n', '<br/>'));
+
+                var klient = new woko.rpc.Client('${cp}');
+                var log = $("#log");
+                var btnExec = $("#btnExec");
+
+                btnExec.click(function() {
+                    btnExec.attr('disabled', true);
+                    log.empty();
+                    klient.invokeFacet('groovy', {
+                        content: {
+                            "facet.code": $('#groovyCode').val()
                         },
-                        error: function(data){
-                            $('#log').append('ERROR !')
+                        onSuccess: function(resp) {
+                            log.append(replaceAll(resp.log, '\n', '<br/>'));
+                            btnExec.attr('disabled', false);
+                        },
+                        onError: function(err) {
+                            log.append('ERROR !' + err);
+                            btnExec.attr('disabled', false);
                         }
                     });
-
-                    return false;
                 });
             })
 
@@ -105,22 +111,21 @@
                         <li><strong><fmt:message key="woko.devel.studio.groovy.logs"/></strong> <fmt:message key="woko.devel.studio.groovy.logsType"/></li>
                     </ul>
 
-                    <form class="well execGroovy">
+                    <div class="well execGroovy">
                         <fieldset>
                             <legend><fmt:message key="woko.devel.studio.groovy.code"/></legend>
                             <div class="control-group">
                                 <textarea id="groovyCode" class="span9" placeholder="Type something…"></textarea>
                             </div>
                             <div class="control-group">
-                                <button type="submit" class="btn btn-primary">Execute</button>
+                                <button id="btnExec" class="btn btn-primary">Execute</button>
                             </div>
                         </fieldset>
-                    </form>
+                    </div>
 
                     <div>
                         <h2><fmt:message key="woko.devel.studio.log.exec"/></h2>
                         <div id="log"></div>
-                        </code>
                     </div>
                     
                     

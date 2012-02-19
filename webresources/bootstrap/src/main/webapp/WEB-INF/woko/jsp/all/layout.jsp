@@ -25,6 +25,10 @@
                 <title>${layout.appTitle}</title>
             </c:otherwise>
         </c:choose>
+
+        <script type="text/javascript" src="${cp}/bootstrap/js/jquery.min.js"></script>
+        <script type="text/javascript" src="${cp}/bootstrap/js/bootstrap.min.js"></script>
+
         <c:forEach items="${layout.cssIncludes}" var="cssLink">
             <link rel="stylesheet" href="${cp}${cssLink}" type="text/css">
         </c:forEach>
@@ -115,10 +119,6 @@
             </div>
         </div>
     </footer>
-
-    <script type="text/javascript" src="${cp}/bootstrap/js/jquery.min.js"></script>
-    <script type="text/javascript" src="${cp}/bootstrap/js/bootstrap.min.js"></script>
-
 
     </body>
     </html>
