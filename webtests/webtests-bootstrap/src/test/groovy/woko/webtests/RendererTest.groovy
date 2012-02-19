@@ -26,7 +26,7 @@ class RendererTest extends WebTestBase {
       goToPage '/save/MyEntity?object.id=1&object.prop1=abc&object.prop2=123'
 
       goToPage '/view/MyEntity/1'
-      verifyXPath xpath:'/html/body/div/div[3]/div/div/div/div[3]/span/span', text:'.*abc.*', regex:true
+      verifyXPath xpath:'/html/body/div/div[2]/div/div/div/div[2]/div/div[3]/div[2]/span/span', text:'.*abc.*', regex:true
     }
   }
 

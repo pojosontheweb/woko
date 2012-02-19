@@ -64,10 +64,10 @@ class CrudTest extends WebTestBase {
     webtest('Validation on Save') {
       login()
       goToPage '/save/MyBook'
-      verifyText 'Please fix the following errors'
+      verifyText 'Name is a required field'
 
       clickButton name:'save'
-      verifyText 'Please fix the following errors'
+      verifyText 'Name is a required field'
 
       setInputField name:'object._id', value:'2'
       setInputField name:'object.name', value:'Moby Dick'
@@ -115,26 +115,25 @@ class CrudTest extends WebTestBase {
       try {
         // find
         goToPage '/find'
-        verifyTitle 'Woko - Find objects'
+        // TODO verifyTitle 'Woko - Find objects'
         verifyText 'Find objects by class'
         clickLink label:'MyBook'
 
         verifyText '400 object(s) found for class MyBook'
-        verifyXPath xpath: "/html/body/div/div[3]/div/div[2]/span[40]/a" // 40 pages
+        verifyXPath xpath: "/html/body/div/div[2]/div/div/div[2]/div/ul/li[11]/a" // check that link to page 10 exists
         verifyText 'Moby test100'
-        clickLink label:'2'
+        clickLink xpath:'/html/body/div/div[2]/div/div/div[2]/div/ul/li[3]/a' // click page 2
         verifyText 'Moby test110'
-        clickLink label:'40'
-        verifyText 'Moby test499'
-        not {
-          // check that we don't have a link to 41st page (should not exist)
-          verifyXPath xpath: '/html/body/div/div[3]/div/div[2]/span[41]/a'
-        }
+        clickLink xpath: '/html/body/div/div[2]/div/div/div[2]/div/ul/li[4]/a' // click page 3
+        verifyText 'Moby test120'
+        clickLink xpath: '/html/body/div/div[2]/div/div/div[2]/div/ul/li[12]/a' // click "next"
+        verifyText 'Moby test130'
+
 
         setSelectField name:'facet.resultsPerPage', value:'500'
         verifyText 'Moby test499'
         not {
-          verifyXPath xpath:"//div[@class='wokoPagination']"
+          verifyXPath xpath:"//div[@class='pagination']"
         }
 
         // list
@@ -154,26 +153,25 @@ class CrudTest extends WebTestBase {
       goToPage "/createDummyObjects"
       verifyText 'all good'
 
-      // full text search from top-right box
       goToPage "/search"
-      setInputField name:'facet.query', value:'moby'
+      setInputField xpath: '/html/body/div/div[2]/div/div/div/form/input', value:'moby'
       clickButton name:'search'
 
       verifyText '400 object(s) found'
-      verifyXPath xpath: "/html/body/div/div[3]/div/div[3]/span[40]/a" // link to 40th page
-      verifyText 'Moby test100'
-      clickLink label:'2'
-      verifyText text:'Moby test1[0-9][0-9]', regex:true
-      clickLink label:'40'
-      verifyText 'Moby test499'
-      not {
-        verifyXPath xpath: "/html/body/div/div[3]/div/div[3]/span[41]/a" // link to 41th page should not exist
-      }
 
-      setSelectField name:'facet.resultsPerPage', value:'500'
+        verifyXPath xpath: "/html/body/div/div[2]/div/div/div[3]/div/ul/li[11]/a" // check that link to page 10 exists
+        verifyText 'Moby test100'
+        clickLink xpath:'/html/body/div/div[2]/div/div/div[3]/div/ul/li[3]/a' // click page 2
+        verifyText 'Moby test113'
+        clickLink xpath:"/html/body/div/div[2]/div/div/div[3]/div/ul/li[4]/a" // click page 3
+        verifyText 'Moby test123'
+        clickLink xpath: '/html/body/div/div[2]/div/div/div[3]/div/ul/li[12]/a' // click "next"
+        verifyText 'Moby test133'
+
+      setSelectField xpath:'/html/body/div/div[2]/div/div/div[2]/form/select', value:'500'
       verifyText 'Moby test499'
       not {
-        verifyXPath xpath:"//div[@class='wokoPagination']"
+        verifyXPath xpath:"//div[@class='pagination']"
       }
 
       // list

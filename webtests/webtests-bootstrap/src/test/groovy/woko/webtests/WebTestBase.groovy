@@ -4,7 +4,7 @@ import com.canoo.webtest.WebtestCase
 
 abstract class WebTestBase extends WebtestCase {
 
-  def homeUrl = 'http://localhost:8080/woko-webtests'
+  def homeUrl = 'http://localhost:9999/woko-webtests'
 
   void goToPage(String url) {
     ant.invoke(homeUrl + url)
