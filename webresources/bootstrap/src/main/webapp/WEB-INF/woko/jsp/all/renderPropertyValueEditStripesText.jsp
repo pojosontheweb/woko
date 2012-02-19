@@ -2,7 +2,6 @@
 <%@ page import="woko.util.Util" %>
 <%@ page import="woko.facets.WokoFacetContext" %>
 <%@ page import="woko.persistence.ObjectStore" %>
-<%@ page import="woko.facets.builtin.RenderPropertyValueEdit" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="s" uri="http://stripes.sourceforge.net/stripes.tld" %>
