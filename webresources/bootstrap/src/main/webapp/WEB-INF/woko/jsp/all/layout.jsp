@@ -1,3 +1,4 @@
+<%@ page import="java.util.Locale" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="s" uri="http://stripes.sourceforge.net/stripes-dynattr.tld" %>
 <%@ taglib prefix="w" tagdir="/WEB-INF/tags/woko" %>
@@ -27,6 +28,22 @@
         </c:choose>
 
         <script type="text/javascript" src="${cp}/bootstrap/js/jquery.min.js"></script>
+        <script type="text/javascript" src="${cp}/plugins/jquery-ui/js/jquery-ui-1.8.17.custom.min.js"></script>
+        <%
+            Locale l = request.getLocale();
+        %>
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $.datepicker.setDefaults($.datepicker.regional['<%=l%>']);
+            });
+        </script>
+        <%
+            if (l.toString().equals("fr")) {
+        %>
+            <script type="text/javascript" src="${cp}/plugins/jquery-ui/js/ui.datepicker-fr.js"></script>
+        <%
+            }
+        %>
         <script type="text/javascript" src="${cp}/bootstrap/js/bootstrap.min.js"></script>
 
         <c:forEach items="${layout.cssIncludes}" var="cssLink">
@@ -39,6 +56,8 @@
         <s:layout-component name="customJs"/>
 
         <link rel="stylesheet" type="text/css" href="${cp}/bootstrap/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="${cp}/plugins/jquery-ui/css/ui-lightness/jquery-ui-1.8.17.custom.css">
+
         <style type="text/css">
             .main-content {
                 padding-top: 60px;

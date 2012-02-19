@@ -9,7 +9,6 @@ import java.util.Date;
 @FacetKeyList(
   keys={
     @FacetKey(name="renderPropertyValueEdit", profileId="all", targetObjectType=String.class),
-    @FacetKey(name="renderPropertyValueEdit", profileId="all", targetObjectType=Date.class),
     @FacetKey(name="renderPropertyValueEdit", profileId="all", targetObjectType=Number.class)
   })
 public class RenderPropertyValueEditStripesText extends RenderPropertyValueImpl implements RenderPropertyValueEdit {

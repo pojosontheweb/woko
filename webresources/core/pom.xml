@@ -9,4 +9,12 @@
     <artifactId>woko-web-core</artifactId>
     <name>Woko - web : core JSPs and tags (no skinning)</name>
     <packaging>war</packaging>
+    <dependencies>
+        <dependency>
+            <groupId>com.rvkb</groupId>
+            <artifactId>woko-core</artifactId>
+            <version>${project.version}</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
 </project>
