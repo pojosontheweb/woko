@@ -26,7 +26,9 @@ public class WokoTypeConverterFactory extends DefaultTypeConverterFactory {
         // because it doesn't remove the old converter from the map before
         // putting the new one.
         if (Date.class.isAssignableFrom(aClass)) {
-            return new WokoDateTypeConverter();
+            tc = new WokoDateTypeConverter();
+            tc.setLocale(locale);
+            return tc;
         }
 
         // class is not managed by Woko, let Stripes find the converter
