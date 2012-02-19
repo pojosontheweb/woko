@@ -72,8 +72,8 @@
                       <containerId>tomcat6x</containerId>
                       <zipUrlInstaller>
                         <url>http://apache.crihan.fr/dist/tomcat/tomcat-6/v6.0.35/bin/apache-tomcat-6.0.35.zip</url>
-                        <installDir>${basedir}/target/tomcat6-install</installDir>
-                        <type>installed</type>
+                          <downloadDir>${project.build.directory}/downloads</downloadDir>
+                          <extractDir>${project.build.directory}/extracts</extractDir>
                     </zipUrlInstaller>
                     </container>
                     <configuration>
