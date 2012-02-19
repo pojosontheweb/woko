@@ -162,11 +162,11 @@ class CrudTest extends WebTestBase {
         verifyXPath xpath: "/html/body/div/div[2]/div/div/div[3]/div/ul/li[11]/a" // check that link to page 10 exists
         verifyText 'Moby test100'
         clickLink xpath:'/html/body/div/div[2]/div/div/div[3]/div/ul/li[3]/a' // click page 2
-        verifyText 'Moby test113'
+        verifyText text:'Moby test11[0-9]', regex:true
         clickLink xpath:"/html/body/div/div[2]/div/div/div[3]/div/ul/li[4]/a" // click page 3
-        verifyText 'Moby test123'
+        verifyText text:'Moby test12[0-9]', regex:true
         clickLink xpath: '/html/body/div/div[2]/div/div/div[3]/div/ul/li[12]/a' // click "next"
-        verifyText 'Moby test133'
+        verifyText text:'Moby test13[0-9]', regex:true
 
       setSelectField xpath:'/html/body/div/div[2]/div/div/div[2]/form/select', value:'500'
       verifyText 'Moby test499'

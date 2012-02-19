@@ -21,7 +21,7 @@
     </s:layout-component>
 
     <s:layout-component name="customCss">
-        <link href="${cp}/plugins/jquery.dataTables.css" type="text/css" rel="stylesheet"/>
+        <link href="${cp}/plugins/dataTables/jquery.dataTables.css" type="text/css" rel="stylesheet"/>
     </s:layout-component>
 
 
