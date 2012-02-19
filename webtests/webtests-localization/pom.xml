@@ -88,6 +88,7 @@
                       <cargo.container.timeout>600000</cargo.container.timeout>
                   </properties>
                 </configuration>
+                </configuration>
                 <executions>
                     <execution>
                         <id>start-container</id>
