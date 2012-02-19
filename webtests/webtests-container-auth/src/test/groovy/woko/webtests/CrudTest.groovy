@@ -165,7 +165,7 @@ class CrudTest extends WebTestBase {
       clickLink label:'2'
       verifyText text:'Moby test1[0-9][0-9]', regex:true
       clickLink label:'40'
-      verifyText 'Moby test499'
+      verifyText text:'Moby test4[0-9][0-9]', regex:true
       not {
         verifyXPath xpath: "/html/body/div/div[3]/div/div[3]/span[41]/a" // link to 41th page should not exist
       }
