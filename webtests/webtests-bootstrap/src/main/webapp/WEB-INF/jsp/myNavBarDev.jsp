@@ -4,3 +4,4 @@
 <li><a href="${pageContext.request.contextPath}/create"><fmt:message key="woko.devel.navbar.create"/> </a></li>
 <li><a href="${pageContext.request.contextPath}/studio"><fmt:message key="woko.devel.navbar.studio"/> </a></li>
 <li><a href="http://www.google.com">google</a></li>
+<li><a href="${pageContext.request.contextPath}/studioInJquery">Studio in jQuery</a></li>
