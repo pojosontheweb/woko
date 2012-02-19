@@ -88,7 +88,7 @@
                         </thead>
                         <tbody>
                         <%
-                            facets.WokoStudioWithJQuery studio = (facets.WokoStudioWithJQuery)request.getAttribute("studioNew");
+                            WokoStudioWithJQuery studio = (WokoStudioWithJQuery)request.getAttribute("studioInJquery");
                             for (FacetDescriptor fd : studio.getFacetDescriptors()) {
                         %>
                         <tr>
