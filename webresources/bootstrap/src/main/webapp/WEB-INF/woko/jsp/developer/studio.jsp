@@ -16,7 +16,14 @@
         <script type="text/javascript" src="${cp}/woko/js/woko.base.js"></script>
         <script type="text/javascript" src="${cp}/woko/js/woko.jquery.js"></script>
         <script type="text/javascript" src="${cp}/woko/js/woko.rpc.js"></script>
+
+        <script type="text/javascript" src="${cp}/plugins/jquery.dataTables.js"></script>
     </s:layout-component>
+
+    <s:layout-component name="customCss">
+        <link href="${cp}/plugins/jquery.dataTables.css" type="text/css" rel="stylesheet"/>
+    </s:layout-component>
+
 
     <s:layout-component name="body">
 
@@ -27,6 +34,10 @@
             }
 
             $(document).ready(function(){
+
+                $("#tblFacets").dataTable({
+                    "bPaginate": false
+                });
 
                 var klient = new woko.rpc.Client('${cp}');
                 var log = $("#log");
@@ -80,7 +91,7 @@
 
                 <div class="tab-pane" id="facets">
                     <h2>All your facets</h2>
-                    <table class="table table-striped table-bordered table-condensed">
+                    <table id="tblFacets" class="table table-striped table-bordered table-condensed">
                         <thead>
                         <tr>
                             <th>name</th>
