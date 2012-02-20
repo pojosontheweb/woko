@@ -92,7 +92,7 @@
         </ul>
 
         <%
-            int nbPagesClickable = 10;
+            int nbPagesClickable = nbPages < 10 ? nbPages : 10;
             if (nbPages>1) {
                 int pagerStart = p > nbPagesClickable ? p - (nbPagesClickable-1) : 1;
                 String leftMoveCss = p <= 1 ? "disabled" : "";
