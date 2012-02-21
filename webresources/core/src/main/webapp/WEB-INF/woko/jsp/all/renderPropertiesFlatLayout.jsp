@@ -5,11 +5,12 @@
 <%@ page import="woko.Woko" %>
 <%@ page import="woko.util.Util" %>
 <%@ page import="woko.facets.builtin.RenderPropertyValue" %>
+<%@ page import="woko.facets.builtin.WokoFacets" %>
 <%@ taglib prefix="w" tagdir="/WEB-INF/tags/woko" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="s" uri="http://stripes.sourceforge.net/stripes.tld" %>
 <%
-    RenderProperties renderProperties = (RenderProperties)request.getAttribute("renderProperties");
+    RenderProperties renderProperties = (RenderProperties)request.getAttribute(WokoFacets.renderProperties);
     List<String> propertyNames = renderProperties.getPropertyNames();
     Map<String,Object> propertyValues = renderProperties.getPropertyValues();
     WokoFacetContext fctx = (WokoFacetContext)renderProperties.getFacetContext();

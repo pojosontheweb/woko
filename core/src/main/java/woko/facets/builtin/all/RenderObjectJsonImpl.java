@@ -30,7 +30,7 @@ public class RenderObjectJsonImpl extends BaseFacet implements RenderObjectJson 
       JSONObject result = new JSONObject();
       Woko woko = facetContext.getWoko();
       // find props to be rendered using renderProperties facet
-      RenderProperties renderProperties = (RenderProperties)woko.getFacet("renderProperties", request, o);
+      RenderProperties renderProperties = (RenderProperties)woko.getFacet(WokoFacets.renderProperties, request, o);
       if (renderProperties==null) {
         logger.warn("No renderProperties facet found for targetObject $o, as a result no props will be serialized.");
         return result;

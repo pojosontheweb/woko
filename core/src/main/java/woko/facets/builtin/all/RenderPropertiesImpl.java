@@ -4,6 +4,7 @@ import net.sourceforge.jfacets.IFacetContext;
 import net.sourceforge.jfacets.annotations.FacetKey;
 import woko.facets.BaseFragmentFacet;
 import woko.facets.builtin.RenderProperties;
+import woko.facets.builtin.WokoFacets;
 import woko.util.Util;
 
 import java.util.Arrays;
@@ -11,7 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@FacetKey(name="renderProperties", profileId="all")
+@FacetKey(name= WokoFacets.renderProperties, profileId="all")
 public class RenderPropertiesImpl extends BaseFragmentFacet implements RenderProperties {
 
   private List<String> propertyNames;

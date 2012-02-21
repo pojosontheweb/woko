@@ -2,13 +2,14 @@ package woko.ext.usermanagement.facets;
 
 import net.sourceforge.jfacets.annotations.FacetKey;
 import woko.ext.usermanagement.core.User;
+import woko.facets.builtin.WokoFacets;
 import woko.facets.builtin.all.RenderPropertiesImpl;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-@FacetKey(name="renderProperties", profileId="all", targetObjectType = User.class)
+@FacetKey(name= WokoFacets.renderProperties, profileId="all", targetObjectType = User.class)
 public class RenderUserProperties extends RenderPropertiesImpl {
 
     @Override

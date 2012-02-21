@@ -20,7 +20,7 @@
     </div>
     <div class="row-fluid">
         <div class="wokoProperties">
-            <w:includeFacet targetObject="<%=o%>" facetName="renderProperties"/>
+            <w:includeFacet targetObject="<%=o%>" facetName="<%=WokoFacets.renderProperties%>"/>
         </div>
     </div>
 </div>
