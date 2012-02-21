@@ -2,13 +2,14 @@ package woko.facets.builtin.developer;
 
 import net.sourceforge.jfacets.annotations.FacetKey;
 import woko.facets.BaseForwardResolutionFacet;
+import woko.facets.builtin.WokoFacets;
 import woko.persistence.ObjectStore;
 
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 
-@FacetKey(name="create", profileId="developer")
+@FacetKey(name= WokoFacets.create, profileId="developer")
 public class Create extends BaseForwardResolutionFacet {
 
   public String getPath() {

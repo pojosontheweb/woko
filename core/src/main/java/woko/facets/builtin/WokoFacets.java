@@ -2,8 +2,10 @@ package woko.facets.builtin;
 
 public interface WokoFacets {
 
+    static final String create = "create";
     static final String delete = "delete";
     static final String edit = "edit";
+    static final String find = "find";
     static final String home = "home";
     static final String json = "json";
     static final String layout = "layout";
@@ -25,6 +27,7 @@ public interface WokoFacets {
     static final String renderTitle = "renderTitle";
     static final String save = "save";
     static final String search = "search";
+    static final String studio = "studio";
     static final String validate = "validate";
     static final String view = "view";
 

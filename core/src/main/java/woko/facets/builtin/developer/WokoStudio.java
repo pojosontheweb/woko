@@ -4,11 +4,12 @@ import net.sourceforge.jfacets.FacetDescriptor;
 import net.sourceforge.jfacets.IFacetDescriptorManager;
 import net.sourceforge.jfacets.annotations.FacetKey;
 import woko.facets.BaseForwardResolutionFacet;
+import woko.facets.builtin.WokoFacets;
 
 import java.util.Arrays;
 import java.util.List;
 
-@FacetKey(name="studio", profileId="developer")
+@FacetKey(name= WokoFacets.studio, profileId="developer")
 public class WokoStudio extends BaseForwardResolutionFacet {
 
   public String getPath() {
