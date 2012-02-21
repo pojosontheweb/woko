@@ -103,7 +103,7 @@ public class Util {
   }
 
   public static RenderPropertyValue getRenderPropValueEditFacet(Woko woko, HttpServletRequest request, Object owningObject, String propertyName, Object propertyValue) {
-    String fName = "renderPropertyValueEdit";
+    String fName = WokoFacets.renderPropertyValueEdit;
     RenderPropertyValue renderPropertyValue = getRenderFacet(fName, woko, request, owningObject, propertyName, propertyValue, false);
     if (renderPropertyValue==null) {
         renderPropertyValue = getRenderFacet(WokoFacets.renderPropertyValue, woko, request, owningObject, propertyName, propertyValue, true);
