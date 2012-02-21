@@ -6,5 +6,5 @@
 <div class="wokoObject">
     <w:includeFacet targetObject="${o}" facetName="renderLinksEdit"/>
     <w:includeFacet targetObject="${o}" facetName="<%=WokoFacets.renderTitle%>"/>
-    <w:includeFacet targetObject="${o}" facetName="renderPropertiesEdit"/>
+    <w:includeFacet targetObject="${o}" facetName="<%=WokoFacets.renderPropertiesEdit%>"/>
 </div>

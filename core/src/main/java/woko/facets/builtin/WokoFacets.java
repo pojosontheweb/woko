@@ -15,6 +15,7 @@ public interface WokoFacets {
     static final String renderObject = "renderObject";
     static final String renderObjectJson = "renderObjectJson";
     static final String renderProperties = "renderProperties";
+    static final String renderPropertiesEdit = "renderPropertiesEdit";
     static final String renderPropertyName = "renderPropertyName";
     static final String renderPropertyValue = "renderPropertyValue";
     static final String renderPropertyValueEdit = "renderPropertyValueEdit";
@@ -23,8 +24,6 @@ public interface WokoFacets {
     static final String save = "save";
     static final String search = "search";
     static final String validate = "validate";
-
-
     static final String view = "view";
 
 }

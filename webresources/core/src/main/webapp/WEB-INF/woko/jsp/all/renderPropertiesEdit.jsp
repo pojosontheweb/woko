@@ -12,7 +12,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="s" uri="http://stripes.sourceforge.net/stripes.tld" %>
 <%
-    RenderProperties editProperties = (RenderProperties)request.getAttribute("renderPropertiesEdit");
+    RenderProperties editProperties = (RenderProperties)request.getAttribute(WokoFacets.renderPropertiesEdit);
     List<String> propertyNames = editProperties.getPropertyNames();
     Map<String,Object> propertyValues = editProperties.getPropertyValues();
     WokoFacetContext fctx = (WokoFacetContext)editProperties.getFacetContext();
