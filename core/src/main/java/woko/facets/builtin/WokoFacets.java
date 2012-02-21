@@ -14,6 +14,7 @@ public interface WokoFacets {
     static final String renderLinks = "renderLinks";
     static final String renderLinksEdit = "renderLinksEdit";
     static final String renderObject = "renderObject";
+    static final String renderObjectEdit = "renderObjectEdit";
     static final String renderObjectJson = "renderObjectJson";
     static final String renderProperties = "renderProperties";
     static final String renderPropertiesEdit = "renderPropertiesEdit";

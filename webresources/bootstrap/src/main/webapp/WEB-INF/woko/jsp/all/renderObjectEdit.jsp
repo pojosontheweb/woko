@@ -4,7 +4,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="w" tagdir="/WEB-INF/tags/woko" %>
 <%
-    RenderObject renderObject = (RenderObject)request.getAttribute("renderObjectEdit");
+    RenderObject renderObject = (RenderObject)request.getAttribute(WokoFacets.renderObjectEdit);
     Object o = renderObject.getFacetContext().getTargetObject();
     Class<?> c = o.getClass();
     String className = Woko.getWoko(application).getObjectStore().getClassMapping(c);

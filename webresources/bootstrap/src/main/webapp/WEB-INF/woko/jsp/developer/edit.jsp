@@ -8,6 +8,6 @@
 <w:facet targetObject="${o}" facetName="<%=WokoFacets.renderTitle%>"/>
 <s:layout-render name="${layout.layoutPath}" layout="${layout}" pageTitle="${renderTitle.title}">
     <s:layout-component name="body">
-        <w:includeFacet facetName="renderObjectEdit" targetObject="${o}"/>
+        <w:includeFacet facetName="<%=WokoFacets.renderObjectEdit%>" targetObject="${o}"/>
     </s:layout-component>
 </s:layout-render>
