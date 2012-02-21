@@ -4,6 +4,7 @@ import groovy.lang.MissingPropertyException;
 import net.sourceforge.stripes.util.ReflectUtil;
 import woko.Woko;
 import woko.facets.builtin.RenderPropertyValue;
+import woko.facets.builtin.WokoFacets;
 
 import javax.servlet.http.HttpServletRequest;
 import java.beans.PropertyDescriptor;
@@ -98,14 +99,14 @@ public class Util {
   }
 
   public static RenderPropertyValue getRenderPropValueFacet(Woko woko, HttpServletRequest request, Object owningObject, String propertyName, Object propertyValue) {
-    return getRenderFacet("renderPropertyValue", woko, request, owningObject, propertyName, propertyValue, true);
+    return getRenderFacet(WokoFacets.renderPropertyValue, woko, request, owningObject, propertyName, propertyValue, true);
   }
 
   public static RenderPropertyValue getRenderPropValueEditFacet(Woko woko, HttpServletRequest request, Object owningObject, String propertyName, Object propertyValue) {
     String fName = "renderPropertyValueEdit";
     RenderPropertyValue renderPropertyValue = getRenderFacet(fName, woko, request, owningObject, propertyName, propertyValue, false);
     if (renderPropertyValue==null) {
-        renderPropertyValue = getRenderFacet("renderPropertyValue", woko, request, owningObject, propertyName, propertyValue, true);
+        renderPropertyValue = getRenderFacet(WokoFacets.renderPropertyValue, woko, request, owningObject, propertyName, propertyValue, true);
     }
     renderPropertyValue.setPropertyValue(propertyValue);
     renderPropertyValue.setOwningObject(owningObject);

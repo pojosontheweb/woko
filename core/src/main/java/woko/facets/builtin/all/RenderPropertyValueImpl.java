@@ -3,8 +3,9 @@ package woko.facets.builtin.all;
 import net.sourceforge.jfacets.annotations.FacetKey;
 import woko.facets.BaseFragmentFacet;
 import woko.facets.builtin.RenderPropertyValue;
+import woko.facets.builtin.WokoFacets;
 
-@FacetKey(name="renderPropertyValue", profileId="all")
+@FacetKey(name= WokoFacets.renderPropertyValue, profileId="all")
 public class RenderPropertyValueImpl extends BaseFragmentFacet implements RenderPropertyValue {
 
   private Object owningObject;

@@ -8,7 +8,7 @@
 <%@ page import="woko.facets.builtin.WokoFacets" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
-    RenderPropertyValue renderPropertyValue = (RenderPropertyValue)request.getAttribute("renderPropertyValue");
+    RenderPropertyValue renderPropertyValue = (RenderPropertyValue)request.getAttribute(WokoFacets.renderPropertyValue);
     WokoFacetContext fctx = (WokoFacetContext)renderPropertyValue.getFacetContext();
     Woko woko = fctx.getWoko();
     ObjectStore os = fctx.getWoko().getObjectStore();

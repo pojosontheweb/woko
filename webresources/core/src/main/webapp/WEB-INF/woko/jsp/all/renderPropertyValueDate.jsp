@@ -3,10 +3,11 @@
 <%@ page import="woko.facets.WokoFacetContext" %>
 <%@ page import="woko.persistence.ObjectStore" %>
 <%@ page import="java.util.Date" %>
+<%@ page import="woko.facets.builtin.WokoFacets" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%
-    RenderPropertyValue renderPropertyValue = (RenderPropertyValue)request.getAttribute("renderPropertyValue");
+    RenderPropertyValue renderPropertyValue = (RenderPropertyValue)request.getAttribute(WokoFacets.renderPropertyValue);
     WokoFacetContext fctx = (WokoFacetContext)renderPropertyValue.getFacetContext();
     ObjectStore os = fctx.getWoko().getObjectStore();
     Date propertyValue = (Date)fctx.getTargetObject();
