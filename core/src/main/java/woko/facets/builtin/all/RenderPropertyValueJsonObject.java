@@ -8,11 +8,12 @@ import woko.facets.BaseFacet;
 import woko.facets.WokoFacetContext;
 import woko.facets.builtin.RenderPropertyValueJson;
 import woko.facets.builtin.RenderTitle;
+import woko.facets.builtin.WokoFacets;
 import woko.persistence.ObjectStore;
 
 import javax.servlet.http.HttpServletRequest;
 
-@FacetKey(name="renderPropertyValueJson", profileId="all")
+@FacetKey(name= WokoFacets.renderPropertyValueJson, profileId="all")
 public class RenderPropertyValueJsonObject extends BaseFacet implements RenderPropertyValueJson {
 
   public Object propertyToJson(HttpServletRequest request, Object propertyValue) {

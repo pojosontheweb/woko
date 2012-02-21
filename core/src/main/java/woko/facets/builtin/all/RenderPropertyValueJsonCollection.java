@@ -5,12 +5,13 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import woko.facets.BaseFacet;
 import woko.facets.builtin.RenderPropertyValueJson;
+import woko.facets.builtin.WokoFacets;
 import woko.util.WLogger;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Collection;
 
-@FacetKey(name="renderPropertyValueJson", profileId="all", targetObjectType=Collection.class)
+@FacetKey(name= WokoFacets.renderPropertyValueJson, profileId="all", targetObjectType=Collection.class)
 public class RenderPropertyValueJsonCollection extends BaseFacet implements RenderPropertyValueJson {
 
   private static final WLogger logger = WLogger.getLogger(RenderPropertyValueJsonCollection.class);
@@ -24,7 +25,7 @@ public class RenderPropertyValueJsonCollection extends BaseFacet implements Rend
         arr.put(new JSONObject());
       }
       RenderPropertyValueJson rpvj =
-          (RenderPropertyValueJson)getFacetContext().getWoko().getFacet("renderPropertyValueJson", request, item);
+          (RenderPropertyValueJson)getFacetContext().getWoko().getFacet(WokoFacets.renderPropertyValueJson, request, item);
       if (rpvj==null) {
         logger.debug("... no renderPropertyValueJson facet found for collection item, adding empty JSON Object");
         arr.put(new JSONObject());

@@ -74,7 +74,7 @@ public class RenderObjectJsonImpl extends BaseFacet implements RenderObjectJson 
     RenderPropertyValueJson rpvj = (RenderPropertyValueJson)woko.getFacet("renderPropertyValueJson_" + propertyName, request, owner);
     if (rpvj==null) {
       // type-specific
-      rpvj = (RenderPropertyValueJson)woko.getFacet("renderPropertyValueJson", request, value);
+      rpvj = (RenderPropertyValueJson)woko.getFacet(WokoFacets.renderPropertyValueJson, request, value);
     }
     if (rpvj==null) {
       // default to toString()
