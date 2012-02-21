@@ -6,10 +6,7 @@ import net.sourceforge.stripes.rpc.RpcResolutionWrapper;
 import woko.Woko;
 import woko.facets.BaseResolutionFacet;
 import woko.facets.WokoFacetContext;
-import woko.facets.builtin.Edit;
-import woko.facets.builtin.Json;
-import woko.facets.builtin.Save;
-import woko.facets.builtin.Validate;
+import woko.facets.builtin.*;
 import woko.util.WLogger;
 
 @FacetKey(name = "save", profileId = "developer")
@@ -17,7 +14,7 @@ public class SaveImpl extends BaseResolutionFacet implements Save {
 
     private final static WLogger logger = WLogger.getLogger(SaveImpl.class);
 
-    public static final String TARGET_FACET_AFTER_SAVE = "edit";
+    public static final String TARGET_FACET_AFTER_SAVE = WokoFacets.edit;
 
     public Resolution getResolution(final ActionBeanContext abc) {
         // try to find a validation facet for the object
@@ -33,7 +30,7 @@ public class SaveImpl extends BaseResolutionFacet implements Save {
             } else {
                 logger.debug("Validate facet raised validation errors, not saving");
                 // forward to the edit fragment
-                Edit editFacet = (Edit) woko.getFacet("edit", abc.getRequest(), targetObject, clazz, true);
+                Edit editFacet = (Edit) woko.getFacet(WokoFacets.edit, abc.getRequest(), targetObject, clazz, true);
                 return new ForwardResolution(editFacet.getFragmentPath());
             }
         } else {

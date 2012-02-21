@@ -30,12 +30,12 @@ public class RenderLinksImpl extends BaseFragmentFacet implements RenderLinks {
     ObjectStore store = woko.getObjectStore();
 
     // display edit link if object can be edited (use instanceof because could be a login required facet)
-    Object editFacet = woko.getFacet("edit", request, o, oc);
+    Object editFacet = woko.getFacet(WokoFacets.edit, request, o, oc);
     if (editFacet instanceof Edit) {
       String className = store.getClassMapping(oc);
       String key = store.getKey(o);
       if (key!=null) {
-        links.add(new Link("edit/" + className + "/" + key, "Edit").setCssClass("edit"));
+        links.add(new Link(WokoFacets.edit + "/" + className + "/" + key, "Edit").setCssClass("edit"));
       }
     }
 

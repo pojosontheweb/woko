@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @FacetKeyList(keys ={
     @FacetKey(name = WokoFacets.view, profileId = "guest"),
-    @FacetKey(name = "edit", profileId = "guest"),
+    @FacetKey(name = WokoFacets.edit, profileId = "guest"),
     @FacetKey(name = "create", profileId = "guest"),
     @FacetKey(name = WokoFacets.delete, profileId = "guest"),
     @FacetKey(name = "save", profileId = "guest"),

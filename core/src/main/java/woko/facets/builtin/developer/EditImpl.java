@@ -6,8 +6,9 @@ import net.sourceforge.stripes.action.ForwardResolution;
 import net.sourceforge.stripes.action.Resolution;
 import woko.facets.BaseFacet;
 import woko.facets.builtin.Edit;
+import woko.facets.builtin.WokoFacets;
 
-@FacetKey(name="edit", profileId="developer")
+@FacetKey(name= WokoFacets.edit, profileId="developer")
 public class EditImpl extends BaseFacet implements Edit {
 
   public String getFragmentPath() {
