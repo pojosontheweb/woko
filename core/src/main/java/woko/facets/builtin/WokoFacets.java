@@ -22,6 +22,7 @@ public interface WokoFacets {
     static final String renderTitle = "renderTitle";
     static final String save = "save";
     static final String search = "search";
+    static final String validate = "validate";
 
 
     static final String view = "view";

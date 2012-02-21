@@ -22,7 +22,7 @@ public class SaveImpl extends BaseResolutionFacet implements Save {
         final Woko woko = facetContext.getWoko();
         final Object targetObject = facetContext.getTargetObject();
         Class<?> clazz = targetObject.getClass();
-        Validate validateFacet = (Validate) woko.getFacet("validate", abc.getRequest(), targetObject, clazz);
+        Validate validateFacet = (Validate) woko.getFacet(WokoFacets.validate, abc.getRequest(), targetObject, clazz);
         if (validateFacet != null) {
             logger.debug("Validation facet found, validating before saving...");
             if (validateFacet.validate(abc)) {

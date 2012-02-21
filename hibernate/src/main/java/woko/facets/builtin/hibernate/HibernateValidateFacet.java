@@ -11,6 +11,7 @@ import net.sourceforge.stripes.validation.ValidationErrors;
 import woko.actions.WokoActionBean;
 import woko.facets.BaseFacet;
 import woko.facets.WokoFacetContext;
+import woko.facets.builtin.WokoFacets;
 import woko.util.WLogger;
 
 import javax.validation.ConstraintViolation;
@@ -22,7 +23,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-@FacetKey(name="validate",profileId="all")
+@FacetKey(name= WokoFacets.validate,profileId="all")
 public class HibernateValidateFacet extends BaseFacet implements woko.facets.builtin.Validate {
 
     private static final Map<String, String> keyMapping = new HashMap<String, String>();
