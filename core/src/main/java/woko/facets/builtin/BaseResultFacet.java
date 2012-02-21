@@ -71,7 +71,7 @@ public abstract class BaseResultFacet extends BaseForwardRpcResolutionFacet impl
                     items.put((JSONObject)null);
                 } else {
                     RenderObjectJson roj =
-                    (RenderObjectJson)facetContext.getWoko().getFacet("renderObjectJson", request, o);
+                    (RenderObjectJson)facetContext.getWoko().getFacet(WokoFacets.renderObjectJson, request, o);
                     JSONObject jo = roj.objectToJson(request);
                     items.put(jo);
                 }

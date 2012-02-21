@@ -7,17 +7,14 @@ import org.json.JSONObject;
 import woko.Woko;
 import woko.facets.BaseFacet;
 import woko.facets.WokoFacetContext;
-import woko.facets.builtin.RenderObjectJson;
-import woko.facets.builtin.RenderProperties;
-import woko.facets.builtin.RenderPropertyValueJson;
-import woko.facets.builtin.RenderTitle;
+import woko.facets.builtin.*;
 import woko.persistence.ObjectStore;
 import woko.util.WLogger;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
-@FacetKey(name="renderObjectJson", profileId="all")
+@FacetKey(name= WokoFacets.renderObjectJson, profileId="all")
 public class RenderObjectJsonImpl extends BaseFacet implements RenderObjectJson {
 
   private static final WLogger logger = WLogger.getLogger(RenderObjectJsonImpl.class);

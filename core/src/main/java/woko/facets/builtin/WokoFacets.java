@@ -13,6 +13,7 @@ public interface WokoFacets {
     static final String navBar = "navBar";
     static final String renderLinks = "renderLinks";
     static final String renderObject = "renderObject";
+    static final String renderObjectJson = "renderObjectJson";
 
 
     static final String view = "view";
