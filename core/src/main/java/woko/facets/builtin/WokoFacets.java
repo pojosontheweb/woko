@@ -12,6 +12,7 @@ public interface WokoFacets {
     static final String logout = "logout";
     static final String navBar = "navBar";
     static final String renderLinks = "renderLinks";
+    static final String renderObject = "renderObject";
 
 
     static final String view = "view";

@@ -9,7 +9,7 @@
 <c:set var="pageTitle" value="${renderTitle.title}"/>
 <s:layout-render name="${layout.layoutPath}" layout="${layout}" pageTitle="${pageTitle}">
     <s:layout-component name="body">
-        <w:includeFacet facetName="renderObject" targetObject="${o}"/>
+        <w:includeFacet facetName="<%=WokoFacets.renderObject%>" targetObject="${o}"/>
     </s:layout-component>
 </s:layout-render>
 
