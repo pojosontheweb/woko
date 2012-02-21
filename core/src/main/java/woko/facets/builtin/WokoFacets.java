@@ -8,6 +8,8 @@ public interface WokoFacets {
     static final String json = "json";
     static final String layout = "layout";
     static final String list = "list";
+    static final String login = "login";
+    static final String logout = "logout";
 
 
     static final String view = "view";
