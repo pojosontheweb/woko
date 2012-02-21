@@ -43,7 +43,7 @@ public class SaveImpl extends BaseResolutionFacet implements Save {
         return new RpcResolutionWrapper(resolution) {
             @Override
             public Resolution getRpcResolution() {
-                Json json = (Json)woko.getFacet("json", facetContext.getRequest(), targetObject);
+                Json json = (Json)woko.getFacet(WokoFacets.json, facetContext.getRequest(), targetObject);
                 return json==null ? null : json.getResolution(abc);
             }
         };

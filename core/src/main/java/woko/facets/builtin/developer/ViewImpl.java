@@ -21,7 +21,7 @@ public class ViewImpl extends BaseForwardRpcResolutionFacet implements View, IIn
     @Override
     protected Resolution getRpcResolution(ActionBeanContext abc) {
         WokoFacetContext wokoFacetContext = getFacetContext();
-        Json json = (Json)wokoFacetContext.getWoko().getFacet("json", wokoFacetContext.getRequest(), wokoFacetContext.getTargetObject());
+        Json json = (Json)wokoFacetContext.getWoko().getFacet(WokoFacets.json, wokoFacetContext.getRequest(), wokoFacetContext.getTargetObject());
         return json==null ? null : json.getResolution(abc);
     }
 

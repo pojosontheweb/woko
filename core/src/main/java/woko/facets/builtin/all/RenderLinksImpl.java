@@ -48,12 +48,12 @@ public class RenderLinksImpl extends BaseFragmentFacet implements RenderLinks {
       }
     }
 
-    Object jsonFacet = woko.getFacet("json", request, o, oc);
+    Object jsonFacet = woko.getFacet(WokoFacets.json, request, o, oc);
     if (jsonFacet instanceof Json) {
       String className = store.getClassMapping(oc);
       String key = store.getKey(o);
       if (key!=null) {
-        links.add(new Link("json/" + className + "/" + key, "Json").setCssClass("json"));
+        links.add(new Link(WokoFacets.json + "/" + className + "/" + key, "Json").setCssClass("json"));
       }
     }
 

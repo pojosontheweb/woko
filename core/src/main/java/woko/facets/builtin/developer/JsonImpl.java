@@ -9,8 +9,9 @@ import woko.facets.BaseFacet;
 import woko.facets.WokoFacetContext;
 import woko.facets.builtin.Json;
 import woko.facets.builtin.RenderObjectJson;
+import woko.facets.builtin.WokoFacets;
 
-@FacetKey(name="json", profileId="developer")
+@FacetKey(name= WokoFacets.json, profileId="developer")
 public class JsonImpl extends BaseFacet implements Json {
 
   public Resolution getResolution(ActionBeanContext abc) {
