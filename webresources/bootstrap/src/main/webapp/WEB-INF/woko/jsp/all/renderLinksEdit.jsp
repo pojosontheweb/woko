@@ -1,10 +1,11 @@
 <%@ page import="woko.facets.builtin.RenderLinks" %>
 <%@ page import="woko.facets.builtin.all.Link" %>
 <%@ page import="java.util.List" %>
+<%@ page import="woko.facets.builtin.WokoFacets" %>
 <%@ taglib prefix="w" tagdir="/WEB-INF/tags/woko" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
-    RenderLinks renderLinks = (RenderLinks)request.getAttribute("renderLinksEdit");
+    RenderLinks renderLinks = (RenderLinks)request.getAttribute(WokoFacets.renderLinksEdit);
     List<Link> links = renderLinks.getLinks();
     if (links.size()>=1) {
         Link first = links.get(0);

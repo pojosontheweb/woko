@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@FacetKey(name="renderLinksEdit", profileId="all")
+@FacetKey(name=WokoFacets.renderLinksEdit, profileId="all")
 public class RenderLinksEditImpl extends BaseFragmentFacet implements RenderLinks {
 
   public String getPath() {

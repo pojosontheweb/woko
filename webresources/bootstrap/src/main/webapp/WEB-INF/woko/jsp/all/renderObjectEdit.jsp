@@ -15,7 +15,7 @@
             <w:includeFacet targetObject="<%=o%>" facetName="<%=WokoFacets.renderTitle%>"/>
         </div>
         <div class="wokoLinks pull-right">
-            <w:includeFacet targetObject="<%=o%>" facetName="renderLinksEdit"/>
+            <w:includeFacet targetObject="<%=o%>" facetName="<%=WokoFacets.renderLinksEdit%>"/>
         </div>
     </div>
     <div class="row-fluid">
