@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletRequest;
     @FacetKey(name = WokoFacets.json, profileId = "guest"),
     @FacetKey(name = "find", profileId = "guest"),
     @FacetKey(name = WokoFacets.list, profileId = "guest"),
-    @FacetKey(name = "search", profileId = "all"),
+    @FacetKey(name = WokoFacets.search, profileId = "all"),
     @FacetKey(name = "studio", profileId = "guest")
 })
 public class LoginRequiredFacet extends BaseResolutionFacet {

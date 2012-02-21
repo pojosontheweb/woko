@@ -4,12 +4,13 @@ import net.sourceforge.jfacets.annotations.FacetKey;
 import net.sourceforge.stripes.action.ActionBeanContext;
 import woko.facets.builtin.BaseResultFacet;
 import woko.facets.builtin.Search;
+import woko.facets.builtin.WokoFacets;
 import woko.persistence.ListResultIterator;
 import woko.persistence.ResultIterator;
 
 import java.util.Collections;
 
-@FacetKey(name="search", profileId="developer")
+@FacetKey(name= WokoFacets.search, profileId="developer")
 public class SearchImpl extends BaseResultFacet implements Search {
 
   private String query;

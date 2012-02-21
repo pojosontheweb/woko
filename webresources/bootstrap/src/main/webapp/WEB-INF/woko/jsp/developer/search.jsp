@@ -15,7 +15,7 @@
     <s:layout-component name="body">
         <%
             Woko woko = Woko.getWoko(application);
-            Search search = (Search)request.getAttribute("search");
+            Search search = (Search)request.getAttribute(WokoFacets.search);
             ResultIterator results = search.getResults();
             String query = search.getQuery();
             int totalSize = results.getTotalSize();
