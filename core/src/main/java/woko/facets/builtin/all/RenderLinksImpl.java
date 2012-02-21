@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@FacetKey(name="renderLinks", profileId="all")
+@FacetKey(name=WokoFacets.renderLinks, profileId="all")
 public class RenderLinksImpl extends BaseFragmentFacet implements RenderLinks {
 
   public String getPath() {

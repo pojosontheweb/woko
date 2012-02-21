@@ -1,5 +1,6 @@
 <%@ page import="woko.facets.builtin.RenderObject" %>
 <%@ page import="woko.Woko" %>
+<%@ page import="woko.facets.builtin.WokoFacets" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="w" tagdir="/WEB-INF/tags/woko" %>
 <%
@@ -14,7 +15,7 @@
             <w:includeFacet targetObject="<%=o%>" facetName="renderTitle"/>
         </div>
         <div class="wokoLinks pull-right">
-            <w:includeFacet targetObject="<%=o%>" facetName="renderLinks"/>
+            <w:includeFacet targetObject="<%=o%>" facetName="<%=WokoFacets.renderLinks%>"/>
         </div>
     </div>
     <div class="row-fluid">
