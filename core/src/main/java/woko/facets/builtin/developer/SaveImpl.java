@@ -9,7 +9,7 @@ import woko.facets.WokoFacetContext;
 import woko.facets.builtin.*;
 import woko.util.WLogger;
 
-@FacetKey(name = "save", profileId = "developer")
+@FacetKey(name = WokoFacets.save, profileId = "developer")
 public class SaveImpl extends BaseResolutionFacet implements Save {
 
     private final static WLogger logger = WLogger.getLogger(SaveImpl.class);
