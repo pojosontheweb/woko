@@ -33,6 +33,12 @@
             <version>${project.version}</version>
             <type>war</type>
         </dependency>
+        <dependency>
+            <groupId>com.rvkb</groupId>
+            <artifactId>woko-webtests-common</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
     <build>
         <finalName>woko-webtests</finalName>
@@ -80,6 +86,7 @@
                       <home>${project.build.directory}/tomcat6x/container</home>
                       <properties>
                           <cargo.servlet.port>9999</cargo.servlet.port>
+                          <cargo.servlet.users>wdevel:wdevel:developer</cargo.servlet.users>
                           <cargo.container.timeout>600000</cargo.container.timeout>
                       </properties>
                     </configuration>
