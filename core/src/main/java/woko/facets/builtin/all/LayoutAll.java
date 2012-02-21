@@ -4,12 +4,13 @@ package woko.facets.builtin.all;
 import net.sourceforge.jfacets.annotations.FacetKey;
 import woko.facets.BaseFacet;
 import woko.facets.builtin.Layout;
+import woko.facets.builtin.WokoFacets;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-@FacetKey(name="layout", profileId="all")
+@FacetKey(name= WokoFacets.layout, profileId="all")
 public class LayoutAll extends BaseFacet implements Layout {
 
   public String getAppTitle() {

@@ -1,11 +1,12 @@
 <%@ page import="woko.Woko" %>
+<%@ page import="woko.facets.builtin.WokoFacets" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="w" tagdir="/WEB-INF/tags/woko" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="s" uri="http://stripes.sourceforge.net/stripes.tld" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <c:set var="cp" value="${pageContext.request.contextPath}"/>
-<w:facet facetName="layout"/>
+<w:facet facetName="<%=WokoFacets.layout%>"/>
 <%
     Woko woko = Woko.getWoko(application);
 %>

@@ -1,9 +1,10 @@
+<%@ page import="woko.facets.builtin.WokoFacets" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="w" tagdir="/WEB-INF/tags/woko" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="s" uri="http://stripes.sourceforge.net/stripes.tld" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<w:facet facetName="layout"/>
+<w:facet facetName="<%=WokoFacets.layout%>"/>
 
 <fmt:message var="pageTitle" key="woko.devel.create.pageTitle"/>
 <s:layout-render name="${layout.layoutPath}" layout="${layout}" pageTitle="${pageTitle}">
