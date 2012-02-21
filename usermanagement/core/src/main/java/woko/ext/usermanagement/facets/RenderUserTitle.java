@@ -2,9 +2,10 @@ package woko.ext.usermanagement.facets;
 
 import net.sourceforge.jfacets.annotations.FacetKey;
 import woko.ext.usermanagement.core.User;
+import woko.facets.builtin.WokoFacets;
 import woko.facets.builtin.all.RenderTitleImpl;
 
-@FacetKey(name="renderTitle", profileId="all", targetObjectType = User.class)
+@FacetKey(name= WokoFacets.renderTitle, profileId="all", targetObjectType = User.class)
 public class RenderUserTitle extends RenderTitleImpl {
 
     @Override

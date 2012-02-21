@@ -5,7 +5,7 @@
 <%@ taglib prefix="s" uri="http://stripes.sourceforge.net/stripes.tld" %>
 <c:set var="o" value="${actionBean.object}"/>
 <w:facet facetName="<%=WokoFacets.layout%>" targetObject="${o}"/>
-<w:facet targetObject="${o}" facetName="renderTitle"/>
+<w:facet targetObject="${o}" facetName="<%=WokoFacets.renderTitle%>"/>
 <s:layout-render name="${layout.layoutPath}" layout="${layout}" pageTitle="${renderTitle.title}">
     <s:layout-component name="body">
         <w:includeFacet facetName="renderObjectEdit" targetObject="${o}"/>

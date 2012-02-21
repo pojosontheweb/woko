@@ -35,7 +35,7 @@ public class RenderPropertyValueJsonObject extends BaseFacet implements RenderPr
         res.put("_key", key);
       }
 
-      RenderTitle renderTitle = (RenderTitle)woko.getFacet("renderTitle", request, propertyValue);
+      RenderTitle renderTitle = (RenderTitle)woko.getFacet(WokoFacets.renderTitle, request, propertyValue);
       if (renderTitle!=null) {
         res.put("_title", renderTitle.getTitle());
       }

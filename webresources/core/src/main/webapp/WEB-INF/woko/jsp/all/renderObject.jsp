@@ -5,6 +5,6 @@
 <c:set var="o" value="${renderObject.facetContext.targetObject}"/>
 <div class="wokoObject">
     <w:includeFacet targetObject="${o}" facetName="<%=WokoFacets.renderLinks%>"/>
-    <w:includeFacet targetObject="${o}" facetName="renderTitle"/>
+    <w:includeFacet targetObject="${o}" facetName="<%=WokoFacets.renderTitle%>"/>
     <w:includeFacet targetObject="${o}" facetName="<%=WokoFacets.renderProperties%>"/>
 </div>

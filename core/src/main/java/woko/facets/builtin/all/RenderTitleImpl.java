@@ -5,6 +5,7 @@ import net.sourceforge.stripes.util.ReflectUtil;
 import woko.facets.BaseFragmentFacet;
 import woko.facets.WokoFacetContext;
 import woko.facets.builtin.RenderTitle;
+import woko.facets.builtin.WokoFacets;
 import woko.persistence.ObjectStore;
 import woko.util.WLogger;
 
@@ -14,7 +15,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-@FacetKey(name="renderTitle", profileId="all")
+@FacetKey(name= WokoFacets.renderTitle, profileId="all")
 public class RenderTitleImpl extends BaseFragmentFacet implements RenderTitle {
 
   private static final WLogger logger = WLogger.getLogger(RenderTitleImpl.class);

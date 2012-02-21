@@ -19,6 +19,7 @@ public interface WokoFacets {
     static final String renderPropertyValue = "renderPropertyValue";
     static final String renderPropertyValueEdit = "renderPropertyValueEdit";
     static final String renderPropertyValueJson = "renderPropertyValueJson";
+    static final String renderTitle = "renderTitle";
 
 
     static final String view = "view";

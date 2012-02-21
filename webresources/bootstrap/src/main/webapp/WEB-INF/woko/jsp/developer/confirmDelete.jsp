@@ -6,7 +6,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <c:set var="o" value="${actionBean.object}"/>
 <w:facet facetName="<%=WokoFacets.layout%>" targetObject="${o}"/>
-<w:facet targetObject="${o}" facetName="renderTitle"/>
+<w:facet targetObject="${o}" facetName="<%=WokoFacets.renderTitle%>"/>
 <s:layout-render name="${layout.layoutPath}" layout="${layout}" pageTitle="${renderTitle.title}">
     <s:layout-component name="body">
         <h1 class="page-header"><fmt:message key="woko.devel.confirmDelete.title"/></h1>

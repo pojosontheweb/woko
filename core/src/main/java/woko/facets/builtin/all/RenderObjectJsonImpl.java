@@ -53,7 +53,7 @@ public class RenderObjectJsonImpl extends BaseFacet implements RenderObjectJson 
         result.put("_key", key);
       }
 
-      RenderTitle renderTitle = (RenderTitle)woko.getFacet("renderTitle", request, o);
+      RenderTitle renderTitle = (RenderTitle)woko.getFacet(WokoFacets.renderTitle, request, o);
       if (renderTitle!=null) {
         result.put("_title", renderTitle.getTitle());
       }

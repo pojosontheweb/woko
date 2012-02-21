@@ -26,7 +26,7 @@
     if (propertyMappedClassName!=null) {
         propertyClassName = propertyMappedClassName;
         if (propertyValue!=null) {
-            RenderTitle rt = (RenderTitle)woko.getFacet("renderTitle", request, propertyValue, propertyClass, true);
+            RenderTitle rt = (RenderTitle)woko.getFacet(WokoFacets.renderTitle, request, propertyValue, propertyClass, true);
             linkTitle = rt.getTitle();
             String key = os.getKey(propertyValue);
             if (key!=null) {

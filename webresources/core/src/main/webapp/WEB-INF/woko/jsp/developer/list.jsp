@@ -78,7 +78,7 @@
               while (results.hasNext()) {
                   Object result = results.next();
                   // compute title
-                  RenderTitle renderTitle = (RenderTitle)woko.getFacet("renderTitle", request, result);
+                  RenderTitle renderTitle = (RenderTitle)woko.getFacet(WokoFacets.renderTitle, request, result);
                   String title = renderTitle!=null ? renderTitle.getTitle() : result.toString();
                   // compute link if view facet is available
                   String href = null;

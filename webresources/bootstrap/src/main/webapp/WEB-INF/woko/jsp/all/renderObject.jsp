@@ -12,7 +12,7 @@
 <div class="wokoObject <%=className%>">
     <div class="row-fluid">
         <div class="wokoTitle">
-            <w:includeFacet targetObject="<%=o%>" facetName="renderTitle"/>
+            <w:includeFacet targetObject="<%=o%>" facetName="<%=WokoFacets.renderTitle%>"/>
         </div>
         <div class="wokoLinks pull-right">
             <w:includeFacet targetObject="<%=o%>" facetName="<%=WokoFacets.renderLinks%>"/>
