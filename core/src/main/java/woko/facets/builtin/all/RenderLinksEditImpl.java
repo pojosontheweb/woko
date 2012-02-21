@@ -36,16 +36,16 @@ public class RenderLinksEditImpl extends BaseFragmentFacet implements RenderLink
       String className = store.getClassMapping(oc);
       String key = store.getKey(o);
       if (key!=null) {
-        links.add(new Link("view/" + className + "/" + key, "Close editing").setCssClass("close"));
+        links.add(new Link(WokoFacets.view + "/" + className + "/" + key, "Close editing").setCssClass("close"));
       }
     }
 
-    Object deleteFacet = woko.getFacet("delete", request, o, oc);
+    Object deleteFacet = woko.getFacet(WokoFacets.delete, request, o, oc);
     if (deleteFacet!=null) {
       String className = store.getClassMapping(oc);
       String key = store.getKey(o);
       if (key!=null) {
-        links.add(new Link("delete/" + className + "/" + key, "Delete").setCssClass("delete"));
+        links.add(new Link(WokoFacets.delete + "/" + className + "/" + key, "Delete").setCssClass("delete"));
       }
     }
     return links;

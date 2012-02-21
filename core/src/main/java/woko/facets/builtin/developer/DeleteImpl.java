@@ -7,10 +7,9 @@ import woko.Woko;
 import woko.facets.BaseResolutionFacet;
 import woko.facets.WokoFacetContext;
 import woko.facets.builtin.Delete;
-import woko.facets.builtin.Json;
 import woko.facets.builtin.WokoFacets;
 
-@FacetKey(name="delete", profileId="developer")
+@FacetKey(name=WokoFacets.delete, profileId="developer")
 public class DeleteImpl extends BaseResolutionFacet implements Delete {
 
   private String confirm;

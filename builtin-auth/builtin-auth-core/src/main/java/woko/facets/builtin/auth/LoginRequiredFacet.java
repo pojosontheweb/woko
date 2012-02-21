@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
     @FacetKey(name = WokoFacets.view, profileId = "guest"),
     @FacetKey(name = "edit", profileId = "guest"),
     @FacetKey(name = "create", profileId = "guest"),
-    @FacetKey(name = "delete", profileId = "guest"),
+    @FacetKey(name = WokoFacets.delete, profileId = "guest"),
     @FacetKey(name = "save", profileId = "guest"),
     @FacetKey(name = "json", profileId = "guest"),
     @FacetKey(name = "find", profileId = "guest"),

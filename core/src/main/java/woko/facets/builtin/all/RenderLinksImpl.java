@@ -4,10 +4,7 @@ import net.sourceforge.jfacets.annotations.FacetKey;
 import woko.Woko;
 import woko.facets.BaseFragmentFacet;
 import woko.facets.WokoFacetContext;
-import woko.facets.builtin.Delete;
-import woko.facets.builtin.Edit;
-import woko.facets.builtin.Json;
-import woko.facets.builtin.RenderLinks;
+import woko.facets.builtin.*;
 import woko.persistence.ObjectStore;
 
 import javax.servlet.http.HttpServletRequest;
@@ -42,12 +39,12 @@ public class RenderLinksImpl extends BaseFragmentFacet implements RenderLinks {
       }
     }
 
-    Object deleteFacet = woko.getFacet("delete", request, o, oc);
+    Object deleteFacet = woko.getFacet(WokoFacets.delete, request, o, oc);
     if (deleteFacet instanceof Delete) {
       String className = store.getClassMapping(oc);
       String key = store.getKey(o);
       if (key!=null) {
-        links.add(new Link("delete/" + className + "/" + key, "Delete").setCssClass("delete"));
+        links.add(new Link(WokoFacets.delete + "/" + className + "/" + key, "Delete").setCssClass("delete"));
       }
     }
 
