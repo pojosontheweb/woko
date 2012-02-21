@@ -14,6 +14,17 @@
             <groupId>com.canoo.webtest</groupId>
             <artifactId>webtest</artifactId>
             <version>3.0</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.codehaus.groovy</groupId>
+                    <artifactId>groovy-all</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.codehaus.groovy</groupId>
+            <artifactId>groovy-all</artifactId>
+            <version>1.7.0</version>
         </dependency>
         <!-- override the htmlunit version (jquery doesn't work otherwise) -->
         <dependency>
