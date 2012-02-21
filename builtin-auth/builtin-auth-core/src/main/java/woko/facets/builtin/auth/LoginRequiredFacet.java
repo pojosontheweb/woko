@@ -6,11 +6,12 @@ import net.sourceforge.stripes.action.ActionBeanContext;
 import net.sourceforge.stripes.action.ForwardResolution;
 import net.sourceforge.stripes.action.Resolution;
 import woko.facets.BaseResolutionFacet;
+import woko.facets.builtin.WokoFacets;
 
 import javax.servlet.http.HttpServletRequest;
 
 @FacetKeyList(keys ={
-    @FacetKey(name = "view", profileId = "guest"),
+    @FacetKey(name = WokoFacets.view, profileId = "guest"),
     @FacetKey(name = "edit", profileId = "guest"),
     @FacetKey(name = "create", profileId = "guest"),
     @FacetKey(name = "delete", profileId = "guest"),

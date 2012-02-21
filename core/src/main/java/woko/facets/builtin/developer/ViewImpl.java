@@ -9,8 +9,9 @@ import woko.facets.BaseForwardRpcResolutionFacet;
 import woko.facets.WokoFacetContext;
 import woko.facets.builtin.Json;
 import woko.facets.builtin.View;
+import woko.facets.builtin.WokoFacets;
 
-@FacetKey(name="view", profileId="developer")
+@FacetKey(name= WokoFacets.view, profileId="developer")
 public class ViewImpl extends BaseForwardRpcResolutionFacet implements View, IInstanceFacet {
 
   public String getPath() {

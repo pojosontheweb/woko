@@ -5,6 +5,7 @@
 <%@ page import="woko.Woko" %>
 <%@ page import="woko.facets.builtin.RenderTitle" %>
 <%@ page import="woko.facets.builtin.View" %>
+<%@ page import="woko.facets.builtin.WokoFacets" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
     RenderPropertyValue renderPropertyValue = (RenderPropertyValue)request.getAttribute("renderPropertyValue");
@@ -30,8 +31,16 @@
             String key = os.getKey(propertyValue);
             if (key!=null) {
                 // we have a className and a key, can the user view the object ?
-                if (woko.getFacet("view", request, propertyValue, propertyClass)!=null) {
-                    href = request.getContextPath() + "/view/" + propertyClassName + "/" + key;
+                if (woko.getFacet(WokoFacets.view, request, propertyValue, propertyClass)!=null) {
+                    href = new StringBuilder().
+                              append(request.getContextPath()).
+                              append("/").
+                              append(WokoFacets.view).
+                              append("/").
+                              append(propertyClassName).
+                              append("/").
+                              append(key).
+                              toString();
                 }
             }
         }

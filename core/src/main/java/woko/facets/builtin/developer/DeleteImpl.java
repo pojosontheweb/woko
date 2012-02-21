@@ -8,6 +8,7 @@ import woko.facets.BaseResolutionFacet;
 import woko.facets.WokoFacetContext;
 import woko.facets.builtin.Delete;
 import woko.facets.builtin.Json;
+import woko.facets.builtin.WokoFacets;
 
 @FacetKey(name="delete", profileId="developer")
 public class DeleteImpl extends BaseResolutionFacet implements Delete {
@@ -37,7 +38,7 @@ public class DeleteImpl extends BaseResolutionFacet implements Delete {
       abc.getMessages().add(new LocalizableMessage("woko.devel.delete.cancel"));
       return new RedirectResolution(
               facetContext.getWoko().facetUrl(
-                  "view",
+                      WokoFacets.view,
                   facetContext.getTargetObject()));
     }
     if (confirm!=null) {

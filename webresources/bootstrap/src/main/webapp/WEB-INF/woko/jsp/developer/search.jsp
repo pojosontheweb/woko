@@ -2,6 +2,7 @@
 <%@ page import="woko.facets.builtin.RenderTitle" %>
 <%@ page import="woko.Woko" %>
 <%@ page import="woko.facets.builtin.Search" %>
+<%@ page import="woko.facets.builtin.WokoFacets" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="w" tagdir="/WEB-INF/tags/woko" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -71,8 +72,16 @@
                   String href = null;
                   String resultKey = woko.getObjectStore().getKey(result);
                   String className = woko.getObjectStore().getClassMapping(result.getClass());
-                  if (woko.getFacet("view", request, result)!=null) {
-                      href = request.getContextPath() + "/view/" + className + "/" + resultKey;
+                  if (woko.getFacet(WokoFacets.view, request, result)!=null) {
+                      href = new StringBuilder().
+                              append(request.getContextPath()).
+                              append("/").
+                              append(WokoFacets.view).
+                              append("/").
+                              append(className).
+                              append("/").
+                              append(resultKey).
+                              toString();
                   }
             %>
                   <li>

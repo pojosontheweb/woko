@@ -5,6 +5,7 @@ import woko.Woko;
 import woko.facets.BaseFragmentFacet;
 import woko.facets.WokoFacetContext;
 import woko.facets.builtin.RenderLinks;
+import woko.facets.builtin.WokoFacets;
 import woko.persistence.ObjectStore;
 
 import javax.servlet.http.HttpServletRequest;
@@ -30,7 +31,7 @@ public class RenderLinksEditImpl extends BaseFragmentFacet implements RenderLink
     ObjectStore store = woko.getObjectStore();
 
     // display view link if object can be displayed
-    Object viewFacet = woko.getFacet("view", request, o, oc);
+    Object viewFacet = woko.getFacet(WokoFacets.view, request, o, oc);
     if (viewFacet!=null) {
       String className = store.getClassMapping(oc);
       String key = store.getKey(o);
