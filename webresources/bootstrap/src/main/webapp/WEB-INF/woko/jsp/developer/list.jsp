@@ -15,7 +15,7 @@
     <s:layout-component name="body">
         <%
             Woko woko = Woko.getWoko(application);
-            ListObjects list = (ListObjects)request.getAttribute("list");
+            ListObjects list = (ListObjects)request.getAttribute(WokoFacets.list);
             String className = list.getClassName();
             ResultIterator results = list.getResults();
             int totalSize = results.getTotalSize();

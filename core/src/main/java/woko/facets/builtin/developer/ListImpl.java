@@ -10,13 +10,14 @@ import org.json.JSONObject;
 import woko.facets.WokoFacetContext;
 import woko.facets.builtin.BaseResultFacet;
 import woko.facets.builtin.RenderObjectJson;
+import woko.facets.builtin.WokoFacets;
 import woko.persistence.ListResultIterator;
 import woko.persistence.ResultIterator;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Collections;
 
-@FacetKey(name="list", profileId="developer")
+@FacetKey(name= WokoFacets.list, profileId="developer")
 public class ListImpl extends BaseResultFacet implements woko.facets.builtin.ListObjects {
 
   public String getPath() {

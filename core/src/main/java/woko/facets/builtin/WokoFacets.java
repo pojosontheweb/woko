@@ -7,6 +7,7 @@ public interface WokoFacets {
     static final String home = "home";
     static final String json = "json";
     static final String layout = "layout";
+    static final String list = "list";
 
 
     static final String view = "view";
