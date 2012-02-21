@@ -1,4 +1,5 @@
 <%@ page import="java.util.Locale" %>
+<%@ page import="woko.facets.builtin.WokoFacets" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="s" uri="http://stripes.sourceforge.net/stripes-dynattr.tld" %>
 <%@ taglib prefix="w" tagdir="/WEB-INF/tags/woko" %>
@@ -88,7 +89,7 @@
                     <div class="nav-collapse">
 
                         <ul class="nav nav-pills">
-                            <w:includeFacet facetName="navBar" targetObject="${layout.facetContext.targetObject}"/>
+                            <w:includeFacet facetName="<%=WokoFacets.navBar%>" targetObject="${layout.facetContext.targetObject}"/>
                         </ul>
 
                         <p class="navbar-text pull-right">

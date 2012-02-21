@@ -10,6 +10,7 @@ public interface WokoFacets {
     static final String list = "list";
     static final String login = "login";
     static final String logout = "logout";
+    static final String navBar = "navBar";
 
 
     static final String view = "view";

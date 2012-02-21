@@ -1,3 +1,4 @@
+<%@ page import="woko.facets.builtin.WokoFacets" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="s" uri="http://stripes.sourceforge.net/stripes.tld" %>
 <%@ taglib prefix="w" tagdir="/WEB-INF/tags/woko" %>
@@ -56,7 +57,7 @@
             <hr/>
 
             <div class="wokoNavBar">
-                <w:includeFacet facetName="navBar" targetObject="${layout.facetContext.targetObject}"/>
+                <w:includeFacet facetName="<%=WokoFacets.navBar%>" targetObject="${layout.facetContext.targetObject}"/>
             </div>
             <hr/>
 
