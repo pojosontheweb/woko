@@ -13,14 +13,16 @@ public class WokoActionBeanPropertyBinder extends DefaultActionBeanPropertyBinde
             Class<?> beanClass = actionBean.getClass();
             if (beanClass.equals(WokoActionBean.class)) {
                 String source = eval.getExpression().getSource();
-                if (source.startsWith("facet.")) {
+                if (source.startsWith("facet.") || source.startsWith("object.")) {
                     WokoActionBean wokoActionBean = (WokoActionBean)actionBean;
 
-                    // check for @StrictBinding of the facet class
+                    // check for @StrictBinding on the facet class
                     Object facet = wokoActionBean.getFacet();
                     if (facet!=null) {
                         Class<?> facetClass = facet.getClass();
-                        return WokoFacetBindingPolicyManager.getInstance(facetClass).isBindingAllowed(eval);
+                         if (!WokoFacetBindingPolicyManager.getInstance(facetClass).isBindingAllowed(eval)) {
+                             return false;
+                         }
                     }
                 }
             }

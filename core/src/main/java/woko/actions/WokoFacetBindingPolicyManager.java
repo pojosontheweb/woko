@@ -10,17 +10,13 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import net.sourceforge.stripes.action.ActionBean;
 import net.sourceforge.stripes.action.ActionBeanContext;
 import net.sourceforge.stripes.action.StrictBinding;
-import net.sourceforge.stripes.action.StrictBinding.Policy;
 import net.sourceforge.stripes.controller.ParameterName;
 import net.sourceforge.stripes.controller.StripesFilter;
 import net.sourceforge.stripes.exception.StripesRuntimeException;
 import net.sourceforge.stripes.util.Log;
 import net.sourceforge.stripes.util.bean.PropertyExpressionEvaluation;
-import net.sourceforge.stripes.validation.ValidationMetadata;
-import net.sourceforge.stripes.validation.ValidationMetadataProvider;
 
 @StrictBinding(defaultPolicy = StrictBinding.Policy.ALLOW)
 public class WokoFacetBindingPolicyManager {
@@ -175,7 +171,7 @@ public class WokoFacetBindingPolicyManager {
         for (String glob : globArray) {
             String[] subs = glob.split("(\\s*,\\s*)+");
             for (String sub : subs) {
-                globs.add("facet." + sub);
+                globs.add(sub);
             }
         }
 
