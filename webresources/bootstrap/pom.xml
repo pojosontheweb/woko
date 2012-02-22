@@ -7,7 +7,7 @@
         <version>2.0-beta2-SNAPSHOT</version>
     </parent>
     <artifactId>woko-web-bootstrap</artifactId>
-    <name>Woko - web</name>
+    <name>Woko - web : bootstrap</name>
     <packaging>war</packaging>
     <dependencies>
         <dependency>
