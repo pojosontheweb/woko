@@ -51,7 +51,6 @@
         <module>compass-hibernate</module>
         <module>ri</module>
         <module>archetype</module>
-        <module>wmaven</module>
         <module>dojo</module>
         <module>archetype-heroku</module>
         <module>usermanagement</module>

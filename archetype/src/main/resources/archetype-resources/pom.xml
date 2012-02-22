@@ -84,10 +84,6 @@
                   </configuration>
                 </configuration>
             </plugin>
-          <plugin>
-            <groupId>com.rvkb</groupId>
-            <artifactId>woko-maven-plugin</artifactId>
-          </plugin>
         </plugins>
     </build>
 </project>
