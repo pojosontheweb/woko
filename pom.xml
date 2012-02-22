@@ -50,12 +50,9 @@
         <module>hibernate</module>
         <module>compass-hibernate</module>
         <module>ri</module>
-        <module>gae</module>
         <module>archetype</module>
-        <module>gitfs</module>
         <module>wmaven</module>
         <module>dojo</module>
-        <module>archetype-gae</module>
         <module>archetype-heroku</module>
         <module>usermanagement</module>
     </modules>
