@@ -8,6 +8,8 @@
 <s:layout-definition>
     <html>
         <head>
+            <link rel="shortcut icon"
+                 href="${cp}/favicon.ico" />
             <c:choose>
                 <c:when test="${not empty pageTitle}">
                     <title>${layout.appTitle} - ${pageTitle}</title>

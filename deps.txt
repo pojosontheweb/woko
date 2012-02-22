@@ -1,0 +1,713 @@
+[INFO] Scanning for projects...
+[WARNING] 
+[WARNING] Some problems were encountered while building the effective model for com.rvkb:stripes-woko-plugins:jar:2.0-beta2-SNAPSHOT
+[WARNING] 'build.plugins.plugin.version' for org.apache.maven.plugins:maven-compiler-plugin is missing. @ line 33, column 21
+[WARNING] 'build.plugins.plugin.version' for org.apache.maven.plugins:maven-surefire-plugin is missing. @ com.rvkb:woko-parent:2.0-beta2-SNAPSHOT, /Users/vankeisb/projects/woko2/pom.xml, line 72, column 21
+[WARNING] 
+[WARNING] Some problems were encountered while building the effective model for com.rvkb:woko-core:jar:2.0-beta2-SNAPSHOT
+[WARNING] 'build.plugins.plugin.version' for org.apache.maven.plugins:maven-compiler-plugin is missing. @ com.rvkb:woko-parent:2.0-beta2-SNAPSHOT, /Users/vankeisb/projects/woko2/pom.xml, line 64, column 21
+[WARNING] 'build.plugins.plugin.version' for org.apache.maven.plugins:maven-surefire-plugin is missing. @ com.rvkb:woko-parent:2.0-beta2-SNAPSHOT, /Users/vankeisb/projects/woko2/pom.xml, line 72, column 21
+[WARNING] 
+[WARNING] Some problems were encountered while building the effective model for com.rvkb:woko-web-core:war:2.0-beta2-SNAPSHOT
+[WARNING] 'build.plugins.plugin.version' for org.apache.maven.plugins:maven-compiler-plugin is missing. @ com.rvkb:woko-parent:2.0-beta2-SNAPSHOT, /Users/vankeisb/projects/woko2/pom.xml, line 64, column 21
+[WARNING] 'build.plugins.plugin.version' for org.apache.maven.plugins:maven-surefire-plugin is missing. @ com.rvkb:woko-parent:2.0-beta2-SNAPSHOT, /Users/vankeisb/projects/woko2/pom.xml, line 72, column 21
+[WARNING] 
+[WARNING] Some problems were encountered while building the effective model for com.rvkb:woko-web-lithium:war:2.0-beta2-SNAPSHOT
+[WARNING] 'build.plugins.plugin.version' for org.apache.maven.plugins:maven-compiler-plugin is missing. @ com.rvkb:woko-parent:2.0-beta2-SNAPSHOT, /Users/vankeisb/projects/woko2/pom.xml, line 64, column 21
+[WARNING] 'build.plugins.plugin.version' for org.apache.maven.plugins:maven-surefire-plugin is missing. @ com.rvkb:woko-parent:2.0-beta2-SNAPSHOT, /Users/vankeisb/projects/woko2/pom.xml, line 72, column 21
+[WARNING] 
+[WARNING] Some problems were encountered while building the effective model for com.rvkb:woko-web-bootstrap:war:2.0-beta2-SNAPSHOT
+[WARNING] 'build.plugins.plugin.version' for org.apache.maven.plugins:maven-compiler-plugin is missing. @ com.rvkb:woko-parent:2.0-beta2-SNAPSHOT, /Users/vankeisb/projects/woko2/pom.xml, line 64, column 21
+[WARNING] 'build.plugins.plugin.version' for org.apache.maven.plugins:maven-surefire-plugin is missing. @ com.rvkb:woko-parent:2.0-beta2-SNAPSHOT, /Users/vankeisb/projects/woko2/pom.xml, line 72, column 21
+[WARNING] 
+[WARNING] Some problems were encountered while building the effective model for com.rvkb:woko-webresources:pom:2.0-beta2-SNAPSHOT
+[WARNING] 'build.plugins.plugin.version' for org.apache.maven.plugins:maven-compiler-plugin is missing. @ com.rvkb:woko-parent:2.0-beta2-SNAPSHOT, /Users/vankeisb/projects/woko2/pom.xml, line 64, column 21
+[WARNING] 'build.plugins.plugin.version' for org.apache.maven.plugins:maven-surefire-plugin is missing. @ com.rvkb:woko-parent:2.0-beta2-SNAPSHOT, /Users/vankeisb/projects/woko2/pom.xml, line 72, column 21
+[WARNING] 
+[WARNING] Some problems were encountered while building the effective model for com.rvkb:woko-container-auth:war:2.0-beta2-SNAPSHOT
+[WARNING] 'build.plugins.plugin.version' for org.apache.maven.plugins:maven-compiler-plugin is missing. @ com.rvkb:woko-parent:2.0-beta2-SNAPSHOT, /Users/vankeisb/projects/woko2/pom.xml, line 64, column 21
+[WARNING] 'build.plugins.plugin.version' for org.apache.maven.plugins:maven-surefire-plugin is missing. @ com.rvkb:woko-parent:2.0-beta2-SNAPSHOT, /Users/vankeisb/projects/woko2/pom.xml, line 72, column 21
+[WARNING] 
+[WARNING] Some problems were encountered while building the effective model for com.rvkb:woko-builtin-auth-core:jar:2.0-beta2-SNAPSHOT
+[WARNING] 'build.plugins.plugin.version' for org.apache.maven.plugins:maven-compiler-plugin is missing. @ com.rvkb:woko-parent:2.0-beta2-SNAPSHOT, /Users/vankeisb/projects/woko2/pom.xml, line 64, column 21
+[WARNING] 'build.plugins.plugin.version' for org.apache.maven.plugins:maven-surefire-plugin is missing. @ com.rvkb:woko-parent:2.0-beta2-SNAPSHOT, /Users/vankeisb/projects/woko2/pom.xml, line 72, column 21
+[WARNING] 
+[WARNING] Some problems were encountered while building the effective model for com.rvkb:woko-builtin-auth-web:war:2.0-beta2-SNAPSHOT
+[WARNING] 'build.plugins.plugin.version' for org.apache.maven.plugins:maven-compiler-plugin is missing. @ com.rvkb:woko-parent:2.0-beta2-SNAPSHOT, /Users/vankeisb/projects/woko2/pom.xml, line 64, column 21
+[WARNING] 'build.plugins.plugin.version' for org.apache.maven.plugins:maven-surefire-plugin is missing. @ com.rvkb:woko-parent:2.0-beta2-SNAPSHOT, /Users/vankeisb/projects/woko2/pom.xml, line 72, column 21
+[WARNING] 
+[WARNING] Some problems were encountered while building the effective model for com.rvkb:woko-builtin-auth:pom:2.0-beta2-SNAPSHOT
+[WARNING] 'build.plugins.plugin.version' for org.apache.maven.plugins:maven-compiler-plugin is missing. @ com.rvkb:woko-parent:2.0-beta2-SNAPSHOT, /Users/vankeisb/projects/woko2/pom.xml, line 64, column 21
+[WARNING] 'build.plugins.plugin.version' for org.apache.maven.plugins:maven-surefire-plugin is missing. @ com.rvkb:woko-parent:2.0-beta2-SNAPSHOT, /Users/vankeisb/projects/woko2/pom.xml, line 72, column 21
+[WARNING] 
+[WARNING] Some problems were encountered while building the effective model for com.rvkb:woko-hibernate:jar:2.0-beta2-SNAPSHOT
+[WARNING] 'build.plugins.plugin.version' for org.apache.maven.plugins:maven-compiler-plugin is missing. @ com.rvkb:woko-parent:2.0-beta2-SNAPSHOT, /Users/vankeisb/projects/woko2/pom.xml, line 64, column 21
+[WARNING] 'build.plugins.plugin.version' for org.apache.maven.plugins:maven-surefire-plugin is missing. @ com.rvkb:woko-parent:2.0-beta2-SNAPSHOT, /Users/vankeisb/projects/woko2/pom.xml, line 72, column 21
+[WARNING] 
+[WARNING] Some problems were encountered while building the effective model for com.rvkb:woko-compass-hibernate-core:jar:2.0-beta2-SNAPSHOT
+[WARNING] 'build.plugins.plugin.version' for org.apache.maven.plugins:maven-compiler-plugin is missing. @ com.rvkb:woko-parent:2.0-beta2-SNAPSHOT, /Users/vankeisb/projects/woko2/pom.xml, line 64, column 21
+[WARNING] 'build.plugins.plugin.version' for org.apache.maven.plugins:maven-surefire-plugin is missing. @ com.rvkb:woko-parent:2.0-beta2-SNAPSHOT, /Users/vankeisb/projects/woko2/pom.xml, line 72, column 21
+[WARNING] 
+[WARNING] Some problems were encountered while building the effective model for com.rvkb:woko-compass-hibernate-web:war:2.0-beta2-SNAPSHOT
+[WARNING] 'build.plugins.plugin.version' for org.apache.maven.plugins:maven-compiler-plugin is missing. @ com.rvkb:woko-parent:2.0-beta2-SNAPSHOT, /Users/vankeisb/projects/woko2/pom.xml, line 64, column 21
+[WARNING] 'build.plugins.plugin.version' for org.apache.maven.plugins:maven-surefire-plugin is missing. @ com.rvkb:woko-parent:2.0-beta2-SNAPSHOT, /Users/vankeisb/projects/woko2/pom.xml, line 72, column 21
+[WARNING] 
+[WARNING] Some problems were encountered while building the effective model for com.rvkb:woko-compass-hibernate:pom:2.0-beta2-SNAPSHOT
+[WARNING] 'build.plugins.plugin.version' for org.apache.maven.plugins:maven-compiler-plugin is missing. @ com.rvkb:woko-parent:2.0-beta2-SNAPSHOT, /Users/vankeisb/projects/woko2/pom.xml, line 64, column 21
+[WARNING] 'build.plugins.plugin.version' for org.apache.maven.plugins:maven-surefire-plugin is missing. @ com.rvkb:woko-parent:2.0-beta2-SNAPSHOT, /Users/vankeisb/projects/woko2/pom.xml, line 72, column 21
+[WARNING] 
+[WARNING] Some problems were encountered while building the effective model for com.rvkb:woko-ri:jar:2.0-beta2-SNAPSHOT
+[WARNING] 'build.plugins.plugin.version' for org.apache.maven.plugins:maven-compiler-plugin is missing. @ com.rvkb:woko-parent:2.0-beta2-SNAPSHOT, /Users/vankeisb/projects/woko2/pom.xml, line 64, column 21
+[WARNING] 'build.plugins.plugin.version' for org.apache.maven.plugins:maven-surefire-plugin is missing. @ com.rvkb:woko-parent:2.0-beta2-SNAPSHOT, /Users/vankeisb/projects/woko2/pom.xml, line 72, column 21
+[WARNING] 
+[WARNING] Some problems were encountered while building the effective model for com.rvkb:woko-archetype:maven-archetype:2.0-beta2-SNAPSHOT
+[WARNING] 'build.plugins.plugin.version' for org.apache.maven.plugins:maven-compiler-plugin is missing. @ com.rvkb:woko-parent:2.0-beta2-SNAPSHOT, /Users/vankeisb/projects/woko2/pom.xml, line 64, column 21
+[WARNING] 'build.plugins.plugin.version' for org.apache.maven.plugins:maven-surefire-plugin is missing. @ com.rvkb:woko-parent:2.0-beta2-SNAPSHOT, /Users/vankeisb/projects/woko2/pom.xml, line 72, column 21
+[WARNING] 
+[WARNING] Some problems were encountered while building the effective model for com.rvkb:woko-maven-plugin:maven-plugin:2.0-beta2-SNAPSHOT
+[WARNING] 'build.plugins.plugin.version' for org.apache.maven.plugins:maven-compiler-plugin is missing. @ com.rvkb:woko-parent:2.0-beta2-SNAPSHOT, /Users/vankeisb/projects/woko2/pom.xml, line 64, column 21
+[WARNING] 'build.plugins.plugin.version' for org.apache.maven.plugins:maven-surefire-plugin is missing. @ com.rvkb:woko-parent:2.0-beta2-SNAPSHOT, /Users/vankeisb/projects/woko2/pom.xml, line 72, column 21
+[WARNING] 
+[WARNING] Some problems were encountered while building the effective model for com.rvkb:woko-dojo:war:1.6.1
+[WARNING] 'build.plugins.plugin.version' for org.apache.maven.plugins:maven-deploy-plugin is missing. @ line 15, column 21
+[WARNING] 'build.plugins.plugin.version' for org.apache.maven.plugins:maven-compiler-plugin is missing. @ com.rvkb:woko-parent:2.0-beta2-SNAPSHOT, /Users/vankeisb/projects/woko2/pom.xml, line 64, column 21
+[WARNING] 'build.plugins.plugin.version' for org.apache.maven.plugins:maven-surefire-plugin is missing. @ com.rvkb:woko-parent:2.0-beta2-SNAPSHOT, /Users/vankeisb/projects/woko2/pom.xml, line 72, column 21
+[WARNING] 
+[WARNING] Some problems were encountered while building the effective model for com.rvkb:woko-archetype-heroku:maven-archetype:2.0-beta2-SNAPSHOT
+[WARNING] 'build.plugins.plugin.version' for org.apache.maven.plugins:maven-compiler-plugin is missing. @ com.rvkb:woko-parent:2.0-beta2-SNAPSHOT, /Users/vankeisb/projects/woko2/pom.xml, line 64, column 21
+[WARNING] 'build.plugins.plugin.version' for org.apache.maven.plugins:maven-surefire-plugin is missing. @ com.rvkb:woko-parent:2.0-beta2-SNAPSHOT, /Users/vankeisb/projects/woko2/pom.xml, line 72, column 21
+[WARNING] 
+[WARNING] Some problems were encountered while building the effective model for com.rvkb:woko-usermanagement-core:jar:2.0-beta2-SNAPSHOT
+[WARNING] 'build.plugins.plugin.version' for org.apache.maven.plugins:maven-compiler-plugin is missing. @ com.rvkb:woko-parent:2.0-beta2-SNAPSHOT, /Users/vankeisb/projects/woko2/pom.xml, line 64, column 21
+[WARNING] 'build.plugins.plugin.version' for org.apache.maven.plugins:maven-surefire-plugin is missing. @ com.rvkb:woko-parent:2.0-beta2-SNAPSHOT, /Users/vankeisb/projects/woko2/pom.xml, line 72, column 21
+[WARNING] 
+[WARNING] Some problems were encountered while building the effective model for com.rvkb:woko-usermanagement-web:war:2.0-beta2-SNAPSHOT
+[WARNING] 'build.plugins.plugin.version' for org.apache.maven.plugins:maven-compiler-plugin is missing. @ com.rvkb:woko-parent:2.0-beta2-SNAPSHOT, /Users/vankeisb/projects/woko2/pom.xml, line 64, column 21
+[WARNING] 'build.plugins.plugin.version' for org.apache.maven.plugins:maven-surefire-plugin is missing. @ com.rvkb:woko-parent:2.0-beta2-SNAPSHOT, /Users/vankeisb/projects/woko2/pom.xml, line 72, column 21
+[WARNING] 
+[WARNING] Some problems were encountered while building the effective model for com.rvkb:woko-usermanagement-hibernate:jar:2.0-beta2-SNAPSHOT
+[WARNING] 'build.plugins.plugin.version' for org.apache.maven.plugins:maven-compiler-plugin is missing. @ com.rvkb:woko-parent:2.0-beta2-SNAPSHOT, /Users/vankeisb/projects/woko2/pom.xml, line 64, column 21
+[WARNING] 'build.plugins.plugin.version' for org.apache.maven.plugins:maven-surefire-plugin is missing. @ com.rvkb:woko-parent:2.0-beta2-SNAPSHOT, /Users/vankeisb/projects/woko2/pom.xml, line 72, column 21
+[WARNING] 
+[WARNING] Some problems were encountered while building the effective model for com.rvkb:woko-usermanagement:pom:2.0-beta2-SNAPSHOT
+[WARNING] 'build.plugins.plugin.version' for org.apache.maven.plugins:maven-compiler-plugin is missing. @ com.rvkb:woko-parent:2.0-beta2-SNAPSHOT, /Users/vankeisb/projects/woko2/pom.xml, line 64, column 21
+[WARNING] 'build.plugins.plugin.version' for org.apache.maven.plugins:maven-surefire-plugin is missing. @ com.rvkb:woko-parent:2.0-beta2-SNAPSHOT, /Users/vankeisb/projects/woko2/pom.xml, line 72, column 21
+[WARNING] 
+[WARNING] Some problems were encountered while building the effective model for com.rvkb:woko-parent:pom:2.0-beta2-SNAPSHOT
+[WARNING] 'build.plugins.plugin.version' for org.apache.maven.plugins:maven-compiler-plugin is missing. @ line 64, column 21
+[WARNING] 'build.plugins.plugin.version' for org.apache.maven.plugins:maven-surefire-plugin is missing. @ line 72, column 21
+[WARNING] 
+[WARNING] It is highly recommended to fix these problems because they threaten the stability of your build.
+[WARNING] 
+[WARNING] For this reason, future Maven versions might no longer support building such malformed projects.
+[WARNING] 
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Build Order:
+[INFO] 
+[INFO] Woko - parent
+[INFO] Woko - Stripes plugins
+[INFO] Woko - core
+[INFO] Woko - web resources
+[INFO] Woko - web : core JSPs and tags (no skinning)
+[INFO] Woko - web : lithium
+[INFO] Woko - web : bootstrap
+[INFO] Woko - container auth
+[INFO] Woko - builtin auth
+[INFO] Woko - builtin auth core
+[INFO] Woko - builtin auth web
+[INFO] Woko - hibernate
+[INFO] Woko - compass and hibernate
+[INFO] Woko - compass and hibernate, core
+[INFO] Woko - compass and hibernate, web resources
+[INFO] Woko - user management extension
+[INFO] Woko - user management extension - core
+[INFO] Woko - user management extension - hibernate
+[INFO] Woko - reference implementation
+[INFO] Woko - archetype
+[INFO] Woko - Maven Mojo
+[INFO] Woko - dojo framework artifact
+[INFO] Woko - Heroku archetype
+[INFO] Woko - usermanagement extension - web
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building Woko - parent 2.0-beta2-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.1:tree (default-cli) @ woko-parent ---
+[INFO] com.rvkb:woko-parent:pom:2.0-beta2-SNAPSHOT
+[INFO] +- junit:junit:jar:4.7:test
+[INFO] \- javax.servlet:servlet-api:jar:2.5:provided
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building Woko - Stripes plugins 2.0-beta2-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.1:tree (default-cli) @ stripes-woko-plugins ---
+[INFO] com.rvkb:stripes-woko-plugins:jar:2.0-beta2-SNAPSHOT
+[INFO] +- net.sourceforge.stripes:stripes:jar:1.5.5:compile
+[INFO] |  \- commons-logging:commons-logging:jar:1.1.1:compile
+[INFO] +- javax.servlet:servlet-api:jar:2.3:provided
+[INFO] +- javax.servlet.jsp:jsp-api:jar:2.1:test
+[INFO] \- junit:junit:jar:4.7:test
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building Woko - core 2.0-beta2-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.1:tree (default-cli) @ woko-core ---
+[INFO] com.rvkb:woko-core:jar:2.0-beta2-SNAPSHOT
+[INFO] +- com.rvkb:stripes-woko-plugins:jar:2.0-beta2-SNAPSHOT:compile
+[INFO] |  \- net.sourceforge.stripes:stripes:jar:1.5.5:compile
+[INFO] |     \- commons-logging:commons-logging:jar:1.1.1:compile
+[INFO] +- org.codehaus.groovy:groovy:jar:1.7.4:compile
+[INFO] |  +- antlr:antlr:jar:2.7.7:compile
+[INFO] |  +- asm:asm:jar:3.2:compile
+[INFO] |  +- asm:asm-commons:jar:3.2:compile
+[INFO] |  +- asm:asm-util:jar:3.2:compile
+[INFO] |  +- asm:asm-analysis:jar:3.2:compile
+[INFO] |  \- asm:asm-tree:jar:3.2:compile
+[INFO] +- servlets.com:cos:jar:05Nov2002:compile
+[INFO] +- org.apache.commons:commons-io:jar:1.3.2:compile
+[INFO] +- net.sourceforge.jfacets:jfacets-core:jar:3.2:compile
+[INFO] +- org.json:json:jar:20090211:compile
+[INFO] +- log4j:log4j:jar:1.2.15:compile
+[INFO] +- javax.servlet:jstl:jar:1.1.2:compile
+[INFO] +- taglibs:standard:jar:1.1.2:compile
+[INFO] +- javax.servlet.jsp:jsp-api:jar:2.1:provided
+[INFO] +- javax.mail:mail:jar:1.4.1:compile
+[INFO] |  \- javax.activation:activation:jar:1.1:compile
+[INFO] +- junit:junit:jar:4.7:test
+[INFO] \- javax.servlet:servlet-api:jar:2.5:provided
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building Woko - web resources 2.0-beta2-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.1:tree (default-cli) @ woko-webresources ---
+[INFO] com.rvkb:woko-webresources:pom:2.0-beta2-SNAPSHOT
+[INFO] +- net.sourceforge.stripes:stripes:jar:1.5.5:provided
+[INFO] |  \- commons-logging:commons-logging:jar:1.1.1:provided
+[INFO] +- servlets.com:cos:jar:05Nov2002:provided
+[INFO] +- org.apache.commons:commons-io:jar:1.3.2:provided
+[INFO] +- javax.servlet:jstl:jar:1.1.2:provided
+[INFO] +- taglibs:standard:jar:1.1.2:provided
+[INFO] +- javax.mail:mail:jar:1.4.1:provided
+[INFO] |  \- javax.activation:activation:jar:1.1:provided
+[INFO] +- junit:junit:jar:4.7:test
+[INFO] \- javax.servlet:servlet-api:jar:2.5:provided
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building Woko - web : core JSPs and tags (no skinning) 2.0-beta2-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.1:tree (default-cli) @ woko-web-core ---
+[INFO] com.rvkb:woko-web-core:war:2.0-beta2-SNAPSHOT
+[INFO] +- com.rvkb:woko-core:jar:2.0-beta2-SNAPSHOT:provided
+[INFO] |  +- com.rvkb:stripes-woko-plugins:jar:2.0-beta2-SNAPSHOT:provided
+[INFO] |  +- net.sourceforge.jfacets:jfacets-core:jar:3.2:provided
+[INFO] |  +- org.json:json:jar:20090211:provided
+[INFO] |  \- log4j:log4j:jar:1.2.15:provided
+[INFO] +- net.sourceforge.stripes:stripes:jar:1.5.5:provided
+[INFO] |  \- commons-logging:commons-logging:jar:1.1.1:provided
+[INFO] +- servlets.com:cos:jar:05Nov2002:provided
+[INFO] +- org.apache.commons:commons-io:jar:1.3.2:provided
+[INFO] +- javax.servlet:jstl:jar:1.1.2:provided
+[INFO] +- taglibs:standard:jar:1.1.2:provided
+[INFO] +- javax.mail:mail:jar:1.4.1:provided
+[INFO] |  \- javax.activation:activation:jar:1.1:provided
+[INFO] +- junit:junit:jar:4.7:test
+[INFO] \- javax.servlet:servlet-api:jar:2.5:provided
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building Woko - web : lithium 2.0-beta2-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.1:tree (default-cli) @ woko-web-lithium ---
+[INFO] com.rvkb:woko-web-lithium:war:2.0-beta2-SNAPSHOT
+[INFO] +- com.rvkb:woko-web-core:war:2.0-beta2-SNAPSHOT:compile
+[INFO] +- net.sourceforge.stripes:stripes:jar:1.5.5:provided
+[INFO] |  \- commons-logging:commons-logging:jar:1.1.1:provided
+[INFO] +- servlets.com:cos:jar:05Nov2002:provided
+[INFO] +- org.apache.commons:commons-io:jar:1.3.2:provided
+[INFO] +- javax.servlet:jstl:jar:1.1.2:provided
+[INFO] +- taglibs:standard:jar:1.1.2:provided
+[INFO] +- javax.mail:mail:jar:1.4.1:provided
+[INFO] |  \- javax.activation:activation:jar:1.1:provided
+[INFO] +- junit:junit:jar:4.7:test
+[INFO] \- javax.servlet:servlet-api:jar:2.5:provided
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building Woko - web : bootstrap 2.0-beta2-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.1:tree (default-cli) @ woko-web-bootstrap ---
+[INFO] com.rvkb:woko-web-bootstrap:war:2.0-beta2-SNAPSHOT
+[INFO] +- com.rvkb:woko-web-core:war:2.0-beta2-SNAPSHOT:compile
+[INFO] +- com.rvkb:woko-core:jar:2.0-beta2-SNAPSHOT:provided
+[INFO] |  +- com.rvkb:stripes-woko-plugins:jar:2.0-beta2-SNAPSHOT:provided
+[INFO] |  +- net.sourceforge.jfacets:jfacets-core:jar:3.2:provided
+[INFO] |  +- org.json:json:jar:20090211:provided
+[INFO] |  \- log4j:log4j:jar:1.2.15:provided
+[INFO] +- net.sourceforge.stripes:stripes:jar:1.5.5:provided
+[INFO] |  \- commons-logging:commons-logging:jar:1.1.1:provided
+[INFO] +- servlets.com:cos:jar:05Nov2002:provided
+[INFO] +- org.apache.commons:commons-io:jar:1.3.2:provided
+[INFO] +- javax.servlet:jstl:jar:1.1.2:provided
+[INFO] +- taglibs:standard:jar:1.1.2:provided
+[INFO] +- javax.mail:mail:jar:1.4.1:provided
+[INFO] |  \- javax.activation:activation:jar:1.1:provided
+[INFO] +- junit:junit:jar:4.7:test
+[INFO] \- javax.servlet:servlet-api:jar:2.5:provided
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building Woko - container auth 2.0-beta2-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.1:tree (default-cli) @ woko-container-auth ---
+[INFO] com.rvkb:woko-container-auth:war:2.0-beta2-SNAPSHOT
+[INFO] +- com.rvkb:woko-core:jar:2.0-beta2-SNAPSHOT:provided
+[INFO] |  +- com.rvkb:stripes-woko-plugins:jar:2.0-beta2-SNAPSHOT:provided
+[INFO] |  |  \- net.sourceforge.stripes:stripes:jar:1.5.5:provided
+[INFO] |  |     \- commons-logging:commons-logging:jar:1.1.1:provided
+[INFO] |  +- servlets.com:cos:jar:05Nov2002:provided
+[INFO] |  +- org.apache.commons:commons-io:jar:1.3.2:provided
+[INFO] |  +- net.sourceforge.jfacets:jfacets-core:jar:3.2:provided
+[INFO] |  +- org.json:json:jar:20090211:provided
+[INFO] |  +- log4j:log4j:jar:1.2.15:provided
+[INFO] |  +- javax.servlet:jstl:jar:1.1.2:provided
+[INFO] |  +- taglibs:standard:jar:1.1.2:provided
+[INFO] |  \- javax.mail:mail:jar:1.4.1:provided
+[INFO] |     \- javax.activation:activation:jar:1.1:provided
+[INFO] +- com.rvkb:woko-web-core:war:2.0-beta2-SNAPSHOT:provided
+[INFO] +- junit:junit:jar:4.7:test
+[INFO] \- javax.servlet:servlet-api:jar:2.5:provided
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building Woko - builtin auth 2.0-beta2-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.1:tree (default-cli) @ woko-builtin-auth ---
+[INFO] com.rvkb:woko-builtin-auth:pom:2.0-beta2-SNAPSHOT
+[INFO] +- junit:junit:jar:4.7:test
+[INFO] \- javax.servlet:servlet-api:jar:2.5:provided
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building Woko - builtin auth core 2.0-beta2-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.1:tree (default-cli) @ woko-builtin-auth-core ---
+[INFO] com.rvkb:woko-builtin-auth-core:jar:2.0-beta2-SNAPSHOT
+[INFO] +- com.rvkb:woko-core:jar:2.0-beta2-SNAPSHOT:compile
+[INFO] |  +- com.rvkb:stripes-woko-plugins:jar:2.0-beta2-SNAPSHOT:compile
+[INFO] |  |  \- net.sourceforge.stripes:stripes:jar:1.5.5:compile
+[INFO] |  |     \- commons-logging:commons-logging:jar:1.1.1:compile
+[INFO] |  +- servlets.com:cos:jar:05Nov2002:compile
+[INFO] |  +- org.apache.commons:commons-io:jar:1.3.2:compile
+[INFO] |  +- net.sourceforge.jfacets:jfacets-core:jar:3.2:compile
+[INFO] |  +- org.json:json:jar:20090211:compile
+[INFO] |  +- log4j:log4j:jar:1.2.15:compile
+[INFO] |  +- javax.servlet:jstl:jar:1.1.2:compile
+[INFO] |  +- taglibs:standard:jar:1.1.2:compile
+[INFO] |  \- javax.mail:mail:jar:1.4.1:compile
+[INFO] |     \- javax.activation:activation:jar:1.1:compile
+[INFO] +- junit:junit:jar:4.7:test
+[INFO] \- javax.servlet:servlet-api:jar:2.5:provided
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building Woko - builtin auth web 2.0-beta2-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.1:tree (default-cli) @ woko-builtin-auth-web ---
+[INFO] com.rvkb:woko-builtin-auth-web:war:2.0-beta2-SNAPSHOT
+[INFO] +- com.rvkb:woko-builtin-auth-core:jar:2.0-beta2-SNAPSHOT:provided
+[INFO] |  \- com.rvkb:woko-core:jar:2.0-beta2-SNAPSHOT:provided
+[INFO] |     +- com.rvkb:stripes-woko-plugins:jar:2.0-beta2-SNAPSHOT:provided
+[INFO] |     |  \- net.sourceforge.stripes:stripes:jar:1.5.5:provided
+[INFO] |     |     \- commons-logging:commons-logging:jar:1.1.1:provided
+[INFO] |     +- servlets.com:cos:jar:05Nov2002:provided
+[INFO] |     +- org.apache.commons:commons-io:jar:1.3.2:provided
+[INFO] |     +- net.sourceforge.jfacets:jfacets-core:jar:3.2:provided
+[INFO] |     +- org.json:json:jar:20090211:provided
+[INFO] |     +- log4j:log4j:jar:1.2.15:provided
+[INFO] |     +- javax.servlet:jstl:jar:1.1.2:provided
+[INFO] |     +- taglibs:standard:jar:1.1.2:provided
+[INFO] |     \- javax.mail:mail:jar:1.4.1:provided
+[INFO] |        \- javax.activation:activation:jar:1.1:provided
+[INFO] +- junit:junit:jar:4.7:test
+[INFO] \- javax.servlet:servlet-api:jar:2.5:provided
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building Woko - hibernate 2.0-beta2-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.1:tree (default-cli) @ woko-hibernate ---
+[INFO] com.rvkb:woko-hibernate:jar:2.0-beta2-SNAPSHOT
+[INFO] +- com.rvkb:woko-core:jar:2.0-beta2-SNAPSHOT:compile
+[INFO] |  +- com.rvkb:stripes-woko-plugins:jar:2.0-beta2-SNAPSHOT:compile
+[INFO] |  |  \- net.sourceforge.stripes:stripes:jar:1.5.5:compile
+[INFO] |  |     \- commons-logging:commons-logging:jar:1.1.1:compile
+[INFO] |  +- servlets.com:cos:jar:05Nov2002:compile
+[INFO] |  +- org.apache.commons:commons-io:jar:1.3.2:compile
+[INFO] |  +- net.sourceforge.jfacets:jfacets-core:jar:3.2:compile
+[INFO] |  +- org.json:json:jar:20090211:compile
+[INFO] |  +- log4j:log4j:jar:1.2.15:compile
+[INFO] |  +- javax.servlet:jstl:jar:1.1.2:compile
+[INFO] |  +- taglibs:standard:jar:1.1.2:compile
+[INFO] |  \- javax.mail:mail:jar:1.4.1:compile
+[INFO] |     \- javax.activation:activation:jar:1.1:compile
+[INFO] +- org.codehaus.groovy:groovy:jar:1.7.4:test
+[INFO] |  +- asm:asm:jar:3.2:test
+[INFO] |  +- asm:asm-commons:jar:3.2:test
+[INFO] |  +- asm:asm-util:jar:3.2:test
+[INFO] |  +- asm:asm-analysis:jar:3.2:test
+[INFO] |  \- asm:asm-tree:jar:3.2:test
+[INFO] +- org.hibernate:hibernate-annotations:jar:3.5.6-Final:compile
+[INFO] |  +- org.hibernate:hibernate-core:jar:3.5.6-Final:compile
+[INFO] |  |  +- antlr:antlr:jar:2.7.7:compile
+[INFO] |  |  +- commons-collections:commons-collections:jar:3.1:compile
+[INFO] |  |  +- dom4j:dom4j:jar:1.6.1:compile
+[INFO] |  |  |  \- xml-apis:xml-apis:jar:1.0.b2:compile
+[INFO] |  |  \- javax.transaction:jta:jar:1.1:compile
+[INFO] |  +- org.hibernate:hibernate-commons-annotations:jar:3.2.0.Final:compile
+[INFO] |  \- org.hibernate.javax.persistence:hibernate-jpa-2.0-api:jar:1.0.0.Final:compile
+[INFO] +- org.slf4j:slf4j-api:jar:1.6.4:compile
+[INFO] +- org.hibernate:hibernate-validator:jar:4.2.0.Final:compile
+[INFO] |  \- javax.validation:validation-api:jar:1.0.0.GA:compile
+[INFO] +- org.slf4j:slf4j-log4j12:jar:1.6.2:compile
+[INFO] +- hsqldb:hsqldb:jar:1.8.0.7:runtime
+[INFO] +- javassist:javassist:jar:3.4.GA:compile
+[INFO] +- org.hibernate:hibernate-cglib-repack:jar:2.1_3:compile
+[INFO] +- junit:junit:jar:4.7:test
+[INFO] \- javax.servlet:servlet-api:jar:2.5:provided
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building Woko - compass and hibernate 2.0-beta2-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.1:tree (default-cli) @ woko-compass-hibernate ---
+[INFO] com.rvkb:woko-compass-hibernate:pom:2.0-beta2-SNAPSHOT
+[INFO] +- junit:junit:jar:4.7:test
+[INFO] \- javax.servlet:servlet-api:jar:2.5:provided
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building Woko - compass and hibernate, core 2.0-beta2-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.1:tree (default-cli) @ woko-compass-hibernate-core ---
+[INFO] com.rvkb:woko-compass-hibernate-core:jar:2.0-beta2-SNAPSHOT
+[INFO] +- com.rvkb:woko-hibernate:jar:2.0-beta2-SNAPSHOT:compile
+[INFO] |  +- com.rvkb:woko-core:jar:2.0-beta2-SNAPSHOT:compile
+[INFO] |  |  +- com.rvkb:stripes-woko-plugins:jar:2.0-beta2-SNAPSHOT:compile
+[INFO] |  |  |  \- net.sourceforge.stripes:stripes:jar:1.5.5:compile
+[INFO] |  |  +- servlets.com:cos:jar:05Nov2002:compile
+[INFO] |  |  +- org.apache.commons:commons-io:jar:1.3.2:compile
+[INFO] |  |  +- net.sourceforge.jfacets:jfacets-core:jar:3.2:compile
+[INFO] |  |  +- org.json:json:jar:20090211:compile
+[INFO] |  |  +- log4j:log4j:jar:1.2.15:compile
+[INFO] |  |  +- javax.servlet:jstl:jar:1.1.2:compile
+[INFO] |  |  +- taglibs:standard:jar:1.1.2:compile
+[INFO] |  |  \- javax.mail:mail:jar:1.4.1:compile
+[INFO] |  |     \- javax.activation:activation:jar:1.1:compile
+[INFO] |  +- org.hibernate:hibernate-annotations:jar:3.5.6-Final:compile
+[INFO] |  |  +- org.hibernate:hibernate-core:jar:3.5.6-Final:compile
+[INFO] |  |  |  +- antlr:antlr:jar:2.7.7:compile
+[INFO] |  |  |  +- commons-collections:commons-collections:jar:3.1:compile
+[INFO] |  |  |  +- dom4j:dom4j:jar:1.6.1:compile
+[INFO] |  |  |  |  \- xml-apis:xml-apis:jar:1.0.b2:compile
+[INFO] |  |  |  \- javax.transaction:jta:jar:1.1:compile
+[INFO] |  |  +- org.hibernate:hibernate-commons-annotations:jar:3.2.0.Final:compile
+[INFO] |  |  \- org.hibernate.javax.persistence:hibernate-jpa-2.0-api:jar:1.0.0.Final:compile
+[INFO] |  +- org.slf4j:slf4j-api:jar:1.6.4:compile
+[INFO] |  +- org.hibernate:hibernate-validator:jar:4.2.0.Final:compile
+[INFO] |  |  \- javax.validation:validation-api:jar:1.0.0.GA:compile
+[INFO] |  +- org.slf4j:slf4j-log4j12:jar:1.6.2:compile
+[INFO] |  +- hsqldb:hsqldb:jar:1.8.0.7:runtime
+[INFO] |  +- javassist:javassist:jar:3.4.GA:compile
+[INFO] |  \- org.hibernate:hibernate-cglib-repack:jar:2.1_3:compile
+[INFO] +- org.codehaus.groovy:groovy:jar:1.7.4:test
+[INFO] |  +- asm:asm:jar:3.2:test
+[INFO] |  +- asm:asm-commons:jar:3.2:test
+[INFO] |  +- asm:asm-util:jar:3.2:test
+[INFO] |  +- asm:asm-analysis:jar:3.2:test
+[INFO] |  \- asm:asm-tree:jar:3.2:test
+[INFO] +- org.compass-project:compass:jar:2.2.0:compile
+[INFO] |  +- commons-logging:commons-logging:jar:1.1.1:compile
+[INFO] |  \- org.apache.lucene:lucene-core:jar:2.4.1:compile
+[INFO] +- junit:junit:jar:4.7:test
+[INFO] \- javax.servlet:servlet-api:jar:2.5:provided
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building Woko - compass and hibernate, web resources 2.0-beta2-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.1:tree (default-cli) @ woko-compass-hibernate-web ---
+[INFO] com.rvkb:woko-compass-hibernate-web:war:2.0-beta2-SNAPSHOT
+[INFO] +- com.rvkb:woko-compass-hibernate-core:jar:2.0-beta2-SNAPSHOT:provided
+[INFO] |  +- com.rvkb:woko-hibernate:jar:2.0-beta2-SNAPSHOT:provided
+[INFO] |  |  +- com.rvkb:woko-core:jar:2.0-beta2-SNAPSHOT:provided
+[INFO] |  |  |  +- com.rvkb:stripes-woko-plugins:jar:2.0-beta2-SNAPSHOT:provided
+[INFO] |  |  |  |  \- net.sourceforge.stripes:stripes:jar:1.5.5:provided
+[INFO] |  |  |  +- servlets.com:cos:jar:05Nov2002:provided
+[INFO] |  |  |  +- org.apache.commons:commons-io:jar:1.3.2:provided
+[INFO] |  |  |  +- net.sourceforge.jfacets:jfacets-core:jar:3.2:provided
+[INFO] |  |  |  +- org.json:json:jar:20090211:provided
+[INFO] |  |  |  +- log4j:log4j:jar:1.2.15:provided
+[INFO] |  |  |  +- javax.servlet:jstl:jar:1.1.2:provided
+[INFO] |  |  |  +- taglibs:standard:jar:1.1.2:provided
+[INFO] |  |  |  \- javax.mail:mail:jar:1.4.1:provided
+[INFO] |  |  |     \- javax.activation:activation:jar:1.1:provided
+[INFO] |  |  +- org.hibernate:hibernate-annotations:jar:3.5.6-Final:provided
+[INFO] |  |  |  +- org.hibernate:hibernate-core:jar:3.5.6-Final:provided
+[INFO] |  |  |  |  +- antlr:antlr:jar:2.7.6:provided
+[INFO] |  |  |  |  +- commons-collections:commons-collections:jar:3.1:provided
+[INFO] |  |  |  |  +- dom4j:dom4j:jar:1.6.1:provided
+[INFO] |  |  |  |  |  \- xml-apis:xml-apis:jar:1.0.b2:provided
+[INFO] |  |  |  |  \- javax.transaction:jta:jar:1.1:provided
+[INFO] |  |  |  +- org.hibernate:hibernate-commons-annotations:jar:3.2.0.Final:provided
+[INFO] |  |  |  \- org.hibernate.javax.persistence:hibernate-jpa-2.0-api:jar:1.0.0.Final:provided
+[INFO] |  |  +- org.slf4j:slf4j-api:jar:1.6.4:provided
+[INFO] |  |  +- org.hibernate:hibernate-validator:jar:4.2.0.Final:provided
+[INFO] |  |  |  \- javax.validation:validation-api:jar:1.0.0.GA:provided
+[INFO] |  |  +- org.slf4j:slf4j-log4j12:jar:1.6.2:provided
+[INFO] |  |  +- hsqldb:hsqldb:jar:1.8.0.7:provided
+[INFO] |  |  +- javassist:javassist:jar:3.4.GA:provided
+[INFO] |  |  \- org.hibernate:hibernate-cglib-repack:jar:2.1_3:provided
+[INFO] |  \- org.compass-project:compass:jar:2.2.0:provided
+[INFO] |     +- commons-logging:commons-logging:jar:1.1.1:provided
+[INFO] |     \- org.apache.lucene:lucene-core:jar:2.4.1:provided
+[INFO] +- junit:junit:jar:4.7:test
+[INFO] \- javax.servlet:servlet-api:jar:2.5:provided
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building Woko - user management extension 2.0-beta2-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.1:tree (default-cli) @ woko-usermanagement ---
+[INFO] com.rvkb:woko-usermanagement:pom:2.0-beta2-SNAPSHOT
+[INFO] +- junit:junit:jar:4.7:test
+[INFO] \- javax.servlet:servlet-api:jar:2.5:provided
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building Woko - user management extension - core 2.0-beta2-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.1:tree (default-cli) @ woko-usermanagement-core ---
+[INFO] com.rvkb:woko-usermanagement-core:jar:2.0-beta2-SNAPSHOT
+[INFO] +- com.rvkb:woko-core:jar:2.0-beta2-SNAPSHOT:compile
+[INFO] |  +- com.rvkb:stripes-woko-plugins:jar:2.0-beta2-SNAPSHOT:compile
+[INFO] |  |  \- net.sourceforge.stripes:stripes:jar:1.5.5:compile
+[INFO] |  |     \- commons-logging:commons-logging:jar:1.1.1:compile
+[INFO] |  +- servlets.com:cos:jar:05Nov2002:compile
+[INFO] |  +- org.apache.commons:commons-io:jar:1.3.2:compile
+[INFO] |  +- net.sourceforge.jfacets:jfacets-core:jar:3.2:compile
+[INFO] |  +- org.json:json:jar:20090211:compile
+[INFO] |  +- log4j:log4j:jar:1.2.15:compile
+[INFO] |  +- javax.servlet:jstl:jar:1.1.2:compile
+[INFO] |  +- taglibs:standard:jar:1.1.2:compile
+[INFO] |  \- javax.mail:mail:jar:1.4.1:compile
+[INFO] |     \- javax.activation:activation:jar:1.1:compile
+[INFO] +- junit:junit:jar:4.7:test
+[INFO] \- javax.servlet:servlet-api:jar:2.5:provided
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building Woko - user management extension - hibernate 2.0-beta2-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.1:tree (default-cli) @ woko-usermanagement-hibernate ---
+[INFO] com.rvkb:woko-usermanagement-hibernate:jar:2.0-beta2-SNAPSHOT
+[INFO] +- com.rvkb:woko-usermanagement-core:jar:2.0-beta2-SNAPSHOT:compile
+[INFO] |  \- com.rvkb:woko-core:jar:2.0-beta2-SNAPSHOT:compile
+[INFO] |     +- com.rvkb:stripes-woko-plugins:jar:2.0-beta2-SNAPSHOT:compile
+[INFO] |     |  \- net.sourceforge.stripes:stripes:jar:1.5.5:compile
+[INFO] |     |     \- commons-logging:commons-logging:jar:1.1.1:compile
+[INFO] |     +- servlets.com:cos:jar:05Nov2002:compile
+[INFO] |     +- org.apache.commons:commons-io:jar:1.3.2:compile
+[INFO] |     +- net.sourceforge.jfacets:jfacets-core:jar:3.2:compile
+[INFO] |     +- org.json:json:jar:20090211:compile
+[INFO] |     +- log4j:log4j:jar:1.2.15:compile
+[INFO] |     +- javax.servlet:jstl:jar:1.1.2:compile
+[INFO] |     +- taglibs:standard:jar:1.1.2:compile
+[INFO] |     \- javax.mail:mail:jar:1.4.1:compile
+[INFO] |        \- javax.activation:activation:jar:1.1:compile
+[INFO] +- com.rvkb:woko-hibernate:jar:2.0-beta2-SNAPSHOT:compile
+[INFO] |  +- org.hibernate:hibernate-annotations:jar:3.5.6-Final:compile
+[INFO] |  |  +- org.hibernate:hibernate-core:jar:3.5.6-Final:compile
+[INFO] |  |  |  +- antlr:antlr:jar:2.7.6:compile
+[INFO] |  |  |  +- commons-collections:commons-collections:jar:3.1:compile
+[INFO] |  |  |  +- dom4j:dom4j:jar:1.6.1:compile
+[INFO] |  |  |  |  \- xml-apis:xml-apis:jar:1.0.b2:compile
+[INFO] |  |  |  \- javax.transaction:jta:jar:1.1:compile
+[INFO] |  |  +- org.hibernate:hibernate-commons-annotations:jar:3.2.0.Final:compile
+[INFO] |  |  \- org.hibernate.javax.persistence:hibernate-jpa-2.0-api:jar:1.0.0.Final:compile
+[INFO] |  +- org.slf4j:slf4j-api:jar:1.6.4:compile
+[INFO] |  +- org.hibernate:hibernate-validator:jar:4.2.0.Final:compile
+[INFO] |  |  \- javax.validation:validation-api:jar:1.0.0.GA:compile
+[INFO] |  +- org.slf4j:slf4j-log4j12:jar:1.6.2:compile
+[INFO] |  +- hsqldb:hsqldb:jar:1.8.0.7:runtime
+[INFO] |  +- javassist:javassist:jar:3.4.GA:compile
+[INFO] |  \- org.hibernate:hibernate-cglib-repack:jar:2.1_3:compile
+[INFO] +- junit:junit:jar:4.7:test
+[INFO] \- javax.servlet:servlet-api:jar:2.5:provided
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building Woko - reference implementation 2.0-beta2-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.1:tree (default-cli) @ woko-ri ---
+[INFO] com.rvkb:woko-ri:jar:2.0-beta2-SNAPSHOT
+[INFO] +- com.rvkb:woko-builtin-auth-core:jar:2.0-beta2-SNAPSHOT:compile
+[INFO] |  \- com.rvkb:woko-core:jar:2.0-beta2-SNAPSHOT:compile
+[INFO] |     +- com.rvkb:stripes-woko-plugins:jar:2.0-beta2-SNAPSHOT:compile
+[INFO] |     |  \- net.sourceforge.stripes:stripes:jar:1.5.5:compile
+[INFO] |     +- servlets.com:cos:jar:05Nov2002:compile
+[INFO] |     +- org.apache.commons:commons-io:jar:1.3.2:compile
+[INFO] |     +- net.sourceforge.jfacets:jfacets-core:jar:3.2:compile
+[INFO] |     +- org.json:json:jar:20090211:compile
+[INFO] |     +- log4j:log4j:jar:1.2.15:compile
+[INFO] |     +- javax.servlet:jstl:jar:1.1.2:compile
+[INFO] |     +- taglibs:standard:jar:1.1.2:compile
+[INFO] |     \- javax.mail:mail:jar:1.4.1:compile
+[INFO] |        \- javax.activation:activation:jar:1.1:compile
+[INFO] +- com.rvkb:woko-compass-hibernate-core:jar:2.0-beta2-SNAPSHOT:compile
+[INFO] |  +- com.rvkb:woko-hibernate:jar:2.0-beta2-SNAPSHOT:compile
+[INFO] |  |  +- org.hibernate:hibernate-annotations:jar:3.5.6-Final:compile
+[INFO] |  |  |  +- org.hibernate:hibernate-core:jar:3.5.6-Final:compile
+[INFO] |  |  |  |  +- antlr:antlr:jar:2.7.6:compile
+[INFO] |  |  |  |  +- commons-collections:commons-collections:jar:3.1:compile
+[INFO] |  |  |  |  +- dom4j:dom4j:jar:1.6.1:compile
+[INFO] |  |  |  |  |  \- xml-apis:xml-apis:jar:1.0.b2:compile
+[INFO] |  |  |  |  \- javax.transaction:jta:jar:1.1:compile
+[INFO] |  |  |  +- org.hibernate:hibernate-commons-annotations:jar:3.2.0.Final:compile
+[INFO] |  |  |  \- org.hibernate.javax.persistence:hibernate-jpa-2.0-api:jar:1.0.0.Final:compile
+[INFO] |  |  +- org.slf4j:slf4j-api:jar:1.6.4:compile
+[INFO] |  |  +- org.hibernate:hibernate-validator:jar:4.2.0.Final:compile
+[INFO] |  |  |  \- javax.validation:validation-api:jar:1.0.0.GA:compile
+[INFO] |  |  +- org.slf4j:slf4j-log4j12:jar:1.6.2:compile
+[INFO] |  |  +- hsqldb:hsqldb:jar:1.8.0.7:runtime
+[INFO] |  |  +- javassist:javassist:jar:3.4.GA:compile
+[INFO] |  |  \- org.hibernate:hibernate-cglib-repack:jar:2.1_3:compile
+[INFO] |  \- org.compass-project:compass:jar:2.2.0:compile
+[INFO] |     +- commons-logging:commons-logging:jar:1.1.1:compile
+[INFO] |     \- org.apache.lucene:lucene-core:jar:2.4.1:compile
+[INFO] +- com.rvkb:woko-usermanagement-hibernate:jar:2.0-beta2-SNAPSHOT:compile
+[INFO] |  \- com.rvkb:woko-usermanagement-core:jar:2.0-beta2-SNAPSHOT:compile
+[INFO] +- junit:junit:jar:4.7:test
+[INFO] \- javax.servlet:servlet-api:jar:2.5:provided
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building Woko - archetype 2.0-beta2-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.1:tree (default-cli) @ woko-archetype ---
+[INFO] com.rvkb:woko-archetype:maven-archetype:2.0-beta2-SNAPSHOT
+[INFO] +- junit:junit:jar:4.7:test
+[INFO] \- javax.servlet:servlet-api:jar:2.5:provided
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building Woko - Maven Mojo 2.0-beta2-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.1:tree (default-cli) @ woko-maven-plugin ---
+[INFO] com.rvkb:woko-maven-plugin:maven-plugin:2.0-beta2-SNAPSHOT
+[INFO] +- org.apache.maven:maven-plugin-api:jar:2.0:compile
+[INFO] +- junit:junit:jar:4.7:test
+[INFO] \- javax.servlet:servlet-api:jar:2.5:provided
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building Woko - dojo framework artifact 1.6.1
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.1:tree (default-cli) @ woko-dojo ---
+[INFO] com.rvkb:woko-dojo:war:1.6.1
+[INFO] +- junit:junit:jar:4.7:test
+[INFO] \- javax.servlet:servlet-api:jar:2.5:provided
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building Woko - Heroku archetype 2.0-beta2-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.1:tree (default-cli) @ woko-archetype-heroku ---
+[INFO] com.rvkb:woko-archetype-heroku:maven-archetype:2.0-beta2-SNAPSHOT
+[INFO] +- junit:junit:jar:4.7:test
+[INFO] \- javax.servlet:servlet-api:jar:2.5:provided
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building Woko - usermanagement extension - web 2.0-beta2-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.1:tree (default-cli) @ woko-usermanagement-web ---
+[INFO] com.rvkb:woko-usermanagement-web:war:2.0-beta2-SNAPSHOT
+[INFO] +- com.rvkb:woko-ri:jar:2.0-beta2-SNAPSHOT:compile
+[INFO] |  +- com.rvkb:woko-builtin-auth-core:jar:2.0-beta2-SNAPSHOT:compile
+[INFO] |  |  \- com.rvkb:woko-core:jar:2.0-beta2-SNAPSHOT:compile
+[INFO] |  |     +- com.rvkb:stripes-woko-plugins:jar:2.0-beta2-SNAPSHOT:compile
+[INFO] |  |     |  \- net.sourceforge.stripes:stripes:jar:1.5.5:compile
+[INFO] |  |     +- servlets.com:cos:jar:05Nov2002:compile
+[INFO] |  |     +- org.apache.commons:commons-io:jar:1.3.2:compile
+[INFO] |  |     +- net.sourceforge.jfacets:jfacets-core:jar:3.2:compile
+[INFO] |  |     +- org.json:json:jar:20090211:compile
+[INFO] |  |     +- log4j:log4j:jar:1.2.15:compile
+[INFO] |  |     +- javax.servlet:jstl:jar:1.1.2:compile
+[INFO] |  |     +- taglibs:standard:jar:1.1.2:compile
+[INFO] |  |     \- javax.mail:mail:jar:1.4.1:compile
+[INFO] |  |        \- javax.activation:activation:jar:1.1:compile
+[INFO] |  +- com.rvkb:woko-compass-hibernate-core:jar:2.0-beta2-SNAPSHOT:compile
+[INFO] |  |  +- com.rvkb:woko-hibernate:jar:2.0-beta2-SNAPSHOT:compile
+[INFO] |  |  |  +- org.hibernate:hibernate-annotations:jar:3.5.6-Final:compile
+[INFO] |  |  |  |  +- org.hibernate:hibernate-core:jar:3.5.6-Final:compile
+[INFO] |  |  |  |  |  +- antlr:antlr:jar:2.7.6:compile
+[INFO] |  |  |  |  |  +- commons-collections:commons-collections:jar:3.1:compile
+[INFO] |  |  |  |  |  +- dom4j:dom4j:jar:1.6.1:compile
+[INFO] |  |  |  |  |  |  \- xml-apis:xml-apis:jar:1.0.b2:compile
+[INFO] |  |  |  |  |  \- javax.transaction:jta:jar:1.1:compile
+[INFO] |  |  |  |  +- org.hibernate:hibernate-commons-annotations:jar:3.2.0.Final:compile
+[INFO] |  |  |  |  \- org.hibernate.javax.persistence:hibernate-jpa-2.0-api:jar:1.0.0.Final:compile
+[INFO] |  |  |  +- org.slf4j:slf4j-api:jar:1.6.4:compile
+[INFO] |  |  |  +- org.hibernate:hibernate-validator:jar:4.2.0.Final:compile
+[INFO] |  |  |  |  \- javax.validation:validation-api:jar:1.0.0.GA:compile
+[INFO] |  |  |  +- org.slf4j:slf4j-log4j12:jar:1.6.2:compile
+[INFO] |  |  |  +- hsqldb:hsqldb:jar:1.8.0.7:runtime
+[INFO] |  |  |  +- javassist:javassist:jar:3.4.GA:compile
+[INFO] |  |  |  \- org.hibernate:hibernate-cglib-repack:jar:2.1_3:compile
+[INFO] |  |  \- org.compass-project:compass:jar:2.2.0:compile
+[INFO] |  |     +- commons-logging:commons-logging:jar:1.1.1:compile
+[INFO] |  |     \- org.apache.lucene:lucene-core:jar:2.4.1:compile
+[INFO] |  \- com.rvkb:woko-usermanagement-hibernate:jar:2.0-beta2-SNAPSHOT:compile
+[INFO] |     \- com.rvkb:woko-usermanagement-core:jar:2.0-beta2-SNAPSHOT:compile
+[INFO] +- com.rvkb:woko-web-core:war:2.0-beta2-SNAPSHOT:provided
+[INFO] +- junit:junit:jar:4.7:test
+[INFO] \- javax.servlet:servlet-api:jar:2.5:provided
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Summary:
+[INFO] 
+[INFO] Woko - parent ..................................... SUCCESS [1.673s]
+[INFO] Woko - Stripes plugins ............................ SUCCESS [0.228s]
+[INFO] Woko - core ....................................... SUCCESS [0.496s]
+[INFO] Woko - web resources .............................. SUCCESS [0.079s]
+[INFO] Woko - web : core JSPs and tags (no skinning) ..... SUCCESS [0.122s]
+[INFO] Woko - web : lithium .............................. SUCCESS [0.062s]
+[INFO] Woko - web : bootstrap ............................ SUCCESS [0.034s]
+[INFO] Woko - container auth ............................. SUCCESS [0.035s]
+[INFO] Woko - builtin auth ............................... SUCCESS [0.016s]
+[INFO] Woko - builtin auth core .......................... SUCCESS [0.036s]
+[INFO] Woko - builtin auth web ........................... SUCCESS [0.062s]
+[INFO] Woko - hibernate .................................. SUCCESS [0.398s]
+[INFO] Woko - compass and hibernate ...................... SUCCESS [0.011s]
+[INFO] Woko - compass and hibernate, core ................ SUCCESS [0.607s]
+[INFO] Woko - compass and hibernate, web resources ....... SUCCESS [0.351s]
+[INFO] Woko - user management extension .................. SUCCESS [0.034s]
+[INFO] Woko - user management extension - core ........... SUCCESS [0.030s]
+[INFO] Woko - user management extension - hibernate ...... SUCCESS [0.075s]
+[INFO] Woko - reference implementation ................... SUCCESS [0.124s]
+[INFO] Woko - archetype .................................. SUCCESS [0.361s]
+[INFO] Woko - Maven Mojo ................................. SUCCESS [0.044s]
+[INFO] Woko - dojo framework artifact .................... SUCCESS [0.004s]
+[INFO] Woko - Heroku archetype ........................... SUCCESS [0.008s]
+[INFO] Woko - usermanagement extension - web ............. SUCCESS [0.077s]
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time: 6.434s
+[INFO] Finished at: Wed Feb 22 15:43:34 CET 2012
+[INFO] Final Memory: 9M/81M
+[INFO] ------------------------------------------------------------------------
