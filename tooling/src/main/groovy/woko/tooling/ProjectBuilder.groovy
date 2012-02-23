@@ -1,7 +1,8 @@
 package woko.tooling
 
-import com.rvkb.woko.tools.utils.AppUtils
-import com.rvkb.woko.tools.utils.Log
+import woko.tooling.utils.Log
+import woko.tooling.utils.AppUtils
+
 
 class ProjectBuilder {
 
