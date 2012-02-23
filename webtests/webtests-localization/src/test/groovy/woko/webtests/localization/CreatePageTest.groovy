@@ -1,7 +1,5 @@
 package woko.webtests.localization
 
-import woko.webtests.WebTestBase
-
 /**
  * Test the UI of the create jsp.
  */

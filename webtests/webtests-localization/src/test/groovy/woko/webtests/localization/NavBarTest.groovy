@@ -1,7 +1,5 @@
 package woko.webtests.localization
 
-import woko.webtests.WebTestBase
-
 /**
  * Test all links provide by the different navbar (Guest and devel).<br/>
  * We don't test here the linked actions. They are tested in other web test module.

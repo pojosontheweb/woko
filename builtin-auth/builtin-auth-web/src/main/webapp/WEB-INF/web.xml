@@ -30,6 +30,14 @@
                 net.sourceforge.stripes.rpc
             </param-value>
         </init-param>
+        <init-param>
+            <param-name>ExceptionHandler.Class</param-name>
+            <param-value>net.sourceforge.stripes.exception.DelegatingExceptionHandler</param-value>
+        </init-param>
+        <init-param>
+            <param-name>DelegatingExceptionHandler.Packages</param-name>
+            <param-value>woko.exceptions.handlers</param-value>
+        </init-param>
     </filter>
     <filter-mapping>
         <filter-name>StripesFilter</filter-name>

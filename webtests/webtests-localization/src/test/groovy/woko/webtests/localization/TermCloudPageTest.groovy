@@ -1,7 +1,5 @@
 package woko.webtests.localization
 
-import woko.webtests.WebTestBase
-
 /**
  * Test the UI of the Term Cloud page.
  * Test only the UI, the results are tested somewhere else.
