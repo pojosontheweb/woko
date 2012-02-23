@@ -1,6 +1,6 @@
 package woko.tooling
 
-import com.rvkb.woko.tools.utils.Log
+import woko.tooling.utils.Log
 
 /**
  * @author Alexis Boissonnat - alexis.boissonnat 'at' gmail.com
