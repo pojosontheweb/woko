@@ -1,0 +1,12 @@
+#!/bin/sh
+
+#
+# woko launcher script
+#
+
+if [ -z "$WOKO_HOME" ] ; then
+	# must be set !
+	echo "the WOKO_HOME environment variable must be set"
+else
+	java -cp "$WOKO_HOME/lib/commons-collections-3.2.1.jar;$WOKO_HOME/lib/commons-lang-2.4.jar;$WOKO_HOME/lib/jline-0.9.94.jar;$WOKO_HOME/lib/velocity-1.7.jar;$WOKO_HOME/lib/groovy-all-1.7.0.jar;$WOKO_HOME/lib/woko-builder-0.1.jar" com.rvkb.woko.tools.Launcher "$@"
+fi
