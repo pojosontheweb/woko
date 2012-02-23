@@ -1,7 +1,5 @@
 package woko.webtests.localization
 
-import woko.webtests.WebTestBase
-
 class HomePageTest extends WebTestBase {
 
   void testAuthenticationWithHome() {

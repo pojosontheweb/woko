@@ -1,7 +1,5 @@
 package woko.webtests.localization
 
-import woko.webtests.WebTestBase
-
 /**
  * @author Alexis Boissonnat - alexis.boissonnat 'at' gmail.com
  */

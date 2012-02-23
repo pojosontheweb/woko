@@ -1,7 +1,5 @@
 package woko.webtests.localization
 
-import woko.webtests.WebTestBase
-
 /**
  * Test the UI of the search.jsp<br/>
  * First, we create 50 objects to provide the full UI components.

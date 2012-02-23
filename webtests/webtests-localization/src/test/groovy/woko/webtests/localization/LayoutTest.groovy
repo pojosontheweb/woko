@@ -1,7 +1,5 @@
 package woko.webtests.localization
 
-import woko.webtests.WebTestBase
-
 /**
  * Test the layout interface for all roles (guest and devel)<br/>
  * Test all texts, input fields etc...
