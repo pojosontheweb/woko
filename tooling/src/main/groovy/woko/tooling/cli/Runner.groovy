@@ -13,7 +13,7 @@ class Runner {
           if (p1) {
               logger.log("help about $p1")
           } else {
-              logger.log("general help")
+              logger.usage()
           }
       },
       "list": { p1 ->
@@ -47,6 +47,9 @@ class Runner {
      * @param args an array or list of Strings containing the command line parameters
      */
     void run(args) {
+        // Display home msg
+        logger.splashMsg()
+
         // first arg is the name of the method to call
         if (!args) {
             commands["help"]()
