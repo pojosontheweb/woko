@@ -39,6 +39,11 @@
             <version>${project.version}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>com.rvkb</groupId>
+            <artifactId>woko-tooling</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
     <build>
         <finalName>woko-webtests</finalName>
