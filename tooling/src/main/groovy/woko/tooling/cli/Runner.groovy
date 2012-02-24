@@ -1,6 +1,5 @@
 package woko.tooling.cli
 
-import woko.tooling.ProjectBuilder
 import woko.tooling.utils.Logger
 import woko.Woko
 import woko.WokoInitListener
@@ -14,19 +13,27 @@ class Runner {
     def commands = [:]
 
     Runner addCommand(String name, String shortDesc, String argSpec, Closure c) {
-        commands[name] = new Command(name, shortDesc, argSpec, c)
+        def lh = LongHelpMessages.MSGS[name]
+        if (!lh) {
+            lh = "no long help available"
+        }
+        commands[name] = new Command(name, shortDesc, argSpec, lh, c)
         return this
     }
 
     Runner() {
         addCommand("help", "display help about specified command", "[command_name]") { p1 -> // first arg could be the name of the command
             if (p1) {
-                logger.log("Help for command '$p1' : ")
                 def c = commands[p1]
                 if (c) {
-                    logger.log("* Description :\t$c.shortDesc")
-                    logger.log("* Usage :")
-                    logger.log("*   - woko $p1 $c.argSpec")
+                    logger.log("Help for command '$p1' : $c.shortDesc")
+                    logger.log("\nUsage :")
+                    logger.log(" - woko $p1 $c.argSpec")
+                    if (c.longHelp) {
+                        logger.log("\n$c.longHelp")
+                    }
+                } else {
+                    logger.log("No such command : $p1")
                 }
             } else {
                 logger.log("* Usage : woko <command> arg*")

@@ -23,7 +23,7 @@ class Logger {
 \\ \\  _  / /___ | |/ / ___
  \\ \\/ \\/ // o \\|   K /   \\
   \\__W__/ \\___/|_|\\_\\\\_o_/  2.0
-             POJOs on the Web !"""
+             POJOs on the Web !\n"""
         log(msg)
     }
 }
