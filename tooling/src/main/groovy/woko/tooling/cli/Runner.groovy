@@ -36,10 +36,11 @@ class Runner {
                     logger.log("No such command : $p1")
                 }
             } else {
-                logger.log("* Usage : woko <command> arg*")
-                logger.log("* Available commands :")
+                logger.log("Usage : woko <command> arg*")
+                logger.log("\nAvailable commands :")
                 commands.each { k, v ->
-                    logger.log("  - $k $v.argSpec\t\t\t : $v.shortDesc")
+                    logger.log("\n  - $k $v.argSpec")
+                    logger.log("     $v.shortDesc")
                 }
             }
         }.
