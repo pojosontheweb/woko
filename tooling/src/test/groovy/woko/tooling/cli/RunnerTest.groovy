@@ -17,10 +17,14 @@ class RunnerTest {
     @Test
     void testCli() {
         [
-                ["list"],
-                ["list","facets"],
-                ["list","roles"],
-                ["help"]
+          ["help"],
+          ["help", "list"],
+          ["help", "create"],
+          ["list"],
+          ["list", "facets"],
+          ["list", "roles"],
+          ["create"]
+//          ["create", "project"]
         ].each { args ->
             println "*** executing command with args $args"
             def s = execCommand(args)
@@ -28,16 +32,6 @@ class RunnerTest {
             println "*** end command"
 
         }
-    }
-
-    @Test
-    void testHelp(){
-        println "*** Excecuting `help` command"
-        def s = execCommand(['help'])
-        assert s.contains("""Usage :
-woko --help : Display help
-woko create project <project_name> : Create a new Woko project
-               """)
     }
 
     @Test
