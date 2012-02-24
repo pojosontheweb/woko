@@ -2,8 +2,6 @@ package woko.tooling.cli
 
 import woko.tooling.ProjectBuilder
 import woko.tooling.utils.Logger
-import net.sourceforge.jfacets.annotations.AnnotatedFacetDescriptorManager
-import net.sourceforge.jfacets.IFacetDescriptorManager
 import woko.Woko
 import woko.WokoInitListener
 import net.sourceforge.jfacets.FacetDescriptor
@@ -50,9 +48,7 @@ class Runner {
                       wx["context-param"].each { it ->
                           if (it["param-name"].text() == "Woko.Facet.Packages") {
                               String facetPackages = it["param-value"].text()
-                              AnnotatedFacetDescriptorManager fdm  = new AnnotatedFacetDescriptorManager(
-                                  WokoInitListener.extractPackagesList(facetPackages)
-                                ).initialize()
+                              def fdm = Woko.createFacetDescriptorManager(WokoInitListener.extractPackagesList(facetPackages))
                               def descriptors = fdm.descriptors
                               logger.log("${descriptors.size()} descriptors found : ")
                               fdm.getDescriptors().each { FacetDescriptor d ->
