@@ -2,6 +2,11 @@ package woko.tooling.cli
 
 import woko.tooling.ProjectBuilder
 import woko.tooling.utils.Logger
+import net.sourceforge.jfacets.annotations.AnnotatedFacetDescriptorManager
+import net.sourceforge.jfacets.IFacetDescriptorManager
+import woko.Woko
+import woko.WokoInitListener
+import net.sourceforge.jfacets.FacetDescriptor
 
 class Runner {
 
@@ -36,7 +41,26 @@ class Runner {
           p1 ->
           switch (p1) {
               case "facets":
-                  logger.log("facet listing")
+                  logger.log("Facets in your project :")
+                  File webXml = new File("./src/main/webapp/WEB-INF/web.xml")
+                  if (!webXml) {
+                      logger.error("Unable to locate the web.xml in your project !")
+                  } else {
+                      def wx = new XmlSlurper().parse(webXml)
+                      wx["context-param"].each { it ->
+                          if (it["param-name"].text() == "Woko.Facet.Packages") {
+                              String facetPackages = it["param-value"].text()
+                              AnnotatedFacetDescriptorManager fdm  = new AnnotatedFacetDescriptorManager(
+                                  WokoInitListener.extractPackagesList(facetPackages)
+                                ).initialize()
+                              def descriptors = fdm.descriptors
+                              logger.log("${descriptors.size()} descriptors found : ")
+                              fdm.getDescriptors().each { FacetDescriptor d ->
+                                  println "  $d.name, $d.profileId, $d.targetObjectType.name, $d.facetClass.name"
+                              }
+                          }
+                      }
+                  }
                   break
               case "roles":
                   logger.log("roles listing")

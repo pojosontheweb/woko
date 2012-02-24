@@ -44,6 +44,12 @@
             <artifactId>woko-tooling</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <!-- needed for tooling : TODO filter out from generated war ? -->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+            <version>2.3</version>
+        </dependency>
     </dependencies>
     <build>
         <finalName>woko-webtests</finalName>

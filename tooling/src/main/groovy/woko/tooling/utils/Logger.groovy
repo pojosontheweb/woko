@@ -11,6 +11,7 @@ class Logger {
 
     void log(String msg){
         writer ? writer<<"$msg\n" : println(msg)
+        writer.flush()
     }
 
     void error(String error){

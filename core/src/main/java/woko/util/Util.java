@@ -1,6 +1,5 @@
 package woko.util;
 
-import groovy.lang.MissingPropertyException;
 import net.sourceforge.stripes.util.ReflectUtil;
 import woko.Woko;
 import woko.facets.builtin.RenderPropertyValue;

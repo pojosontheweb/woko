@@ -117,17 +117,22 @@ public abstract class WokoInitListener implements ServletContextListener {
         return Collections.emptyList();
       }
     }
-    String[] pkgNamesArr = pkgNamesStr.
-            replace('\n', ',').
-            replace(' ', ',').
-            split(",");
-    List<String> pkgNames = new ArrayList<String>();
-    for (String s : pkgNamesArr) {
-      if (s!=null && !s.equals("")) {
-        pkgNames.add(s);
-      }
-    }
-    return pkgNames;
+
+    return extractPackagesList(pkgNamesStr);
   }
+
+    public static List<String> extractPackagesList(String packagesStr) {
+        String[] pkgNamesArr = packagesStr.
+                replace('\n', ',').
+                replace(' ', ',').
+                split(",");
+        List<String> pkgNames = new ArrayList<String>();
+        for (String s : pkgNamesArr) {
+          if (s!=null && !s.equals("")) {
+            pkgNames.add(s);
+          }
+        }
+        return pkgNames;
+    }
 
 }
