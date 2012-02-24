@@ -1,6 +1,7 @@
 package woko.tooling.cli
 
 import org.junit.Test
+import org.junit.Ignore
 
 class RunnerTest {
 
@@ -26,8 +27,12 @@ class RunnerTest {
             println "*** end command"
 
         }
+    }
 
-
+    @Test
+    @Ignore
+    void testCreateProject() {
+        println execCommand(["create", "project"])
     }
 
 }

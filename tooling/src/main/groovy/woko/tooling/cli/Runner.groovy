@@ -1,9 +1,15 @@
 package woko.tooling.cli
 
+import woko.tooling.utils.Log
+import woko.tooling.ProjectBuilder
+
 class Runner {
 
     // output goes here
     Writer out
+
+    private static Log log = new Log(true) // TODO remove
+
 
     // the commands map : String -> Closure !
     def commands = [
@@ -26,6 +32,16 @@ class Runner {
                   error("invalid list command")
                   commands["help"]("list")
                   break
+          }
+      },
+      "create": { p1 ->
+          switch (p1) {
+              case "project" :
+                  ProjectBuilder pb = new ProjectBuilder(log)
+                  pb.build()
+                  break
+              default :
+                  error("Only 'create project' is supported yet")
           }
       }
     ]
