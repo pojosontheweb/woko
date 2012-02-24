@@ -54,6 +54,7 @@
         <module>dojo</module>
         <module>archetype-heroku</module>
         <module>usermanagement</module>
+        <module>tooling</module>
     </modules>
     <properties>
         <stripes.version>1.5.5</stripes.version>
