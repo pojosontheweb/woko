@@ -7,7 +7,7 @@
     <name>${artifactId}</name>
     <packaging>war</packaging>
     <properties>
-        <woko.version>2.0-beta1-SNAPSHOT</woko.version>
+        <woko.version>2.0-SNAPSHOT</woko.version>
     </properties>
     <dependencies>
         <dependency>
@@ -26,6 +26,11 @@
             <artifactId>woko-builtin-auth-web</artifactId>
             <version>${woko.version}</version>
             <type>war</type>
+        </dependency>
+        <dependency>
+            <groupId>com.rvkb</groupId>
+            <artifactId>woko-tooling</artifactId>
+            <version>${woko.version}</version>
         </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>
