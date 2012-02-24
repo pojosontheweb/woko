@@ -1,35 +1,31 @@
 package woko.tooling.cli
 
-import woko.tooling.utils.Log
 import woko.tooling.ProjectBuilder
+import woko.tooling.utils.Logger
 
 class Runner {
 
-    // output goes here
-    Writer out
-
-    private static Log log = new Log(true) // TODO remove
-
+    Logger logger
 
     // the commands map : String -> Closure !
     def commands = [
       "help": { p1 -> // first arg could be the name of the command
           if (p1) {
-              log("help about $p1")
+              logger.log("help about $p1")
           } else {
-              log("general help")
+              logger.log("general help")
           }
       },
       "list": { p1 ->
           switch (p1) {
               case "facets" :
-                  log("facet listing")
+                  logger.log("facet listing")
                   break
               case "roles" :
-                  log("roles listing")
+                  logger.log("roles listing")
                   break
               default:
-                  error("invalid list command")
+                  logger.error("invalid list command")
                   commands["help"]("list")
                   break
           }
@@ -37,11 +33,11 @@ class Runner {
       "create": { p1 ->
           switch (p1) {
               case "project" :
-                  ProjectBuilder pb = new ProjectBuilder(log)
+                  ProjectBuilder pb = new ProjectBuilder(logger)
                   pb.build()
                   break
               default :
-                  error("Only 'create project' is supported yet")
+                  logger.error("Only 'create project' is supported yet")
           }
       }
     ]
@@ -75,17 +71,9 @@ class Runner {
         }
     }
 
-    void log(msg) {
-        out ? out << "$msg\n" : println(msg)
-    }
-
-    void error(msg) {
-        log("ERROR : $msg")
-    }
-
     public static void main(String[] args) {
         System.out.withWriter { w->
-            new Runner([out: w]).run(args)
+            new Runner(logger: new Logger(w)).run(args)
         }
     }
 

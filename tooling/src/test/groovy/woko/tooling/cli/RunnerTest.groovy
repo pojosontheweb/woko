@@ -2,12 +2,13 @@ package woko.tooling.cli
 
 import org.junit.Test
 import org.junit.Ignore
+import woko.tooling.utils.Logger
 
 class RunnerTest {
 
     def execCommand(args) {
-        StringWriter sw = new StringWriter()
-        new Runner([out:sw]).run(args)
+        Writer sw = new StringWriter()
+        new Runner(logger: new Logger(sw)).run(args)
         sw.flush()
         sw.close()
         sw.toString()

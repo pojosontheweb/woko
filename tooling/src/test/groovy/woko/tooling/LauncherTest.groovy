@@ -3,6 +3,7 @@ package woko.tooling
 import junit.framework.Assert
 import org.junit.Test
 import woko.tooling.utils.Log
+import org.junit.Ignore
 
 /**
  * @author Alexis Boissonnat - alexis.boissonnat 'at' gmail.com
@@ -13,6 +14,7 @@ class LauncherTest {
     private static Launcher launcher = new Launcher(log)
 
     @Test
+    @Ignore
     void withoutArgs() {
         println "Without args :"
         launcher.main(new String[0])
@@ -21,6 +23,7 @@ class LauncherTest {
     }
 
     @Test
+    @Ignore
     void withBadArgs() {
         println "With bad args :"
         String[] args = new String[1]
@@ -31,6 +34,7 @@ class LauncherTest {
     }
 
     @Test
+    @Ignore
     void helpWithH() {
         println "With -h :"
         String[] args = new String[1]
@@ -42,6 +46,7 @@ class LauncherTest {
 
 
     @Test
+    @Ignore
     void helpWithHelp() {
         println "With --help :"
         String[] arguments = new String[1]
@@ -52,6 +57,7 @@ class LauncherTest {
     }
 
     @Test
+    @Ignore
     void createWithoutCreationType() {
         println "With create (without creation type) :"
         String[] arguments = new String[1]
@@ -62,6 +68,7 @@ class LauncherTest {
     }
 
     @Test
+    @Ignore
     void createWithWrongCreationType() {
         println "With create badCreationType :"
         String[] arguments = new String[2]

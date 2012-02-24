@@ -1,12 +1,13 @@
 package woko.tooling
 
-import woko.tooling.utils.Log
 import woko.tooling.utils.AppUtils
+import woko.tooling.utils.Logger
 
 
 class ProjectBuilder {
 
-    Log log
+    Logger logger
+//    Writer writer
     String name
     String description
 
@@ -17,8 +18,8 @@ class ProjectBuilder {
     String webApp
     String modelPath
 
-    ProjectBuilder(Log log) {
-        this.log = log
+    ProjectBuilder(Logger logger) {
+        this.logger = logger
     }
 
     public void build(){
@@ -35,7 +36,7 @@ class ProjectBuilder {
         name = AppUtils.requiredAsk('Project name : ');
         description = AppUtils.simpleAsk('Project Description : ');
         if (!createDirectory(name)){
-            log.error('An error occurs during the project folder creation')
+            logger.error('An error occurs during the project folder creation')
             System.exit(1)
         }
     }
@@ -86,31 +87,31 @@ class ProjectBuilder {
                 File.separator+'WEB-INF'
 
         if (!createDirectory(facetPath)){
-            log.error('An error occurs during the facets source directory creation')
+            logger.error('An error occurs during the facets source directory creation')
             System.exit(1)
         }
         if (!createDirectory(modelPath)){
-            log.error('An error occurs during the model source directory creation')
+            logger.error('An error occurs during the model source directory creation')
             System.exit(1)
         }
         if (!createDirectory(wokoPath)){
-            log.error('An error occurs during the woko source directory creation')
+            logger.error('An error occurs during the woko source directory creation')
             System.exit(1)
         }
         if (!createDirectory(testPath)){
-            log.error('An error occurs during the maven TEST directory creation')
+            logger.error('An error occurs during the maven TEST directory creation')
             System.exit(1)
         }
         if (!createDirectory(srcResources)){
-            log.error('An error occurs during the maven SRC RESOURCES directory creation')
+            logger.error('An error occurs during the maven SRC RESOURCES directory creation')
             System.exit(1)
         }
         if (!createDirectory(testResources)){
-            log.error('An error occurs during the maven TEST RESOURCES directory creation')
+            logger.error('An error occurs during the maven TEST RESOURCES directory creation')
             System.exit(1)
         }
         if (!createDirectory(webApp)){
-            log.error('An error occurs during the webapp directory creation')
+            logger.error('An error occurs during the webapp directory creation')
             System.exit(1)
         }
     }
