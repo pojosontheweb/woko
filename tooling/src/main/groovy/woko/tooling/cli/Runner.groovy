@@ -92,11 +92,7 @@ class Runner {
     void run(args) {
         // Display home msg
         logger.splashMsg()
-
-        // first arg is the name of the method to call
-        if (!args) {
-            commands["help"]()
-        }
+        args = args ? args : ["help"]
         invokeCommand(args)
     }
 
