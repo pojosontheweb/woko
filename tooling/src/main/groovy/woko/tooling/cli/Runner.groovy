@@ -48,7 +48,10 @@ class Runner {
                       wx["context-param"].each { it ->
                           if (it["param-name"].text() == "Woko.Facet.Packages") {
                               String facetPackages = it["param-value"].text()
-                              def fdm = Woko.createFacetDescriptorManager(WokoInitListener.extractPackagesList(facetPackages))
+                              def packages = []
+                              packages.addAll(Woko.DEFAULT_FACET_PACKAGES);
+                              packages.addAll(WokoInitListener.extractPackagesList(facetPackages))
+                              def fdm = Woko.createFacetDescriptorManager(packages)
                               def descriptors = fdm.descriptors
                               logger.log("${descriptors.size()} descriptors found : ")
                               fdm.getDescriptors().each { FacetDescriptor d ->
