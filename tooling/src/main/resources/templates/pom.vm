@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!--~~~~~~~~~~~~~~~~~~~~~-->
+    <!-- Project information -->
+    <!--~~~~~~~~~~~~~~~~~~~~~-->
+    <artifactId>$artifactId</artifactId>
+    <groupId>$groupId</groupId>
+    <name>$name</name>
+    <packaging>war</packaging>
+
+    <!--~~~~~~~~~~~~~~-->
+    <!-- Dependencies -->
+    <!--~~~~~~~~~~~~~~-->
+    <dependencies>
+
+        <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+        <!-- Defaults dependencies needed to use woko -->
+        <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+        <dependency>
+            <groupId>com.rvkb</groupId>
+            <artifactId>woko-ri</artifactId>
+            <version>$wokoVersion</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+            <version>2.3</version>
+            <scope>provided</scope>
+        </dependency>
+
+
+        <!--~~~~~~~~~~~~~~~~~~~-->
+        <!-- Your dependencies -->
+        <!--~~~~~~~~~~~~~~~~~~~-->
+        #if($bootstrap)
+        <!-- Bootstrap : UI from twitter -->
+        <dependency>
+            <groupId>com.rvkb</groupId>
+            <artifactId>woko-web-bootstrap</artifactId>
+            <version>$wokoVersion</version>
+            <type>war</type>
+        </dependency>
+        #end
+
+        #if($groovy)
+        <!-- Groovy -->
+        <dependency>
+            <groupId>org.codehaus.groovy</groupId>
+            <artifactId>groovy</artifactId>
+            <version>1.7.4</version>
+        </dependency>
+        #end
+
+    </dependencies>
+    <version>1.0-SNAPSHOT</version>
+    <build>
+        <finalName>$name</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.2</version>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.groovy.maven</groupId>
+                <artifactId>gmaven-plugin</artifactId>
+                <version>1.0</version>
+                <configuration>
+                    <verbose>true</verbose>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generateStubs</goal>
+                            <goal>compile</goal>
+                            <goal>generateTestStubs</goal>
+                            <goal>testCompile</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.cargo</groupId>
+                <artifactId>cargo-maven2-plugin</artifactId>
+                <configuration>
+                    <wait>true</wait>
+                    <container>
+                        <containerId>tomcat6x</containerId>
+                        <zipUrlInstaller>
+                            <url>http://apache.crihan.fr/dist/tomcat/tomcat-6/v6.0.35/bin/apache-tomcat-6.0.35.zip</url>
+                            <downloadDir>${project.build.directory}/downloads</downloadDir>
+                            <extractDir>${project.build.directory}/extracts</extractDir>
+                        </zipUrlInstaller>
+                    </container>
+                    <configuration>
+                        <home>${project.build.directory}/tomcat6x/container</home>
+                        <properties>
+                            <cargo.servlet.port>8080</cargo.servlet.port>
+                        </properties>
+                    </configuration>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>com.rvkb</groupId>
+                <artifactId>woko-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+</project>
