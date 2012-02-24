@@ -15,6 +15,7 @@ class RunnerTest {
     }
 
     @Test
+    @Ignore
     void testCli() {
         [
           ["help"],
@@ -22,9 +23,7 @@ class RunnerTest {
           ["help", "create"],
           ["list"],
           ["list", "facets"],
-          ["list", "roles"],
-          ["create"]
-//          ["create", "project"]
+          ["list", "roles"]
         ].each { args ->
             println "*** executing command with args $args"
             def s = execCommand(args)
