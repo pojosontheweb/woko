@@ -24,14 +24,15 @@ class Runner {
                 logger.log("Help for command '$p1' : ")
                 def c = commands[p1]
                 if (c) {
-                    logger.log("  * Description :\t$c.shortDesc")
-                    logger.log("  * Usage :\t\t\twoko $p1 $c.argSpec")
+                    logger.log("* Description :\t$c.shortDesc")
+                    logger.log("* Usage :")
+                    logger.log("*   - woko $p1 $c.argSpec")
                 }
             } else {
-                logger.log("  * Usage : woko <command> arg*")
-                logger.log("  * Available commands :")
+                logger.log("* Usage : woko <command> arg*")
+                logger.log("* Available commands :")
                 commands.each { k, v ->
-                    logger.log("    - $k")
+                    logger.log("  - $k $v.argSpec\t\t\t : $v.shortDesc")
                 }
             }
         }.
@@ -70,24 +71,20 @@ class Runner {
                   break
           }
         }.
-        addCommand("create", "create project elements", "project|facet") {
+        addCommand("create", "create project elements", "facet") {
           p1 ->
           switch (p1) {
-              case "project":
-                  ProjectBuilder pb = new ProjectBuilder(logger)
-                  pb.build()
-                  break
               default:
                   logger.error("invalid create command : Only 'create project' is supported yet")
                   invokeCommand(["help","create"])
           }
         }.
-        addCommand("run", "run the application in a local tomcat container", "no args") {
+        addCommand("run", "run the application in a local tomcat container", "") {
             "mvn package cargo:start".execute()
             logger.log("Application sarted : http://localhost:8080/<app_name>")
             logger.log("woko stop to terminate the server")
         }.
-        addCommand("stop", "stop the local tomcat container", "no args") {
+        addCommand("stop", "stop the local tomcat container", "") {
           "mvn cargo:stop".execute()
           logger.log("Application stopped")
         }
