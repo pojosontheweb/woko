@@ -81,6 +81,15 @@ class Runner {
                   logger.error("invalid create command : Only 'create project' is supported yet")
                   invokeCommand(["help","create"])
           }
+        }.
+        addCommand("run", "run the application in a local tomcat container", "no args") {
+            "mvn package cargo:start".execute()
+            logger.log("Application sarted : http://localhost:8080/<app_name>")
+            logger.log("woko stop to terminate the server")
+        }.
+        addCommand("stop", "stop the local tomcat container", "no args") {
+          "mvn cargo:stop".execute()
+          logger.log("Application stopped")
         }
     }
 
