@@ -11,14 +11,22 @@ else
     echo "  \\__W__/ \\___/|_|\\_\\\\_o_/  2.0"
     echo "             POJOs on the Web !"
     echo ""
-    echo "ERROR : No pom file found in current directory. "
-    read -p "Do you want to init the project ? [N]" answer
-    if [ "$answer" == "y" ]
+
+    # Asking for project creation ?
+    if [ "$1" == "init" ]
     then
         echo "Initializing project"
         mvn archetype:generate -DarchetypeArtifactId=woko-archetype -DarchetypeGroupId=com.rvkb -q
     else
-        echo "Nothing done. Hope to see you soon !"
+        echo "ERROR : No pom file found in current directory. "
+        read -p "Do you want to init the project ? [N]" answer
+        if [ "$answer" == "y" ]
+        then
+            echo "Initializing project"
+            mvn archetype:generate -DarchetypeArtifactId=woko-archetype -DarchetypeGroupId=com.rvkb -q
+        else
+            echo "Nothing done. Hope to see you soon !"
+        fi
     fi
 fi
 
