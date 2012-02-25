@@ -4,6 +4,7 @@ import woko.tooling.utils.Logger
 import woko.Woko
 import woko.WokoInitListener
 import net.sourceforge.jfacets.FacetDescriptor
+import net.sourceforge.jfacets.IFacetDescriptorManager
 
 class Runner {
 
@@ -21,13 +22,36 @@ class Runner {
         return this
     }
 
+    private IFacetDescriptorManager getFdm() {
+        String pathToWebXml = "./src/main/webapp/WEB-INF/web.xml"
+        File webXml = new File(pathToWebXml)
+        if (!webXml) {
+            logger.error("Unable to locate the web.xml in your project ! Should be in $pathToWebXml")
+            return null
+        } else {
+            def wx = new XmlSlurper().parse(webXml)
+            def fdm = null
+            // TODO UGLY : don't loop if you don't need to !
+            wx["context-param"].each { it ->
+                if (it["param-name"].text() == "Woko.Facet.Packages") {
+                    String facetPackages = it["param-value"].text()
+                    def packages = []
+                    packages.addAll(Woko.DEFAULT_FACET_PACKAGES);
+                    packages.addAll(WokoInitListener.extractPackagesList(facetPackages))
+                    fdm = Woko.createFacetDescriptorManager(packages)
+                }
+            }
+            return fdm
+        }
+    }
+
     Runner() {
         addCommand("help", "display help about specified command", "[command_name]") { p1 -> // first arg could be the name of the command
             if (p1) {
                 def c = commands[p1]
                 if (c) {
                     logger.log("Help for command '$p1' : $c.shortDesc")
-                    logger.log("\nUsage :")
+                    logger.log("\nUsage :\n")
                     logger.log(" - woko $p1 $c.argSpec")
                     if (c.longHelp) {
                         logger.log("\n$c.longHelp")
@@ -37,10 +61,9 @@ class Runner {
                 }
             } else {
                 logger.log("Usage : woko <command> arg*")
-                logger.log("\nAvailable commands :")
+                logger.log("\nAvailable commands :\n")
                 commands.each { k, v ->
-                    logger.log("\n  - $k $v.argSpec")
-                    logger.log("     $v.shortDesc")
+                    logger.log("  - $k $v.argSpec\t\t:\t\t$v.shortDesc")
                 }
             }
         }.
@@ -48,30 +71,27 @@ class Runner {
           p1 ->
           switch (p1) {
               case "facets":
-                  logger.log("Facets in your project :")
-                  File webXml = new File("./src/main/webapp/WEB-INF/web.xml")
-                  if (!webXml) {
-                      logger.error("Unable to locate the web.xml in your project !")
-                  } else {
-                      def wx = new XmlSlurper().parse(webXml)
-                      wx["context-param"].each { it ->
-                          if (it["param-name"].text() == "Woko.Facet.Packages") {
-                              String facetPackages = it["param-value"].text()
-                              def packages = []
-                              packages.addAll(Woko.DEFAULT_FACET_PACKAGES);
-                              packages.addAll(WokoInitListener.extractPackagesList(facetPackages))
-                              def fdm = Woko.createFacetDescriptorManager(packages)
-                              def descriptors = fdm.descriptors
-                              logger.log("${descriptors.size()} descriptors found : ")
-                              fdm.getDescriptors().each { FacetDescriptor d ->
-                                  println "  $d.name, $d.profileId, $d.targetObjectType.name, $d.facetClass.name"
-                              }
-                          }
-                      }
+                  def fdm = getFdm()
+                  def descriptors = fdm.descriptors
+                  logger.log("${descriptors.size()} facets found : ")
+                  descriptors.each { FacetDescriptor d ->
+                      println "  $d.name, $d.profileId, $d.targetObjectType.name, $d.facetClass.name"
                   }
                   break
               case "roles":
-                  logger.log("roles listing")
+                  def fdm = getFdm()
+                  def descriptors = fdm.descriptors
+                  def allRoles = []
+                  descriptors.each { FacetDescriptor d ->
+                      def role = d.profileId
+                      if (!allRoles.contains(role)) {
+                          allRoles << role
+                      }
+                  }
+                  logger.log("${allRoles.size()} role(s) used in faced keys :")
+                  allRoles.sort().each { r ->
+                      println "  $r"
+                  }
                   break
               default:
                   logger.error("invalid list command")
@@ -79,11 +99,10 @@ class Runner {
                   break
           }
         }.
-        addCommand("create", "create project elements", "facet") {
-          p1 ->
+        addCommand("create", "create project elements", "facet|entity") { p1 ->
           switch (p1) {
               default:
-                  logger.error("invalid create command : Only 'create project' is supported yet")
+                  logger.error("create is not implemented")
                   invokeCommand(["help","create"])
           }
         }.
