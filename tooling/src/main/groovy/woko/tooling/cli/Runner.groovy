@@ -5,6 +5,7 @@ import woko.Woko
 import woko.WokoInitListener
 import net.sourceforge.jfacets.FacetDescriptor
 import net.sourceforge.jfacets.IFacetDescriptorManager
+import static woko.tooling.utils.AppUtils.*
 
 class Runner {
 
@@ -22,27 +23,32 @@ class Runner {
         return this
     }
 
-    private IFacetDescriptorManager getFdm() {
+    private def getWebXml() {
         String pathToWebXml = "./src/main/webapp/WEB-INF/web.xml"
         File webXml = new File(pathToWebXml)
         if (!webXml) {
             logger.error("Unable to locate the web.xml in your project ! Should be in $pathToWebXml")
             return null
-        } else {
-            def wx = new XmlSlurper().parse(webXml)
-            def fdm = null
-            // TODO UGLY : don't loop if you don't need to !
-            wx["context-param"].each { it ->
-                if (it["param-name"].text() == "Woko.Facet.Packages") {
-                    String facetPackages = it["param-value"].text()
-                    def packages = []
-                    packages.addAll(Woko.DEFAULT_FACET_PACKAGES);
-                    packages.addAll(WokoInitListener.extractPackagesList(facetPackages))
-                    fdm = Woko.createFacetDescriptorManager(packages)
-                }
-            }
-            return fdm
         }
+        new XmlSlurper().parse(webXml)
+    }
+
+    private def computeFacetPackages(webXml) {
+        def packages = null
+        // TODO UGLY : don't loop if you don't need to !
+        webXml["context-param"].each { it ->
+            if (it["param-name"].text() == "Woko.Facet.Packages") {
+                String facetPackages = it["param-value"].text()
+                packages = []
+                packages.addAll(WokoInitListener.extractPackagesList(facetPackages))
+                packages.addAll(Woko.DEFAULT_FACET_PACKAGES);
+            }
+        }
+        return packages
+    }
+
+    private IFacetDescriptorManager getFdm() {
+        Woko.createFacetDescriptorManager(computeFacetPackages(webXml))
     }
 
     Runner() {
@@ -74,7 +80,9 @@ class Runner {
                   def fdm = getFdm()
                   def descriptors = fdm.descriptors
                   logger.log("${descriptors.size()} facets found : ")
-                  descriptors.each { FacetDescriptor d ->
+                  descriptors.sort { a,b ->
+                      a.name <=> b.name
+                  }.each { FacetDescriptor d ->
                       println "  $d.name, $d.profileId, $d.targetObjectType.name, $d.facetClass.name"
                   }
                   break
@@ -101,6 +109,66 @@ class Runner {
         }.
         addCommand("create", "create project elements", "facet|entity") { p1 ->
           switch (p1) {
+              case "facet" :
+                  def fdm = getFdm()
+
+                  // ask for required params and assist the best we can !
+
+                  def name = requiredAsk("Facet name")
+                  // check if there are facets with this name already
+                  def facetsWithSameName = fdm.descriptors.findAll { fd -> fd.name == name }
+                  if (facetsWithSameName) {
+                      // facet override !
+                      logger.log("Found ${facetsWithSameName.size()} facet(s) with the same name :")
+                      facetsWithSameName.each { fd ->
+                        logger.log("  - $fd.name, $fd.profileId, $fd.targetObjectType.name, $fd.facetClass")
+                      }
+                      logger.log("You might be overriding a facet...")
+                  } else {
+                      logger.log("No facet(s) with that name already, you are not overriding anything...")
+                  }
+                  logger.log(" ") // line sep
+
+                  def role = askWithDefault("Role", "all")
+                  // check if the facet already exists for that name and role
+                  def facetsWithSameNameAndSameRole = facetsWithSameName.findAll { fd -> fd.profileId == role}
+                  if (facetsWithSameNameAndSameRole) {
+                      // facet overide !
+                      logger.log("Found ${facetsWithSameNameAndSameRole.size()} facet(s) with the same name and role :")
+                      facetsWithSameNameAndSameRole.each { fd ->
+                          logger.log("  - $fd.name, $fd.profileId, $fd.targetObjectType.name, $fd.facetClass")
+                      }
+                      logger.log("You are overriding an existing facet by type...")
+                  } else {
+                      if (role=="all") {
+                          logger.log("You are assigning the facet to all users of the application...")
+                      }
+                  }
+                  logger.log(" ") // line sep
+
+                  def targetType = askWithDefault("Target type", "java.lang.Object")
+
+                  // check if a facet exists for the same type
+                  def identicalFacets = facetsWithSameNameAndSameRole.findAll { fd -> fd.targetObjectType.name == targetType }
+                  if (identicalFacets) {
+                      logger.log("Found ${identicalFacets.size()} facet(s) with the exact same key :")
+                      identicalFacets.each { fd ->
+                          logger.log("  - $fd.facetClass")
+                      }
+                      logger.log("\nYou are REPLACING a facet. Make sure the ordering of the facet packages is ok : ")
+                      computeFacetPackages(webXml).each {
+                          logger.log("  - $it")
+                      }
+                  } else {
+                      logger.log("You are overriding facet(s) by type...")
+                  }
+                  logger.log(" ") // line sep
+
+                  // TODO
+
+
+
+                  break
               default:
                   logger.error("create is not implemented")
                   invokeCommand(["help","create"])
