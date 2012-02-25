@@ -22,4 +22,15 @@
             </includes>
         </fileSet>
     </fileSets>
+
+    <requiredProperties>
+        <requiredProperty key="bootstrap-usage">
+            <defaultValue>no</defaultValue>
+        </requiredProperty>
+
+        <requiredProperty key="groovy-usage">
+            <defaultValue>no</defaultValue>
+        </requiredProperty>
+    </requiredProperties>
+
 </archetype-descriptor>

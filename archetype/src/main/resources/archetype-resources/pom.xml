@@ -38,6 +38,27 @@
             <artifactId>servlet-api</artifactId>
             <version>2.3</version>
         </dependency>
+
+        <!-- Include bootstrap if wanted by user -->
+        #if(${bootstrap-usage} == "yes")
+        <!-- Bootstrap : UI from twitter -->
+        <dependency>
+            <groupId>com.rvkb</groupId>
+            <artifactId>woko-web-bootstrap</artifactId>
+            <version>${woko.version}</version>
+            <type>war</type>
+        </dependency>
+        #end
+
+        #if(${groovy-usage} == "yes")
+        <!-- Groovy -->
+        <dependency>
+            <groupId>org.codehaus.groovy</groupId>
+            <artifactId>groovy</artifactId>
+            <version>1.7.4</version>
+        </dependency>
+        #end
+
     </dependencies>
     <version>${version}</version>
     <build>
