@@ -8,6 +8,8 @@ import java.util.List;
 
 public interface RenderLinks extends IFacet, FragmentFacet {
 
+    static final String FACET_NAME = "renderLinks";
+
   List<Link> getLinks();
 
 }

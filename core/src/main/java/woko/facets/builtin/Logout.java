@@ -4,4 +4,6 @@ import woko.facets.ResolutionFacet;
 
 public interface Logout extends ResolutionFacet {
 
+    static final String FACET_NAME = "logout";
+
 }

@@ -6,6 +6,8 @@ import java.util.List;
 
 public interface Layout extends IFacet {
 
+    static final String FACET_NAME = "layout";
+
   String getAppTitle();
 
   List<String> getCssIncludes();

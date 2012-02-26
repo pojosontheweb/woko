@@ -8,6 +8,8 @@ import java.util.Map;
 
 public interface RenderProperties extends IFacet, FragmentFacet {
 
+    static final String FACET_NAME = "renderProperties";
+
   List<String> getPropertyNames();
 
   Map<String,Object> getPropertyValues();

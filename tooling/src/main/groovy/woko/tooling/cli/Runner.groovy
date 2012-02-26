@@ -6,6 +6,7 @@ import woko.WokoInitListener
 import net.sourceforge.jfacets.FacetDescriptor
 import net.sourceforge.jfacets.IFacetDescriptorManager
 import static woko.tooling.utils.AppUtils.*
+import woko.facets.builtin.WokoFacets
 
 class Runner {
 
@@ -49,6 +50,10 @@ class Runner {
 
     private IFacetDescriptorManager getFdm() {
         Woko.createFacetDescriptorManager(computeFacetPackages(webXml))
+    }
+
+    private void indentedLog(msg) {
+        logger.log("|  $msg")
     }
 
     Runner() {
@@ -119,52 +124,79 @@ class Runner {
                   def facetsWithSameName = fdm.descriptors.findAll { fd -> fd.name == name }
                   if (facetsWithSameName) {
                       // facet override !
-                      logger.log("Found ${facetsWithSameName.size()} facet(s) with the same name :")
+                      indentedLog("Found ${facetsWithSameName.size()} facet(s) with the same name :")
                       facetsWithSameName.each { fd ->
-                        logger.log("  - $fd.name, $fd.profileId, $fd.targetObjectType.name, $fd.facetClass")
+                        indentedLog("  - $fd.name, $fd.profileId, $fd.targetObjectType.name, $fd.facetClass")
                       }
-                      logger.log("You might be overriding a facet...")
+                      indentedLog("You might be overriding a facet...")
                   } else {
-                      logger.log("No facet(s) with that name already, you are not overriding anything...")
+                      indentedLog("No facet(s) with that name already, you are not overriding anything...")
                   }
-                  logger.log(" ") // line sep
+                  indentedLog(" ") // line sep
 
                   def role = askWithDefault("Role", "all")
                   // check if the facet already exists for that name and role
                   def facetsWithSameNameAndSameRole = facetsWithSameName.findAll { fd -> fd.profileId == role}
                   if (facetsWithSameNameAndSameRole) {
                       // facet overide !
-                      logger.log("Found ${facetsWithSameNameAndSameRole.size()} facet(s) with the same name and role :")
+                      indentedLog("Found ${facetsWithSameNameAndSameRole.size()} facet(s) with the same name and role :")
                       facetsWithSameNameAndSameRole.each { fd ->
-                          logger.log("  - $fd.name, $fd.profileId, $fd.targetObjectType.name, $fd.facetClass")
+                          indentedLog("  - $fd.name, $fd.profileId, $fd.targetObjectType.name, $fd.facetClass")
                       }
-                      logger.log("You are overriding an existing facet by type...")
+                      indentedLog("You are overriding an existing facet by type...")
                   } else {
                       if (role=="all") {
-                          logger.log("You are assigning the facet to all users of the application...")
+                          indentedLog("You are assigning the facet to all users of the application...")
                       }
                   }
-                  logger.log(" ") // line sep
+                  indentedLog(" ") // line sep
 
                   def targetType = askWithDefault("Target type", "java.lang.Object")
 
                   // check if a facet exists for the same type
                   def identicalFacets = facetsWithSameNameAndSameRole.findAll { fd -> fd.targetObjectType.name == targetType }
                   if (identicalFacets) {
-                      logger.log("Found ${identicalFacets.size()} facet(s) with the exact same key :")
+                      indentedLog("Found ${identicalFacets.size()} facet(s) with the exact same key :")
                       identicalFacets.each { fd ->
-                          logger.log("  - $fd.facetClass")
+                          indentedLog("  - $fd.facetClass")
                       }
-                      logger.log("\nYou are REPLACING a facet. Make sure the ordering of the facet packages is ok : ")
+                      indentedLog("You are REPLACING a facet. Make sure the ordering of the facet packages is ok : ")
                       computeFacetPackages(webXml).each {
-                          logger.log("  - $it")
+                          indentedLog("  - $it")
                       }
                   } else {
-                      logger.log("You are overriding facet(s) by type...")
+                      indentedLog("You are overriding facet(s) by type...")
                   }
-                  logger.log(" ") // line sep
+                  indentedLog(" ") // line sep
 
-                  // TODO
+                  // now that we have the params, propose an appropriate base class if any
+                  def baseClass = WokoFacets.getDefaultImpl(name)
+                  def baseIntf = WokoFacets.getInterface(name)
+                  def useBaseClass = false
+                  if (baseClass && baseIntf) {
+                      indentedLog("Found interface and possible base class for your facet :")
+                      indentedLog("  - interface  : $baseIntf.name")
+                      indentedLog("  - base class : $baseClass.name")
+                  } else if (baseClass) {
+                      indentedLog("Found possible base class your facet : $baseClass.name")
+                  } else if (baseIntf) {
+                      indentedLog("Found interface for your facet : $baseIntf.name")
+                  }
+                  if (baseClass) {
+                      def useBaseClassQuestion = askWithDefault("Do you want to use the base class ?", "y")
+                      if (useBaseClassQuestion.toLowerCase()=="y") {
+                        useBaseClass = true
+                      }
+                  }
+                  if (baseIntf && !useBaseClass) {
+                      indentedLog("Your facet will implement $baseIntf.name")
+                  }
+                  indentedLog(" ") // line sep
+
+                  // check if the facet is a fragment facet and propose JSP fragment if any
+
+
+
 
 
 

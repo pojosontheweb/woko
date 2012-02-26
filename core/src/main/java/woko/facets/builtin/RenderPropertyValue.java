@@ -5,6 +5,8 @@ import net.sourceforge.jfacets.IFacet;
 
 public interface RenderPropertyValue extends IFacet, FragmentFacet {
 
+    static final String FACET_NAME = "renderPropertyValue";
+
   void setOwningObject(Object o);
 
   Object getOwningObject();
