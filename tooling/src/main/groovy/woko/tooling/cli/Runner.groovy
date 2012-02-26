@@ -40,16 +40,8 @@ class Runner {
     }
 
     private List<String> computeFacetPackages(webXml) {
-        def packages = null
-        // TODO UGLY : don't loop if you don't need to !
-        webXml["context-param"].each { it ->
-            if (it["param-name"].text() == "Woko.Facet.Packages") {
-                String facetPackages = it["param-value"].text()
-                packages = []
-                packages.addAll(WokoInitListener.extractPackagesList(facetPackages))
-                packages.addAll(Woko.DEFAULT_FACET_PACKAGES);
-            }
-        }
+        def packages = computeUserFacetPackages(webXml)
+        packages.addAll(Woko.DEFAULT_FACET_PACKAGES);
         return packages
     }
 
@@ -234,7 +226,7 @@ class Runner {
                             def pm = new PomHelper(pomFile)
                             def basePackage = pm.model.groupId
 
-                            def userFacetPgkList = computeUserFacetPackages(webXml)
+                            def userFacetPgkList = computeFacetPackages(webXml)
                             if (userFacetPgkList.size() > 1) {
                                 logger.log('Several facets package found :')
                                 int i=1
