@@ -7,6 +7,7 @@ import net.sourceforge.jfacets.FacetDescriptor
 import net.sourceforge.jfacets.IFacetDescriptorManager
 import static woko.tooling.utils.AppUtils.*
 import woko.facets.builtin.WokoFacets
+import woko.facets.FragmentFacet
 
 class Runner {
 
@@ -172,7 +173,6 @@ class Runner {
                   // now that we have the params, propose an appropriate base class if any
                   def baseClass = WokoFacets.getDefaultImpl(name)
                   def baseIntf = WokoFacets.getInterface(name)
-                  def useBaseClass = false
                   if (baseClass && baseIntf) {
                       indentedLog("Found interface and possible base class for your facet :")
                       indentedLog("  - interface  : $baseIntf.name")
@@ -182,18 +182,22 @@ class Runner {
                   } else if (baseIntf) {
                       indentedLog("Found interface for your facet : $baseIntf.name")
                   }
-                  if (baseClass) {
-                      def useBaseClassQuestion = askWithDefault("Do you want to use the base class ?", "y")
-                      if (useBaseClassQuestion.toLowerCase()=="y") {
-                        useBaseClass = true
-                      }
-                  }
+                  def useBaseClass = baseClass && yesNoAsk("Do you want to use the base class")
                   if (baseIntf && !useBaseClass) {
                       indentedLog("Your facet will implement $baseIntf.name")
                   }
                   indentedLog(" ") // line sep
 
                   // check if the facet is a fragment facet and propose JSP fragment if any
+                  def fragmentPath = null
+                  if (baseIntf && FragmentFacet.isAssignableFrom(baseIntf)) {
+                      indentedLog("The facet is a Fragment Facet...")
+                      if (yesNoAsk("Do you want to generate JSP a fragment")) {
+                          fragmentPath = askWithDefault("Enter the JSP fragment path", "/WEB-INF/jsp/$role/${name}.jsp")
+                      } else {
+                          fragmentPath = null
+                      }
+                  }
 
 
 

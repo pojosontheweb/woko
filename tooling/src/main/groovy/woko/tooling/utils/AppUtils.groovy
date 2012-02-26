@@ -31,12 +31,12 @@ class AppUtils {
 
     static Boolean yesNoAsk(String question){
         String response
-        while ( (!response) || ( (!response.equals('yes')) && (!response.equals('no')) ) ) {
-            print question+ '(yes or no)'
+        while ( (!response) || ( (!response.toLowerCase().equals('y')) && (!response.toLowerCase().equals('n')) ) ) {
+            print "$question ? [y] :"
             DataInputStream stream = new DataInputStream(System.in);
             response = stream.readLine()    
         }
-        return response.equals('yes') ? true : false
+        response.toLowerCase() == 'y'
     }
 
     static generateTemplate(def props, String template, Writer writer){
