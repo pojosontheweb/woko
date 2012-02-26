@@ -9,6 +9,7 @@ import static woko.tooling.utils.AppUtils.*
 import woko.facets.builtin.WokoFacets
 import woko.facets.FragmentFacet
 import woko.tooling.utils.PomHelper
+import woko.tooling.utils.AppUtils
 
 class Runner {
 
@@ -201,11 +202,12 @@ class Runner {
                   indentedLog(" ") // line sep
 
                   // check if the facet is a fragment facet and propose JSP fragment if any
+                  def targetObjectSimpleType = extractPkgAndClazz(targetType).clazz
                   def fragmentPath = null
                   if (baseIntf && FragmentFacet.isAssignableFrom(baseIntf)) {
                       indentedLog("The facet is a Fragment Facet...")
                       if (yesNoAsk("Do you want to generate JSP a fragment")) {
-                          fragmentPath = askWithDefault("Enter the JSP fragment path", "/WEB-INF/jsp/$role/${name}.jsp")
+                          fragmentPath = askWithDefault("Enter the JSP fragment path", "/WEB-INF/jsp/$role/${name}${targetObjectSimpleType}.jsp")
                       } else {
                           fragmentPath = null
                       }
@@ -224,7 +226,7 @@ class Runner {
 
                   def capName = name[0].toUpperCase() + name[1..-1]
                   def facetClassName = askWithDefault("Specify the facet class name",
-                    "${basePackage}.facets.${role}.${capName}Impl")
+                    "${basePackage}.facets.${role}.${capName}${targetObjectSimpleType}Impl")
 
                   // do we generate a Groovy or a Java class ?
                   // check if we have Groovy available in the project

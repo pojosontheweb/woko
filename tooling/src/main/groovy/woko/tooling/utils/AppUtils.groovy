@@ -56,6 +56,15 @@ class AppUtils {
         writer.close()
     }
 
+    static def extractPkgAndClazz(String fqcn) {
+        int i = fqcn.lastIndexOf(".")
+        if (i!=-1) {
+            return [pkg:fqcn[0..i-1], clazz:fqcn[i+1..-1]]
+        }
+        return [pkg:'',clazz:fqcn]
+    }
+
+
 
 
 

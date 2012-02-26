@@ -2,6 +2,7 @@ package woko.tooling.cli
 
 import woko.tooling.utils.Logger
 import groovy.text.GStringTemplateEngine
+import woko.tooling.utils.AppUtils
 
 class FacetCodeGenerator {
 
@@ -21,7 +22,7 @@ class FacetCodeGenerator {
         this.facetClassName = facetClassName
         binding["name"] = name
         binding["role"] = role
-        def pc = extractPkgAndClazz(facetClassName)
+        def pc = AppUtils.extractPkgAndClazz(facetClassName)
         binding["facetPackage"] = pc.pkg
         binding["facetClassName"] = pc.clazz
         binding["targetTypeStr"] = ""
@@ -30,17 +31,9 @@ class FacetCodeGenerator {
         binding["classBody"] = ""
     }
 
-    private def extractPkgAndClazz(String fqcn) {
-        int i = fqcn.lastIndexOf(".")
-        if (i!=-1) {
-            return [pkg:fqcn[0..i-1], clazz:fqcn[i+1..-1]]
-        }
-        return [pkg:'',clazz:fqcn]
-    }
-
     FacetCodeGenerator setTargetObjectType(String targetType) {
         if (targetType && targetType!="Object" && targetType!="java.lang.Object") {
-            def pc = extractPkgAndClazz(targetType)
+            def pc = AppUtils.extractPkgAndClazz(targetType)
             binding["targetTypeStr"] = ", targetObjectType=${pc.clazz}.class"
             imports << targetType
         }
@@ -49,7 +42,7 @@ class FacetCodeGenerator {
 
     FacetCodeGenerator setBaseClass(Class<?> baseClass) {
         if (baseClass) {
-            def pc = extractPkgAndClazz(baseClass.name)
+            def pc = AppUtils.extractPkgAndClazz(baseClass.name)
             binding["baseClassStr"] = " extends $pc.clazz"
             imports << baseClass.name
         }
@@ -58,7 +51,7 @@ class FacetCodeGenerator {
 
     FacetCodeGenerator setInterface(Class<?> intf) {
         if (intf) {
-            def pc = extractPkgAndClazz(intf.name)
+            def pc = AppUtils.extractPkgAndClazz(intf.name)
             binding["interfaceStr"] = " implements $pc.clazz"
             imports << intf.name
         }
@@ -121,7 +114,7 @@ class FacetCodeGenerator {
             logger.log(" ")
             logger.log(" ")
         } else {
-            def pc = extractPkgAndClazz(facetClassName)
+            def pc = AppUtils.extractPkgAndClazz(facetClassName)
             def srcFolderName = useGroovy ? "groovy" : "java"
             String pkgPath = pc["pkg"].replaceAll("\\.", "/")
             String fullPkgPath = "$baseDir.absolutePath/src/main/$srcFolderName/$pkgPath"
