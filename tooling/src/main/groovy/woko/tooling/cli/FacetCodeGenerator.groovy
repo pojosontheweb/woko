@@ -23,6 +23,7 @@ class FacetCodeGenerator {
         binding["facetClassName"] = pc.clazz
         binding["targetTypeStr"] = ""
         binding["baseClassStr"] = ""
+        binding["interfaceStr"] = ""
         binding["classBody"] = ""
     }
 

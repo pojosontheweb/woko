@@ -4,12 +4,14 @@ import org.junit.Test
 import some.test.pkg.DummyBaseClass
 import woko.facets.builtin.RenderPropertyValue
 
-class FacetCodeGeneratorTest {
+abstract class BaseFacetCodeGeneratorTest {
+
+    abstract boolean useGroovy();
 
     private String doGenerate(FacetCodeGenerator fcg) {
         def out = new ByteArrayOutputStream()
         out.withWriter { sysout ->
-            fcg.setUseGroovy(true).generate(sysout)
+            fcg.setUseGroovy(useGroovy()).generate(sysout)
         }
         return out.toString()
     }
@@ -23,31 +25,22 @@ class FacetCodeGeneratorTest {
     void testGroovyFacetNoSupertypesNoFragmentNoTargetType() {
         assertGeneratedText(
             new FacetCodeGenerator(null, new File(""), "myfacet", "myrole", "com.xyz.MyFacetClass"),
-            """package com.xyz
-
-import net.sourceforge.jfacets.annotations.FacetKey
-
-@FacetKey(name="myfacet", profileId="myrole")
-class MyFacetClass {
-
-}""")
+            getExpectedNoSupertypesNoFragmentNoTargetType()
+        )
     }
+
+    protected abstract String getExpectedNoSupertypesNoFragmentNoTargetType();
 
     @Test
     void testGroovyFacetNoSupertypesNoFragment() {
         assertGeneratedText(
             new FacetCodeGenerator(null, new File(""), "myfacet", "myrole", "com.xyz.MyFacetClass").
                 setTargetObjectType("com.xyz.MyPojo"),
-            """package com.xyz
-
-import net.sourceforge.jfacets.annotations.FacetKey
-import com.xyz.MyPojo
-
-@FacetKey(name="myfacet", profileId="myrole", targetObjectType=MyPojo.class)
-class MyFacetClass {
-
-}""")
+            getExpectedNoSupertypesNoFragment()
+        )
     }
+
+    protected abstract String getExpectedNoSupertypesNoFragment();
 
     @Test
     void testGroovyFacetBaseClassNoFragment() {
@@ -55,17 +48,10 @@ class MyFacetClass {
             new FacetCodeGenerator(null, new File(""), "myfacet", "myrole", "com.xyz.MyFacetClass").
                 setTargetObjectType("com.xyz.MyPojo").
                 setBaseClass(DummyBaseClass.class),
-            """package com.xyz
-
-import net.sourceforge.jfacets.annotations.FacetKey
-import com.xyz.MyPojo
-import some.test.pkg.DummyBaseClass
-
-@FacetKey(name="myfacet", profileId="myrole", targetObjectType=MyPojo.class)
-class MyFacetClass extends DummyBaseClass {
-
-}""")
+            getExpectedBaseClassNoFragment())
     }
+
+    protected abstract String getExpectedBaseClassNoFragment();
 
     @Test
     void testGroovyFacetBaseClassFragment() {
@@ -74,22 +60,11 @@ class MyFacetClass extends DummyBaseClass {
                 setTargetObjectType("com.xyz.MyPojo").
                 setBaseClass(DummyBaseClass.class).
                 setFragmentPath("/WEB-INF/jsp/myrole/myjsp.jsp"),
-            """package com.xyz
-
-import net.sourceforge.jfacets.annotations.FacetKey
-import com.xyz.MyPojo
-import some.test.pkg.DummyBaseClass
-
-@FacetKey(name="myfacet", profileId="myrole", targetObjectType=MyPojo.class)
-class MyFacetClass extends DummyBaseClass {
-
-    @Override
-    String getPath() {
-        "/WEB-INF/jsp/myrole/myjsp.jsp"
+            getExpectedBaseClassFragment()
+        )
     }
 
-}""")
-    }
+    protected abstract String getExpectedBaseClassFragment()
 
     @Test
     void testGroovyFacetInterfaceFragment() {
@@ -98,22 +73,11 @@ class MyFacetClass extends DummyBaseClass {
                 setTargetObjectType("com.xyz.MyPojo").
                 setInterface(RenderPropertyValue.class).
                 setFragmentPath("/WEB-INF/jsp/myrole/myjsp.jsp"),
-            """package com.xyz
-
-import net.sourceforge.jfacets.annotations.FacetKey
-import com.xyz.MyPojo
-import woko.facets.builtin.RenderPropertyValue
-
-@FacetKey(name="myfacet", profileId="myrole", targetObjectType=MyPojo.class)
-class MyFacetClass implements RenderPropertyValue {
-
-    @Override
-    String getPath() {
-        "/WEB-INF/jsp/myrole/myjsp.jsp"
+            getExpectedInterfaceFragment()
+        )
     }
 
-}""")
-    }
+    protected abstract String getExpectedInterfaceFragment()
 
 
 }
