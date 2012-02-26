@@ -2,24 +2,33 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
+    <!--~~~~~~~~~~~~~~~~~~~~~-->
+    <!-- Project information -->
+    <!--~~~~~~~~~~~~~~~~~~~~~-->
     <artifactId>${artifactId}</artifactId>
     <groupId>${groupId}</groupId>
     <name>${artifactId}</name>
+    <version>${version}</version>
     <packaging>war</packaging>
+
+
     <properties>
         <woko.version>2.0-SNAPSHOT</woko.version>
     </properties>
+
+    <!--~~~~~~~~~~~~~~-->
+    <!-- Dependencies -->
+    <!--~~~~~~~~~~~~~~-->
     <dependencies>
+
+        <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+        <!-- Defaults dependencies needed to use woko -->
+        <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
         <dependency>
             <groupId>com.rvkb</groupId>
             <artifactId>woko-ri</artifactId>
             <version>${woko.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.rvkb</groupId>
-            <artifactId>woko-web-lithium</artifactId>
-            <version>${woko.version}</version>
-            <type>war</type>
         </dependency>
         <dependency>
             <groupId>com.rvkb</groupId>
@@ -39,12 +48,22 @@
             <version>2.3</version>
         </dependency>
 
-        <!-- Include bootstrap if wanted by user -->
+
+        <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+        <!-- Your specifics Woko dependencies -->
+        <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
         #if(${bootstrap-usage} == "yes")
         <!-- Bootstrap : UI from twitter -->
         <dependency>
             <groupId>com.rvkb</groupId>
             <artifactId>woko-web-bootstrap</artifactId>
+            <version>${woko.version}</version>
+            <type>war</type>
+        </dependency>
+        #else
+        <dependency>
+            <groupId>com.rvkb</groupId>
+            <artifactId>woko-web-lithium</artifactId>
             <version>${woko.version}</version>
             <type>war</type>
         </dependency>
@@ -58,9 +77,12 @@
             <version>1.7.4</version>
         </dependency>
         #end
-
     </dependencies>
-    <version>${version}</version>
+
+
+    <!--~~~~~~~~~~~~~~~~~~~~~-->
+    <!-- Build configuration -->
+    <!--~~~~~~~~~~~~~~~~~~~~~-->
     <build>
         <finalName>${artifactId}</finalName>
         <plugins>
