@@ -204,17 +204,11 @@ class Runner {
                   indentedLog(" ") // line sep
 
                   // Create a pom helper to grab info from maven pom
-                  def pm
-                  try{
-                     pm = new PomHelper()
-                  }catch (RuntimeException e){
-                      logger.error(e.getMessage())
-                      // TODO : what we do now ? For now, leaving the tool...
-                      System.exit(1)
-                  }
+                  def pm = new PomHelper()
 
                   // ask for facet class name
                   def basePackage = pm.model.groupId
+
                   def capName = name[0].toUpperCase() + name[1..-1]
                   def facetClassName = askWithDefault("Specify the facet class name",
                     "${basePackage}.${role}.${capName}Impl")
@@ -247,7 +241,7 @@ class Runner {
 
                   break
               default:
-                  logger.error("create is not implemented")
+                  logger.error("create $p1 is not implemented")
                   invokeCommand(["help","create"])
           }
         }.
