@@ -11,7 +11,9 @@ abstract class BaseFacetCodeGeneratorTest {
     private String doGenerate(FacetCodeGenerator fcg) {
         def out = new ByteArrayOutputStream()
         out.withWriter { sysout ->
-            fcg.setUseGroovy(useGroovy()).generate(sysout)
+            fcg.
+              setUseGroovy(useGroovy()).
+              generate(sysout)
         }
         return out.toString()
     }

@@ -17,6 +17,8 @@ class Runner {
     // the commands map : String -> Command !
     def commands = [:]
 
+    File workingDir = new File(System.getProperty("user.dir"))
+
     Runner addCommand(String name, String shortDesc, String argSpec, Closure c) {
         def lh = LongHelpMessages.MSGS[name]
         if (!lh) {
@@ -27,7 +29,7 @@ class Runner {
     }
 
     private def getWebXml() {
-        String pathToWebXml = "./src/main/webapp/WEB-INF/web.xml"
+        String pathToWebXml = "$workingDir.absolutePath/src/main/webapp/WEB-INF/web.xml"
         File webXml = new File(pathToWebXml)
         if (!webXml) {
             logger.error("Unable to locate the web.xml in your project ! Should be in $pathToWebXml")
@@ -36,7 +38,7 @@ class Runner {
         new XmlSlurper().parse(webXml)
     }
 
-    private def computeFacetPackages(webXml) {
+    private List<String> computeFacetPackages(webXml) {
         def packages = null
         // TODO UGLY : don't loop if you don't need to !
         webXml["context-param"].each { it ->
@@ -114,7 +116,7 @@ class Runner {
                   break
           }
         }.
-        addCommand("create", "create project elements", "facet|entity") { p1 ->
+        addCommand("create", "create project elements", "facet|entity") { p1, dry ->
           switch (p1) {
               case "facet" :
                   def fdm = getFdm()
@@ -213,15 +215,11 @@ class Runner {
                   indentedLog(" ") // line sep
 
                   // ask for facet class name with default computed name
-                  File pomFile = new File(System.getProperty("user.dir") + File.separator + "pom.xml")
+                  File pomFile = new File(workingDir.absolutePath + File.separator + "pom.xml")
                   def pm = new PomHelper(pomFile)
                   def basePackage = pm.model.groupId
                   if (!basePackage) {
                       basePackage = pm.model.parent.groupId
-                  }
-                  def artifactId = pm.model.artifactId
-                  if (!basePackage.endsWith(artifactId)) {
-                      basePackage = "${basePackage}.$artifactId" // append artifact ID if not specified
                   }
 
                   def capName = name[0].toUpperCase() + name[1..-1]
@@ -255,18 +253,21 @@ class Runner {
                   }
                   def lang = useGroovy ? "Groovy" : "pure Java"
                   indentedLog(" Facet written in  : $lang")
+                  indentedLog(" Facet source dir  : $workingDir.absolutePath/src/main/${useGroovy ? "groovy" : "java"}")
                   indentedLog(" ") // line sep
                   if (yesNoAsk("Is this OK ? Shall we generate all this")) {
 
-                      // actually generate the file !
-                      File baseDir = new File(".")
-                      new FacetCodeGenerator(logger,baseDir,name,role,facetClassName).
+                      // actually generate the file (or print out) !
+                      def fcg = new FacetCodeGenerator(logger,workingDir,name,role,facetClassName).
                         setTargetObjectType(targetType).
                         setBaseClass(baseClass).
                         setInterface(baseIntf).
                         setFragmentPath(fragmentPath).
-                        setUseGroovy(useGroovy).
-                        generate()
+                        setUseGroovy(useGroovy)
+                      if (dry=="dry") {
+                        fcg.setDontGenerate(true)
+                      }
+                      fcg.generate()
 
                   }
                   break
