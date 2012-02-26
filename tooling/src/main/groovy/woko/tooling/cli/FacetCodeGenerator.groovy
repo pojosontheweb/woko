@@ -10,32 +10,42 @@ class FacetCodeGenerator {
 
     private final def binding = [:]
     private boolean useGroovy = false
+    private List<String> imports = []
 
     FacetCodeGenerator(Logger logger, File baseDir, String name, String role, String facetClassName) {
         this.logger = logger
         this.baseDir = baseDir
         binding["name"] = name
         binding["role"] = role
-        int i = facetClassName.lastIndexOf(".")
+        def pc = extractPkgAndClazz(facetClassName)
+        binding["facetPackage"] = pc.pkg
+        binding["facetClassName"] = pc.clazz
+        binding["targetTypeStr"] = ""
+        binding["baseClassStr"] = ""
+    }
+
+    private def extractPkgAndClazz(String fqcn) {
+        int i = fqcn.lastIndexOf(".")
         if (i!=-1) {
-            binding["facetPackage"] = facetClassName[0..i-1]
-            binding["facetClassName"] = facetClassName[i+1..-1]
-        } else {
-            binding["facetClassName"] = facetClassName
-            binding["facetPackage"] = ""
+            return [pkg:fqcn[0..i-1], clazz:fqcn[i+1..-1]]
         }
+        return [pkg:'',clazz:fqcn]
     }
 
     FacetCodeGenerator setTargetObjectType(String targetType) {
         if (targetType) {
-            binding["targetObjectType"] = targetType
+            def pc = extractPkgAndClazz(targetType)
+            binding["targetTypeStr"] = ", targetObjectType=${pc.clazz}.class"
+            imports << targetType
         }
         this
     }
 
     FacetCodeGenerator setBaseClass(Class<?> baseClass) {
         if (baseClass) {
-            binding["baseClass"] = baseClass
+            def pc = extractPkgAndClazz(baseClass.name)
+            binding["baseClassStr"] = " extends $pc.clazz"
+            imports << baseClass.name
         }
         this
     }
@@ -60,6 +70,13 @@ class FacetCodeGenerator {
     }
 
     void generate(Writer out) {
+        // compute imports
+        StringBuilder importsStr = new StringBuilder()
+        imports.each {
+            importsStr << "\nimport $it"
+        }
+        binding["imports"] = "$importsStr"
+
         def engine = new GStringTemplateEngine()
         def tpl = useGroovy ? "facet-groovy.template" : "facet-java.template"
         engine.
