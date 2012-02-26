@@ -1,0 +1,11 @@
+package $facetPackage
+
+import net.sourceforge.jfacets.annotations.FacetKey
+
+@FacetKey(name="$name", profileId="$role")
+class $facetClassName  {
+
+
+
+
+}

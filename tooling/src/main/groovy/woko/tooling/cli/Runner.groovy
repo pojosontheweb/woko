@@ -183,8 +183,14 @@ class Runner {
                   } else if (baseIntf) {
                       indentedLog("Found interface for your facet : $baseIntf.name")
                   }
-                  def useBaseClass = baseClass && yesNoAsk("Do you want to use the base class")
-                  if (baseIntf && !useBaseClass) {
+                  if (baseClass) {
+                      if (yesNoAsk("Do you want to use the base class")) {
+                          "Your facet will extend $baseClass.name"
+                      } else {
+                          baseClass = null
+                      }
+                  }
+                  if (baseIntf) {
                       indentedLog("Your facet will implement $baseIntf.name")
                   }
                   indentedLog(" ") // line sep
@@ -203,16 +209,27 @@ class Runner {
                   // copy the original Woko fragment in the project...
                   indentedLog(" ") // line sep
 
-                  // Create a pom helper to grab info from maven pom
+                  // ask for facet class name with default computed name
                   def pm = new PomHelper()
-
-                  // ask for facet class name
                   def basePackage = pm.model.groupId
+                  def artifactId = pm.model.artifactId
+                  if (!basePackage.endsWith(artifactId)) {
+                      basePackage = "${basePackage}.$artifactId" // append artifact ID if not specified
+                  }
 
                   def capName = name[0].toUpperCase() + name[1..-1]
                   def facetClassName = askWithDefault("Specify the facet class name",
-                    "${basePackage}.${role}.${capName}Impl")
+                    "${basePackage}.facets.${role}.${capName}Impl")
 
+                  // do we generate a Groovy or a Java class ?
+                  // check if we have Groovy available in the project
+                  // TODO better check !
+                  def useGroovy = false
+                  def groovyAvailable = new File("src/main/groovy").exists()
+                  if (groovyAvailable) {
+                      indentedLog("Groovy seems to be available in your project...")
+                      useGroovy = yesNoAsk("Do you want to write the facet in Groovy")
+                  }
 
                   // show summary of all infos
                   indentedLog(" ") // line sep
@@ -229,9 +246,23 @@ class Runner {
                   if (fragmentPath) {
                       indentedLog(" JSP fragment path : $fragmentPath")
                   }
+                  def lang = useGroovy ? "Groovy" : "pure Java"
+                  indentedLog("Facet written in $lang")
                   indentedLog(" ") // line sep
                   if (yesNoAsk("Is this OK ? Shall we generate all this")) {
-                      logger.log("TODO !")
+
+                      // actually generate the file !
+                      File baseDir = new File(".")
+                      new FacetCodeGenerator(logger,baseDir,name,role,facetClassName).
+                        setTargetObjectType(targetType).
+                        setBaseClass(baseClass).
+                        setInterface(baseIntf).
+                        setFragmentPath(fragmentPath).
+                        setUseGroovy(useGroovy).
+                        generate()
+
+
+
                   }
 
 
