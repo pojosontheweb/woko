@@ -2,6 +2,7 @@ package woko.tooling.cli
 
 import org.junit.Test
 import some.test.pkg.DummyBaseClass
+import woko.facets.builtin.RenderPropertyValue
 
 class FacetCodeGeneratorTest {
 
@@ -81,6 +82,30 @@ import some.test.pkg.DummyBaseClass
 
 @FacetKey(name="myfacet", profileId="myrole", targetObjectType=MyPojo.class)
 class MyFacetClass extends DummyBaseClass {
+
+    @Override
+    String getPath() {
+        "/WEB-INF/jsp/myrole/myjsp.jsp"
+    }
+
+}""")
+    }
+
+    @Test
+    void testGroovyFacetInterfaceFragment() {
+        assertGeneratedText(
+            new FacetCodeGenerator(null, new File(""), "myfacet", "myrole", "com.xyz.MyFacetClass").
+                setTargetObjectType("com.xyz.MyPojo").
+                setInterface(RenderPropertyValue.class).
+                setFragmentPath("/WEB-INF/jsp/myrole/myjsp.jsp"),
+            """package com.xyz
+
+import net.sourceforge.jfacets.annotations.FacetKey
+import com.xyz.MyPojo
+import woko.facets.builtin.RenderPropertyValue
+
+@FacetKey(name="myfacet", profileId="myrole", targetObjectType=MyPojo.class)
+class MyFacetClass implements RenderPropertyValue {
 
     @Override
     String getPath() {

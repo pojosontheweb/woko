@@ -54,7 +54,9 @@ class FacetCodeGenerator {
 
     FacetCodeGenerator setInterface(Class<?> intf) {
         if (intf) {
-            binding["intf"] = intf
+            def pc = extractPkgAndClazz(intf.name)
+            binding["interfaceStr"] = " implements $pc.clazz"
+            imports << intf.name
         }
         this
     }
