@@ -8,6 +8,7 @@ import net.sourceforge.jfacets.IFacetDescriptorManager
 import static woko.tooling.utils.AppUtils.*
 import woko.facets.builtin.WokoFacets
 import woko.facets.FragmentFacet
+import woko.tooling.utils.PomHelper
 
 class Runner {
 
@@ -202,8 +203,18 @@ class Runner {
                   // copy the original Woko fragment in the project...
                   indentedLog(" ") // line sep
 
+                  // Create a pom helper to grab info from maven pom
+                  def pm
+                  try{
+                     pm = new PomHelper()
+                  }catch (RuntimeException e){
+                      logger.error(e.getMessage())
+                      // TODO : what we do now ? For now, leaving the tool...
+                      System.exit(1)
+                  }
+
                   // ask for facet class name
-                  def basePackage = "base.pkg" // TODO grab in pom (groupId)
+                  def basePackage = pm.model.groupId
                   def capName = name[0].toUpperCase() + name[1..-1]
                   def facetClassName = askWithDefault("Specify the facet class name",
                     "${basePackage}.${role}.${capName}Impl")
