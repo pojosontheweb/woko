@@ -109,6 +109,7 @@ class FacetCodeGenerator {
           createTemplate(getClass().getResource(tpl)).
           make(binding).
           writeTo(out)
+
     }
 
     void generate() {
@@ -120,10 +121,14 @@ class FacetCodeGenerator {
             logger.log(" ")
             logger.log(" ")
         } else {
-            String s = facetClassName.replaceAll("\\.", "/")
-            String pathToFile = "$baseDir.absolutePath/src/main/${useGroovy ? "groovy" : "java"}/${s}.${useGroovy ? "groovy" : "java"}"
+            def pc = extractPkgAndClazz(facetClassName)
+            def srcFolderName = useGroovy ? "groovy" : "java"
+            String pkgPath = pc["pkg"].replaceAll("\\.", "/")
+            String fullPkgPath = "$baseDir.absolutePath/src/main/$srcFolderName/$pkgPath"
+            new File(fullPkgPath).mkdirs()
+            String pathToFile = "$fullPkgPath/${pc["clazz"]}.$srcFolderName"
             logger.log("Generating file $pathToFile")
-            new File(pathToFile).withWriter { w ->
+            new FileOutputStream(pathToFile).withWriter { w ->
                 generate(w)
             }
         }

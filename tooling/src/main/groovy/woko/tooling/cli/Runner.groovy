@@ -116,7 +116,7 @@ class Runner {
                   break
           }
         }.
-        addCommand("create", "create project elements", "facet|entity") { p1, dry ->
+        addCommand("create", "create project elements", "facet|entity") { p1 ->
           switch (p1) {
               case "facet" :
                   def fdm = getFdm()
@@ -255,21 +255,20 @@ class Runner {
                   indentedLog(" Facet written in  : $lang")
                   indentedLog(" Facet source dir  : $workingDir.absolutePath/src/main/${useGroovy ? "groovy" : "java"}")
                   indentedLog(" ") // line sep
-                  if (yesNoAsk("Is this OK ? Shall we generate all this")) {
 
-                      // actually generate the file (or print out) !
-                      def fcg = new FacetCodeGenerator(logger,workingDir,name,role,facetClassName).
-                        setTargetObjectType(targetType).
-                        setBaseClass(baseClass).
-                        setInterface(baseIntf).
-                        setFragmentPath(fragmentPath).
-                        setUseGroovy(useGroovy)
-                      if (dry=="dry") {
-                        fcg.setDontGenerate(true)
-                      }
-                      fcg.generate()
 
-                  }
+                  // file generation
+                  def fcg = new FacetCodeGenerator(logger,workingDir,name,role,facetClassName).
+                    setTargetObjectType(targetType).
+                    setBaseClass(baseClass).
+                    setInterface(baseIntf).
+                    setFragmentPath(fragmentPath).
+                    setUseGroovy(useGroovy).
+                    setDontGenerate(
+                      !yesNoAsk("Is this OK ? Shall we generate all this (n to view gen sources only)")
+                    ).
+                    generate()
+
                   break
               default:
                   logger.error("create $p1 is not implemented")
