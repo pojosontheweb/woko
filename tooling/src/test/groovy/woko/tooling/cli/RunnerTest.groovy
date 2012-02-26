@@ -36,7 +36,7 @@ class RunnerTest {
     @Test
     @Ignore
     void testCreateProject() {
-        println execCommand(["create", "project"])
+        println execCommand(["create", "facet"])
     }
 
 }
