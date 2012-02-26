@@ -8,9 +8,9 @@ class PomHelper {
 
     Model model
 
-    PomHelper(){
+    PomHelper(File pomFile){
         // No need to check if pom exists or not : It's a prerequisite of the command processor itself
-        Reader pomReader = new FileReader('pom.xml')
+        Reader pomReader = new FileReader(pomFile)
         try {
             MavenXpp3Reader modelReader = new MavenXpp3Reader()
             model = modelReader.read(pomReader)

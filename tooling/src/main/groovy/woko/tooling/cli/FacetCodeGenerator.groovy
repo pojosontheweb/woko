@@ -109,8 +109,10 @@ class FacetCodeGenerator {
     }
 
     void generate() {
+        println "***"
         System.out.withWriter { w ->
             generate(w)
         }
+        println "***"
     }
 }

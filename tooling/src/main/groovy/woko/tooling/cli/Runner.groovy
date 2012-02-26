@@ -166,10 +166,13 @@ class Runner {
                       computeFacetPackages(webXml).each {
                           indentedLog("  - $it")
                       }
+                      indentedLog(" ") // line sep
                   } else {
-                      indentedLog("You are overriding facet(s) by type...")
+                      if (facetsWithSameName) {
+                          indentedLog("You are overriding facet(s) by type...")
+                          indentedLog(" ") // line sep
+                      }
                   }
-                  indentedLog(" ") // line sep
 
                   // now that we have the params, propose an appropriate base class if any
                   def baseClass = WokoFacets.getDefaultImpl(name)
@@ -210,8 +213,12 @@ class Runner {
                   indentedLog(" ") // line sep
 
                   // ask for facet class name with default computed name
-                  def pm = new PomHelper()
+                  File pomFile = new File(System.getProperty("user.dir") + File.separator + "pom.xml")
+                  def pm = new PomHelper(pomFile)
                   def basePackage = pm.model.groupId
+                  if (!basePackage) {
+                      basePackage = pm.model.parent.groupId
+                  }
                   def artifactId = pm.model.artifactId
                   if (!basePackage.endsWith(artifactId)) {
                       basePackage = "${basePackage}.$artifactId" // append artifact ID if not specified
@@ -247,7 +254,7 @@ class Runner {
                       indentedLog(" JSP fragment path : $fragmentPath")
                   }
                   def lang = useGroovy ? "Groovy" : "pure Java"
-                  indentedLog("Facet written in $lang")
+                  indentedLog(" Facet written in  : $lang")
                   indentedLog(" ") // line sep
                   if (yesNoAsk("Is this OK ? Shall we generate all this")) {
 
@@ -261,15 +268,7 @@ class Runner {
                         setUseGroovy(useGroovy).
                         generate()
 
-
-
                   }
-
-
-
-
-
-
                   break
               default:
                   logger.error("create $p1 is not implemented")
