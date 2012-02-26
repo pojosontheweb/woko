@@ -4,7 +4,7 @@
 <%@ taglib prefix="w" tagdir="/WEB-INF/tags/woko" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <w:username var="username"/>
-
+<c:set var="cp" value="${pageContext.request.contextPath}"/>
 <s:layout-definition>
     <html>
         <head>
@@ -18,6 +18,8 @@
                     <title>${layout.appTitle}</title>
                 </c:otherwise>
             </c:choose>
+            <link rel="stylesheet" href="${cp}/woko/css/layout-all.css" type="text/css">
+            <link rel="stylesheet" href="${cp}/woko/css/lithium/assets/style.css" type="text/css">
             <c:forEach items="${layout.cssIncludes}" var="cssLink">
                 <link rel="stylesheet" href="${pageContext.request.contextPath}${cssLink}" type="text/css">
             </c:forEach>

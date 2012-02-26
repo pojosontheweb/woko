@@ -80,7 +80,10 @@
 
     <context-param>
         <param-name>Woko.Hibernate.Packages</param-name>
-        <param-value>${package}.model</param-value>
+        <param-value>
+            ${package}.model
+            woko.ext.usermanagement.hibernate
+        </param-value>
     </context-param>
 
     <context-param>
