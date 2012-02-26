@@ -66,5 +66,29 @@ class MyFacetClass extends DummyBaseClass {
 }""")
     }
 
+    @Test
+    void testGroovyFacetBaseClassFragment() {
+        assertGeneratedText(
+            new FacetCodeGenerator(null, new File(""), "myfacet", "myrole", "com.xyz.MyFacetClass").
+                setTargetObjectType("com.xyz.MyPojo").
+                setBaseClass(DummyBaseClass.class).
+                setFragmentPath("/WEB-INF/jsp/myrole/myjsp.jsp"),
+            """package com.xyz
+
+import net.sourceforge.jfacets.annotations.FacetKey
+import com.xyz.MyPojo
+import some.test.pkg.DummyBaseClass
+
+@FacetKey(name="myfacet", profileId="myrole", targetObjectType=MyPojo.class)
+class MyFacetClass extends DummyBaseClass {
+
+    @Override
+    String getPath() {
+        "/WEB-INF/jsp/myrole/myjsp.jsp"
+    }
+
+}""")
+    }
+
 
 }

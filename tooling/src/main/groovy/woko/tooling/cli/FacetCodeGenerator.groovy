@@ -11,6 +11,7 @@ class FacetCodeGenerator {
     private final def binding = [:]
     private boolean useGroovy = false
     private List<String> imports = []
+    private String fragmentPath = null
 
     FacetCodeGenerator(Logger logger, File baseDir, String name, String role, String facetClassName) {
         this.logger = logger
@@ -22,6 +23,7 @@ class FacetCodeGenerator {
         binding["facetClassName"] = pc.clazz
         binding["targetTypeStr"] = ""
         binding["baseClassStr"] = ""
+        binding["classBody"] = ""
     }
 
     private def extractPkgAndClazz(String fqcn) {
@@ -58,9 +60,7 @@ class FacetCodeGenerator {
     }
 
     FacetCodeGenerator setFragmentPath(String path) {
-        if (path) {
-            binding["fragmentPath"] = path
-        }
+        this.fragmentPath = path
         this
     }
 
@@ -74,8 +74,28 @@ class FacetCodeGenerator {
         StringBuilder importsStr = new StringBuilder()
         imports.each {
             importsStr << "\nimport $it"
+            if (!useGroovy) {
+                importsStr << ";"
+            }
         }
         binding["imports"] = "$importsStr"
+
+        // compute class body
+        if (fragmentPath) {
+            binding["classBody"] = useGroovy ?
+                """
+    @Override
+    String getPath() {
+        "$fragmentPath"
+    }
+""" :
+                """
+    @Override
+    public String getPath() {
+        return "$fragmentPath";
+    }
+"""
+        }
 
         def engine = new GStringTemplateEngine()
         def tpl = useGroovy ? "facet-groovy.template" : "facet-java.template"
