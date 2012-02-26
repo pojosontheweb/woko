@@ -30,13 +30,10 @@ class AppUtils {
     }
 
     static Boolean yesNoAsk(String question){
-        String response
-        while ( (!response) || ( (!response.toLowerCase().equals('y')) && (!response.toLowerCase().equals('n')) ) ) {
-            print "$question ? [y] :"
-            DataInputStream stream = new DataInputStream(System.in);
-            response = stream.readLine()    
-        }
-        response.toLowerCase() == 'y'
+        print "$question ? [y] :"
+        DataInputStream stream = new DataInputStream(System.in);
+        def response = stream.readLine()
+        return response?.toLowerCase() != 'n'
     }
 
     static generateTemplate(def props, String template, Writer writer){

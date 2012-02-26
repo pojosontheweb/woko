@@ -198,6 +198,36 @@ class Runner {
                           fragmentPath = null
                       }
                   }
+                  // TODO check if the fragment path is one of Woko's : the idea being to
+                  // copy the original Woko fragment in the project...
+                  indentedLog(" ") // line sep
+
+                  // ask for facet class name
+                  def basePackage = "base.pkg" // TODO grab in pom (groupId)
+                  def capName = name[0].toUpperCase() + name[1..-1]
+                  def facetClassName = askWithDefault("Specify the facet class name",
+                    "${basePackage}.${role}.${capName}Impl")
+
+
+                  // show summary of all infos
+                  indentedLog(" ") // line sep
+                  indentedLog(" --- Summary ---")
+                  indentedLog(" ") // line sep
+                  indentedLog(" Facet key         : $name, $role, $targetType")
+                  indentedLog(" Facet class       : $facetClassName")
+                  if (baseIntf) {
+                      indentedLog(" Implements        : ${baseIntf.name}")
+                  }
+                  if (baseClass) {
+                      indentedLog(" Extends           : ${baseClass.name}")
+                  }
+                  if (fragmentPath) {
+                      indentedLog(" JSP fragment path : $fragmentPath")
+                  }
+                  indentedLog(" ") // line sep
+                  if (yesNoAsk("Is this OK ? Shall we generate all this")) {
+                      logger.log("TODO !")
+                  }
 
 
 
