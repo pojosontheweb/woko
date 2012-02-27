@@ -11,8 +11,8 @@ public abstract class LoginActionBean<U, C extends ActionBeanContext> implements
 
     private static final Log log = Log.getInstance(LoginActionBean.class);
     
-    public static final String KEY_MSG_LOGIN_FAILED  = "stripes.login.failed";
-    public static final String KEY_MSG_LOGIN_SUCCESS  = "stripes.login.success";
+    public static final String KEY_MSG_LOGIN_FAILED  = "woko.login.failed";
+    public static final String KEY_MSG_LOGIN_SUCCESS  = "woko.login.success";
 
     private C context;
 

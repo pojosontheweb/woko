@@ -7,8 +7,9 @@ import java.util.ResourceBundle;
 
 public class WokoResourceBundle extends ResourceBundle {
 
-    private static final String WOKO_RESOURCES_BUNDLE = "WokoResources";
-    private static final String APP_RESOURCES_BUNDLE = "ApplicationResources";
+    public static final String WOKO_RESOURCES_BUNDLE = "WokoResources";
+    public static final String STRIPES_MSG_RESOURCES_BUNDLE = "StripesMessageResources";
+    public static final String APP_RESOURCES_BUNDLE = "ApplicationResources";
 
     private Locale locale;
 
@@ -23,13 +24,14 @@ public class WokoResourceBundle extends ResourceBundle {
 
     @Override
     protected Object handleGetObject(String fullKey) {
-        // First, try to get resources from app specific bundle
         String result = getResult(locale, APP_RESOURCES_BUNDLE, fullKey);
-        if (result == null)
-            result = getResult(locale, WOKO_RESOURCES_BUNDLE, fullKey);
-
+        if (result == null){
+            if (fullKey.startsWith("stripes."))
+                result = getResult(locale, STRIPES_MSG_RESOURCES_BUNDLE, fullKey);
+            else
+                result = getResult(locale, WOKO_RESOURCES_BUNDLE, fullKey);
+        }
         return result;
-
     }
 
     // Just returns null if the bundle or the key is not found,
