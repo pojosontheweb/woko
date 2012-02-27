@@ -1,8 +1,8 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@include file="/WEB-INF/woko/jsp/taglibs.jsp"%>
+
 <%@ page import="woko.facets.builtin.WokoFacets" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="s" uri="http://stripes.sourceforge.net/stripes.tld" %>
-<%@ taglib prefix="w" tagdir="/WEB-INF/tags/woko" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
 <w:username var="username"/>
 <c:set var="cp" value="${pageContext.request.contextPath}"/>
 <s:layout-definition>
@@ -41,12 +41,12 @@
                             <span class="authInfo">
                                 <c:choose>
                                     <c:when test="${username != null}">
-                                        <fmt:message key="woko.layout.loggedAs"/> <strong>${username}</strong> -
-                                        <a href="${pageContext.request.contextPath}/logout"><fmt:message key="woko.layout.logout"/> </a>
+                                        <fmt:message bundle="${wokoBundle}" key="woko.layout.loggedAs"/> <strong>${username}</strong> -
+                                        <a href="${pageContext.request.contextPath}/logout"><fmt:message bundle="${wokoBundle}" key="woko.layout.logout"/> </a>
                                     </c:when>
                                     <c:otherwise>
-                                        <fmt:message key="woko.layout.notLogged"/>
-                                        <a href="${pageContext.request.contextPath}/login"><fmt:message key="woko.layout.login"/> </a>
+                                        <fmt:message bundle="${wokoBundle}" key="woko.layout.notLogged"/>
+                                        <a href="${pageContext.request.contextPath}/login"><fmt:message bundle="${wokoBundle}" key="woko.layout.login"/> </a>
                                     </c:otherwise>
                                 </c:choose>
                             </span>
