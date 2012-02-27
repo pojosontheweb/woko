@@ -226,7 +226,7 @@ class Runner {
                             def pm = new PomHelper(pomFile)
                             def basePackage = pm.model.groupId
 
-                            def userFacetPgkList = computeFacetPackages(webXml)
+                            def userFacetPgkList = computeUserFacetPackages(webXml)
                             if (userFacetPgkList.size() > 1) {
                                 logger.log('Several facets package found :')
                                 int i=1
