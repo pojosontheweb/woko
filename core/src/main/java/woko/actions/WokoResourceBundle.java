@@ -7,32 +7,41 @@ import java.util.ResourceBundle;
 
 public class WokoResourceBundle extends ResourceBundle {
 
-  private Locale locale;
+    private static final String WOKO_RESOURCES_BUNDLE = "WokoResources";
+    private static final String APP_RESOURCES_BUNDLE = "ApplicationResources";
 
-  public WokoResourceBundle(Locale locale) {
-    this.locale = locale;
-  }
+    private Locale locale;
 
-  @Override
-  public Enumeration<String> getKeys() {
-    return null;
-  }
-
-  @Override
-  protected Object handleGetObject(String fullKey) {
-      return getResult(locale, "WokoResources", fullKey);
-  }
-
-  // Just returns null if the bundle or the key is not found,
-  // instead of throwing an exception.
-  private String getResult(Locale loc, String name, String key) {
-    String result = null;
-    ResourceBundle bundle = ResourceBundle.getBundle(name, loc);
-    if (bundle != null) {
-      try { result = bundle.getString(key); }
-      catch (MissingResourceException exc) { }
+    public WokoResourceBundle(Locale locale) {
+        this.locale = locale;
     }
-    return result;
-  }
+
+    @Override
+    public Enumeration<String> getKeys() {
+        return null;
+    }
+
+    @Override
+    protected Object handleGetObject(String fullKey) {
+        // First, try to get resources from app specific bundle
+        String result = getResult(locale, APP_RESOURCES_BUNDLE, fullKey);
+        if (result == null)
+            result = getResult(locale, WOKO_RESOURCES_BUNDLE, fullKey);
+
+        return result;
+
+    }
+
+    // Just returns null if the bundle or the key is not found,
+    // instead of throwing an exception.
+    private String getResult(Locale loc, String name, String key) {
+        String result = null;
+        ResourceBundle bundle = ResourceBundle.getBundle(name, loc);
+        if (bundle != null) {
+            try { result = bundle.getString(key); }
+            catch (MissingResourceException exc) { }
+        }
+        return result;
+    }
 }
 
