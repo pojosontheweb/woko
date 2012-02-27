@@ -8,12 +8,14 @@
 <w:facet facetName="<%=WokoFacets.layout%>" targetObject="${o}"/>
 <w:facet targetObject="${o}" facetName="<%=WokoFacets.renderTitle%>"/>
 
-<fmt:message var="pageTitle" key="woko.guest.home.pageTitle"/>
+<fmt:setBundle var="wokobundle" basename="woko" scope="application" />
+
+<fmt:message bundle="${wokobundle}" var="pageTitle" key="woko.guest.home.pageTitle"/>
 <s:layout-render name="${layout.layoutPath}" layout="${layout}" pageTitle="${pageTitle}">
     <s:layout-component name="body">
-        <h1><fmt:message key="woko.guest.home.title"/> </h1>
+        <h1><fmt:message bundle="${wokobundle}" key="woko.guest.home.title"/> </h1>
         <p>
-            <fmt:message key="woko.guest.home.content"/>
+            <fmt:message bundle="${wokobundle}" key="woko.guest.home.content"/>
         </p>
     </s:layout-component>
 </s:layout-render>

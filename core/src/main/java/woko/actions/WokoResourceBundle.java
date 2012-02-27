@@ -1,20 +1,17 @@
 package woko.actions;
 
-import java.util.Enumeration;
-import java.util.Locale;
-import java.util.MissingResourceException;
-import java.util.ResourceBundle;
+import net.sourceforge.stripes.localization.DefaultLocalizationBundleFactory;
+
+import java.util.*;
 
 public class WokoResourceBundle extends ResourceBundle {
 
-    public static final String WOKO_RESOURCES_BUNDLE = "WokoResources";
-    public static final String STRIPES_MSG_RESOURCES_BUNDLE = "StripesMessageResources";
-    public static final String APP_RESOURCES_BUNDLE = "ApplicationResources";
-
     private Locale locale;
+    private List<String> bundleNames;
 
-    public WokoResourceBundle(Locale locale) {
+    public WokoResourceBundle(Locale locale, List<String> bundleNames) {
         this.locale = locale;
+        this.bundleNames = bundleNames;
     }
 
     @Override
@@ -23,20 +20,26 @@ public class WokoResourceBundle extends ResourceBundle {
     }
 
     @Override
-    protected Object handleGetObject(String fullKey) {
-        String result = getResult(locale, APP_RESOURCES_BUNDLE, fullKey);
-        if (result == null){
-            if (fullKey.startsWith("stripes."))
-                result = getResult(locale, STRIPES_MSG_RESOURCES_BUNDLE, fullKey);
-            else
-                result = getResult(locale, WOKO_RESOURCES_BUNDLE, fullKey);
+    protected Object handleGetObject(String key) {
+        Object result = null;
+        if (bundleNames != null) {
+            // Look in each configured bundle
+            for (String bundleName : bundleNames) {
+                if (bundleName != null) {
+                    result = getFromBundle(locale, bundleName, key);
+                    if (result != null) {
+                        break;
+                    }
+                }
+            }
         }
+
         return result;
     }
 
     // Just returns null if the bundle or the key is not found,
     // instead of throwing an exception.
-    private String getResult(Locale loc, String name, String key) {
+    private String getFromBundle(Locale loc, String name, String key) {
         String result = null;
         ResourceBundle bundle = ResourceBundle.getBundle(name, loc);
         if (bundle != null) {
