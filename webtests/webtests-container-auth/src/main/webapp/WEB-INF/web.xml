@@ -11,7 +11,7 @@
 
     <context-param>
         <param-name>javax.servlet.jsp.jstl.fmt.localizationContext</param-name>
-        <param-value>WokoResources</param-value>
+        <param-value>application</param-value>
     </context-param>
 
     <filter>
@@ -39,6 +39,10 @@
         <init-param>
             <param-name>LocalePicker.Locales</param-name>
             <param-value>en,fr</param-value>
+        </init-param>
+        <init-param>
+            <param-name>ResourceBundles.BaseNames</param-name>
+            <param-value>application,woko,stripes</param-value>
         </init-param>
         <init-param>
             <param-name>ExceptionHandler.Class</param-name>
