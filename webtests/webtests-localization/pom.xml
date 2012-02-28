@@ -17,13 +17,13 @@
         </dependency>
         <dependency>
             <groupId>com.rvkb</groupId>
-            <artifactId>woko-web-lithium</artifactId>
+            <artifactId>woko-builtin-auth-web</artifactId>
             <version>${project.version}</version>
             <type>war</type>
         </dependency>
         <dependency>
             <groupId>com.rvkb</groupId>
-            <artifactId>woko-builtin-auth-web</artifactId>
+            <artifactId>woko-web-lithium</artifactId>
             <version>${project.version}</version>
             <type>war</type>
         </dependency>
@@ -79,21 +79,21 @@
                 <artifactId>cargo-maven2-plugin</artifactId>
                 <configuration>
                     <wait>false</wait>
-                <container>
-                  <containerId>tomcat6x</containerId>
-                  <zipUrlInstaller>
-                    <url>http://apache.crihan.fr/dist/tomcat/tomcat-6/v6.0.35/bin/apache-tomcat-6.0.35.zip</url>
-                      <downloadDir>${project.build.directory}/downloads</downloadDir>
-                      <extractDir>${project.build.directory}/extracts</extractDir>
-                </zipUrlInstaller>
-                </container>
-                <configuration>
-                  <home>${project.build.directory}/tomcat6x/container</home>
-                  <properties>
-                      <cargo.servlet.port>9999</cargo.servlet.port>
-                      <cargo.container.timeout>600000</cargo.container.timeout>
-                  </properties>
-                </configuration>
+                    <container>
+                        <containerId>tomcat6x</containerId>
+                        <zipUrlInstaller>
+                            <url>http://apache.crihan.fr/dist/tomcat/tomcat-6/v6.0.35/bin/apache-tomcat-6.0.35.zip</url>
+                            <downloadDir>${project.build.directory}/downloads</downloadDir>
+                            <extractDir>${project.build.directory}/extracts</extractDir>
+                        </zipUrlInstaller>
+                    </container>
+                    <configuration>
+                        <home>${project.build.directory}/tomcat6x/container</home>
+                        <properties>
+                            <cargo.servlet.port>9999</cargo.servlet.port>
+                            <cargo.container.timeout>600000</cargo.container.timeout>
+                        </properties>
+                    </configuration>
                 </configuration>
                 <executions>
                     <execution>
@@ -113,5 +113,5 @@
                 </executions>
             </plugin>
         </plugins>
-    </build>    
+    </build>
 </project>
