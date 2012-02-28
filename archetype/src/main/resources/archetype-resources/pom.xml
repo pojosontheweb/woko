@@ -52,7 +52,7 @@
         <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
         <!-- Your specifics Woko dependencies -->
         <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
-        #if(${bootstrap-usage} == "yes")
+        #if(${bootstrap-usage} == "y")
         <!-- Bootstrap : UI from twitter -->
         <dependency>
             <groupId>com.rvkb</groupId>
@@ -69,7 +69,7 @@
         </dependency>
         #end
 
-        #if(${groovy-usage} == "yes")
+        #if(${groovy-usage} == "y")
         <!-- Groovy -->
         <dependency>
             <groupId>org.codehaus.groovy</groupId>

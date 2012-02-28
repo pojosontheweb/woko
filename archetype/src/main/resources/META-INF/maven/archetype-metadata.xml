@@ -25,11 +25,11 @@
 
     <requiredProperties>
         <requiredProperty key="bootstrap-usage">
-            <defaultValue>no</defaultValue>
+            <defaultValue>y</defaultValue>
         </requiredProperty>
 
         <requiredProperty key="groovy-usage">
-            <defaultValue>no</defaultValue>
+            <defaultValue>y</defaultValue>
         </requiredProperty>
     </requiredProperties>
 
