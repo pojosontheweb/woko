@@ -1,10 +1,7 @@
 <%@ page import="woko.actions.auth.builtin.WokoLogin" %>
 <%@ page import="woko.facets.builtin.WokoFacets" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="w" tagdir="/WEB-INF/tags/woko" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="s" uri="http://stripes.sourceforge.net/stripes.tld" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@include file="/WEB-INF/woko/jsp/taglibs.jsp"%>
 <w:facet facetName="<%=WokoFacets.layout%>"/>
 
 <fmt:message bundle="${wokoBundle}" var="pageTitle" key="woko.login.pageTitle"/>
