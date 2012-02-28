@@ -105,14 +105,12 @@ class FacetCodeGenerator {
 
     }
 
-    void generate() {
+    def generate() {
         if (dontGenerate) {
-            logger.log("Dry run, no files will be written. The source is simply printed here :")
-            logger.log(" ")
-            logger.log(" ")
+            logger.indentedLog("Dry run, no files will be written. The source is simply printed here :")
             generate(logger.writer)
-            logger.log(" ")
-            logger.log(" ")
+            logger.indentedLog(" ")
+            return null
         } else {
             def pc = AppUtils.extractPkgAndClazz(facetClassName)
             def srcFolderName = useGroovy ? "groovy" : "java"
@@ -120,12 +118,12 @@ class FacetCodeGenerator {
             String fullPkgPath = "$baseDir.absolutePath/src/main/$srcFolderName/$pkgPath"
             new File(fullPkgPath).mkdirs()
             String pathToFile = "$fullPkgPath/${pc["clazz"]}.$srcFolderName"
-            logger.log("Generating file $pathToFile")
+            logger.indentedLog("Generating file $pathToFile")
             new FileOutputStream(pathToFile).withWriter { w ->
                 generate(w)
             }
+            return pathToFile
         }
-        logger.log("Facet source generated.")
     }
 
     FacetCodeGenerator setDontGenerate(boolean dontGen) {

@@ -9,7 +9,6 @@ import static woko.tooling.utils.AppUtils.*
 import woko.facets.builtin.WokoFacets
 import woko.facets.FragmentFacet
 import woko.tooling.utils.PomHelper
-import woko.tooling.utils.AppUtils
 
 class Runner {
 
@@ -62,8 +61,12 @@ class Runner {
         Woko.createFacetDescriptorManager(computeFacetPackages(webXml))
     }
 
-    private void indentedLog(msg) {
-        logger.log("|  $msg")
+    private void iLog(msg) {
+        logger.indentedLog(msg)
+    }
+
+    private void log(msg) {
+        logger.log(msg)
     }
 
     Runner() {
@@ -71,20 +74,20 @@ class Runner {
             if (p1) {
                 def c = commands[p1]
                 if (c) {
-                    logger.log("Help for command '$p1' : $c.shortDesc")
-                    logger.log("\nUsage :\n")
-                    logger.log(" - woko $p1 $c.argSpec")
+                    log("Help for command '$p1' : $c.shortDesc")
+                    log("\nUsage :\n")
+                    log(" - woko $p1 $c.argSpec")
                     if (c.longHelp) {
-                        logger.log("\n$c.longHelp")
+                        log("\n$c.longHelp")
                     }
                 } else {
-                    logger.log("No such command : $p1")
+                    log("No such command : $p1")
                 }
             } else {
-                logger.log("Usage : woko <command> arg*")
-                logger.log("\nAvailable commands :\n")
+                log("Usage : woko <command> arg*")
+                log("\nAvailable commands :\n")
                 commands.each { k, v ->
-                    logger.log("  - $k $v.argSpec\t\t:\t\t$v.shortDesc")
+                    log("  - $k $v.argSpec\t\t:\t\t$v.shortDesc")
                 }
             }
         }.
@@ -94,7 +97,7 @@ class Runner {
                         case "facets":
                             def fdm = getFdm()
                             def descriptors = fdm.descriptors
-                            logger.log("${descriptors.size()} facets found : ")
+                            log("${descriptors.size()} facets found : ")
                             descriptors.sort { a,b ->
                                 a.name <=> b.name
                             }.each { FacetDescriptor d ->
@@ -111,7 +114,7 @@ class Runner {
                                     allRoles << role
                                 }
                             }
-                            logger.log("${allRoles.size()} role(s) used in faced keys :")
+                            log("${allRoles.size()} role(s) used in faced keys :")
                             allRoles.sort().each { r ->
                                 println "  $r"
                             }
@@ -127,6 +130,8 @@ class Runner {
                         case "facet" :
                             def fdm = getFdm()
 
+                            def genFiles = []
+
                             // ask for required params and assist the best we can !
 
                             def name = requiredAsk("Facet name")
@@ -134,51 +139,51 @@ class Runner {
                             def facetsWithSameName = fdm.descriptors.findAll { fd -> fd.name == name }
                             if (facetsWithSameName) {
                                 // facet override !
-                                indentedLog("Found ${facetsWithSameName.size()} facet(s) with the same name :")
+                                iLog("Found ${facetsWithSameName.size()} facet(s) with the same name :")
                                 facetsWithSameName.each { fd ->
-                                    indentedLog("  - $fd.name, $fd.profileId, $fd.targetObjectType.name, $fd.facetClass")
+                                    iLog("  - $fd.name, $fd.profileId, $fd.targetObjectType.name, $fd.facetClass")
                                 }
-                                indentedLog("You might be overriding a facet...")
+                                iLog("You might be overriding a facet...")
                             } else {
-                                indentedLog("No facet(s) with that name already, you are not overriding anything...")
+                                iLog("No facet(s) with that name already, you are not overriding anything...")
                             }
-                            indentedLog(" ") // line sep
+                            iLog(" ") // line sep
 
                             def role = askWithDefault("Role", "all")
                             // check if the facet already exists for that name and role
                             def facetsWithSameNameAndSameRole = facetsWithSameName.findAll { fd -> fd.profileId == role}
                             if (facetsWithSameNameAndSameRole) {
                                 // facet overide !
-                                indentedLog("Found ${facetsWithSameNameAndSameRole.size()} facet(s) with the same name and role :")
+                                iLog("Found ${facetsWithSameNameAndSameRole.size()} facet(s) with the same name and role :")
                                 facetsWithSameNameAndSameRole.each { fd ->
-                                    indentedLog("  - $fd.name, $fd.profileId, $fd.targetObjectType.name, $fd.facetClass")
+                                    iLog("  - $fd.name, $fd.profileId, $fd.targetObjectType.name, $fd.facetClass")
                                 }
-                                indentedLog("You are overriding an existing facet by type...")
+                                iLog("You are overriding an existing facet by type...")
                             } else {
                                 if (role=="all") {
-                                    indentedLog("You are assigning the facet to all users of the application...")
+                                    iLog("You are assigning the facet to all users of the application...")
                                 }
                             }
-                            indentedLog(" ") // line sep
+                            iLog(" ") // line sep
 
                             def targetType = askWithDefault("Target type", "java.lang.Object")
 
                             // check if a facet exists for the same type
                             def identicalFacets = facetsWithSameNameAndSameRole.findAll { fd -> fd.targetObjectType.name == targetType }
                             if (identicalFacets) {
-                                indentedLog("Found ${identicalFacets.size()} facet(s) with the exact same key :")
+                                iLog("Found ${identicalFacets.size()} facet(s) with the exact same key :")
                                 identicalFacets.each { fd ->
-                                    indentedLog("  - $fd.facetClass")
+                                    iLog("  - $fd.facetClass")
                                 }
-                                indentedLog("You are REPLACING a facet. Make sure the ordering of the facet packages is ok : ")
+                                iLog("You are REPLACING a facet. Make sure the ordering of the facet packages is ok : ")
                                 computeFacetPackages(webXml).each {
-                                    indentedLog("  - $it")
+                                    iLog("  - $it")
                                 }
-                                indentedLog(" ") // line sep
+                                iLog(" ") // line sep
                             } else {
                                 if (facetsWithSameName) {
-                                    indentedLog("You are overriding facet(s) by type...")
-                                    indentedLog(" ") // line sep
+                                    iLog("You are overriding facet(s) by type...")
+                                    iLog(" ") // line sep
                                 }
                             }
 
@@ -186,52 +191,62 @@ class Runner {
                             def baseClass = WokoFacets.getDefaultImpl(name)
                             def baseIntf = WokoFacets.getInterface(name)
                             if (baseClass && baseIntf) {
-                                indentedLog("Found interface and possible base class for your facet :")
-                                indentedLog("  - interface  : $baseIntf.name")
-                                indentedLog("  - base class : $baseClass.name")
+                                iLog("Found interface and possible base class for your facet :")
+                                iLog("  - interface  : $baseIntf.name")
+                                iLog("  - base class : $baseClass.name")
                             } else if (baseClass) {
-                                indentedLog("Found possible base class your facet : $baseClass.name")
+                                iLog("Found possible base class your facet : $baseClass.name")
                             } else if (baseIntf) {
-                                indentedLog("Found interface for your facet : $baseIntf.name")
+                                iLog("Found interface for your facet : $baseIntf.name")
                             }
                             if (baseClass) {
+                                iLog(" ") // line sep
                                 if (yesNoAsk("Do you want to use the base class")) {
-                                    "Your facet will extend $baseClass.name"
-                                } else {
-                                    baseClass = null
+                                    iLog("Your facet will extend $baseClass.name")
                                 }
+                            } else if (baseIntf) {
+                                iLog("Your facet will implement $baseIntf.name")
                             }
-                            if (baseIntf) {
-                                indentedLog("Your facet will implement $baseIntf.name")
-                            }
-                            indentedLog(" ") // line sep
+                            iLog(" ") // line sep
 
                             // check if the facet is a fragment facet and propose JSP fragment if any
                             def targetObjectSimpleType = extractPkgAndClazz(targetType).clazz
                             def fragmentPath = null
                             if (baseIntf && FragmentFacet.isAssignableFrom(baseIntf)) {
-                                indentedLog("The facet is a Fragment Facet...")
+                                iLog("The facet is a Fragment Facet...")
+                                iLog(" ") // line sep
                                 if (yesNoAsk("Do you want to generate JSP a fragment")) {
                                     fragmentPath = askWithDefault("Enter the JSP fragment path", "/WEB-INF/jsp/$role/${name}${targetObjectSimpleType}.jsp")
                                 } else {
                                     fragmentPath = null
                                 }
                             }
-                            // TODO check if the fragment path is one of Woko's : the idea being to
-                            // copy the original Woko fragment in the project...
-                            indentedLog(" ") // line sep
+                            // check if there's a base class, and an associated JSP fragment
+                            // by convention JSP fragments are stored as statics of the facet class
+                            def baseClassFragmentPath = null
+                            if (baseClass!=null) {
+                                try {
+                                    baseClassFragmentPath = baseClass.FRAGMENT_PATH
+                                } catch(Exception) {
+                                    iLog("No JSP fragment available from the base class, an empty JSP will be generated.")
+                                    iLog(" ") // line sep
+                                }
+                            }
 
-                            // ask for facet class name with default computed name
+                            // grab maven pom
                             File pomFile = new File(workingDir.absolutePath + File.separator + "pom.xml")
                             def pm = new PomHelper(pomFile)
+
+
+                            // ask for facet class name with default computed name
                             def basePackage = pm.model.groupId
 
                             def userFacetPgkList = computeUserFacetPackages(webXml)
                             if (userFacetPgkList.size() > 1) {
-                                logger.log('Several facets package found :')
+                                log('Several facets package found :')
                                 int i=1
                                 userFacetPgkList.each {
-                                    indentedLog("$i : $it")
+                                    iLog("$i : $it")
                                     i++
                                 }
                                 def facetsPkg = Integer.valueOf(askWithDefault("In which package would you like to create this facet ?", "1"))
@@ -255,42 +270,96 @@ class Runner {
                             def useGroovy = false
                             def groovyAvailable = new File("src/main/groovy").exists()
                             if (groovyAvailable) {
-                                indentedLog("Groovy seems to be available in your project...")
+                                iLog("Groovy seems to be available in your project...")
+                                iLog(" ") // line sep
                                 useGroovy = yesNoAsk("Do you want to write the facet in Groovy")
                             }
 
                             // show summary of all infos
-                            indentedLog(" ") // line sep
-                                    indentedLog(" --- Summary ---")
-                                    indentedLog(" ") // line sep
-                                    indentedLog(" Facet key         : $name, $role, $targetType")
-                                    indentedLog(" Facet class       : $facetClassName")
+                            iLog(" ") // line sep
+                            iLog(" --- Summary ---")
+                            iLog(" ") // line sep
+                            iLog(" Facet key         : $name, $role, $targetType")
+                            iLog(" Facet class       : $facetClassName")
                             if (baseIntf) {
-                                indentedLog(" Implements        : ${baseIntf.name}")
+                                iLog(" Implements        : ${baseIntf.name}")
                             }
                             if (baseClass) {
-                                indentedLog(" Extends           : ${baseClass.name}")
+                                iLog(" Extends           : ${baseClass.name}")
                             }
                             if (fragmentPath) {
-                                indentedLog(" JSP fragment path : $fragmentPath")
+                                iLog(" JSP fragment path : $fragmentPath")
                             }
                             def lang = useGroovy ? "Groovy" : "pure Java"
-                            indentedLog(" Facet written in  : $lang")
-                                    indentedLog(" Facet source dir  : $workingDir.absolutePath/src/main/${useGroovy ? "groovy" : "java"}")
-                                    indentedLog(" ") // line sep
+                            iLog(" Facet written in  : $lang")
+                                    iLog(" Facet source dir  : $workingDir.absolutePath/src/main/${useGroovy ? "groovy" : "java"}")
+                                    iLog(" ") // line sep
 
+
+                            boolean doIt = yesNoAsk("Is this OK ? Shall we generate all this (n to view gen sources only)")
 
                             // file generation
-                            def fcg = new FacetCodeGenerator(logger,workingDir,name,role,facetClassName).
+                            def facetFilePath = new FacetCodeGenerator(logger,workingDir,name,role,facetClassName).
                                     setTargetObjectType(targetType).
                                     setBaseClass(baseClass).
                                     setInterface(baseIntf).
                                     setFragmentPath(fragmentPath).
                                     setUseGroovy(useGroovy).
                                     setDontGenerate(
-                                            !yesNoAsk("Is this OK ? Shall we generate all this (n to view gen sources only)")
+                                            !doIt
                                     ).
                                     generate()
+                            if (facetFilePath) {
+                                genFiles << facetFilePath
+                            }
+
+                            // create the JSP fragment file if requested
+                            if (fragmentPath) {
+
+                                def genDefaultFragment = { w ->
+                                    w << "Default generated JSP fragment for facet \${$name}..."
+                                    iLog("Default JSP fragment generated.")
+                                }
+
+                                def output = logger.writer
+                                if (doIt) {
+                                    int i = fragmentPath.lastIndexOf("/")
+                                    def pathToJsp = fragmentPath
+                                    if (i!=-1) {
+                                        pathToJsp = fragmentPath[0..i-1]
+                                    }
+                                    pathToJsp = "$workingDir/src/main/webapp/$pathToJsp"
+                                    new File(pathToJsp).mkdirs()
+
+                                    def genFragmentFullPath = "$workingDir/src/main/webapp/$fragmentPath"
+                                    output = new FileOutputStream(genFragmentFullPath)
+                                    genFiles << genFragmentFullPath
+                                }
+
+                                if (baseClassFragmentPath) {
+                                    iLog("Using JSP fragment from base class : ")
+                                    iLog("  - $baseClassFragmentPath")
+                                    // look in target folder
+                                    def finalName = pm.model.build.finalName
+                                    String path = "$workingDir.absolutePath/target/$finalName$baseClassFragmentPath"
+                                    def f = new File(path)
+                                    if (!f.exists()) {
+                                        iLog("File $path not found : build the project first ?" ) // TODO better error handling
+                                        genDefaultFragment(output)
+                                    } else {
+                                        f.withReader { r -> output << r }
+                                        output.flush()
+                                        iLog("JSP fragment written")
+                                    }
+                                } else {
+                                    genDefaultFragment(output)
+                                }
+                            }
+
+                            log("${genFiles.size()} file(s) generated")
+                            genFiles.each {
+                                log("  - $it")
+                            }
 
                             break
                         default:
@@ -300,12 +369,12 @@ class Runner {
                 }.
                 addCommand("run", "run the application in a local tomcat container", "") {
                     "mvn package cargo:start".execute()
-                    logger.log("Application sarted : http://localhost:8080/<app_name>")
-                    logger.log("woko stop to terminate the server")
+                    log("Application sarted : http://localhost:8080/<app_name>")
+                    log("woko stop to terminate the server")
                 }.
                 addCommand("stop", "stop the local tomcat container", "") {
                     "mvn cargo:stop".execute()
-                    logger.log("Application stopped")
+                    log("Application stopped")
                 }
     }
 

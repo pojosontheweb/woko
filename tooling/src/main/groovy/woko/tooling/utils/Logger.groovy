@@ -15,8 +15,13 @@ class Logger {
     }
 
     void error(String error){
-        log("ERROR : $error\n")
+        log("ERROR : $error")
     }
+
+    void indentedLog(msg) {
+        log("|  $msg")
+    }
+
 
     void splashMsg(){
         def msg = """__       __     _  __
