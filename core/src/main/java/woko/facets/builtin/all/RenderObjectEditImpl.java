@@ -5,12 +5,14 @@ import woko.facets.BaseFragmentFacet;
 import woko.facets.builtin.RenderObject;
 import woko.facets.builtin.WokoFacets;
 
-@FacetKey(name= WokoFacets.renderObjectEdit, profileId="all")
+@FacetKey(name = WokoFacets.renderObjectEdit, profileId = "all")
 public class RenderObjectEditImpl extends BaseFragmentFacet implements RenderObject {
 
-  public String getPath() {
-    return "/WEB-INF/woko/jsp/all/renderObjectEdit.jsp";
-  }
+    public static final String FRAGMENT_PATH = "/WEB-INF/woko/jsp/all/renderObjectEdit.jsp";
+
+    public String getPath() {
+        return FRAGMENT_PATH;
+    }
 
 
 }

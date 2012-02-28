@@ -8,8 +8,10 @@ import woko.facets.builtin.WokoFacets;
 @FacetKey(name= WokoFacets.home, profileId="all")
 public class HomeImpl extends BaseForwardResolutionFacet implements Home {
 
-  public String getPath() {
-    return "/WEB-INF/woko/jsp/all/home.jsp";
-  }
+    public static final String FRAGMENT_PATH = "/WEB-INF/woko/jsp/all/home.jsp";
+
+    public String getPath() {
+        return FRAGMENT_PATH;
+    }
 
 }

@@ -5,12 +5,14 @@ import woko.facets.BaseFragmentFacet;
 import woko.facets.builtin.NavBar;
 import woko.facets.builtin.WokoFacets;
 
-@FacetKey(name= WokoFacets.navBar,profileId="all")
+@FacetKey(name = WokoFacets.navBar, profileId = "all")
 public class NavBarAll extends BaseFragmentFacet implements NavBar {
 
-  public String getPath() {
-    return "/WEB-INF/woko/jsp/all/navBar.jsp";
-  }
+    public static final String FRAGMENT_PATH = "/WEB-INF/woko/jsp/all/navBar.jsp";
+
+    public String getPath() {
+        return FRAGMENT_PATH;
+    }
 
 
 }

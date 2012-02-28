@@ -9,17 +9,19 @@ import woko.facets.builtin.WokoFacets;
 import java.util.Arrays;
 import java.util.List;
 
-@FacetKey(name= WokoFacets.studio, profileId="developer")
+@FacetKey(name = WokoFacets.studio, profileId = "developer")
 public class WokoStudio extends BaseForwardResolutionFacet {
 
-  public String getPath() {
-    return "/WEB-INF/woko/jsp/developer/studio.jsp";
-  }
+    public static final String FRAGMENT_PATH = "/WEB-INF/woko/jsp/developer/studio.jsp";
 
-  public List<FacetDescriptor> getFacetDescriptors() {
-    IFacetDescriptorManager fdm = getFacetContext().getWoko().getJFacets().getFacetRepository().getFacetDescriptorManager();
-    FacetDescriptor[] descriptors = fdm.getDescriptors();
-    return Arrays.asList(descriptors);
-  }
+    public String getPath() {
+        return FRAGMENT_PATH;
+    }
+
+    public List<FacetDescriptor> getFacetDescriptors() {
+        IFacetDescriptorManager fdm = getFacetContext().getWoko().getJFacets().getFacetRepository().getFacetDescriptorManager();
+        FacetDescriptor[] descriptors = fdm.getDescriptors();
+        return Arrays.asList(descriptors);
+    }
 
 }

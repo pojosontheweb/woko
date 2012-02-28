@@ -10,16 +10,16 @@ import woko.persistence.ObjectStore;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @FacetKey(name=WokoFacets.renderLinksEdit, profileId="all")
 public class RenderLinksEditImpl extends BaseFragmentFacet implements RenderLinks {
 
-  public String getPath() {
-    return "/WEB-INF/woko/jsp/all/renderLinksEdit.jsp";
-  }
+    public static final String FRAGMENT_PATH = "/WEB-INF/woko/jsp/all/renderLinksEdit.jsp";
+
+    public String getPath() {
+        return FRAGMENT_PATH;
+    }
 
   public List<Link> getLinks() {
     List<Link> links = new ArrayList<Link>();

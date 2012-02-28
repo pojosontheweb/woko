@@ -6,11 +6,13 @@ import woko.facets.builtin.WokoFacets;
 
 import java.util.Date;
 
-@FacetKey(name= WokoFacets.renderPropertyValueEdit, profileId="all", targetObjectType=Date.class)
+@FacetKey(name = WokoFacets.renderPropertyValueEdit, profileId = "all", targetObjectType = Date.class)
 public class RenderPropertyValueEditDate extends RenderPropertyValueImpl implements RenderPropertyValueEdit {
 
+    public static final String FRAGMENT_PATH = "/WEB-INF/woko/jsp/all/renderPropertyValueEditDate.jsp";
+
     public String getPath() {
-      return "/WEB-INF/woko/jsp/all/renderPropertyValueEditDate.jsp";
+        return FRAGMENT_PATH;
     }
 
 

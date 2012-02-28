@@ -5,12 +5,14 @@ import woko.facets.builtin.WokoFacets;
 
 import java.util.Date;
 
-@FacetKey(name= WokoFacets.renderPropertyValue, profileId="all", targetObjectType=Date.class)
+@FacetKey(name = WokoFacets.renderPropertyValue, profileId = "all", targetObjectType = Date.class)
 public class RenderPropertyValueDate extends RenderPropertyValueImpl {
 
-  public String getPath() {
-    return "/WEB-INF/woko/jsp/all/renderPropertyValueDate.jsp";
-  }
+    public static final String FRAGMENT_PATH = "/WEB-INF/woko/jsp/all/renderPropertyValueDate.jsp";
+
+    public String getPath() {
+        return FRAGMENT_PATH;
+    }
 
 
 }

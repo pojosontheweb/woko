@@ -8,17 +8,18 @@ import woko.facets.BaseFacet;
 import woko.facets.builtin.Edit;
 import woko.facets.builtin.WokoFacets;
 
-@FacetKey(name= WokoFacets.edit, profileId="developer")
+@FacetKey(name = WokoFacets.edit, profileId = "developer")
 public class EditImpl extends BaseFacet implements Edit {
 
-  public String getFragmentPath() {
-    return "/WEB-INF/woko/jsp/developer/edit.jsp";
-  }
+    public static final String FRAGMENT_PATH = "/WEB-INF/woko/jsp/developer/edit.jsp";
 
-  public Resolution getResolution(ActionBeanContext abc) {
-    return new ForwardResolution(getFragmentPath());
-  }
+    public String getFragmentPath() {
+        return FRAGMENT_PATH;
+    }
 
+    public Resolution getResolution(ActionBeanContext abc) {
+        return new ForwardResolution(getFragmentPath());
+    }
 
 
 }

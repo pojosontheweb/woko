@@ -13,7 +13,9 @@ import java.util.List;
 @FacetKey(name= WokoFacets.layout, profileId="all")
 public class LayoutAll extends BaseFacet implements Layout {
 
-  public String getAppTitle() {
+    public static final String FRAGMENT_PATH = "/WEB-INF/woko/jsp/all/layout.jsp";
+
+    public String getAppTitle() {
     return "Woko";
   }
 
@@ -26,7 +28,7 @@ public class LayoutAll extends BaseFacet implements Layout {
   }
 
   public String getLayoutPath() {
-    return "/WEB-INF/woko/jsp/all/layout.jsp";
+    return FRAGMENT_PATH;
   }
 
 

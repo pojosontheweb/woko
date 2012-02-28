@@ -13,51 +13,53 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@FacetKey(name=WokoFacets.renderLinks, profileId="all")
+@FacetKey(name = WokoFacets.renderLinks, profileId = "all")
 public class RenderLinksImpl extends BaseFragmentFacet implements RenderLinks {
 
-  public String getPath() {
-    return "/WEB-INF/woko/jsp/all/renderLinks.jsp";
-  }
+    public static final String FRAGMENT_PATH = "/WEB-INF/woko/jsp/all/renderLinks.jsp";
 
-  public List<Link> getLinks() {
-    List<Link> links = new ArrayList<Link>();
-    WokoFacetContext facetContext = getFacetContext();
-    Woko woko = getFacetContext().getWoko();
-    Object o = facetContext.getTargetObject();
-    Class<?> oc = o.getClass();
-    HttpServletRequest request = getRequest();
-    ObjectStore store = woko.getObjectStore();
-
-    // display edit link if object can be edited (use instanceof because could be a login required facet)
-    Object editFacet = woko.getFacet(WokoFacets.edit, request, o, oc);
-    if (editFacet instanceof Edit) {
-      String className = store.getClassMapping(oc);
-      String key = store.getKey(o);
-      if (key!=null) {
-        links.add(new Link(WokoFacets.edit + "/" + className + "/" + key, "Edit").setCssClass("edit"));
-      }
+    public String getPath() {
+        return FRAGMENT_PATH;
     }
 
-    Object deleteFacet = woko.getFacet(WokoFacets.delete, request, o, oc);
-    if (deleteFacet instanceof Delete) {
-      String className = store.getClassMapping(oc);
-      String key = store.getKey(o);
-      if (key!=null) {
-        links.add(new Link(WokoFacets.delete + "/" + className + "/" + key, "Delete").setCssClass("delete"));
-      }
-    }
+    public List<Link> getLinks() {
+        List<Link> links = new ArrayList<Link>();
+        WokoFacetContext facetContext = getFacetContext();
+        Woko woko = getFacetContext().getWoko();
+        Object o = facetContext.getTargetObject();
+        Class<?> oc = o.getClass();
+        HttpServletRequest request = getRequest();
+        ObjectStore store = woko.getObjectStore();
 
-    Object jsonFacet = woko.getFacet(WokoFacets.json, request, o, oc);
-    if (jsonFacet instanceof Json) {
-      String className = store.getClassMapping(oc);
-      String key = store.getKey(o);
-      if (key!=null) {
-        links.add(new Link(WokoFacets.json + "/" + className + "/" + key, "Json").setCssClass("json"));
-      }
-    }
+        // display edit link if object can be edited (use instanceof because could be a login required facet)
+        Object editFacet = woko.getFacet(WokoFacets.edit, request, o, oc);
+        if (editFacet instanceof Edit) {
+            String className = store.getClassMapping(oc);
+            String key = store.getKey(o);
+            if (key != null) {
+                links.add(new Link(WokoFacets.edit + "/" + className + "/" + key, "Edit").setCssClass("edit"));
+            }
+        }
 
-    return links;
-  }
+        Object deleteFacet = woko.getFacet(WokoFacets.delete, request, o, oc);
+        if (deleteFacet instanceof Delete) {
+            String className = store.getClassMapping(oc);
+            String key = store.getKey(o);
+            if (key != null) {
+                links.add(new Link(WokoFacets.delete + "/" + className + "/" + key, "Delete").setCssClass("delete"));
+            }
+        }
+
+        Object jsonFacet = woko.getFacet(WokoFacets.json, request, o, oc);
+        if (jsonFacet instanceof Json) {
+            String className = store.getClassMapping(oc);
+            String key = store.getKey(o);
+            if (key != null) {
+                links.add(new Link(WokoFacets.json + "/" + className + "/" + key, "Json").setCssClass("json"));
+            }
+        }
+
+        return links;
+    }
 
 }

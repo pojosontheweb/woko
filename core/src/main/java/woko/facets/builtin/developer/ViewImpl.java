@@ -11,18 +11,20 @@ import woko.facets.builtin.Json;
 import woko.facets.builtin.View;
 import woko.facets.builtin.WokoFacets;
 
-@FacetKey(name= WokoFacets.view, profileId="developer")
+@FacetKey(name = WokoFacets.view, profileId = "developer")
 public class ViewImpl extends BaseForwardRpcResolutionFacet implements View, IInstanceFacet {
 
-  public String getPath() {
-    return "/WEB-INF/woko/jsp/developer/view.jsp";
-  }
+    public static final String FRAGMENT_PATH = "/WEB-INF/woko/jsp/developer/view.jsp";
+
+    public String getPath() {
+        return FRAGMENT_PATH;
+    }
 
     @Override
     protected Resolution getRpcResolution(ActionBeanContext abc) {
         WokoFacetContext wokoFacetContext = getFacetContext();
-        Json json = (Json)wokoFacetContext.getWoko().getFacet(WokoFacets.json, wokoFacetContext.getRequest(), wokoFacetContext.getTargetObject());
-        return json==null ? null : json.getResolution(abc);
+        Json json = (Json) wokoFacetContext.getWoko().getFacet(WokoFacets.json, wokoFacetContext.getRequest(), wokoFacetContext.getTargetObject());
+        return json == null ? null : json.getResolution(abc);
     }
 
     @Override

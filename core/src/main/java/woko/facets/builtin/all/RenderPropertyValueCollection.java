@@ -5,12 +5,14 @@ import woko.facets.builtin.WokoFacets;
 
 import java.util.Collection;
 
-@FacetKey(name= WokoFacets.renderPropertyValue, profileId="all", targetObjectType=Collection.class)
+@FacetKey(name = WokoFacets.renderPropertyValue, profileId = "all", targetObjectType = Collection.class)
 public class RenderPropertyValueCollection extends RenderPropertyValueImpl {
 
-  public String getPath() {
-    return "/WEB-INF/woko/jsp/all/renderPropertyValueCollection.jsp";
-  }
+    public static final String FRAGMENT_PATH = "/WEB-INF/woko/jsp/all/renderPropertyValueCollection.jsp";
+
+    public String getPath() {
+        return FRAGMENT_PATH;
+    }
 
 
 }
