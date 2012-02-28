@@ -1,16 +1,15 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@include file="/WEB-INF/woko/jsp/taglibs.jsp"%>
+
 <%@ page import="woko.Woko" %>
 <%@ page import="woko.facets.builtin.WokoFacets" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="w" tagdir="/WEB-INF/tags/woko" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="s" uri="http://stripes.sourceforge.net/stripes.tld" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
 <c:set var="cp" value="${pageContext.request.contextPath}"/>
 <w:facet facetName="<%=WokoFacets.layout%>"/>
 <%
     Woko woko = Woko.getWoko(application);
 %>
-<fmt:message var="pageTitle" key="woko.devel.studio.pageTitle"/>
+<fmt:message bundle="${wokoBundle}" var="pageTitle" key="woko.devel.studio.pageTitle"/>
 <s:layout-render name="${layout.layoutPath}" layout="${layout}" pageTitle="${pageTitle}" bodyClass="claro">
 
     <s:layout-component name="customJs">
@@ -66,7 +65,7 @@
         </script>
         
         
-        <h1 class="page-header"><fmt:message key="woko.devel.studio.title"/></h1>
+        <h1 class="page-header"><fmt:message bundle="${wokoBundle}" key="woko.devel.studio.title"/></h1>
 
 
         <div class="tabbable">
@@ -80,12 +79,12 @@
 
                 <%-- Configuration tab --%>
                 <div class="tab-pane active" id="configuration">
-                    <h2><fmt:message key="woko.devel.studio.config.title"/> </h2>
+                    <h2><fmt:message bundle="${wokoBundle}" key="woko.devel.studio.config.title"/> </h2>
                     <ul>
-                        <li><fmt:message key="woko.devel.studio.config.objectStore"/> <strong><%=woko.getObjectStore().getClass().getName()%></strong></li>
-                        <li><fmt:message key="woko.devel.studio.config.userManager"/> <strong><%=woko.getUserManager().getClass().getName()%></strong></li>
-                        <li><fmt:message key="woko.devel.studio.config.fallbackRoles"/> <strong><%=woko.getFallbackRoles()%></strong></li>
-                        <li><fmt:message key="woko.devel.studio.config.userStrategy"/> <strong><%=woko.getUsernameResolutionStrategy()%></strong></li>
+                        <li><fmt:message bundle="${wokoBundle}" key="woko.devel.studio.config.objectStore"/> <strong><%=woko.getObjectStore().getClass().getName()%></strong></li>
+                        <li><fmt:message bundle="${wokoBundle}" key="woko.devel.studio.config.userManager"/> <strong><%=woko.getUserManager().getClass().getName()%></strong></li>
+                        <li><fmt:message bundle="${wokoBundle}" key="woko.devel.studio.config.fallbackRoles"/> <strong><%=woko.getFallbackRoles()%></strong></li>
+                        <li><fmt:message bundle="${wokoBundle}" key="woko.devel.studio.config.userStrategy"/> <strong><%=woko.getUsernameResolutionStrategy()%></strong></li>
                     </ul>
                 </div>
 
@@ -116,16 +115,16 @@
 
 
                 <div class="tab-pane" id="groovyShell">
-                    <h2><fmt:message key="woko.devel.studio.groovy.title"/> </h2>
+                    <h2><fmt:message bundle="${wokoBundle}" key="woko.devel.studio.groovy.title"/> </h2>
                     <ul>
-                        <li><strong><fmt:message key="woko.devel.studio.groovy.request"/> </strong> <fmt:message key="woko.devel.studio.groovy.requestType"/></li>
-                        <li><strong><fmt:message key="woko.devel.studio.groovy.woko"/></strong> <fmt:message key="woko.devel.studio.groovy.wokoType"/></li>
-                        <li><strong><fmt:message key="woko.devel.studio.groovy.logs"/></strong> <fmt:message key="woko.devel.studio.groovy.logsType"/></li>
+                        <li><strong><fmt:message bundle="${wokoBundle}" key="woko.devel.studio.groovy.request"/> </strong> <fmt:message bundle="${wokoBundle}" key="woko.devel.studio.groovy.requestType"/></li>
+                        <li><strong><fmt:message bundle="${wokoBundle}" key="woko.devel.studio.groovy.woko"/></strong> <fmt:message bundle="${wokoBundle}" key="woko.devel.studio.groovy.wokoType"/></li>
+                        <li><strong><fmt:message bundle="${wokoBundle}" key="woko.devel.studio.groovy.logs"/></strong> <fmt:message bundle="${wokoBundle}" key="woko.devel.studio.groovy.logsType"/></li>
                     </ul>
 
                     <div class="well execGroovy">
                         <fieldset>
-                            <legend><fmt:message key="woko.devel.studio.groovy.code"/></legend>
+                            <legend><fmt:message bundle="${wokoBundle}" key="woko.devel.studio.groovy.code"/></legend>
                             <div class="control-group">
                                 <textarea id="groovyCode" class="span9" placeholder="Type something…"></textarea>
                             </div>
@@ -136,7 +135,7 @@
                     </div>
 
                     <div>
-                        <h2><fmt:message key="woko.devel.studio.log.exec"/></h2>
+                        <h2><fmt:message bundle="${wokoBundle}" key="woko.devel.studio.log.exec"/></h2>
                         <div id="log"></div>
                     </div>
                     

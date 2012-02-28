@@ -11,7 +11,7 @@ public class LogoutImpl extends BaseResolutionFacet implements Logout {
 
   public Resolution getResolution(ActionBeanContext abc) {
     abc.getRequest().getSession().invalidate();
-    abc.getMessages().add(new LocalizableMessage("stripes.logout.success"));
+    abc.getMessages().add(new LocalizableMessage("woko.logout.success"));
     return new RedirectResolution("/home");
   }
 
