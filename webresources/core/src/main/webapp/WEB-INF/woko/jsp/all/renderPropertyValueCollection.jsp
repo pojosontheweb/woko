@@ -1,3 +1,6 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@include file="/WEB-INF/woko/jsp/taglibs.jsp"%>
+
 <%@ page import="woko.facets.builtin.RenderPropertyValue" %>
 <%@ page import="woko.util.Util" %>
 <%@ page import="woko.facets.WokoFacetContext" %>
@@ -5,8 +8,7 @@
 <%@ page import="java.util.Collection" %>
 <%@ page import="woko.Woko" %>
 <%@ page import="woko.facets.builtin.WokoFacets" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
 <%
     RenderPropertyValue renderPropertyValue = (RenderPropertyValue)request.getAttribute(WokoFacets.renderPropertyValue);
     WokoFacetContext fctx = (WokoFacetContext)renderPropertyValue.getFacetContext();

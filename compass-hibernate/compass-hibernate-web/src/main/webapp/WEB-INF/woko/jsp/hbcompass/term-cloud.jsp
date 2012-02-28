@@ -6,7 +6,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <w:facet facetName="<%=WokoFacets.layout%>"/>
 
-<fmt:message var="pageTitle" key="woko.devel.cloud.pageTitle"/>
+<fmt:message bundle="${wokoBundle}" var="pageTitle" key="woko.devel.cloud.pageTitle"/>
 <s:layout-render name="${layout.layoutPath}" layout="${layout}" pageTitle="${pageTitle}">
 
     <s:layout-component name="body">
@@ -29,7 +29,7 @@
             }
         </style>
 
-        <h1><fmt:message key="woko.devel.cloud.title"/></h1>
+        <h1><fmt:message bundle="${wokoBundle}" key="woko.devel.cloud.title"/></h1>
 
         <w:includeFacet facetName="termCloudFragment" targetObject="${termCloud.cloud}"/>
         

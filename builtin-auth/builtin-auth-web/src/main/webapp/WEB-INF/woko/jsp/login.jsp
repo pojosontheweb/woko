@@ -7,10 +7,10 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <w:facet facetName="<%=WokoFacets.layout%>"/>
 
-<fmt:message var="pageTitle" key="woko.login.pageTitle"/>
+<fmt:message bundle="${wokoBundle}" var="pageTitle" key="woko.login.pageTitle"/>
 <s:layout-render name="${layout.layoutPath}" layout="${layout}" pageTitle="${pageTitle}" skipLoginLink="true">
     <s:layout-component name="body">
-        <h1><fmt:message key="woko.login.title"/></h1>
+        <h1><fmt:message bundle="${wokoBundle}" key="woko.login.title"/></h1>
             <s:form beanclass="<%=WokoLogin.class%>">
                 <s:hidden name="targetUrl"/>
                     <div>

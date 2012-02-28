@@ -10,7 +10,7 @@ import woko.facets.builtin.WokoFacets;
 public class LoginImpl extends BaseResolutionFacet implements Login {
 
   public Resolution getResolution(ActionBeanContext abc) {
-    abc.getMessages().add(new LocalizableMessage("stripes.login.success"));
+    abc.getMessages().add(new LocalizableMessage("woko.login.success"));
     return new RedirectResolution("/home");
   }
 

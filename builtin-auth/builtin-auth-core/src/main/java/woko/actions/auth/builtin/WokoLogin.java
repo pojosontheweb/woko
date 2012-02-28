@@ -11,8 +11,8 @@ import woko.util.WLogger;
 public class WokoLogin extends BaseActionBean {
 
   private static final WLogger log = WLogger.getLogger(WokoLogin.class);
-  private static final String KEY_MSG_LOGIN_FAILED  = "stripes.login.failed";
-  private static final String KEY_MSG_LOGIN_SUCCESS  = "stripes.login.success";
+  private static final String KEY_MSG_LOGIN_FAILED  = "woko.login.failed";
+  private static final String KEY_MSG_LOGIN_SUCCESS  = "woko.login.success";
 
   public static final String SESSION_ATTR_CURRENT_USER = "__CURRENT_USER";
 
