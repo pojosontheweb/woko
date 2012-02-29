@@ -367,15 +367,20 @@ class Runner {
                                     invokeCommand(["help","create"])
                     }
                 }.
-                addCommand("run", "run the application in a local tomcat container", "") {
-                    "mvn package cargo:start".execute()
-                    log("Application sarted : http://localhost:8080/<app_name>")
-                    log("woko stop to terminate the server")
+                addCommand("start", "run the application in a local tomcat container", "") {
+                    exec("mvn package cargo:start -Dmaven.test.skip")
                 }.
-                addCommand("stop", "stop the local tomcat container", "") {
-                    "mvn cargo:stop".execute()
-                    log("Application stopped")
+                addCommand("build", "rebuilds the whole application", "") {
+                    exec("mvn clean install")
                 }
+    }
+
+    private void exec(String cmd) {
+        logger.indentedLog(" Running : $cmd")
+        Process p = cmd.execute()
+        p.in.eachLine { logger.indentedLog(it) }
+        p.waitFor()
+        logger.indentedLog(" Command executed, returned ${p.exitValue()}")
     }
 
     void invokeCommand(args) {
