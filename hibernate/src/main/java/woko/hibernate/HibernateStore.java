@@ -250,7 +250,10 @@ public class HibernateStore implements ObjectStore {
 
     public <RES> RES doInTxWithResult(TxCallbackWithResult<RES> callback) {
         Session session = getSessionFactory().getCurrentSession();
-        Transaction tx = session.beginTransaction();
+        Transaction tx = session.getTransaction();
+        if (tx==null || !tx.isActive()) {
+            tx = session.beginTransaction();
+        }
         try {
             RES res = callback.execute(this, session);
             tx.commit();
@@ -267,7 +270,10 @@ public class HibernateStore implements ObjectStore {
 
     public void doInTx(TxCallback callback) {
         Session session = getSessionFactory().getCurrentSession();
-        Transaction tx = session.beginTransaction();
+        Transaction tx = session.getTransaction();
+        if (tx==null || !tx.isActive()) {
+            tx = session.beginTransaction();
+        }
         try {
             callback.execute(this, session);
             tx.commit();
