@@ -1,4 +1,4 @@
-package woko.ext.usermanagement.hibernate;
+package woko.hibernate;
 
 import org.hibernate.Session;
 import woko.hibernate.HibernateStore;
