@@ -24,7 +24,7 @@
         <dependency>
             <groupId>org.codehaus.groovy</groupId>
             <artifactId>groovy-all</artifactId>
-            <version>1.7.0</version>
+            <version>${groovy.version}</version>
         </dependency>
         <!-- override the htmlunit version (jquery doesn't work otherwise) -->
         <dependency>

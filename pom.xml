@@ -58,6 +58,7 @@
     </modules>
     <properties>
         <stripes.version>1.5.5</stripes.version>
+        <groovy.version>1.7.4</groovy.version>
     </properties>
     <build>
         <plugins>
