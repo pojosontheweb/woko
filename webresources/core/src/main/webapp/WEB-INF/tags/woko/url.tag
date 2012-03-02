@@ -11,7 +11,7 @@
     if (object!=null) {
         url = LinkUtil.getUrl(Woko.getWoko(application), object, facetName);
     } else if (targetObjectClass!=null) {
-        url = Woko.getWoko(application).getObjectStore().getClassMapping(targetObjectClass);
+        url = facetName + "/" + Woko.getWoko(application).getObjectStore().getClassMapping(targetObjectClass);
     } else {
         throw new IllegalStateException("neither object nor targetObjectClass provided !");
     }
