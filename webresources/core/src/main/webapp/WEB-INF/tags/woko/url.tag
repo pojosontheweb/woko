@@ -13,7 +13,7 @@
     } else if (targetObjectClass!=null) {
         url = Woko.getWoko(application).getObjectStore().getClassMapping(targetObjectClass);
     } else {
-        throw new IllegalStateException("neither object nor targetObjectClass provided !")
+        throw new IllegalStateException("neither object nor targetObjectClass provided !");
     }
     String path = request.getContextPath();
 %>
