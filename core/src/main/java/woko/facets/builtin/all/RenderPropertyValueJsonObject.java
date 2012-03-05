@@ -13,37 +13,16 @@ import woko.persistence.ObjectStore;
 
 import javax.servlet.http.HttpServletRequest;
 
-@FacetKey(name= WokoFacets.renderPropertyValueJson, profileId="all")
+@FacetKey(name = WokoFacets.renderPropertyValueJson, profileId = "all")
 public class RenderPropertyValueJsonObject extends BaseFacet implements RenderPropertyValueJson {
 
-  public Object propertyToJson(HttpServletRequest request, Object propertyValue) {
-    try {
-      if (propertyValue==null) {
-        return null;
-      }
-      JSONObject res = new JSONObject();
-      res.put("_object", true);
-      Class c = propertyValue.getClass();
-      WokoFacetContext facetContext = getFacetContext();
-      Woko woko = facetContext.getWoko();
-      ObjectStore os = woko.getObjectStore();
-      String className = os.getClassMapping(c);
-      res.put("_className", className);
-      String key = os.getKey(propertyValue);
-      if (key!=null) {
-        res.put("_persistent", true);
-        res.put("_key", key);
-      }
-
-      RenderTitle renderTitle = (RenderTitle)woko.getFacet(WokoFacets.renderTitle, request, propertyValue);
-      if (renderTitle!=null) {
-        res.put("_title", renderTitle.getTitle());
-      }
-
-      return res;
-    } catch (JSONException e) {
-      throw new RuntimeException(e);
+    public Object propertyToJson(HttpServletRequest request, Object propertyValue) {
+        if (propertyValue == null) {
+            return null;
+        }
+        JSONObject res = new JSONObject();
+        RenderObjectJsonImpl.addWokoMetadata(getFacetContext().getWoko(), res, propertyValue, request);
+        return res;
     }
-  }
 
 }

@@ -46,23 +46,34 @@ public class RenderObjectJsonImpl extends BaseFacet implements RenderObjectJson 
             }
 
             // add object metadata
-            JSONObject metadata = new JSONObject();
-            ObjectStore os = woko.getObjectStore();
-            String className = os.getClassMapping(o.getClass());
-            metadata.put("className", className);
-            String key = os.getKey(o);
-            if (key != null) {
-                metadata.put("key", key);
-            }
-            RenderTitle renderTitle = (RenderTitle) woko.getFacet(WokoFacets.renderTitle, request, o);
-            if (renderTitle != null) {
-                metadata.put("_title", renderTitle.getTitle());
-            }
-            result.put("_wokoInfo", metadata);
+            addWokoMetadata(woko, result, o, request);
             return result;
         } catch (JSONException e) {
             logger.error("Unable to convert object to JSON : " + o);
             throw new RuntimeException(e);
+        }
+    }
+
+    public static void addWokoMetadata(Woko woko, JSONObject json, Object obj, HttpServletRequest request) {
+        if (obj!=null) {
+            try {
+                JSONObject metadata = new JSONObject();
+                ObjectStore os = woko.getObjectStore();
+                String className = os.getClassMapping(obj.getClass());
+                metadata.put("className", className);
+                String key = os.getKey(obj);
+                if (key != null) {
+                    metadata.put("key", key);
+                }
+                RenderTitle renderTitle = (RenderTitle) woko.getFacet(WokoFacets.renderTitle, request, obj);
+                if (renderTitle != null) {
+                    metadata.put("_title", renderTitle.getTitle());
+                }
+                json.put("_wokoInfo", metadata);
+            } catch(JSONException e) {
+                logger.error("Unable to add metadata to JSON : " + json + " for object " + obj);
+                throw new RuntimeException(e);
+            }
         }
     }
 
