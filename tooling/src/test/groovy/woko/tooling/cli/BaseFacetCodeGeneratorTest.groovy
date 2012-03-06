@@ -24,7 +24,7 @@ abstract class BaseFacetCodeGeneratorTest {
     }
 
     @Test
-    void testGroovyFacetNoSupertypesNoFragmentNoTargetType() {
+    void testFacetNoSupertypesNoFragmentNoTargetType() {
         assertGeneratedText(
             new FacetCodeGenerator(null, new File(""), "myfacet", "myrole", "com.xyz.MyFacetClass"),
             getExpectedNoSupertypesNoFragmentNoTargetType()
@@ -34,7 +34,7 @@ abstract class BaseFacetCodeGeneratorTest {
     protected abstract String getExpectedNoSupertypesNoFragmentNoTargetType();
 
     @Test
-    void testGroovyFacetNoSupertypesNoFragment() {
+    void testFacetNoSupertypesNoFragment() {
         assertGeneratedText(
             new FacetCodeGenerator(null, new File(""), "myfacet", "myrole", "com.xyz.MyFacetClass").
                 setTargetObjectType("com.xyz.MyPojo"),
@@ -45,7 +45,7 @@ abstract class BaseFacetCodeGeneratorTest {
     protected abstract String getExpectedNoSupertypesNoFragment();
 
     @Test
-    void testGroovyFacetBaseClassNoFragment() {
+    void testFacetBaseClassNoFragment() {
         assertGeneratedText(
             new FacetCodeGenerator(null, new File(""), "myfacet", "myrole", "com.xyz.MyFacetClass").
                 setTargetObjectType("com.xyz.MyPojo").
@@ -56,7 +56,7 @@ abstract class BaseFacetCodeGeneratorTest {
     protected abstract String getExpectedBaseClassNoFragment();
 
     @Test
-    void testGroovyFacetBaseClassFragment() {
+    void testFacetBaseClassFragment() {
         assertGeneratedText(
             new FacetCodeGenerator(null, new File(""), "myfacet", "myrole", "com.xyz.MyFacetClass").
                 setTargetObjectType("com.xyz.MyPojo").
@@ -69,7 +69,7 @@ abstract class BaseFacetCodeGeneratorTest {
     protected abstract String getExpectedBaseClassFragment()
 
     @Test
-    void testGroovyFacetInterfaceFragment() {
+    void testFacetInterfaceFragment() {
         assertGeneratedText(
             new FacetCodeGenerator(null, new File(""), "myfacet", "myrole", "com.xyz.MyFacetClass").
                 setTargetObjectType("com.xyz.MyPojo").
@@ -80,6 +80,5 @@ abstract class BaseFacetCodeGeneratorTest {
     }
 
     protected abstract String getExpectedInterfaceFragment()
-
 
 }
