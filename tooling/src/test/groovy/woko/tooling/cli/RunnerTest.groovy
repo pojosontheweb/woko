@@ -44,6 +44,7 @@ Available commands :
   - list facets|roles		:		list facets or roles
   - create facet|entity		:		create project elements
   - start 		:		run the application in a local tomcat container
+  - stop 		:		stop the local tomcat container (in case started in background process)
   - build 		:		rebuilds the whole application
   - help [command_name]		:		display help about specified command
 

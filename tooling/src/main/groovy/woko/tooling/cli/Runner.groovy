@@ -83,6 +83,16 @@ class Runner {
                     "",
                     "mvn package cargo:start -Dmaven.test.skip"
             ),
+          new ProcessCmd(
+                  this,
+                  workingDir,
+                  logger,
+                  "stop",
+                  "stop the local tomcat container (in case started in background process)",
+                  "",
+                  "",
+                  "mvn cargo:stop"
+          ),
             new ProcessCmd(
                     this,
                     workingDir,
