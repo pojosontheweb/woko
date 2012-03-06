@@ -118,7 +118,13 @@ you want to create :
                     iLog("The facet is a Fragment Facet...")
                     iLog(" ") // line sep
                     if (yesNoAsk("Do you want to generate JSP a fragment")) {
-                        fragmentPath = askWithDefault("Enter the JSP fragment path", "/WEB-INF/jsp/$role/${name}${targetObjectSimpleType}.jsp")
+                        String proposedFragmentPath = "/WEB-INF/jsp/$role/${name}" // ${targetObjectSimpleType}.jsp"
+                        if (targetObjectSimpleType != "Object") {
+                            proposedFragmentPath += targetObjectSimpleType
+                        }
+                        String capRole = capitalize(role)
+                        proposedFragmentPath += capRole + ".jsp"
+                        fragmentPath = askWithDefault("Enter the JSP fragment path", proposedFragmentPath)
                     } else {
                         fragmentPath = null
                     }
@@ -156,9 +162,14 @@ you want to create :
                     basePackage = simpleAsk("facets pakage ?")
                 }
 
-                def capName = name[0].toUpperCase() + name[1..-1]
-                def facetClassName = askWithDefault("Specify the facet class name",
-                        "${basePackage}.${role}.${capName}${targetObjectSimpleType}Impl")
+                def capName = capitalize(name)
+                String proposedFacetClassName = "${basePackage}.${role}.${capName}"
+                if (targetObjectSimpleType != "Object") {
+                    proposedFacetClassName += targetObjectSimpleType
+                }
+                def capRole = capitalize(role)
+                proposedFacetClassName += capRole
+                def facetClassName = askWithDefault("Specify the facet class name", proposedFacetClassName)
 
                 // do we generate a Groovy or a Java class ?
                 // check if we have Groovy available in the project

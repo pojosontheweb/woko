@@ -98,6 +98,13 @@ abstract class Command {
         return getPomHelper().model.groupId
     }
 
+    protected String capitalize(String str) {
+        if (!str) {
+            return str
+        }
+        return str[0].toUpperCase() + str[1..-1]
+    }
+
     abstract void execute(List<String> args)
 
 }

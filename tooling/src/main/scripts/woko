@@ -19,7 +19,7 @@ else
         mvn archetype:generate -DarchetypeArtifactId=woko-archetype -DarchetypeGroupId=com.rvkb -q
     else
         echo "ERROR : No pom file found in current directory. "
-        read -p "Do you want to init the project ? [N]" answer
+        read -p "Do you want to init the project ? [n]" answer
         if [ "$answer" == "y" ]
         then
             echo "Initializing project"
