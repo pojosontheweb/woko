@@ -13,13 +13,19 @@ class ProcessCmd extends Command {
         this.commandLine = commandLine
     }
 
+    boolean isWindows() {
+        String os = System.getProperty("os.name").toLowerCase()
+		return (os.indexOf("win") >= 0)
+    }
+
     @Override
     void execute(List<String> args) {
-        logger.indentedLog(" Launching process : $commandLine")
-        Process p = commandLine.execute()
+        String cmd = windows ?  "cmd /c $commandLine" : commandLine
+        logger.indentedLog(" Launching process : $cmd")
+        Process p = cmd.execute()
         p.in.eachLine { logger.indentedLog(it) }
         p.waitFor()
-        logger.indentedLog(" Process terminated, returned ${p.exitValue()}")
+        logger.indentedLog(" Process terminated for $name, returned ${p.exitValue()}")
     }
 
 

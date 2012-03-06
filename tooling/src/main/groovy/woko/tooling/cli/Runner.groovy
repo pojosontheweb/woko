@@ -142,6 +142,8 @@ class Runner {
         Writer out = new OutputStreamWriter(System.out)
         try {
             new Runner(new Logger(out), new File(currentDir)).run(args)
+        } catch(Exception e) {
+            e.printStackTrace()
         } finally {
             out.flush()
             out.close()

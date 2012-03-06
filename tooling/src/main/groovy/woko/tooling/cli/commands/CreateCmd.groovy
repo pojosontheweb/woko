@@ -19,7 +19,7 @@ class CreateCmd extends Command {
                 "create project elements",
                 "facet|entity",
                 """Create new elements (facets, entities, etc.) in your Woko project.
-Basic usage involves one argument, depending on the type of element
+Usage involves one argument, depending on the type of element
 you want to create :
   * facet    : allows for easy creation of facets and associated views if any.
   * entity   : create persistent POJOs and associated default facets.""")

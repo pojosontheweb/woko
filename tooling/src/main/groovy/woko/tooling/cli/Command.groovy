@@ -95,7 +95,7 @@ abstract class Command {
     }
 
     protected String getGroupId() {
-        return pomHelper.model.groupId
+        return getPomHelper().model.groupId
     }
 
     abstract void execute(List<String> args)
