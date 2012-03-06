@@ -8,7 +8,12 @@ import static junit.framework.Assert.*
 class RunnerTest {
 
     private String getTestAppDir() {
-        System.getProperty("user.dir") + "/webtests/webtests-container-auth" // assume we run test from top level woko2 folder
+        String woko2dir = System.getProperty("user.dir")
+        if (woko2dir.endsWith("tooling")) {
+            woko2dir = woko2dir[0..woko2dir.length()-"/tooling".length()]
+        }
+        println "*** $woko2dir"
+        return woko2dir + "/webtests/webtests-container-auth" // assume we run test from top level woko2 folder
     }
 
     def execCommand(args, workingDir) {
@@ -75,7 +80,6 @@ The command accepts one argument that can be  :
 """)
     }
 
-    @Ignore
     @Test
     void testListFacets() {
         assertCommandResult(["list", "facets"], """__       __     _  __
@@ -127,7 +131,6 @@ The command accepts one argument that can be  :
 """)
     }
 
-    @Ignore
     @Test
     void testListRoles() {
         assertCommandResult(["list", "roles"], """__       __     _  __

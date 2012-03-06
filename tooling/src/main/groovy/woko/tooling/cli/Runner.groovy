@@ -81,7 +81,18 @@ class Runner {
                     "",
                     "",
                     "mvn package cargo:start -Dmaven.test.skip"
+            ),
+            new ProcessCmd(
+                    this,
+                    workingDir,
+                    logger,
+                    "build",
+                    "rebuilds the whole application",
+                    "",
+                    "",
+                    "mvn clean install"
             )
+
         ])
     }
 
@@ -123,9 +134,17 @@ class Runner {
     }
 
     public static void main(String[] args) {
-        System.out.withWriter { w ->
-            new Runner(new Logger(w)).run(args)
+        String currentDir = System.getProperty("user.dir")
+        if (!currentDir) {
+            throw new IllegalStateException("Cannot determine current dir (user.dir sys prop not found)")
         }
-    }
+        Writer out = new OutputStreamWriter(System.out)
+        try {
+            new Runner(new Logger(out), new File(currentDir)).run(args)
+        } finally {
+            out.flush()
+            out.close()
+        }
+   }
 
 }
