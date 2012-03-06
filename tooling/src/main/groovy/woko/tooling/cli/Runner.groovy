@@ -63,7 +63,7 @@ class Runner {
                 log("  - $k $v.argSpec\t\t:\t\t$v.shortDesc")
             }
             log("  - help [command_name]\t\t:\t\tdisplay help about specified command")
-            log(" ")
+            log("")
         }
     }
 
