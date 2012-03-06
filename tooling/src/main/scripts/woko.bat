@@ -1,6 +1,6 @@
 @echo off 
 if exist pom.xml (
-    mvn exec:java -Dexec.mainClass="woko.tooling.cli.Runner" -Dexec.classpathScope=runtime -Dexec.args="%1 %2 %3 %4 %5"
+    mvn exec:java -Dexec.mainClass="woko.tooling.cli.Runner" -Dexec.classpathScope=runtime -Dexec.args="%1 %2 %3 %4 %5" -q
 ) else (
     echo __       __     _  __
     echo \ \  _  / /___ ^| ^|/ / ___
