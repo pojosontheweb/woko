@@ -11,6 +11,8 @@ import java.util.ResourceBundle;
 
 public class WokoLocalizationBundleFactory implements LocalizationBundleFactory {
 
+    private static final String[] DEFAULT_BUNDLES = {"application","woko","stripes"};
+
     public static final String RESOURCE_BUNDLES_BASE_NAMES = "ResourceBundles.BaseNames";
     private String[] bundles;
 
@@ -25,7 +27,11 @@ public class WokoLocalizationBundleFactory implements LocalizationBundleFactory 
     public void init(Configuration config) {
         String bundleNames = config.getBootstrapPropertyResolver()
                 .getProperty(RESOURCE_BUNDLES_BASE_NAMES);
-        bundles = StringUtil.standardSplit(bundleNames);
+        if (bundleNames==null) {
+            bundles = DEFAULT_BUNDLES;
+        } else {
+            bundles = StringUtil.standardSplit(bundleNames);
+        }
     }
 
     public List<String> getBundleNames() {

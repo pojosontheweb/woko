@@ -50,9 +50,12 @@
             var cli = new woko.rpc.Client("/woko-webtests");
 
             var mobyDick = {
-                _id: 1234,
-                _className: "MyBook",
-                name: "Moby Dick"
+                _wokoInfo: {
+                    className: "MyBook",
+                    key: 1234
+                },
+                name: "Moby Dick",
+                _id: 1234
             };
 
             cli.saveObject({

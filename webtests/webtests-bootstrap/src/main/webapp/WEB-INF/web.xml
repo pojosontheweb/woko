@@ -41,10 +41,6 @@
             <param-value>en,fr</param-value>
         </init-param>
         <init-param>
-            <param-name>ResourceBundles.BaseNames</param-name>
-            <param-value>application,woko,stripes</param-value>
-        </init-param>
-        <init-param>
             <param-name>ExceptionHandler.Class</param-name>
             <param-value>net.sourceforge.stripes.exception.DelegatingExceptionHandler</param-value>
         </init-param>

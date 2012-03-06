@@ -29,7 +29,7 @@ public class Woko {
   public static final String ROLE_ALL = "all";
   public static final String ROLE_GUEST = "guest";
 
-  protected static final WLogger logger = WLogger.getLogger(Woko.class);
+  public static final WLogger logger = WLogger.getLogger(Woko.class);
 
   public static final String CTX_KEY = "woko";
 

@@ -15,11 +15,12 @@
     ObjectStore os = woko.getObjectStore();
     String propertyName = renderPropertyName.getPropertyName();
     Object owningObject = fctx.getTargetObject();
-    String objectKey = "object." + propertyName;
     String propertyLabel = propertyName;
     String propertyClassName = os.getClassMapping(Util.getPropertyType(owningObject.getClass(), propertyName));
     String labelClass = "control-label wokoPropertyName " + propertyClassName + "-" + propertyName;
+    String label = os.getClassMapping(owningObject.getClass()) + "." + propertyName;
+
 %>
-<s:label for="<%=objectKey%>" class="<%=labelClass%>"><%=propertyLabel%></s:label>
+<s:label for="<%=label%>" class="<%=labelClass%>"><%=propertyLabel%></s:label>
 
 

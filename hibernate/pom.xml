@@ -18,7 +18,7 @@
       <dependency>
           <groupId>org.codehaus.groovy</groupId>
           <artifactId>groovy</artifactId>
-          <version>1.7.4</version>
+          <version>${groovy.version}</version>
         <scope>test</scope>
       </dependency>
         <dependency>

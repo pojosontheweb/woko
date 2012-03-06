@@ -6,6 +6,7 @@ import net.sourceforge.stripes.validation.LocalizableError;
 import net.sourceforge.stripes.util.Log;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 public abstract class LoginActionBean<U, C extends ActionBeanContext> implements ActionBean, AuthConstants {
 
@@ -81,6 +82,7 @@ public abstract class LoginActionBean<U, C extends ActionBeanContext> implements
             // authentication failed, add messages to context, and redirect to login
             log.warn("Authentication failed for user '", username, "', redirecting to login form again");
             getContext().getValidationErrors().addGlobalError(new LocalizableError(KEY_MSG_LOGIN_FAILED));
+            getContext().getResponse().setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return displayForm();
         }
     }

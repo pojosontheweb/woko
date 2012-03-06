@@ -1,9 +1,5 @@
 package woko.tooling.utils
 
-import org.apache.velocity.Template
-import org.apache.velocity.VelocityContext
-import org.apache.velocity.app.VelocityEngine
-
 class AppUtils {
 
     static String simpleAsk(String question){
@@ -36,26 +32,6 @@ class AppUtils {
         return response?.toLowerCase() != 'n'
     }
 
-    static generateTemplate(def props, String template, Writer writer){
-        // Init velocity engine
-        VelocityEngine ve = new VelocityEngine()
-        Properties vProperties = new Properties()
-        vProperties.load(VelocityEngine.class.getResourceAsStream('/velocity.properties'))
-        ve.init(vProperties)
-
-        // Grab template
-        Template pomTemplate = ve.getTemplate("/templates/$template"+".vm")
-        VelocityContext ctx = new VelocityContext()
-        props.entrySet().each {
-            ctx.put(it.key, it.value)
-        }
-
-        // Generate the file
-        pomTemplate.merge(ctx, writer)
-        writer.flush()
-        writer.close()
-    }
-
     static def extractPkgAndClazz(String fqcn) {
         int i = fqcn.lastIndexOf(".")
         if (i!=-1) {
@@ -63,9 +39,5 @@ class AppUtils {
         }
         return [pkg:'',clazz:fqcn]
     }
-
-
-
-
 
 }

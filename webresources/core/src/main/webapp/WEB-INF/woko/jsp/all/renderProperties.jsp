@@ -22,21 +22,28 @@
         <tbody>
         <%
             for (String pName : propertyNames) {
-                Object pVal = propertyValues.get(pName);
+                if (Util.hasProperty(owningObject, pName)) {
 
-                RenderPropertyName renderPropertyName =
-                    (RenderPropertyName)woko.getFacet(WokoFacets.renderPropertyName, request, owningObject, owningObject.getClass(), true);
-                renderPropertyName.setPropertyName(pName);
-                String pNameFragmentPath = renderPropertyName.getFragmentPath(request);
+                    Object pVal = propertyValues.get(pName);
 
-                RenderPropertyValue renderPropertyValue = Util.getRenderPropValueFacet(woko, request, owningObject, pName, pVal);
-                String pValFragmentPath = renderPropertyValue.getFragmentPath(request);
+                    RenderPropertyName renderPropertyName =
+                        (RenderPropertyName)woko.getFacet(WokoFacets.renderPropertyName, request, owningObject, owningObject.getClass(), true);
+                    renderPropertyName.setPropertyName(pName);
+                    String pNameFragmentPath = renderPropertyName.getFragmentPath(request);
+
+                    RenderPropertyValue renderPropertyValue = Util.getRenderPropValueFacet(woko, request, owningObject, pName, pVal);
+                    String pValFragmentPath = renderPropertyValue.getFragmentPath(request);
         %>
         <tr>
             <th><jsp:include page="<%=pNameFragmentPath%>"/></th>
             <td><jsp:include page="<%=pValFragmentPath%>"/></td>
         </tr>
         <%
+                } else {
+                    Woko.logger.warn("renderProperties facet " + renderProperties +
+                      " returned a non existing property : " +
+                      owningObject.getClass().getName() + "." + pName);
+                }
             }
         %>
         </tbody>

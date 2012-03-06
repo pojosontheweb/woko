@@ -17,7 +17,8 @@
         <script type="text/javascript" src="${cp}/woko/js/woko.jquery.js"></script>
         <script type="text/javascript" src="${cp}/woko/js/woko.rpc.js"></script>
 
-        <script type="text/javascript" src="${cp}/plugins/dataTables/jquery.dataTables.js"></script>
+        <script type="text/javascript" src="${cp}/plugins/dataTables/jquery.dataTables.min.js"></script>
+        <script type="text/javascript" src="${cp}/plugins/dataTables/DT_bootstrap.js"></script>
     </s:layout-component>
 
     <s:layout-component name="customCss">
