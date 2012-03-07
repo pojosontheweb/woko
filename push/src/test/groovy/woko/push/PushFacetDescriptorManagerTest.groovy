@@ -101,6 +101,12 @@ class My3 {
         assertFacetClass(push, "foo.bar.My3", "my", "all")
     }
 
+    @Test
+    void testReloadNoSources() {
+        def push = createPush().reload([])
+        assertDescriptorCount(push, 1)
+        assertFacetClass(push, "woko.push.testfacets.MyFacet", "my", "all")
+    }
 
 
 }

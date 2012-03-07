@@ -80,13 +80,13 @@ server restarts when you change facet code.
                 int index = 0
                 facetSources.each { k,v ->
                     iLog("  - $k")
-                    httpParams["facet.sources[$index]", v]
+                    httpParams["facet.sources[$index]"] = v
                     index++
                 }
                 if (yesNoAsk("Shall we push this")) {
                     // convert to woko-enabled params for the push facet
 
-                    AppHttpClient c = new AppHttpClient(url)
+                    AppHttpClient c = new AppHttpClient(logger, url, pomHelper)
                     c.doWithLogin(username, password) {
                         c.post("/push", httpParams) { String resp ->
                             log("Push result :")

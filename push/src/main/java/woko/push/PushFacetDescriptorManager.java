@@ -3,7 +3,6 @@ package woko.push;
 import groovy.lang.GroovyClassLoader;
 import net.sourceforge.jfacets.IFacetDescriptorManager;
 import net.sourceforge.jfacets.FacetDescriptor;
-import net.sourceforge.jfacets.annotations.DuplicatedKeyException;
 import net.sourceforge.jfacets.annotations.FacetKey;
 import net.sourceforge.jfacets.annotations.FacetKeyList;
 import org.codehaus.groovy.control.CompilationFailedException;
@@ -101,7 +100,6 @@ public class PushFacetDescriptorManager implements IFacetDescriptorManager {
         pushedDescriptors = reloadedDescriptors;
         return this;
     }
-
 
     private List<FacetDescriptor> createDescriptors(Class<?> facetClass) {
         List<FacetDescriptor> result = new ArrayList<FacetDescriptor>();
