@@ -1,5 +1,6 @@
 package woko.facets.builtin.push;
 
+import net.sourceforge.jfacets.FacetDescriptor;
 import net.sourceforge.jfacets.IFacetDescriptorManager;
 import net.sourceforge.jfacets.annotations.FacetKey;
 import woko.Woko;
@@ -8,6 +9,8 @@ import net.sourceforge.stripes.action.Resolution;
 import net.sourceforge.stripes.action.ActionBeanContext;
 import net.sourceforge.stripes.action.StreamingResolution;
 import woko.push.PushFacetDescriptorManager;
+import woko.push.PushResult;
+import woko.push.PushedSourceResult;
 import woko.util.WLogger;
 
 import javax.servlet.http.HttpServletRequest;
@@ -25,13 +28,9 @@ public class PushFacet extends BaseResolutionFacet {
         return sources;
     }
 
-    public void setSources(List<String> sources) {
-        this.sources = sources;
-    }
-
     public Resolution getResolution(ActionBeanContext abc) {
         StringBuilder sb = new StringBuilder();
-        if (sources!=null) {
+        if (sources.size()>0) {
             Woko woko = getFacetContext().getWoko();
             IFacetDescriptorManager fdm = woko.getJFacets().getFacetRepository().getFacetDescriptorManager();
             if (!(fdm instanceof PushFacetDescriptorManager)) {
@@ -45,11 +44,48 @@ public class PushFacet extends BaseResolutionFacet {
             String remoteHost = request.getRemoteHost();
             logger.warn("Push requested by user '" + username + "' from remote host '" + remoteHost + "'...");
             logger.info("Pushing " + sources.size() + " source files");
-            pfdm.reload(sources);
+            PushResult res = pfdm.reload(sources);
             logger.warn("user '" + username + "' pushed from remote host '" + remoteHost + "'");
-            sb.append("OK");
+            List<PushedSourceResult> pushedSourceResults = res.getPushedSourceResults();
+            if (pushedSourceResults.size()==0) {
+                sb.append("Nothing pushed. No sources posted ???");
+            } else {
+                sb.append("Push result (").
+                  append(Integer.toString(pushedSourceResults.size())).
+                  append(") source(s) pushed and compiled :\n");
+                for (PushedSourceResult pushedSourceResult : pushedSourceResults) {
+                    Class<?> facetClass = pushedSourceResult.getFacetClass();
+                    if (facetClass!=null) {
+                        sb.append("  - ").
+                          append(facetClass.getName()).
+                          append(" => ");
+                        List<FacetDescriptor> facetDescriptors = pushedSourceResult.getFacetDescriptors();
+                        if (facetDescriptors!=null && facetDescriptors.size()>0) {
+                            for (FacetDescriptor fd : facetDescriptors) {
+                                sb.append("(").
+                                  append(fd.getName()).
+                                  append(",").
+                                  append(fd.getProfileId()).
+                                  append(",").
+                                  append(fd.getTargetObjectType().getName()).
+                                  append(") ");
+                            }
+                        } else {
+                            sb.append("No descriptor (not a facet class ???)");
+                        }
+                        sb.append("\n");
+                    } else {
+                        sb.append("  - Compilation error :\n").
+                          append("Source :\n").
+                          append(pushedSourceResult.getSource()).
+                          append("\nCompilation errors :").
+                          append(pushedSourceResult.getCompilationException()).
+                          append("\n");
+                    }
+                }
+            }
         } else {
-            sb.append("ERROR : facet.sources is null !");
+            sb.append("Nothing pushed (no sources posted).");
         }
         return new StreamingResolution("text/plain", sb.toString());
     }

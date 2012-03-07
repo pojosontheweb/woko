@@ -75,7 +75,8 @@ public class PushFacetDescriptorManager implements IFacetDescriptorManager {
         return delegate.getDescriptor(name, profileId, targetObjectType);
     }
 
-    public PushFacetDescriptorManager reload(List<String> sources) {
+    public PushResult reload(List<String> sources) {
+        List<PushedSourceResult> pushedSourceResults = new ArrayList<PushedSourceResult>();
         List<FacetDescriptor> reloadedDescriptors = new ArrayList<FacetDescriptor>();
         if (sources != null && sources.size() > 0) {
             logger.info("Reloading with " + sources.size() + " source(s)");
@@ -90,15 +91,16 @@ public class PushFacetDescriptorManager implements IFacetDescriptorManager {
                     } else {
                         reloadedDescriptors.addAll(facetDescriptors);
                     }
+                    pushedSourceResults.add(new PushedSourceResult(source, clazz, facetDescriptors));
                 } catch (CompilationFailedException e) {
                     logger.error("Unable to parse class for source :\n" + source + "\n", e);
+                    pushedSourceResults.add(new PushedSourceResult(source, e));
                 }
-
             }
         }
         logger.info("Loaded " + reloadedDescriptors.size() + " descriptors");
         pushedDescriptors = reloadedDescriptors;
-        return this;
+        return new PushResult(pushedSourceResults);
     }
 
     private List<FacetDescriptor> createDescriptors(Class<?> facetClass) {

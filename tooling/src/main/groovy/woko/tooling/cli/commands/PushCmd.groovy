@@ -89,7 +89,6 @@ server restarts when you change facet code.
                     AppHttpClient c = new AppHttpClient(logger, url, pomHelper)
                     c.doWithLogin(username, password) {
                         c.post("/push", httpParams) { String resp ->
-                            log("Push result :")
                             log(resp)
                         }
                     }
