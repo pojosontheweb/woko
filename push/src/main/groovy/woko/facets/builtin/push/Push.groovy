@@ -5,6 +5,7 @@ import woko.facets.BaseResolutionFacet
 import net.sourceforge.stripes.action.Resolution
 import net.sourceforge.stripes.action.ActionBeanContext
 import net.sourceforge.stripes.action.StreamingResolution
+import woko.push.PushFacetDescriptorManager
 
 @FacetKey(name = "push", profileId = "developer")
 class Push extends BaseResolutionFacet {
@@ -14,11 +15,8 @@ class Push extends BaseResolutionFacet {
     Resolution getResolution(ActionBeanContext abc) {
         StringBuilder sb = new StringBuilder()
         if (sources) {
-            int i=0
-            sources.each { s ->
-                sb.append("source $i : \n").append("s").append("\n****\n")
-                i++
-            }
+            PushFacetDescriptorManager pfdm = facetContext.woko.getJFacets().facetRepository.facetDescriptorManager
+            pfdm.reload(sources)
         } else {
             sb.append("No sources !")
         }
