@@ -12,7 +12,7 @@ import java.util.UUID;
 
 public class WokoAutoExceptionHandler implements AutoExceptionHandler {
 
-    private static final String REQ_ATTR_TICKET = "ticket";
+    private static final String REQ_ATTR_TICKET = "wokoErrorTicket";
     private static final WLogger logger = WLogger.getLogger(WokoAutoExceptionHandler.class);
 
     private String genTicket(HttpServletRequest request) {
@@ -29,12 +29,14 @@ public class WokoAutoExceptionHandler implements AutoExceptionHandler {
         String ticket = genTicket(request);
         logger.warn("FacetNotFoundException caught by the WokoAutoExceptionHandler - ticket : " + ticket, exc);
         response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+        response.setHeader(REQ_ATTR_TICKET, ticket);
         return new ForwardResolution("/WEB-INF/woko/jsp/exception-404.jsp");
     }
 
     public Resolution handleGenericException(Exception e, HttpServletRequest request, HttpServletResponse response) {
         String ticket = genTicket(request);
         logger.error("Exception caught by the WokoAutoExceptionHandler - ticket : " + ticket, e);
+        response.setHeader(REQ_ATTR_TICKET, ticket);
         response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         return new ForwardResolution("/WEB-INF/woko/jsp/exception-500.jsp");
     }

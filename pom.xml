@@ -49,6 +49,7 @@
         <module>builtin-auth</module>
         <module>hibernate</module>
         <module>compass-hibernate</module>
+        <module>push</module>
         <module>ri</module>
         <module>archetype</module>
         <module>dojo</module>
