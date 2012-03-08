@@ -83,7 +83,7 @@ class Runner {
             "run the application in a local tomcat container",
             "",
             "",
-            "mvn package jetty:run -Dmaven.test.skip"
+            "mvn package jetty:run-exploded -Dmaven.test.skip"
           ),
           new ProcessCmd(
             this,
