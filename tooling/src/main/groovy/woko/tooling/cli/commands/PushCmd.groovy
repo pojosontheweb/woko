@@ -37,60 +37,62 @@ server restarts when you change facet code.
 
     @Override
     void execute(List<String> args) {
-        String url = getArgAt(args, 0)
-        if (!url) {
-            url = "http://localhost:8080/$pomHelper.model.build.finalName"
-        }
-        iLog "Pushing to $url"
-        String username = askWithDefault("Developer username", "wdevel")
-        String password = askWithDefault("          password", "wdevel")
+        String arg1 = getArgAt(args, 0)
+        boolean resources = false
+        if (arg1=="resources") {
+            resources = true
+        } else {
+            String url = askWithDefault("Application url", "http://localhost:8080/$pomHelper.model.build.finalName")
+            String username = askWithDefault("Developer username", "wdevel")
+            String password = askWithDefault("          password", "wdevel")
 
-        // scan the local facet sources
-        def baseDir = "$projectDir.absolutePath/src/main/groovy"
-        def facetPackages = []
-        facetPackages << computeUserFacetPackages()
-        facetPackages << "facets"
-        def facetSources = [:]
-        facetPackages.each { facetPkg ->
-            String basePkgDir = "$baseDir/${pkgToPath(facetPkg)}"
-            File basePkg = new File(basePkgDir)
-            if (basePkg.exists()) {
-                basePkg.eachFileRecurse { File f ->
-                    if (!f.isDirectory() && f.name.endsWith(".groovy")) {
-                        String fileText = f.text
-                        if (fileText =~ /@FacetKey/) {
-                            // looks like a facet, add to sources
-                            facetSources[f.path] = fileText
+            // scan the local facet sources
+            def baseDir = "$projectDir.absolutePath/src/main/groovy"
+            def facetPackages = []
+            facetPackages << computeUserFacetPackages()
+            facetPackages << "facets"
+            def facetSources = [:]
+            facetPackages.each { facetPkg ->
+                String basePkgDir = "$baseDir/${pkgToPath(facetPkg)}"
+                File basePkg = new File(basePkgDir)
+                if (basePkg.exists()) {
+                    basePkg.eachFileRecurse { File f ->
+                        if (!f.isDirectory() && f.name.endsWith(".groovy")) {
+                            String fileText = f.text
+                            if (fileText =~ /@FacetKey/) {
+                                // looks like a facet, add to sources
+                                facetSources[f.path] = fileText
+                            }
                         }
                     }
                 }
             }
-        }
 
-        if (facetSources) {
-            iLog("The following facet source files will be pushed :")
-            def httpParams = [:]
-            int index = 0
-            facetSources.each { k,v ->
-                iLog("  - $k")
-                httpParams["facet.sources[$index]"] = v
-                index++
-            }
-            if (yesNoAsk("Shall we push this")) {
-                // convert to woko-enabled params for the push facet
+            if (facetSources) {
+                iLog("The following facet source files will be pushed :")
+                def httpParams = [:]
+                int index = 0
+                facetSources.each { k,v ->
+                    iLog("  - $k")
+                    httpParams["facet.sources[$index]"] = v
+                    index++
+                }
+                if (yesNoAsk("Shall we push this")) {
+                    // convert to woko-enabled params for the push facet
 
-                AppHttpClient c = new AppHttpClient(logger, url, pomHelper)
-                c.doWithLogin(username, password) {
-                    c.post("/push", httpParams) { String resp ->
-                        log(resp)
+                    AppHttpClient c = new AppHttpClient(logger, url, pomHelper)
+                    c.doWithLogin(username, password) {
+                        c.post("/push", httpParams) { String resp ->
+                            log(resp)
+                        }
                     }
                 }
+            } else {
+                log("No facet sources found, nothing will be pushed")
             }
-        } else {
-            log("No facet sources found, nothing will be pushed")
         }
 
-        if (yesNoAsk("Do you want to redeploy your web resources to /target")) {
+        if (resources || yesNoAsk("Do you want to redeploy your web resources to /target")) {
             String targetDir = "$projectDir.absolutePath/target/${pomHelper.model.build.finalName}"
             File target = new File(targetDir)
             if (!target.exists()) {
