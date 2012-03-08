@@ -32,7 +32,7 @@ server restarts when you change facet code.
     }
 
     String pkgToPath(String pkg) {
-        pkg.replaceAll(/\./, File.separator)
+        pkg.replaceAll("\\.", "/")
     }
 
     @Override
@@ -49,11 +49,12 @@ server restarts when you change facet code.
             // scan the local facet sources
             def baseDir = "$projectDir.absolutePath/src/main/groovy"
             def facetPackages = []
-            facetPackages << computeUserFacetPackages()
+            facetPackages.addAll(computeUserFacetPackages())
             facetPackages << "facets"
             def facetSources = [:]
             facetPackages.each { facetPkg ->
-                String basePkgDir = "$baseDir/${pkgToPath(facetPkg)}"
+                String pkgPath = pkgToPath(facetPkg)
+                String basePkgDir = "$baseDir/$pkgPath"
                 File basePkg = new File(basePkgDir)
                 if (basePkg.exists()) {
                     basePkg.eachFileRecurse { File f ->
@@ -83,12 +84,14 @@ server restarts when you change facet code.
                     AppHttpClient c = new AppHttpClient(logger, url, pomHelper)
                     c.doWithLogin(username, password) {
                         c.post("/push", httpParams) { String resp ->
-                            log(resp)
+                            resp.eachLine { l ->
+                                iLog(l)
+                            }
                         }
                     }
                 }
             } else {
-                log("No facet sources found, nothing will be pushed")
+                iLog("No facet sources found, nothing will be pushed")
             }
         }
 
@@ -104,7 +107,7 @@ server restarts when you change facet code.
                 log("webapp dir not found : $sourceDir")
             } else {
                 def extensions = ["jsp", "html", "js", "css", "png", "jpg", "jpeg"]
-                log("Copying from webapp with extensions $extensions")
+                iLog("Copying from webapp with extensions $extensions")
                 int nbCopied = 0;
                 source.eachFileRecurse { File f ->
                     if (!f.isDirectory()) {
@@ -132,7 +135,7 @@ server restarts when you change facet code.
                         }
                     }
                 }
-                log("$nbCopied resource(s) copied")
+                iLog("  - $nbCopied resource(s) copied")
             }
         }
     }
