@@ -83,7 +83,7 @@ class Runner {
             "run the application in a local tomcat container",
             "",
             "",
-            "mvn package cargo:start -Dmaven.test.skip"
+            "mvn package jetty:run -Dmaven.test.skip"
           ),
           new ProcessCmd(
             this,
@@ -93,7 +93,7 @@ class Runner {
             "stop the local tomcat container (in case started in background process)",
             "",
             "",
-            "mvn cargo:stop"
+            "mvn jetty:stop"
           ),
           new ProcessCmd(
             this,
