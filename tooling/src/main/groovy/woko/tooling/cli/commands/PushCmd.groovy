@@ -6,6 +6,7 @@ import woko.tooling.utils.Logger
 
 import static woko.tooling.utils.AppUtils.*
 import woko.tooling.utils.AppHttpClient
+import com.google.common.io.Files
 
 class PushCmd extends Command {
 
@@ -87,6 +88,50 @@ server restarts when you change facet code.
             }
         } else {
             log("No facet sources found, nothing will be pushed")
+        }
+
+        if (yesNoAsk("Do you want to redeploy your web resources to /target")) {
+            String targetDir = "$projectDir.absolutePath/target/${pomHelper.model.build.finalName}"
+            File target = new File(targetDir)
+            if (!target.exists()) {
+                target.mkdirs()
+            }
+            String sourceDir = "$projectDir.absolutePath/src/main/webapp"
+            File source = new File(sourceDir)
+            if (!source.exists()) {
+                log("webapp dir not found : $sourceDir")
+            } else {
+                def extensions = ["jsp", "html", "js", "css", "png", "jpg", "jpeg"]
+                log("Copying from webapp with extensions $extensions")
+                int nbCopied = 0;
+                source.eachFileRecurse { File f ->
+                    if (!f.isDirectory()) {
+                        String name = f.name
+                        boolean copy = false
+                        for (String ext : extensions) {
+                            if (name.endsWith(ext)) {
+                                copy = true
+                                break
+                            }
+                        }
+                        if (copy) {
+                            String relativePath = f.absolutePath[sourceDir.length()..-1]
+                            String toPath = "$targetDir$relativePath"
+                            File targetFile = new File(toPath)
+                            if (!targetFile.exists()) {
+                                new File(targetFile.parent).mkdirs()
+                            }
+                            try {
+                                Files.copy(f, targetFile)
+                                nbCopied++
+                            } catch(Exception e) {
+                                log("ERROR : exception while copying $f.absolutePath to $toPath")
+                            }
+                        }
+                    }
+                }
+                log("$nbCopied resource(s) copied")
+            }
         }
     }
 
