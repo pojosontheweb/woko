@@ -123,8 +123,10 @@
                 <configuration>
                     <scanIntervalSeconds>10</scanIntervalSeconds>
                     <!-- Configure the webapp -->
-                    <contextPath>/myapp</contextPath>
+                    <contextPath>/${artifactId}</contextPath>
                     <tmpDir>target/tmp</tmpDir>
+                    <stopKey>foo</stopKey>
+                    <stopPort>9999</stopPort>
                     <requestLog implementation="org.mortbay.jetty.NCSARequestLog">
                         <filename>target/yyyy_mm_dd.request.log</filename>
                         <retainDays>90</retainDays>
