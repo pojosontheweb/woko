@@ -50,9 +50,8 @@ public class PushFacet extends BaseResolutionFacet {
             if (pushedSourceResults.size()==0) {
                 sb.append("Nothing pushed. No sources posted ???");
             } else {
-                sb.append("Push result (").
-                  append(Integer.toString(pushedSourceResults.size())).
-                  append(") source(s) pushed and compiled :\n");
+                sb.append(Integer.toString(pushedSourceResults.size())).
+                  append(" source(s) pushed and compiled :\n");
                 for (PushedSourceResult pushedSourceResult : pushedSourceResults) {
                     Class<?> facetClass = pushedSourceResult.getFacetClass();
                     if (facetClass!=null) {

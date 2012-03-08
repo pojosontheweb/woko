@@ -10,7 +10,7 @@ import net.sourceforge.stripes.action.StreamingResolution
 class MyFacet extends BaseResolutionFacet {
 
     Resolution getResolution(ActionBeanContext abc) {
-        return new StreamingResolution("text/plain", "hooo there")
+        return new StreamingResolution("text/plain", "heey there")
     }
 
 

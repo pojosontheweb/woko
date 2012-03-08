@@ -30,6 +30,10 @@ server restarts when you change facet code.
 """)
     }
 
+    String pkgToPath(String pkg) {
+        pkg.replaceAll(/\./, File.separator)
+    }
+
     @Override
     void execute(List<String> args) {
         String url = getArgAt(args, 0)
@@ -40,70 +44,50 @@ server restarts when you change facet code.
         String username = askWithDefault("Developer username", "wdevel")
         String password = askWithDefault("          password", "wdevel")
 
-        // scan the local facets and gather descriptors for facets in project
-        def fdm = getFdm()
-        def baseDir = "$projectDir.absolutePath/src/main"
+        // scan the local facet sources
+        def baseDir = "$projectDir.absolutePath/src/main/groovy"
         def facetPackages = []
         facetPackages << computeUserFacetPackages()
         facetPackages << "facets"
-        def descriptorsToPush = []
-        fdm.descriptors.each { fd ->
-            def fqcn = fd.facetClass.name
-            boolean isProjectFacet = false
-            for (String facetPackage : facetPackages) {
-                if (fqcn.startsWith(facetPackage)) {
-                    isProjectFacet = true
-                    break
-                }
-            }
-            if (isProjectFacet) {
-                descriptorsToPush << fd
-            }
-        }
-
-        if (descriptorsToPush) {
-            def facetSources = [:]
-            descriptorsToPush.each { fd ->
-                def fqcn = fd.facetClass.name
-                def facetLocalPath = "$baseDir/groovy/${fqcn.replaceAll(/\./, "/")}.groovy"
-                File facetSourceFile = new File(facetLocalPath)
-                if (!facetSourceFile.exists()) {
-                    iLog("WARNING : Facet source not found : $facetLocalPath - will not be pushed !")
-                } else {
-                    // file exists, add contents to facet sources
-                    facetSources[facetLocalPath] = facetSourceFile.text
-                }
-            }
-            if (facetSources) {
-                iLog("The following facet source files will be pushed :")
-                def httpParams = [:]
-                int index = 0
-                facetSources.each { k,v ->
-                    iLog("  - $k")
-                    httpParams["facet.sources[$index]"] = v
-                    index++
-                }
-                if (yesNoAsk("Shall we push this")) {
-                    // convert to woko-enabled params for the push facet
-
-                    AppHttpClient c = new AppHttpClient(logger, url, pomHelper)
-                    c.doWithLogin(username, password) {
-                        c.post("/push", httpParams) { String resp ->
-                            log(resp)
+        def facetSources = [:]
+        facetPackages.each { facetPkg ->
+            String basePkgDir = "$baseDir/${pkgToPath(facetPkg)}"
+            File basePkg = new File(basePkgDir)
+            if (basePkg.exists()) {
+                basePkg.eachFileRecurse { File f ->
+                    if (!f.isDirectory() && f.name.endsWith(".groovy")) {
+                        String fileText = f.text
+                        if (fileText =~ /@FacetKey/) {
+                            // looks like a facet, add to sources
+                            facetSources[f.path] = fileText
                         }
                     }
                 }
-            } else {
-                log("No facet sources found, nothing will be pushed")
+            }
+        }
+
+        if (facetSources) {
+            iLog("The following facet source files will be pushed :")
+            def httpParams = [:]
+            int index = 0
+            facetSources.each { k,v ->
+                iLog("  - $k")
+                httpParams["facet.sources[$index]"] = v
+                index++
+            }
+            if (yesNoAsk("Shall we push this")) {
+                // convert to woko-enabled params for the push facet
+
+                AppHttpClient c = new AppHttpClient(logger, url, pomHelper)
+                c.doWithLogin(username, password) {
+                    c.post("/push", httpParams) { String resp ->
+                        log(resp)
+                    }
+                }
             }
         } else {
-            log("No facets found in your project, nothing pushed. Please check your facet packages in web.xml :")
-            facetPackages.each {
-                log("  - $it")
-            }
-
+            log("No facet sources found, nothing will be pushed")
         }
     }
-
 
 }

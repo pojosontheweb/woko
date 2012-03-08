@@ -43,6 +43,7 @@ Available commands :
 
   - list facets|roles		:		list facets or roles
   - create facet|entity		:		create project elements
+  - push [url]		:		pushes the local facets to a remote application
   - start 		:		run the application in a local tomcat container
   - stop 		:		stop the local tomcat container (in case started in background process)
   - build 		:		rebuilds the whole application
