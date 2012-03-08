@@ -12,12 +12,13 @@ import woko.tooling.utils.PomHelper
 import woko.tooling.cli.commands.ListCmd
 import woko.tooling.cli.commands.CreateCmd
 import woko.tooling.cli.commands.ProcessCmd
+import woko.tooling.cli.commands.PushCmd
 
 class Runner {
 
     private Logger logger
 
-    private Map<String,Command> commands = [:]
+    private Map<String, Command> commands = [:]
 
     private File workingDir = new File(System.getProperty("user.dir"))
 
@@ -71,38 +72,39 @@ class Runner {
         this.logger = logger
         this.workingDir = workingDir
         addCommands([
-            new ListCmd(this, workingDir, logger),
-            new CreateCmd(this, workingDir, logger),
-            new ProcessCmd(
-                    this,
-                    workingDir,
-                    logger,
-                    "start",
-                    "run the application in a local tomcat container",
-                    "",
-                    "",
-                    "mvn package cargo:start -Dmaven.test.skip"
-            ),
+          new ListCmd(this, workingDir, logger),
+          new CreateCmd(this, workingDir, logger),
+          new PushCmd(this, workingDir, logger),
           new ProcessCmd(
-                  this,
-                  workingDir,
-                  logger,
-                  "stop",
-                  "stop the local tomcat container (in case started in background process)",
-                  "",
-                  "",
-                  "mvn cargo:stop"
+            this,
+            workingDir,
+            logger,
+            "start",
+            "run the application in a local tomcat container",
+            "",
+            "",
+            "mvn package jetty:run -Dmaven.test.skip"
           ),
-            new ProcessCmd(
-                    this,
-                    workingDir,
-                    logger,
-                    "build",
-                    "rebuilds the whole application",
-                    "",
-                    "",
-                    "mvn clean install"
-            )
+          new ProcessCmd(
+            this,
+            workingDir,
+            logger,
+            "stop",
+            "stop the local tomcat container (in case started in background process)",
+            "",
+            "",
+            "mvn jetty:stop"
+          ),
+          new ProcessCmd(
+            this,
+            workingDir,
+            logger,
+            "build",
+            "rebuilds the whole application",
+            "",
+            "",
+            "mvn clean install"
+          )
 
         ])
     }
@@ -111,7 +113,7 @@ class Runner {
         if (!args) {
             throw new IllegalArgumentException("0 args specified, we need at least the command name")
         }
-        if (args[0]=="help") {
+        if (args[0] == "help") {
             help()
         } else {
             def command = commands[args[0]]
@@ -152,12 +154,12 @@ class Runner {
         Writer out = new OutputStreamWriter(System.out)
         try {
             new Runner(new Logger(out), new File(currentDir)).run(args)
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace()
         } finally {
             out.flush()
             out.close()
         }
-   }
+    }
 
 }

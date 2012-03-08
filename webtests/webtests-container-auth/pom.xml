@@ -12,6 +12,11 @@
     <dependencies>
         <dependency>
             <groupId>com.rvkb</groupId>
+            <artifactId>woko-push</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.rvkb</groupId>
             <artifactId>woko-container-auth</artifactId>
             <version>${project.version}</version>
             <type>war</type>

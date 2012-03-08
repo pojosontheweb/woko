@@ -72,7 +72,7 @@
 
     <listener>
         <display-name>WokoInitListener</display-name>
-        <listener-class>woko.ri.RiWokoInitListener</listener-class>
+        <listener-class>test.BuiltinAuthWTInitIListener</listener-class>
     </listener>
 
     <context-param>
@@ -82,5 +82,11 @@
             woko.ext.usermanagement.hibernate
         </param-value>
     </context-param>
+
+    <context-param>
+        <param-name>Woko.Facet.Packages</param-name>
+        <param-value>woko.test.builtinauth</param-value>
+    </context-param>
+
 
 </web-app>

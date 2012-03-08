@@ -17,6 +17,11 @@
         </dependency>
         <dependency>
             <groupId>com.rvkb</groupId>
+            <artifactId>woko-push</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.rvkb</groupId>
             <artifactId>woko-builtin-auth-web</artifactId>
             <version>${project.version}</version>
             <type>war</type>
@@ -39,6 +44,18 @@
             <version>${project.version}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>com.rvkb</groupId>
+            <artifactId>woko-tooling</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <!-- needed for tooling : TODO filter out from generated war ? -->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+            <version>2.3</version>
+        </dependency>
+
     </dependencies>
     <build>
         <finalName>woko-webtests</finalName>

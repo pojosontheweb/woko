@@ -75,7 +75,7 @@
 
     <listener>
         <display-name>WokoInitListener</display-name>
-        <listener-class>woko.ri.RiWokoInitListener</listener-class>
+        <listener-class>${package}.MyInitListener</listener-class>
     </listener>
 
     <context-param>
