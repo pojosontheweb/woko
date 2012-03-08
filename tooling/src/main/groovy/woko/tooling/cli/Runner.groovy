@@ -114,7 +114,11 @@ class Runner {
             throw new IllegalArgumentException("0 args specified, we need at least the command name")
         }
         if (args[0] == "help") {
-            help()
+            if (args[1])
+                help(args[1])
+            else
+                help()
+            
         } else {
             def command = commands[args[0]]
             if (!command) {
