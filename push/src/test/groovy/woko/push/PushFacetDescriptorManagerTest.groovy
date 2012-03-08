@@ -50,7 +50,8 @@ class MyNewFacet {
 
     @Test
     void testReloadNewFacet() {
-        def push = createPush().reload([FACET_SOURCE])
+        def push = createPush()
+        push.reload([FACET_SOURCE])
         assertDescriptorCount(push, 2)
         assertDescriptor(push, "my", "all")
         assertFacetClass(push, "foo.bar.MyNewFacet", "newFacet", "all")
@@ -58,7 +59,8 @@ class MyNewFacet {
 
     @Test
     void testReloadReplaceFacetFromDelegate() {
-        def push = createPush().reload(["""package foo.bar
+        def push = createPush()
+        push.reload(["""package foo.bar
 
 import net.sourceforge.jfacets.annotations.FacetKey
 
@@ -75,7 +77,8 @@ class My2 {
     @Test
     void testReloadReplaceFacetTwice() {
 
-        def push = createPush().reload(["""package foo.bar
+        def push = createPush()
+        push.reload(["""package foo.bar
 
 import net.sourceforge.jfacets.annotations.FacetKey
 
@@ -103,7 +106,8 @@ class My3 {
 
     @Test
     void testReloadNoSources() {
-        def push = createPush().reload([])
+        def push = createPush()
+        push.reload([])
         assertDescriptorCount(push, 1)
         assertFacetClass(push, "woko.push.testfacets.MyFacet", "my", "all")
     }
