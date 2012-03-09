@@ -15,12 +15,12 @@
             <artifactId>woko-core</artifactId>
             <version>${project.version}</version>
         </dependency>
-      <dependency>
-          <groupId>org.codehaus.groovy</groupId>
-          <artifactId>groovy</artifactId>
-          <version>${groovy.version}</version>
-        <scope>test</scope>
-      </dependency>
+        <dependency>
+            <groupId>org.codehaus.groovy</groupId>
+            <artifactId>groovy</artifactId>
+            <version>${groovy.version}</version>
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-annotations</artifactId>
@@ -81,9 +81,9 @@
             </snapshots>
         </repository>
     </repositories>
-  <build>
-    <plugins>
-      <plugin>
+    <build>
+        <plugins>
+            <plugin>
                 <groupId>org.codehaus.gmaven</groupId>
                 <artifactId>gmaven-plugin</artifactId>
                 <version>1.2</version>
@@ -96,10 +96,10 @@
                         <artifactId>gmaven-runtime-1.7</artifactId>
                         <version>1.2</version>
                         <exclusions>
-                          <exclusion>
-                            <groupId>org.codehaus.groovy</groupId>
-                            <artifactId>groovy-all</artifactId>
-                          </exclusion>
+                            <exclusion>
+                                <groupId>org.codehaus.groovy</groupId>
+                                <artifactId>groovy-all</artifactId>
+                            </exclusion>
                         </exclusions>
                     </dependency>
                     <dependency>
@@ -109,7 +109,7 @@
                     </dependency>
                 </dependencies>
                 <executions>
-                     <execution>
+                    <execution>
                         <goals>
                             <goal>generateStubs</goal>
                             <goal>compile</goal>
@@ -119,6 +119,6 @@
                     </execution>
                 </executions>
             </plugin>
-    </plugins>
-  </build>
+        </plugins>
+    </build>
 </project>
