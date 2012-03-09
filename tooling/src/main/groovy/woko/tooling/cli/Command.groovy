@@ -71,6 +71,19 @@ abstract class Command {
         return packages
     }
 
+    protected List<String> computeModelPackages() {
+        def packages = null
+        // TODO UGLY : don't loop if you don't need to !
+        webXml["context-param"].each { it ->
+            if (it["param-name"].text() == "Woko.Hibernate.Packages") {
+                String facetPackages = it["param-value"].text()
+                packages = []
+                packages.addAll(WokoInitListener.extractPackagesList(facetPackages))
+            }
+        }
+        return packages
+    }
+
     protected IFacetDescriptorManager getFdm() {
         Woko.createFacetDescriptorManager(computeFacetPackages())
     }

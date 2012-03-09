@@ -70,6 +70,24 @@ you want to create :
                 iLog(" ") // line sep
 
                 def targetType = askWithDefault("Target type", "java.lang.Object")
+                // check if the class name contains package
+                if (targetType.indexOf(".")==-1) {
+                    // infer the package...
+                    def pkgs = []
+                    pkgs.addAll(computeModelPackages())
+                    pkgs.addAll(["java.lang", "java.util"])
+                    for (String pkg : pkgs) {
+                        try {
+                            String className = pkg + "." + targetType
+                            Class.forName(className)
+                            targetType = className
+                            iLog("Resolved target type : $targetType")
+                            break
+                        } catch(ClassNotFoundException e) {
+                            // let it go through : not the good class
+                        }
+                    }
+                }
 
                 // check if a facet exists for the same type
                 def identicalFacets = facetsWithSameNameAndSameRole.findAll { fd -> fd.targetObjectType.name == targetType }
