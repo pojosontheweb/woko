@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.sonatype.oss</groupId>
@@ -39,7 +40,7 @@
             <artifactId>servlet-api</artifactId>
             <version>2.5</version>
             <scope>provided</scope>
-        </dependency>        
+        </dependency>
     </dependencies>
     <modules>
         <module>stripes-plugins</module>
@@ -62,36 +63,77 @@
         <groovy.version>1.7.4</groovy.version>
     </properties>
     <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>2.3.2</version>
-                <configuration>
-                    <source>1.6</source>
-                    <target>1.6</target>
-                </configuration>
-            </plugin>
-            <plugin>
-              <groupId>org.apache.maven.plugins</groupId>
-              <artifactId>maven-surefire-plugin</artifactId>
-              <version>2.12</version>
-              <dependencies>
-                  <dependency>
-                      <groupId>org.apache.maven.surefire</groupId>
-                      <artifactId>surefire-junit47</artifactId>
-                      <version>2.8.1</version>
-                  </dependency>
-              </dependencies>
-              <configuration>
-                  <parallel>methods</parallel>
-                  <threadCount>10</threadCount>
-                  <includes>
-                      <include>**/*Test.java</include>
-                  </includes>
-              </configuration>
-          </plugin>
-        </plugins>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>2.3.2</version>
+                    <configuration>
+                        <source>1.6</source>
+                        <target>1.6</target>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>2.12</version>
+                    <dependencies>
+                        <dependency>
+                            <groupId>org.apache.maven.surefire</groupId>
+                            <artifactId>surefire-junit47</artifactId>
+                            <version>2.8.1</version>
+                        </dependency>
+                    </dependencies>
+                    <configuration>
+                        <parallel>methods</parallel>
+                        <threadCount>10</threadCount>
+                        <includes>
+                            <include>**/*Test.java</include>
+                        </includes>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.gmaven</groupId>
+                    <artifactId>gmaven-plugin</artifactId>
+                    <version>1.2</version>
+                    <configuration>
+                        <providerSelection>1.7</providerSelection>
+                    </configuration>
+                    <dependencies>
+                        <dependency>
+                            <groupId>org.codehaus.gmaven.runtime</groupId>
+                            <artifactId>gmaven-runtime-1.7</artifactId>
+                            <version>1.2</version>
+                            <exclusions>
+                                <exclusion>
+                                    <groupId>org.codehaus.groovy</groupId>
+                                    <artifactId>groovy-all</artifactId>
+                                </exclusion>
+                            </exclusions>
+                        </dependency>
+                        <dependency>
+                            <groupId>org.codehaus.groovy</groupId>
+                            <artifactId>groovy-all</artifactId>
+                            <version>1.7.0</version>
+                        </dependency>
+                    </dependencies>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>generateTestStubs</goal>
+                                <goal>testCompile</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-deploy-plugin</artifactId>
+                    <version>2.7</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
     </build>
     <profiles>
         <profile>
@@ -100,43 +142,45 @@
                 <module>webtests</module>
             </modules>
         </profile>
-      <profile>
-        <id>release</id>
-        <build>
-          <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>generate-javadoc</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                        <configuration>
-                            <author>true</author>
-                            <protected>true</protected>
-                            <use>true</use>
-                            <version>true</version>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-source-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>attach-sources</id>
-                        <goals>
-                            <goal>jar-no-fork</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-          </plugins>
-        </build>
-      </profile>
+        <profile>
+            <id>release</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <version>2.7</version>
+                        <executions>
+                            <execution>
+                                <id>generate-javadoc</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                                <configuration>
+                                    <author>true</author>
+                                    <protected>true</protected>
+                                    <use>true</use>
+                                    <version>true</version>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-source-plugin</artifactId>
+                        <version>2.1.2</version>
+                        <executions>
+                            <execution>
+                                <id>attach-sources</id>
+                                <goals>
+                                    <goal>jar-no-fork</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
     </profiles>
 </project>
