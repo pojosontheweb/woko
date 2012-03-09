@@ -7,6 +7,7 @@ import woko.facets.builtin.WokoFacets
 import woko.facets.FragmentFacet
 import woko.tooling.cli.FacetCodeGenerator
 import woko.tooling.cli.Runner
+import org.apache.maven.model.Dependency
 
 class CreateCmd extends Command {
 
@@ -173,14 +174,15 @@ you want to create :
 
                 // do we generate a Groovy or a Java class ?
                 // check if we have Groovy available in the project
-                // TODO better check !
                 def useGroovy = false
-                def groovyAvailable = new File("src/main/groovy").exists()
-                if (groovyAvailable) {
-                    iLog("Groovy seems to be available in your project...")
-                    iLog(" ") // line sep
-                    useGroovy = yesNoAsk("Do you want to write the facet in Groovy")
+                for (Dependency d : pomHelper.model.dependencies) {
+                    if (d.artifactId=="groovy" || d.artifactId=="groovy-all") {
+                        useGroovy = true
+                    }
                 }
+                iLog("Groovy seems to be available in your project...")
+                iLog(" ") // line sep
+                useGroovy = yesNoAsk("Do you want to write the facet in Groovy")
 
                 // show summary of all infos
                 iLog(" ") // line sep
