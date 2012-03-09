@@ -60,58 +60,9 @@
     <build>
         <finalName>woko-webtests</finalName>
         <plugins>
-            <!-- skip unit test run, tests to be executed during integration-test -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.apache.maven.surefire</groupId>
-                        <artifactId>surefire-junit47</artifactId>
-                        <version>2.8.1</version>
-                    </dependency>
-                </dependencies>
-                <configuration>
-                    <skip>true</skip>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>surefire-it</id>
-                        <phase>integration-test</phase>
-                        <goals>
-                            <goal>test</goal>
-                        </goals>
-                        <configuration>
-                            <skip>false</skip>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <!--
-                Use Cargo plugin to start/stop tomcat and deploy examples
-                for integration tests
-            -->
             <plugin>
                 <groupId>org.codehaus.cargo</groupId>
                 <artifactId>cargo-maven2-plugin</artifactId>
-                <configuration>
-                    <wait>false</wait>
-                    <container>
-                      <containerId>tomcat6x</containerId>
-                      <zipUrlInstaller>
-                        <url>http://apache.crihan.fr/dist/tomcat/tomcat-6/v6.0.35/bin/apache-tomcat-6.0.35.zip</url>
-                          <downloadDir>${project.build.directory}/downloads</downloadDir>
-                          <extractDir>${project.build.directory}/extracts</extractDir>
-                    </zipUrlInstaller>
-                    </container>
-                    <configuration>
-                      <home>${project.build.directory}/tomcat6x/container</home>
-                      <properties>
-                          <cargo.servlet.port>9999</cargo.servlet.port>
-                          <cargo.container.timeout>600000</cargo.container.timeout>
-                      </properties>
-                    </configuration>
-                </configuration>
                 <executions>
                     <execution>
                         <id>start-container</id>

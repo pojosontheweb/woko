@@ -46,18 +46,12 @@
             <version>r03</version>
         </dependency>
     </dependencies>
-
-
     <build>
         <defaultGoal>install</defaultGoal>
         <plugins>
-            <!--
-                Use Groovy plugin for compilation of .groovy files
-            -->
             <plugin>
-                <groupId>org.codehaus.groovy.maven</groupId>
+                <groupId>org.codehaus.gmaven</groupId>
                 <artifactId>gmaven-plugin</artifactId>
-                <version>1.0</version>
                 <executions>
                     <execution>
                         <goals>
@@ -69,38 +63,6 @@
                     </execution>
                 </executions>
             </plugin>
-
         </plugins>
     </build>
-
-    <profiles>
-        <profile>
-            <id>distrib</id>
-            <build>
-                <plugins>
-
-                    <!--
-                        Assembly plugin allows to generate the distributable archive
-                    -->
-                    <plugin>
-                        <artifactId>maven-assembly-plugin</artifactId>
-                        <configuration>
-                            <descriptors>
-                                <descriptor>assembly.xml</descriptor>
-                            </descriptors>
-                        </configuration>
-                        <executions>
-                            <execution>
-                                <phase>install</phase>
-                                <goals>
-                                    <goal>assembly</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
 </project>
