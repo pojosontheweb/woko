@@ -39,16 +39,21 @@ class InitCmd {
 
     private void init(){
         // Create project folder
-        name = AppUtils.requiredAsk('Project name : ');
-        description = AppUtils.simpleAsk('Project Description : ');
+        logger.log("# Global project information")
+        logger.log("----------------------------")
+        name = AppUtils.requiredAsk('Project name');
+        description = AppUtils.simpleAsk('Project Description');
         if (!createDirectory(name)){
             logger.error('An error occurs during the project folder creation')
             System.exit(1)
         }
+        logger.log("") // jump line
     }
 
     private void createPom(){
-        // Ask some questions
+        // Create pom
+        logger.log("# Generate pom.xml for maven")
+        logger.log("----------------------------")
         groupId = AppUtils.askWithDefault('Maven groupId ?', "com."+name.toLowerCase());
         artifactId = AppUtils.askWithDefault('Maven artifactId ?', name.toLowerCase());
         String versionId = AppUtils.askWithDefault("Your application's version ?", "0.1-SNAPSHOT");
@@ -68,12 +73,16 @@ class InitCmd {
 
         FileWriter writer = new FileWriter(name+File.separator+'pom.xml')
         generateTemplate(binding, 'pom', false, writer)
+        logger.indentedLog("pom.xml file generated")
+        logger.log("") // jump line
     }
 
     /**
      * Convention : package name = groupId.artifactId
      */
     private void createPackage(){
+        logger.log("# Generate folders and packages")
+        logger.log("-------------------------------")
         String srcBasePath, testBasePath
         if (groovy){
             srcBasePath = name+File.separator+'src'+File.separator+'main'+File.separator+'groovy'
@@ -122,9 +131,14 @@ class InitCmd {
             logger.error('An error occurs during the webapp directory creation')
             System.exit(1)
         }
+        logger.indentedLog("All your folders have been created")
+        logger.log("") // jump line
+
     }
 
     private void createWebXml(){
+        logger.log("# Generate the web.xml")
+        logger.log("----------------------")
         // Ask for 'push' command
         Boolean pushCmd = AppUtils.yesNoAsk("Would you like enable the woko 'push' command");
         String initListenerClassName = "woko.ri.RiWokoInitListener"
@@ -144,6 +158,12 @@ class InitCmd {
 
         FileWriter writer = new FileWriter(webApp+File.separator+'web.xml')
         generateTemplate(binding, 'web-xml', false, writer)
+
+        logger.indentedLog("web.xml file created")
+        if (pushCmd)
+            logger.indentedLog("As you want to enjoy the 'push' command a Listener has been created too")
+        
+        logger.log('') //jump line
     }
 
     private String generateInitListener(){
@@ -161,13 +181,20 @@ class InitCmd {
     }
 
     private void createClass(){
+        logger.log("# Generate default model")
+        logger.log("------------------------")
         // Generate example POJO
         def bindingPOJO = [:]
         bindingPOJO['modelPackage'] = groupId+"."+artifactId+".model"
 
         FileWriter writer = new FileWriter(modelPath+File.separator+"MyEntity" + (groovy ? ".groovy" : ".java"))
         generateTemplate(bindingPOJO, 'my-entity', groovy, writer)
+        logger.indentedLog("MyEntity domain model had been created")
+        logger.log("")  // jump line
 
+
+        logger.log("# Generate Layout facet for All roles")
+        logger.log("-------------------------------------")
         // Generate default Layout facet
         def bindingFacets = [:]
         bindingFacets['facetsPackage'] = groupId+"."+artifactId+".facets"
@@ -175,13 +202,18 @@ class InitCmd {
 
         writer = new FileWriter(facetsPath+File.separator+"MyLayout" + (groovy ? ".groovy" : ".java"))
         generateTemplate(bindingFacets, 'layout', groovy, writer)
+        logger.indentedLog("MyLayout facet has been created")
+        logger.log("")  // jump line
     }
 
     private void copyResources(){
-
+        logger.log("# Generate default application resources")
+        logger.log("----------------------------------------")
         FileWriter writer = new FileWriter(name+File.separator+'src'+File.separator+'main'+
                 File.separator+'resources'+File.separator+'application.properties')
         generateTemplate(null, 'application', false, writer)
+        logger.indentedLog("application.resource has been created")
+        logger.log("")  // jump line
     }
 
     private boolean createDirectory(String path){
