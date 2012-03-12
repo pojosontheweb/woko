@@ -1,18 +1,7 @@
 package woko.tooling.cli
 
 import woko.tooling.utils.Logger
-import woko.Woko
-import woko.WokoInitListener
-import net.sourceforge.jfacets.FacetDescriptor
-import net.sourceforge.jfacets.IFacetDescriptorManager
-import static woko.tooling.utils.AppUtils.*
-import woko.facets.builtin.WokoFacets
-import woko.facets.FragmentFacet
-import woko.tooling.utils.PomHelper
-import woko.tooling.cli.commands.ListCmd
-import woko.tooling.cli.commands.CreateCmd
-import woko.tooling.cli.commands.ProcessCmd
-import woko.tooling.cli.commands.PushCmd
+import woko.tooling.cli.commands.*
 
 class Runner {
 

@@ -11,7 +11,7 @@ if exist pom.xml (
 
     if "%1" == "init" (
         echo Initializing project
-        mvn archetype:generate -DarchetypeArtifactId=woko-archetype -DarchetypeGroupId=com.rvkb -q	
+        mvn archetype:generate -DarchetypeArtifactId=woko-archetype -DarchetypeGroupId=com.rvkb -q
 	) else (
 		echo ERROR : No pom file found in current directory.
 		:input

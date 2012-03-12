@@ -16,7 +16,7 @@ else
     if [ "$1" == "init" ]
     then
         echo "Initializing project"
-        mvn archetype:generate -DarchetypeArtifactId=woko-archetype -DarchetypeGroupId=com.rvkb -q
+        mvn exec:java -Dexec.mainClass="woko.tooling.cli.Runner" -Dexec.classpathScope=runtime -Dexec.args="init" -q
     else
         echo "ERROR : No pom file found in current directory. "
         read -p "Do you want to init the project ? [n]" answer
