@@ -33,8 +33,8 @@ class InitCmd {
         createPom()
         createPackage()
         createWebXml()
-//        createJavaClass()
-//        copyResources()
+        createClass()
+        copyResources()
     }
 
     private void init(){
@@ -160,23 +160,28 @@ class InitCmd {
         return groupId+'.'+artifactId+'.woko.'+initListenerClassName
     }
 
-    private void createJavaClass(){
-        def props = [
-                'modelPackage': groupId+'.'+artifactId+'.model',
-        ]
+    private void createClass(){
+        // Generate example POJO
+        def bindingPOJO = [:]
+        bindingPOJO['modelPackage'] = groupId+"."+artifactId+".model"
 
-        FileWriter writer = new FileWriter(modelPath+File.separator+'MyEntity.java')
-        AppUtils.generateTemplate(props, 'my-entity', writer)
+        FileWriter writer = new FileWriter(modelPath+File.separator+"MyEntity" + (groovy ? ".groovy" : ".java"))
+        generateTemplate(bindingPOJO, 'my-entity', groovy, writer)
+
+        // Generate default Layout facet
+        def bindingFacets = [:]
+        bindingFacets['facetsPackage'] = groupId+"."+artifactId+".facets"
+        bindingFacets['name'] = name
+
+        writer = new FileWriter(facetsPath+File.separator+"MyLayout" + (groovy ? ".groovy" : ".java"))
+        generateTemplate(bindingFacets, 'layout', groovy, writer)
     }
 
     private void copyResources(){
-        def props = [
-                'bootstrap': bootstrap,
-        ]
 
         FileWriter writer = new FileWriter(name+File.separator+'src'+File.separator+'main'+
-                File.separator+'resources'+File.separator+'WokoResources.properties')
-        AppUtils.generateTemplate(props, 'WokoResources', writer)
+                File.separator+'resources'+File.separator+'application.properties')
+        generateTemplate(null, 'application', false, writer)
     }
 
     private boolean createDirectory(String path){
