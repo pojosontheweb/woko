@@ -16,6 +16,7 @@ class InitCmd {
     String description
     String groupId
     String artifactId
+    String packageName
     Boolean bootstrap
     Boolean groovy
     String webApp
@@ -57,6 +58,7 @@ class InitCmd {
         groupId = AppUtils.askWithDefault('Maven groupId ?', "com."+name.toLowerCase());
         artifactId = AppUtils.askWithDefault('Maven artifactId ?', name.toLowerCase());
         String versionId = AppUtils.askWithDefault("Your application's version ?", "0.1-SNAPSHOT");
+        packageName = AppUtils.askWithDefault("Choose you default package name ?", groupId+"."+artifactId);
         String wokoVersion = AppUtils.askWithDefault('Which version of Woko you want to use ?', "2.0-SNAPSHOT");
         bootstrap = AppUtils.yesNoAsk('Would you like to use Bootstrap UI');
         groovy = AppUtils.yesNoAsk('Would you like to use Groovy language');
@@ -92,8 +94,8 @@ class InitCmd {
             testBasePath = name+File.separator+'src'+File.separator+'test'+File.separator+'java'
         }
 
-        String srcPath = srcBasePath + File.separator+groupId.replaceAll("\\.", "\\"+File.separator)+File.separator+artifactId
-        String testPath = testBasePath + File.separator+groupId.replaceAll("\\.", "\\"+File.separator)+File.separator+artifactId
+        String srcPath = srcBasePath + File.separator+packageName.replaceAll("\\.", "\\"+File.separator)
+        String testPath = testBasePath + File.separator+packageName.replaceAll("\\.", "\\"+File.separator)
         facetsPath = srcPath+File.separator+'facets'
         modelPath = srcPath+File.separator+'model'
         wokoPath = srcPath+File.separator+'woko'
@@ -152,8 +154,8 @@ class InitCmd {
         def binding = [:]
         binding['name'] = name
         binding['description'] = description
-        binding['modelPackage'] = groupId+'.'+artifactId+'.model'
-        binding['facetsPackage'] = groupId+'.'+artifactId+'.facets'
+        binding['modelPackage'] = packageName+'.model'
+        binding['facetsPackage'] = packageName+'.facets'
         binding['initListenerClassName'] = initListenerClassName
 
         FileWriter writer = new FileWriter(webApp+File.separator+'web.xml')
@@ -171,13 +173,13 @@ class InitCmd {
         String initListenerClassName = AppUtils.askWithDefault("How you want to named this listener ?", "MyInitListener")
 
         def binding = [:]
-        binding['wokoPackage'] = groupId+'.'+artifactId+'.woko'
+        binding['wokoPackage'] = packageName+'.woko'
         binding['className'] = initListenerClassName
 
         FileWriter writer = new FileWriter(wokoPath+File.separator+initListenerClassName+ (groovy ? ".groovy" : ".java") )
         generateTemplate(binding, 'initListener', groovy, writer)
 
-        return groupId+'.'+artifactId+'.woko.'+initListenerClassName
+        return packageName+'.woko.'+initListenerClassName
     }
 
     private void createClass(){
@@ -185,7 +187,7 @@ class InitCmd {
         logger.log("------------------------")
         // Generate example POJO
         def bindingPOJO = [:]
-        bindingPOJO['modelPackage'] = groupId+"."+artifactId+".model"
+        bindingPOJO['modelPackage'] = packageName+".model"
 
         FileWriter writer = new FileWriter(modelPath+File.separator+"MyEntity" + (groovy ? ".groovy" : ".java"))
         generateTemplate(bindingPOJO, 'my-entity', groovy, writer)
@@ -197,7 +199,7 @@ class InitCmd {
         logger.log("-------------------------------------")
         // Generate default Layout facet
         def bindingFacets = [:]
-        bindingFacets['facetsPackage'] = groupId+"."+artifactId+".facets"
+        bindingFacets['facetsPackage'] = packageName+".facets"
         bindingFacets['name'] = name
 
         writer = new FileWriter(facetsPath+File.separator+"MyLayout" + (groovy ? ".groovy" : ".java"))
