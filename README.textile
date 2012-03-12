@@ -26,6 +26,7 @@ h1. Getting started
 
 3. Start your woko application in Jetty embed container
     <pre><code>woko start</code></pre>
+    Run with <code>help</code> for options.
 
 4. Go to "http://localhost:8080/myapp":http://localhost:8080/myapp
 How cool is that ?
