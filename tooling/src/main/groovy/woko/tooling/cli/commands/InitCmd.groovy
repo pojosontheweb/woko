@@ -20,6 +20,8 @@ class InitCmd {
     Boolean groovy
     String webApp
     String modelPath
+    String wokoPath
+    String facetsPath
 
     InitCmd(Logger logger) {
         this.logger = logger
@@ -83,16 +85,16 @@ class InitCmd {
 
         String srcPath = srcBasePath + File.separator+groupId.replaceAll("\\.", "\\"+File.separator)+File.separator+artifactId
         String testPath = testBasePath + File.separator+groupId.replaceAll("\\.", "\\"+File.separator)+File.separator+artifactId
-        String facetPath = srcPath+File.separator+'facets'
+        facetsPath = srcPath+File.separator+'facets'
         modelPath = srcPath+File.separator+'model'
-        String wokoPath = srcPath+File.separator+'woko'
+        wokoPath = srcPath+File.separator+'woko'
 
         String srcResources = name+File.separator+'src'+File.separator+'main'+File.separator+'resources'
         String testResources = name+File.separator+'src'+File.separator+'test'+File.separator+'resources'
         webApp = name+File.separator+'src'+File.separator+'main'+File.separator+'webapp'+
                 File.separator+'WEB-INF'
 
-        if (!createDirectory(facetPath)){
+        if (!createDirectory(facetsPath)){
             logger.error('An error occurs during the facets source directory creation')
             System.exit(1)
         }
@@ -120,6 +122,61 @@ class InitCmd {
             logger.error('An error occurs during the webapp directory creation')
             System.exit(1)
         }
+    }
+
+    private void createWebXml(){
+        // Ask for 'push' command
+        Boolean pushCmd = AppUtils.yesNoAsk("Would you like enable the woko 'push' command");
+        String initListenerClassName = "woko.ri.RiWokoInitListener"
+
+        if (pushCmd){
+            // Generate the InitListener
+            initListenerClassName = generateInitListener()
+        }
+
+
+        def binding = [:]
+        binding['name'] = name
+        binding['description'] = description
+        binding['modelPackage'] = groupId+'.'+artifactId+'.model'
+        binding['facetsPackage'] = groupId+'.'+artifactId+'.facets'
+        binding['initListenerClassName'] = initListenerClassName
+
+        FileWriter writer = new FileWriter(webApp+File.separator+'web.xml')
+        generateTemplate(binding, 'web-xml', false, writer)
+    }
+
+    private String generateInitListener(){
+        logger.log("To enable the woko 'push' command, we will generate a default WokoInitListener")
+        String initListenerClassName = AppUtils.askWithDefault("How you want to named this listener ?", "MyInitListener")
+
+        def binding = [:]
+        binding['wokoPackage'] = groupId+'.'+artifactId+'.woko'
+        binding['className'] = initListenerClassName
+
+        FileWriter writer = new FileWriter(wokoPath+File.separator+initListenerClassName+ (groovy ? ".groovy" : ".java") )
+        generateTemplate(binding, 'initListener', groovy, writer)
+
+        return groupId+'.'+artifactId+'.woko.'+initListenerClassName
+    }
+
+    private void createJavaClass(){
+        def props = [
+                'modelPackage': groupId+'.'+artifactId+'.model',
+        ]
+
+        FileWriter writer = new FileWriter(modelPath+File.separator+'MyEntity.java')
+        AppUtils.generateTemplate(props, 'my-entity', writer)
+    }
+
+    private void copyResources(){
+        def props = [
+                'bootstrap': bootstrap,
+        ]
+
+        FileWriter writer = new FileWriter(name+File.separator+'src'+File.separator+'main'+
+                File.separator+'resources'+File.separator+'WokoResources.properties')
+        AppUtils.generateTemplate(props, 'WokoResources', writer)
     }
 
     private boolean createDirectory(String path){

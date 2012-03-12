@@ -1,0 +1,14 @@
+package $wokoPackage
+
+import net.sourceforge.jfacets.IFacetDescriptorManager
+import woko.hbcompass.HibernateCompassInMemWokoInitListener
+import woko.push.PushFacetDescriptorManager
+import woko.ri.RiWokoInitListener
+
+class $className extends RiWokoInitListener {
+
+    @Override
+    protected IFacetDescriptorManager createFacetDescriptorManager() {
+        new PushFacetDescriptorManager(super.createFacetDescriptorManager()) // Enable push command
+    }
+}
