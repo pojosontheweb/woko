@@ -25,7 +25,7 @@ h1. Getting started
     <pre><code>cd myapp</code></pre>
 
 3. Start your woko application in Jetty embed container
-    <pre><code>woko start</pre></code>
+    <pre><code>woko start</code></pre>
 
 4. Go to "http://localhost:8080/myapp":http://localhost:8080/myapp
 
@@ -35,5 +35,14 @@ h1. Getting started
 * The all "documentation index":https://github.com/vankeisb/woko2/wiki
 * The "Woko screencasts":https://github.com/vankeisb/woko2/wiki/Screencasts
 
-h1. Licence
+h1. License
+
+Licensed under the Apache License, Version 2.0 (the "License"); you may not use this work except in compliance with the License.
+You may obtain a copy of the License in the LICENSE file, or at:
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software distributed under the License is
+distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License
+for the specific language governing permissions and limitations under the License.
 
