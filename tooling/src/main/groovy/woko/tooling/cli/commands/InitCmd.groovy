@@ -68,7 +68,64 @@ class InitCmd {
         generateTemplate(binding, 'pom', false, writer)
     }
 
+    /**
+     * Convention : package name = groupId.artifactId
+     */
+    private void createPackage(){
+        String srcBasePath, testBasePath
+        if (groovy){
+            srcBasePath = name+File.separator+'src'+File.separator+'main'+File.separator+'groovy'
+            testBasePath = name+File.separator+'src'+File.separator+'test'+File.separator+'groovy'
+        }else{
+            srcBasePath = name+File.separator+'src'+File.separator+'main'+File.separator+'java'
+            testBasePath = name+File.separator+'src'+File.separator+'test'+File.separator+'java'
+        }
 
+        String srcPath = srcBasePath + File.separator+groupId.replaceAll("\\.", "\\"+File.separator)+File.separator+artifactId
+        String testPath = testBasePath + File.separator+groupId.replaceAll("\\.", "\\"+File.separator)+File.separator+artifactId
+        String facetPath = srcPath+File.separator+'facets'
+        modelPath = srcPath+File.separator+'model'
+        String wokoPath = srcPath+File.separator+'woko'
+
+        String srcResources = name+File.separator+'src'+File.separator+'main'+File.separator+'resources'
+        String testResources = name+File.separator+'src'+File.separator+'test'+File.separator+'resources'
+        webApp = name+File.separator+'src'+File.separator+'main'+File.separator+'webapp'+
+                File.separator+'WEB-INF'
+
+        if (!createDirectory(facetPath)){
+            logger.error('An error occurs during the facets source directory creation')
+            System.exit(1)
+        }
+        if (!createDirectory(modelPath)){
+            logger.error('An error occurs during the model source directory creation')
+            System.exit(1)
+        }
+        if (!createDirectory(wokoPath)){
+            logger.error('An error occurs during the woko source directory creation')
+            System.exit(1)
+        }
+        if (!createDirectory(testPath)){
+            logger.error('An error occurs during the maven TEST directory creation')
+            System.exit(1)
+        }
+        if (!createDirectory(srcResources)){
+            logger.error('An error occurs during the maven SRC RESOURCES directory creation')
+            System.exit(1)
+        }
+        if (!createDirectory(testResources)){
+            logger.error('An error occurs during the maven TEST RESOURCES directory creation')
+            System.exit(1)
+        }
+        if (!createDirectory(webApp)){
+            logger.error('An error occurs during the webapp directory creation')
+            System.exit(1)
+        }
+    }
+
+    private boolean createDirectory(String path){
+        File dir = new File(path)
+        return dir.mkdirs()
+    }
 
     private void generateTemplate(Map binding, String templateName, boolean useGroovy, Writer out){
         def engine = new GStringTemplateEngine()
