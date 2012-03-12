@@ -102,7 +102,10 @@ class Runner {
         if (!args) {
             throw new IllegalArgumentException("0 args specified, we need at least the command name")
         }
-        if (args[0] == "help") {
+        if (args[0] == "init"){
+            logger.error("This project seems to be already initialized...")
+            System.exit(1)
+        }else if (args[0] == "help") {
             if (args[1])
                 help(args[1])
             else
