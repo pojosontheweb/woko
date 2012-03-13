@@ -19,4 +19,6 @@ class MyEntity {
     @NotNull
     @SearchableProperty
     String myProp
+
+    Date myOtherProp
 }
