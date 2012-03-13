@@ -1,17 +1,17 @@
 #!/bin/bash
 
+echo "__       __     _  __"
+echo "\\ \\  _  / /___ | |/ / ___"
+echo " \\ \\/ \\/ // o \\|   K /   \\"
+echo "  \\__W__/ \\___/|_|\\_\\\\_o_/  2.0"
+echo "             POJOs on the Web !"
+echo ""
+
 # do we have a pom file ?
 if [ -e pom.xml ]
 then
     mvn exec:java -Dexec.mainClass="woko.tooling.cli.Runner" -Dexec.classpathScope=runtime -Dexec.args="$1 $2 $3 $4 $5" -q
 else
-    echo "__       __     _  __"
-    echo "\\ \\  _  / /___ | |/ / ___"
-    echo " \\ \\/ \\/ // o \\|   K /   \\"
-    echo "  \\__W__/ \\___/|_|\\_\\\\_o_/  2.0"
-    echo "             POJOs on the Web !"
-    echo ""
-
     # Asking for project creation ?
     if [ "$1" == "init" ]
     then
