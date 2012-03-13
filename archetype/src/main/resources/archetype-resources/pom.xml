@@ -53,35 +53,6 @@
             <version>2.3</version>
         </dependency>
 
-
-        <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
-        <!-- Your specifics Woko dependencies -->
-        <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
-        #if(${bootstrap-usage} == "y")
-        <!-- Bootstrap : UI from twitter -->
-        <dependency>
-            <groupId>com.rvkb</groupId>
-            <artifactId>woko-web-bootstrap</artifactId>
-            <version>${woko.version}</version>
-            <type>war</type>
-        </dependency>
-        #else
-        <dependency>
-            <groupId>com.rvkb</groupId>
-            <artifactId>woko-web-lithium</artifactId>
-            <version>${woko.version}</version>
-            <type>war</type>
-        </dependency>
-        #end
-
-        #if(${groovy-usage} == "y")
-        <!-- Groovy -->
-        <dependency>
-            <groupId>org.codehaus.groovy</groupId>
-            <artifactId>groovy</artifactId>
-            <version>1.7.4</version>
-        </dependency>
-        #end
     </dependencies>
 
 
