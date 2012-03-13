@@ -43,6 +43,7 @@ class InitCmd extends Command{
         iLog(" ") // line sep
         iLog(" --- Summary ---")
         iLog(" ") // line sep
+        iLog("Your project has been generated in : $artifactId folder, and contains : ")
         iLog("- Some dependencies have been added to your pom")
         iLog("- A web.xml file has been created")
         iLog("- Default POJO has been added in your model package")
