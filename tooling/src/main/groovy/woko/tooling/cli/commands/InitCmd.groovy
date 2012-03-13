@@ -208,7 +208,7 @@ class InitCmd extends Command{
         // Generate default Layout facet
         def bindingFacets = [:]
         bindingFacets['facetsPackage'] = packageName+".facets"
-        bindingFacets['name'] = name
+        bindingFacets['name'] = artifactId
 
         writer = new FileWriter(facetsPath+File.separator+"MyLayout" + (useGroovy ? ".groovy" : ".java"))
         generateTemplate(bindingFacets, 'layout', useGroovy, writer)
