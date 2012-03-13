@@ -48,7 +48,6 @@ public class SaveImpl extends BaseResolutionFacet implements Save {
             }
         };
 
-
     }
 
     protected Resolution getNonRpcResolution(ActionBeanContext abc) {
