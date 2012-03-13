@@ -34,6 +34,7 @@
                     <artifactId>maven-surefire-plugin</artifactId>
                     <configuration>
                         <skip>true</skip>
+                        <argLine>-Xmx1024m</argLine>
                     </configuration>
                     <executions>
                         <execution>
