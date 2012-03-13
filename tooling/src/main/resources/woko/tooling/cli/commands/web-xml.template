@@ -6,7 +6,7 @@
          http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
          version="2.4">
 
-    <description>$description</description>
+    <description>My woko app</description>
     <display-name>$name</display-name>
 
     <context-param>
