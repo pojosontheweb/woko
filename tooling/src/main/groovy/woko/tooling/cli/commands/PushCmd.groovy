@@ -17,7 +17,7 @@ class PushCmd extends Command {
           logger,
           "push",
           "pushes the local facets to a remote application",
-          "[url]",
+          "[resources|quiet]",
           """Scans the local facets in your project and pushes them
 to a running woko application. The url argument defaults to :
 
@@ -39,12 +39,22 @@ server restarts when you change facet code.
     void execute(List<String> args) {
         String arg1 = getArgAt(args, 0)
         boolean resources = false
+        boolean quiet = false
         if (arg1=="resources") {
             resources = true
         } else {
-            String url = askWithDefault("Application url", "http://localhost:8080/$pomHelper.model.build.finalName")
-            String username = askWithDefault("Developer username", "wdevel")
-            String password = askWithDefault("          password", "wdevel")
+            quiet = arg1 == "quiet"
+
+            String url = "http://localhost:8080/$pomHelper.model.build.finalName"
+            String username = "wdevel"
+            String password = "wdevel"
+            if (!quiet) {
+                url = askWithDefault("Application url", url)
+                username = askWithDefault("Developer username", username)
+                password = askWithDefault("          password", password)
+            } else {
+                iLog("quiet mode : pushing all !")
+            }
 
             // scan the local facet sources
             def baseDir = "$projectDir.absolutePath/src/main/groovy"
@@ -78,7 +88,7 @@ server restarts when you change facet code.
                     httpParams["facet.sources[$index]"] = v
                     index++
                 }
-                if (yesNoAsk("Shall we push this")) {
+                if (quiet || yesNoAsk("Shall we push this")) {
                     // convert to woko-enabled params for the push facet
 
                     AppHttpClient c = new AppHttpClient(logger, url, pomHelper)
@@ -95,7 +105,7 @@ server restarts when you change facet code.
             }
         }
 
-        if (resources || yesNoAsk("Do you want to redeploy your web resources to /target")) {
+        if (resources || quiet || yesNoAsk("Do you want to redeploy your web resources to /target")) {
             String targetDir = "$projectDir.absolutePath/target/${pomHelper.model.build.finalName}"
             File target = new File(targetDir)
             if (!target.exists()) {
