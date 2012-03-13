@@ -1,18 +1,7 @@
 package woko.tooling.cli
 
 import woko.tooling.utils.Logger
-import woko.Woko
-import woko.WokoInitListener
-import net.sourceforge.jfacets.FacetDescriptor
-import net.sourceforge.jfacets.IFacetDescriptorManager
-import static woko.tooling.utils.AppUtils.*
-import woko.facets.builtin.WokoFacets
-import woko.facets.FragmentFacet
-import woko.tooling.utils.PomHelper
-import woko.tooling.cli.commands.ListCmd
-import woko.tooling.cli.commands.CreateCmd
-import woko.tooling.cli.commands.ProcessCmd
-import woko.tooling.cli.commands.PushCmd
+import woko.tooling.cli.commands.*
 
 class Runner {
 
@@ -75,6 +64,7 @@ class Runner {
           new ListCmd(this, workingDir, logger),
           new CreateCmd(this, workingDir, logger),
           new PushCmd(this, workingDir, logger),
+          new InitCmd(this, workingDir, logger),
           new ProcessCmd(
             this,
             workingDir,
@@ -112,8 +102,7 @@ class Runner {
     void invokeCommand(args) {
         if (!args) {
             throw new IllegalArgumentException("0 args specified, we need at least the command name")
-        }
-        if (args[0] == "help") {
+        }else if (args[0] == "help") {
             if (args[1])
                 help(args[1])
             else
@@ -144,8 +133,10 @@ class Runner {
      * @param args an array or list of Strings containing the command line parameters
      */
     void run(args) {
-        // Display home msg
-        logger.splashMsg()
+        if (args[0] != "init"){
+            // Display home msg
+            logger.splashMsg()
+        }
         args = args ? args : ["help"]
         invokeCommand(args)
     }

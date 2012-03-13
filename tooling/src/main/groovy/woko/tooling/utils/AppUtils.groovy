@@ -11,7 +11,7 @@ class AppUtils {
     static requiredAsk(String question){
         String response
         while(!response){
-            print "> $question :"
+            print "> $question : "
             DataInputStream stream = new DataInputStream(System.in);
             response = stream.readLine()
         }

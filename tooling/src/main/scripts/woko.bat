@@ -11,7 +11,21 @@ if exist pom.xml (
 
     if "%1" == "init" (
         echo Initializing project
-        mvn archetype:generate -DarchetypeArtifactId=woko-archetype -DarchetypeGroupId=com.rvkb -q	
+        :artifactId
+        set ARTIFACTID=
+        set /P ARTIFACTID=Project name ? : %=%
+        :groupId
+        set GROUPID=
+        set /P GROUPID=Maven groupId ? : %=%
+        :version
+        set VERSION="1.0-SNAPSHOT"
+        set /P VERSION=Your project's version ? [1.0-SNAPSHOT] : %=%
+
+        mvn archetype:generate -DarchetypeArtifactId=woko-archetype -DarchetypeGroupId=com.rvkb\
+                		-DgroupId="%GROUPID%" -DartifactId="%ARTIFACTID%" -Dversion="%VERSION%" -DinteractiveMode="false" -q
+
+        cd "%ARTIFACTID%"
+        mvn exec:java -Dexec.mainClass="woko.tooling.cli.Runner" -Dexec.classpathScope=runtime -Dexec.args="init" -q
 	) else (
 		echo ERROR : No pom file found in current directory.
 		:input
@@ -19,7 +33,21 @@ if exist pom.xml (
 		set /P INPUT=Do you want to init the project ? [n]: %=%
 		if "%INPUT%"=="y" (
             echo Initializing project
-            mvn archetype:generate -DarchetypeArtifactId=woko-archetype -DarchetypeGroupId=com.rvkb -q
+            :artifactId
+            set ARTIFACTID=
+            set /P ARTIFACTID=Project name ? : %=%
+            :groupId
+            set GROUPID=
+            set /P GROUPID=Maven groupId ? : %=%
+            :version
+            set VERSION="1.0-SNAPSHOT"
+            set /P VERSION=Your project's version ? [1.0-SNAPSHOT] : %=%
+
+            mvn archetype:generate -DarchetypeArtifactId=woko-archetype -DarchetypeGroupId=com.rvkb\
+                            -DgroupId="%GROUPID%" -DartifactId="%ARTIFACTID%" -Dversion="%VERSION%" -DinteractiveMode="false" -q
+
+            cd "%ARTIFACTID%"
+            mvn exec:java -Dexec.mainClass="woko.tooling.cli.Runner" -Dexec.classpathScope=runtime -Dexec.args="init" -q
 		) else (
             echo Nothing done. Hope to see you soon !
 		)
