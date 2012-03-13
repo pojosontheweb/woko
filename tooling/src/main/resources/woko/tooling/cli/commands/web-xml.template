@@ -84,8 +84,8 @@
     </context-param>
 
     <context-param>
+        <param-value>$facetsPackage</param-value>
         <param-name>Woko.Facet.Packages</param-name>
-        <param-value>facetsPackage</param-value>
     </context-param>
 
 </web-app>
