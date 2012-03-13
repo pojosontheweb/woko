@@ -133,10 +133,6 @@ class Runner {
      * @param args an array or list of Strings containing the command line parameters
      */
     void run(args) {
-        if (args[0] != "init"){
-            // Display home msg
-            logger.splashMsg()
-        }
         args = args ? args : ["help"]
         invokeCommand(args)
     }
