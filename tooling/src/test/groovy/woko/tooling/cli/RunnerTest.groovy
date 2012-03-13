@@ -31,19 +31,14 @@ class RunnerTest {
         assertEquals("invalid command result for args $args", expectedResult, actual)
     }
 
-    static final String EXPECTED_NO_ARGS = """__       __     _  __
-\\ \\  _  / /___ | |/ / ___
- \\ \\/ \\/ // o \\|   K /   \\
-  \\__W__/ \\___/|_|\\_\\\\_o_/  2.0
-             POJOs on the Web !
-
-Usage : woko <command> arg*
+    static final String EXPECTED_NO_ARGS = """Usage : woko <command> arg*
 
 Available commands :
 
   - list facets|roles		:		list facets or roles
   - create facet|entity		:		create project elements
   - push [resources|quiet]		:		pushes the local facets to a remote application
+  - init 		:		Initialize a new Woko project
   - start 		:		run the application in a local tomcat container
   - stop 		:		stop the local tomcat container (in case started in background process)
   - build 		:		rebuilds the whole application
@@ -64,13 +59,7 @@ Available commands :
 
     @Test
     void testList() {
-        assertCommandResult(["list"], """__       __     _  __
-\\ \\  _  / /___ | |/ / ___
- \\ \\/ \\/ // o \\|   K /   \\
-  \\__W__/ \\___/|_|\\_\\\\_o_/  2.0
-             POJOs on the Web !
-
-ERROR : invalid list command
+        assertCommandResult(["list"], """ERROR : invalid list command
 Help for command 'list' : list facets or roles
 
 Usage :
@@ -86,13 +75,7 @@ The command accepts one argument that can be  :
 
     @Test
     void testListFacets() {
-        assertCommandResult(["list", "facets"], """__       __     _  __
-\\ \\  _  / /___ | |/ / ___
- \\ \\/ \\/ // o \\|   K /   \\
-  \\__W__/ \\___/|_|\\_\\\\_o_/  2.0
-             POJOs on the Web !
-
-40 facets found : \n  create, developer, java.lang.Object, woko.facets.builtin.developer.Create
+        assertCommandResult(["list", "facets"], """40 facets found : \n  create, developer, java.lang.Object, woko.facets.builtin.developer.Create
   delete, developer, java.lang.Object, woko.facets.builtin.developer.DeleteImpl
   edit, developer, java.lang.Object, woko.facets.builtin.developer.EditImpl
   find, developer, java.lang.Object, woko.facets.builtin.developer.Find
@@ -137,13 +120,7 @@ The command accepts one argument that can be  :
 
     @Test
     void testListRoles() {
-        assertCommandResult(["list", "roles"], """__       __     _  __
-\\ \\  _  / /___ | |/ / ___
- \\ \\/ \\/ // o \\|   K /   \\
-  \\__W__/ \\___/|_|\\_\\\\_o_/  2.0
-             POJOs on the Web !
-
-2 role(s) used in faced keys :
+        assertCommandResult(["list", "roles"], """2 role(s) used in faced keys :
   all
   developer
 """)

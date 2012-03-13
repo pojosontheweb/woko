@@ -1,8 +1,4 @@
-#set( $symbol_pound = '#' )
-#set( $symbol_dollar = '$' )
-#set( $symbol_escape = '\' )
-     
-package ${package}.model;
+package $modelPackage;
 
 import org.compass.annotations.Searchable;
 import org.compass.annotations.SearchableId;

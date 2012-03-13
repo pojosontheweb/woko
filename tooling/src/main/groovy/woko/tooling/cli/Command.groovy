@@ -111,6 +111,10 @@ abstract class Command {
         return getPomHelper().model.groupId
     }
 
+    protected String getArtifactId() {
+        return getPomHelper().model.artifactId
+    }
+
     protected String capitalize(String str) {
         if (!str) {
             return str
