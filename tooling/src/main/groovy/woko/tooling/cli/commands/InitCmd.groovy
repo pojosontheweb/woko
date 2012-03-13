@@ -6,16 +6,13 @@ import woko.tooling.utils.Logger
 import woko.tooling.utils.AppUtils
 import groovy.text.GStringTemplateEngine
 import groovy.text.Template
+import org.apache.maven.model.Dependency
 
 
-class InitCmd {
+class InitCmd extends Command{
 
     final Logger logger
 
-    String name
-    String description
-    String groupId
-    String artifactId
     String packageName
     Boolean bootstrap
     Boolean groovy
@@ -24,59 +21,75 @@ class InitCmd {
     String wokoPath
     String facetsPath
 
-    InitCmd(Logger logger) {
-        this.logger = logger
+    InitCmd(Runner runner, File projectDir, Logger logger) {
+        super(
+                runner,
+                projectDir,
+                logger,
+                "init",
+                "Initialize a new Woko project",
+                "",
+                """Initialize a new Woko project""")
     }
 
     @Override
-    void execute() {
-        init()
+    void execute(List<String> args) {
+//        init()
         createPom()
-        createPackage()
-        createWebXml()
-        createClass()
-        copyResources()
+//        createPackage()
+//        createWebXml()
+//        createClass()
+//        copyResources()
     }
 
     private void init(){
         // Create project folder
-        logger.log("# Global project information")
-        logger.log("----------------------------")
-        name = AppUtils.requiredAsk('Project name');
-        description = AppUtils.simpleAsk('Project Description');
-        if (!createDirectory(name)){
-            logger.error('An error occurs during the project folder creation')
-            System.exit(1)
-        }
-        logger.log("") // jump line
+//        logger.log("# Global project information")
+//        logger.log("----------------------------")
+//        name = AppUtils.requiredAsk('Project name');
+//        description = AppUtils.simpleAsk('Project Description');
+//        if (!createDirectory(name)){
+//            logger.error('An error occurs during the project folder creation')
+//        }
+//        logger.log("") // jump line
     }
 
     private void createPom(){
         // Create pom
-        logger.log("# Generate pom.xml for maven")
-        logger.log("----------------------------")
-        groupId = AppUtils.askWithDefault('Maven groupId ?', "com."+name.toLowerCase());
-        artifactId = AppUtils.askWithDefault('Maven artifactId ?', name.toLowerCase());
-        String versionId = AppUtils.askWithDefault("Your application's version ?", "0.1-SNAPSHOT");
-        packageName = AppUtils.askWithDefault("Choose you default package name ?", groupId+"."+artifactId);
-        String wokoVersion = AppUtils.askWithDefault('Which version of Woko you want to use ?', "2.0-SNAPSHOT");
-        bootstrap = AppUtils.yesNoAsk('Would you like to use Bootstrap UI');
-        groovy = AppUtils.yesNoAsk('Would you like to use Groovy language');
+//        logger.log("# Generate pom.xml for maven")
+//        logger.log("----------------------------")
+//        groupId = AppUtils.askWithDefault('Maven groupId ?', "com."+name.toLowerCase());
+//        artifactId = AppUtils.askWithDefault('Maven artifactId ?', name.toLowerCase());
+//        String versionId = AppUtils.askWithDefault("Your application's version ?", "0.1-SNAPSHOT");
+//        packageName = AppUtils.askWithDefault("Choose you default package name ?", groupId+"."+artifactId);
+//        String wokoVersion = AppUtils.askWithDefault('Which version of Woko you want to use ?', "2.0-SNAPSHOT");
+//        bootstrap = AppUtils.yesNoAsk('Would you like to use Bootstrap UI');
+//        groovy = AppUtils.yesNoAsk('Would you like to use Groovy language');
 
-        private final def binding = [:]
-        binding['name'] = name
-        binding['description'] = description
-        binding['artifactId'] =artifactId
-        binding['groupId'] = groupId
-        binding['version'] = versionId
-        binding['wokoVersion'] = wokoVersion
-        binding['bootstrap'] = bootstrap
-        binding['groovy'] = groovy
+//        private final def binding = [:]
+//        binding['name'] = name
+////        binding['description'] = description
+//        binding['artifactId'] =artifactId
+//        binding['groupId'] = groupId
+//        binding['version'] = versionId
+//        binding['wokoVersion'] = wokoVersion
+//        binding['bootstrap'] = bootstrap
+//        binding['groovy'] = groovy
 
-        FileWriter writer = new FileWriter(name+File.separator+'pom.xml')
-        generateTemplate(binding, 'pom', false, writer)
-        logger.indentedLog("pom.xml file generated")
-        logger.log("") // jump line
+//        FileWriter writer = new FileWriter(name+File.separator+'pom.xml')
+//        generateTemplate(binding, 'pom', false, writer)
+//        logger.indentedLog("pom.xml file generated")
+//        logger.log("") // jump line
+
+        bootstrap = AppUtils.yesNoAsk("Would you like to use Bootstrap for UI")
+        if (bootstrap){
+            // Add bootstrap dependency in pom
+            Dependency bootStrapDep = new Dependency()
+            bootStrapDep.groupId = "com.rvkb"
+            bootStrapDep.artifactId = "woko-web-bootstrap"
+            bootStrapDep.version = '${woko-version}'
+            pomHelper.addDependency(bootStrapDep)
+        }
     }
 
     /**

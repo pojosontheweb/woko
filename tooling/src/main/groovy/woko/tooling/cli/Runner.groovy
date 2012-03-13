@@ -64,6 +64,7 @@ class Runner {
           new ListCmd(this, workingDir, logger),
           new CreateCmd(this, workingDir, logger),
           new PushCmd(this, workingDir, logger),
+          new InitCmd(this, workingDir, logger),
           new ProcessCmd(
             this,
             workingDir,
@@ -101,10 +102,6 @@ class Runner {
     void invokeCommand(args) {
         if (!args) {
             throw new IllegalArgumentException("0 args specified, we need at least the command name")
-        }
-        if (args[0] == "init"){
-            logger.error("This project seems to be already initialized...")
-            System.exit(1)
         }else if (args[0] == "help") {
             if (args[1])
                 help(args[1])
