@@ -39,8 +39,8 @@ Available commands :
   - create facet|entity		:		create project elements
   - push [resources|quiet]		:		pushes the local facets to a remote application
   - init 		:		Initialize a new Woko project
-  - start 		:		run the application in a local tomcat container
-  - stop 		:		stop the local tomcat container (in case started in background process)
+  - start 		:		run the application in a local jetty container
+  - stop 		:		stop the local jetty container (in case started in background process)
   - build 		:		rebuilds the whole application
   - help [command_name]		:		display help about specified command
 

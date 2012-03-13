@@ -65,22 +65,22 @@ class Runner {
           new CreateCmd(this, workingDir, logger),
           new PushCmd(this, workingDir, logger),
           new InitCmd(this, workingDir, logger),
-          new ProcessCmd(
+          new StartCommand(
             this,
             workingDir,
             logger,
             "start",
-            "run the application in a local tomcat container",
+            "run the application in a local jetty container",
             "",
             "",
-            "mvn package jetty:run-exploded -Dmaven.test.skip"
+            "mvn package jetty:run-exploded -Dmaven.test.skip",
           ),
           new ProcessCmd(
             this,
             workingDir,
             logger,
             "stop",
-            "stop the local tomcat container (in case started in background process)",
+            "stop the local jetty container (in case started in background process)",
             "",
             "",
             "mvn jetty:stop"
