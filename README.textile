@@ -24,7 +24,7 @@ h1. Getting started
 3. Change directory to <code>myapp</code>, where "myapp" is the application name (coming from the maven artifactId)
     <pre><code>cd myapp</code></pre>
 
-3. Start your woko application in Jetty embed container
+3. Start your woko application in Jetty embedded container
     <pre><code>woko start</code></pre>
     Run with <code>help</code> for options.
 
