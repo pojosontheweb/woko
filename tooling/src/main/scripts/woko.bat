@@ -18,8 +18,8 @@ if exist pom.xml (
         set GROUPID=
         set /P GROUPID=Maven groupId ? : %=%
         :version
-        set VERSION=
-        set /P VERSION=Your project's version ? : %=%
+        set VERSION="1.0-SNAPSHOT"
+        set /P VERSION=Your project's version ? [1.0-SNAPSHOT] : %=%
 
         mvn archetype:generate -DarchetypeArtifactId=woko-archetype -DarchetypeGroupId=com.rvkb\
                 		-DgroupId="%GROUPID%" -DartifactId="%ARTIFACTID%" -Dversion="%VERSION%" -DinteractiveMode="false" -q
@@ -40,8 +40,8 @@ if exist pom.xml (
             set GROUPID=
             set /P GROUPID=Maven groupId ? : %=%
             :version
-            set VERSION=
-            set /P VERSION=Your project's version ? : %=%
+            set VERSION="1.0-SNAPSHOT"
+            set /P VERSION=Your project's version ? [1.0-SNAPSHOT] : %=%
 
             mvn archetype:generate -DarchetypeArtifactId=woko-archetype -DarchetypeGroupId=com.rvkb\
                             -DgroupId="%GROUPID%" -DartifactId="%ARTIFACTID%" -Dversion="%VERSION%" -DinteractiveMode="false" -q

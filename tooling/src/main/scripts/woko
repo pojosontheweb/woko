@@ -18,7 +18,8 @@ else
         echo "Initializing project"
                 read -p "> Project name ? " artifactId
                 read -p "> Maven groupId ? " groupId
-                read -p "> Your project's version ? " version
+                read -p "> Your project's version ? [1.0-SNAPSHOT] " version
+                version=${version:-"1.0-SNAPSHOT"}
                 mvn archetype:generate -DarchetypeArtifactId=woko-archetype -DarchetypeGroupId=com.rvkb\
         		-DgroupId="$groupId" -DartifactId="$artifactId" -Dversion="$version" -DinteractiveMode="false" -q
                 cd "$artifactId"
@@ -30,7 +31,8 @@ else
         then
            read -p "> Project name ? " artifactId
            read -p "> Maven groupId ? " groupId
-           read -p "> Your project's version ? " version
+           read -p "> Your project's version ? [1.0-SNAPSHOT] " version
+           version=${version:-"1.0-SNAPSHOT"}
            mvn archetype:generate -DarchetypeArtifactId=woko-archetype -DarchetypeGroupId=com.rvkb\
            -DgroupId="$groupId" -DartifactId="$artifactId" -Dversion="$version" -DinteractiveMode="false" -q
            cd "$artifactId"
