@@ -39,12 +39,10 @@ else
 		BUILD_RESULT="FAILED"
 		MSG="pull develop and have a look at what's going on !"
 		BUILD_LOG=`cat build.log`
+	        echo Sending email
+	        echo "Woko automatic build $BUILD_RESULT - $MSG $BUILD_LOG" | mail -s "[Woko build] $BUILD_RESULT" remi@rvkb.comdd	  
 	else
 		BUILD_RESULT="SUCCESSFUL"
-                MSG="keep pushing it !"
-		BUILD_LOG=""
 	fi
 	echo Build result : $BUILD_RESULT
-	echo Sending email
-	echo "Woko automatic build $BUILD_RESULT - $MSG $BUILD_LOG" | mail -s "[Woko build] $BUILD_RESULT" remi@rvkb.com
 fi
