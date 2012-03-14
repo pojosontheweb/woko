@@ -31,17 +31,20 @@ then
 	echo Up to date, nothing done.
 else
 	echo Code changed, building...
-	rm -rf build.log
+	rm -rf build.log.*
 	mvn clean install | tee build.log 
 	BUILD_RESULT=`grep -l "BUILD FAILURE" build.log` 
 	if [ "build.log" == "$BUILD_RESULT" ]
 	then
 		BUILD_RESULT="FAILED"
 		MSG="pull develop and have a look at what's going on !"
+		BUILD_LOG=`cat build.log`
 	else
 		BUILD_RESULT="SUCCESSFUL"
-                MSG="keep pushing"
+                MSG="keep pushing it !"
+		BUILD_LOG=""
 	fi
 	echo Build result : $BUILD_RESULT
-	echo Woko automatic build $BUILD_RESULT - $MSG  | mail -s "[Woko build] $BUILD_RESULT" remi@rvkb.com
+	echo Sending email
+	echo "Woko automatic build $BUILD_RESULT - $MSG $BUILD_LOG" | mail -s "[Woko build] $BUILD_RESULT" remi@rvkb.com
 fi
