@@ -72,7 +72,7 @@
 
     <listener>
         <display-name>WokoInitListener</display-name>
-        <listener-class>woko.push.RiWokoInitListenerWithPush</listener-class>
+        <listener-class>woko.ri.RiWokoInitListenerWithPush</listener-class>
     </listener>
 
     <context-param>

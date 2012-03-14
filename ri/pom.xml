@@ -41,5 +41,10 @@
             <artifactId>woko-usermanagement-hibernate</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.rvkb</groupId>
+            <artifactId>woko-push</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 </project>
