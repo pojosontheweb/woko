@@ -21,6 +21,7 @@ if exist pom.xml (
         set VERSION="1.0-SNAPSHOT"
         set /P VERSION=Your project's version ? [1.0-SNAPSHOT] : %=%
 
+        echo Generating your project, please wait, it can take a while to download everything...
         mvn archetype:generate -DarchetypeArtifactId=woko-archetype -DarchetypeGroupId=com.rvkb\
                 		-DgroupId="%GROUPID%" -DartifactId="%ARTIFACTID%" -Dversion="%VERSION%" -DinteractiveMode="false" -q
 

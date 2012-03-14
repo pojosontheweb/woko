@@ -1,3 +1,19 @@
+/*
+ * Copyright 2001-2010 Remi Vankeisbelck
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package woko.tooling.cli.commands
 
 import woko.tooling.cli.Command
@@ -40,17 +56,9 @@ class InitCmd extends Command{
         createClass()
         copyResources()
 
-        iLog(" ") // line sep
-        iLog(" --- Summary ---")
-        iLog(" ") // line sep
-        iLog("Your project has been generated in : $artifactId folder, and contains : ")
-        iLog("- Some dependencies have been added to your pom")
-        iLog("- A web.xml file has been created")
-        iLog("- Default POJO has been added in your model package")
-        iLog("- The application name has been overridden through a Layout facet")
-        iLog("- A application.properties has been added")
-        iLog(" ") // line sep
-        iLog("Use 'woko start' command to launch your app in a Jetty embedded server")
+        iLog("")
+        iLog("Your project has been generated in : $artifactId.")
+        iLog("Run 'woko start' in order to launch your app in a local Jetty container")
     }
 
     private void addSpecificsDependencies(){
@@ -63,19 +71,17 @@ class InitCmd extends Command{
             bootStrapDep.version = '${woko.version}'
             bootStrapDep.type = "war"
             pomHelper.addDependency(bootStrapDep)
-            iLog("A dependency on woko-web-bootstrap has been added to your pom")
         }else{
             // Add a dependency on Lithium in pom
             Dependency lithiumDep = new Dependency()
             lithiumDep.groupId = "com.rvkb"
             lithiumDep.artifactId = "woko-web-lithium"
             lithiumDep.version = '${woko.version}'
-            bootStrapDep.type = "war"
+            lithiumDep.type = "war"
             pomHelper.addDependency(lithiumDep)
-            iLog("A dependency on woko-web-lithium has been added to your pom")
         }
 
-        useGroovy = AppUtils.yesNoAsk("Would you like to use Groovy language")
+        useGroovy = AppUtils.yesNoAsk("Would you like to use Groovy")
         if (useGroovy){
             // Add a dependency on Groovy in pom
             Dependency groovyDep = new Dependency()
@@ -83,18 +89,15 @@ class InitCmd extends Command{
             groovyDep.artifactId = "groovy"
             groovyDep.version = "1.7.4"
             pomHelper.addDependency(groovyDep)
-            iLog("A dependency on groovy has been added to your pom")
         }else{
             iLog("You will use pure Java")
         }
-        log("") // jump line
     }
 
     /**
      * Convention : package name = groupId.artifactId
      */
     private void createPackage(){
-        iLog("We will generate all needed directories...")
         String srcBasePath, testBasePath
         if (useGroovy){
             srcBasePath = 'src'+File.separator+'main'+File.separator+'groovy'
@@ -104,7 +107,12 @@ class InitCmd extends Command{
             testBasePath = 'src'+File.separator+'test'+File.separator+'java'
         }
 
-        packageName = AppUtils.askWithDefault("Specify your default package name", groupId+"."+artifactId)
+        String defaultPackageName = groupId
+        if (!defaultPackageName.endsWith(artifactId)) {
+            defaultPackageName = "$defaultPackageName.$artifactId"
+        }
+
+        packageName = AppUtils.askWithDefault("Specify your default package name", defaultPackageName)
         String srcPath = srcBasePath + File.separator+packageName.replaceAll("\\.", "\\"+File.separator)
         String testPath = testBasePath + File.separator+packageName.replaceAll("\\.", "\\"+File.separator)
         facetsPath = srcPath+File.separator+'facets'
@@ -137,13 +145,9 @@ class InitCmd extends Command{
         if (!createDirectory(webApp)){
             logger.error('An error occurs during the webapp directory creation')
         }
-        iLog("...All directories have been created")
-        log("") // jump line
-
     }
 
     private void createWebXml(){
-        iLog("Generation of the web.xml file")
         // Ask for 'push' command
         Boolean pushCmd = AppUtils.yesNoAsk("Would you like enable the woko 'push' command");
         String initListenerClassName = "woko.ri.RiWokoInitListener"
@@ -151,7 +155,6 @@ class InitCmd extends Command{
         if (pushCmd){
             initListenerClassName = generateInitListener()
         }
-
 
         def binding = [:]
         binding['name'] = artifactId
@@ -163,18 +166,11 @@ class InitCmd extends Command{
         generateTemplate(binding, 'web-xml', false, writer)
 
         // Summary
-        iLog("web.xml file generation :")
-        iLog("- A web.xml file has been created : " + webApp+File.separator+'web.xml')
-        if (pushCmd){
-            iLog("- A new InitListener has been generated in : " + packageName+'.woko.'+initListenerClassName)
-            iLog("- A new dependency on woko-push has been added to your pom")
-        }
-        log('') //jump line
+        iLog("- web.xml file created : " + webApp+File.separator+'web.xml')
     }
 
     private String generateInitListener(){
-        iLog("To enable the woko 'push' command, we will generate a default WokoInitListener")
-        String initListenerClassName = AppUtils.askWithDefault("How you want to name this listener ?", "MyInitListener")
+        String initListenerClassName = "${capitalize(artifactId)}InitListener"
 
         // Generate the Listener
         def binding = [:]
@@ -194,17 +190,13 @@ class InitCmd extends Command{
     }
 
     private void createClass(){
-        iLog("Now we will generated a default POJO as example")
         // Generate example POJO
         def bindingPOJO = [:]
         bindingPOJO['modelPackage'] = packageName+".model"
 
         FileWriter writer = new FileWriter(modelPath+File.separator+"MyEntity" + (useGroovy ? ".groovy" : ".java"))
         generateTemplate(bindingPOJO, 'my-entity', useGroovy, writer)
-        iLog("MyEntity domain model had been created : " + packageName+".model.MyEntity")
-        log("")  // jump line
 
-        iLog("A default Layout facet will be created to specify your application name")
         // Generate default Layout facet
         def bindingFacets = [:]
         bindingFacets['facetsPackage'] = packageName+".facets"
@@ -212,18 +204,15 @@ class InitCmd extends Command{
 
         writer = new FileWriter(facetsPath+File.separator+"MyLayout" + (useGroovy ? ".groovy" : ".java"))
         generateTemplate(bindingFacets, 'layout', useGroovy, writer)
-        iLog("MyLayout facet has been created : " + packageName+".facets.MyLayout")
-        log("")  // jump line
+        iLog("- Layout facet created : " + packageName+".facets.MyLayout")
     }
 
     private void copyResources(){
-        iLog("Generation of the resources")
         FileWriter writer = new FileWriter('src'+File.separator+'main'+
                 File.separator+'resources'+File.separator+'application.properties')
         generateTemplate(null, 'application', false, writer)
-        iLog("application.resource has been created in : " + name+File.separator+'src'+File.separator+'main'+
+        iLog("- resource bundle created : " + artifactId +File.separator+'src'+File.separator+'main'+
                 File.separator+'resources'+File.separator+'application.properties')
-        log("")  // jump line
     }
 
     private boolean createDirectory(String path){

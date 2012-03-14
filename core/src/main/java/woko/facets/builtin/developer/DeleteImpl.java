@@ -1,3 +1,19 @@
+/*
+ * Copyright 2001-2010 Remi Vankeisbelck
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package woko.facets.builtin.developer;
 
 import net.sourceforge.jfacets.annotations.FacetKey;
@@ -32,14 +48,23 @@ public class DeleteImpl extends BaseResolutionFacet implements Delete {
         this.cancel = cancel;
     }
 
+    private static StreamingResolution createResolution(boolean success) {
+        return new StreamingResolution("text/json", "{ \"success\": " + success + " }");
+    }
+
     public Resolution getResolution(final ActionBeanContext abc) {
         if (cancel != null) {
             WokoFacetContext facetContext = getFacetContext();
             abc.getMessages().add(new LocalizableMessage("woko.devel.delete.cancel"));
-            return new RedirectResolution(
-              facetContext.getWoko().facetUrl(
-                WokoFacets.view,
-                facetContext.getTargetObject()));
+            return new RpcResolutionWrapper(new RedirectResolution(
+                    facetContext.getWoko().facetUrl(
+                            WokoFacets.view,
+                            facetContext.getTargetObject()))) {
+                @Override
+                public Resolution getRpcResolution() {
+                    return createResolution(false);
+                }
+            };
         }
         if (confirm != null) {
             final WokoFacetContext facetContext = getFacetContext();
@@ -50,12 +75,18 @@ public class DeleteImpl extends BaseResolutionFacet implements Delete {
             return new RpcResolutionWrapper(new RedirectResolution("/home")) {
                 @Override
                 public Resolution getRpcResolution() {
-                    return new StreamingResolution("text/json", "{ \"success\": true }");
+                    return createResolution(true);
                 }
             };
         }
         // not confirmed, we display the confirm screen
-        return new ForwardResolution(FRAGMENT_PATH);
+        return new RpcResolutionWrapper(new ForwardResolution(FRAGMENT_PATH)) {
+            @Override
+            public Resolution getRpcResolution() {
+                return createResolution(false);
+            }
+        };
     }
+
 
 }
