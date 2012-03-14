@@ -148,45 +148,17 @@ class InitCmd extends Command{
     }
 
     private void createWebXml(){
-        // Ask for 'push' command
-        Boolean pushCmd = AppUtils.yesNoAsk("Would you like enable the woko 'push' command");
-        String initListenerClassName = "woko.ri.RiWokoInitListener"
-
-        if (pushCmd){
-            initListenerClassName = generateInitListener()
-        }
 
         def binding = [:]
         binding['name'] = artifactId
         binding['modelPackage'] = packageName+'.model'
         binding['facetsPackage'] = packageName+'.facets'
-        binding['initListenerClassName'] = initListenerClassName
 
         FileWriter writer = new FileWriter(webApp+File.separator+'web.xml')
         generateTemplate(binding, 'web-xml', false, writer)
 
         // Summary
         iLog("- web.xml file created : " + webApp+File.separator+'web.xml')
-    }
-
-    private String generateInitListener(){
-        String initListenerClassName = "${capitalize(artifactId)}InitListener"
-
-        // Generate the Listener
-        def binding = [:]
-        binding['wokoPackage'] = packageName+'.woko'
-        binding['className'] = initListenerClassName
-        FileWriter writer = new FileWriter(wokoPath+File.separator+initListenerClassName+ (useGroovy ? ".groovy" : ".java") )
-        generateTemplate(binding, 'initListener', useGroovy, writer)
-
-        // Add dependency on woko-push in pom
-        Dependency pushDep = new Dependency()
-        pushDep.groupId = "com.rvkb"
-        pushDep.artifactId = "woko-push"
-        pushDep.version = '${woko.version}'
-        pomHelper.addDependency(pushDep)
-
-        return packageName+'.woko.'+initListenerClassName
     }
 
     private void createClass(){
