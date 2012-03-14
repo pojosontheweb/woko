@@ -26,7 +26,7 @@ echo Checking for changes
 
 PULL_RESULT=`git pull`
 
-if [ "xAlready up-to-date." == "$PULL_RESULT" ]
+if [ "Already up-to-date." == "$PULL_RESULT" ]
 then
 	echo Up to date, nothing done.
 else
