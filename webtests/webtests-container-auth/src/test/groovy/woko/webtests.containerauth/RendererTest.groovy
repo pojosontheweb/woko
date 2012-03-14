@@ -26,8 +26,7 @@ class RendererTest extends WebTestBase {
 
       // view
       goToPage '/view/MyBook/1111'
-      verifyText '123'
-      verifyText 'page(s)' // prop override
+      verifyText '123 page(s)' // view override
 
       // edit
       goToPage '/edit/MyBook/1111'
