@@ -37,9 +37,11 @@ else
 	if [ "build.log" == "$BUILD_RESULT" ]
 	then
 		BUILD_RESULT="FAILED"
+		MSG="pull develop and have a look at what's going on !"
 	else
 		BUILD_RESULT="SUCCESSFUL"
+                MSG="keep pushing"
 	fi
 	echo Build result : $BUILD_RESULT
-	echo Woko build $BUILD_RESULT | mail -s "Woko build $BUILD_RESULT" remi@rvkb.com
+	echo Woko automatic build $BUILD_RESULT - $MSG  | mail -s "[Woko build] $BUILD_RESULT" remi@rvkb.com
 fi
