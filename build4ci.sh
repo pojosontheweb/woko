@@ -26,13 +26,13 @@ echo Checking for changes
 
 PULL_RESULT=`git pull`
 
-if [ "Already up-to-date." == "$PULL_RESULT" ]
+if [ "xAlready up-to-date." == "$PULL_RESULT" ]
 then
 	echo Up to date, nothing done.
 else
 	echo Code changed, building...
 	rm -rf build.log.*
-	mvn clean install | tee build.log 
+	mvn clean install -Pwebtests | tee build.log 
 	BUILD_RESULT=`grep -l "BUILD FAILURE" build.log` 
 	if [ "build.log" == "$BUILD_RESULT" ]
 	then
