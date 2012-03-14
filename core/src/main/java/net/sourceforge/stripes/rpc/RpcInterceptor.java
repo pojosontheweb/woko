@@ -1,6 +1,8 @@
 package net.sourceforge.stripes.rpc;
 
+import net.sourceforge.stripes.action.ActionBeanContext;
 import net.sourceforge.stripes.action.Resolution;
+import net.sourceforge.stripes.action.StreamingResolution;
 import net.sourceforge.stripes.ajax.JavaScriptResolution;
 import net.sourceforge.stripes.config.ConfigurableComponent;
 import net.sourceforge.stripes.config.Configuration;
@@ -10,6 +12,11 @@ import net.sourceforge.stripes.controller.Intercepts;
 import net.sourceforge.stripes.controller.LifecycleStage;
 import net.sourceforge.stripes.util.Log;
 import net.sourceforge.stripes.validation.ValidationErrors;
+import org.json.JSONObject;
+import woko.Woko;
+import woko.facets.builtin.RenderObjectJson;
+
+import javax.servlet.http.HttpServletRequest;
 
 @Intercepts({
         LifecycleStage.BindingAndValidation,
@@ -23,7 +30,7 @@ public class RpcInterceptor implements Interceptor, ConfigurableComponent {
     public static final String DEFAULT_RPC_PARAM_NAME = "isRpc";
     public static final String CFG_RPC_INTERCEPTOR_PARAM_NAME = "RpcInterceptor.Param.Name";
 
-    private String rpcParamName;
+    private static String rpcParamName = DEFAULT_RPC_PARAM_NAME;
 
     public void init(Configuration configuration) throws Exception {
         // init rpcParamName from config
@@ -34,9 +41,8 @@ public class RpcInterceptor implements Interceptor, ConfigurableComponent {
         logger.info("Will handle RPC requests with param name ", rpcParamName);
     }
 
-    protected boolean isRpcRequest(ExecutionContext context) {
-        // activate on special parameter
-        return context.getActionBeanContext().getRequest().getParameter(rpcParamName) != null;
+    public static boolean isRpcRequest(HttpServletRequest request) {
+        return request.getParameter(rpcParamName) != null;
     }
 
     public Resolution intercept(ExecutionContext context) throws Exception {
@@ -45,7 +51,7 @@ public class RpcInterceptor implements Interceptor, ConfigurableComponent {
         Resolution result = context.proceed();
 
         // activate on special parameter
-        if (isRpcRequest(context)) {
+        if (isRpcRequest(context.getActionBeanContext().getRequest())) {
             logger.debug("Request ", context.getActionBeanContext().getRequest().getQueryString(), " considered RPC");
             // do we have errors ?
             ValidationErrors errors =
@@ -79,8 +85,14 @@ public class RpcInterceptor implements Interceptor, ConfigurableComponent {
 
     protected Resolution serializeErrors(ExecutionContext context) {
         // serialize errors to JavaScript
-        ValidationErrors errors =
-                    context.getActionBeanContext().getValidationErrors();
-        return new JavaScriptResolution(errors);
+        ActionBeanContext abc = context.getActionBeanContext();
+        ValidationErrors errors = abc.getValidationErrors();
+        Woko woko = Woko.getWoko(abc.getServletContext());
+        RenderObjectJson roj = (RenderObjectJson)woko.getFacet(RenderObjectJson.FACET_NAME, abc.getRequest(), errors);
+        if (roj==null) {
+            return new JavaScriptResolution(errors);
+        }
+        JSONObject jsonErrors = roj.objectToJson(abc.getRequest());
+        return new StreamingResolution("text/json", jsonErrors.toString());
     }
 }

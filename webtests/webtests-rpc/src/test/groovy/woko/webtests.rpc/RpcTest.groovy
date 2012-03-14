@@ -104,6 +104,39 @@ class RpcTest extends WebTestBase {
     }
 
     @Test
+    void testExceptionIsSerializedAsJson() {
+        webtest("testExceptionIsSerializedAsJson") {
+            config {
+                option name:"ThrowExceptionOnFailingStatusCode", value:false
+            }
+            goToPage "/throw?isRpc=true"
+            storeResponseCode property:"status"
+            verifyProperty name:"status", text:"500"
+            verifyText "ouch !"
+            verifyText "error\":true"
+            verifyText "ticket"
+
+            goToPage "/IdontExIsT?isRpc=true"
+            storeResponseCode property:"status"
+            verifyProperty name:"status", text:"404"
+            verifyText "requested resource not found"
+            verifyText "error\":true"
+            verifyText "ticket"
+        }
+    }
+
+    @Test
+    void testValidationErrorsAreSerializedAsJson() {
+        webtest("testValidationErrorsAreSerializedAsJson") {
+            goToPage "/validationInThere?isRpc=true"
+            verifyText "Validation errors"
+            verifyText "error\":true"
+            verifyText "validation\":true"
+            verifyText "fieldName\":\"facet.myProp"
+        }
+    }
+
+    @Test
     @Ignore
     // TODO jquery /webtest issue here...
     void javaScriptAPIJQuery() {
