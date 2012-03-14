@@ -75,7 +75,7 @@ The command accepts one argument that can be  :
 
     @Test
     void testListFacets() {
-        assertCommandResult(["list", "facets"], """40 facets found : \n  create, developer, java.lang.Object, woko.facets.builtin.developer.Create
+        assertCommandResult(["list", "facets"], """41 facets found : \n  create, developer, java.lang.Object, woko.facets.builtin.developer.Create
   delete, developer, java.lang.Object, woko.facets.builtin.developer.DeleteImpl
   edit, developer, java.lang.Object, woko.facets.builtin.developer.EditImpl
   find, developer, java.lang.Object, woko.facets.builtin.developer.Find
@@ -93,6 +93,7 @@ The command accepts one argument that can be  :
   renderObject, all, java.lang.Object, woko.facets.builtin.all.RenderObjectImpl
   renderObjectEdit, all, java.lang.Object, woko.facets.builtin.all.RenderObjectEditImpl
   renderObjectJson, all, java.lang.Object, woko.facets.builtin.all.RenderObjectJsonImpl
+  renderObjectJson, all, net.sourceforge.stripes.validation.ValidationErrors, woko.facets.builtin.all.RenderValidationErrorsJson
   renderProperties, all, java.lang.Object, woko.facets.builtin.all.RenderPropertiesImpl
   renderPropertiesEdit, all, java.lang.Object, woko.facets.builtin.all.RenderPropertiesEditImpl
   renderPropertyName, all, java.lang.Object, woko.facets.builtin.all.RenderPropertyNameImpl
