@@ -1,9 +1,3 @@
-<%@ page import="woko.facets.builtin.WokoFacets" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="w" tagdir="/WEB-INF/tags/woko" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="s" uri="http://stripes.sourceforge.net/stripes.tld" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%--
   ~ Copyright 2001-2010 Remi Vankeisbelck
   ~
@@ -19,6 +13,12 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   --%>
+<%@ page import="woko.facets.builtin.WokoFacets" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="w" tagdir="/WEB-INF/tags/woko" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="s" uri="http://stripes.sourceforge.net/stripes.tld" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <w:facet facetName="<%=WokoFacets.layout%>"/>
 

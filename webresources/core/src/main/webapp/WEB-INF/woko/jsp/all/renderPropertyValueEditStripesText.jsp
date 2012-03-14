@@ -1,12 +1,3 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@include file="/WEB-INF/woko/jsp/taglibs.jsp"%>
-
-<%@ page import="woko.facets.WokoFacetContext" %>
-<%@ page import="woko.facets.builtin.RenderPropertyValue" %>
-<%@ page import="woko.facets.builtin.WokoFacets" %>
-<%@ page import="woko.persistence.ObjectStore" %>
-<%@ page import="woko.util.Util" %>
-
 <%--
   ~ Copyright 2001-2010 Remi Vankeisbelck
   ~
@@ -22,7 +13,13 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   --%>
-
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@include file="/WEB-INF/woko/jsp/taglibs.jsp"%>
+<%@ page import="woko.facets.WokoFacetContext" %>
+<%@ page import="woko.facets.builtin.RenderPropertyValue" %>
+<%@ page import="woko.facets.builtin.WokoFacets" %>
+<%@ page import="woko.persistence.ObjectStore" %>
+<%@ page import="woko.util.Util" %>
 <%
     RenderPropertyValue renderPropertyValue = (RenderPropertyValue)request.getAttribute(WokoFacets.renderPropertyValueEdit);
     WokoFacetContext fctx = (WokoFacetContext)renderPropertyValue.getFacetContext();

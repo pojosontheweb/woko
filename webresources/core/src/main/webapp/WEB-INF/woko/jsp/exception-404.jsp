@@ -1,4 +1,3 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%--
   ~ Copyright 2001-2010 Remi Vankeisbelck
   ~
@@ -14,7 +13,7 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   --%>
-
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head><title>Page not found</title></head>
 <body>

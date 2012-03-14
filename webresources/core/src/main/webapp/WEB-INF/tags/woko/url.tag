@@ -1,11 +1,3 @@
-<%@ tag import="woko.Woko" %>
-<%@ tag import="woko.util.LinkUtil" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ attribute name="object" required="false" type="java.lang.Object" %>
-<%@ attribute name="targetObjectClass" required="false" type="java.lang.Class" %>
-<%@ attribute name="facetName" required="false" type="java.lang.String" %>
-<%@ attribute name="var" required="true" type="java.lang.String" rtexprvalue="false" %>
-<%@ variable name-from-attribute="var" alias="daLink" scope="AT_END" %>
 <%--
   ~ Copyright 2001-2010 Remi Vankeisbelck
   ~
@@ -21,7 +13,14 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   --%>
-
+<%@ tag import="woko.Woko" %>
+<%@ tag import="woko.util.LinkUtil" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ attribute name="object" required="false" type="java.lang.Object" %>
+<%@ attribute name="targetObjectClass" required="false" type="java.lang.Class" %>
+<%@ attribute name="facetName" required="false" type="java.lang.String" %>
+<%@ attribute name="var" required="true" type="java.lang.String" rtexprvalue="false" %>
+<%@ variable name-from-attribute="var" alias="daLink" scope="AT_END" %>
 <%
     String url;
     if (object!=null) {

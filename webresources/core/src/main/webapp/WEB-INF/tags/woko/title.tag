@@ -1,7 +1,3 @@
-<%@ include file="../../woko/jsp/taglibs.jsp"%>
-<%@ tag import="woko.Woko" %>
-<%@ tag import="woko.facets.builtin.RenderTitle" %>
-<%@ attribute name="object" required="true" type="java.lang.Object" %>
 <%--
   ~ Copyright 2001-2010 Remi Vankeisbelck
   ~
@@ -17,7 +13,10 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   --%>
-
+<%@ include file="../../woko/jsp/taglibs.jsp"%>
+<%@ tag import="woko.Woko" %>
+<%@ tag import="woko.facets.builtin.RenderTitle" %>
+<%@ attribute name="object" required="true" type="java.lang.Object" %>
 <%
     Woko woko = Woko.getWoko(application);
     RenderTitle renderTitle = (RenderTitle)woko.getFacet(RenderTitle.FACET_NAME, request, object);

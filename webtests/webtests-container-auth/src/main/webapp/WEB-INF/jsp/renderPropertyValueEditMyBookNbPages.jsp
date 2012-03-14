@@ -32,8 +32,7 @@
 %>
 <span class="wokoPropertyValueEdit">
     <span class="<%=propertyName%> <%=propertyClassName%>">
-        <s:text name="<%=fullFieldName%>"/>
-        page(s)
+        <s:text name="<%=fullFieldName%>"/> page(s)
     </span>
 </span>
 

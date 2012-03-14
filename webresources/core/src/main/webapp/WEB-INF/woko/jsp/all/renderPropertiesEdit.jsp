@@ -1,15 +1,3 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page import="woko.facets.builtin.RenderProperties" %>
-<%@ page import="java.util.List" %>
-<%@ page import="java.util.Map" %>
-<%@ page import="woko.facets.WokoFacetContext" %>
-<%@ page import="woko.Woko" %>
-<%@ page import="woko.util.Util" %>
-<%@ page import="woko.facets.builtin.RenderPropertyName" %>
-<%@ page import="woko.persistence.ObjectStore" %>
-<%@ page import="woko.facets.builtin.RenderPropertyValue" %>
-<%@ page import="woko.facets.builtin.WokoFacets" %>
-<%@include file="/WEB-INF/woko/jsp/taglibs.jsp"%>
 <%--
   ~ Copyright 2001-2010 Remi Vankeisbelck
   ~
@@ -25,7 +13,18 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   --%>
-
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="woko.facets.builtin.RenderProperties" %>
+<%@ page import="java.util.List" %>
+<%@ page import="java.util.Map" %>
+<%@ page import="woko.facets.WokoFacetContext" %>
+<%@ page import="woko.Woko" %>
+<%@ page import="woko.util.Util" %>
+<%@ page import="woko.facets.builtin.RenderPropertyName" %>
+<%@ page import="woko.persistence.ObjectStore" %>
+<%@ page import="woko.facets.builtin.RenderPropertyValue" %>
+<%@ page import="woko.facets.builtin.WokoFacets" %>
+<%@include file="/WEB-INF/woko/jsp/taglibs.jsp"%>
 <%
     RenderProperties editProperties = (RenderProperties)request.getAttribute(WokoFacets.renderPropertiesEdit);
     List<String> propertyNames = editProperties.getPropertyNames();

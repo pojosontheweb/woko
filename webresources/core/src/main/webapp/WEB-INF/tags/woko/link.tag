@@ -1,8 +1,3 @@
-<%@ tag import="woko.facets.builtin.WokoFacets" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="w" tagdir="/WEB-INF/tags/woko" %>
-<%@ attribute name="object" required="true" type="java.lang.Object" %>
-<%@ attribute name="facetName" required="false" type="java.lang.String" %>
 <%--
   ~ Copyright 2001-2010 Remi Vankeisbelck
   ~
@@ -18,7 +13,11 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   --%>
-
+<%@ tag import="woko.facets.builtin.WokoFacets" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="w" tagdir="/WEB-INF/tags/woko" %>
+<%@ attribute name="object" required="true" type="java.lang.Object" %>
+<%@ attribute name="facetName" required="false" type="java.lang.String" %>
 <c:if test="facetName==null">
     <c:set var="facetName" value="<%=WokoFacets.view%>"/>
 </c:if>

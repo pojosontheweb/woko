@@ -1,4 +1,3 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   ~ Copyright 2001-2010 Remi Vankeisbelck
   ~
@@ -14,7 +13,7 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   --%>
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <div class="termCloud">
     <c:forEach items="${termCloudFragment.cloudElems}" var="cloudElem">
         <a class="cloudElem${cloudElem.categ}" href="${pageContext.request.contextPath}/search?facet.query=${cloudElem.term}">${cloudElem.term}</a>

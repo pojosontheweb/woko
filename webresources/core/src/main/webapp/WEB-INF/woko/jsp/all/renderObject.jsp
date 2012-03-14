@@ -1,7 +1,3 @@
-<%@ page import="woko.facets.builtin.WokoFacets" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@include file="/WEB-INF/woko/jsp/taglibs.jsp"%>
-
 <%--
   ~ Copyright 2001-2010 Remi Vankeisbelck
   ~
@@ -17,7 +13,9 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   --%>
-
+<%@ page import="woko.facets.builtin.WokoFacets" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@include file="/WEB-INF/woko/jsp/taglibs.jsp"%>
 <c:set var="o" value="${renderObject.facetContext.targetObject}"/>
 <div class="wokoObject">
     <w:includeFacet targetObject="${o}" facetName="<%=WokoFacets.renderLinks%>"/>

@@ -1,7 +1,3 @@
-<%@ page import="woko.facets.builtin.WokoFacets" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@include file="/WEB-INF/woko/jsp/taglibs.jsp"%>
-
 <%--
   ~ Copyright 2001-2010 Remi Vankeisbelck
   ~
@@ -17,13 +13,12 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   --%>
-
+<%@ page import="woko.facets.builtin.WokoFacets" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@include file="/WEB-INF/woko/jsp/taglibs.jsp"%>
 <c:set var="o" value="${actionBean.object}"/>
 <w:facet facetName="<%=WokoFacets.layout%>" targetObject="${o}"/>
 <w:facet targetObject="${o}" facetName="<%=WokoFacets.renderTitle%>"/>
-
-
-
 <fmt:message bundle="${wokoBundle}" var="pageTitle" key="woko.guest.home.pageTitle"/>
 <s:layout-render name="${layout.layoutPath}" layout="${layout}" pageTitle="${pageTitle}">
     <s:layout-component name="body">
