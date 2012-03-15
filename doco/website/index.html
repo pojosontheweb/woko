@@ -8,14 +8,14 @@
     <meta name="author" content="">
 
     <!-- Le styles -->
-    <link href="bootstrap/css/bootstrap.css" rel="stylesheet">
+    <link href="bootstrap/css/bootstrap.woko.css" rel="stylesheet">
     <style type="text/css">
         body {
             padding-top: 60px;
             padding-bottom: 40px;
         }
     </style>
-    <link href="bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+    <!--<link href="bootstrap/css/bootstrap-responsive.css" rel="stylesheet"> TODO wrecks my neat hero border of course ! -->
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
@@ -27,6 +27,15 @@
     <link rel="apple-touch-icon-precomposed" sizes="114x114" href="bootstrap/ico/apple-touch-icon-114-precomposed.png">
     <link rel="apple-touch-icon-precomposed" sizes="72x72" href="bootstrap/ico/apple-touch-icon-72-precomposed.png">
     <link rel="apple-touch-icon-precomposed" href="bootstrap/ico/apple-touch-icon-57-precomposed.png">
+
+    <style type="text/css">
+        .hero-unit {
+            background-image: url("images/hero-border.png");
+            background-repeat: no-repeat;
+            border: none;
+            background-color: #ffffff;
+        }
+    </style>
 </head>
 
 <body>
@@ -57,7 +66,6 @@
 
 <div class="container">
 
-    <!-- Main hero unit for a primary marketing message or call to action -->
     <div class="hero-unit">
         <h1>
             POJOs on the Web!
@@ -65,7 +73,7 @@
         <p>
             Tired of heavyweight, unproductive and boring web development in Java ?
             <br/>
-            Woko is a Full-Stack Web Framework for the Java Platform that aims to put your POJOs on the Web for nothing
+            Woko is a Full-Stack, Domain-Driven Web Framework that aims to put your POJOs on the Web for nothing
             (or almost !).
         </p>
 
@@ -80,9 +88,13 @@
             </h2>
             <p>
                 <img src="images/icon-dbsearch.png" alt="dbsearch" class="pull-left"/>
-                Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris
-                condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis
-                euismod. Donec sed odio dui. </p>
+                No-config persistence and full text search services for your POJOs,
+                with built-in support for <a href="http://www.hibernate.org/">Hibernate</a>
+                and <a href="http://compass-project.org/">Compass</a>.
+                <br/>
+                No more DAO hassles and Session management : all you need to worry
+                about is your Domain Objects.
+            </p>
 
             <p><a class="btn" href="#">View details &raquo;</a></p>
         </div>
@@ -92,9 +104,12 @@
             </h2>
             <p>
                 <img src="images/icon-people.png" alt="people" class="pull-left"/>
-                Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris
-                condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis
-                euismod. Donec sed odio dui. </p>
+                First-class support for roles and users. Authentication, user management,
+                GUI profiling...
+                <br/>
+                It's all built-in, and completely pluggable if you need
+                to include your own user management system.
+            </p>
 
             <p><a class="btn" href="#">View details &raquo;</a></p>
         </div>
@@ -106,9 +121,10 @@
             </h2>
             <p>
                 <img src="images/icon-form.png" alt="dbsearch" class="pull-left"/>
-                Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris
-                condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis
-                euismod. Donec sed odio dui. </p>
+                Base MVC plumbing (URLs, data binding & validation, controllers, templating etc.),  and
+                facet-based Object Renderer : Woko can display your objects without you writing code
+                for it !
+            </p>
 
             <p><a class="btn" href="#">View details &raquo;</a></p>
         </div>
@@ -118,9 +134,11 @@
             </h2>
             <p>
                 <img src="images/icon-jsonhttp.png" alt="dbsearch" class="pull-left"/>
-                Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris
-                condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis
-                euismod. Donec sed odio dui. </p>
+                Out of the box JSON/HTTP services for your application, and a JavaScript API
+                for use right in the page.
+                <br/>
+
+            </p>
 
             <p><a class="btn" href="#">View details &raquo;</a></p>
         </div>
