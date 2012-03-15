@@ -28,7 +28,6 @@ import net.sourceforge.stripes.mock.MockRoundtrip
 import junit.framework.TestCase
 import org.hibernate.Transaction
 import org.hibernate.Session
-import entities.MyEntity
 import net.sourceforge.stripes.validation.ValidationErrors
 import net.sourceforge.stripes.validation.ValidationError
 
@@ -61,11 +60,11 @@ class HibernateValidationTest extends TestCase {
         return mockServletContext;
     }
 
-    WokoActionBean trip(String username, String facetName, String className, String key) {
+    MockRoundtrip trip(String username, String facetName, String className, String key) {
       return trip(username, facetName, className, key, null)
     }
 
-    WokoActionBean trip(String username, String facetName, String className, String key, Map params) {
+    MockRoundtrip trip(String username, String facetName, String className, String key, Map params) {
       def c = createMockServletContext(username)
       StringBuilder url = new StringBuilder('/').append(facetName)
       if (className) {
@@ -83,9 +82,7 @@ class HibernateValidationTest extends TestCase {
         }
       }
       t.execute()
-      WokoActionBean ab = t.getActionBean(WokoActionBean.class)
-      assert ab
-      return ab
+      return t
     }
 
     private void doInTx(store,Closure c) {
@@ -106,12 +103,11 @@ class HibernateValidationTest extends TestCase {
 
 
     void testEntityValidation() {
-
         WokoActionBean ab = trip("wdevel", "save", "MyEntity", null, [
                 "object.id":"1",
                 "object.name":"foobar",
                 "object.otherProp":"baz"
-        ])
+        ]).getActionBean(WokoActionBean.class)
         assertNotNull("unable to get WokoActionBean", ab)
         assertEquals("invalid property value", ab.object.name, "foobar")
 
@@ -119,7 +115,8 @@ class HibernateValidationTest extends TestCase {
         ab = trip("wdevel", "save", "MyEntity", null, [
                 "object.id":"2",
                 "object.otherProp":"baz"
-        ])
+        ]).getActionBean(WokoActionBean.class)
+
         assertNotNull("unable to get WokoActionBean", ab)
         assertNull("name should be null", ab.object.name)
         // make sure we have a validation error
@@ -130,7 +127,9 @@ class HibernateValidationTest extends TestCase {
         List<ValidationError> lve = errors[expectedKey]
         assertEquals("invalid validation error count for key $expectedKey", 1, lve.size())
         ValidationError e = lve[0]
-        // TODO check validation error details
+        assertEquals("unexpected field name in validation error", expectedKey, e.fieldName)
+//        String msg = e.getMessage(ab.context.locale) // TODO assert but there's a bug in Stripes, NPE thrown (no StripesFilter.getConfiguration()
+//        println msg
     }
 
 }
