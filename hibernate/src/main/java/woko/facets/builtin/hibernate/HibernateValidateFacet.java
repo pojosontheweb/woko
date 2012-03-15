@@ -25,6 +25,7 @@ import net.sourceforge.stripes.validation.ValidationErrors;
 //import org.hibernate.validator.ClassValidator;
 //import org.hibernate.validator.InvalidValue;
 import woko.actions.WokoActionBean;
+import woko.actions.WokoLocalizableError;
 import woko.facets.BaseFacet;
 import woko.facets.WokoFacetContext;
 import woko.facets.builtin.WokoFacets;
@@ -89,10 +90,11 @@ public class HibernateValidateFacet extends BaseFacet implements woko.facets.bui
         for (ConstraintViolation<Object> c : constraintViolations){
             hasErrors = true;
             String fieldName = OBJECT_PREFIX + c.getPropertyPath();
-            LocalizableError stripesError = new LocalizableError(getStripesKey(c.getMessageTemplate()), c.getConstraintDescriptor().getAttributes().values().toArray());
-            stripesError.setFieldName(fieldName);
-            stripesError.setBeanclass(abClass);
-            errs.add(fieldName, stripesError);
+            String fieldKey = targetObject.getClass().getSimpleName()+"."+c.getPropertyPath();
+            WokoLocalizableError wokoError = new WokoLocalizableError(getStripesKey(c.getMessageTemplate()), fieldKey, c.getConstraintDescriptor().getAttributes().values().toArray());
+            wokoError.setFieldName(fieldName);
+            wokoError.setBeanclass(abClass);
+            errs.add(fieldName, wokoError);
         }
         return !hasErrors;
     }
