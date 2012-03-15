@@ -1,5 +1,47 @@
 #!/bin/bash
 
+# init vars
+usageHelp="Usage: ${0##*/} init"
+artifactIdHelp="-n project name, serves as the artifact Id (i.e. myapp)"
+groupIdHelp="-m the maven group Id (i.e. com.myexample.myapp)"
+packageHelp="-p the default package name, defaults to maven group Id"
+versionHelp="-v the version (i.e. 1.0-SNAPSHOT)"
+boostrapHelp="-b use Boostrap css & js, defaults to no"
+groovyHelp="-g use Groovy, defaults to no"
+
+helpHelp="-h this help"
+badOptionHelp="Option not recognised"
+
+artifactId=""
+groupId=""
+version=""
+groovy="n"
+boostrap="n"
+package=""
+
+printHelpAndExit()
+{
+	echo "$usageHelp"
+	echo "$artifactIdHelp"
+	echo "$groupIdHelp" 
+	echo "$packageHelp"
+	echo "$versionHelp"  
+	echo "$boostrapHelp"
+	echo "$groovyHelp"
+	
+	echo "$helpHelp"
+	exit $1
+}              
+
+printErrorHelpAndExit()
+{
+        echo
+        echo "$@"
+        echo
+        echo
+        printHelpAndExit 1
+}
+
 echo "__       __     _  __"
 echo "\\ \\  _  / /___ | |/ / ___"
 echo " \\ \\/ \\/ // o \\|   K /   \\"
@@ -7,40 +49,67 @@ echo "  \\__W__/ \\___/|_|\\_\\\\_o_/  2.0"
 echo "             POJOs on the Web !"
 echo ""
 
+read_init_project_values()
+{
+     while [ "$artifactId" == "" ]; do
+         read -p "> Project name ? " artifactId 
+     done
+     while [ "$groupId" == "" ]; do
+         read -p "> Maven groupId ? " groupId
+     done
+     while [ "$version" == "" ]; do
+         read -p "> Your project's version ? [1.0-SNAPSHOT] " version
+         version=${version:-"1.0-SNAPSHOT"} 
+     done   
+}   
+
+init_project()
+{
+    echo "Initializing project"
+    read_init_project_values
+    echo "| Generating your project, please wait, it can take a while to download everything..."
+    mvn archetype:generate -DarchetypeArtifactId=woko-archetype -DarchetypeGroupId=com.rvkb\
+        -DgroupId="$groupId" -DartifactId="$artifactId" -Dversion="$version" -DinteractiveMode="false" -q
+    cd "$artifactId"
+    mvn exec:java -Dexec.mainClass="woko.tooling.cli.Runner" -Dexec.classpathScope=runtime -Dexec.args="init" -q  << EOI
+$boostrap
+$groovy  
+$package
+EOI
+}
+  
 # do we have a pom file ?
 if [ -e pom.xml ]
 then
     mvn exec:java -Dexec.mainClass="woko.tooling.cli.Runner" -Dexec.classpathScope=runtime -Dexec.args="$1 $2 $3 $4 $5" -q
-else
+else     
     # Asking for project creation ?
     if [ "$1" == "init" ]
     then
-        echo "Initializing project"
-                read -p "> Project name ? " artifactId
-                read -p "> Maven groupId ? " groupId
-                read -p "> Your project's version ? [1.0-SNAPSHOT] " version
-                version=${version:-"1.0-SNAPSHOT"}
-                echo "| Generating your project, please wait, it can take a while to download everything..."
-                mvn archetype:generate -DarchetypeArtifactId=woko-archetype -DarchetypeGroupId=com.rvkb\
-        		-DgroupId="$groupId" -DartifactId="$artifactId" -Dversion="$version" -DinteractiveMode="false" -q
-                cd "$artifactId"
-                mvn exec:java -Dexec.mainClass="woko.tooling.cli.Runner" -Dexec.classpathScope=runtime -Dexec.args="init" -q
+        shift
     else
         echo "ERROR : No pom file found in current directory. "
         read -p "Do you want to init the project ? [n]" answer
-        if [ "$answer" == "y" ]
-        then
-           read -p "> Project name ? " artifactId
-           read -p "> Maven groupId ? " groupId
-           read -p "> Your project's version ? [1.0-SNAPSHOT] " version
-           version=${version:-"1.0-SNAPSHOT"}
-           mvn archetype:generate -DarchetypeArtifactId=woko-archetype -DarchetypeGroupId=com.rvkb\
-           -DgroupId="$groupId" -DartifactId="$artifactId" -Dversion="$version" -DinteractiveMode="false" -q
-           cd "$artifactId"
-           mvn exec:java -Dexec.mainClass="woko.tooling.cli.Runner" -Dexec.classpathScope=runtime -Dexec.args="init" -q
-        else
+        if [ "$answer" != "y" ]
+        then                       
             echo "Nothing done. Hope to see you soon !"
+            exit 0
         fi
     fi
+     
+    while getopts ":n:m:p:v:gbh" optionName; do
+        case "$optionName" in
+            h) printHelpAndExit 0;;
+            n) artifactId="$OPTARG";;
+            m) groupId="$OPTARG";;
+            v) version="$OPTARG";; 
+            p) package="$OPTARG";;
+            g) groovy="y";;
+            b) boostrap="y";;
+            [?]) printErrorHelpAndExit "$badOptionHelp";;
+        esac  
+    done
+    
+    init_project
 fi
 
