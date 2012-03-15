@@ -61,6 +61,9 @@ public class WokoActionBeanPropertyBinder extends DefaultActionBeanPropertyBinde
                 if (key.startsWith("facet")){
                     String newKey = key.replaceFirst("facet", facetName);
                     errorsUpdated.put(newKey, errorsSaved.get(key));
+                }else if (key.startsWith("object")){
+                    String newKey = key.replaceFirst("object", facetName);
+                    errorsUpdated.put(newKey, errorsSaved.get(key));
                 }
             }
             return errorsUpdated;

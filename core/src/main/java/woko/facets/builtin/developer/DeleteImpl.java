@@ -28,6 +28,8 @@ import woko.facets.builtin.WokoFacets;
 @FacetKey(name = WokoFacets.delete, profileId = "developer")
 public class DeleteImpl extends BaseResolutionFacet implements Delete {
 
+    public static final String TARGET_FACET_AFTER_DELETE = WokoFacets.home;
+
     public static final String FRAGMENT_PATH = "/WEB-INF/woko/jsp/developer/confirmDelete.jsp";
     private String confirm;
     private String cancel;
@@ -72,7 +74,9 @@ public class DeleteImpl extends BaseResolutionFacet implements Delete {
             final Object targetObject = facetContext.getTargetObject();
             woko.getObjectStore().delete(targetObject);
             abc.getMessages().add(new LocalizableMessage("woko.devel.delete.confirm"));
-            return new RpcResolutionWrapper(new RedirectResolution("/home")) {
+
+            Resolution resolution = getNonRpcResolution(abc);
+            return new RpcResolutionWrapper(resolution) {
                 @Override
                 public Resolution getRpcResolution() {
                     return createResolution(true);
@@ -86,6 +90,15 @@ public class DeleteImpl extends BaseResolutionFacet implements Delete {
                 return createResolution(false);
             }
         };
+    }
+
+    protected Resolution getNonRpcResolution(ActionBeanContext abc) {
+        WokoFacetContext fc = getFacetContext();
+        return new RedirectResolution(fc.getWoko().facetUrl(getTargetFacetAfterDelete(),fc.getTargetObject()));
+    }
+
+    protected String getTargetFacetAfterDelete() {
+        return TARGET_FACET_AFTER_DELETE;
     }
 
 
