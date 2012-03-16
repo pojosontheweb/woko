@@ -27,6 +27,8 @@
     <link rel="apple-touch-icon-precomposed" sizes="114x114" href="bootstrap/ico/apple-touch-icon-114-precomposed.png">
     <link rel="apple-touch-icon-precomposed" sizes="72x72" href="bootstrap/ico/apple-touch-icon-72-precomposed.png">
     <link rel="apple-touch-icon-precomposed" href="bootstrap/ico/apple-touch-icon-57-precomposed.png">
+	
+	<link href="bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
 
     <style type="text/css">
         .hero-unit {
@@ -71,6 +73,12 @@
         .getstarted {
             text-align: center;
         }
+		
+		#download .dropdown-menu {
+			padding: 8px;
+			width: 300px;
+			color: #222222;
+		}
 
     </style>
 </head>
@@ -82,8 +90,30 @@
         <div class="container">
             <div class="nav-collapse">
                 <ul class="nav">
-                    <li class="active"><a href="#"><i class="icon-home icon-white"> </i> Home</a></li>
-                    <li><a href="#"><i class="icon-download-alt icon-white"> </i> Download</a></li>
+                    <li class="active"><a href="index.html"><i class="icon-home icon-white"> </i> Home</a></li>
+                    <li class="dropdown">				
+					<li class="dropdown" id="download">
+						<a href="#download"  class="dropdown-toggle" data-toggle="dropdown">
+							<i class="icon-download-alt icon-white"> </i> Download
+							<b class="caret"></b>
+						</a>
+						<div class="dropdown-menu alert alert-info">						
+						<p>
+							You only need a simple command-line tool in order 
+							to start playing with Woko.<br/>
+							Please <em>choose the version for your platform</em>, save the file
+							and <em>add it to your PATH</em> environment variable.
+						</p>
+						<div class="row">
+						<div class="span2">
+						<a href="#" id="dlBash" class="btn">*nix bash</a>
+						</div>
+						<div class="span2">
+						<a href="#" id="dlBat" class="btn">Windows .bat</a>
+						</div>
+						</div>
+						</div>
+					</li>
                     <li><a href="#"><i class="icon-book icon-white"></i> Documentation</a></li>
                     <li><a href="#"><i class="icon-question-sign icon-white"></i> Support</a></li>
                     <li><a href="#"><i class="icon-fire icon-white"></i> Develop</a></li>
@@ -171,6 +201,27 @@
         <img src="images/woko-logo-small.png" alt="logo"/>
         Team 2012
     </footer>
+	
+	<script src="bootstrap/js/jquery.js"></script>
+    <script src="bootstrap/js/bootstrap-transition.js"></script>
+    <script src="bootstrap/js/bootstrap-alert.js"></script>
+    <script src="bootstrap/js/bootstrap-modal.js"></script>
+    <script src="bootstrap/js/bootstrap-dropdown.js"></script>
+    <script src="bootstrap/js/bootstrap-scrollspy.js"></script>
+    <script src="bootstrap/js/bootstrap-tab.js"></script>
+    <script src="bootstrap/js/bootstrap-tooltip.js"></script>
+    <script src="bootstrap/js/bootstrap-popover.js"></script>
+    <script src="bootstrap/js/bootstrap-button.js"></script>
+    <script src="bootstrap/js/bootstrap-collapse.js"></script>
+    <script src="bootstrap/js/bootstrap-carousel.js"></script>
+    <script src="bootstrap/js/bootstrap-typeahead.js"></script>
+	
+	<script type="text/javascript">
+		$(document).ready(function() {
+			var id = navigator.appVersion.indexOf("Win")!=-1 ? "#dlBat" : "#dlBash";
+			$(id).addClass("btn-success");
+		});	
+	</script>
 
 </div>
 <!-- /container -->
