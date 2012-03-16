@@ -1,0 +1,46 @@
+#!/bin/bash
+
+echo "__       __     _  __"
+echo "\\ \\  _  / /___ | |/ / ___"
+echo " \\ \\/ \\/ // o \\|   K /   \\"
+echo "  \\__W__/ \\___/|_|\\_\\\\_o_/  2.0"
+echo "             POJOs on the Web !"
+echo ""
+
+# do we have a pom file ?
+if [ -e pom.xml ]
+then
+    mvn exec:java -Dexec.mainClass="woko.tooling.cli.Runner" -Dexec.classpathScope=runtime -Dexec.args="$1 $2 $3 $4 $5" -q
+else
+    # Asking for project creation ?
+    if [ "$1" == "init" ]
+    then
+        echo "Initializing project"
+                read -p "> Project name ? " artifactId
+                read -p "> Maven groupId ? " groupId
+                read -p "> Your project's version ? [1.0-SNAPSHOT] " version
+                version=${version:-"1.0-SNAPSHOT"}
+                echo "| Generating your project, please wait, it can take a while to download everything..."
+                mvn archetype:generate -DarchetypeArtifactId=woko-archetype -DarchetypeGroupId=com.rvkb\
+        		-DgroupId="$groupId" -DartifactId="$artifactId" -Dversion="$version" -DinteractiveMode="false" -q
+                cd "$artifactId"
+                mvn exec:java -Dexec.mainClass="woko.tooling.cli.Runner" -Dexec.classpathScope=runtime -Dexec.args="init" -q
+    else
+        echo "ERROR : No pom file found in current directory. "
+        read -p "Do you want to init the project ? [n]" answer
+        if [ "$answer" == "y" ]
+        then
+           read -p "> Project name ? " artifactId
+           read -p "> Maven groupId ? " groupId
+           read -p "> Your project's version ? [1.0-SNAPSHOT] " version
+           version=${version:-"1.0-SNAPSHOT"}
+           mvn archetype:generate -DarchetypeArtifactId=woko-archetype -DarchetypeGroupId=com.rvkb\
+           -DgroupId="$groupId" -DartifactId="$artifactId" -Dversion="$version" -DinteractiveMode="false" -q
+           cd "$artifactId"
+           mvn exec:java -Dexec.mainClass="woko.tooling.cli.Runner" -Dexec.classpathScope=runtime -Dexec.args="init" -q
+        else
+            echo "Nothing done. Hope to see you soon !"
+        fi
+    fi
+fi
+

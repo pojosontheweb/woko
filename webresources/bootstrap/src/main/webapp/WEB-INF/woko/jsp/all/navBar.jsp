@@ -1,2 +1,4 @@
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<li><a href="${pageContext.request.contextPath}/home"><fmt:message key="woko.guest.navbar.home"/> </a></li>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@include file="/WEB-INF/woko/jsp/taglibs.jsp"%>
+
+<li><a href="${pageContext.request.contextPath}/home"><fmt:message bundle="${wokoBundle}" key="woko.guest.navbar.home"/> </a></li>

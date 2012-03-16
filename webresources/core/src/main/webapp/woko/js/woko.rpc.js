@@ -1,3 +1,19 @@
+/*
+ * Copyright 2001-2010 Remi Vankeisbelck
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 var u = woko.util;
 var pkg = woko.rpc = {};
 
@@ -13,6 +29,28 @@ pkg.Client = function(baseUrl, config) {
     this.config = config || {};
 };
 
+pkg.Client.prototype.getWokoInfo = function(wokoObject) {
+    if (u.isUndefinedOrNull(wokoObject)) {
+        return null;
+    }
+    return wokoObject._wokoInfo;
+};
+
+pkg.Client.prototype.getWokoClassName = function(wokoObject) {
+    var wokoInfo = this.getWokoInfo(wokoObject);
+    if (wokoInfo) {
+        return wokoInfo.className;
+    }
+    return null;
+};
+
+pkg.Client.prototype.getWokoKey = function(wokoObject) {
+    var wokoInfo = this.getWokoInfo(wokoObject);
+    if (wokoInfo) {
+        return wokoInfo.key;
+    }
+    return null;
+};
 
 /**
  * Invoke a facet (via XHR) with supplied args.
@@ -161,7 +199,7 @@ pkg.Client.prototype.saveObject = function(oArgs) {
         throw "obj not found in arguments";
     }
     var obj = oArgs.obj;
-    var className = oArgs.className || obj._className;
+    var className = oArgs.className || this.getWokoClassName(obj);
     if (u.isUndefinedOrNull(className)) {
         throw "className not found in arguments (not in oArgs, and not in passed obj)";
     }
@@ -204,15 +242,15 @@ pkg.Client.prototype.removeObject = function(oArgs) {
         className = oArgs.className,
         key = oArgs.key;
     if (obj) {
-        className = obj._className || className;
-        key = obj._id || key;
+        className = this.getWokoClassName(obj) || className;
+        key = this.getWokoKey(obj) || key;
     }
     if (u.isUndefinedOrNull(className)) {
-        throw "className not found in arguments. It must be provided either as an argument or as the _className field of " +
+        throw "className not found in arguments. It must be provided either as an argument or in the object's metadata as the _wokoInfo.className field of " +
             " the instance to be deleted";
     }
     if (u.isUndefinedOrNull(key)) {
-        throw "key not found in arguments. It must be provided either as an argument or as the _id field of " +
+        throw "key not found in arguments. It must be provided either as an argument or as in the object's metadata as the _wokoInfo.key field of " +
             " the instance to be deleted";
     }
     var content = oArgs.content || {};

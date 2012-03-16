@@ -1,16 +1,15 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@include file="/WEB-INF/woko/jsp/taglibs.jsp"%>
+
 <%@ page import="woko.persistence.ResultIterator" %>
 <%@ page import="woko.facets.builtin.RenderTitle" %>
 <%@ page import="woko.Woko" %>
 <%@ page import="woko.facets.builtin.Search" %>
 <%@ page import="woko.facets.builtin.WokoFacets" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="w" tagdir="/WEB-INF/tags/woko" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="s" uri="http://stripes.sourceforge.net/stripes.tld" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
 <w:facet facetName="<%=WokoFacets.layout%>"/>
 
-<fmt:message var="pageTitle" key="woko.devel.search.pageTitle"/>
+<fmt:message bundle="${wokoBundle}" var="pageTitle" key="woko.devel.search.pageTitle"/>
 <s:layout-render name="${layout.layoutPath}" layout="${layout}" pageTitle="${pageTitle}">
     <s:layout-component name="body">
         <%
@@ -27,14 +26,14 @@
             }
         %>
         <h1 class="page-header">
-            <fmt:message key="woko.devel.search.title">
+            <fmt:message bundle="${wokoBundle}" key="woko.devel.search.title">
                 <fmt:param value="<%=totalSize%>"/>
             </fmt:message>
         </h1>
 
         <div class="row-fluid">
             <s:form action="/search" class="form-inline" method="GET">
-                <fmt:message key="woko.devel.find.enterQuery"/>
+                <fmt:message bundle="${wokoBundle}" key="woko.devel.find.enterQuery"/>
                 <s:text name="facet.query" class="input-xlarge"/>
                 <s:submit name="search" class="btn btn-primary"/>
             </s:form>
@@ -47,7 +46,7 @@
                     <s:hidden name="facet.query"/>
                     <s:hidden name="className"/>
                     <input type="hidden"name="facet.page" value="1"/>
-                    <fmt:message key="woko.devel.search.showing"/>
+                    <fmt:message bundle="${wokoBundle}" key="woko.devel.search.showing"/>
                     <s:select name="facet.resultsPerPage" onchange="this.form.submit()">
                         <s:option value="10">10</s:option>
                         <s:option value="25">25</s:option>
@@ -56,7 +55,7 @@
                         <s:option value="500">500</s:option>
                         <s:option value="1000">1000</s:option>
                     </s:select>
-                    <fmt:message key="woko.devel.search.objectPerPage"/>
+                    <fmt:message bundle="${wokoBundle}" key="woko.devel.search.objectPerPage"/>
                 </s:form>
             </div>
         </c:if>

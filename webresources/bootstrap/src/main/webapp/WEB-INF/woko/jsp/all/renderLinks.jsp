@@ -1,10 +1,11 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@include file="/WEB-INF/woko/jsp/taglibs.jsp"%>
+
 <%@ page import="woko.facets.builtin.RenderLinks" %>
-<%@ page import="org.apache.log4j.or.RendererMap" %>
+<%@ page import="woko.facets.builtin.WokoFacets" %>
 <%@ page import="woko.facets.builtin.all.Link" %>
 <%@ page import="java.util.List" %>
-<%@ page import="woko.facets.builtin.WokoFacets" %>
-<%@ taglib prefix="w" tagdir="/WEB-INF/tags/woko" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <%
     RenderLinks renderLinks = (RenderLinks)request.getAttribute(WokoFacets.renderLinks);
     List<Link> links = renderLinks.getLinks();

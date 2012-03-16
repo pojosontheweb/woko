@@ -1,3 +1,19 @@
+/*
+ * Copyright 2001-2010 Remi Vankeisbelck
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package net.sourceforge.stripes.auth;
 
 import net.sourceforge.stripes.action.*;
@@ -6,13 +22,14 @@ import net.sourceforge.stripes.validation.LocalizableError;
 import net.sourceforge.stripes.util.Log;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 public abstract class LoginActionBean<U, C extends ActionBeanContext> implements ActionBean, AuthConstants {
 
     private static final Log log = Log.getInstance(LoginActionBean.class);
     
-    public static final String KEY_MSG_LOGIN_FAILED  = "stripes.login.failed";
-    public static final String KEY_MSG_LOGIN_SUCCESS  = "stripes.login.success";
+    public static final String KEY_MSG_LOGIN_FAILED  = "woko.login.failed";
+    public static final String KEY_MSG_LOGIN_SUCCESS  = "woko.login.success";
 
     private C context;
 
@@ -81,6 +98,7 @@ public abstract class LoginActionBean<U, C extends ActionBeanContext> implements
             // authentication failed, add messages to context, and redirect to login
             log.warn("Authentication failed for user '", username, "', redirecting to login form again");
             getContext().getValidationErrors().addGlobalError(new LocalizableError(KEY_MSG_LOGIN_FAILED));
+            getContext().getResponse().setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return displayForm();
         }
     }

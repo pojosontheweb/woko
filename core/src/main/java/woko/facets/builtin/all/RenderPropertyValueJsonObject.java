@@ -1,3 +1,19 @@
+/*
+ * Copyright 2001-2010 Remi Vankeisbelck
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package woko.facets.builtin.all;
 
 import net.sourceforge.jfacets.annotations.FacetKey;
@@ -13,37 +29,16 @@ import woko.persistence.ObjectStore;
 
 import javax.servlet.http.HttpServletRequest;
 
-@FacetKey(name= WokoFacets.renderPropertyValueJson, profileId="all")
+@FacetKey(name = WokoFacets.renderPropertyValueJson, profileId = "all")
 public class RenderPropertyValueJsonObject extends BaseFacet implements RenderPropertyValueJson {
 
-  public Object propertyToJson(HttpServletRequest request, Object propertyValue) {
-    try {
-      if (propertyValue==null) {
-        return null;
-      }
-      JSONObject res = new JSONObject();
-      res.put("_object", true);
-      Class c = propertyValue.getClass();
-      WokoFacetContext facetContext = getFacetContext();
-      Woko woko = facetContext.getWoko();
-      ObjectStore os = woko.getObjectStore();
-      String className = os.getClassMapping(c);
-      res.put("_className", className);
-      String key = os.getKey(propertyValue);
-      if (key!=null) {
-        res.put("_persistent", true);
-        res.put("_key", key);
-      }
-
-      RenderTitle renderTitle = (RenderTitle)woko.getFacet(WokoFacets.renderTitle, request, propertyValue);
-      if (renderTitle!=null) {
-        res.put("_title", renderTitle.getTitle());
-      }
-
-      return res;
-    } catch (JSONException e) {
-      throw new RuntimeException(e);
+    public Object propertyToJson(HttpServletRequest request, Object propertyValue) {
+        if (propertyValue == null) {
+            return null;
+        }
+        JSONObject res = new JSONObject();
+        RenderObjectJsonImpl.addWokoMetadata(getFacetContext().getWoko(), res, propertyValue, request);
+        return res;
     }
-  }
 
 }

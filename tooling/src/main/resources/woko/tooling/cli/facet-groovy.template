@@ -1,0 +1,8 @@
+package $facetPackage
+
+import net.sourceforge.jfacets.annotations.FacetKey$imports
+
+@FacetKey(name="$name", profileId="$role"${targetTypeStr})
+class $facetClassName$baseClassStr$interfaceStr {
+$classBody
+}

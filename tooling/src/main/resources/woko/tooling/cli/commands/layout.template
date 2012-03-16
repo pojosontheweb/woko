@@ -1,0 +1,16 @@
+package $facetsPackage;
+
+import net.sourceforge.jfacets.annotations.FacetKey;
+import woko.facets.BaseFacet;
+import woko.facets.builtin.Layout;
+import woko.facets.builtin.WokoFacets;
+import woko.facets.builtin.all.LayoutAll;
+
+@FacetKey(name= WokoFacets.layout, profileId="all")
+public class MyLayout extends LayoutAll {
+
+    @Override
+    public String getAppTitle() {
+        return "$name";
+    }
+}

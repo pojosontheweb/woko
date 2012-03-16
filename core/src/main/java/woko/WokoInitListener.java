@@ -1,3 +1,19 @@
+/*
+ * Copyright 2001-2010 Remi Vankeisbelck
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package woko;
 
 import net.sourceforge.jfacets.IFacetDescriptorManager;
@@ -117,17 +133,22 @@ public abstract class WokoInitListener implements ServletContextListener {
         return Collections.emptyList();
       }
     }
-    String[] pkgNamesArr = pkgNamesStr.
-            replace('\n', ',').
-            replace(' ', ',').
-            split(",");
-    List<String> pkgNames = new ArrayList<String>();
-    for (String s : pkgNamesArr) {
-      if (s!=null && !s.equals("")) {
-        pkgNames.add(s);
-      }
-    }
-    return pkgNames;
+
+    return extractPackagesList(pkgNamesStr);
   }
+
+    public static List<String> extractPackagesList(String packagesStr) {
+        String[] pkgNamesArr = packagesStr.
+                replace('\n', ',').
+                replace(' ', ',').
+                split(",");
+        List<String> pkgNames = new ArrayList<String>();
+        for (String s : pkgNamesArr) {
+          if (s!=null && !s.equals("")) {
+            pkgNames.add(s);
+          }
+        }
+        return pkgNames;
+    }
 
 }

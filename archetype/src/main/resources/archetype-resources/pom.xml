@@ -1,25 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
+    <!--~~~~~~~~~~~~~~~~~~~~~-->
+    <!-- Project information -->
+    <!--~~~~~~~~~~~~~~~~~~~~~-->
     <artifactId>${artifactId}</artifactId>
     <groupId>${groupId}</groupId>
     <name>${artifactId}</name>
+    <version>${version}</version>
     <packaging>war</packaging>
+
+
     <properties>
-        <woko.version>2.0-beta1-SNAPSHOT</woko.version>
+        <woko.version>2.0-SNAPSHOT</woko.version>
     </properties>
+
+    <!--~~~~~~~~~~~~~~-->
+    <!-- Dependencies -->
+    <!--~~~~~~~~~~~~~~-->
     <dependencies>
+
+        <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+        <!-- Defaults dependencies needed to use woko -->
+        <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
         <dependency>
             <groupId>com.rvkb</groupId>
             <artifactId>woko-ri</artifactId>
             <version>${woko.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.rvkb</groupId>
-            <artifactId>woko-web-lithium</artifactId>
-            <version>${woko.version}</version>
-            <type>war</type>
         </dependency>
         <dependency>
             <groupId>com.rvkb</groupId>
@@ -28,31 +38,64 @@
             <type>war</type>
         </dependency>
         <dependency>
+            <groupId>com.rvkb</groupId>
+            <artifactId>woko-push</artifactId>
+            <version>${woko.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.rvkb</groupId>
+            <artifactId>woko-tooling</artifactId>
+            <version>${woko.version}</version>
+        </dependency>
+        <!-- needed for tooling -->
+        <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>servlet-api</artifactId>
             <version>2.3</version>
-            <scope>provided</scope>
         </dependency>
     </dependencies>
-    <version>${version}</version>
+
+
+    <!--~~~~~~~~~~~~~~~~~~~~~-->
+    <!-- Build configuration -->
+    <!--~~~~~~~~~~~~~~~~~~~~~-->
     <build>
         <finalName>${artifactId}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.2</version>
                 <configuration>
-                    <source>1.5</source>
-                    <target>1.5</target>
+                    <source>1.6</source>
+                    <target>1.6</target>
                 </configuration>
             </plugin>
             <plugin>
-                <groupId>org.codehaus.groovy.maven</groupId>
+                <groupId>org.codehaus.gmaven</groupId>
                 <artifactId>gmaven-plugin</artifactId>
-                <version>1.0</version>
+                <version>1.2</version>
                 <configuration>
-                    <verbose>true</verbose>
+                    <providerSelection>1.7</providerSelection>
                 </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.codehaus.gmaven.runtime</groupId>
+                        <artifactId>gmaven-runtime-1.7</artifactId>
+                        <version>1.2</version>
+                        <exclusions>
+                            <exclusion>
+                                <groupId>org.codehaus.groovy</groupId>
+                                <artifactId>groovy-all</artifactId>
+                            </exclusion>
+                        </exclusions>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.codehaus.groovy</groupId>
+                        <artifactId>groovy-all</artifactId>
+                        <version>1.7.0</version>
+                    </dependency>
+                </dependencies>
                 <executions>
                     <execution>
                         <goals>
@@ -65,23 +108,23 @@
                 </executions>
             </plugin>
             <plugin>
-                <groupId>org.codehaus.cargo</groupId>
-                <artifactId>cargo-maven2-plugin</artifactId>
+                <groupId>org.mortbay.jetty</groupId>
+                <artifactId>maven-jetty-plugin</artifactId>
+                <version>6.1.10</version>
                 <configuration>
-                    <wait>true</wait>
-                  <container>
-                    <containerId>tomcat6x</containerId>
-                    <zipUrlInstaller>
-                      <url>http://apache.crihan.fr/dist/tomcat/tomcat-6/v6.0.33/bin/apache-tomcat-6.0.33.zip</url>
-                      <installDir>${basedir}/target/tomcat6-install</installDir>
-                    </zipUrlInstaller>
-                  </container>
-                  <configuration>
-                    <home>${project.build.directory}/tomcat6x/container</home>
-                    <properties>
-                        <cargo.servlet.port>8080</cargo.servlet.port>
-                    </properties>
-                  </configuration>
+                    <scanIntervalSeconds>10</scanIntervalSeconds>
+                    <!-- Configure the webapp -->
+                    <contextPath>/${artifactId}</contextPath>
+                    <tmpDir>target/tmp</tmpDir>
+                    <stopKey>foo</stopKey>
+                    <stopPort>9999</stopPort>
+                    <requestLog implementation="org.mortbay.jetty.NCSARequestLog">
+                        <filename>target/yyyy_mm_dd.request.log</filename>
+                        <retainDays>90</retainDays>
+                        <append>true</append>
+                        <extended>false</extended>
+                        <logTimeZone>GMT</logTimeZone>
+                    </requestLog>
                 </configuration>
             </plugin>
         </plugins>

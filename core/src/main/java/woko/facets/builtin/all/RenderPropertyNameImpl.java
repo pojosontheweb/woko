@@ -1,3 +1,19 @@
+/*
+ * Copyright 2001-2010 Remi Vankeisbelck
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package woko.facets.builtin.all;
 
 import net.sourceforge.jfacets.annotations.FacetKey;
@@ -5,21 +21,22 @@ import woko.facets.BaseFragmentFacet;
 import woko.facets.builtin.RenderPropertyName;
 import woko.facets.builtin.WokoFacets;
 
-@FacetKey(name= WokoFacets.renderPropertyName, profileId="all")
+@FacetKey(name = WokoFacets.renderPropertyName, profileId = "all")
 public class RenderPropertyNameImpl extends BaseFragmentFacet implements RenderPropertyName {
 
-  private String propertyName;
+    public static final String FRAGMENT_PATH = "/WEB-INF/woko/jsp/all/renderPropertyName.jsp";
+    private String propertyName;
 
-  public String getPropertyName() {
-    return propertyName;
-  }
+    public String getPropertyName() {
+        return propertyName;
+    }
 
-  public void setPropertyName(String propertyName) {
-    this.propertyName = propertyName;
-  }
+    public void setPropertyName(String propertyName) {
+        this.propertyName = propertyName;
+    }
 
-  public String getPath() {
-    return "/WEB-INF/woko/jsp/all/renderPropertyName.jsp";
-  }
+    public String getPath() {
+        return FRAGMENT_PATH;
+    }
 
 }

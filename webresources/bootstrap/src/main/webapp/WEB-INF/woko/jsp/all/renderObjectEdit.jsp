@@ -1,8 +1,10 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@include file="/WEB-INF/woko/jsp/taglibs.jsp"%>
+
 <%@ page import="woko.facets.builtin.RenderObject" %>
 <%@ page import="woko.Woko" %>
 <%@ page import="woko.facets.builtin.WokoFacets" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="w" tagdir="/WEB-INF/tags/woko" %>
+
 <%
     RenderObject renderObject = (RenderObject)request.getAttribute(WokoFacets.renderObjectEdit);
     Object o = renderObject.getFacetContext().getTargetObject();
