@@ -39,6 +39,32 @@
         .hero-unit .btn-large {
             font-weight: bold;
         }
+
+        hr {
+            margin-bottom: 4px;
+        }
+
+        footer {
+            text-align: center;
+        }
+
+        footer img {
+            vertical-align: bottom;
+        }
+
+        .navbar-inner {
+            height: 28px;
+        }
+
+        .navbar .nav > li > a {
+            padding-top: 4px;
+            padding-bottom: 4px;
+            padding-right: 8px;
+        }
+
+        body {
+            padding-top: 45px;
+        }
     </style>
 </head>
 
@@ -47,20 +73,12 @@
 <div class="navbar navbar-fixed-top">
     <div class="navbar-inner">
         <div class="container">
-            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </a>
-            <a class="brand" href="#">
-                <img src="images/woko-logo-small.png" alt="logo"/>
-            </a>
-
             <div class="nav-collapse">
                 <ul class="nav">
-                    <li class="active"><a href="#">Home</a></li>
-                    <li><a href="#about">About</a></li>
-                    <li><a href="#contact">Contact</a></li>
+                    <li class="active"><a href="#"><i class="icon-download-alt icon-white"> </i> Download</a></li>
+                    <li class="active"><a href="#"><i class="icon-book icon-white"></i> Documentation</a></li>
+                    <li class="active"><a href="#"><i class="icon-envelope icon-white"></i> Support</a></li>
+                    <li class="active"><a href="#"><i class="icon-fire icon-white"></i> Develop</a></li>
                 </ul>
             </div>
             <!--/.nav-collapse -->
@@ -81,54 +99,51 @@
             (or almost !).
         </p>
 
-        <p><a class="btn btn-large">Get started &raquo;</a></p>
+        <p><a class="btn btn-large btn-success">Get started &raquo;</a></p>
     </div>
 
     <!-- Example row of columns -->
     <div class="row">
-        <div class="span6">
+        <div class="span5 offset1">
             <h2>
                 Persistence & Search
             </h2>
             <p>
                 <img src="images/icon-dbsearch.png" alt="dbsearch" class="pull-left"/>
-                No-config persistence and full text search services for your POJOs,
-                with built-in support for <a href="http://www.hibernate.org/">Hibernate</a>
-                and <a href="http://compass-project.org/">Compass</a>.
+                Built-in persistence and full text search services for your POJOs.
                 <br/>
                 No more DAO hassles and Session management : all you need to worry
                 about is your Domain Objects.
             </p>
         </div>
-        <div class="span6">
+        <div class="span5">
             <h2>
                 Users & Roles
             </h2>
             <p>
                 <img src="images/icon-people.png" alt="people" class="pull-left"/>
                 First-class support for roles and users. Authentication, user management,
-                GUI profiling...
+                GUI profiling, it's all built-in.
                 <br/>
-                It's all built-in, and completely pluggable if you need
-                to include your own user management system.
+                And completely pluggable.
             </p>
         </div>
     </div>
     <div class="row">
-        <div class="span6">
+        <div class="span5 offset1">
             <h2>
                 MVC & Object Renderer
             </h2>
             <p>
                 <img src="images/icon-form.png" alt="dbsearch" class="pull-left"/>
                 Base MVC plumbing (URLs, data binding & validation, controllers, templating etc.),  and
-                facet-based Object Renderer : Woko can display your objects without you writing code
-                for it !
+                facet-based Object Renderer... Woko can display your objects without you writing code
+                for it.
             </p>
         </div>
-        <div class="span6">
+        <div class="span5">
             <h2>
-                JSON & Javascript APIs
+                JSON & Javascript
             </h2>
             <p>
                 <img src="images/icon-jsonhttp.png" alt="dbsearch" class="pull-left"/>
@@ -141,29 +156,13 @@
     <hr>
 
     <footer>
-        <p>&copy; Company 2012
-        </p>
+        &copy; The
+        <img src="images/woko-logo-small.png" alt="logo"/>
+        Team 2012
     </footer>
 
 </div>
 <!-- /container -->
-
-<!-- Le javascript
-================================================== -->
-<!-- Placed at the end of the document so the pages load faster -->
-<script src="bootstrap/js/jquery.js"></script>
-<script src="bootstrap/js/bootstrap-transition.js"></script>
-<script src="bootstrap/js/bootstrap-alert.js"></script>
-<script src="bootstrap/js/bootstrap-modal.js"></script>
-<script src="bootstrap/js/bootstrap-dropdown.js"></script>
-<script src="bootstrap/js/bootstrap-scrollspy.js"></script>
-<script src="bootstrap/js/bootstrap-tab.js"></script>
-<script src="bootstrap/js/bootstrap-tooltip.js"></script>
-<script src="bootstrap/js/bootstrap-popover.js"></script>
-<script src="bootstrap/js/bootstrap-button.js"></script>
-<script src="bootstrap/js/bootstrap-collapse.js"></script>
-<script src="bootstrap/js/bootstrap-carousel.js"></script>
-<script src="bootstrap/js/bootstrap-typeahead.js"></script>
 
 </body>
 </html>
