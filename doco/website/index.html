@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Woko - POJOs on the Web!</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="bootstrap/css/bootstrap.woko.css" rel="stylesheet">
+    <style type="text/css">
+        body {
+            padding-top: 60px;
+            padding-bottom: 40px;
+        }
+    </style>
+    <!--<link href="bootstrap/css/bootstrap-responsive.css" rel="stylesheet"> TODO wrecks my neat hero border of course ! -->
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le fav and touch icons -->
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="bootstrap/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="bootstrap/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="bootstrap/ico/apple-touch-icon-57-precomposed.png">
+
+    <style type="text/css">
+        .hero-unit {
+            background-image: url("images/hero-border.png");
+            background-repeat: no-repeat;
+            border: none;
+            background-color: #ffffff;
+        }
+
+        .hero-unit .btn-large {
+            font-weight: bold;
+            font-size: 24px;
+        }
+
+        hr {
+            margin-bottom: 4px;
+        }
+
+        footer {
+            text-align: center;
+        }
+
+        footer img {
+            vertical-align: bottom;
+        }
+
+        .navbar-inner {
+            height: 28px;
+        }
+
+        .navbar .nav > li > a {
+            padding-top: 4px;
+            padding-bottom: 4px;
+            padding-right: 8px;
+        }
+
+        body {
+            padding-top: 45px;
+        }
+
+        .getstarted {
+            text-align: center;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <div class="nav-collapse">
+                <ul class="nav">
+                    <li class="active"><a href="#"><i class="icon-home icon-white"> </i> Home</a></li>
+                    <li><a href="#"><i class="icon-download-alt icon-white"> </i> Download</a></li>
+                    <li><a href="#"><i class="icon-book icon-white"></i> Documentation</a></li>
+                    <li><a href="#"><i class="icon-question-sign icon-white"></i> Support</a></li>
+                    <li><a href="#"><i class="icon-fire icon-white"></i> Develop</a></li>
+                    <li><a href="#"><i class="icon-envelope icon-white"></i> Contact us</a></li>
+                </ul>
+            </div>
+            <!--/.nav-collapse -->
+        </div>
+    </div>
+</div>
+
+<div class="container">
+
+    <div class="hero-unit">
+        <h1>
+            POJOs on the Web!
+        </h1>
+        <p>
+            Tired of heavyweight, unproductive and boring web development in Java ?
+            <br/>
+            Woko is a Full-Stack, Domain-Driven Web Framework that aims to put your POJOs on the Web for nothing
+            (or almost !).
+        </p>
+
+        <p class="getstarted">
+            <a class="btn btn-large btn-success">Get started &raquo;</a>
+        </p>
+    </div>
+
+    <!-- Example row of columns -->
+    <div class="row">
+        <div class="span5 offset1">
+            <h2>
+                Persistence & Search
+            </h2>
+            <p>
+                <img src="images/icon-dbsearch.png" alt="dbsearch" class="pull-left"/>
+                Built-in persistence and full text search services for your POJOs.
+                <br/>
+                No more DAO hassles and Session management : all you need to worry
+                about is your Domain Objects.
+            </p>
+        </div>
+        <div class="span5">
+            <h2>
+                Users & Roles
+            </h2>
+            <p>
+                <img src="images/icon-people.png" alt="people" class="pull-left"/>
+                First-class support for roles and users. Authentication, user management,
+                GUI profiling, it's all built-in.
+                <br/>
+                And completely pluggable.
+            </p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="span5 offset1">
+            <h2>
+                MVC & Object Renderer
+            </h2>
+            <p>
+                <img src="images/icon-form.png" alt="dbsearch" class="pull-left"/>
+                Base MVC plumbing (URLs, data binding & validation, controllers, templating etc.),  and
+                facet-based Object Renderer... Woko can display your objects without you writing code
+                for it.
+            </p>
+        </div>
+        <div class="span5">
+            <h2>
+                JSON & Javascript
+            </h2>
+            <p>
+                <img src="images/icon-jsonhttp.png" alt="dbsearch" class="pull-left"/>
+                Out of the box JSON/HTTP services for your application, and a JavaScript API
+                for accessing your Domain Objects and back-end, right in the page.
+            </p>
+        </div>
+    </div>
+
+    <hr>
+
+    <footer>
+        &copy; The
+        <img src="images/woko-logo-small.png" alt="logo"/>
+        Team 2012
+    </footer>
+
+</div>
+<!-- /container -->
+
+</body>
+</html>
