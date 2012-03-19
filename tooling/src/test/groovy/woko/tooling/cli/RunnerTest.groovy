@@ -162,7 +162,7 @@ The command accepts one argument that can be  :
         // straight copy (not optimally efficient)
 
         folder.newFile('pom.xml').withWriter { file ->
-            new File(this.class.getResource('/pom.xml').toURI()).eachLine { line ->
+            new File(this.class.getResource('/test-pom.xml').toURI()).eachLine { line ->
                 file.writeLine(line)
             }
         }
@@ -188,7 +188,7 @@ The command accepts one argument that can be  :
         // straight copy (not optimally efficient)
 
         folder.newFile('pom.xml').withWriter { file ->
-            new File(this.class.getResource('/pom.xml').toURI()).eachLine { line ->
+            new File(this.class.getResource('/test-pom.xml').toURI()).eachLine { line ->
                 file.writeLine(line)
             }
         }
