@@ -20,6 +20,8 @@ import org.junit.Test
 import org.junit.Ignore
 import woko.tooling.utils.Logger
 import static junit.framework.Assert.*
+import org.junit.rules.TemporaryFolder
+import org.junit.Rule
 
 class RunnerTest {
 
@@ -41,11 +43,16 @@ class RunnerTest {
     }
 
     void assertCommandResult(args,expectedResult) {
+        assertCommandResult(args, expectedResult, new File(testAppDir))
+    }
+
+    void assertCommandResult(args,expectedResult, workingDir) {
         println "Executing $args"
-        def actual = execCommand(args, new File(testAppDir))
+        def actual = execCommand(args, workingDir)
         println actual
         assertEquals("invalid command result for args $args", expectedResult, actual)
     }
+
 
     static final String EXPECTED_NO_ARGS = """Usage : woko <command> arg*
 
@@ -143,12 +150,61 @@ The command accepts one argument that can be  :
 """)
     }
 
+    @Rule
+    public TemporaryFolder folder = new TemporaryFolder();
+
     @Test
-    void testInit() {
-        assertCommandResult(["init","-help"], "")
-        //assertCommandResult(["init","-use-bootstrap", "yes", "-use-groovy","no","-package-name","com.example.myapp"], "")
+    void testInitHelp() {
+
+        println folder.getRoot().absolutePath
+
+        // copy testAppDir/pom.xml into folder
+        // straight copy (not optimally efficient)
+
+        folder.newFile('pom.xml').withWriter { file ->
+            new File(testAppDir+'/pom.xml').eachLine { line ->
+                file.writeLine(line)
+            }
+        }
+
+       // System.setProperty("user.dir", folder.getRoot().absolutePath);
+
+        assertCommandResult(["init","-help"],
+               "usage: woko init\n" +
+               " -b,--use-boostrap <yes|no>                      boostrap usage\n" +
+               " -g,--use-groovy <yes|no>                        groovy usage\n" +
+               " -h,--help                                       Show usage information\n" +
+               " -p,--default-package-name <com.example.myapp>   default package name\n"
+               ,folder.getRoot())
+
     }
 
+    @Test
+    void testInit() {
+
+        println folder.getRoot().absolutePath
+
+        // copy testAppDir/pom.xml into folder
+        // straight copy (not optimally efficient)
+
+        folder.newFile('pom.xml').withWriter { file ->
+            new File(testAppDir+'/pom.xml').eachLine { line ->
+                file.writeLine(line)
+            }
+        }
+
+        assertCommandResult(["init","-b","yes", "-g", "no", "-p", "foo.bar"],
+                "|  You will use pure Java\n" +
+                        "|  - web.xml file created : src/main/webapp/WEB-INF/web.xml\n" +
+                        "|  - Layout facet created : foo.bar.facets.MyLayout\n" +
+                        "|  - resource bundle created : src/main/resources/application.properties\n" +
+                        "|  \n" +
+                        "|  Your project has been generated in : $folder.root.name \n" +
+                        "|  Run 'woko start' in order to launch your app in a local Jetty container\n"
+                , folder.getRoot())
+
+        println 'coucou'
+    }
 
 
 

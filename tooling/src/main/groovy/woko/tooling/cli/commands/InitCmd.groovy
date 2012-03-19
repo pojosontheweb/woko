@@ -25,7 +25,7 @@ import woko.tooling.utils.Logger
 
 class InitCmd extends Command{
 
-    final Logger logger
+    //final Logger logger
 
     String packageName
     Boolean useBootstrap
@@ -50,54 +50,53 @@ class InitCmd extends Command{
     @Override
     void execute(List<String> args) {
 
-        def cli = new CliBuilder(usage: 'woko init [-use-boostrap {yes|no}] [-use-groovy {yes|no}] [-default-package-name <package name>]')
+        CliBuilder cliBuilder = new CliBuilder(usage: 'woko init')
 
-        cli.with {
+        cliBuilder.writer = new PrintWriter(logger.writer)
+
+        cliBuilder.with {
             h longOpt: 'help', 'Show usage information'
             b longOpt: 'use-boostrap', args: 1, argName: 'yes|no', 'boostrap usage'
             g longOpt: 'use-groovy', args: 1, argName: 'yes|no', 'groovy usage'
-            p longOpt: 'default-package-name', args: 1,   'default package name'
+            p longOpt: 'default-package-name', args: 1, argName: 'com.example.myapp', 'default package name'
         }
 
         String defaultPackageName = groupId
+
         if (!defaultPackageName.endsWith(artifactId)) {
             defaultPackageName = "$defaultPackageName.$artifactId"
         }
 
-        def options = cli.parse(args.toArray())
-        if (options) {
-            if(options.h) {
-                cli.usage()
-                return
-            }
-
-            if(options.b)
-            {
-                useBootstrap = (options.b == "yes")
-            } else {
-                useBootstrap = AppUtils.yesNoAsk("Would you like to use Bootstrap for UI")
-            }
-
-            if(options.g)
-            {
-                useGroovy = (options.g == "yes")
-            } else {
-                useGroovy = AppUtils.yesNoAsk("Would you like to use Groovy")
-            }
-
-            if(options.p)
-            {
-                packageName = options.p
-            } else {
-                packageName = AppUtils.askWithDefault("Specify your default package name", defaultPackageName)
-            }
-
-        } else {
-            useBootstrap = AppUtils.yesNoAsk("Would you like to use Bootstrap for UI")
-            useGroovy = AppUtils.yesNoAsk("Would you like to use Groovy")
-            packageName = AppUtils.askWithDefault("Specify your default package name", defaultPackageName)
+        def options = cliBuilder.parse(args.toArray())
+        if (!options) {
+            options = new OptionAccessor()
         }
 
+        if(options.h) {
+            cliBuilder.usage()
+            return
+        }
+
+        if(options.b)
+        {
+            useBootstrap = (options.b == "yes")
+        } else {
+            useBootstrap = AppUtils.yesNoAsk("Would you like to use Bootstrap for UI")
+        }
+
+        if(options.g)
+        {
+            useGroovy = (options.g == "yes")
+        } else {
+            useGroovy = AppUtils.yesNoAsk("Would you like to use Groovy")
+        }
+
+        if(options.p)
+        {
+            packageName = options.p
+        } else {
+            packageName = AppUtils.askWithDefault("Specify your default package name", defaultPackageName)
+        }
 
         addSpecificsDependencies()
         createPackage()
@@ -106,7 +105,7 @@ class InitCmd extends Command{
         copyResources()
 
         iLog("")
-        iLog("Your project has been generated in : $artifactId.")
+        iLog("Your project has been generated in : $projectDir.name ")
         iLog("Run 'woko start' in order to launch your app in a local Jetty container")
     }
 
@@ -145,13 +144,16 @@ class InitCmd extends Command{
      * Convention : package name = groupId.artifactId
      */
     private void createPackage(){
+
+        println System.getProperty("user.dir")
+
         String srcBasePath, testBasePath
         if (useGroovy){
-            srcBasePath = 'src'+File.separator+'main'+File.separator+'groovy'
-            testBasePath = 'src'+File.separator+'test'+File.separator+'groovy'
+            srcBasePath = projectDir.absolutePath + File.separator + 'src'+File.separator+'main'+File.separator+'groovy'
+            testBasePath = projectDir.absolutePath + File.separator + 'src'+File.separator+'test'+File.separator+'groovy'
         }else{
-            srcBasePath = 'src'+File.separator+'main'+File.separator+'java'
-            testBasePath = 'src'+File.separator+'test'+File.separator+'java'
+            srcBasePath = projectDir.absolutePath + File.separator + 'src'+File.separator+'main'+File.separator+'java'
+            testBasePath = projectDir.absolutePath + File.separator + 'src'+File.separator+'test'+File.separator+'java'
         }
 
         String srcPath = srcBasePath + File.separator+packageName.replaceAll("\\.", "\\"+File.separator)
@@ -160,9 +162,9 @@ class InitCmd extends Command{
         modelPath = srcPath+File.separator+'model'
         wokoPath = srcPath+File.separator+'woko'
 
-        String srcResources = 'src'+File.separator+'main'+File.separator+'resources'
-        String testResources = 'src'+File.separator+'test'+File.separator+'resources'
-        webApp = 'src'+File.separator+'main'+File.separator+'webapp'+
+        String srcResources = projectDir.absolutePath + File.separator + 'src'+File.separator+'main'+File.separator+'resources'
+        String testResources = projectDir.absolutePath + File.separator + 'src'+File.separator+'test'+File.separator+'resources'
+        webApp = projectDir.absolutePath + File.separator + 'src'+File.separator+'main'+File.separator+'webapp'+
                 File.separator+'WEB-INF'
 
         if (!createDirectory(facetsPath)){
@@ -199,7 +201,8 @@ class InitCmd extends Command{
         generateTemplate(binding, 'web-xml', false, writer)
 
         // Summary
-        iLog("- web.xml file created : " + webApp+File.separator+'web.xml')
+        iLog("- web.xml file created : " + 'src'+File.separator+'main'+ File.separator+'webapp'+File.separator+
+                'WEB-INF'+File.separator+'web.xml')
     }
 
     private void createClass(){
@@ -221,11 +224,11 @@ class InitCmd extends Command{
     }
 
     private void copyResources(){
-        FileWriter writer = new FileWriter('src'+File.separator+'main'+
+        FileWriter writer = new FileWriter(projectDir.absolutePath + File.separator + 'src'+File.separator+'main'+
                 File.separator+'resources'+File.separator+'application.properties')
         generateTemplate(null, 'application', false, writer)
-        iLog("- resource bundle created : " + artifactId +File.separator+'src'+File.separator+'main'+
-                File.separator+'resources'+File.separator+'application.properties')
+        iLog("- resource bundle created : " + 'src'+File.separator+'main'+ File.separator+'resources'+File.separator+
+                'application.properties')
     }
 
     private boolean createDirectory(String path){
