@@ -25,7 +25,7 @@ class FacetValidationTest extends WebTestBase{
 
       // submit and check that we have nvalidation errors
       clickButton(name:'doIt')
-      verifyText 'Facet Prop is a required field'
+      verifyText 'My facet prop is a required field'
 
       // now fill in the required field, and submit
       setInputField(name:'facet.prop', value:'foobar')

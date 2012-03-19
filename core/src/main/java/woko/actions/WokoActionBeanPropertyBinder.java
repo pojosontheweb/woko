@@ -16,8 +16,11 @@
 
 package woko.actions;
 
+import net.sourceforge.stripes.action.ActionBean;
+import net.sourceforge.stripes.action.ActionBeanContext;
 import net.sourceforge.stripes.controller.DefaultActionBeanPropertyBinder;
 import net.sourceforge.stripes.util.bean.PropertyExpressionEvaluation;
+import net.sourceforge.stripes.validation.ValidationErrors;
 
 public class WokoActionBeanPropertyBinder extends DefaultActionBeanPropertyBinder {
 
@@ -45,5 +48,27 @@ public class WokoActionBeanPropertyBinder extends DefaultActionBeanPropertyBinde
 
         }
         return true;
+    }
+
+    @Override
+    public ValidationErrors bind(ActionBean bean, ActionBeanContext context, boolean validate) {
+        ValidationErrors errorsSaved =  super.bind(bean, context, validate);
+        ValidationErrors errorsUpdated = new ValidationErrors();
+        if (bean instanceof WokoActionBean){
+            WokoActionBean wBean = (WokoActionBean)bean;
+            String facetName = wBean.getFacetName();
+            for(String key : errorsSaved.keySet()){
+                if (key.startsWith("facet")){
+                    String newKey = key.replaceFirst("facet", facetName);
+                    errorsUpdated.put(newKey, errorsSaved.get(key));
+                }else if (key.startsWith("object")){
+                    String newKey = key.replaceFirst("object", facetName);
+                    errorsUpdated.put(newKey, errorsSaved.get(key));
+                }
+            }
+            return errorsUpdated;
+        }
+        else
+            return errorsSaved;
     }
 }

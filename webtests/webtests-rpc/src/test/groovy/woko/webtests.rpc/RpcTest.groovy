@@ -148,7 +148,7 @@ class RpcTest extends WebTestBase {
             verifyText "Validation errors"
             verifyText "error\":true"
             verifyText "validation\":true"
-            verifyText "fieldName\":\"facet.myProp"
+            verifyText "fieldName\":\"validationInThere.myProp"
         }
     }
 
