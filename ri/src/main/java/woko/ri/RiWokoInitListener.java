@@ -22,8 +22,14 @@ import woko.hbcompass.HibernateCompassWokoInitListener;
 import woko.hibernate.HibernateStore;
 import woko.users.UserManager;
 import woko.users.UsernameResolutionStrategy;
+import woko.util.WLogger;
 
 public class RiWokoInitListener extends HibernateCompassWokoInitListener {
+
+    private static final WLogger logger = WLogger.getLogger(RiWokoInitListener.class);
+
+    public static final String CTX_PARAM_WDEVEL_USERNAME = "Woko.Wdevel.Username";
+    public static final String CTX_PARAM_WDEVEL_PASSWORD = "Woko.Wdevel.Password";
 
     @Override
     protected UsernameResolutionStrategy createUsernameResolutionStrategy() {
@@ -32,6 +38,20 @@ public class RiWokoInitListener extends HibernateCompassWokoInitListener {
 
     @Override
     protected UserManager createUserManager() {
-        return new HibernateUserManager((HibernateStore)getObjectStore()).createDefaultUsers();
+        HibernateUserManager um = new HibernateUserManager((HibernateStore)getObjectStore());
+        String wdevelUsername = getServletContext().getInitParameter(CTX_PARAM_WDEVEL_USERNAME);
+        if (wdevelUsername!=null) {
+            um.setDeveloperUsername(wdevelUsername);
+        } else {
+            logger.warn("You seem to be using the default wdevel username : change this in web.xml using init param " + CTX_PARAM_WDEVEL_USERNAME + ", or even better : subclass UserManager");
+        }
+        String wdevelPassword = getServletContext().getInitParameter(CTX_PARAM_WDEVEL_PASSWORD);
+        if (wdevelPassword!=null) {
+            um.setDeveloperPassword(wdevelPassword);
+        } else {
+            logger.warn("You seem to be using the default wdevel password : change this in web.xml using init param " + CTX_PARAM_WDEVEL_PASSWORD + ", or even better : subclass UserManager");
+        }
+        um.createDefaultUsers();
+        return um;
     }
 }

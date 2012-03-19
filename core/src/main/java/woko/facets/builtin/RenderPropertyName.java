@@ -23,7 +23,7 @@ public interface RenderPropertyName extends IFacet, FragmentFacet {
 
     static final String FACET_NAME = "renderPropertyName";
 
-  void setPropertyName(String name);
+    void setPropertyName(String name);
 
-  String getPropertyName();
+    String getPropertyName();
 }

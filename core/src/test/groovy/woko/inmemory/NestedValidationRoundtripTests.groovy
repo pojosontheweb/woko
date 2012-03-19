@@ -49,4 +49,20 @@ class NestedValidationRoundtripTests extends InMemRoundtripTestBase {
                 'Required property is a required field',
                 errors.get(errors.keySet().iterator().next()).get(0).getMessage(Locale.ENGLISH))
     }
+
+
+    void testObjectValidation() {
+        WokoActionBean ab = trip('wdevel', 'testObjectValidate', 'testentity.MyValidatedPojo', '2') // no params specified but a @NotNull is there !
+        // assert validation error has been added
+        def errors = ab.context.validationErrors
+        assertEquals('unexpected number of errors', 1, errors.size())
+        assertEquals('Unexpected map key for error', 'object.str', errors.keySet().iterator().next())
+        assertEquals('Unexpected field key for error',
+                'testentity.MyValidatedPojo.str',
+                errors.get(errors.keySet().iterator().next()).get(0).getFieldName())
+        assertEquals('Unexpected error message',
+                'OooohYeah is a required field',
+                errors.get(errors.keySet().iterator().next()).get(0).getMessage(Locale.ENGLISH))
+    }
+
 }
