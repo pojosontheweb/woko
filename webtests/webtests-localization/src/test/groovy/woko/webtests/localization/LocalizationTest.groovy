@@ -38,6 +38,7 @@ class LocalizationTest extends WebTestBase {
             not {
                 verifyText "???MyBook.anotherProp???" // the message doesn't exist for the prop, we check if we don't have an ugly ???xyz??? message
             }
+            verifyXPath xpath:"/html/body/div/div[3]/div/div[2]/div/form/table/tbody/tr[2]/th/span/span/label", text:"anotherProp"
         }
     }
 }

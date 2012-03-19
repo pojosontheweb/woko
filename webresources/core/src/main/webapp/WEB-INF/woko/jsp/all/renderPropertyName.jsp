@@ -21,6 +21,9 @@
 <%@ page import="woko.Woko" %>
 <%@ page import="woko.persistence.ObjectStore" %>
 <%@ page import="woko.facets.builtin.WokoFacets" %>
+<%@ page import="net.sourceforge.stripes.controller.StripesFilter" %>
+<%@ page import="java.util.ResourceBundle" %>
+<%@ page import="java.util.MissingResourceException" %>
 <%
     RenderPropertyName renderPropertyName = (RenderPropertyName)request.getAttribute(WokoFacets.renderPropertyName);
     WokoFacetContext fctx = (WokoFacetContext)renderPropertyName.getFacetContext();
@@ -31,10 +34,18 @@
     String propertyClassName = os.getClassMapping(Util.getPropertyType(owningObject.getClass(), propertyName));
     String label = "object." + propertyName;
     String labelMsgKey = os.getClassMapping(owningObject.getClass()) + "." + propertyName;
+    ResourceBundle b = StripesFilter.getConfiguration().
+            getLocalizationBundleFactory().getFormFieldBundle(request.getLocale());
+    String msg = propertyName;
+    try {
+        msg = b.getString(labelMsgKey);
+    } catch(MissingResourceException e) {
+        // just let it through and use property name
+    }
 %>
 <span class="wokoPropertyName">
     <span class="<%=propertyName%> <%=propertyClassName%>">
-        <s:label for="<%=label%>"><fmt:message key="<%=labelMsgKey%>"/></s:label>
+        <s:label for="<%=label%>"><c:out value="<%=msg%>"/></s:label>
     </span>
 </span>
 
