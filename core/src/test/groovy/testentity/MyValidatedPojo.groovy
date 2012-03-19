@@ -14,13 +14,15 @@
  * limitations under the License.
  */
 
-package facets
+package testentity
 
 import net.sourceforge.stripes.validation.Validate
 
 class MyValidatedPojo {
 
-  @Validate()
-  String str
+    Long id
+
+    @Validate(required = true)
+    String str
 
 }

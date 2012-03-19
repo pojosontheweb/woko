@@ -16,23 +16,23 @@
 
 package woko.inmemory
 
-import woko.Woko
-import net.sourceforge.stripes.mock.MockServletContext
-import net.sourceforge.stripes.controller.StripesFilter
-import net.sourceforge.stripes.controller.DispatcherServlet
-import woko.actions.WokoActionBean
-import net.sourceforge.stripes.mock.MockRoundtrip
 import javax.servlet.ServletException
+import net.sourceforge.stripes.controller.DispatcherServlet
+import net.sourceforge.stripes.controller.StripesFilter
+import net.sourceforge.stripes.mock.MockRoundtrip
+import net.sourceforge.stripes.mock.MockServletContext
+import testentity.MyValidatedPojo
+import woko.Woko
+import woko.actions.WokoActionBean
 import woko.facets.FacetNotFoundException
-import woko.persistence.ObjectStore
 import woko.users.UserManager
-import woko.WokoInitListener
 
 abstract class InMemRoundtripTestBase extends GroovyTestCase {
 
   Woko createWoko(String username) {
     InMemoryObjectStore store = new InMemoryObjectStore()
     store.addObject('1', new Book([_id: '1', name: 'Moby Dick', nbPages: 123]))
+    store.addObject('2', new MyValidatedPojo(id:1, str:"cannotbenull"))
     UserManager userManager = new InMemoryUserManager()
     userManager.addUser("wdevel", "wdevel", ["developer"])
     Woko inMem = new Woko(
