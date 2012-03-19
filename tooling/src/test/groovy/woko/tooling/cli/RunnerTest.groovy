@@ -143,5 +143,13 @@ The command accepts one argument that can be  :
 """)
     }
 
+    @Test
+    void testInit() {
+        assertCommandResult(["init","-help"], "")
+        //assertCommandResult(["init","-use-bootstrap", "yes", "-use-groovy","no","-package-name","com.example.myapp"], "")
+    }
+
+
+
 
 }

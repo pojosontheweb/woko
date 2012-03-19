@@ -16,14 +16,12 @@
 
 package woko.tooling.cli.commands
 
+import groovy.text.GStringTemplateEngine
+import org.apache.maven.model.Dependency
 import woko.tooling.cli.Command
 import woko.tooling.cli.Runner
-import woko.tooling.utils.Logger
 import woko.tooling.utils.AppUtils
-import groovy.text.GStringTemplateEngine
-import groovy.text.Template
-import org.apache.maven.model.Dependency
-
+import woko.tooling.utils.Logger
 
 class InitCmd extends Command{
 
@@ -44,12 +42,63 @@ class InitCmd extends Command{
                 logger,
                 "init",
                 "Initialize a new Woko project",
-                "",
+                "[-use-boostrap {yes|no}] [-use-groovy {yes|no}] [-default-package-name <package name>]",
                 """Initialize a new Woko project""")
+
     }
 
     @Override
     void execute(List<String> args) {
+
+        def cli = new CliBuilder(usage: 'woko init [-use-boostrap {yes|no}] [-use-groovy {yes|no}] [-default-package-name <package name>]')
+
+        cli.with {
+            h longOpt: 'help', 'Show usage information'
+            b longOpt: 'use-boostrap', args: 1, argName: 'yes|no', 'boostrap usage'
+            g longOpt: 'use-groovy', args: 1, argName: 'yes|no', 'groovy usage'
+            p longOpt: 'default-package-name', args: 1,   'default package name'
+        }
+
+        String defaultPackageName = groupId
+        if (!defaultPackageName.endsWith(artifactId)) {
+            defaultPackageName = "$defaultPackageName.$artifactId"
+        }
+
+        def options = cli.parse(args.toArray())
+        if (options) {
+            if(options.h) {
+                cli.usage()
+                return
+            }
+
+            if(options.b)
+            {
+                useBootstrap = (options.b == "yes")
+            } else {
+                useBootstrap = AppUtils.yesNoAsk("Would you like to use Bootstrap for UI")
+            }
+
+            if(options.g)
+            {
+                useGroovy = (options.g == "yes")
+            } else {
+                useGroovy = AppUtils.yesNoAsk("Would you like to use Groovy")
+            }
+
+            if(options.p)
+            {
+                packageName = options.p
+            } else {
+                packageName = AppUtils.askWithDefault("Specify your default package name", defaultPackageName)
+            }
+
+        } else {
+            useBootstrap = AppUtils.yesNoAsk("Would you like to use Bootstrap for UI")
+            useGroovy = AppUtils.yesNoAsk("Would you like to use Groovy")
+            packageName = AppUtils.askWithDefault("Specify your default package name", defaultPackageName)
+        }
+
+
         addSpecificsDependencies()
         createPackage()
         createWebXml()
@@ -62,7 +111,6 @@ class InitCmd extends Command{
     }
 
     private void addSpecificsDependencies(){
-        useBootstrap = AppUtils.yesNoAsk("Would you like to use Bootstrap for UI")
         if (useBootstrap){
             // Add a dependency on bootstrap in pom
             Dependency bootStrapDep = new Dependency()
@@ -81,7 +129,6 @@ class InitCmd extends Command{
             pomHelper.addDependency(lithiumDep)
         }
 
-        useGroovy = AppUtils.yesNoAsk("Would you like to use Groovy")
         if (useGroovy){
             // Add a dependency on Groovy in pom
             Dependency groovyDep = new Dependency()
@@ -107,12 +154,6 @@ class InitCmd extends Command{
             testBasePath = 'src'+File.separator+'test'+File.separator+'java'
         }
 
-        String defaultPackageName = groupId
-        if (!defaultPackageName.endsWith(artifactId)) {
-            defaultPackageName = "$defaultPackageName.$artifactId"
-        }
-
-        packageName = AppUtils.askWithDefault("Specify your default package name", defaultPackageName)
         String srcPath = srcBasePath + File.separator+packageName.replaceAll("\\.", "\\"+File.separator)
         String testPath = testBasePath + File.separator+packageName.replaceAll("\\.", "\\"+File.separator)
         facetsPath = srcPath+File.separator+'facets'
