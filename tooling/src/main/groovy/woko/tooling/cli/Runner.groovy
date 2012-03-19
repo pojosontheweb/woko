@@ -80,7 +80,7 @@ class Runner {
           new ListCmd(this, workingDir, logger),
           new CreateCmd(this, workingDir, logger),
           new PushCmd(this, workingDir, logger),
-          new InitCmd(this, workingDir, logger),
+          new GenerateCmd(this, workingDir, logger),
           new StartCommand(
             this,
             workingDir,

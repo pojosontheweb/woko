@@ -61,7 +61,7 @@ Available commands :
   - list facets|roles		:		list facets or roles
   - create facet|entity		:		create project elements
   - push [resources|quiet]		:		pushes the local facets to a remote application
-  - init [-use-boostrap {yes|no}] [-use-groovy {yes|no}] [-default-package-name <package name>]		:		Initialize a new Woko project
+  - generate [-use-boostrap {yes|no}] [-use-groovy {yes|no}] [-default-package-name <package name>]		:		Generates a new Woko project
   - start 		:		run the application in a local jetty container
   - stop 		:		stop the local jetty container (in case started in background process)
   - build 		:		rebuilds the whole application
@@ -169,8 +169,8 @@ The command accepts one argument that can be  :
 
        // System.setProperty("user.dir", folder.getRoot().absolutePath);
 
-        assertCommandResult(["init","-help"],
-               "usage: woko init\n" +
+        assertCommandResult(["generate","-help"],
+               "usage: woko generate\n" +
                " -b,--use-boostrap <yes|no>                      boostrap usage\n" +
                " -g,--use-groovy <yes|no>                        groovy usage\n" +
                " -h,--help                                       Show usage information\n" +
@@ -193,7 +193,7 @@ The command accepts one argument that can be  :
             }
         }
 
-        assertCommandResult(["init","-b","yes", "-g", "no", "-p", "foo.bar"],
+        assertCommandResult(["generate","-b","yes", "-g", "no", "-p", "foo.bar"],
                 "|  You will use pure Java\n" +
                 "|  - web.xml file created : src/main/webapp/WEB-INF/web.xml\n" +
                 "|  - Layout facet created : foo.bar.facets.MyLayout\n" +

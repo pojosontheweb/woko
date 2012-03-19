@@ -17,19 +17,20 @@
 package woko.tooling.cli
 
 import woko.tooling.utils.Logger
-import woko.tooling.cli.commands.InitCmd
+
+import woko.tooling.cli.commands.GenerateCmd
 
 
-class Init {
+class Generate {
 
     void run(Logger logger){
-        new InitCmd(logger).execute()
+        new GenerateCmd(logger).execute()
     }
 
     public static void main(String[] args) {
         Writer out = new OutputStreamWriter(System.out)
         try {
-            new Init().run(new Logger(out))
+            new Generate().run(new Logger(out))
         } catch (Exception e) {
             e.printStackTrace()
         } finally {

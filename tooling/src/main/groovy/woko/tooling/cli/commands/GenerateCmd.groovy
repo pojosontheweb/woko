@@ -23,7 +23,7 @@ import woko.tooling.cli.Runner
 import woko.tooling.utils.AppUtils
 import woko.tooling.utils.Logger
 
-class InitCmd extends Command{
+class GenerateCmd extends Command{
 
     //final Logger logger
 
@@ -35,13 +35,13 @@ class InitCmd extends Command{
     String wokoPath
     String facetsPath
 
-    InitCmd(Runner runner, File projectDir, Logger logger) {
+    GenerateCmd(Runner runner, File projectDir, Logger logger) {
         super(
                 runner,
                 projectDir,
                 logger,
-                "init",
-                "Initialize a new Woko project",
+                "generate",
+                "Generates a new Woko project",
                 "[-use-boostrap {yes|no}] [-use-groovy {yes|no}] [-default-package-name <package name>]",
                 """Initialize a new Woko project""")
 
@@ -50,7 +50,7 @@ class InitCmd extends Command{
     @Override
     void execute(List<String> args) {
 
-        CliBuilder cliBuilder = new CliBuilder(usage: 'woko init')
+        CliBuilder cliBuilder = new CliBuilder(usage: 'woko generate')
 
         cliBuilder.writer = new PrintWriter(logger.writer)
 

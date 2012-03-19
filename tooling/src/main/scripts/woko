@@ -71,7 +71,7 @@ init_project()
     mvn archetype:generate -DarchetypeArtifactId=woko-archetype -DarchetypeGroupId=com.rvkb\
         -DgroupId="$groupId" -DartifactId="$artifactId" -Dversion="$version" -DinteractiveMode="false" -q
     cd "$artifactId"
-    mvn exec:java -Dexec.mainClass="woko.tooling.cli.Runner" -Dexec.classpathScope=runtime -Dexec.args="init" -q  << EOI
+    mvn exec:java -Dexec.mainClass="woko.tooling.cli.Runner" -Dexec.classpathScope=runtime -Dexec.args="generate" -q  << EOI
 $boostrap
 $groovy  
 $package
@@ -89,7 +89,7 @@ else
         shift
     else
         echo "ERROR : No pom file found in current directory. "
-        read -p "Do you want to init the project ? [n]" answer
+        read -p "Do you want to generate the project ? [n]" answer
         if [ "$answer" != "y" ]
         then                       
             echo "Nothing done. Hope to see you soon !"
