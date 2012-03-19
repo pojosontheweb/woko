@@ -44,9 +44,17 @@ class PomHelper {
     }
 
     void addDependency(Dependency dependency){
+        addDependency(dependency, true)
+    }
 
+    void addDependency(Dependency dependency, boolean atEnd){
         Writer pomWriter = new FileWriter(pomFile)
-        model.addDependency(dependency)
+        if (atEnd) {
+            model.addDependency(dependency)
+        } else {
+            List<Dependency> deps = model.getDependencies();
+            deps.add(0, dependency);
+        }
         try{
             MavenXpp3Writer modelWriter = new MavenXpp3Writer()
             modelWriter.write(pomWriter, model)
