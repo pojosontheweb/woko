@@ -61,7 +61,7 @@ Available commands :
   - list facets|roles		:		list facets or roles
   - create facet|entity		:		create project elements
   - push [resources|quiet]		:		pushes the local facets to a remote application
-  - init 		:		Initialize a new Woko project
+  - init [-use-boostrap {yes|no}] [-use-groovy {yes|no}] [-default-package-name <package name>]		:		Initialize a new Woko project
   - start 		:		run the application in a local jetty container
   - stop 		:		stop the local jetty container (in case started in background process)
   - build 		:		rebuilds the whole application
@@ -162,7 +162,7 @@ The command accepts one argument that can be  :
         // straight copy (not optimally efficient)
 
         folder.newFile('pom.xml').withWriter { file ->
-            new File(testAppDir+'/pom.xml').eachLine { line ->
+            new File(this.class.getResource('/pom.xml').toURI()).eachLine { line ->
                 file.writeLine(line)
             }
         }
@@ -188,19 +188,19 @@ The command accepts one argument that can be  :
         // straight copy (not optimally efficient)
 
         folder.newFile('pom.xml').withWriter { file ->
-            new File(testAppDir+'/pom.xml').eachLine { line ->
+            new File(this.class.getResource('/pom.xml').toURI()).eachLine { line ->
                 file.writeLine(line)
             }
         }
 
         assertCommandResult(["init","-b","yes", "-g", "no", "-p", "foo.bar"],
                 "|  You will use pure Java\n" +
-                        "|  - web.xml file created : src/main/webapp/WEB-INF/web.xml\n" +
-                        "|  - Layout facet created : foo.bar.facets.MyLayout\n" +
-                        "|  - resource bundle created : src/main/resources/application.properties\n" +
-                        "|  \n" +
-                        "|  Your project has been generated in : $folder.root.name \n" +
-                        "|  Run 'woko start' in order to launch your app in a local Jetty container\n"
+                "|  - web.xml file created : src/main/webapp/WEB-INF/web.xml\n" +
+                "|  - Layout facet created : foo.bar.facets.MyLayout\n" +
+                "|  - resource bundle created : src/main/resources/application.properties\n" +
+                "|  \n" +
+                "|  Your project has been generated in : $folder.root.name \n" +
+                "|  Run 'woko start' in order to launch your app in a local Jetty container\n"
                 , folder.getRoot())
 
         println 'coucou'
