@@ -40,6 +40,8 @@ public class WokoActionBean extends BaseActionBean {
     private String key;
     @Validate(required = true)
     private String facetName;
+
+    @ValidateNestedProperties({})
     private Object object;
     @ValidateNestedProperties({})
     private ResolutionFacet facet;

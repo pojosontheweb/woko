@@ -7,6 +7,9 @@
 <%@ page import="woko.Woko" %>
 <%@ page import="woko.persistence.ObjectStore" %>
 <%@ page import="woko.facets.builtin.WokoFacets" %>
+<%@ page import="net.sourceforge.stripes.controller.StripesFilter" %>
+<%@ page import="java.util.ResourceBundle" %>
+<%@ page import="java.util.MissingResourceException" %>
 
 <%
     RenderPropertyName renderPropertyName = (RenderPropertyName)request.getAttribute(WokoFacets.renderPropertyName);
@@ -19,8 +22,15 @@
     String labelClass = "control-label wokoPropertyName " + propertyClassName + "-" + propertyName;
     String label = "object." + propertyName;
     String labelMsgKey = os.getClassMapping(owningObject.getClass()) + "." + propertyName;
-
+    ResourceBundle b = StripesFilter.getConfiguration().
+                getLocalizationBundleFactory().getFormFieldBundle(request.getLocale());
+    String msg = propertyName;
+    try {
+        msg = b.getString(labelMsgKey);
+    } catch(MissingResourceException e) {
+        // just let it through and use property name
+    }
 %>
-<s:label for="<%=label%>" class="<%=labelClass%>"><fmt:message key="<%=labelMsgKey%>"/></s:label>
+<s:label for="<%=label%>" class="<%=labelClass%>"><c:out value="<%=msg%>"/></s:label>
 
 

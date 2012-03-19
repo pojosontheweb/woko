@@ -20,7 +20,11 @@ import net.sourceforge.stripes.action.ActionBean;
 import net.sourceforge.stripes.action.ActionBeanContext;
 import net.sourceforge.stripes.controller.DefaultActionBeanPropertyBinder;
 import net.sourceforge.stripes.util.bean.PropertyExpressionEvaluation;
+import net.sourceforge.stripes.validation.ValidationError;
 import net.sourceforge.stripes.validation.ValidationErrors;
+import woko.Woko;
+
+import java.util.List;
 
 public class WokoActionBeanPropertyBinder extends DefaultActionBeanPropertyBinder {
 
@@ -55,15 +59,23 @@ public class WokoActionBeanPropertyBinder extends DefaultActionBeanPropertyBinde
         ValidationErrors errorsSaved =  super.bind(bean, context, validate);
         ValidationErrors errorsUpdated = new ValidationErrors();
         if (bean instanceof WokoActionBean){
+            Woko woko = Woko.getWoko(context.getServletContext());
             WokoActionBean wBean = (WokoActionBean)bean;
             String facetName = wBean.getFacetName();
             for(String key : errorsSaved.keySet()){
+                List<ValidationError> errs = errorsSaved.get(key);
                 if (key.startsWith("facet")){
                     String newKey = key.replaceFirst("facet", facetName);
-                    errorsUpdated.put(newKey, errorsSaved.get(key));
+                    errorsUpdated.put(newKey, errs);
                 }else if (key.startsWith("object")){
-                    String newKey = key.replaceFirst("object", facetName);
-                    errorsUpdated.put(newKey, errorsSaved.get(key));
+                    Object o = wBean.getObject();
+                    String className = o!=null ?
+                            woko.getObjectStore().getClassMapping(o.getClass()) :
+                            wBean.getClassName();
+                    String newKey = key.replaceFirst("object", className);
+                    errorsUpdated.put(newKey, errs);
+                } else {
+                    errorsUpdated.put(key, errs);
                 }
             }
             return errorsUpdated;
