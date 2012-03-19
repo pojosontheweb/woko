@@ -56,12 +56,12 @@ class NestedValidationRoundtripTests extends InMemRoundtripTestBase {
         // assert validation error has been added
         def errors = ab.context.validationErrors
         assertEquals('unexpected number of errors', 1, errors.size())
-        assertEquals('Unexpected key for error', 'object.str', errors.keySet().iterator().next())
-        assertEquals('Unexpected message key for error',
-                'MyValidatedPojo.str',
+        assertEquals('Unexpected map key for error', 'object.str', errors.keySet().iterator().next())
+        assertEquals('Unexpected field key for error',
+                'testentity.MyValidatedPojo.str',
                 errors.get(errors.keySet().iterator().next()).get(0).getFieldName())
         assertEquals('Unexpected error message',
-                'Required property is a required field',
+                'OooohYeah is a required field',
                 errors.get(errors.keySet().iterator().next()).get(0).getMessage(Locale.ENGLISH))
     }
 
