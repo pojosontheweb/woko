@@ -29,4 +29,15 @@ class LocalizationTest extends WebTestBase {
             verifyText 'Woko message (woko.guest.home.content) overridden from application resources'
         }
     }
+
+    void testMissingKeysDontGenerateUglyLabels() {
+        webtest("testMissingKeysDontGenerateUglyLabels") {
+            login()
+            goToPage '/save/MyBook'
+            verifyText "Number of pages"
+            not {
+                verifyText "???MyBook.anotherProp???" // the message doesn't exist for the prop, we check if we don't have an ugly ???xyz??? message
+            }
+        }
+    }
 }
