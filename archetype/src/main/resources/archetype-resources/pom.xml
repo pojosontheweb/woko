@@ -13,7 +13,6 @@
     <version>${version}</version>
     <packaging>war</packaging>
 
-
     <properties>
         <woko.version>2.0-SNAPSHOT</woko.version>
     </properties>
@@ -26,28 +25,52 @@
         <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
         <!-- Defaults dependencies needed to use woko -->
         <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+
+        <!--
+            the Woko Reference Implementation dep : will grab all the
+            "full defaults" stack :
+              * hibernate/compass object store
+              * database user manager
+              * built-in authentication
+        -->
         <dependency>
             <groupId>com.rvkb</groupId>
             <artifactId>woko-ri</artifactId>
             <version>${woko.version}</version>
         </dependency>
+
+        <!--
+            Woko built-in authentication JSPs
+        -->
         <dependency>
             <groupId>com.rvkb</groupId>
             <artifactId>woko-builtin-auth-web</artifactId>
             <version>${woko.version}</version>
             <type>war</type>
         </dependency>
+
+        <!--
+            Woko push : enables /push in your webapp
+        -->
         <dependency>
             <groupId>com.rvkb</groupId>
             <artifactId>woko-push</artifactId>
             <version>${woko.version}</version>
         </dependency>
+
+        <!--
+            client-side dependency on the tooling module : this is
+            used to run the woko[.bat] command line script
+        -->
         <dependency>
             <groupId>com.rvkb</groupId>
             <artifactId>woko-tooling</artifactId>
             <version>${woko.version}</version>
         </dependency>
-        <!-- needed for tooling -->
+        <!--
+            this is needed for running the tooling module, but
+            we we exclude it from the generated war (see below)
+        -->
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>servlet-api</artifactId>
@@ -125,6 +148,20 @@
                         <extended>false</extended>
                         <logTimeZone>GMT</logTimeZone>
                     </requestLog>
+                </configuration>
+            </plugin>
+            <!--
+                We exclude the servlet API jar that tooling requires, we
+                don't want this in our war !
+            -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>2.2</version>
+                <configuration>
+                    <configuration>
+                        <warSourceExcludes>WEB-INF/lib/servlet-api*.jar</warSourceExcludes>
+                    </configuration>
                 </configuration>
             </plugin>
         </plugins>
