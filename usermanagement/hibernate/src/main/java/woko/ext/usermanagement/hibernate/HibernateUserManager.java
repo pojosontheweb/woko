@@ -18,12 +18,10 @@ package woko.ext.usermanagement.hibernate;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
-import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
 import woko.ext.usermanagement.core.DatabaseUserManager;
 import woko.ext.usermanagement.core.User;
 import woko.hibernate.HibernateStore;
-import woko.hibernate.TxCallback;
 import woko.hibernate.TxCallbackWithResult;
 import woko.persistence.ListResultIterator;
 import woko.persistence.ResultIterator;
