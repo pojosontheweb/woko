@@ -67,14 +67,21 @@ class ScriptTest {
 
     @Rule public TemporaryFolder folder = new TemporaryFolder()
 
+    String woko
+    
+    @Before
+    void setUp(){
+        woko = System.getProperty('os.name').toLowerCase().contains("windows") ? "woko.bat" : "woko"
+    }
+
     @Test
     void testHelp() {
-        assertCommandResult([testAppDir+File.separator+"woko","init","-h"], EXPECTED_NO_ARGS, folder.getRoot())
+        assertCommandResult([testAppDir+File.separator+woko,"init","-h"], EXPECTED_NO_ARGS, folder.getRoot())
     }
 
     @Test
     void testInitBootstrapGroovy() {
-        assertCommandResult([testAppDir+File.separator+"woko", "init","-n","myapp", "-m", "foo.bar.myapp", "-p", "foo.bar", "-v", "1.0-SNAPSHOT", "-g", "-b"],
+        assertCommandResult([testAppDir+File.separator+woko, "init","-n","myapp", "-m", "foo.bar.myapp", "-p", "foo.bar", "-v", "1.0-SNAPSHOT", "-g", "-b"],
                 "__       __     _  __\n" +
                 "\\ \\  _  / /___ | |/ / ___\n" +
                 " \\ \\/ \\/ // o \\|   K /   \\\n" +
@@ -95,7 +102,7 @@ class ScriptTest {
 
     @Test
     void testInitNoBootstrapGroovy() {
-        assertCommandResult([testAppDir+File.separator+"woko", "init","-n","myapp", "-m", "foo.bar.myapp", "-p", "foo.bar", "-v", "1.0-SNAPSHOT", "-g"],
+        assertCommandResult([testAppDir+File.separator+woko, "init","-n","myapp", "-m", "foo.bar.myapp", "-p", "foo.bar", "-v", "1.0-SNAPSHOT", "-g"],
                 "__       __     _  __\n" +
                 "\\ \\  _  / /___ | |/ / ___\n" +
                 " \\ \\/ \\/ // o \\|   K /   \\\n" +
@@ -116,7 +123,7 @@ class ScriptTest {
 
     @Test
     void testInitBootstrapNoGroovy() {
-        assertCommandResult([testAppDir+File.separator+"woko", "init","-n","myapp", "-m", "foo.bar.myapp", "-p", "foo.bar", "-v", "1.0-SNAPSHOT", "-b"],
+        assertCommandResult([testAppDir+File.separator+woko, "init","-n","myapp", "-m", "foo.bar.myapp", "-p", "foo.bar", "-v", "1.0-SNAPSHOT", "-b"],
                 "__       __     _  __\n" +
                 "\\ \\  _  / /___ | |/ / ___\n" +
                 " \\ \\/ \\/ // o \\|   K /   \\\n" +
@@ -138,7 +145,7 @@ class ScriptTest {
 
     @Test
     void testInitNoBootstrapNoGroovy() {
-        assertCommandResult([testAppDir+File.separator+"woko", "init","-n","myapp", "-m", "foo.bar.myapp", "-p", "foo.bar", "-v", "1.0-SNAPSHOT"],
+        assertCommandResult([testAppDir+File.separator+woko, "init","-n","myapp", "-m", "foo.bar.myapp", "-p", "foo.bar", "-v", "1.0-SNAPSHOT"],
                 "__       __     _  __\n" +
                 "\\ \\  _  / /___ | |/ / ___\n" +
                 " \\ \\/ \\/ // o \\|   K /   \\\n" +
