@@ -28,10 +28,10 @@ class RunnerTest {
     private String getTestAppDir() {
         String woko2dir = System.getProperty("user.dir")
         if (woko2dir.endsWith("tooling")) {
-            woko2dir = woko2dir[0..woko2dir.length()-"/tooling".length()]
+            woko2dir = woko2dir[0..woko2dir.length() - (File.separator + "tooling").length()]
         }
         println "*** $woko2dir"
-        return woko2dir + "/webtests/webtests-container-auth" // assume we run test from top level woko2 folder
+        return woko2dir + File.separator + "webtests" + File.separator + "webtests-container-auth" // assume we run test from top level woko2 folder
     }
 
     def execCommand(args, workingDir) {
@@ -214,9 +214,9 @@ The command accepts one argument that can be  :
         }
 
         assertCommandResult(["generate","-b","no", "-g", "yes", "-p", "foo.bar"],
-                        "|  - web.xml file created : src"+File.separator+"main"+File.separator+"webapp"+File.separator+"WEB-INF"+File.separator+"web.xml\n" +
+                        "|  - web.xml file created : src" + File.separator + "main" + File.separator + "webapp" + File.separator + "WEB-INF" + File.separator + "web.xml\n" +
                         "|  - Layout facet created : foo.bar.facets.MyLayout\n" +
-                        "|  - resource bundle created : src"+File.separator+"main"+File.separator+"resources"+File.separator+"application.properties\n" +
+                        "|  - resource bundle created : src" + File.separator + "main" + File.separator + "resources" + File.separator + "application.properties\n" +
                         "|  \n" +
                         "|  Your project has been generated in : $folder.root.name \n" +
                         "|  Run 'woko start' in order to launch your app in a local Jetty container\n"
@@ -237,9 +237,9 @@ The command accepts one argument that can be  :
 
         assertCommandResult(["generate","-b","no", "-g", "no", "-p", "foo.bar"],
                 "|  You will use pure Java\n" +
-                        "|  - web.xml file created : src"+File.separator+"main"+File.separator+"webapp"+File.separator+"WEB-INF"+File.separator+"web.xml\n" +
+                        "|  - web.xml file created : src" + File.separator + "main" + File.separator + "webapp" + File.separator + "WEB-INF" + File.separator + "web.xml\n" +
                         "|  - Layout facet created : foo.bar.facets.MyLayout\n" +
-                        "|  - resource bundle created : src"+File.separator+"main"+File.separator+"resources"+File.separator+"application.properties\n" +
+                        "|  - resource bundle created : src" + File.separator + "main" + File.separator + "resources" + File.separator + "application.properties\n" +
                         "|  \n" +
                         "|  Your project has been generated in : $folder.root.name \n" +
                         "|  Run 'woko start' in order to launch your app in a local Jetty container\n"
@@ -249,7 +249,7 @@ The command accepts one argument that can be  :
 
     @Test
     void testGenerateBootstapGroovy() {
-       // copy testAppDir/pom.xml into folder
+        // copy testAppDir/pom.xml into folder
         // straight copy (not optimally efficient)
 
         folder.newFile('pom.xml').withWriter { file ->
@@ -259,9 +259,9 @@ The command accepts one argument that can be  :
         }
 
         assertCommandResult(["generate","-b","yes", "-g", "yes", "-p", "foo.bar"],
-                        "|  - web.xml file created : src"+File.separator+"main"+File.separator+"webapp"+File.separator+"WEB-INF"+File.separator+"web.xml\n" +
+                        "|  - web.xml file created : src" + File.separator + "main" + File.separator + "webapp" + File.separator + "WEB-INF" + File.separator + "web.xml\n" +
                         "|  - Layout facet created : foo.bar.facets.MyLayout\n" +
-                        "|  - resource bundle created : src"+File.separator+"main"+File.separator+"resources"+File.separator+"application.properties\n" +
+                        "|  - resource bundle created : src" + File.separator + "main" + File.separator + "resources" + File.separator + "application.properties\n" +
                         "|  \n" +
                         "|  Your project has been generated in : $folder.root.name \n" +
                         "|  Run 'woko start' in order to launch your app in a local Jetty container\n"

@@ -29,10 +29,10 @@ class ScriptTest {
     private String getTestAppDir() {
         String woko2dir = System.getProperty("user.dir")
         if (woko2dir.endsWith("tooling")) {
-            woko2dir = woko2dir[0..woko2dir.length()-"/tooling".length()]
+            woko2dir = woko2dir[0..woko2dir.length()-(File.separator+"tooling").length()]
         }
         println "*** $woko2dir"
-        return woko2dir + "/tooling/src/main/scripts"
+        return woko2dir + File.separator+"tooling" +File.separator+ "src" +File.separator+ "main" +File.separator+ "scripts"
     }
 
     def execCommand(args, workingDir) {
@@ -72,7 +72,6 @@ class ScriptTest {
     @Before
     void setUp(){
         woko = System.getProperty('os.name').toLowerCase().contains("windows") ? "woko.bat" : "woko"
-        woko = 'woko'
     }
 
     @Test
@@ -91,9 +90,9 @@ class ScriptTest {
                 "\n" +
                 "Initializing project\n" +
                 "| Generating your project, please wait, it can take a while to download everything...\n" +
-                "|  - web.xml file created : src"+File.separator+"main"+File.separator+"webapp"+File.separator+"WEB-INF"+File.separator+"web.xml\n" +
+                "|  - web.xml file created : src" + File.separator + "main" + File.separator + "webapp" + File.separator + "WEB-INF" + File.separator + "web.xml\n" +
                 "|  - Layout facet created : foo.bar.facets.MyLayout\n" +
-                "|  - resource bundle created : src"+File.separator+"main"+File.separator+"resources"+File.separator+"application.properties\n" +
+                "|  - resource bundle created : src" + File.separator + "main" + File.separator + "resources" + File.separator + "application.properties\n" +
                 "|  \n" +
                 "|  Your project has been generated in : myapp \n" +
                 "|  Run 'woko start' in order to launch your app in a local Jetty container\n"
@@ -112,9 +111,9 @@ class ScriptTest {
                 "\n" +
                 "Initializing project\n" +
                 "| Generating your project, please wait, it can take a while to download everything...\n" +
-                "|  - web.xml file created : src"+File.separator+"main"+File.separator+"webapp"+File.separator+"WEB-INF"+File.separator+"web.xml\n" +
+                "|  - web.xml file created : src" + File.separator + "main" + File.separator + "webapp" + File.separator + "WEB-INF" + File.separator + "web.xml\n" +
                 "|  - Layout facet created : foo.bar.facets.MyLayout\n" +
-                "|  - resource bundle created : src"+File.separator+"main"+File.separator+"resources"+File.separator+"application.properties\n" +
+                "|  - resource bundle created : src" + File.separator + "main" + File.separator + "resources" + File.separator + "application.properties\n" +
                 "|  \n" +
                 "|  Your project has been generated in : myapp \n" +
                 "|  Run 'woko start' in order to launch your app in a local Jetty container\n"
@@ -134,9 +133,9 @@ class ScriptTest {
                 "Initializing project\n" +
                 "| Generating your project, please wait, it can take a while to download everything...\n" +
                 "|  You will use pure Java\n" +
-                "|  - web.xml file created : src"+File.separator+"main"+File.separator+"webapp"+File.separator+"WEB-INF"+File.separator+"web.xml\n" +
+                "|  - web.xml file created : src" + File.separator + "main" + File.separator + "webapp" + File.separator + "WEB-INF" + File.separator + "web.xml\n" +
                 "|  - Layout facet created : foo.bar.facets.MyLayout\n" +
-                "|  - resource bundle created : src"+File.separator+"main"+File.separator+"resources"+File.separator+"application.properties\n" +
+                "|  - resource bundle created : src" + File.separator + "main" + File.separator + "resources" + File.separator + "application.properties\n" +
                 "|  \n" +
                 "|  Your project has been generated in : myapp \n" +
                 "|  Run 'woko start' in order to launch your app in a local Jetty container\n"
@@ -156,9 +155,9 @@ class ScriptTest {
                 "Initializing project\n" +
                 "| Generating your project, please wait, it can take a while to download everything...\n" +
                 "|  You will use pure Java\n" +
-                "|  - web.xml file created : src"+File.separator+"main"+File.separator+"webapp"+File.separator+"WEB-INF"+File.separator+"web.xml\n" +
+                "|  - web.xml file created : src" + File.separator + "main" + File.separator + "webapp" + File.separator + "WEB-INF" + File.separator + "web.xml\n" +
                 "|  - Layout facet created : foo.bar.facets.MyLayout\n" +
-                "|  - resource bundle created : src"+File.separator+"main"+File.separator+"resources"+File.separator+"application.properties\n" +
+                "|  - resource bundle created : src" + File.separator + "main" + File.separator + "resources" + File.separator + "application.properties\n" +
                 "|  \n" +
                 "|  Your project has been generated in : myapp \n" +
                 "|  Run 'woko start' in order to launch your app in a local Jetty container\n"
