@@ -21,6 +21,7 @@ import org.apache.maven.model.Model
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException
 import org.apache.maven.model.io.xpp3.MavenXpp3Writer
 import org.apache.maven.model.Dependency
+import org.apache.maven.model.Plugin
 
 class PomHelper {
 
@@ -60,7 +61,21 @@ class PomHelper {
             modelWriter.write(pomWriter, model)
             pomWriter.flush()
         }catch (IOException e){
-            throw new RuntimeException("IOException : Error writing the pom.xml file.")
+            throw new RuntimeException("IOException : Error writing the pom.xml file, , during the dependencies addition.")
+        }finally{
+            pomWriter.close()
+        }
+    }
+
+    void addPlugin(Plugin plugin){
+        Writer pomWriter = new FileWriter(pomFile)
+        model.getBuild().addPlugin(plugin)
+        try{
+            MavenXpp3Writer modelWriter = new MavenXpp3Writer()
+            modelWriter.write(pomWriter, model)
+            pomWriter.flush()
+        }catch (IOException e){
+            throw new RuntimeException("IOException : Error writing the pom.xml file, during the plugin addition")
         }finally{
             pomWriter.close()
         }

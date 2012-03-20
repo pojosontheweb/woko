@@ -22,6 +22,11 @@ import woko.tooling.cli.Command
 import woko.tooling.cli.Runner
 import woko.tooling.utils.AppUtils
 import woko.tooling.utils.Logger
+import org.apache.maven.model.Plugin
+import groovy.xml.MarkupBuilder
+import org.codehaus.plexus.util.xml.Xpp3Dom
+import org.apache.maven.model.Exclusion
+import org.apache.maven.model.PluginExecution
 
 class GenerateCmd extends Command{
 
@@ -127,7 +132,6 @@ class GenerateCmd extends Command{
             lithiumDep.type = "war"
             pomHelper.addDependency(lithiumDep)
         }
-
         if (useGroovy){
             // Add a dependency on Groovy in pom
             Dependency groovyDep = new Dependency()
@@ -135,6 +139,45 @@ class GenerateCmd extends Command{
             groovyDep.artifactId = "groovy"
             groovyDep.version = "1.7.4"
             pomHelper.addDependency(groovyDep)
+
+            // Add the GMAVEN plugin
+            Plugin gmaven = new Plugin()
+            // Create plugin description
+            gmaven.groupId = "org.codehaus.gmaven"
+            gmaven.artifactId = "gmaven-plugin"
+            gmaven.version = "1.2"
+            // Add plugin configuration
+            Xpp3Dom configNode = new Xpp3Dom('configuration')
+            Xpp3Dom providerSelectionNode = new Xpp3Dom('providerSelection')
+            providerSelectionNode.value = '1.7'
+            configNode.addChild(providerSelectionNode)
+            gmaven.configuration = configNode
+            // Add dependency on gmaven.runtime
+            Dependency gMavenRuntime = new Dependency()
+            gMavenRuntime.groupId = 'org.codehaus.gmaven.runtime'
+            gMavenRuntime.artifactId = 'gmaven-runtime-1.7'
+            gMavenRuntime.version = '1.2'
+            Exclusion groovyAllExclusion = new Exclusion()
+            groovyAllExclusion.groupId = 'org.codehaus.groovy'
+            groovyAllExclusion.artifactId = 'groovy-all'
+            gMavenRuntime.addExclusion(groovyAllExclusion)
+            gmaven.addDependency(gMavenRuntime)
+            // Add dependency on groovy-all
+            Dependency gMavenGroovyAll = new Dependency()
+            gMavenGroovyAll.groupId = 'org.codehaus.groovy'
+            gMavenGroovyAll.artifactId = 'groovy-all'
+            gMavenGroovyAll.version = '1.7.0'
+            gmaven.addDependency(gMavenGroovyAll)
+            // Add execution
+            PluginExecution execution = new PluginExecution()
+            execution.addGoal('generateStubs')
+            execution.addGoal('compile')
+            execution.addGoal('generateTestStubs')
+            execution.addGoal('testCompile')
+            gmaven.addExecution(execution)
+
+            pomHelper.addPlugin(gmaven)
+
         }else{
             iLog("You will use pure Java")
         }
