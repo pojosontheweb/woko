@@ -154,7 +154,7 @@ The command accepts one argument that can be  :
     public TemporaryFolder folder = new TemporaryFolder();
 
     @Test
-    void testInitHelp() {
+    void testGenerateHelp() {
 
         println folder.getRoot().absolutePath
 
@@ -180,10 +180,7 @@ The command accepts one argument that can be  :
     }
 
     @Test
-    void testInit() {
-
-        println folder.getRoot().absolutePath
-
+    void testGenerateBootstapNoGroovy() {
         // copy testAppDir/pom.xml into folder
         // straight copy (not optimally efficient)
 
@@ -203,9 +200,73 @@ The command accepts one argument that can be  :
                 "|  Run 'woko start' in order to launch your app in a local Jetty container\n"
                 , folder.getRoot())
 
-        println 'coucou'
     }
 
+    @Test
+    void testGenerateNoBootstapGroovy() {
+        // copy testAppDir/pom.xml into folder
+        // straight copy (not optimally efficient)
 
+        folder.newFile('pom.xml').withWriter { file ->
+            new File(this.class.getResource('/test-pom.xml').toURI()).eachLine { line ->
+                file.writeLine(line)
+            }
+        }
+
+        assertCommandResult(["generate","-b","no", "-g", "yes", "-p", "foo.bar"],
+                        "|  - web.xml file created : src/main/webapp/WEB-INF/web.xml\n" +
+                        "|  - Layout facet created : foo.bar.facets.MyLayout\n" +
+                        "|  - resource bundle created : src/main/resources/application.properties\n" +
+                        "|  \n" +
+                        "|  Your project has been generated in : $folder.root.name \n" +
+                        "|  Run 'woko start' in order to launch your app in a local Jetty container\n"
+                , folder.getRoot())
+
+    }
+
+    @Test
+    void testGenerateNoBootstapNoGroovy() {
+        // copy testAppDir/pom.xml into folder
+        // straight copy (not optimally efficient)
+
+        folder.newFile('pom.xml').withWriter { file ->
+            new File(this.class.getResource('/test-pom.xml').toURI()).eachLine { line ->
+                file.writeLine(line)
+            }
+        }
+
+        assertCommandResult(["generate","-b","no", "-g", "no", "-p", "foo.bar"],
+                "|  You will use pure Java\n" +
+                        "|  - web.xml file created : src/main/webapp/WEB-INF/web.xml\n" +
+                        "|  - Layout facet created : foo.bar.facets.MyLayout\n" +
+                        "|  - resource bundle created : src/main/resources/application.properties\n" +
+                        "|  \n" +
+                        "|  Your project has been generated in : $folder.root.name \n" +
+                        "|  Run 'woko start' in order to launch your app in a local Jetty container\n"
+                , folder.getRoot())
+
+    }
+
+    @Test
+    void testGenerateBootstapGroovy() {
+       // copy testAppDir/pom.xml into folder
+        // straight copy (not optimally efficient)
+
+        folder.newFile('pom.xml').withWriter { file ->
+            new File(this.class.getResource('/test-pom.xml').toURI()).eachLine { line ->
+                file.writeLine(line)
+            }
+        }
+
+        assertCommandResult(["generate","-b","yes", "-g", "yes", "-p", "foo.bar"],
+                        "|  - web.xml file created : src/main/webapp/WEB-INF/web.xml\n" +
+                        "|  - Layout facet created : foo.bar.facets.MyLayout\n" +
+                        "|  - resource bundle created : src/main/resources/application.properties\n" +
+                        "|  \n" +
+                        "|  Your project has been generated in : $folder.root.name \n" +
+                        "|  Run 'woko start' in order to launch your app in a local Jetty container\n"
+                , folder.getRoot())
+
+    }
 
 }

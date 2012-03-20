@@ -187,9 +187,6 @@ class GenerateCmd extends Command{
      * Convention : package name = groupId.artifactId
      */
     private void createPackage(){
-
-        println System.getProperty("user.dir")
-
         String srcBasePath, testBasePath
         if (useGroovy){
             srcBasePath = projectDir.absolutePath + File.separator + 'src'+File.separator+'main'+File.separator+'groovy'
