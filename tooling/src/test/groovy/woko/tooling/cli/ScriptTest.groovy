@@ -72,6 +72,7 @@ class ScriptTest {
     @Before
     void setUp(){
         woko = System.getProperty('os.name').toLowerCase().contains("windows") ? "woko.bat" : "woko"
+        woko = 'woko'
     }
 
     @Test
@@ -90,9 +91,9 @@ class ScriptTest {
                 "\n" +
                 "Initializing project\n" +
                 "| Generating your project, please wait, it can take a while to download everything...\n" +
-                "|  - web.xml file created : src/main/webapp/WEB-INF/web.xml\n" +
+                "|  - web.xml file created : src"+File.separator+"main"+File.separator+"webapp"+File.separator+"WEB-INF"+File.separator+"web.xml\n" +
                 "|  - Layout facet created : foo.bar.facets.MyLayout\n" +
-                "|  - resource bundle created : src/main/resources/application.properties\n" +
+                "|  - resource bundle created : src"+File.separator+"main"+File.separator+"resources"+File.separator+"application.properties\n" +
                 "|  \n" +
                 "|  Your project has been generated in : myapp \n" +
                 "|  Run 'woko start' in order to launch your app in a local Jetty container\n"
@@ -111,9 +112,9 @@ class ScriptTest {
                 "\n" +
                 "Initializing project\n" +
                 "| Generating your project, please wait, it can take a while to download everything...\n" +
-                "|  - web.xml file created : src/main/webapp/WEB-INF/web.xml\n" +
+                "|  - web.xml file created : src"+File.separator+"main"+File.separator+"webapp"+File.separator+"WEB-INF"+File.separator+"web.xml\n" +
                 "|  - Layout facet created : foo.bar.facets.MyLayout\n" +
-                "|  - resource bundle created : src/main/resources/application.properties\n" +
+                "|  - resource bundle created : src"+File.separator+"main"+File.separator+"resources"+File.separator+"application.properties\n" +
                 "|  \n" +
                 "|  Your project has been generated in : myapp \n" +
                 "|  Run 'woko start' in order to launch your app in a local Jetty container\n"
@@ -133,9 +134,9 @@ class ScriptTest {
                 "Initializing project\n" +
                 "| Generating your project, please wait, it can take a while to download everything...\n" +
                 "|  You will use pure Java\n" +
-                "|  - web.xml file created : src/main/webapp/WEB-INF/web.xml\n" +
+                "|  - web.xml file created : src"+File.separator+"main"+File.separator+"webapp"+File.separator+"WEB-INF"+File.separator+"web.xml\n" +
                 "|  - Layout facet created : foo.bar.facets.MyLayout\n" +
-                "|  - resource bundle created : src/main/resources/application.properties\n" +
+                "|  - resource bundle created : src"+File.separator+"main"+File.separator+"resources"+File.separator+"application.properties\n" +
                 "|  \n" +
                 "|  Your project has been generated in : myapp \n" +
                 "|  Run 'woko start' in order to launch your app in a local Jetty container\n"
@@ -155,9 +156,9 @@ class ScriptTest {
                 "Initializing project\n" +
                 "| Generating your project, please wait, it can take a while to download everything...\n" +
                 "|  You will use pure Java\n" +
-                "|  - web.xml file created : src/main/webapp/WEB-INF/web.xml\n" +
+                "|  - web.xml file created : src"+File.separator+"main"+File.separator+"webapp"+File.separator+"WEB-INF"+File.separator+"web.xml\n" +
                 "|  - Layout facet created : foo.bar.facets.MyLayout\n" +
-                "|  - resource bundle created : src/main/resources/application.properties\n" +
+                "|  - resource bundle created : src"+File.separator+"main"+File.separator+"resources"+File.separator+"application.properties\n" +
                 "|  \n" +
                 "|  Your project has been generated in : myapp \n" +
                 "|  Run 'woko start' in order to launch your app in a local Jetty container\n"
