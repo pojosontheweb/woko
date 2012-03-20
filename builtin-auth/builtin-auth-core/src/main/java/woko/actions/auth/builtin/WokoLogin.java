@@ -80,8 +80,11 @@ public class WokoLogin extends BaseActionBean {
                        port = Integer.parseInt(serverPortHttpsStr);
                     } catch(NumberFormatException e) {
                         // default to 443
+                        log.warn("Could not parse HTTPs port");
                     }
                 }
+                log.debug("Request is not secure, redirecting to HTTPs with serverName '" + serverName +
+                        "' and port " + port);
                 return new LoginHttpsRedirectResolution(serverName, port);
             }
         }
