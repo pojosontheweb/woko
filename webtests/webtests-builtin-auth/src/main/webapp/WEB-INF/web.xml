@@ -104,6 +104,8 @@
         <param-value>woko.test.builtinauth</param-value>
     </context-param>
 
+    <!--
+        SSL support
     <context-param>
         <param-name>Woko.Ssl.Enabled</param-name>
         <param-value>true</param-value>
@@ -118,6 +120,8 @@
         <param-name>Woko.Ssl.Server.Port</param-name>
         <param-value>8443</param-value>
     </context-param>
+    -->
+
 
 
 </web-app>
