@@ -26,8 +26,8 @@ if exist pom.xml (
     set ARTIFACTID=
     set GROUPID=
     set VERSION=
-    set GROOVY=no
-    set BOOTSTRAP=no
+    set GROOVY=yes
+    set BOOTSTRAP=yes
     set PACKAGE=
 
     :GETOPTS
@@ -75,7 +75,7 @@ if exist pom.xml (
         echo  -m the maven group Id (i.e. com.myexample.myapp)
         echo  -p the default package name, defaults to maven group Id
         echo  -v the version (i.e. 1.0-SNAPSHOT)
-        echo  -b use Boostrap css ^& js, defaults to no
-        echo  -g use Groovy, defaults to no
+        echo  -b don't use Boostrap css ^& js
+        echo  -g don't use Groovy
 
 )

@@ -6,8 +6,8 @@ artifactIdHelp="-n project name, serves as the artifact Id (i.e. myapp)"
 groupIdHelp="-m the maven group Id (i.e. com.myexample.myapp)"
 packageHelp="-p the default package name, defaults to maven group Id"
 versionHelp="-v the version (i.e. 1.0-SNAPSHOT)"
-boostrapHelp="-b use Boostrap css & js, defaults to no"
-groovyHelp="-g use Groovy, defaults to no"
+boostrapHelp="-b don't use Boostrap css & js"
+groovyHelp="-g don't use Groovy, defaults to no"
 
 helpHelp="-h this help"
 badOptionHelp="Option not recognised"
@@ -15,8 +15,8 @@ badOptionHelp="Option not recognised"
 artifactId=""
 groupId=""
 version=""
-groovy="no"
-boostrap="no"
+groovy="yes"
+boostrap="yes"
 package=""
 
 printHelpAndExit()
@@ -105,8 +105,8 @@ else
             m) groupId="$OPTARG";;
             v) version="$OPTARG";; 
             p) package="$OPTARG";;
-            g) groovy="yes";;
-            b) boostrap="yes";;
+            g) groovy="no";;
+            b) boostrap="no";;
             [?]) printErrorHelpAndExit "$badOptionHelp";;
         esac  
     done
