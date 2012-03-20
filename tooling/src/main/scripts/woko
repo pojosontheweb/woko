@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # init vars
-usageHelp="Usage: ${0##*/} init"
+usageHelp="Usage: woko init"
 artifactIdHelp="-n project name, serves as the artifact Id (i.e. myapp)"
 groupIdHelp="-m the maven group Id (i.e. com.myexample.myapp)"
 packageHelp="-p the default package name, defaults to maven group Id"
@@ -60,7 +60,12 @@ read_init_project_values()
      while [ "$version" == "" ]; do
          read -p "> Your project's version ? [1.0-SNAPSHOT] " version
          version=${version:-"1.0-SNAPSHOT"} 
-     done   
+     done
+
+     if [ "$package" == "" ]
+     then
+        package = $groupId
+     fi
 }   
 
 init_project()
