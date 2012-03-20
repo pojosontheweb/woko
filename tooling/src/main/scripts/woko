@@ -15,8 +15,8 @@ badOptionHelp="Option not recognised"
 artifactId=""
 groupId=""
 version=""
-groovy="n"
-boostrap="n"
+groovy="no"
+boostrap="no"
 package=""
 
 printHelpAndExit()
@@ -71,17 +71,13 @@ init_project()
     mvn archetype:generate -DarchetypeArtifactId=woko-archetype -DarchetypeGroupId=com.rvkb\
         -DgroupId="$groupId" -DartifactId="$artifactId" -Dversion="$version" -DinteractiveMode="false" -q
     cd "$artifactId"
-    mvn exec:java -Dexec.mainClass="woko.tooling.cli.Runner" -Dexec.classpathScope=runtime -Dexec.args="generate" -q  << EOI
-$boostrap
-$groovy  
-$package
-EOI
+    mvn exec:java -Dexec.mainClass="woko.tooling.cli.Runner" -Dexec.classpathScope=runtime -Dexec.args="generate -b $boostrap -g $groovy -p $package" -q
 }
   
 # do we have a pom file ?
 if [ -e pom.xml ]
 then
-    mvn exec:java -Dexec.mainClass="woko.tooling.cli.Runner" -Dexec.classpathScope=runtime -Dexec.args="$1 $2 $3 $4 $5" -q
+    mvn exec:java -Dexec.mainClass="woko.tooling.cli.Runner" -Dexec.classpathScope=runtime -Dexec.args="$*" -q
 else     
     # Asking for project creation ?
     if [ "$1" == "init" ]
@@ -104,8 +100,8 @@ else
             m) groupId="$OPTARG";;
             v) version="$OPTARG";; 
             p) package="$OPTARG";;
-            g) groovy="y";;
-            b) boostrap="y";;
+            g) groovy="yes";;
+            b) boostrap="yes";;
             [?]) printErrorHelpAndExit "$badOptionHelp";;
         esac  
     done
