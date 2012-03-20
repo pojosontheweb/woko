@@ -195,9 +195,9 @@ The command accepts one argument that can be  :
 
         assertCommandResult(["generate","-b","yes", "-g", "no", "-p", "foo.bar"],
                 "|  You will use pure Java\n" +
-                "|  - web.xml file created : src/main/webapp/WEB-INF/web.xml\n" +
+                "|  - web.xml file created : src" + File.separator + "main"+File.separator+"webapp"+File.separator+"WEB-INF"+File.separator+"web.xml\n" +
                 "|  - Layout facet created : foo.bar.facets.MyLayout\n" +
-                "|  - resource bundle created : src/main/resources/application.properties\n" +
+                "|  - resource bundle created : src"+File.separator+"main"+File.separator+"resources"+File.separator+"application.properties\n" +
                 "|  \n" +
                 "|  Your project has been generated in : $folder.root.name \n" +
                 "|  Run 'woko start' in order to launch your app in a local Jetty container\n"
