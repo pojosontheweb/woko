@@ -7,6 +7,7 @@ import woko.actions.BaseActionBean;
 import woko.actions.WokoActionBeanContext;
 import woko.util.WLogger;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
 @UrlBinding("/login")
@@ -17,6 +18,10 @@ public class WokoLogin extends BaseActionBean {
     private static final String KEY_MSG_LOGIN_SUCCESS = "woko.login.success";
 
     public static final String SESSION_ATTR_CURRENT_USER = "__CURRENT_USER";
+
+    public static final String CTX_INIT_PARAM_WOKO_SSL_ENABLED = "Woko.Ssl.Enabled";
+    public static final String CTX_INIT_PARAM_WOKO_SSL_SERVER_NAME = "Woko.Ssl.Server.Name";
+    public static final String CTX_INIT_PARAM_WOKO_SSL_SERVER_PORT = "Woko.Ssl.Server.Port";
 
     @Validate(required = true)
     private String username;
@@ -46,11 +51,43 @@ public class WokoLogin extends BaseActionBean {
         return null;
     }
 
+    private Resolution forward() {
+        return new ForwardResolution("/WEB-INF/woko/jsp/login.jsp");
+    }
+
     @DefaultHandler
     @DontValidate
     public Resolution displayForm() {
-        return new ForwardResolution("/WEB-INF/woko/jsp/login.jsp");
+        // check if SSL is enabled
+        ServletContext ctx = getContext().getServletContext();
+        String sslEnabledParam = ctx.getInitParameter(CTX_INIT_PARAM_WOKO_SSL_ENABLED);
+        boolean sslEnabled = sslEnabledParam!=null && !sslEnabledParam.toLowerCase().equals("false");
+        if (!sslEnabled) {
+            return forward();
+        } else {
+            HttpServletRequest request = getContext().getRequest();
+            if (request.isSecure()) {
+                return forward();
+            } else {
+                String serverName = ctx.getInitParameter(CTX_INIT_PARAM_WOKO_SSL_SERVER_NAME);
+                if (serverName==null) {
+                    serverName = request.getServerName();
+                }
+                String serverPortHttpsStr = ctx.getInitParameter(CTX_INIT_PARAM_WOKO_SSL_SERVER_PORT);
+                int port = 443;
+                if (serverPortHttpsStr!=null) {
+                    try {
+                       port = Integer.parseInt(serverPortHttpsStr);
+                    } catch(NumberFormatException e) {
+                        // default to 443
+                    }
+                }
+                return new LoginHttpsRedirectResolution(serverName, port);
+            }
+        }
     }
+
+
 
     public Resolution login() {
         log.debug("trying to log-in user " + username);
