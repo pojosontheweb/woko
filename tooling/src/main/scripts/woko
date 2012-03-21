@@ -7,7 +7,7 @@ groupIdHelp="-m the maven group Id (i.e. com.myexample.myapp)"
 packageHelp="-p the default package name, defaults to maven group Id"
 versionHelp="-v the version (i.e. 1.0-SNAPSHOT)"
 boostrapHelp="-b don't use Boostrap css & js"
-groovyHelp="-g don't use Groovy, defaults to no"
+groovyHelp="-g don't use Groovy"
 
 helpHelp="-h this help"
 badOptionHelp="Option not recognised"
