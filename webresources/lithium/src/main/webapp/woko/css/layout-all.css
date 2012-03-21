@@ -65,8 +65,10 @@ ul.messages {
   background-color: #DDFFDD;
   color: green;
   padding: 4px;
-  position: absolute;
-  top: 24px;
+  margin:5px 0;
+}
+ul.messages li {
+    text-align: center;
 }
 
 .errorsContainer {

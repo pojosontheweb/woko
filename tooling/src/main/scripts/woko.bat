@@ -1,4 +1,4 @@
-@echo off
+@echo off 
 
 if exist pom.xml (
     mvn exec:java -Dexec.mainClass="woko.tooling.cli.Runner" -Dexec.classpathScope=runtime -Dexec.args="%*" -q
@@ -42,19 +42,19 @@ if exist pom.xml (
 		
     if not "%1"=="" GOTO GETOPTS
 
-	echo Initializing project
+            echo Initializing project
 
     if "X%ARTIFACTID%" == "X" (
-        set /P ARTIFACTID=Project name ? : %=%
+            set /P ARTIFACTID=Project name ? : %=%
     )
 
     if "X%GROUPID%" == "X" (
-        set /P GROUPID=Maven groupId ?: %=%
+            set /P GROUPID=Maven groupId ? : %=%
     )
 
     if "X%VERSION%" == "X" (
         set VERSION=1.0-SNAPSHOT
-        set /P VERSION=Your project's version ? [1.0-SNAPSHOT] : %=%
+            set /P VERSION=Your project's version ? [1.0-SNAPSHOT] : %=%
     )
 
     if "X%PACKAGE%" == "X" (
@@ -64,7 +64,7 @@ if exist pom.xml (
     echo ^| Generating your project, please wait, it can take a while to download everything...
     mvn archetype:generate -DarchetypeArtifactId=woko-archetype -DarchetypeGroupId=com.rvkb -DgroupId="%GROUPID%" -DartifactId="%ARTIFACTID%" -Dversion="%VERSION%" -DinteractiveMode="false" -q
 
-    cd "%ARTIFACTID%"
+            cd "%ARTIFACTID%"
     mvn exec:java -Dexec.mainClass="woko.tooling.cli.Runner" -Dexec.classpathScope=runtime -Dexec.args="generate -b %BOOTSTRAP% -g %GROOVY% -p %PACKAGE%" -q
 
     goto:EOF
@@ -78,4 +78,4 @@ if exist pom.xml (
         echo  -b don't use Boostrap css ^& js
         echo  -g don't use Groovy
 
-)
+		)
