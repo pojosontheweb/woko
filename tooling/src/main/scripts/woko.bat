@@ -64,7 +64,7 @@ if exist pom.xml (
     echo ^| Generating your project, please wait, it can take a while to download everything...
     mvn archetype:generate -DarchetypeArtifactId=woko-archetype -DarchetypeGroupId=com.rvkb -DgroupId="%GROUPID%" -DartifactId="%ARTIFACTID%" -Dversion="%VERSION%" -DinteractiveMode="false" -q
 
-            cd "%ARTIFACTID%"
+    cd "%ARTIFACTID%"
     mvn exec:java -Dexec.mainClass="woko.tooling.cli.Runner" -Dexec.classpathScope=runtime -Dexec.args="generate -b %BOOTSTRAP% -g %GROOVY% -p %PACKAGE%" -q
 
     goto:EOF
@@ -78,4 +78,4 @@ if exist pom.xml (
         echo  -b don't use Boostrap css ^& js
         echo  -g don't use Groovy
 
-		)
+)

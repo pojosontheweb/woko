@@ -64,7 +64,7 @@ read_init_project_values()
 
      if [ "$package" == "" ]
      then
-        package = $groupId
+        package=$groupId
      fi
 }   
 
