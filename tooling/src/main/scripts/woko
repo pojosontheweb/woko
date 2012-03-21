@@ -6,8 +6,10 @@ artifactIdHelp="-n project name, serves as the artifact Id (i.e. myapp)"
 groupIdHelp="-m the maven group Id (i.e. com.myexample.myapp)"
 packageHelp="-p the default package name, defaults to maven group Id"
 versionHelp="-v the version (i.e. 1.0-SNAPSHOT)"
-boostrapHelp="-b don't use Boostrap css & js"
-groovyHelp="-g don't use Groovy"
+boostrapHelp="-b use Boostrap css & js"
+lithiumHelp="-l use lithium skin"
+groovyHelp="-g use Groovy"
+javaHelp="-j use pure java"
 
 helpHelp="-h this help"
 badOptionHelp="Option not recognised"
@@ -15,9 +17,11 @@ badOptionHelp="Option not recognised"
 artifactId=""
 groupId=""
 version=""
-groovy="yes"
-boostrap="yes"
+groovy=""
+boostrap=""
 package=""
+
+execargs="generate"
 
 printHelpAndExit()
 {
@@ -27,8 +31,10 @@ printHelpAndExit()
 	echo "$packageHelp"
 	echo "$versionHelp"  
 	echo "$boostrapHelp"
+	echo "$lithiumHelp"
 	echo "$groovyHelp"
-	
+	echo "$javaHelp"
+
 	echo "$helpHelp"
 	exit $1
 }              
@@ -51,27 +57,39 @@ echo ""
 
 read_init_project_values()
 {
-     while [ "$artifactId" == "" ]; do
-         read -p "> Project name ? " artifactId 
-     done
-     while [ "$groupId" == "" ]; do
-         read -p "> Maven groupId ? " groupId
-     done
-     while [ "$version" == "" ]; do
-         read -p "> Your project's version ? [1.0-SNAPSHOT] " version
-         version=${version:-"1.0-SNAPSHOT"} 
-     done
+    while [ "$artifactId" == "" ]; do
+        read -p "> Project name ? " artifactId
+        done
+    while [ "$groupId" == "" ]; do
+        read -p "> Maven groupId ? " groupId
+        done
+    while [ "$version" == "" ]; do
+        read -p "> Your project's version ? [1.0-SNAPSHOT] " version
+        version=${version:-"1.0-SNAPSHOT"}
+    done
 
-     if [ "$package" == "" ]
-     then
-        package=$groupId
-     fi
+    if [ ! "groovy" == "" ]
+    then
+        execargs="$execargs -g $groovy"
+    fi
+
+    if [ ! "$boostrap" == "" ]
+    then
+        execargs="$execargs -b $boostrap"
+    fi
+
+    if [ ! "$package" == "" ]
+    then
+        execargs="$execargs -p $package"
+    fi
 }   
 
 init_project()
 {
     echo "Initializing project"
     read_init_project_values
+    echo $execargs
+    exit
     echo "| Generating your project, please wait, it can take a while to download everything..."
     mvn archetype:generate -DarchetypeArtifactId=woko-archetype -DarchetypeGroupId=com.rvkb\
         -DgroupId="$groupId" -DartifactId="$artifactId" -Dversion="$version" -DinteractiveMode="false" -q
@@ -98,15 +116,17 @@ else
         fi
     fi
      
-    while getopts ":n:m:p:v:gbh" optionName; do
+    while getopts ":n:m:p:v:gjblh" optionName; do
         case "$optionName" in
             h) printHelpAndExit 0;;
             n) artifactId="$OPTARG";;
             m) groupId="$OPTARG";;
             v) version="$OPTARG";; 
             p) package="$OPTARG";;
-            g) groovy="no";;
-            b) boostrap="no";;
+            g) groovy="yes";;
+            j) groovy="no";;
+            b) boostrap="yes";;
+            l) boostrap="no";;
             [?]) printErrorHelpAndExit "$badOptionHelp";;
         esac  
     done

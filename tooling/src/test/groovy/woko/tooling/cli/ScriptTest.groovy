@@ -50,7 +50,7 @@ class ScriptTest {
     }
 
 
-    static final String EXPECTED_NO_ARGS =
+    static final String EXPECTED_HELP =
         "__       __     _  __\n" +
         "\\ \\  _  / /___ | |/ / ___\n" +
         " \\ \\/ \\/ // o \\|   K /   \\\n" +
@@ -62,8 +62,10 @@ class ScriptTest {
         "-m the maven group Id (i.e. com.myexample.myapp)\n" +
         "-p the default package name, defaults to maven group Id\n" +
         "-v the version (i.e. 1.0-SNAPSHOT)\n" +
-        "-b don't use Boostrap css & js\n" +
-        "-g don't use Groovy\n" +
+        "-b use Boostrap css & js\n" +
+        "-l use lithium skin\n" +
+        "-g use Groovy\n" +
+        "-j use pure java\n" +
         "-h this help\n"
 
     @Rule public TemporaryFolder folder = new TemporaryFolder()
@@ -77,7 +79,7 @@ class ScriptTest {
 
     @Test
     void testHelp() {
-        assertCommandResult([testAppDir+File.separator+woko,"init","-h"], EXPECTED_NO_ARGS, folder.getRoot())
+        assertCommandResult([testAppDir+File.separator+woko,"init","-h"], EXPECTED_HELP, folder.getRoot())
     }
 
     @Ignore
