@@ -68,7 +68,7 @@ read_init_project_values()
         version=${version:-"1.0-SNAPSHOT"}
     done
 
-    if [ ! "groovy" == "" ]
+    if [ ! "$groovy" == "" ]
     then
         execargs="$execargs -g $groovy"
     fi
@@ -88,13 +88,11 @@ init_project()
 {
     echo "Initializing project"
     read_init_project_values
-    echo $execargs
-    exit
     echo "| Generating your project, please wait, it can take a while to download everything..."
     mvn archetype:generate -DarchetypeArtifactId=woko-archetype -DarchetypeGroupId=com.rvkb\
         -DgroupId="$groupId" -DartifactId="$artifactId" -Dversion="$version" -DinteractiveMode="false" -q
     cd "$artifactId"
-    mvn exec:java -Dexec.mainClass="woko.tooling.cli.Runner" -Dexec.classpathScope=runtime -Dexec.args="generate -b $boostrap -g $groovy -p $package" -q
+    mvn exec:java -Dexec.mainClass="woko.tooling.cli.Runner" -Dexec.classpathScope=runtime -Dexec.args="$execargs" -q
 }
   
 # do we have a pom file ?
