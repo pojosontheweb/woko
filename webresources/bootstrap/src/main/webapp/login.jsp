@@ -29,5 +29,6 @@
                 </div>
             </fieldset>
         </form>
+
     </s:layout-component>
 </s:layout-render>
