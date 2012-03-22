@@ -11,30 +11,27 @@
     <s:layout-component name="body">
 
         <h1 class="page-header"><fmt:message bundle="${wokoBundle}" key="woko.login.title"/></h1>
-        <div class="row">
-            <div class="span2">
-                <s:form beanclass="<%=WokoLogin.class%>" class="form-horizontal">
-                    <s:hidden name="targetUrl"/>
-                    <fieldset>
-                        <div class="control-group">
-                            <s:label for="user.username" class="control-label"/>
-                            <div class="controls">
-                                <s:text name="username" id="username"/>
-                            </div>
+
+            <s:form beanclass="<%=WokoLogin.class%>" class="form-horizontal">
+                <s:hidden name="targetUrl"/>
+                <fieldset>
+                    <div class="control-group">
+                        <s:label for="user.username" class="control-label"/>
+                        <div class="controls">
+                            <s:text name="username" id="username"/>
                         </div>
-                        <div class="control-group">
-                            <s:label for="user.password" class="control-label"/>
-                            <div class="controls">
-                                <s:password name="password" id="password"/>
-                            </div>
+                    </div>
+                    <div class="control-group">
+                        <s:label for="user.password" class="control-label"/>
+                        <div class="controls">
+                            <s:password name="password" id="password"/>
                         </div>
-                        <div class="form-actions">
-                            <s:submit class="btn btn-primary" name="login"/>
-                        </div>
-                    </fieldset>
-                </s:form>
-            </div>
-        </div>
+                    </div>
+                    <div class="form-actions">
+                        <s:submit class="btn btn-primary btn-large" name="login"/>
+                    </div>
+                </fieldset>
+            </s:form>
 
     </s:layout-component>
 </s:layout-render>
