@@ -25,7 +25,7 @@
                     </div>
                 </div>
                 <div class="form-actions">
-                    <button name="login" class="btn btn-primary" type="submit"><fmt:message bundle="${wokoBundle}" key="login"/></button>
+                    <button name="login" class="btn btn-primary  btn-large" type="submit"><fmt:message bundle="${wokoBundle}" key="login"/></button>
                 </div>
             </fieldset>
         </form>
