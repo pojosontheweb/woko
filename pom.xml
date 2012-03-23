@@ -152,9 +152,7 @@
                     <artifactId>maven-war-plugin</artifactId>
                     <version>2.2</version>
                     <configuration>
-                        <configuration>
-                            <warSourceExcludes>WEB-INF/lib/*.jar</warSourceExcludes>
-                        </configuration>
+                        <warSourceExcludes>WEB-INF/lib/*.jar</warSourceExcludes>
                     </configuration>
                 </plugin>
             </plugins>
