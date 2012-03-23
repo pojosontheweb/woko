@@ -70,7 +70,6 @@
         <module>ri</module>
         <module>archetype</module>
         <module>dojo</module>
-        <module>archetype-heroku</module>
         <module>usermanagement</module>
         <module>tooling</module>
     </modules>
