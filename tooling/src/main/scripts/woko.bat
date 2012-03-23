@@ -1,15 +1,15 @@
 @echo off 
 
+echo __       __     _  __
+echo \ \  _  / /___ ^| ^|/ / ___
+echo  \ \/ \/ // o \^|   K /   \
+echo   \__W__/ \___/^|_^|\_\\_o_/  2.0
+echo              POJOs on the Web !
+echo.
+
 if exist pom.xml (
     mvn exec:java -Dexec.mainClass="woko.tooling.cli.Runner" -Dexec.classpathScope=runtime -Dexec.args="%*" -q
 ) else (
-    echo __       __     _  __
-    echo \ \  _  / /___ ^| ^|/ / ___
-    echo  \ \/ \/ // o \^|   K /   \
-    echo   \__W__/ \___/^|_^|\_\\_o_/  2.0
-    echo              POJOs on the Web !
-    echo.
-
     if "%1" == "init" (
         shift
 	) else (
