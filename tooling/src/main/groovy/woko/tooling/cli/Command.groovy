@@ -21,6 +21,8 @@ import woko.Woko
 import woko.WokoInitListener
 import net.sourceforge.jfacets.IFacetDescriptorManager
 import woko.tooling.utils.PomHelper
+import org.apache.maven.model.Dependency
+import woko.tooling.utils.AppUtils
 
 abstract class Command {
 
@@ -137,6 +139,70 @@ abstract class Command {
         }
         return str[0].toUpperCase() + str[1..-1]
     }
+
+    protected String modelFqcnFromSimpleName(String simpleName) {
+        if (simpleName.indexOf(".")==-1) {
+            // infer the package...
+            def pkgs = []
+            pkgs.addAll(computeModelPackages())
+            pkgs.addAll(["java.lang", "java.util"])
+            for (String pkg : pkgs) {
+                try {
+                    String className = pkg + "." + simpleName
+                    Class.forName(className)
+                    simpleName = className
+                    iLog("Resolved target type : $simpleName")
+                    break
+                } catch(ClassNotFoundException e) {
+                    // let it go through : not the good class
+                }
+            }
+        }
+        return simpleName
+    }
+
+    protected boolean isGroovyAvailable() {
+        try {
+            Class.forName("groovy.lang.GroovyObject")
+            return true
+        } catch (Exception e) {
+            return false
+        }
+    }
+
+    protected boolean askIfUseGroovy(boolean quiet) {
+        if (isGroovyAvailable()) {
+            if (quiet) {
+                iLog("Groovy is available in your project, facet will be written in Groovy")
+                return true
+            } else {
+                iLog("Groovy seems to be available in your project...")
+                iLog(" ") // line sep
+                return AppUtils.yesNoAsk("Do you want to write the facet in Groovy")
+            }
+        }
+        return false
+    }
+
+    protected String getBaseFacetPackage() {
+        def basePackage = getGroupId()
+        def userFacetPgkList = computeUserFacetPackages()
+        if (userFacetPgkList.size() > 1) {
+            log('Several facets package found :')
+            int i=1
+            userFacetPgkList.each {
+                iLog("$i : $it")
+                i++
+            }
+            def facetsPkg = Integer.valueOf(AppUtils.askWithDefault("In which package would you like to create this facet ?", "0"))
+            basePackage = userFacetPgkList.get(facetsPkg)
+        } else {
+            basePackage = userFacetPgkList.get(0)
+        }
+        return basePackage
+    }
+
+
 
     abstract void execute(List<String> args)
 

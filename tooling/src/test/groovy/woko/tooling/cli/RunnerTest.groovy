@@ -60,6 +60,7 @@ Available commands :
 
   - list facets|roles		:		list facets or roles
   - create facet|entity		:		create project elements
+  - crud [<Entity> [<Role> [quiet]		:		Generate the CRUD facets for a given role (view/edit/save/delete)
   - push [resources|quiet]		:		pushes the local facets to a remote application
   - generate [-use-boostrap {yes|no}] [-use-groovy {yes|no}] [-default-package-name <package name>]		:		Generates a new Woko project
   - start 		:		run the application in a local jetty container

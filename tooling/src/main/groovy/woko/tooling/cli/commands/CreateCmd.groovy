@@ -23,7 +23,6 @@ import woko.facets.builtin.WokoFacets
 import woko.facets.FragmentFacet
 import woko.tooling.cli.FacetCodeGenerator
 import woko.tooling.cli.Runner
-import org.apache.maven.model.Dependency
 
 class CreateCmd extends Command {
 
@@ -85,25 +84,9 @@ you want to create :
                 }
                 iLog(" ") // line sep
 
-                def targetType = askWithDefault("Target type", "java.lang.Object")
-                // check if the class name contains package
-                if (targetType.indexOf(".")==-1) {
-                    // infer the package...
-                    def pkgs = []
-                    pkgs.addAll(computeModelPackages())
-                    pkgs.addAll(["java.lang", "java.util"])
-                    for (String pkg : pkgs) {
-                        try {
-                            String className = pkg + "." + targetType
-                            Class.forName(className)
-                            targetType = className
-                            iLog("Resolved target type : $targetType")
-                            break
-                        } catch(ClassNotFoundException e) {
-                            // let it go through : not the good class
-                        }
-                    }
-                }
+                def targetType = modelFqcnFromSimpleName(
+                        askWithDefault("Target type", "java.lang.Object")
+                );
 
                 // check if a facet exists for the same type
                 def identicalFacets = facetsWithSameNameAndSameRole.findAll { fd -> fd.targetObjectType.name == targetType }
@@ -177,21 +160,7 @@ you want to create :
                 }
 
                 // ask for facet class name with default computed name
-                def basePackage = getGroupId()
-
-                def userFacetPgkList = computeUserFacetPackages()
-                if (userFacetPgkList.size() > 1) {
-                    log('Several facets package found :')
-                    int i=1
-                    userFacetPgkList.each {
-                        iLog("$i : $it")
-                        i++
-                    }
-                    def facetsPkg = Integer.valueOf(askWithDefault("In which package would you like to create this facet ?", "1"))
-                    basePackage = userFacetPgkList.get(facetsPkg-1)
-                }else
-                    basePackage = userFacetPgkList.get(0)
-
+                def basePackage = getBaseFacetPackage()
                 if (!basePackage){
                     logger.error("unable to find your facet package definition. Please check your web.xml file.")
                     basePackage = simpleAsk("facets pakage ?")
@@ -208,15 +177,7 @@ you want to create :
 
                 // do we generate a Groovy or a Java class ?
                 // check if we have Groovy available in the project
-                def useGroovy = false
-                for (Dependency d : pomHelper.model.dependencies) {
-                    if (d.artifactId=="groovy" || d.artifactId=="groovy-all") {
-                        useGroovy = true
-                    }
-                }
-                iLog("Groovy seems to be available in your project...")
-                iLog(" ") // line sep
-                useGroovy = yesNoAsk("Do you want to write the facet in Groovy")
+                def useGroovy = askIfUseGroovy(false)
 
                 // show summary of all infos
                 iLog(" ") // line sep
@@ -235,8 +196,8 @@ you want to create :
                 }
                 def lang = useGroovy ? "Groovy" : "pure Java"
                 iLog(" Facet written in  : $lang")
-                        iLog(" Facet source dir  : $projectDir.absolutePath/src/main/${useGroovy ? "groovy" : "java"}")
-                        iLog(" ") // line sep
+                iLog(" Facet source dir  : $projectDir.absolutePath/src/main/${useGroovy ? "groovy" : "java"}")
+                iLog(" ") // line sep
 
                 boolean doIt = yesNoAsk("Is this OK ? Shall we generate all this (n to view gen sources only)")
 
@@ -310,6 +271,5 @@ you want to create :
         }
 
     }
-
 
 }
