@@ -36,24 +36,24 @@
 
        <!-- Woko dependencies -->
        <dependency>
-            <groupId>com.rvkb</groupId>
+            <groupId>com.pojosontheweb</groupId>
             <artifactId>woko-ri</artifactId>
             <version>${woko.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.rvkb</groupId>
+            <groupId>com.pojosontheweb</groupId>
             <artifactId>woko-web-lithium</artifactId>
             <version>${woko.version}</version>
             <type>war</type>
         </dependency>
         <dependency>
-            <groupId>com.rvkb</groupId>
+            <groupId>com.pojosontheweb</groupId>
             <artifactId>woko-builtin-auth-web</artifactId>
             <version>${woko.version}</version>
             <type>war</type>
         </dependency>
         <dependency>
-            <groupId>com.rvkb</groupId>
+            <groupId>com.pojosontheweb</groupId>
             <artifactId>woko-tooling</artifactId>
             <version>${woko.version}</version>
         </dependency>

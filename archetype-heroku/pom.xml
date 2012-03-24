@@ -27,7 +27,7 @@
 
     <parent>
         <artifactId>woko-parent</artifactId>
-        <groupId>com.rvkb</groupId>
+        <groupId>com.pojosontheweb</groupId>
         <version>2.0-SNAPSHOT</version>
     </parent>
 

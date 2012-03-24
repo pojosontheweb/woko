@@ -118,7 +118,7 @@ class GenerateCmd extends Command{
         if (useBootstrap){
             // Add a dependency on bootstrap in pom
             Dependency bootStrapDep = new Dependency()
-            bootStrapDep.groupId = "com.rvkb"
+            bootStrapDep.groupId = "com.pojosontheweb"
             bootStrapDep.artifactId = "woko-web-bootstrap"
             bootStrapDep.version = '${woko.version}'
             bootStrapDep.type = "war"
@@ -126,7 +126,7 @@ class GenerateCmd extends Command{
         }else{
             // Add a dependency on Lithium in pom
             Dependency lithiumDep = new Dependency()
-            lithiumDep.groupId = "com.rvkb"
+            lithiumDep.groupId = "com.pojosontheweb"
             lithiumDep.artifactId = "woko-web-lithium"
             lithiumDep.version = '${woko.version}'
             lithiumDep.type = "war"

@@ -34,7 +34,7 @@
               * built-in authentication
         -->
         <dependency>
-            <groupId>com.rvkb</groupId>
+            <groupId>com.pojosontheweb</groupId>
             <artifactId>woko-ri</artifactId>
             <version>${woko.version}</version>
         </dependency>
@@ -43,7 +43,7 @@
             Woko built-in authentication JSPs
         -->
         <dependency>
-            <groupId>com.rvkb</groupId>
+            <groupId>com.pojosontheweb</groupId>
             <artifactId>woko-builtin-auth-web</artifactId>
             <version>${woko.version}</version>
             <type>war</type>
@@ -53,7 +53,7 @@
             Woko push : enables /push in your webapp
         -->
         <dependency>
-            <groupId>com.rvkb</groupId>
+            <groupId>com.pojosontheweb</groupId>
             <artifactId>woko-push</artifactId>
             <version>${woko.version}</version>
         </dependency>
@@ -63,7 +63,7 @@
             used to run the woko[.bat] command line script
         -->
         <dependency>
-            <groupId>com.rvkb</groupId>
+            <groupId>com.pojosontheweb</groupId>
             <artifactId>woko-tooling</artifactId>
             <version>${woko.version}</version>
         </dependency>
