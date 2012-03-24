@@ -15,7 +15,7 @@
 
 
     <properties>
-        <woko.version>2.0-SNAPSHOT</woko.version>
+        <woko.version>2.0-beta</woko.version>
     </properties>
 
     <!--~~~~~~~~~~~~~~-->
