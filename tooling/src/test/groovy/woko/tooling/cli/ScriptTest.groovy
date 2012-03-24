@@ -24,6 +24,7 @@ import static junit.framework.Assert.assertEquals;
 import org.junit.rules.TemporaryFolder
 import org.junit.Rule
 import org.junit.Ignore
+import org.junit.Assume
 
 class ScriptTest {
 
@@ -74,17 +75,17 @@ class ScriptTest {
     
     @Before
     void setUp(){
-        woko = System.getProperty('os.name').toLowerCase().contains("windows") ? "woko.bat" : "woko"
+        boolean isWindows = System.getProperty('os.name').toLowerCase().contains("windows")
+        Assume.assumeTrue(!isWindows) // TODO make tests run on windows !
+        woko =  isWindows ? "woko.bat" : "woko"
     }
 
     @Test
-    @Ignore
     void testHelp() {
         assertCommandResult([testAppDir+File.separator+woko,"init","-h"], EXPECTED_HELP, folder.getRoot())
     }
 
     @Test
-    @Ignore
     void testInitBootstrapGroovy() {
         assertCommandResult([testAppDir+File.separator+woko, "init","-n","myapp", "-m", "foo.bar.myapp", "-p", "foo.bar", "-v", "1.0-SNAPSHOT"],
                 "__       __     _  __\n" +
@@ -106,7 +107,6 @@ class ScriptTest {
     }
 
     @Test
-    @Ignore
     void testInitNoBootstrapGroovy() {
         assertCommandResult([testAppDir+File.separator+woko, "init","-n","myapp", "-m", "foo.bar.myapp", "-p", "foo.bar", "-v", "1.0-SNAPSHOT", "-b"],
                 "__       __     _  __\n" +
@@ -128,7 +128,6 @@ class ScriptTest {
     }
 
     @Test
-    @Ignore
     void testInitBootstrapNoGroovy() {
         assertCommandResult([testAppDir+File.separator+woko, "init","-n","myapp", "-m", "foo.bar.myapp", "-p", "foo.bar", "-v", "1.0-SNAPSHOT", "-g"],
                 "__       __     _  __\n" +
@@ -151,7 +150,6 @@ class ScriptTest {
     }
 
     @Test
-    @Ignore
     void testInitNoBootstrapNoGroovy() {
         assertCommandResult([testAppDir+File.separator+woko, "init","-n","myapp", "-m", "foo.bar.myapp", "-p", "foo.bar", "-v", "1.0-SNAPSHOT", "-g", "-b"],
                 "__       __     _  __\n" +
