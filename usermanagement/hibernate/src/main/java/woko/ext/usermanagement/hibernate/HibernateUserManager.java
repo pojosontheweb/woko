@@ -1,12 +1,28 @@
+/*
+ * Copyright 2001-2010 Remi Vankeisbelck
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package woko.ext.usermanagement.hibernate;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
-import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
 import woko.ext.usermanagement.core.DatabaseUserManager;
 import woko.ext.usermanagement.core.User;
 import woko.hibernate.HibernateStore;
+import woko.hibernate.TxCallbackWithResult;
 import woko.persistence.ListResultIterator;
 import woko.persistence.ResultIterator;
 
@@ -73,42 +89,10 @@ public class HibernateUserManager extends DatabaseUserManager {
         return new ListResultIterator<User>(l, st, lm, count.intValue());
     }
 
-    public <RES> RES doInTxWithResult(TxCallbackWithResult<RES> callback) {
-        Session session = hibernateStore.getSessionFactory().getCurrentSession();
-        Transaction tx = session.beginTransaction();
-        try {
-            RES res = callback.execute(hibernateStore, session);
-            tx.commit();
-            return res;
-        } catch(Exception e) {
-            tx.rollback();
-            throw new RuntimeException(e);
-        } finally {
-            if (session.isOpen()) {
-                session.close();
-            }
-        }
-    }
-
-    public void doInTx(TxCallback callback) {
-        Session session = hibernateStore.getSessionFactory().getCurrentSession();
-        Transaction tx = session.beginTransaction();
-        try {
-            callback.execute(hibernateStore, session);
-            tx.commit();
-        } catch(Exception e) {
-            tx.rollback();
-            throw new RuntimeException(e);
-        } finally {
-            if (session.isOpen()) {
-                session.close();
-            }
-        }
-    }
 
     @Override
     protected User createUser(final String username, final String password, final List<String> roles) {
-        return doInTxWithResult(new TxCallbackWithResult<User>() {
+        return getHibernateStore().doInTxWithResult(new TxCallbackWithResult<User>() {
             @Override
             public User execute(HibernateStore store, Session session) throws Exception {
                 User u = getUserByUsername(username);
@@ -118,7 +102,7 @@ public class HibernateUserManager extends DatabaseUserManager {
                     user.setPassword(encodePassword(password));
                     ArrayList<String> rolesCopy = new ArrayList<String>(roles);
                     user.setRoles(rolesCopy);
-                    hibernateStore.save(user);
+                    store.save(user);
                     return user;
                 }
                 return u;

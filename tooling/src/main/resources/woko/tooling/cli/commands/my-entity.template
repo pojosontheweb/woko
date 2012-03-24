@@ -1,0 +1,50 @@
+package $modelPackage;
+
+import org.compass.annotations.Searchable;
+import org.compass.annotations.SearchableId;
+import org.compass.annotations.SearchableProperty;
+import javax.validation.constraints.NotNull;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+import java.util.Date;
+
+@Entity
+@Searchable
+public class MyEntity {
+
+    @Id
+    @SearchableId
+    private Long id;
+
+    @NotNull
+    @SearchableProperty
+    private String myProp;
+
+    private Date myOtherProp;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getMyProp() {
+        return myProp;
+    }
+
+    public void setMyProp(String myProp) {
+        this.myProp = myProp;
+    }
+
+    public Date getMyOtherProp() {
+        return myOtherProp;
+    }
+
+    public void setMyOtherProp(Date myOhterProp) {
+        this.myOtherProp = myOtherProp;
+    }
+}

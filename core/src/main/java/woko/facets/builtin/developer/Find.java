@@ -1,3 +1,19 @@
+/*
+ * Copyright 2001-2010 Remi Vankeisbelck
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package woko.facets.builtin.developer;
 
 import net.sourceforge.jfacets.annotations.FacetKey;
@@ -8,23 +24,24 @@ import woko.persistence.ObjectStore;
 import java.util.ArrayList;
 import java.util.List;
 
-@FacetKey(name= WokoFacets.find, profileId="developer")
+@FacetKey(name = WokoFacets.find, profileId = "developer")
 public class Find extends BaseForwardResolutionFacet {
 
-  public String getPath() {
-    return "/WEB-INF/woko/jsp/developer/find.jsp";
-  }
+    public static final String FRAGMENT_PATH = "/WEB-INF/woko/jsp/developer/find.jsp";
 
-  public List<String> getMappedClasses() {
-    List<String> res = new ArrayList<String>();
-    ObjectStore os = getFacetContext().getWoko().getObjectStore();
-    List<Class<?>> mappedClasses = os.getMappedClasses();
-    for (Class<?> c : mappedClasses) {
-      res.add(os.getClassMapping(c));
+    public String getPath() {
+        return FRAGMENT_PATH;
     }
-    return res;
-  }
 
+    public List<String> getMappedClasses() {
+        List<String> res = new ArrayList<String>();
+        ObjectStore os = getFacetContext().getWoko().getObjectStore();
+        List<Class<?>> mappedClasses = os.getMappedClasses();
+        for (Class<?> c : mappedClasses) {
+            res.add(os.getClassMapping(c));
+        }
+        return res;
+    }
 
 
 }

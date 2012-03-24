@@ -1,0 +1,134 @@
+#!/bin/bash
+
+# init vars
+usageHelp="Usage: woko init"
+artifactIdHelp="-n project name, serves as the artifact Id (i.e. myapp)"
+groupIdHelp="-m the maven group Id (i.e. com.myexample.myapp)"
+packageHelp="-p the default package name, defaults to maven group Id"
+versionHelp="-v the version (i.e. 1.0-SNAPSHOT)"
+boostrapHelp="-b use Boostrap css & js"
+lithiumHelp="-l use lithium skin"
+groovyHelp="-g use Groovy"
+javaHelp="-j use pure java"
+
+helpHelp="-h this help"
+badOptionHelp="Option not recognised"
+
+artifactId=""
+groupId=""
+version=""
+groovy=""
+boostrap=""
+package=""
+
+execargs="generate"
+
+printHelpAndExit()
+{
+	echo "$usageHelp"
+	echo "$artifactIdHelp"
+	echo "$groupIdHelp" 
+	echo "$packageHelp"
+	echo "$versionHelp"  
+	echo "$boostrapHelp"
+	echo "$lithiumHelp"
+	echo "$groovyHelp"
+	echo "$javaHelp"
+
+	echo "$helpHelp"
+	exit $1
+}              
+
+printErrorHelpAndExit()
+{
+        echo
+        echo "$@"
+        echo
+        echo
+        printHelpAndExit 1
+}
+
+echo "__       __     _  __"
+echo "\\ \\  _  / /___ | |/ / ___"
+echo " \\ \\/ \\/ // o \\|   K /   \\"
+echo "  \\__W__/ \\___/|_|\\_\\\\_o_/  2.0"
+echo "             POJOs on the Web !"
+echo ""
+
+read_init_project_values()
+{
+    while [ "$artifactId" == "" ]; do
+        read -p "> Project name ? " artifactId
+        done
+    while [ "$groupId" == "" ]; do
+        read -p "> Maven groupId ? " groupId
+        done
+    while [ "$version" == "" ]; do
+        read -p "> Your project's version ? [1.0-SNAPSHOT] " version
+        version=${version:-"1.0-SNAPSHOT"}
+    done
+
+    if [ ! "$groovy" == "" ]
+    then
+        execargs="$execargs -g $groovy"
+    fi
+
+    if [ ! "$boostrap" == "" ]
+    then
+        execargs="$execargs -b $boostrap"
+    fi
+
+    if [ ! "$package" == "" ]
+    then
+        execargs="$execargs -p $package"
+    fi
+}   
+
+init_project()
+{
+    echo "Initializing project"
+    read_init_project_values
+    echo "| Generating your project, please wait, it can take a while to download everything..."
+    mvn archetype:generate -DarchetypeVersion=2.0-beta -DarchetypeArtifactId=woko-archetype -DarchetypeGroupId=com.pojosontheweb\
+        -DgroupId="$groupId" -DartifactId="$artifactId" -Dversion="$version" -DinteractiveMode="false" -q
+    cd "$artifactId"
+    mvn exec:java -Dexec.mainClass="woko.tooling.cli.Runner" -Dexec.classpathScope=runtime -Dexec.args="$execargs" -q
+}
+  
+# do we have a pom file ?
+if [ -e pom.xml ]
+then
+    mvn exec:java -Dexec.mainClass="woko.tooling.cli.Runner" -Dexec.classpathScope=runtime -Dexec.args="$*" -q
+else     
+    # Asking for project creation ?
+    if [ "$1" == "init" ]
+    then
+        shift
+    else
+        echo "ERROR : No pom file found in current directory. "
+        read -p "Do you want to generate the project ? [n]" answer
+        if [ "$answer" != "y" ]
+        then                       
+            echo "Nothing done. Hope to see you soon !"
+            exit 0
+        fi
+    fi
+     
+    while getopts ":n:m:p:v:gjblh" optionName; do
+        case "$optionName" in
+            h) printHelpAndExit 0;;
+            n) artifactId="$OPTARG";;
+            m) groupId="$OPTARG";;
+            v) version="$OPTARG";; 
+            p) package="$OPTARG";;
+            g) groovy="yes";;
+            j) groovy="no";;
+            b) boostrap="yes";;
+            l) boostrap="no";;
+            [?]) printErrorHelpAndExit "$badOptionHelp";;
+        esac  
+    done
+    
+    init_project
+fi
+

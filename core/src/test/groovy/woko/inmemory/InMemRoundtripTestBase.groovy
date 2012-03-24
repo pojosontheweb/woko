@@ -1,22 +1,38 @@
+/*
+ * Copyright 2001-2010 Remi Vankeisbelck
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package woko.inmemory
 
-import woko.Woko
-import net.sourceforge.stripes.mock.MockServletContext
-import net.sourceforge.stripes.controller.StripesFilter
-import net.sourceforge.stripes.controller.DispatcherServlet
-import woko.actions.WokoActionBean
-import net.sourceforge.stripes.mock.MockRoundtrip
 import javax.servlet.ServletException
+import net.sourceforge.stripes.controller.DispatcherServlet
+import net.sourceforge.stripes.controller.StripesFilter
+import net.sourceforge.stripes.mock.MockRoundtrip
+import net.sourceforge.stripes.mock.MockServletContext
+import testentity.MyValidatedPojo
+import woko.Woko
+import woko.actions.WokoActionBean
 import woko.facets.FacetNotFoundException
-import woko.persistence.ObjectStore
 import woko.users.UserManager
-import woko.WokoInitListener
 
 abstract class InMemRoundtripTestBase extends GroovyTestCase {
 
   Woko createWoko(String username) {
     InMemoryObjectStore store = new InMemoryObjectStore()
     store.addObject('1', new Book([_id: '1', name: 'Moby Dick', nbPages: 123]))
+    store.addObject('2', new MyValidatedPojo(id:1, str:"cannotbenull"))
     UserManager userManager = new InMemoryUserManager()
     userManager.addUser("wdevel", "wdevel", ["developer"])
     Woko inMem = new Woko(
