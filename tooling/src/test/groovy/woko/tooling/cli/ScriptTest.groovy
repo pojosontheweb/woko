@@ -78,11 +78,13 @@ class ScriptTest {
     }
 
     @Test
+    @Ignore
     void testHelp() {
         assertCommandResult([testAppDir+File.separator+woko,"init","-h"], EXPECTED_HELP, folder.getRoot())
     }
 
-    @Test @Ignore
+    @Test
+    @Ignore
     void testInitBootstrapGroovy() {
         assertCommandResult([testAppDir+File.separator+woko, "init","-n","myapp", "-m", "foo.bar.myapp", "-p", "foo.bar", "-v", "1.0-SNAPSHOT"],
                 "__       __     _  __\n" +
@@ -103,7 +105,8 @@ class ScriptTest {
 
     }
 
-    @Test @Ignore
+    @Test
+    @Ignore
     void testInitNoBootstrapGroovy() {
         assertCommandResult([testAppDir+File.separator+woko, "init","-n","myapp", "-m", "foo.bar.myapp", "-p", "foo.bar", "-v", "1.0-SNAPSHOT", "-b"],
                 "__       __     _  __\n" +
@@ -124,7 +127,8 @@ class ScriptTest {
 
     }
 
-    @Test @Ignore
+    @Test
+    @Ignore
     void testInitBootstrapNoGroovy() {
         assertCommandResult([testAppDir+File.separator+woko, "init","-n","myapp", "-m", "foo.bar.myapp", "-p", "foo.bar", "-v", "1.0-SNAPSHOT", "-g"],
                 "__       __     _  __\n" +
@@ -146,7 +150,8 @@ class ScriptTest {
 
     }
 
-    @Test @Ignore
+    @Test
+    @Ignore
     void testInitNoBootstrapNoGroovy() {
         assertCommandResult([testAppDir+File.separator+woko, "init","-n","myapp", "-m", "foo.bar.myapp", "-p", "foo.bar", "-v", "1.0-SNAPSHOT", "-g", "-b"],
                 "__       __     _  __\n" +
