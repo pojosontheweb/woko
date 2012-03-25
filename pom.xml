@@ -38,11 +38,11 @@
         </license>
     </licenses>
     <scm>
-        <url>https://vankeisb@github.com/vankeisb/woko2.git</url>
+        <url>https://github.com/pojosontheweb/woko</url>
     </scm>
     <issueManagement>
         <system>GitHub</system>
-        <url>https://github.com/vankeisb/woko2/issues</url>
+        <url>https://github.com/pojosontheweb/woko/issues</url>
     </issueManagement>
     <dependencies>
         <dependency>
