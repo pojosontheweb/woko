@@ -120,7 +120,7 @@ class Runner {
         if (!args) {
             throw new IllegalArgumentException("0 args specified, we need at least the command name")
         }else if (args[0] == "help") {
-            if (args[1])
+            if (args.size()>1 && args[1])
                 help(args[1])
             else
                 help()
