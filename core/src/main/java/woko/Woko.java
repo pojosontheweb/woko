@@ -32,12 +32,17 @@ import woko.util.WLogger;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 public class Woko {
+
+    public static final String ENVI_FILE = "woko.environment";
 
     public static final List<String> DEFAULT_FACET_PACKAGES =
             Collections.unmodifiableList(Arrays.asList("facets", "woko.facets.builtin"));
@@ -217,6 +222,28 @@ public class Woko {
         return new AnnotatedFacetDescriptorManager(packageNames).
                 setDuplicatedKeyPolicy(DuplicatedKeyPolicyType.FirstScannedWins).
                 initialize();
+    }
+
+
+    /**
+     * Return the environment used
+     * @return the environment used at build-time (as found in the woko.environment file)
+     */
+    public String getEnvironment() {
+        InputStream is = getClass().getResourceAsStream("/" + ENVI_FILE);
+        if (is==null) {
+            return null;
+        }
+        BufferedReader r = new BufferedReader(new InputStreamReader(is));
+        try {
+            try {
+                return r.readLine();
+            } finally {
+                r.close();
+            }
+        } catch(Exception e) {
+            throw new RuntimeException("unable to read envi file !", e);
+        }
     }
 
 

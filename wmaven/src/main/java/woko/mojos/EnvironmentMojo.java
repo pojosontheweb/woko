@@ -19,7 +19,7 @@ package woko.mojos;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.logging.Log;
-import woko.util.EnvironmentUtil;
+import woko.Woko;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -55,7 +55,7 @@ public class EnvironmentMojo extends AbstractMojo {
 
     public void execute()
             throws MojoExecutionException {
-        File enviFile = new File(outputDirectory.getAbsolutePath() + File.separator + EnvironmentUtil.ENVI_FILE);
+        File enviFile = new File(outputDirectory.getAbsolutePath() + File.separator + Woko.ENVI_FILE);
         if (enviFile.exists()) {
             enviFile.delete();
         }

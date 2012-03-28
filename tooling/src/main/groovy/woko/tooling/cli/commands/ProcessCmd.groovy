@@ -50,10 +50,13 @@ class ProcessCmd extends Command {
         String cmd = windows ?  "cmd /c $cmdLineWithArgs" : cmdLineWithArgs
         logger.indentedLog(" Launching process : $cmd")
         Process p = cmd.execute()
-        p.in.eachLine { logger.indentedLog(it) }
+        p.in.eachLine { handleLine(it) }
         p.waitFor()
         logger.indentedLog(" Process terminated for $name, returned ${p.exitValue()}")
     }
 
+    protected void handleLine(String line) {
+        logger.indentedLog(line)
+    }
 
 }
