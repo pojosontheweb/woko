@@ -72,6 +72,7 @@
         <module>dojo</module>
         <module>usermanagement</module>
         <module>tooling</module>
+        <module>wmaven</module>
     </modules>
     <properties>
         <stripes.version>1.5.5</stripes.version>
