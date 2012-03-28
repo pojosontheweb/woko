@@ -18,13 +18,15 @@ package woko.mojos;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugin.logging.Log;
+import woko.util.EnvironmentUtil;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
 /**
- * @goal envi
+ * @goal env
  * @phase process-resources
  */
 public class EnvironmentMojo extends AbstractMojo {
@@ -34,7 +36,7 @@ public class EnvironmentMojo extends AbstractMojo {
     /**
      * Location of the build output.
      *
-     * @parameter expression="${project.build.directory}"
+     * @parameter expression="${project.build.outputDirectory}"
      * @required
      */
     private File outputDirectory;
@@ -42,32 +44,57 @@ public class EnvironmentMojo extends AbstractMojo {
     /**
      * Environment to be used
      * @parameter expression="${woko.env}"
-     * @required
      */
     private String env;
 
     /**
      * Project base folder
-     * @parameter expression="${project.build.sourceDirectory}"
+     * @parameter expression="${basedir}"
      */
     private File projectDirectory;
 
     public void execute()
             throws MojoExecutionException {
-        File f = outputDirectory;
-        String envPath = projectDirectory.getAbsolutePath() + File.separator +
-                ENVIRONMENTS_FOLDER + File.separator + env;
-        File envRoot = new File(envPath);
-        if (!envRoot.exists()) {
-            throw new MojoExecutionException("Environment folder not found : '" + envPath + "'.");
+        File enviFile = new File(outputDirectory.getAbsolutePath() + File.separator + EnvironmentUtil.ENVI_FILE);
+        if (enviFile.exists()) {
+            enviFile.delete();
         }
-        if (!envRoot.isDirectory()) {
-            throw new MojoExecutionException("Environment ain't a valid folder : '" + envPath + "'.");
+        if (env!=null) {
+            FileWriter out = null;
+            try {
+                try {
+                    out = new FileWriter(enviFile);
+                    out.write(env);
+                } finally {
+                    if (out!=null) {
+                        out.flush();
+                        out.close();
+                    }
+                }
+                final Log log = getLog();
+                String envPath = projectDirectory.getAbsolutePath() + File.separator +
+                        ENVIRONMENTS_FOLDER + File.separator + env;
+                File envRoot = new File(envPath);
+                if (!envRoot.exists()) {
+                    throw new MojoExecutionException("Environment folder not found : '" + envPath + "'. Make sure you have " +
+                        "an 'environments/" + env + "' folder in your project root.");
+                } else {
+                    if (!envRoot.isDirectory()) {
+                        throw new MojoExecutionException("Environment ain't a folder : '" + envPath + "'.");
+                    }
+                    // cp -r everything in environments/myenv to target/classes
+                    log.info("Copying resources from environment '" + env + "' to '" + outputDirectory.getAbsolutePath() + "' :");
+                    FolderCopy.copy(envRoot, outputDirectory, new FolderCopy.CopyCallback() {
+                        @Override
+                        public void onCopy(File fromDir, File toDir, File f) {
+                            log.info("  " + f.getPath());
+                        }
+                    });
+                }
+            } catch (IOException e) {
+                throw new MojoExecutionException("unable to copy environment file(s) for environment '" + env + "'", e);
+            }
         }
-        // cp -r everything in environments/myenv to target/classes
-        getLog().info("Copying resources from environment '" + env + "' : ");
-        handleFolder()
-        
-
     }
+
 }

@@ -5,8 +5,8 @@ import woko.tooling.utils.Logger
 
 class StartCommand extends ProcessCmd{
 
-    StartCommand(Runner runner, File projectDir, Logger logger, String name, String shortDesc, String argSpec, String longHelp, String commandLine) {
-        super(runner, projectDir, logger, name, shortDesc, argSpec, longHelp, commandLine)
+    StartCommand(Runner runner, File projectDir, Logger logger, String name, String shortDesc, String argSpec, String longHelp) {
+        super(runner, projectDir, logger, name, shortDesc, argSpec, longHelp, "mvn package jetty:run-exploded")
     }
 
     @Override

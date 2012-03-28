@@ -15,6 +15,8 @@
 
     <properties>
         <woko.version>2.0-SNAPSHOT</woko.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
 
     <!--~~~~~~~~~~~~~~-->
@@ -78,7 +80,6 @@
         </dependency>
     </dependencies>
 
-
     <!--~~~~~~~~~~~~~~~~~~~~~-->
     <!-- Build configuration -->
     <!--~~~~~~~~~~~~~~~~~~~~~-->
@@ -127,6 +128,23 @@
                         <warSourceExcludes>WEB-INF/lib/servlet-api*.jar</warSourceExcludes>
                     </configuration>
                 </configuration>
+            </plugin>
+            <!--
+                The Woko plugin (environments etc.)
+            -->
+            <plugin>
+                <groupId>com.pojosontheweb</groupId>
+                <artifactId>woko-maven-plugin</artifactId>
+                <version>${woko.version}</version>
+                <executions>
+                    <execution>
+                        <id>woko.environment</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>env</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

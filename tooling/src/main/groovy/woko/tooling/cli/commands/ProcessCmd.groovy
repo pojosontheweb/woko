@@ -34,9 +34,20 @@ class ProcessCmd extends Command {
 		return (os.indexOf("win") >= 0)
     }
 
+    protected String argsToStr(List<String> args) {
+        StringBuilder sb = new StringBuilder()
+        if (args) {
+            args.each {
+                sb.append(it).append(" ")
+            }
+        }
+        return sb.toString()
+    }
+
     @Override
     void execute(List<String> args) {
-        String cmd = windows ?  "cmd /c $commandLine" : commandLine
+        String cmdLineWithArgs = "$commandLine ${argsToStr(args)}"
+        String cmd = windows ?  "cmd /c $cmdLineWithArgs" : cmdLineWithArgs
         logger.indentedLog(" Launching process : $cmd")
         Process p = cmd.execute()
         p.in.eachLine { logger.indentedLog(it) }
