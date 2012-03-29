@@ -48,6 +48,13 @@ public class EnvironmentMojo extends AbstractMojo {
     private String env;
 
     /**
+     * Default environment to be used in case none is
+     * passed (to be configured in pom)
+     * @parameter
+     */
+    private String defaultEnv;
+
+    /**
      * Project base folder
      * @parameter expression="${basedir}"
      */
@@ -59,12 +66,13 @@ public class EnvironmentMojo extends AbstractMojo {
         if (enviFile.exists()) {
             enviFile.delete();
         }
-        if (env!=null) {
+        String theEnv = env !=null ? env : defaultEnv;
+        if (theEnv!=null) {
             FileWriter out = null;
             try {
                 try {
                     out = new FileWriter(enviFile);
-                    out.write(env);
+                    out.write(theEnv);
                 } finally {
                     if (out!=null) {
                         out.flush();
@@ -73,17 +81,17 @@ public class EnvironmentMojo extends AbstractMojo {
                 }
                 final Log log = getLog();
                 String envPath = projectDirectory.getAbsolutePath() + File.separator +
-                        ENVIRONMENTS_FOLDER + File.separator + env;
+                        ENVIRONMENTS_FOLDER + File.separator + theEnv;
                 File envRoot = new File(envPath);
                 if (!envRoot.exists()) {
                     throw new MojoExecutionException("Environment folder not found : '" + envPath + "'. Make sure you have " +
-                        "an 'environments/" + env + "' folder in your project root.");
+                        "an 'environments/" + theEnv + "' folder in your project root.");
                 } else {
                     if (!envRoot.isDirectory()) {
                         throw new MojoExecutionException("Environment ain't a folder : '" + envPath + "'.");
                     }
                     // cp -r everything in environments/myenv to target/classes
-                    log.info("Copying resources from environment '" + env + "' to '" + outputDirectory.getAbsolutePath() + "' :");
+                    log.info("Copying resources from environment '" + theEnv + "' to '" + outputDirectory.getAbsolutePath() + "' :");
                     FolderCopy.copy(envRoot, outputDirectory, new FolderCopy.CopyCallback() {
                         @Override
                         public void onCopy(File fromDir, File toDir, File f) {
@@ -92,7 +100,7 @@ public class EnvironmentMojo extends AbstractMojo {
                     });
                 }
             } catch (IOException e) {
-                throw new MojoExecutionException("unable to copy environment file(s) for environment '" + env + "'", e);
+                throw new MojoExecutionException("unable to copy environment file(s) for environment '" + theEnv + "'", e);
             }
         }
     }
