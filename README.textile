@@ -16,7 +16,7 @@ it provides some plumbing for the most common features needed in webapp developm
 h1. Getting started
 
 1. Download and install Woko tools
-    "Installation instructions":https://github.com/vankeisb/woko2/wiki/Wokotools
+    "Installation instructions":https://github.com/pojosontheweb/woko/wiki/Wokotools
 
 2. Create a new Woko project
     <pre><code>woko init</code></pre>
