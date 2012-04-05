@@ -137,7 +137,7 @@
     <footer>
         <div class="container-fluid">
             <div class="pull-right">
-                Powered by <a href="https://github.com/vankeisb/woko2"><img src="${cp}/woko/woko-logo-small.png"
+                Powered by <a href="http://www.pojosontheweb.com"><img src="${cp}/woko/woko-logo-small.png"
                                                                             alt="logo" height="24px"/></a>
             </div>
         </div>

@@ -85,7 +85,7 @@
             <hr/>
 
             <div class="wokoFooter">
-                <img src="${cp}/woko/woko-logo-small.png" alt="logo"/>Powered by <a href="https://github.com/vankeisb/woko2">Woko</a>
+                <img src="${cp}/woko/woko-logo-small.png" alt="logo"/>Powered by <a href="http://www.pojosontheweb.com">Woko</a>
             </div>
 
         </body>
