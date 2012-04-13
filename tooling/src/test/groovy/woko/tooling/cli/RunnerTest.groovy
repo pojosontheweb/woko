@@ -66,6 +66,7 @@ Available commands :
   - start 		:		run the application in a local jetty container
   - stop 		:		stop the local jetty container (in case started in background process)
   - build 		:		rebuilds the whole application
+  - env list|use <env_name>		:		manage the environments
   - help [command_name]		:		display help about specified command
 
 """
