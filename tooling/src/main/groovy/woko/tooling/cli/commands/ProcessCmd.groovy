@@ -29,30 +29,13 @@ class ProcessCmd extends Command {
         this.commandLine = commandLine
     }
 
-    boolean isWindows() {
-        String os = System.getProperty("os.name").toLowerCase()
-		return (os.indexOf("win") >= 0)
-    }
-
-    protected String argsToStr(List<String> args) {
-        StringBuilder sb = new StringBuilder()
-        if (args) {
-            args.each {
-                sb.append(it).append(" ")
-            }
-        }
-        return sb.toString()
-    }
-
     @Override
     void execute(List<String> args) {
-        String cmdLineWithArgs = "$commandLine ${argsToStr(args)}"
-        String cmd = windows ?  "cmd /c $cmdLineWithArgs" : cmdLineWithArgs
-        logger.indentedLog(" Launching process : $cmd")
-        Process p = cmd.execute()
-        p.in.eachLine { handleLine(it) }
-        p.waitFor()
-        logger.indentedLog(" Process terminated for $name, returned ${p.exitValue()}")
+        new ProcessExec().execute(logger, commandLine, args, { line ->
+            handleLine(line)
+        }, { Process p ->
+            logger.indentedLog(" Process terminated for $name, returned ${p.exitValue()}")
+        })
     }
 
     protected void handleLine(String line) {

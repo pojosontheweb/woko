@@ -106,8 +106,8 @@ class Runner {
             "",
             "",
             "mvn clean install"
-          )
-
+          ),
+          new EnvironmentsCmd(this, workingDir, logger)
         ])
     }
 
