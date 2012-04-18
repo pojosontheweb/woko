@@ -67,9 +67,11 @@
             #groovyCodeWrapper {
                 height: 350px;
                 width: 600px;
+                margin-bottom: 8px;
             }
 
             #groovyCode {
+                border: 1px solid #d3d3d3;
                 height: 350px;
                 width: 600px;
             }
@@ -164,7 +166,7 @@
 
         <h1><fmt:message bundle="${wokoBundle}" key="woko.devel.studio.title"/></h1>
 
-        <div style="width: 100%; height: 600px">
+        <div style="width: 100%;">
             <div dojoType="dijit.layout.TabContainer" style="width: 100%; height: 100%;">
                 <div dojoType="dijit.layout.ContentPane" title="Configuration" selected="true">
                     <h2><fmt:message bundle="${wokoBundle}" key="woko.devel.studio.config.title"/> </h2>
