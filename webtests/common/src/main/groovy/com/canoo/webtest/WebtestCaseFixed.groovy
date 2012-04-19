@@ -60,7 +60,7 @@ abstract class WebtestCaseFixed extends GroovyTestCase
 			{
 				pathelement(path: '${java.class.path}')
 			}
-			antBuilder.property(name: "wt.defineTasks.defineClasspath.skip", value: "true")
+			antBuilder.property(name: "~wt.defineTasks.defineClasspath.skip", value: "true")
 			antBuilder.property(name: "wt.generateDtd.skip", value: "true")
 			antBuilder.property(name: "wt.generateDefinitions.skip", value: "true")
 			antBuilder.property(name: "wt.defineMacros.skip", value: "true")
@@ -70,7 +70,6 @@ abstract class WebtestCaseFixed extends GroovyTestCase
 			antBuilder.property(name: "wt.config.haltonfailure", value: "true")
             antBuilder.property(name: "wt.headless", value: System.getProperty("wt.headless", "true"))
             antBuilder.property(name: "wt.config.resultpath", value: new File(temporaryWebTestResourcesFolder.parentFile, "webtest-results"))
-            antBuilder.property(name: "ThrowExceptionOnScriptError", value: "false")
 
 			def tmpWebtestXml = new File(temporaryWebTestResourcesFolder, "webtest.xml")
 
