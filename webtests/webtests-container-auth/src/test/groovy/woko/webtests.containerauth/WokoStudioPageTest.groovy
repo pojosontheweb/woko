@@ -16,19 +16,30 @@
 
 package woko.webtests.containerauth
 
-class WokoStudioPageTest extends WebTestBase{
+import org.junit.runners.JUnit4
+import org.junit.runner.RunWith
+import org.junit.Test
 
-  void testStudioPage(){
-    webtest('test Woko Studio page'){
-      login()
+@RunWith(JUnit4.class)
+class WokoStudioPageTest extends WebTestBase {
 
-      clickLink label:'woko studio'
+    @Test
+    void testStudioPage() {
+        webtest('test Woko Studio page') {
 
-      verifyTitle 'Woko - Studio'
-      verifyText 'Woko Studio'
+            config {
+                option name: "ThrowExceptionOnScriptError", value: "false"
+            }
+            
+            login()
 
-      // Check search input is present
-      checkSearchForm('/studio')
+            clickLink label: 'woko studio'
+
+            verifyTitle 'Woko - Studio'
+            verifyText 'Woko Studio'
+
+            // Check search input is present
+            checkSearchForm('/studio')
+        }
     }
-  }
 }
