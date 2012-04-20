@@ -8,7 +8,7 @@ import javax.persistence.ManyToOne
 @Entity
 class SubEntity {
 
-    @Id @GeneratedValue
+    @Id
     Long id
 
     String name
