@@ -27,4 +27,6 @@ class OtherPojo {
 
   String foo = 'bar'
 
+    String name = "booyaka"
+
 }
