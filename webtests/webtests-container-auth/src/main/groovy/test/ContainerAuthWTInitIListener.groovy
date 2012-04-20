@@ -19,12 +19,28 @@ package test
 import woko.hbcompass.HibernateCompassInMemWokoInitListener
 import net.sourceforge.jfacets.IFacetDescriptorManager
 import woko.push.PushFacetDescriptorManager
+import woko.persistence.ObjectStore
+import woko.hibernate.HibernateStore
+import woko.hibernate.TxCallback
 
 class ContainerAuthWTInitIListener extends HibernateCompassInMemWokoInitListener {
 
     @Override
     protected IFacetDescriptorManager createFacetDescriptorManager() {
         return new PushFacetDescriptorManager(super.createFacetDescriptorManager()) // Enable /push !
+    }
+
+    @Override
+    protected ObjectStore createObjectStore() {
+        HibernateStore o = super.createObjectStore()
+        o.doInTx({ store, session ->
+            EntityWithRelations ewr = new EntityWithRelations(name:"test")
+            store.save(ewr)
+            SubEntity se = new SubEntity(name:"testSub")
+            se.daEntity = ewr
+            store.save(se)
+        } as TxCallback)
+        return o
     }
 
 
