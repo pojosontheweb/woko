@@ -145,6 +145,12 @@ The command accepts one argument that can be  :
     }
 
     @Test
+    void testNonExistingCommand() {
+        def actual = execCommand(["blah"], new File(testAppDir))
+        assertTrue("expected text not found", actual.contains("Command 'blah' not found"))
+    }
+
+    @Test
     void testListRoles() {
         assertCommandResult(["list", "roles"], """2 role(s) used in faced keys :
   all

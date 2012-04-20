@@ -123,20 +123,22 @@ class Runner {
         } else {
             def command = commands[args[0]]
             if (!command) {
-                throw new IllegalArgumentException("command ${args[0]} does not exist")
-            }
-            def commandArgs = []
-            if (args) {
-                boolean first = true
-                args.each { arg ->
-                    if (first) {
-                        first = false
-                    } else {
-                        commandArgs << arg
+                log("ERROR: Command '${args[0]}' not found")
+                help()
+            } else {
+                def commandArgs = []
+                if (args) {
+                    boolean first = true
+                    args.each { arg ->
+                        if (first) {
+                            first = false
+                        } else {
+                            commandArgs << arg
+                        }
                     }
                 }
+                command.execute(commandArgs)
             }
-            command.execute(commandArgs)
         }
     }
 
