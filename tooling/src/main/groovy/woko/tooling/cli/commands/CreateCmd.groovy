@@ -154,7 +154,7 @@ you want to create :
                     try {
                         baseClassFragmentPath = baseClass.FRAGMENT_PATH
                     } catch(Exception) {
-                        iLog("No JSP fragment available from the base class, an empty JSP will be generated.")
+                        iLog("No JSP fragment available from the base class, no JSP will be generated.")
                         iLog(" ") // line sep
                     }
                 }
