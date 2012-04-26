@@ -24,12 +24,13 @@ import woko.persistence.ObjectStore;
 import woko.persistence.ResultIterator;
 import woko.util.Util;
 
+import java.util.Collection;
 import java.util.List;
 
-@FacetKey(name = WokoFacets.renderPropertyValueEdit, profileId = "all")
-public class RenderPropertyValueEditXToOneRelation extends RenderPropertyValueImpl implements RenderPropertyValueEdit {
+@FacetKey(name = WokoFacets.renderPropertyValueEdit, profileId = "all", targetObjectType = Collection.class)
+public class RenderPropertyValueEditXToManyRelation extends RenderPropertyValueImpl implements RenderPropertyValueEdit {
 
-    public static final String FRAGMENT_PATH = "/WEB-INF/woko/jsp/all/renderPropertyValueEditXToOneRelation.jsp";
+    public static final String FRAGMENT_PATH = "/WEB-INF/woko/jsp/all/renderPropertyValueEditXToManyRelation.jsp";
 
     public String getPath() {
         // we check if the target object is persistent or not.
