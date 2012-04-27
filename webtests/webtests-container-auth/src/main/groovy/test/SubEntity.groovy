@@ -21,6 +21,7 @@ import javax.persistence.GeneratedValue
 import javax.persistence.Id
 import javax.persistence.ManyToOne
 import javax.persistence.OneToMany
+import javax.persistence.ManyToMany
 
 @Entity
 class SubEntity {
@@ -35,6 +36,6 @@ class SubEntity {
 
     transient OtherPojo nonPersistent = new OtherPojo()
 
-    @OneToMany
+    @ManyToMany
     Collection<EntityWithRelations> children
 }

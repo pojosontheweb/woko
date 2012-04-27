@@ -33,7 +33,6 @@
     String propertyClassName = os.getClassMapping(Util.getPropertyType(owningObject.getClass(), propertyName));
     String fullFieldName = "object." + propertyName;
     Object propVal = renderPropertyValue.getPropertyValue();
-    String pvKey = os.getKey(propVal);
 %>
 <span class="wokoPropertyValueEdit">
     <span class="<%=propertyName%> <%=propertyClassName%>">
