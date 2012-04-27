@@ -19,12 +19,12 @@
 <%@ page import="woko.facets.WokoFacetContext" %>
 <%@ page import="woko.persistence.ObjectStore" %>
 <%@ page import="woko.facets.builtin.RenderPropertyValueEdit" %>
-<%@ page import="woko.facets.builtin.all.RenderPropertyValueEditXToOneRelation" %>
 <%@ page import="woko.facets.builtin.RenderTitle" %>
 <%@ page import="woko.Woko" %>
 <%@ page import="java.util.Collection" %>
+<%@ page import="woko.facets.builtin.all.RenderPropertyValueEditXToManyRelation" %>
 <%
-    RenderPropertyValueEditXToOneRelation renderPropertyValue = (RenderPropertyValueEditXToOneRelation)request.getAttribute(RenderPropertyValueEdit.FACET_NAME);
+    RenderPropertyValueEditXToManyRelation renderPropertyValue = (RenderPropertyValueEditXToManyRelation)request.getAttribute(RenderPropertyValueEdit.FACET_NAME);
     WokoFacetContext fctx = renderPropertyValue.getFacetContext();
     Woko woko = fctx.getWoko();
     ObjectStore os = woko.getObjectStore();
@@ -32,20 +32,18 @@
     Object owningObject = renderPropertyValue.getOwningObject();
     String propertyClassName = os.getClassMapping(Util.getPropertyType(owningObject.getClass(), propertyName));
     String fullFieldName = "object." + propertyName;
-    Object propVal = renderPropertyValue.getPropertyValue();
-    String pvKey = os.getKey(propVal);
+    Collection<?> propVal = (Collection<?>)renderPropertyValue.getPropertyValue();
 %>
 <span class="wokoPropertyValueEdit">
     <span class="<%=propertyName%> <%=propertyClassName%>">
-        <select name="<%=fullFieldName%>">
-            <option value=""></option>
+        <select name="<%=fullFieldName%>" multiple="multiple">
             <%
                 Collection<?> choices = renderPropertyValue.getChoices();
                 for (Object choice : choices) {
                     String key = os.getKey(choice);
                     RenderTitle rt = (RenderTitle)woko.getFacet(RenderTitle.FACET_NAME, request, choice);
                     String title = rt==null ? choice.toString() : rt.getTitle();
-                    String selected = propVal!=null && propVal.equals(choice) ?
+                    String selected = propVal!=null && propVal.contains(choice) ?
                             selected = "selected=\"selected\"" :
                             "";
             %>

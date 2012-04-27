@@ -24,6 +24,7 @@ import woko.persistence.ObjectStore;
 import woko.persistence.ResultIterator;
 import woko.util.Util;
 
+import java.lang.reflect.Type;
 import java.util.Collection;
 import java.util.List;
 
@@ -35,23 +36,33 @@ public class RenderPropertyValueEditXToManyRelation extends RenderPropertyValueI
     public String getPath() {
         // we check if the target object is persistent or not.
         // if persistent, then forward to another JSP
+        Class<?> compoundType = getCompoundType();
         ObjectStore os = getFacetContext().getWoko().getObjectStore();
         List<Class<?>> mappedClasses = os.getMappedClasses();
-        Class<?> propertyType = getPropertyType();
-        if (mappedClasses.contains(propertyType)) {
+        if (mappedClasses.contains(compoundType)) {
             return FRAGMENT_PATH;
         }
+
+        // fallback to view if can't use the collection compound type
         getRequest().setAttribute(RenderPropertyValue.FACET_NAME, this); // NEEDED because the JSP expects the facet to be found.
         return super.getPath();
     }
 
-    private Class<?> getPropertyType() {
-        return Util.getPropertyType(getOwningObject().getClass(), getPropertyName());
+    private Class<?> getCompoundType() {
+        Type[] genTypes = Util.getPropertyGenericTypes(getOwningObject().getClass(), getPropertyName());
+        if (genTypes!=null && genTypes.length>0) {
+            Type t = genTypes[0];
+            if (t instanceof Class<?>) {
+                return (Class<?>)t;
+            }
+        }
+        return null;
     }
 
     public List<?> getChoices() {
         ObjectStore store = getFacetContext().getWoko().getObjectStore();
-        ResultIterator<?> choices = store.list(store.getClassMapping(getPropertyType()), 0, Integer.MAX_VALUE);
+        Class<?> compoundType = getCompoundType();
+        ResultIterator<?> choices = store.list(store.getClassMapping(compoundType), 0, Integer.MAX_VALUE);
         return choices.toList();
     }
 

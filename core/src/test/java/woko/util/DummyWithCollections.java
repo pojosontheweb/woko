@@ -14,27 +14,15 @@
  * limitations under the License.
  */
 
-package test
+package woko.util;
 
-import javax.persistence.Entity
-import javax.persistence.GeneratedValue
-import javax.persistence.Id
-import javax.persistence.ManyToOne
-import javax.persistence.OneToMany
+import java.util.Collection;
 
-@Entity
-class SubEntity {
+public class DummyWithCollections {
 
-    @Id @GeneratedValue
-    Long id
+    public Collection<String> getStringCollection() {
+        return null;
+    }
 
-    String name
 
-    @ManyToOne
-    EntityWithRelations daEntity
-
-    transient OtherPojo nonPersistent = new OtherPojo()
-
-    @OneToMany
-    Collection<EntityWithRelations> children
 }
