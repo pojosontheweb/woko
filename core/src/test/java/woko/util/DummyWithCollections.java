@@ -1,11 +1,11 @@
 /*
- * Copyright 2001-2010 Remi Vankeisbelck
+ * Copyright 2001-2012 Remi Vankeisbelck
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,19 +14,15 @@
  * limitations under the License.
  */
 
-package test
+package woko.util;
 
-/**
- * Created by IntelliJ IDEA.
- * User: vankeisb
- * Date: 2 nov. 2010
- * Time: 12:40:17
- * To change this template use File | Settings | File Templates.
- */
-class OtherPojo {
+import java.util.Collection;
 
-  String foo = 'bar'
+public class DummyWithCollections {
 
-    String name = "booyaka"
+    public Collection<String> getStringCollection() {
+        return null;
+    }
+
 
 }

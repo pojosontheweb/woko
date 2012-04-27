@@ -1,11 +1,11 @@
 /*
- * Copyright 2001-2010 Remi Vankeisbelck
+ * Copyright 2001-2012 Remi Vankeisbelck
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,17 +16,26 @@
 
 package test
 
-/**
- * Created by IntelliJ IDEA.
- * User: vankeisb
- * Date: 2 nov. 2010
- * Time: 12:40:17
- * To change this template use File | Settings | File Templates.
- */
-class OtherPojo {
+import javax.persistence.Entity
+import javax.persistence.GeneratedValue
+import javax.persistence.Id
+import javax.persistence.ManyToOne
+import javax.persistence.ManyToMany
 
-  String foo = 'bar'
+@Entity
+class SubEntity {
 
-    String name = "booyaka"
+    @Id @GeneratedValue
+    Long id
+
+    String name
+
+    @ManyToOne
+    EntityWithRelations daEntity
+
+    transient OtherPojo nonPersistent = new OtherPojo()
+
+    @ManyToMany
+    Collection<EntityWithRelations> children
 
 }

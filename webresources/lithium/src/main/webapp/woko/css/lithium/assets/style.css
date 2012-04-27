@@ -177,7 +177,7 @@ label {
 	color: #333333;
 }
 
-input {
+input, select {
 	padding : 2px;
 	border : 1px solid #D7D7D7;
 	font : normal 1em Verdana, sans-serif;

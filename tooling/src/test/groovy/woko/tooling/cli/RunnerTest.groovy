@@ -100,7 +100,7 @@ The command accepts one argument that can be  :
 
     @Test
     void testListFacets() {
-        assertCommandResult(["list", "facets"], """41 facets found : \n  create, developer, java.lang.Object, woko.facets.builtin.developer.Create
+        assertCommandResult(["list", "facets"], """43 facets found : \n  create, developer, java.lang.Object, woko.facets.builtin.developer.Create
   delete, developer, java.lang.Object, woko.facets.builtin.developer.DeleteImpl
   edit, developer, java.lang.Object, woko.facets.builtin.developer.EditImpl
   find, developer, java.lang.Object, woko.facets.builtin.developer.Find
@@ -126,8 +126,10 @@ The command accepts one argument that can be  :
   renderPropertyValue, all, java.util.Date, woko.facets.builtin.all.RenderPropertyValueDate
   renderPropertyValue, all, java.util.Collection, woko.facets.builtin.all.RenderPropertyValueCollection
   renderPropertyValueEdit, all, java.lang.Number, woko.facets.builtin.all.RenderPropertyValueEditStripesText
+  renderPropertyValueEdit, all, java.lang.Object, woko.facets.builtin.all.RenderPropertyValueEditXToOneRelation
   renderPropertyValueEdit, all, java.lang.String, woko.facets.builtin.all.RenderPropertyValueEditStripesText
   renderPropertyValueEdit, all, java.util.Date, woko.facets.builtin.all.RenderPropertyValueEditDate
+  renderPropertyValueEdit, all, java.util.Collection, woko.facets.builtin.all.RenderPropertyValueEditXToManyRelation
   renderPropertyValueJson, all, java.lang.Boolean, woko.facets.builtin.all.RenderPropertyValueJsonBasicTypes
   renderPropertyValueJson, all, java.lang.Class, woko.facets.builtin.all.RenderPropertyValueJsonClass
   renderPropertyValueJson, all, java.lang.Number, woko.facets.builtin.all.RenderPropertyValueJsonBasicTypes
