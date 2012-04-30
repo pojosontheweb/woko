@@ -1,5 +1,5 @@
 /*
- * Copyright 2001-2010 Remi Vankeisbelck
+ * Copyright 2001-2012 Remi Vankeisbelck
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -85,12 +85,7 @@ class Runner {
           new StartCommand(
             this,
             workingDir,
-            logger,
-            "start",
-            "run the application in a local jetty container",
-            "",
-            "",
-            "mvn package jetty:run-exploded -Dmaven.test.skip",
+            logger
           ),
           new ProcessCmd(
             this,
@@ -111,8 +106,8 @@ class Runner {
             "",
             "",
             "mvn clean install"
-          )
-
+          ),
+          new EnvironmentsCmd(this, workingDir, logger)
         ])
     }
 
@@ -120,7 +115,7 @@ class Runner {
         if (!args) {
             throw new IllegalArgumentException("0 args specified, we need at least the command name")
         }else if (args[0] == "help") {
-            if (args[1])
+            if (args.size()>1 && args[1])
                 help(args[1])
             else
                 help()
@@ -128,20 +123,22 @@ class Runner {
         } else {
             def command = commands[args[0]]
             if (!command) {
-                throw new IllegalArgumentException("command ${args[0]} does not exist")
-            }
-            def commandArgs = []
-            if (args) {
-                boolean first = true
-                args.each { arg ->
-                    if (first) {
-                        first = false
-                    } else {
-                        commandArgs << arg
+                log("ERROR: Command '${args[0]}' not found")
+                help()
+            } else {
+                def commandArgs = []
+                if (args) {
+                    boolean first = true
+                    args.each { arg ->
+                        if (first) {
+                            first = false
+                        } else {
+                            commandArgs << arg
+                        }
                     }
                 }
+                command.execute(commandArgs)
             }
-            command.execute(commandArgs)
         }
     }
 

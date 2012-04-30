@@ -1,5 +1,5 @@
 /*
- * Copyright 2001-2010 Remi Vankeisbelck
+ * Copyright 2001-2012 Remi Vankeisbelck
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -66,6 +66,7 @@ Available commands :
   - start 		:		run the application in a local jetty container
   - stop 		:		stop the local jetty container (in case started in background process)
   - build 		:		rebuilds the whole application
+  - env list|use <env_name>		:		manage the environments
   - help [command_name]		:		display help about specified command
 
 """
@@ -99,7 +100,7 @@ The command accepts one argument that can be  :
 
     @Test
     void testListFacets() {
-        assertCommandResult(["list", "facets"], """41 facets found : \n  create, developer, java.lang.Object, woko.facets.builtin.developer.Create
+        assertCommandResult(["list", "facets"], """43 facets found : \n  create, developer, java.lang.Object, woko.facets.builtin.developer.Create
   delete, developer, java.lang.Object, woko.facets.builtin.developer.DeleteImpl
   edit, developer, java.lang.Object, woko.facets.builtin.developer.EditImpl
   find, developer, java.lang.Object, woko.facets.builtin.developer.Find
@@ -125,8 +126,10 @@ The command accepts one argument that can be  :
   renderPropertyValue, all, java.util.Date, woko.facets.builtin.all.RenderPropertyValueDate
   renderPropertyValue, all, java.util.Collection, woko.facets.builtin.all.RenderPropertyValueCollection
   renderPropertyValueEdit, all, java.lang.Number, woko.facets.builtin.all.RenderPropertyValueEditStripesText
+  renderPropertyValueEdit, all, java.lang.Object, woko.facets.builtin.all.RenderPropertyValueEditXToOneRelation
   renderPropertyValueEdit, all, java.lang.String, woko.facets.builtin.all.RenderPropertyValueEditStripesText
   renderPropertyValueEdit, all, java.util.Date, woko.facets.builtin.all.RenderPropertyValueEditDate
+  renderPropertyValueEdit, all, java.util.Collection, woko.facets.builtin.all.RenderPropertyValueEditXToManyRelation
   renderPropertyValueJson, all, java.lang.Boolean, woko.facets.builtin.all.RenderPropertyValueJsonBasicTypes
   renderPropertyValueJson, all, java.lang.Class, woko.facets.builtin.all.RenderPropertyValueJsonClass
   renderPropertyValueJson, all, java.lang.Number, woko.facets.builtin.all.RenderPropertyValueJsonBasicTypes
@@ -141,6 +144,12 @@ The command accepts one argument that can be  :
   toString, developer, java.lang.Object, woko.facets.builtin.developer.ToString
   view, developer, java.lang.Object, woko.facets.builtin.developer.ViewImpl
 """)
+    }
+
+    @Test
+    void testNonExistingCommand() {
+        def actual = execCommand(["blah"], new File(testAppDir))
+        assertTrue("expected text not found", actual.contains("Command 'blah' not found"))
     }
 
     @Test

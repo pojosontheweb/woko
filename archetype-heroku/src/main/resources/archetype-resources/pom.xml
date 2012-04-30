@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  ~ Copyright 2001-2010 Remi Vankeisbelck
+  ~ Copyright 2001-2012 Remi Vankeisbelck
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@
     <packaging>war</packaging>
 
     <properties>
-        <woko.version>2.0-beta1-SNAPSHOT</woko.version>
+        <woko.version>2.0</woko.version>
         <jetty.version>7.4.5.v20110725</jetty.version>
     </properties>
 

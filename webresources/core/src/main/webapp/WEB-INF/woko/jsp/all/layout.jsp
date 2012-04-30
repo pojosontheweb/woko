@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright 2001-2010 Remi Vankeisbelck
+  ~ Copyright 2001-2012 Remi Vankeisbelck
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -85,7 +85,7 @@
             <hr/>
 
             <div class="wokoFooter">
-                <img src="${cp}/woko/woko-logo-small.png" alt="logo"/>Powered by <a href="https://github.com/vankeisb/woko2">Woko</a>
+                <img src="${cp}/woko/woko-logo-small.png" alt="logo"/>Powered by <a href="http://www.pojosontheweb.com">Woko</a>
             </div>
 
         </body>

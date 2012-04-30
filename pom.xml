@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  ~ Copyright 2001-2010 Remi Vankeisbelck
+  ~ Copyright 2001-2012 Remi Vankeisbelck
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@
     </parent>
     <groupId>com.pojosontheweb</groupId>
     <artifactId>woko-parent</artifactId>
-    <version>2.0-beta</version>
+    <version>2.0</version>
     <packaging>pom</packaging>
     <name>Woko - parent</name>
     <url>https://github.com/vankeisb/woko2/wiki</url>
@@ -72,10 +72,13 @@
         <module>dojo</module>
         <module>usermanagement</module>
         <module>tooling</module>
+        <module>wmaven</module>
     </modules>
     <properties>
         <stripes.version>1.5.5</stripes.version>
         <groovy.version>1.7.4</groovy.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
     <build>
         <pluginManagement>

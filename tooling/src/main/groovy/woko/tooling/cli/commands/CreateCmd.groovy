@@ -1,5 +1,5 @@
 /*
- * Copyright 2001-2010 Remi Vankeisbelck
+ * Copyright 2001-2012 Remi Vankeisbelck
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -154,7 +154,7 @@ you want to create :
                     try {
                         baseClassFragmentPath = baseClass.FRAGMENT_PATH
                     } catch(Exception) {
-                        iLog("No JSP fragment available from the base class, an empty JSP will be generated.")
+                        iLog("No JSP fragment available from the base class, no JSP will be generated.")
                         iLog(" ") // line sep
                     }
                 }

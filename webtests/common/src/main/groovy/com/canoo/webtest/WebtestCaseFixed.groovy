@@ -1,5 +1,5 @@
 /*
- * Copyright 2001-2010 Remi Vankeisbelck
+ * Copyright 2001-2012 Remi Vankeisbelck
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -69,8 +69,8 @@ abstract class WebtestCaseFixed extends GroovyTestCase
 			antBuilder.property(name: "wt.config.haltonerror", value: "true")
 			antBuilder.property(name: "wt.config.haltonfailure", value: "true")
             antBuilder.property(name: "wt.headless", value: System.getProperty("wt.headless", "true"))
-			antBuilder.property(name: "wt.config.resultpath", value: new File(temporaryWebTestResourcesFolder.parentFile, "webtest-results"))
-			
+            antBuilder.property(name: "wt.config.resultpath", value: new File(temporaryWebTestResourcesFolder.parentFile, "webtest-results"))
+
 			def tmpWebtestXml = new File(temporaryWebTestResourcesFolder, "webtest.xml")
 
 	        antBuilder.'import' (file: tmpWebtestXml)   // sets properties into current ant project

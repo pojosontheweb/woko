@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright 2001-2010 Remi Vankeisbelck
+  ~ Copyright 2001-2012 Remi Vankeisbelck
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -23,12 +23,14 @@
 <%
     Woko woko = Woko.getWoko(application);
 %>
+<c:set var="cp" value="${pageContext.request.contextPath}"/>
 <fmt:message bundle="${wokoBundle}" var="pageTitle" key="woko.devel.studio.pageTitle"/>
 <s:layout-render name="${layout.layoutPath}" layout="${layout}" pageTitle="${pageTitle}" bodyClass="claro">
 
     <s:layout-component name="customJs">
-        <script type="text/javascript" src="${pageContext.request.contextPath}/woko/js/woko.base.js"></script>
-        <script type="text/javascript" src="${pageContext.request.contextPath}/woko/js/woko.rpc.js"></script>
+        <script type="text/javascript" src="${cp}/woko/js/woko.base.js"></script>
+        <script type="text/javascript" src="${cp}/woko/js/woko.rpc.js"></script>
+        <script src="${cp}/woko/ace/ace-uncompressed-noconflict.js" type="text/javascript" charset="utf-8"></script>
     </s:layout-component>
 
     <s:layout-component name="body">
@@ -60,6 +62,18 @@
 
             body {
                 font: 100%/150% Geneva, Arial, Helvetica, sans-serif;
+            }
+
+            #groovyCodeWrapper {
+                height: 350px;
+                width: 600px;
+                margin-bottom: 8px;
+            }
+
+            #groovyCode {
+                border: 1px solid #d3d3d3;
+                height: 350px;
+                width: 600px;
             }
         </style>
 
@@ -114,6 +128,11 @@
                 dojo.byId("gridContainer").appendChild(grid.domNode);
 
                 grid.startup();
+
+                // initialize code editor
+                editor = ace.edit("groovyCode");
+                editor.setTheme("ace/theme/textmate");
+                editor.getSession().setMode("ace/mode/groovy");
             }
 
             dojo.config.parseOnLoad = true;
@@ -125,10 +144,10 @@
             }
 
             function execGroovy() {
-                var code = dijit.byId('groovyCode').attr('value');
+                var code = editor.getSession().getValue();
                 dijit.byId('execute').attr('disabled', true);
                 dojo.xhrPost({
-                    url: "${pageContext.request.contextPath}/groovy",
+                    url: "${cp}/groovy",
                     handleAs: "json",
                     content : {
                         "facet.code": code
@@ -147,7 +166,7 @@
 
         <h1><fmt:message bundle="${wokoBundle}" key="woko.devel.studio.title"/></h1>
 
-        <div style="width: 100%; height: 600px">
+        <div style="width: 100%;">
             <div dojoType="dijit.layout.TabContainer" style="width: 100%; height: 100%;">
                 <div dojoType="dijit.layout.ContentPane" title="Configuration" selected="true">
                     <h2><fmt:message bundle="${wokoBundle}" key="woko.devel.studio.config.title"/> </h2>
@@ -169,12 +188,9 @@
                         <li><strong><fmt:message bundle="${wokoBundle}" key="woko.devel.studio.groovy.logs"/></strong> <fmt:message bundle="${wokoBundle}" key="woko.devel.studio.groovy.logsType"/></li>
                     </ul>
                     <h2><fmt:message bundle="${wokoBundle}" key="woko.devel.studio.groovy.code"/> </h2>
-                    <div dojoType="dijit.form.Textarea" id="groovyCode"><fmt:message bundle="${wokoBundle}" key="woko.devel.studio.groovy.script"/><script type="dojo/method" event="onClick">
-                            if (!window.clickedAlready) {
-                                window.clickedAlready = true;
-                                this.attr('value', '');
-                            }
-                        </script></div>
+                    <div id="groovyCodeWrapper">
+                        <div id="groovyCode"></div>
+                    </div>
                     <button dojoType="dijit.form.Button" id="execute" onclick="execGroovy();"><fmt:message bundle="${wokoBundle}" key="woko.devel.studio.groovy.execute"/> </button>
                     <h2><fmt:message bundle="${wokoBundle}" key="woko.devel.studio.log.title"/> </h2>
                     <div dojoType="dijit.form.Textarea" disabled="true" id="log"><fmt:message bundle="${wokoBundle}" key="woko.devel.studio.log.exec"/></div>

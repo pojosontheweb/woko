@@ -1,5 +1,5 @@
 /*
- * Copyright 2001-2010 Remi Vankeisbelck
+ * Copyright 2001-2012 Remi Vankeisbelck
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,20 +16,25 @@
 
 package woko.util;
 
+import net.sourceforge.stripes.controller.StripesFilter;
+import net.sourceforge.stripes.localization.LocalizationUtility;
 import net.sourceforge.stripes.util.ReflectUtil;
 import woko.Woko;
 import woko.facets.builtin.RenderPropertyValue;
+import woko.facets.builtin.RenderTitle;
 import woko.facets.builtin.WokoFacets;
 
 import javax.servlet.http.HttpServletRequest;
 import java.beans.PropertyDescriptor;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Stack;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.util.*;
 
 public class Util {
+
+    private static final WLogger logger = WLogger.getLogger(Util.class);
 
     public static void assertArg(String name, Object val) {
         if (val == null) {
@@ -90,18 +95,18 @@ public class Util {
     }
 
     private static RenderPropertyValue getRenderFacet(
-      String facetName,
-      Woko woko,
-      HttpServletRequest request,
-      Object owningObject,
-      String propertyName,
-      Object propertyValue,
-      boolean throwIfNotFound) {
+            String facetName,
+            Woko woko,
+            HttpServletRequest request,
+            Object owningObject,
+            String propertyName,
+            Object propertyValue,
+            boolean throwIfNotFound) {
         RenderPropertyValue renderPropertyValue = (RenderPropertyValue) woko.getFacet(facetName + "_" + propertyName, request, owningObject);
         if (renderPropertyValue == null) {
             Class<?> pClass = propertyValue != null ? propertyValue.getClass() : Util.getPropertyType(owningObject.getClass(), propertyName);
             renderPropertyValue =
-              (RenderPropertyValue) woko.getFacet(facetName, request, propertyValue, pClass, throwIfNotFound);
+                    (RenderPropertyValue) woko.getFacet(facetName, request, propertyValue, pClass, throwIfNotFound);
         } else {
             request.setAttribute(facetName, renderPropertyValue);
         }
@@ -131,10 +136,78 @@ public class Util {
     }
 
     public static boolean hasProperty(Object owningObject, String propertyName) {
-        if (owningObject==null) {
+        if (owningObject == null) {
             return false;
         }
         Class<?> clazz = owningObject.getClass();
         return getPropertyType(clazz, propertyName) != null;
     }
+
+    public static Field[] getFields(Class<?> clazz) {
+        ArrayList<Field> fields = new ArrayList<Field>();
+        while (clazz != null) {
+            Field[] fds = clazz.getDeclaredFields();
+            fields.addAll(Arrays.asList(fds));
+            clazz = clazz.getSuperclass();
+        }
+        Field[] result = new Field[fields.size()];
+        result = fields.toArray(result);
+        return result;
+    }
+
+    /**
+     * Return the field for passed class and field name
+     */
+    public static Field getField(Class<?> clazz, String name) {
+        Field[] fields = getFields(clazz);
+        Field f = null;
+        for (int i = 0; (i < fields.length && f == null); i++) {
+            if (fields[i].getName().equals(name))
+                f = fields[i];
+        }
+        return f;
+    }
+
+    public static Type[] getPropertyGenericTypes(Class<?> clazz, String propName) {
+        PropertyDescriptor pd = ReflectUtil.getPropertyDescriptor(clazz, propName);
+        if (pd==null) {
+            throw new IllegalStateException("The property '" + propName + "' of class '" + clazz.getName() + "'" +
+                " doesn't exist");
+        }
+
+        // use read method in order to grab the generic return type
+        Method meth = pd.getReadMethod();
+        if (meth==null) {
+            throw new IllegalStateException("The property '" + propName + "' of class '" + clazz.getName() + "'" +
+                " has no read method");
+        }
+
+        Type retType = meth.getGenericReturnType();
+        if (retType instanceof ParameterizedType) {
+            ParameterizedType pt = (ParameterizedType)retType;
+            return pt.getActualTypeArguments();
+        }
+        return new Type[0];
+    }
+
+    public static String getMessage(Locale locale, String key) {
+        ResourceBundle b =  StripesFilter.getConfiguration().getLocalizationBundleFactory().getFormFieldBundle(locale);
+        try {
+            return b.getString(key);
+        } catch(Exception e) {
+            logger.warn("Key '" + key + "' not found in bundle(s) for locale '" + locale + "'");
+            return "???" + key + "???";
+        }
+    }
+
+    public static String getTitle(HttpServletRequest request, Object object) {
+        assertArg("object", object);
+        Woko woko = Woko.getWoko(request.getSession().getServletContext());
+        RenderTitle rt = (RenderTitle)woko.getFacet(RenderTitle.FACET_NAME, request, object);
+        if (rt==null) {
+            return object.toString();
+        }
+        return rt.getTitle();
+    }
+
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2001-2010 Remi Vankeisbelck
+ * Copyright 2001-2012 Remi Vankeisbelck
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,12 +19,28 @@ package test
 import woko.hbcompass.HibernateCompassInMemWokoInitListener
 import net.sourceforge.jfacets.IFacetDescriptorManager
 import woko.push.PushFacetDescriptorManager
+import woko.persistence.ObjectStore
+import woko.hibernate.HibernateStore
+import woko.hibernate.TxCallback
 
 class ContainerAuthWTInitIListener extends HibernateCompassInMemWokoInitListener {
 
     @Override
     protected IFacetDescriptorManager createFacetDescriptorManager() {
         return new PushFacetDescriptorManager(super.createFacetDescriptorManager()) // Enable /push !
+    }
+
+    @Override
+    protected ObjectStore createObjectStore() {
+        HibernateStore o = super.createObjectStore()
+        o.doInTx({ store, session ->
+            EntityWithRelations ewr = new EntityWithRelations(name:"test")
+            store.save(ewr)
+            SubEntity se = new SubEntity(name:"testSub")
+            se.daEntity = ewr
+            store.save(se)
+        } as TxCallback)
+        return o
     }
 
 

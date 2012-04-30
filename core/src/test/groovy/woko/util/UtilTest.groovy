@@ -1,5 +1,5 @@
 /*
- * Copyright 2001-2010 Remi Vankeisbelck
+ * Copyright 2001-2012 Remi Vankeisbelck
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,19 +20,25 @@ import org.junit.Test
 
 class UtilTest {
 
-  private void assertProps(o) {
-    def pNames = Util.getPropertyNames(o, ['p2'])
-    println pNames
-    ['p1', 'p3', 'p4'].each {
-      assert pNames.contains(it)
+    private void assertProps(o) {
+        def pNames = Util.getPropertyNames(o, ['p2'])
+        println pNames
+        ['p1', 'p3', 'p4'].each {
+            assert pNames.contains(it)
+        }
+        assert !pNames.contains('p2')
     }
-    assert !pNames.contains('p2')
-  }
 
-  @Test
-  void testGetPropertyNamesOnObject() {
-    assertProps(new DummyPojo())
-  }
+    @Test
+    void testGetPropertyNamesOnObject() {
+        assertProps(new DummyPojo())
+    }
+
+    @Test
+    void testGetPropertyGenericTypes() {
+        assert Util.getPropertyGenericTypes(DummyWithCollections.class, "stringCollection")[0] == String.class
+        assert Util.getPropertyGenericTypes(DummyPojo.class, "stringList")[0] == String.class
+    }
 
 
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2001-2010 Remi Vankeisbelck
+ * Copyright 2001-2012 Remi Vankeisbelck
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,19 +16,30 @@
 
 package woko.webtests.containerauth
 
-class WokoStudioPageTest extends WebTestBase{
+import org.junit.runners.JUnit4
+import org.junit.runner.RunWith
+import org.junit.Test
 
-  void testStudioPage(){
-    webtest('test Woko Studio page'){
-      login()
+@RunWith(JUnit4.class)
+class WokoStudioPageTest extends WebTestBase {
 
-      clickLink label:'woko studio'
+    @Test
+    void testStudioPage() {
+        webtest('test Woko Studio page') {
 
-      verifyTitle 'Woko - Studio'
-      verifyText 'Woko Studio'
+            config {
+                option name: "ThrowExceptionOnScriptError", value: "false"
+            }
+            
+            login()
 
-      // Check search input is present
-      checkSearchForm('/studio')
+            clickLink label: 'woko studio'
+
+            verifyTitle 'Woko - Studio'
+            verifyText 'Woko Studio'
+
+            // Check search input is present
+            checkSearchForm('/studio')
+        }
     }
-  }
 }

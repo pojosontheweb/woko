@@ -1,5 +1,5 @@
 /*
- * Copyright 2001-2010 Remi Vankeisbelck
+ * Copyright 2001-2012 Remi Vankeisbelck
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,20 +29,17 @@ class ProcessCmd extends Command {
         this.commandLine = commandLine
     }
 
-    boolean isWindows() {
-        String os = System.getProperty("os.name").toLowerCase()
-		return (os.indexOf("win") >= 0)
-    }
-
     @Override
     void execute(List<String> args) {
-        String cmd = windows ?  "cmd /c $commandLine" : commandLine
-        logger.indentedLog(" Launching process : $cmd")
-        Process p = cmd.execute()
-        p.in.eachLine { logger.indentedLog(it) }
-        p.waitFor()
-        logger.indentedLog(" Process terminated for $name, returned ${p.exitValue()}")
+        new ProcessExec().execute(logger, commandLine, args, { line ->
+            handleLine(line)
+        }, { Process p ->
+            logger.indentedLog(" Process terminated for $name, returned ${p.exitValue()}")
+        })
     }
 
+    protected void handleLine(String line) {
+        logger.indentedLog(line)
+    }
 
 }

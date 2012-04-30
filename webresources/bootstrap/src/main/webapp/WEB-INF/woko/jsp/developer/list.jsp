@@ -2,10 +2,10 @@
 <%@include file="/WEB-INF/woko/jsp/taglibs.jsp"%>
 
 <%@ page import="woko.persistence.ResultIterator" %>
-<%@ page import="woko.facets.builtin.RenderTitle" %>
 <%@ page import="woko.Woko" %>
 <%@ page import="woko.facets.builtin.ListObjects" %>
 <%@ page import="woko.facets.builtin.WokoFacets" %>
+<%@ page import="woko.util.Util" %>
 
 <w:facet facetName="<%=WokoFacets.layout%>"/>
 
@@ -55,9 +55,7 @@
             <%
               while (results.hasNext()) {
                   Object result = results.next();
-                  // compute title
-                  RenderTitle renderTitle = (RenderTitle)woko.getFacet(WokoFacets.renderTitle, request, result);
-                  String title = renderTitle!=null ? renderTitle.getTitle() : result.toString();
+                  String title = Util.getTitle(request, result);
                   // compute link if view facet is available
                   String href = null;
                   String resultKey = woko.getObjectStore().getKey(result);

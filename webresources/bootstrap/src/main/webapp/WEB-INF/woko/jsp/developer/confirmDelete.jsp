@@ -11,7 +11,7 @@
         <h1 class="page-header"><fmt:message bundle="${wokoBundle}" key="woko.devel.confirmDelete.title"/></h1>
         <p>
             <fmt:message bundle="${wokoBundle}" key="woko.devel.confirmDelete.question">
-                <fmt:param value="${renderTitle.title}"/>
+                <fmt:param><w:title object="${o}"/></fmt:param>
             </fmt:message>
             
             <w:objectClassName var="className" object="${actionBean.object}"/>

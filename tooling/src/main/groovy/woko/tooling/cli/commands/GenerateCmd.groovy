@@ -1,5 +1,5 @@
 /*
- * Copyright 2001-2010 Remi Vankeisbelck
+ * Copyright 2001-2012 Remi Vankeisbelck
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -69,7 +69,7 @@ class GenerateCmd extends Command{
         String defaultPackageName = groupId
 
         if (!defaultPackageName.endsWith(artifactId)) {
-            defaultPackageName = "$defaultPackageName.$artifactId"
+            defaultPackageName = "$defaultPackageName.${artifactId.toLowerCase()}"
         }
 
         def options = cliBuilder.parse(args.toArray())
