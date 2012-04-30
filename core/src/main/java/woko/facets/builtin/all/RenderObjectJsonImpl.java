@@ -1,5 +1,5 @@
 /*
- * Copyright 2001-2010 Remi Vankeisbelck
+ * Copyright 2001-2012 Remi Vankeisbelck
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,6 +25,7 @@ import woko.facets.BaseFacet;
 import woko.facets.WokoFacetContext;
 import woko.facets.builtin.*;
 import woko.persistence.ObjectStore;
+import woko.util.Util;
 import woko.util.WLogger;
 
 import javax.servlet.http.HttpServletRequest;
@@ -81,9 +82,9 @@ public class RenderObjectJsonImpl extends BaseFacet implements RenderObjectJson 
                 if (key != null) {
                     metadata.put("key", key);
                 }
-                RenderTitle renderTitle = (RenderTitle) woko.getFacet(WokoFacets.renderTitle, request, obj);
-                if (renderTitle != null) {
-                    metadata.put("title", renderTitle.getTitle());
+                String title = Util.getTitle(request, obj);
+                if (title != null) {
+                    metadata.put("title", title);
                 }
                 json.put("_wokoInfo", metadata);
             } catch(JSONException e) {

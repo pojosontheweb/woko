@@ -1,5 +1,5 @@
 /*
- * Copyright 2001-2010 Remi Vankeisbelck
+ * Copyright 2001-2012 Remi Vankeisbelck
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,6 +21,7 @@ import net.sourceforge.stripes.localization.LocalizationUtility;
 import net.sourceforge.stripes.util.ReflectUtil;
 import woko.Woko;
 import woko.facets.builtin.RenderPropertyValue;
+import woko.facets.builtin.RenderTitle;
 import woko.facets.builtin.WokoFacets;
 
 import javax.servlet.http.HttpServletRequest;
@@ -197,6 +198,16 @@ public class Util {
             logger.warn("Key '" + key + "' not found in bundle(s) for locale '" + locale + "'");
             return "???" + key + "???";
         }
+    }
+
+    public static String getTitle(HttpServletRequest request, Object object) {
+        assertArg("object", object);
+        Woko woko = Woko.getWoko(request.getSession().getServletContext());
+        RenderTitle rt = (RenderTitle)woko.getFacet(RenderTitle.FACET_NAME, request, object);
+        if (rt==null) {
+            return object.toString();
+        }
+        return rt.getTitle();
     }
 
 }

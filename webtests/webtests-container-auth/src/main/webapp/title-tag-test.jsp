@@ -2,7 +2,7 @@
 <%@ page import="test.MyEntity" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%--
-  ~ Copyright 2001-2010 Remi Vankeisbelck
+  ~ Copyright 2001-2012 Remi Vankeisbelck
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.

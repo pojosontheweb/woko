@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright 2001-2010 Remi Vankeisbelck
+  ~ Copyright 2001-2012 Remi Vankeisbelck
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -18,7 +18,6 @@
 <%@ page import="woko.Woko" %>
 <%@ page import="woko.facets.WokoFacetContext" %>
 <%@ page import="woko.facets.builtin.RenderPropertyValue" %>
-<%@ page import="woko.facets.builtin.RenderTitle" %>
 <%@ page import="woko.facets.builtin.WokoFacets" %>
 <%@ page import="woko.persistence.ObjectStore" %>
 <%@ page import="woko.util.Util" %>
@@ -41,8 +40,7 @@
     if (propertyMappedClassName!=null) {
         propertyClassName = propertyMappedClassName;
         if (propertyValue!=null) {
-            RenderTitle rt = (RenderTitle)woko.getFacet(WokoFacets.renderTitle, request, propertyValue, propertyClass, true);
-            linkTitle = rt.getTitle();
+            linkTitle = Util.getTitle(request, propertyValue);
             String key = os.getKey(propertyValue);
             if (key!=null) {
                 // we have a className and a key, can the user view the object ?
