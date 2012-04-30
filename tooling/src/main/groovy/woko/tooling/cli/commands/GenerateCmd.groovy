@@ -69,7 +69,7 @@ class GenerateCmd extends Command{
         String defaultPackageName = groupId
 
         if (!defaultPackageName.endsWith(artifactId)) {
-            defaultPackageName = "$defaultPackageName.$artifactId"
+            defaultPackageName = "$defaultPackageName.${artifactId.toLowerCase()}"
         }
 
         def options = cliBuilder.parse(args.toArray())
