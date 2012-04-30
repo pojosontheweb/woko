@@ -1,5 +1,5 @@
 /*
- * Copyright 2001-2010 Remi Vankeisbelck
+ * Copyright 2001-2012 Remi Vankeisbelck
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,7 +23,9 @@ import woko.Woko;
 import woko.facets.BaseResolutionFacet;
 import woko.facets.WokoFacetContext;
 import woko.facets.builtin.Delete;
+import woko.facets.builtin.RenderTitle;
 import woko.facets.builtin.WokoFacets;
+import woko.util.Util;
 
 @FacetKey(name = WokoFacets.delete, profileId = "developer")
 public class DeleteImpl extends BaseResolutionFacet implements Delete {

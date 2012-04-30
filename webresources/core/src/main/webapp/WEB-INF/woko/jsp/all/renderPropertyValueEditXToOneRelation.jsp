@@ -20,7 +20,6 @@
 <%@ page import="woko.persistence.ObjectStore" %>
 <%@ page import="woko.facets.builtin.RenderPropertyValueEdit" %>
 <%@ page import="woko.facets.builtin.all.RenderPropertyValueEditXToOneRelation" %>
-<%@ page import="woko.facets.builtin.RenderTitle" %>
 <%@ page import="woko.Woko" %>
 <%@ page import="java.util.Collection" %>
 <%
@@ -42,8 +41,7 @@
                 Collection<?> choices = renderPropertyValue.getChoices();
                 for (Object choice : choices) {
                     String key = os.getKey(choice);
-                    RenderTitle rt = (RenderTitle)woko.getFacet(RenderTitle.FACET_NAME, request, choice);
-                    String title = rt==null ? choice.toString() : rt.getTitle();
+                    String title = Util.getTitle(request, choice);
                     String selected = propVal!=null && propVal.equals(choice) ?
                             selected = "selected=\"selected\"" :
                             "";

@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright 2001-2010 Remi Vankeisbelck
+  ~ Copyright 2001-2012 Remi Vankeisbelck
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -16,10 +16,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="/WEB-INF/woko/jsp/taglibs.jsp"%>
 <%@ page import="woko.persistence.ResultIterator" %>
-<%@ page import="woko.facets.builtin.RenderTitle" %>
 <%@ page import="woko.Woko" %>
 <%@ page import="woko.facets.builtin.ListObjects" %>
 <%@ page import="woko.facets.builtin.WokoFacets" %>
+<%@ page import="woko.util.Util" %>
 <w:facet facetName="<%=WokoFacets.layout%>"/>
 <fmt:message bundle="${wokoBundle}" var="pageTitle" key="woko.devel.list.pageTitle"/>
 <s:layout-render name="${layout.layoutPath}" layout="${layout}" pageTitle="${pageTitle}">
@@ -89,8 +89,7 @@
               while (results.hasNext()) {
                   Object result = results.next();
                   // compute title
-                  RenderTitle renderTitle = (RenderTitle)woko.getFacet(WokoFacets.renderTitle, request, result);
-                  String title = renderTitle!=null ? renderTitle.getTitle() : result.toString();
+                  String title = Util.getTitle(request, result);
                   // compute link if view facet is available
                   String href = null;
                   String resultKey = woko.getObjectStore().getKey(result);

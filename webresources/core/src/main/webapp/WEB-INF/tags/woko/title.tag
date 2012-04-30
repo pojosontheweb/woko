@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright 2001-2010 Remi Vankeisbelck
+  ~ Copyright 2001-2012 Remi Vankeisbelck
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -14,14 +14,6 @@
   ~ limitations under the License.
   --%>
 <%@ include file="../../woko/jsp/taglibs.jsp"%>
-<%@ tag import="woko.Woko" %>
-<%@ tag import="woko.facets.builtin.RenderTitle" %>
+<%@ tag import="woko.util.Util" %>
 <%@ attribute name="object" required="true" type="java.lang.Object" %>
-<%
-    Woko woko = Woko.getWoko(application);
-    RenderTitle renderTitle = (RenderTitle)woko.getFacet(RenderTitle.FACET_NAME, request, object);
-    String title = null;
-    if (renderTitle!=null) {
-        title = renderTitle.getTitle();
-    }
-%><c:out value="<%=title%>"/>
+<c:out value="<%=Util.getTitle(request, object)%>"/>

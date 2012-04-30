@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright 2001-2010 Remi Vankeisbelck
+  ~ Copyright 2001-2012 Remi Vankeisbelck
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -23,8 +23,9 @@
     <s:layout-component name="body">
         <h1><fmt:message bundle="${wokoBundle}" key="woko.devel.confirmDelete.title"/></h1>
         <p>
+
             <fmt:message bundle="${wokoBundle}" key="woko.devel.confirmDelete.question">
-                <fmt:param value="${renderTitle.title}"/>
+                <fmt:param><w:title object="${o}"/></fmt:param>
             </fmt:message>
             
             <w:objectClassName var="className" object="${actionBean.object}"/>

@@ -1,5 +1,5 @@
 /*
- * Copyright 2001-2010 Remi Vankeisbelck
+ * Copyright 2001-2012 Remi Vankeisbelck
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,7 +34,7 @@ class ConfirmDeletePageTest extends WebTestBase {
 
       verifyTitle 'Woko - Moby'
       verifyText 'Please confirm deletion'
-      verifyText 'You are about to permanently delete object "Moby". Are you sure ?'
+      verifyText 'You are about to permanently delete object Moby. Are you sure ?'
 
       verifyXPath xpath:"/html/body/div/div[3]/div/form[@action='/woko-webtests/delete/MyBook/1']"
       verifyXPath xpath:"/html/body/div/div[3]/div/form/input[1][@value='Delete']"
