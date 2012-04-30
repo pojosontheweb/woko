@@ -34,7 +34,7 @@ class ConfirmDeletePageTest extends WebTestBase {
 
       verifyTitle 'Woko - Moby'
       verifyText 'Please confirm deletion'
-      verifyText 'You are about to permanently delete object "Moby". Are you sure ?'
+      verifyText 'You are about to permanently delete object Moby. Are you sure ?'
 
       verifyXPath xpath:"/html/body/div/div[3]/div/form[@action='/woko-webtests/delete/MyBook/1']"
       verifyXPath xpath:"/html/body/div/div[3]/div/form/input[1][@value='Delete']"
