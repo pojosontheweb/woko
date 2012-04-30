@@ -16,6 +16,8 @@
 
 package woko.util;
 
+import net.sourceforge.stripes.controller.StripesFilter;
+import net.sourceforge.stripes.localization.LocalizationUtility;
 import net.sourceforge.stripes.util.ReflectUtil;
 import woko.Woko;
 import woko.facets.builtin.RenderPropertyValue;
@@ -30,6 +32,8 @@ import java.lang.reflect.Type;
 import java.util.*;
 
 public class Util {
+
+    private static final WLogger logger = WLogger.getLogger(Util.class);
 
     public static void assertArg(String name, Object val) {
         if (val == null) {
@@ -184,4 +188,15 @@ public class Util {
         }
         return new Type[0];
     }
+
+    public static String getMessage(Locale locale, String key) {
+        ResourceBundle b =  StripesFilter.getConfiguration().getLocalizationBundleFactory().getFormFieldBundle(locale);
+        try {
+            return b.getString(key);
+        } catch(Exception e) {
+            logger.warn("Key '" + key + "' not found in bundle(s) for locale '" + locale + "'");
+            return "???" + key + "???";
+        }
+    }
+
 }

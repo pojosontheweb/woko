@@ -16,8 +16,6 @@
 
 package woko.actions;
 
-import net.sourceforge.stripes.localization.DefaultLocalizationBundleFactory;
-
 import java.util.*;
 
 public class WokoResourceBundle extends ResourceBundle {

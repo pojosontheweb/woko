@@ -22,12 +22,10 @@ import woko.facets.BaseFragmentFacet;
 import woko.facets.WokoFacetContext;
 import woko.facets.builtin.*;
 import woko.persistence.ObjectStore;
+import woko.util.Util;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @FacetKey(name = WokoFacets.renderLinks, profileId = "all")
 public class RenderLinksImpl extends BaseFragmentFacet implements RenderLinks {
@@ -46,6 +44,7 @@ public class RenderLinksImpl extends BaseFragmentFacet implements RenderLinks {
         Class<?> oc = o.getClass();
         HttpServletRequest request = getRequest();
         ObjectStore store = woko.getObjectStore();
+        Locale locale = request.getLocale();
 
         // display edit link if object can be edited (use instanceof because could be a login required facet)
         Object editFacet = woko.getFacet(WokoFacets.edit, request, o, oc);
@@ -53,7 +52,7 @@ public class RenderLinksImpl extends BaseFragmentFacet implements RenderLinks {
             String className = store.getClassMapping(oc);
             String key = store.getKey(o);
             if (key != null) {
-                links.add(new Link(WokoFacets.edit + "/" + className + "/" + key, "Edit").setCssClass("edit"));
+                links.add(new Link(WokoFacets.edit + "/" + className + "/" + key, Util.getMessage(locale, "woko.links.edit")).setCssClass("edit"));
             }
         }
 
@@ -62,7 +61,7 @@ public class RenderLinksImpl extends BaseFragmentFacet implements RenderLinks {
             String className = store.getClassMapping(oc);
             String key = store.getKey(o);
             if (key != null) {
-                links.add(new Link(WokoFacets.delete + "/" + className + "/" + key, "Delete").setCssClass("delete"));
+                links.add(new Link(WokoFacets.delete + "/" + className + "/" + key, Util.getMessage(locale, "woko.links.delete")).setCssClass("delete"));
             }
         }
 
@@ -71,7 +70,7 @@ public class RenderLinksImpl extends BaseFragmentFacet implements RenderLinks {
             String className = store.getClassMapping(oc);
             String key = store.getKey(o);
             if (key != null) {
-                links.add(new Link(WokoFacets.json + "/" + className + "/" + key, "Json").setCssClass("json"));
+                links.add(new Link(WokoFacets.json + "/" + className + "/" + key, Util.getMessage(locale, "woko.links.json")).setCssClass("json"));
             }
         }
 
