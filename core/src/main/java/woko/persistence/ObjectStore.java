@@ -32,11 +32,11 @@ public interface ObjectStore {
 
   Class<?> getMappedClass(String className);
 
-  ResultIterator list(String className, Integer start, Integer limit);
+  ResultIterator<?> list(String className, Integer start, Integer limit);
 
   List<Class<?>> getMappedClasses();
 
-  ResultIterator search(Object query, Integer start, Integer limit);
+  ResultIterator<?> search(Object query, Integer start, Integer limit);
 
   void close();
 
