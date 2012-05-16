@@ -3,7 +3,7 @@
 
 <%@ page import="woko.facets.builtin.WokoFacets" %>
 
-<c:set var="o" value="${actionBean.object}"/>
+<c:set var="o" value="${edit.facetContext.targetObject}"/>
 <w:facet facetName="<%=WokoFacets.layout%>" targetObject="${o}"/>
 <w:facet targetObject="${o}" facetName="<%=WokoFacets.renderTitle%>"/>
 <s:layout-render name="${layout.layoutPath}" layout="${layout}" pageTitle="${renderTitle.title}">
