@@ -51,7 +51,7 @@ class GenerateCmd extends Command{
     }
 
     @Override
-    void execute(List<String> args) {
+    def execute(List<String> args) {
 
         CliBuilder cliBuilder = new CliBuilder(usage: 'woko generate')
 

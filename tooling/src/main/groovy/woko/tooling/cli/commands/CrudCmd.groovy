@@ -39,7 +39,7 @@ class CrudCmd extends Command {
     }
 
     @Override
-    void execute(List<String> args) {
+    def execute(List<String> args) {
         // args can be passed :
         String entityClassStr = getArgAt(args, 0)
         String role = getArgAt(args, 1)

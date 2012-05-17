@@ -37,22 +37,30 @@ The command accepts one argument that can be  :
     }
 
     @Override
-    void execute(List<String> args) {
+    def execute(List<String> args) {
         String arg0 = getArgAt(args,0)
         switch (arg0) {
             case "facets":
-                def fdm = getFdm()
+                String arg1 = getArgAt(args, 1)
+                def fdm
+                if (arg1=="customClassLoader") {
+                    fdm = getFdmCustomClassLoader()
+                } else {
+                    fdm = getFdm()
+                }
                 def descriptors = fdm.descriptors
                 logger.log("${descriptors.size()} facets found : ")
                 def mkstr = { FacetDescriptor fd ->
                     return "$fd.name-$fd.profileId-$fd.targetObjectType-$fd.facetClass.name"
                 }
+                def sorted = []
                 descriptors.sort { a,b ->
                     return mkstr(a) <=> mkstr(b)
                 }.each { FacetDescriptor d ->
                     logger.log "  $d.name, $d.profileId, $d.targetObjectType.name, $d.facetClass.name"
+                    sorted << d
                 }
-                break
+                return sorted
             case "roles":
                 def fdm = getFdm()
                 def descriptors = fdm.descriptors
@@ -64,13 +72,15 @@ The command accepts one argument that can be  :
                     }
                 }
                 logger.log("${allRoles.size()} role(s) used in faced keys :")
+                def sorted = []
                 allRoles.sort().each { r ->
                     logger.log "  $r"
+                    sorted << r
                 }
-                break
+                return sorted
             default:
                 logger.error("invalid list command")
-                runner.help("list")
+                return runner.help("list")
         }
 
 

@@ -30,7 +30,7 @@ class ProcessCmd extends Command {
     }
 
     @Override
-    void execute(List<String> args) {
+    def execute(List<String> args) {
         new ProcessExec().execute(logger, commandLine, args, { line ->
             handleLine(line)
         }, { Process p ->

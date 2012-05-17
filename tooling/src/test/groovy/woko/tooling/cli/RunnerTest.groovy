@@ -36,7 +36,8 @@ class RunnerTest {
 
     def execCommand(args, workingDir) {
         Writer sw = new StringWriter()
-        new Runner(new Logger(sw), workingDir).run(args)
+        String[] argsA = new String[args.size()]
+        new Runner(new Logger(sw), workingDir).run(args.toArray(argsA))
         sw.flush()
         sw.close()
         sw.toString()

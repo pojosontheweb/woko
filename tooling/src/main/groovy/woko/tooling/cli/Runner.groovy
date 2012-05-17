@@ -21,11 +21,9 @@ import woko.tooling.cli.commands.*
 
 class Runner {
 
-    private Logger logger
-
-    private Map<String, Command> commands = [:]
-
-    private File workingDir = new File(System.getProperty("user.dir"))
+    private final Logger logger
+    private final Map<String, Command> commands = [:]
+    private final File workingDir = new File(System.getProperty("user.dir"))
 
     File getWorkingDir() {
         return workingDir
@@ -53,7 +51,7 @@ class Runner {
         logger.log(msg)
     }
 
-    void help(String commandName) {
+    def help(String commandName) {
         if (commandName) {
             def c = commands[commandName]
             if (c) {
@@ -77,6 +75,11 @@ class Runner {
         }
     }
 
+    /**
+     * Create a runner for passed args
+     * @param logger the logger to be used
+     * @param workingDir the working directory (should be the top level project folder)
+     */
     Runner(Logger logger, File workingDir) {
         this.logger = logger
         this.workingDir = workingDir
@@ -107,7 +110,7 @@ class Runner {
         ])
     }
 
-    void invokeCommand(args) {
+    def invokeCommand(String... args) {
         if (!args) {
             throw new IllegalArgumentException("0 args specified, we need at least the command name")
         }else if (args[0] == "help") {
@@ -140,10 +143,11 @@ class Runner {
 
     /**
      * Run with passed arguments
-     * @param args an array or list of Strings containing the command line parameters
      */
-    void run(args) {
-        args = args ? args : ["help"]
+    void run(String... args) {
+        if (!args) {
+            args = ["help"]
+        }
         invokeCommand(args)
     }
 

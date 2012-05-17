@@ -50,7 +50,7 @@ server restarts when you change facet code.
     }
 
     @Override
-    void execute(List<String> args) {
+    def execute(List<String> args) {
         String arg1 = getArgAt(args, 0)
         boolean resources = false
         boolean quiet = false
