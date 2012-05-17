@@ -20,6 +20,10 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowFactory;
+import com.intellij.psi.JavaPsiFacade;
+import com.intellij.psi.PsiClass;
+import com.intellij.psi.search.GlobalSearchScope;
+import com.intellij.psi.search.SearchScope;
 import com.intellij.ui.content.Content;
 import com.intellij.ui.content.ContentFactory;
 import net.sourceforge.jfacets.FacetDescriptor;
@@ -29,14 +33,12 @@ import woko.tooling.utils.Logger;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.table.AbstractTableModel;
-import javax.swing.table.TableRowSorter;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import javax.swing.table.*;
+import java.awt.*;
+import java.awt.event.*;
 import java.io.File;
 import java.io.StringWriter;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class WokoToolWindow implements ToolWindowFactory {
@@ -45,6 +47,7 @@ public class WokoToolWindow implements ToolWindowFactory {
     private JTable table1;
     private JButton reloadButton;
     private JTextField textFieldFilter;
+    private JButton clearButton;
 
     private Project project;
     private TableRowSorter<FacetDescriptorTableModel> sorter;
@@ -67,6 +70,34 @@ public class WokoToolWindow implements ToolWindowFactory {
                     filter();
                 }
             });
+        table1.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent mouseEvent) {
+                if (mouseEvent.getClickCount()==2) {
+                    // dbl-clicked : get selected row
+                    openFacets(table1.getSelectedRow());
+                }
+            }
+        });
+        clearButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent actionEvent) {
+                textFieldFilter.setText(null);
+            }
+        });
+    }
+
+    private void openFacets(int... rows) {
+        JavaPsiFacade psiFacade = JavaPsiFacade.getInstance(project);
+        GlobalSearchScope projectScope = GlobalSearchScope.projectScope(project);
+        FacetDescriptorTableModel model = (FacetDescriptorTableModel)table1.getModel();
+        for (int i : rows) {
+            String projectFileName = model.getProjectFile(i);
+            if (projectFileName!=null) {
+                PsiClass c = psiFacade.findClass(model.getProjectFile(i), projectScope);
+                if (c!=null) {
+                    c.getContainingFile().navigate(true);
+                }
+            }
+        }
     }
 
     private void refresh() {
@@ -79,11 +110,17 @@ public class WokoToolWindow implements ToolWindowFactory {
         Object result = runner.invokeCommand("list", "facets", "customClassLoader");
         if (result instanceof List) {
             List<FacetDescriptor> descriptors = (List<FacetDescriptor>)result;
-            FacetDescriptorTableModel tableModel = new FacetDescriptorTableModel(descriptors);
+            FacetDescriptorTableModel tableModel = new FacetDescriptorTableModel(project, descriptors);
             // enable sort / filter of the jtable
             sorter = new TableRowSorter<FacetDescriptorTableModel>(tableModel);
             table1.setModel(tableModel);
             table1.setRowSorter(sorter);
+            TableCellRenderer renderer = new FacetTableCellRenderer();
+            TableColumnModel colModel = table1.getColumnModel();
+            colModel.getColumn(0).setWidth(70);
+            for (int i=0;i<tableModel.getColumnCount();i++) {
+                colModel.getColumn(i).setCellRenderer(renderer);
+            }
         }
         textFieldFilter.setEnabled(true);
     }
@@ -122,11 +159,25 @@ public class WokoToolWindow implements ToolWindowFactory {
 class FacetDescriptorTableModel extends AbstractTableModel {
 
     private final List<FacetDescriptor> facetDescriptors;
+    private final String[] facetLocalFiles;
 
     private static final String[] COLUMNS = new String[] { "name", "profileId", "targetObjectType", "facetClass" };
 
-    FacetDescriptorTableModel(List<FacetDescriptor> descriptors) {
+    FacetDescriptorTableModel(Project project, List<FacetDescriptor> descriptors) {
         this.facetDescriptors = descriptors;
+        this.facetLocalFiles = new String[descriptors.size()];
+        // iterate on descriptors and set the local files if
+        // any for later use
+        JavaPsiFacade psiFacade = JavaPsiFacade.getInstance(project);
+        GlobalSearchScope globalSearchScope = GlobalSearchScope.projectScope(project);
+        for (int i=0 ; i<descriptors.size(); i++) {
+            // check if the file is defined in the project
+            String facetClassName = descriptors.get(i).getFacetClass().getName();
+            PsiClass psiClass = psiFacade.findClass(facetClassName, globalSearchScope);
+            if (psiClass!=null) {
+                facetLocalFiles[i] = psiClass.getQualifiedName();
+            }
+        }
     }
 
     @Override
@@ -157,4 +208,27 @@ class FacetDescriptorTableModel extends AbstractTableModel {
         return facetDescriptors.get(i);
     }
 
+    public String getProjectFile(int row) {
+        return facetLocalFiles[row];
+    }
+
+}
+
+class FacetTableCellRenderer extends DefaultTableCellRenderer {
+
+    private Font oldFont;
+
+    public Component getTableCellRendererComponent(
+                            JTable table, Object value,
+                            boolean isSelected, boolean hasFocus,
+                            int row, int column) {
+        FacetDescriptorTableModel model = (FacetDescriptorTableModel)table.getModel();
+        // is the class a project class ?
+        if (model.getProjectFile(row)==null) {
+            setBackground(new Color(230,230,230));
+        } else {
+            setBackground(Color.white);
+        }
+        return super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+    }
 }
