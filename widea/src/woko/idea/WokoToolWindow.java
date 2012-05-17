@@ -27,14 +27,14 @@ import woko.tooling.cli.Runner;
 import woko.tooling.utils.Logger;
 
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.TableRowSorter;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.io.File;
 import java.io.StringWriter;
-import java.util.ArrayList;
 import java.util.List;
 
 public class WokoToolWindow implements ToolWindowFactory {
@@ -45,8 +45,9 @@ public class WokoToolWindow implements ToolWindowFactory {
     private JButton newButton;
     private JButton pushSelectedButton;
     private JTextField textFieldFilter;
+
     private Project project;
-    private FacetDescriptorTableModel tableModel;
+    private TableRowSorter<FacetDescriptorTableModel> sorter;
 
     public WokoToolWindow() {
         reloadButton.addActionListener(new ActionListener() {
@@ -54,19 +55,18 @@ public class WokoToolWindow implements ToolWindowFactory {
                 refresh();
             }
         });
-        textFieldFilter.addKeyListener(new KeyListener() {
-            public void keyTyped(KeyEvent keyEvent) {
-                if (tableModel!=null) {
-                    tableModel.filter(textFieldFilter.getText());
+        textFieldFilter.getDocument().addDocumentListener(
+            new DocumentListener() {
+                public void changedUpdate(DocumentEvent e) {
+                    filter();
                 }
-            }
-
-            public void keyPressed(KeyEvent keyEvent) {
-            }
-
-            public void keyReleased(KeyEvent keyEvent) {
-            }
-        });
+                public void insertUpdate(DocumentEvent e) {
+                    filter();
+                }
+                public void removeUpdate(DocumentEvent e) {
+                    filter();
+                }
+            });
     }
 
     private void refresh() {
@@ -79,9 +79,35 @@ public class WokoToolWindow implements ToolWindowFactory {
         Object result = runner.invokeCommand("list", "facets", "customClassLoader");
         if (result instanceof List) {
             List<FacetDescriptor> descriptors = (List<FacetDescriptor>)result;
-            tableModel = new FacetDescriptorTableModel(descriptors);
+            FacetDescriptorTableModel tableModel = new FacetDescriptorTableModel(descriptors);
+            // enable sort / filter of the jtable
+            sorter = new TableRowSorter<FacetDescriptorTableModel>(tableModel);
             table1.setModel(tableModel);
+            table1.setRowSorter(sorter);
         }
+    }
+
+    private void filter() {
+        sorter.setRowFilter(new RowFilter<FacetDescriptorTableModel,Integer>() {
+            @Override
+            public boolean include(Entry<? extends FacetDescriptorTableModel, ? extends Integer> entry) {
+                FacetDescriptorTableModel model = entry.getModel();
+                FacetDescriptor fd = model.getFacetDescriptorAt(entry.getIdentifier());
+                String filterText = textFieldFilter.getText();
+                return (strMatch(fd.getName(), filterText)
+                    || strMatch(fd.getProfileId(), filterText)
+                    || strMatch(fd.getTargetObjectType().getName(), filterText)
+                    || strMatch(fd.getFacetClass().getName(), filterText));
+            }
+
+            private boolean strMatch(String s, String filterText) {
+                return filterText == null
+                        || filterText.equals("")
+                        || s == null
+                        || s.equals("")
+                        || s.toLowerCase().contains(filterText.toLowerCase());
+            }
+        });
     }
 
     public void createToolWindowContent(Project project, ToolWindow toolWindow) {
@@ -95,13 +121,11 @@ public class WokoToolWindow implements ToolWindowFactory {
 class FacetDescriptorTableModel extends AbstractTableModel {
 
     private final List<FacetDescriptor> facetDescriptors;
-    private List<FacetDescriptor> filtered;
 
     private static final String[] COLUMNS = new String[] { "select", "name", "profileId", "targetObjectType", "facetClass" };
 
     FacetDescriptorTableModel(List<FacetDescriptor> descriptors) {
         this.facetDescriptors = descriptors;
-        this.filtered = descriptors;
     }
 
     @Override
@@ -109,29 +133,8 @@ class FacetDescriptorTableModel extends AbstractTableModel {
         return COLUMNS[i];
     }
 
-    private boolean strMatch(String s, String filterText) {
-        return filterText == null
-                || filterText.equals("")
-                || s == null
-                || s.equals("")
-                || s.toLowerCase().contains(filterText.toLowerCase());
-    }
-
-    private List<FacetDescriptor> filterList(String filterText) {
-        List<FacetDescriptor> filtered = new ArrayList<FacetDescriptor>();
-        for(FacetDescriptor fd : facetDescriptors) {
-            if (strMatch(fd.getName(), filterText)
-                    || strMatch(fd.getProfileId(), filterText)
-                    || strMatch(fd.getTargetObjectType().getName(), filterText)
-                    || strMatch(fd.getFacetClass().getName(), filterText)) {
-                filtered.add(fd);
-            }
-        }
-        return filtered;
-    }
-
     public int getRowCount() {
-        return filtered.size();
+        return facetDescriptors.size();
     }
 
     public int getColumnCount() {
@@ -139,7 +142,7 @@ class FacetDescriptorTableModel extends AbstractTableModel {
     }
 
     public Object getValueAt(int row, int col) {
-        FacetDescriptor fd = filtered.get(row);
+        FacetDescriptor fd = facetDescriptors.get(row);
         switch (col) {
             case 0 : return true;
             case 1 : return fd.getName();
@@ -150,8 +153,8 @@ class FacetDescriptorTableModel extends AbstractTableModel {
         }
     }
 
-    public void filter(String text) {
-        this.filtered = filterList(text);
-        fireTableDataChanged();
+    public FacetDescriptor getFacetDescriptorAt(int i) {
+        return facetDescriptors.get(i);
     }
+
 }
