@@ -42,7 +42,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class WokoToolWindow implements ToolWindowFactory {
-    private JTabbedPane tabbedPane1;
     private JPanel panel1;
     private JTable table1;
     private JButton reloadButton;
