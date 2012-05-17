@@ -34,7 +34,7 @@
   </actions>
 
   <extensions defaultExtensionNs="com.intellij">
-      <toolWindow id="Woko"   secondary="true" icon="/woko/idea/woko.png" anchor="right" factoryClass="woko.idea.FacetsTable"   >
+      <toolWindow id="Woko"   secondary="true" icon="/woko/idea/woko.png" anchor="right" factoryClass="woko.idea.WokoToolWindow"   >
       </toolWindow>
   </extensions>
 </idea-plugin>
