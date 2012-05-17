@@ -110,8 +110,8 @@ class FacetDescriptorTableModel extends AbstractTableModel {
         switch (col) {
             case 0 : return fd.getName();
             case 1 : return fd.getProfileId();
-            case 2 : return fd.getTargetObjectType();
-            case 3 : return fd.getFacetClass();
+            case 2 : return fd.getTargetObjectType().getName();
+            case 3 : return fd.getFacetClass().getName();
             default: throw new ArrayIndexOutOfBoundsException("col is out of bounds : " + col);
         }
     }
