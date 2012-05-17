@@ -35,6 +35,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class WokoToolWindow implements ToolWindowFactory {
@@ -42,8 +44,6 @@ public class WokoToolWindow implements ToolWindowFactory {
     private JPanel panel1;
     private JTable table1;
     private JButton reloadButton;
-    private JButton newButton;
-    private JButton pushSelectedButton;
     private JTextField textFieldFilter;
 
     private Project project;
@@ -85,6 +85,7 @@ public class WokoToolWindow implements ToolWindowFactory {
             table1.setModel(tableModel);
             table1.setRowSorter(sorter);
         }
+        textFieldFilter.setEnabled(true);
     }
 
     private void filter() {
@@ -122,7 +123,7 @@ class FacetDescriptorTableModel extends AbstractTableModel {
 
     private final List<FacetDescriptor> facetDescriptors;
 
-    private static final String[] COLUMNS = new String[] { "select", "name", "profileId", "targetObjectType", "facetClass" };
+    private static final String[] COLUMNS = new String[] { "name", "profileId", "targetObjectType", "facetClass" };
 
     FacetDescriptorTableModel(List<FacetDescriptor> descriptors) {
         this.facetDescriptors = descriptors;
@@ -138,17 +139,16 @@ class FacetDescriptorTableModel extends AbstractTableModel {
     }
 
     public int getColumnCount() {
-        return 5;
+        return 4;
     }
 
     public Object getValueAt(int row, int col) {
         FacetDescriptor fd = facetDescriptors.get(row);
         switch (col) {
-            case 0 : return true;
-            case 1 : return fd.getName();
-            case 2 : return fd.getProfileId();
-            case 3 : return fd.getTargetObjectType().getName();
-            case 4 : return fd.getFacetClass().getName();
+            case 0 : return fd.getName();
+            case 1 : return fd.getProfileId();
+            case 2 : return fd.getTargetObjectType().getName();
+            case 3 : return fd.getFacetClass().getName();
             default: throw new ArrayIndexOutOfBoundsException("col is out of bounds : " + col);
         }
     }
