@@ -26,11 +26,9 @@ import woko.tooling.cli.Runner
 
 class CreateCmd extends Command {
 
-    CreateCmd(Runner runner, File projectDir, Logger logger) {
+    CreateCmd(Runner runner) {
         super(
                 runner,
-                projectDir,
-                logger,
                 "create",
                 "create project elements",
                 "facet|entity",

@@ -26,8 +26,8 @@ import woko.facets.builtin.WokoFacets
 
 class CrudCmd extends Command {
 
-    CrudCmd(Runner runner, File projectDir, Logger logger) {
-        super(runner, projectDir, logger,
+    CrudCmd(Runner runner) {
+        super(runner,
                 "crud",
                 "Generate the CRUD facets for a given role (view/edit/save/delete)", "[<Entity> [<Role> [quiet]",
                 """Command that generates the necessary facets for CRUD operations on a given target type :

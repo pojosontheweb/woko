@@ -26,11 +26,9 @@ import com.google.common.io.Files
 
 class PushCmd extends Command {
 
-    PushCmd(Runner runner,File projectDir,Logger logger) {
+    PushCmd(Runner runner) {
         super(
           runner,
-          projectDir,
-          logger,
           "push",
           "pushes the local facets to a remote application",
           "[resources|quiet]",

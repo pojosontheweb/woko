@@ -23,11 +23,9 @@ import woko.tooling.cli.Runner
 
 class ListCmd extends Command {
 
-    ListCmd(Runner runner, File projectDir, Logger logger) {
+    ListCmd(Runner runner) {
         super(
                 runner,
-                projectDir,
-                logger,
                 "list",
                 "list facets or roles",
                 "facets|roles",

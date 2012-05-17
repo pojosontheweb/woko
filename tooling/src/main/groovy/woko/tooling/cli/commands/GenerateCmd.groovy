@@ -40,11 +40,9 @@ class GenerateCmd extends Command{
     String wokoPath
     String facetsPath
 
-    GenerateCmd(Runner runner, File projectDir, Logger logger) {
+    GenerateCmd(Runner runner) {
         super(
                 runner,
-                projectDir,
-                logger,
                 "generate",
                 "Generates a new Woko project",
                 "[-use-boostrap {yes|no}] [-use-groovy {yes|no}] [-default-package-name <package name>]",

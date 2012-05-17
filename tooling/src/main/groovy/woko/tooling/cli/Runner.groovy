@@ -27,6 +27,10 @@ class Runner {
 
     private File workingDir = new File(System.getProperty("user.dir"))
 
+    File getWorkingDir() {
+        return workingDir
+    }
+
     Runner addCommand(Command c) {
         if (!commands[c]) {
             commands[c.name] = c
@@ -77,37 +81,29 @@ class Runner {
         this.logger = logger
         this.workingDir = workingDir
         addCommands([
-          new ListCmd(this, workingDir, logger),
-          new CreateCmd(this, workingDir, logger),
-          new CrudCmd(this, workingDir, logger),
-          new PushCmd(this, workingDir, logger),
-          new GenerateCmd(this, workingDir, logger),
-          new StartCommand(
-            this,
-            workingDir,
-            logger
-          ),
-          new ProcessCmd(
-            this,
-            workingDir,
-            logger,
-            "stop",
-            "stop the local jetty container (in case started in background process)",
-            "",
-            "",
-            "mvn jetty:stop"
-          ),
-          new ProcessCmd(
-            this,
-            workingDir,
-            logger,
-            "build",
-            "rebuilds the whole application",
-            "",
-            "",
-            "mvn clean install"
-          ),
-          new EnvironmentsCmd(this, workingDir, logger)
+                new ListCmd(this),
+                new CreateCmd(this),
+                new CrudCmd(this),
+                new PushCmd(this),
+                new GenerateCmd(this),
+                new StartCommand(this),
+                new ProcessCmd(
+                        this,
+                        "stop",
+                        "stop the local jetty container (in case started in background process)",
+                        "",
+                        "",
+                        "mvn jetty:stop"
+                ),
+                new ProcessCmd(
+                        this,
+                        "build",
+                        "rebuilds the whole application",
+                        "",
+                        "",
+                        "mvn clean install"
+                ),
+                new EnvironmentsCmd(this)
         ])
     }
 

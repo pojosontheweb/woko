@@ -37,9 +37,9 @@ abstract class Command {
     private def webXmlSlurped
     private PomHelper pomHelper
 
-    Command(Runner runner, File projectDir, Logger logger, String name, String shortDesc, String argSpec, String longHelp) {
-        this.projectDir = projectDir
-        this.logger = logger
+    Command(Runner runner, String name, String shortDesc, String argSpec, String longHelp) {
+        this.projectDir = runner.workingDir
+        this.logger = runner.logger
         this.name = name
         this.shortDesc = shortDesc
         this.argSpec = argSpec
