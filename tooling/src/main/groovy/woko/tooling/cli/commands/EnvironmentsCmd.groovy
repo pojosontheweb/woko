@@ -22,25 +22,19 @@ import woko.tooling.utils.Logger
 
 class EnvironmentsCmd extends Command {
 
-    EnvironmentsCmd(
-            Runner runner,
-            File projectDir,
-            Logger logger) {
-        super(
-                runner,
-                projectDir,
-                logger,
-                            "env",
-            "manage the environments",
-            "list|use <env_name>",
-            """Manages the environments for your app. Environments can be found in
+    EnvironmentsCmd(Runner runner) {
+        super(runner,
+              "env",
+              "manage the environments",
+              "list|use <env_name>",
+              """Manages the environments for your app. Environments can be found in
 the 'environments' folder, at the project root. You can put any resources in the environments
 folders and use this command in order to copy the resources from an environment into the
 packaged application.""")
     }
 
     @Override
-    void execute(List<String> args) {
+    def execute(List<String> args) {
         def arg0 = getArgAt(args, 0)
         switch(arg0) {
             case "list" :

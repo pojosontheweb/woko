@@ -24,13 +24,13 @@ class ProcessCmd extends Command {
 
     private final String commandLine
 
-    ProcessCmd(Runner runner, File projectDir, Logger logger, String name, String shortDesc, String argSpec, String longHelp, String commandLine) {
-        super(runner, projectDir, logger, name, shortDesc, argSpec, longHelp)
+    ProcessCmd(Runner runner, String name, String shortDesc, String argSpec, String longHelp, String commandLine) {
+        super(runner, name, shortDesc, argSpec, longHelp)
         this.commandLine = commandLine
     }
 
     @Override
-    void execute(List<String> args) {
+    def execute(List<String> args) {
         new ProcessExec().execute(logger, commandLine, args, { line ->
             handleLine(line)
         }, { Process p ->

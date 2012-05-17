@@ -26,11 +26,9 @@ import com.google.common.io.Files
 
 class PushCmd extends Command {
 
-    PushCmd(Runner runner,File projectDir,Logger logger) {
+    PushCmd(Runner runner) {
         super(
           runner,
-          projectDir,
-          logger,
           "push",
           "pushes the local facets to a remote application",
           "[resources|quiet]",
@@ -52,7 +50,7 @@ server restarts when you change facet code.
     }
 
     @Override
-    void execute(List<String> args) {
+    def execute(List<String> args) {
         String arg1 = getArgAt(args, 0)
         boolean resources = false
         boolean quiet = false
