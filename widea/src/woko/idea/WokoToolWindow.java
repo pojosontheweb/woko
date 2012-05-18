@@ -28,8 +28,10 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 
 public class WokoToolWindow implements ToolWindowFactory {
 
@@ -89,8 +91,10 @@ public class WokoToolWindow implements ToolWindowFactory {
     }
 
     private void refresh() {
-        getWpc().initializeFacetsTable(table1);
-        textFieldFilter.setEnabled(true);
+        FacetDescriptorTableModel fdm = getWpc().initializeFacetsTable(table1);
+        if (fdm!=null) {
+            textFieldFilter.setEnabled(true);
+        }
     }
 
     private void filter() {
@@ -114,6 +118,7 @@ public class WokoToolWindow implements ToolWindowFactory {
 
     public void createToolWindowContent(Project project, ToolWindow toolWindow) {
         this.project = project;
+        table1.setModel(new FacetDescriptorTableModel(project, new ArrayList<FacetDescriptor>()));
         ContentFactory contentFactory = ContentFactory.SERVICE.getInstance();
         Content content = contentFactory.createContent(panel1, "", false);
         toolWindow.getContentManager().addContent(content);

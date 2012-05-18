@@ -91,26 +91,33 @@ public class WokoProjectComponent implements ProjectComponent {
         StringWriter sw = new StringWriter();
         Logger logger = new Logger(sw);
         Runner runner = new Runner(logger, projectRootDir);
-        Object result = runner.invokeCommand("list", "facets", "customClassLoader");
-        if (result instanceof List) {
-            @SuppressWarnings("unchecked")
-            List<FacetDescriptor> descriptors = (List<FacetDescriptor>)result;
-            return new FacetDescriptorTableModel(project, descriptors);
+        try {
+            Object result = runner.invokeCommand("list", "facets", "customClassLoader");
+            if (result instanceof List) {
+                @SuppressWarnings("unchecked")
+                List<FacetDescriptor> descriptors = (List<FacetDescriptor>)result;
+                return new FacetDescriptorTableModel(project, descriptors);
+            }
+            return null;
+        } catch(Exception e) {
+            return null;
         }
-        return null;
     }
 
-    public void initializeFacetsTable(JTable table) {
+    public FacetDescriptorTableModel initializeFacetsTable(JTable table) {
         FacetDescriptorTableModel model = createFacetsTableModel();
-        TableRowSorter<FacetDescriptorTableModel> sorter = new TableRowSorter<FacetDescriptorTableModel>(model);
-        table.setModel(model);
-        table.setRowSorter(sorter);
-        TableCellRenderer renderer = new FacetTableCellRenderer();
-        TableColumnModel colModel = table.getColumnModel();
-        colModel.getColumn(0).setWidth(70);
-        for (int i=0;i<model.getColumnCount();i++) {
-            colModel.getColumn(i).setCellRenderer(renderer);
+        if (model!=null) {
+            TableRowSorter<FacetDescriptorTableModel> sorter = new TableRowSorter<FacetDescriptorTableModel>(model);
+            table.setModel(model);
+            table.setRowSorter(sorter);
+            TableCellRenderer renderer = new FacetTableCellRenderer();
+            TableColumnModel colModel = table.getColumnModel();
+            colModel.getColumn(0).setWidth(70);
+            for (int i=0;i<model.getColumnCount();i++) {
+                colModel.getColumn(i).setCellRenderer(renderer);
+            }
         }
+        return model;
     }
 
     public FacetDescriptorTableModel getFacetTableModel(JTable table) {
@@ -140,14 +147,16 @@ public class WokoProjectComponent implements ProjectComponent {
 
     public void setFacetTableFilterCallback(JTable table, final FilterCallback callback) {
         TableRowSorter<FacetDescriptorTableModel> sorter = (TableRowSorter<FacetDescriptorTableModel>)table.getRowSorter();
-        sorter.setRowFilter(new RowFilter<FacetDescriptorTableModel,Integer>() {
-            @Override
-            public boolean include(Entry<? extends FacetDescriptorTableModel, ? extends Integer> entry) {
-                FacetDescriptorTableModel model = entry.getModel();
-                FacetDescriptor fd = model.getFacetDescriptorAt(entry.getIdentifier());
-                return callback.matches(fd);
-            }
-        });
+        if (sorter!=null) {
+            sorter.setRowFilter(new RowFilter<FacetDescriptorTableModel,Integer>() {
+                @Override
+                public boolean include(Entry<? extends FacetDescriptorTableModel, ? extends Integer> entry) {
+                    FacetDescriptorTableModel model = entry.getModel();
+                    FacetDescriptor fd = model.getFacetDescriptorAt(entry.getIdentifier());
+                    return callback.matches(fd);
+                }
+            });
+        }
     }
 
     public void openFindFacet() {

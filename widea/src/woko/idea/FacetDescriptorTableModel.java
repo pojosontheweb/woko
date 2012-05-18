@@ -70,6 +70,9 @@ class FacetDescriptorTableModel extends AbstractTableModel {
     }
 
     public Object getValueAt(int row, int col) {
+        if (row>facetDescriptors.size()-1) {
+            return null;
+        }
         FacetDescriptor fd = facetDescriptors.get(row);
         switch (col) {
             case 0 : return fd.getName();

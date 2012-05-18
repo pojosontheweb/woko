@@ -20,6 +20,7 @@ import net.sourceforge.jfacets.FacetDescriptor;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableModel;
 import java.awt.*;
 
 /**

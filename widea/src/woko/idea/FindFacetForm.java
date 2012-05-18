@@ -127,9 +127,12 @@ public class FindFacetForm {
                         && wpc.getFacetTableModel(table1).getProjectFile(fd) != null;
             }
         });
-        int viewRowCount = table1.getRowSorter().getViewRowCount();
-        if (viewRowCount>=1) {
-            table1.getSelectionModel().setSelectionInterval(0, 0);
+        RowSorter<?> rowSorter = table1.getRowSorter();
+        if (rowSorter!=null) {
+            int viewRowCount = rowSorter.getViewRowCount();
+            if (viewRowCount>=1) {
+                table1.getSelectionModel().setSelectionInterval(0, 0);
+            }
         }
     }
 
