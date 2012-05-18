@@ -15,10 +15,10 @@
   -->
 
 <idea-plugin version="2">
-  <name>Plugin name here</name>
-  <description>short description of the plugin</description>
+  <name>Woko Plugin</name>
+  <description>Plugin for the Woko framework</description>
   <version>1.0</version>
-  <vendor>YourCompany</vendor>
+  <vendor>pojosontheweb.com</vendor>
   <idea-version since-build="8000"/>
 
   <application-components>
@@ -34,7 +34,7 @@
 
   <actions>
     <!-- Add your actions here -->
-      <action id="FindFacet" class="woko.idea.FindFacetAction" text="FindFacet" description="FindFacet">
+      <action id="FindFacet" class="woko.idea.FindFacetAction" text="FindFacet" description="FindFacet" icon="/woko/idea/woko.png">
           <add-to-group group-id="SearchMenu" anchor="first"/>
           <keyboard-shortcut keymap="$default" first-keystroke="shift meta W"/>
       </action>

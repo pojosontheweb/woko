@@ -18,6 +18,7 @@ package woko.idea;
 
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.DialogWrapper;
+import com.intellij.util.IconUtil;
 import net.sourceforge.jfacets.FacetDescriptor;
 
 import javax.swing.*;
