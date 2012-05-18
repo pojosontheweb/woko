@@ -35,29 +35,17 @@
             <properties/>
             <border type="none"/>
             <children>
-              <toolbar id="a9398">
+              <component id="f84ed" class="javax.swing.JButton" binding="reloadButton" default-binding="true">
                 <constraints>
-                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false">
-                    <preferred-size width="-1" height="20"/>
-                  </grid>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
-                  <borderPainted value="false"/>
-                  <floatable value="false"/>
+                  <hideActionText value="true"/>
+                  <icon value="vcs/refresh.png"/>
+                  <text value=""/>
+                  <toolTipText value="(re)load the facets available to your app"/>
                 </properties>
-                <border type="none"/>
-                <children>
-                  <component id="f84ed" class="javax.swing.JButton" binding="reloadButton" default-binding="true">
-                    <constraints/>
-                    <properties>
-                      <hideActionText value="true"/>
-                      <icon value="vcs/refresh.png"/>
-                      <text value=""/>
-                      <toolTipText value="(re)load the facets available to your app"/>
-                    </properties>
-                  </component>
-                </children>
-              </toolbar>
+              </component>
             </children>
           </grid>
           <hspacer id="900cb">
@@ -82,7 +70,9 @@
               <grid row="0" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="Clear"/>
+              <icon value="actions/clean.png"/>
+              <text value=""/>
+              <toolTipText value="clear filter"/>
             </properties>
           </component>
         </children>

@@ -31,6 +31,7 @@ import woko.tooling.cli.Runner;
 import woko.tooling.utils.Logger;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.*;
@@ -73,7 +74,7 @@ public class WokoToolWindow implements ToolWindowFactory {
             public void mouseClicked(MouseEvent mouseEvent) {
                 if (mouseEvent.getClickCount()==2) {
                     // dbl-clicked : get selected row
-                    openFacets(table1.getSelectedRow());
+                    openFacets(table1.convertRowIndexToModel(table1.getSelectedRow()));
                 }
             }
         });
@@ -82,6 +83,7 @@ public class WokoToolWindow implements ToolWindowFactory {
                 textFieldFilter.setText(null);
             }
         });
+        table1.setIntercellSpacing(new Dimension(0,0));
     }
 
     private void openFacets(int... rows) {
@@ -215,8 +217,6 @@ class FacetDescriptorTableModel extends AbstractTableModel {
 
 class FacetTableCellRenderer extends DefaultTableCellRenderer {
 
-    private Font oldFont;
-
     public Component getTableCellRendererComponent(
                             JTable table, Object value,
                             boolean isSelected, boolean hasFocus,
@@ -228,6 +228,8 @@ class FacetTableCellRenderer extends DefaultTableCellRenderer {
         } else {
             setBackground(Color.white);
         }
-        return super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+        super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+        setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.lightGray));
+        return this;
     }
 }
