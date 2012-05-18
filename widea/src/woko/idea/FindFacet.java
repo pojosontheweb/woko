@@ -19,15 +19,10 @@ package woko.idea;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 
-/**
- * Created by IntelliJ IDEA.
- * User: vankeisb
- * Date: 18/05/12
- * Time: 02:50
- * To change this template use File | Settings | File Templates.
- */
 public class FindFacet extends AnAction {
     public void actionPerformed(AnActionEvent e) {
-        // TODO: insert action logic here
+        FindFacetDialog ffd = new FindFacetDialog();
+        ffd.setModal(true);
+        ffd.setVisible(true);
     }
 }
