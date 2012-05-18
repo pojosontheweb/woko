@@ -22,7 +22,7 @@ import com.intellij.openapi.actionSystem.AnActionEvent;
 public class FindFacet extends AnAction {
     public void actionPerformed(AnActionEvent e) {
         FindFacetDialog ffd = new FindFacetDialog();
-        ffd.setModal(true);
+        ffd.pack();
         ffd.setVisible(true);
     }
 }
