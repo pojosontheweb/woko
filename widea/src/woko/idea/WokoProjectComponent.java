@@ -16,12 +16,14 @@
 
 package woko.idea;
 
+import com.intellij.openapi.components.ProjectComponent;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.JavaPsiFacade;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.search.GlobalSearchScope;
 import net.sourceforge.jfacets.FacetDescriptor;
+import org.jetbrains.annotations.NotNull;
 import woko.tooling.cli.Runner;
 import woko.tooling.utils.Logger;
 
@@ -32,18 +34,35 @@ import javax.swing.table.TableRowSorter;
 import java.io.File;
 import java.io.StringWriter;
 import java.util.List;
-import java.util.Vector;
 
-public class ProjectUtil {
+public class WokoProjectComponent implements ProjectComponent {
 
     private final Project project;
-    private final JavaPsiFacade psiFacade;
-    private final GlobalSearchScope projectScope;
+    private JavaPsiFacade psiFacade;
+    private GlobalSearchScope projectScope;
 
-    public ProjectUtil(Project project) {
+    public WokoProjectComponent(Project project) {
         this.project = project;
+    }
+
+    public void initComponent() {
+    }
+
+    public void disposeComponent() {
+    }
+
+    @NotNull
+    public String getComponentName() {
+        return "WokoProjectComponent";
+    }
+
+    public void projectOpened() {
         psiFacade = JavaPsiFacade.getInstance(project);
         projectScope = GlobalSearchScope.projectScope(project);
+    }
+
+    public void projectClosed() {
+        // called when project is being closed
     }
 
     public boolean openClassInEditor(String fqcn) {

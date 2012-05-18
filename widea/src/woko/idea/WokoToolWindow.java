@@ -17,28 +17,22 @@
 package woko.idea;
 
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowFactory;
 import com.intellij.ui.content.Content;
 import com.intellij.ui.content.ContentFactory;
 import net.sourceforge.jfacets.FacetDescriptor;
-import woko.tooling.cli.Runner;
-import woko.tooling.utils.Logger;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.table.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.File;
-import java.io.StringWriter;
-import java.util.List;
 
 public class WokoToolWindow implements ToolWindowFactory {
+
     private JPanel panel1;
     private JTable table1;
     private JButton reloadButton;
@@ -47,7 +41,6 @@ public class WokoToolWindow implements ToolWindowFactory {
     private JCheckBox includeLibsCheckBox;
 
     private Project project;
-    private TableRowSorter<FacetDescriptorTableModel> sorter;
 
     public WokoToolWindow() {
         reloadButton.addActionListener(new ActionListener() {
@@ -91,18 +84,21 @@ public class WokoToolWindow implements ToolWindowFactory {
     private void openFacet(int row) {
         FacetDescriptorTableModel model = (FacetDescriptorTableModel)table1.getModel();
         FacetDescriptor fd = model.getFacetDescriptorAt(row);
-        new ProjectUtil(project).openClassInEditor(model.getProjectFile(fd));
+        getWpc().openClassInEditor(model.getProjectFile(fd));
+    }
+
+    private WokoProjectComponent getWpc() {
+        return project.getComponent(WokoProjectComponent.class);
     }
 
     private void refresh() {
-        ProjectUtil pu = new ProjectUtil(project);
-        pu.initializeFacetsTable(table1);
+        getWpc().initializeFacetsTable(table1);
         textFieldFilter.setEnabled(true);
     }
 
     private void filter() {
-        final ProjectUtil pu = new ProjectUtil(project);
-        pu.setFacetTableFilterCallback(table1, new ProjectUtil.FilterCallback() {
+        final WokoProjectComponent wpc = getWpc();
+        wpc.setFacetTableFilterCallback(table1, new WokoProjectComponent.FilterCallback() {
             @Override
             protected boolean matches(FacetDescriptor fd) {
                 String text = textFieldFilter.getText();
@@ -111,7 +107,7 @@ public class WokoToolWindow implements ToolWindowFactory {
                     // do we include libs or not ?
                     if (!includeLibsCheckBox.isSelected()) {
                         // check if class is project class
-                        return pu.getFacetTableModel(table1).getProjectFile(fd)!=null;
+                        return wpc.getFacetTableModel(table1).getProjectFile(fd) != null;
                     }
                 }
                 return fdMatch;
