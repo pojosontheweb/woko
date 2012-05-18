@@ -64,7 +64,10 @@ public class WokoToolWindow implements ToolWindowFactory {
             public void mouseClicked(MouseEvent mouseEvent) {
                 if (mouseEvent.getClickCount()==2) {
                     // dbl-clicked : get selected row
-                    openFacet(table1.convertRowIndexToModel(table1.getSelectedRow()));
+                    int row = table1.convertRowIndexToModel(table1.getSelectedRow());
+                    FacetDescriptorTableModel model = (FacetDescriptorTableModel)table1.getModel();
+                    FacetDescriptor fd = model.getFacetDescriptorAt(row);
+                    getWpc().openClassInEditor(model.getProjectFile(fd));
                 }
             }
         });
@@ -79,12 +82,6 @@ public class WokoToolWindow implements ToolWindowFactory {
                 filter();
             }
         });
-    }
-
-    private void openFacet(int row) {
-        FacetDescriptorTableModel model = (FacetDescriptorTableModel)table1.getModel();
-        FacetDescriptor fd = model.getFacetDescriptorAt(row);
-        getWpc().openClassInEditor(model.getProjectFile(fd));
     }
 
     private WokoProjectComponent getWpc() {

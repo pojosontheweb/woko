@@ -36,7 +36,7 @@
     <!-- Add your actions here -->
       <action id="FindFacet" class="woko.idea.FindFacet" text="FindFacet" description="FindFacet">
           <add-to-group group-id="SearchMenu" anchor="first"/>
-          <keyboard-shortcut keymap="$default" first-keystroke="shift alt F"/>
+          <keyboard-shortcut keymap="$default" first-keystroke="shift meta W"/>
       </action>
   </actions>
 

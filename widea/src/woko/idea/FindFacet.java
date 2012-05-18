@@ -18,11 +18,15 @@ package woko.idea;
 
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
+import com.intellij.openapi.actionSystem.DataKeys;
+import com.intellij.openapi.project.Project;
 
 public class FindFacet extends AnAction {
     public void actionPerformed(AnActionEvent e) {
-        FindFacetDialog ffd = new FindFacetDialog();
+        Project project = DataKeys.PROJECT.getData(e.getDataContext());
+        FindFacetDialog ffd = new FindFacetDialog(project).refresh().filter();
         ffd.pack();
+//        ffd.setLocationRelativeTo(e.getData(DataKeys.));
         ffd.setVisible(true);
     }
 }
