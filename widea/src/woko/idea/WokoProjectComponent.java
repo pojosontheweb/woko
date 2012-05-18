@@ -150,4 +150,12 @@ public class WokoProjectComponent implements ProjectComponent {
         });
     }
 
+    public void openFindFacet() {
+        FindFacetDialogWrapper dw = new FindFacetDialogWrapper(project);
+        dw.setTitle("Find Facet...");
+        dw.pack();
+        dw.show();
+    }
+
 }
+

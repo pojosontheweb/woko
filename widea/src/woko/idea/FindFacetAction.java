@@ -21,12 +21,10 @@ import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.DataKeys;
 import com.intellij.openapi.project.Project;
 
-public class FindFacet extends AnAction {
+public class FindFacetAction extends AnAction {
     public void actionPerformed(AnActionEvent e) {
         Project project = DataKeys.PROJECT.getData(e.getDataContext());
-        FindFacetDialog ffd = new FindFacetDialog(project).refresh().filter();
-        ffd.pack();
-//        ffd.setLocationRelativeTo(e.getData(DataKeys.));
-        ffd.setVisible(true);
+        WokoProjectComponent pc = project.getComponent(WokoProjectComponent.class);
+        pc.openFindFacet();
     }
 }
