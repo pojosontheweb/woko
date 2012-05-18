@@ -84,6 +84,9 @@ class FacetDescriptorTableModel extends AbstractTableModel {
     }
 
     public FacetDescriptor getFacetDescriptorAt(int i) {
+        if (i>facetDescriptors.size()-1) {
+            return null;
+        }
         return facetDescriptors.get(i);
     }
 
