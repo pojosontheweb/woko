@@ -32,6 +32,8 @@ import woko.tooling.utils.Logger;
 
 import javax.swing.*;
 import javax.swing.border.Border;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.*;
@@ -48,6 +50,7 @@ public class WokoToolWindow implements ToolWindowFactory {
     private JButton reloadButton;
     private JTextField textFieldFilter;
     private JButton clearButton;
+    private JCheckBox includeLibsCheckBox;
 
     private Project project;
     private TableRowSorter<FacetDescriptorTableModel> sorter;
@@ -84,6 +87,11 @@ public class WokoToolWindow implements ToolWindowFactory {
             }
         });
         table1.setIntercellSpacing(new Dimension(0,0));
+        includeLibsCheckBox.addChangeListener(new ChangeListener() {
+            public void stateChanged(ChangeEvent changeEvent) {
+                filter();
+            }
+        });
     }
 
     private void openFacets(int... rows) {
@@ -133,10 +141,18 @@ public class WokoToolWindow implements ToolWindowFactory {
                 FacetDescriptorTableModel model = entry.getModel();
                 FacetDescriptor fd = model.getFacetDescriptorAt(entry.getIdentifier());
                 String filterText = textFieldFilter.getText();
-                return (strMatch(fd.getName(), filterText)
+                boolean fdMatch = (strMatch(fd.getName(), filterText)
                     || strMatch(fd.getProfileId(), filterText)
                     || strMatch(fd.getTargetObjectType().getName(), filterText)
                     || strMatch(fd.getFacetClass().getName(), filterText));
+                if (fdMatch) {
+                    // do we include libs or not ?
+                    if (!includeLibsCheckBox.isSelected()) {
+                        // check if class is project class
+                        return model.getProjectFile(entry.getIdentifier())!=null;
+                    }
+                }
+                return fdMatch;
             }
 
             private boolean strMatch(String s, String filterText) {
@@ -223,7 +239,7 @@ class FacetTableCellRenderer extends DefaultTableCellRenderer {
                             int row, int column) {
         FacetDescriptorTableModel model = (FacetDescriptorTableModel)table.getModel();
         // is the class a project class ?
-        if (model.getProjectFile(row)==null) {
+        if (model.getProjectFile(table.convertRowIndexToModel(row))==null) {
             setBackground(new Color(230,230,230));
         } else {
             setBackground(Color.white);
