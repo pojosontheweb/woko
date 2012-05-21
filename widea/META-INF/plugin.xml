@@ -33,11 +33,6 @@
   </project-components>
 
   <actions>
-    <!-- Add your actions here -->
-      <action id="FindFacet" class="woko.idea.FindFacetAction" text="FindFacet" description="FindFacet" icon="/woko/idea/woko.png">
-          <add-to-group group-id="SearchMenu" anchor="first"/>
-          <keyboard-shortcut keymap="$default" first-keystroke="shift meta W"/>
-      </action>
   </actions>
 
   <extensions defaultExtensionNs="com.intellij">

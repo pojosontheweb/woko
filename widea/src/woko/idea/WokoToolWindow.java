@@ -16,6 +16,9 @@
 
 package woko.idea;
 
+import com.intellij.openapi.compiler.CompileContext;
+import com.intellij.openapi.compiler.CompileStatusNotification;
+import com.intellij.openapi.compiler.CompilerManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowFactory;
@@ -91,10 +94,15 @@ public class WokoToolWindow implements ToolWindowFactory {
     }
 
     private void refresh() {
-        FacetDescriptorTableModel fdm = getWpc().initializeFacetsTable(table1);
-        if (fdm!=null) {
-            textFieldFilter.setEnabled(true);
-        }
+        // trigger a make and load facets
+        CompilerManager.getInstance(project).make(new CompileStatusNotification() {
+            public void finished(boolean b, int i, int i1, CompileContext compileContext) {
+                FacetDescriptorTableModel fdm = getWpc().initializeFacetsTable(table1);
+                if (fdm!=null) {
+                    textFieldFilter.setEnabled(true);
+                }
+            }
+        });
     }
 
     private void filter() {
