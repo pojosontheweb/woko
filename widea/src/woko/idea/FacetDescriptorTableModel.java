@@ -17,52 +17,23 @@
 package woko.idea;
 
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.psi.JavaPsiFacade;
-import com.intellij.psi.PsiClass;
-import com.intellij.psi.PsiFile;
-import com.intellij.psi.search.GlobalSearchScope;
 import net.sourceforge.jfacets.FacetDescriptor;
 
 import javax.swing.table.AbstractTableModel;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 class FacetDescriptorTableModel extends AbstractTableModel {
 
-    private final List<FacetDescriptor> facetDescriptors;
-    private final String[] facetLocalFiles;
-    private Map<String,Long> pushStamps;
-    private final JavaPsiFacade psiFacade;
-    private final GlobalSearchScope globalSearchScope;
+    private final Project project;
 
     private static final String[] COLUMNS = new String[] { "name", "profileId", "targetObjectType", "facetClass" };
 
-    FacetDescriptorTableModel(Project project, List<FacetDescriptor> descriptors, Map<String,Long> pushStamps) {
-        facetDescriptors = descriptors;
-        facetLocalFiles = new String[descriptors.size()];
-        psiFacade = JavaPsiFacade.getInstance(project);
-        globalSearchScope = GlobalSearchScope.projectScope(project);
-        this.pushStamps = pushStamps != null ? pushStamps : new HashMap<String, Long>();
-        // iterate on descriptors and set the local files if
-        // any for later use
-        for (int i=0 ; i<descriptors.size(); i++) {
-            // check if the file is defined in the project
-            String facetClassName = descriptors.get(i).getFacetClass().getName();
-            PsiClass psiClass = getPsiClass(facetClassName);
-            if (psiClass!=null) {
-                String fqcn = psiClass.getQualifiedName();
-                facetLocalFiles[i] = fqcn;
-                PsiFile pf = psiClass.getContainingFile();
-                if (pf!=null) {
-                    VirtualFile vf = pf.getVirtualFile();
-                    if (vf!=null) {
-                        pushStamps.put(fqcn, vf.getModificationStamp());
-                    }
-                }
-            }
-        }
+    FacetDescriptorTableModel(Project project) {
+        this.project = project;
+    }
+
+    private WokoProjectComponent wpc() {
+        return project.getComponent(WokoProjectComponent.class);
     }
 
     @Override
@@ -71,7 +42,7 @@ class FacetDescriptorTableModel extends AbstractTableModel {
     }
 
     public int getRowCount() {
-        return facetDescriptors.size();
+        return wpc().getFacetDescriptors().size();
     }
 
     public int getColumnCount() {
@@ -79,6 +50,7 @@ class FacetDescriptorTableModel extends AbstractTableModel {
     }
 
     public Object getValueAt(int row, int col) {
+        List<FacetDescriptor> facetDescriptors = wpc().getFacetDescriptors();
         if (row>facetDescriptors.size()-1) {
             return null;
         }
@@ -93,33 +65,11 @@ class FacetDescriptorTableModel extends AbstractTableModel {
     }
 
     public FacetDescriptor getFacetDescriptorAt(int i) {
+        List<FacetDescriptor> facetDescriptors = wpc().getFacetDescriptors();
         if (i>facetDescriptors.size()-1) {
             return null;
         }
         return facetDescriptors.get(i);
     }
 
-    public String getProjectFile(FacetDescriptor fd) {
-        int i = facetDescriptors.indexOf(fd);
-        if (i==-1) {
-            return null;
-        }
-        return facetLocalFiles[i];
-    }
-
-    public Long getPushStamp(FacetDescriptor fd) {
-        String facetLocalFile = getProjectFile(fd);
-        if (facetLocalFile!=null) {
-            return pushStamps.get(facetLocalFile);
-        }
-        return null;
-    }
-
-    public Map<String,Long> getPushStamps() {
-        return pushStamps;
-    }
-
-    public PsiClass getPsiClass(String projectFile) {
-         return psiFacade.findClass(projectFile, globalSearchScope);
-    }
 }

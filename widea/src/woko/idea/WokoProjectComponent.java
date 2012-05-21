@@ -21,22 +21,19 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.JavaPsiFacade;
 import com.intellij.psi.PsiClass;
+import com.intellij.psi.PsiFile;
 import com.intellij.psi.search.GlobalSearchScope;
 import net.sourceforge.jfacets.FacetDescriptor;
 import org.jetbrains.annotations.NotNull;
 import woko.tooling.cli.Runner;
-import woko.tooling.utils.AppHttpClient;
 import woko.tooling.utils.AppUtils;
 import woko.tooling.utils.Logger;
 import woko.tooling.utils.PomHelper;
 
-import javax.swing.*;
-import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableColumnModel;
-import javax.swing.table.TableModel;
-import javax.swing.table.TableRowSorter;
 import java.io.File;
 import java.io.StringWriter;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -45,6 +42,9 @@ public class WokoProjectComponent implements ProjectComponent {
     private final Project project;
     private JavaPsiFacade psiFacade;
     private GlobalSearchScope projectScope;
+
+    private List<FacetDescriptor> facetDescriptors = Collections.emptyList();
+    private Map<String,Long> refreshStamps = Collections.emptyMap();
 
     public WokoProjectComponent(Project project) {
         this.project = project;
@@ -74,7 +74,7 @@ public class WokoProjectComponent implements ProjectComponent {
         if (fqcn==null) {
             return false;
         }
-        PsiClass c = psiFacade.findClass(fqcn, projectScope);
+        PsiClass c = getPsiClass(fqcn);
         if (c!=null) {
             c.getContainingFile().navigate(true);
             return true;
@@ -82,58 +82,40 @@ public class WokoProjectComponent implements ProjectComponent {
         return false;
     }
 
-    private FacetDescriptorTableModel createFacetsTableModel(Map<String,Long> pushStamps) {
+    public void refresh() {
         // invoke runner to grab the facets in the project
         VirtualFile baseDir = project.getBaseDir();
         if (baseDir==null) {
-            return null;
-        }
-        File projectRootDir = new File(baseDir.getPath());
-        StringWriter sw = new StringWriter();
-        Logger logger = new Logger(sw);
-        Runner runner = new Runner(logger, projectRootDir);
-        try {
-            Object result = runner.invokeCommand("list", "facets", "customClassLoader");
-            if (result instanceof List) {
-                @SuppressWarnings("unchecked")
-                List<FacetDescriptor> descriptors = (List<FacetDescriptor>)result;
-                return new FacetDescriptorTableModel(project, descriptors, pushStamps);
-            }
-            return null;
-        } catch(Exception e) {
-            return null;
-        }
-    }
-
-    public FacetDescriptorTableModel initializeFacetsTable(JTable table) {
-        // retrieve push states for the old model
-        FacetDescriptorTableModel oldModel = getFacetTableModel(table);
-        Map<String,Long> oldPushStamps = null;
-        if (oldModel!=null) {
-            oldPushStamps = oldModel.getPushStamps();
-        }
-
-        FacetDescriptorTableModel model = createFacetsTableModel(oldPushStamps);
-        if (model!=null) {
-            TableRowSorter<FacetDescriptorTableModel> sorter = new TableRowSorter<FacetDescriptorTableModel>(model);
-            table.setModel(model);
-            table.setRowSorter(sorter);
-            TableCellRenderer renderer = new FacetTableCellRenderer();
-            TableColumnModel colModel = table.getColumnModel();
-            colModel.getColumn(0).setWidth(70);
-            for (int i=0;i<model.getColumnCount();i++) {
-                colModel.getColumn(i).setCellRenderer(renderer);
+            facetDescriptors = Collections.emptyList();
+        } else {
+            File projectRootDir = new File(baseDir.getPath());
+            StringWriter sw = new StringWriter();
+            Logger logger = new Logger(sw);
+            Runner runner = new Runner(logger, projectRootDir);
+            try {
+                Object result = runner.invokeCommand("list", "facets", "customClassLoader");
+                if (result instanceof List) {
+                    facetDescriptors = (List<FacetDescriptor>)result;
+                }
+            } catch(Exception e) {
+                facetDescriptors = Collections.emptyList();
+                // TODO handle errors
             }
         }
-        return model;
+        // init refresh stamps
+        Map<String,Long> newStamps = new HashMap<String, Long>();
+        for (FacetDescriptor fd : facetDescriptors) {
+            String fqcn = fd.getFacetClass().getName();
+            PsiFile f = getPsiFile(fqcn);
+            if (f!=null) {
+                newStamps.put(fqcn, f.getModificationStamp());
+            }
+        }
+        refreshStamps = newStamps;
     }
 
-    public FacetDescriptorTableModel getFacetTableModel(JTable table) {
-        TableModel m = table.getModel();
-        if (m instanceof FacetDescriptorTableModel) {
-            return (FacetDescriptorTableModel)m;
-        }
-        return null;
+    public List<FacetDescriptor> getFacetDescriptors() {
+        return facetDescriptors;
     }
 
     public boolean push(String url, String username, String password) {
@@ -145,39 +127,16 @@ public class WokoProjectComponent implements ProjectComponent {
         return true;
     }
 
-    public static abstract class FilterCallback {
-
-        protected abstract boolean matches(FacetDescriptor fd);
-
-        protected boolean strMatch(String s, String filterText) {
-            return filterText == null
-                    || filterText.equals("")
-                    || s == null
-                    || s.equals("")
-                    || s.toLowerCase().contains(filterText.toLowerCase());
-        }
-
-        protected boolean fdMatch(FacetDescriptor fd, String filterText) {
-            return strMatch(fd.getName(), filterText)
-                    || strMatch(fd.getProfileId(), filterText)
-                    || strMatch(fd.getTargetObjectType().getName(), filterText)
-                    || strMatch(fd.getFacetClass().getName(), filterText);
-        }
-
+    public PsiClass getPsiClass(String fqcn) {
+        return psiFacade.findClass(fqcn, projectScope);
     }
 
-    public void setFacetTableFilterCallback(JTable table, final FilterCallback callback) {
-        TableRowSorter<FacetDescriptorTableModel> sorter = (TableRowSorter<FacetDescriptorTableModel>)table.getRowSorter();
-        if (sorter!=null) {
-            sorter.setRowFilter(new RowFilter<FacetDescriptorTableModel,Integer>() {
-                @Override
-                public boolean include(Entry<? extends FacetDescriptorTableModel, ? extends Integer> entry) {
-                    FacetDescriptorTableModel model = entry.getModel();
-                    FacetDescriptor fd = model.getFacetDescriptorAt(entry.getIdentifier());
-                    return callback.matches(fd);
-                }
-            });
+    public PsiFile getPsiFile(String fqcn) {
+        PsiClass pc = getPsiClass(fqcn);
+        if (pc!=null) {
+            return pc.getContainingFile();
         }
+        return null;
     }
 
     public void openPushDialog() {
@@ -188,5 +147,8 @@ public class WokoProjectComponent implements ProjectComponent {
     }
 
 
+    public Long getLastRefreshStamp(FacetDescriptor fd) {
+        return refreshStamps.get(fd.getFacetClass().getName());
+    }
 }
 

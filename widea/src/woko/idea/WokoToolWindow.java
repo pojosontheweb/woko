@@ -32,6 +32,9 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumnModel;
+import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
@@ -73,7 +76,7 @@ public class WokoToolWindow implements ToolWindowFactory {
                     int row = table1.convertRowIndexToModel(table1.getSelectedRow());
                     FacetDescriptorTableModel model = (FacetDescriptorTableModel)table1.getModel();
                     FacetDescriptor fd = model.getFacetDescriptorAt(row);
-                    getWpc().openClassInEditor(model.getProjectFile(fd));
+                    getWpc().openClassInEditor(fd.getFacetClass().getName());
                 }
             }
         });
@@ -100,20 +103,31 @@ public class WokoToolWindow implements ToolWindowFactory {
     }
 
     private void refresh() {
-        // trigger a make and load facets
+        // trigger a make and reload facets
+        reloadButton.setEnabled(false);
         CompilerManager.getInstance(project).make(new CompileStatusNotification() {
             public void finished(boolean b, int i, int i1, CompileContext compileContext) {
-                FacetDescriptorTableModel fdm = getWpc().initializeFacetsTable(table1);
-                if (fdm!=null) {
-                    textFieldFilter.setEnabled(true);
+                WokoProjectComponent wpc = project.getComponent(WokoProjectComponent.class);
+                wpc.refresh();
+                FacetDescriptorTableModel model = new FacetDescriptorTableModel(project);
+                TableRowSorter<FacetDescriptorTableModel> sorter = new TableRowSorter<FacetDescriptorTableModel>(model);
+                table1.setModel(model);
+                table1.setRowSorter(sorter);
+                TableCellRenderer renderer = new FacetTableCellRenderer(project);
+                TableColumnModel colModel = table1.getColumnModel();
+                colModel.getColumn(0).setWidth(70);
+                for (int colIndex=0;colIndex<model.getColumnCount();colIndex++) {
+                    colModel.getColumn(colIndex).setCellRenderer(renderer);
                 }
+                textFieldFilter.setEnabled(true);
+                reloadButton.setEnabled(true);
             }
         });
     }
 
     private void filter() {
         final WokoProjectComponent wpc = getWpc();
-        wpc.setFacetTableFilterCallback(table1, new WokoProjectComponent.FilterCallback() {
+        setFacetTableFilterCallback(table1, new FilterCallback() {
             @Override
             protected boolean matches(FacetDescriptor fd) {
                 String text = textFieldFilter.getText();
@@ -122,7 +136,7 @@ public class WokoToolWindow implements ToolWindowFactory {
                     // do we include libs or not ?
                     if (!includeLibsCheckBox.isSelected()) {
                         // check if class is project class
-                        return wpc.getFacetTableModel(table1).getProjectFile(fd) != null;
+                        return wpc.getPsiClass(fd.getFacetClass().getName())!=null;
                     }
                 }
                 return fdMatch;
@@ -132,11 +146,45 @@ public class WokoToolWindow implements ToolWindowFactory {
 
     public void createToolWindowContent(Project project, ToolWindow toolWindow) {
         this.project = project;
-        table1.setModel(new FacetDescriptorTableModel(project, new ArrayList<FacetDescriptor>(), null));
+        table1.setModel(new FacetDescriptorTableModel(project));
         ContentFactory contentFactory = ContentFactory.SERVICE.getInstance();
         Content content = contentFactory.createContent(panel1, "", false);
         toolWindow.getContentManager().addContent(content);
-        refresh();
+    }
+
+    public static abstract class FilterCallback {
+
+        protected abstract boolean matches(FacetDescriptor fd);
+
+        protected boolean strMatch(String s, String filterText) {
+            return filterText == null
+                    || filterText.equals("")
+                    || s == null
+                    || s.equals("")
+                    || s.toLowerCase().contains(filterText.toLowerCase());
+        }
+
+        protected boolean fdMatch(FacetDescriptor fd, String filterText) {
+            return strMatch(fd.getName(), filterText)
+                    || strMatch(fd.getProfileId(), filterText)
+                    || strMatch(fd.getTargetObjectType().getName(), filterText)
+                    || strMatch(fd.getFacetClass().getName(), filterText);
+        }
+
+    }
+
+    public void setFacetTableFilterCallback(JTable table, final FilterCallback callback) {
+        TableRowSorter<FacetDescriptorTableModel> sorter = (TableRowSorter<FacetDescriptorTableModel>)table.getRowSorter();
+        if (sorter!=null) {
+            sorter.setRowFilter(new RowFilter<FacetDescriptorTableModel,Integer>() {
+                @Override
+                public boolean include(Entry<? extends FacetDescriptorTableModel, ? extends Integer> entry) {
+                    FacetDescriptorTableModel model = entry.getModel();
+                    FacetDescriptor fd = model.getFacetDescriptorAt(entry.getIdentifier());
+                    return callback.matches(fd);
+                }
+            });
+        }
     }
 
 }

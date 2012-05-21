@@ -16,6 +16,7 @@
 
 package woko.idea;
 
+import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiFile;
@@ -37,34 +38,41 @@ import java.util.Date;
  */
 class FacetTableCellRenderer extends DefaultTableCellRenderer {
 
+    private final Project project;
+
+    FacetTableCellRenderer(Project project) {
+        this.project = project;
+    }
+
+    private WokoProjectComponent wpc() {
+        return project.getComponent(WokoProjectComponent.class);
+    }
+
     public Component getTableCellRendererComponent(
                             JTable table, Object value,
                             boolean isSelected, boolean hasFocus,
                             int row, int column) {
         FacetDescriptorTableModel model = (FacetDescriptorTableModel)table.getModel();
+        WokoProjectComponent w = wpc();
         // is the class a project class ?
         FacetDescriptor fd = model.getFacetDescriptorAt(table.convertRowIndexToModel(row));
-        String projectFile = model.getProjectFile(fd);
-        if (projectFile==null) {
+        PsiClass psiClass = w.getPsiClass(fd.getFacetClass().getName());
+        if (psiClass==null) {
             setBackground(new Color(230,230,230));
         } else {
             setBackground(Color.white);
         }
 
-        // does it need a push ?
-        Long pushStamp = model.getPushStamp(fd);
+        // check if the file has changed since last refresh
+        Long lastRefreshStamp = w.getLastRefreshStamp(fd);
         boolean needsPush = false;
-        if (pushStamp!=null) {
+        if (lastRefreshStamp!=null) {
             // check if the file has been modified since last push
-            PsiClass psiClass = model.getPsiClass(projectFile);
             if (psiClass!=null) {
                 PsiFile f = psiClass.getContainingFile();
                 if (f!=null) {
-                    VirtualFile vf = f.getVirtualFile();
-                    if (vf!=null) {
-                        long modifStamp = vf.getModificationStamp();
-                        needsPush = modifStamp!=pushStamp;
-                    }
+                    long modifStamp = f.getModificationStamp();
+                    needsPush = modifStamp!=lastRefreshStamp;
                 }
             }
         }
