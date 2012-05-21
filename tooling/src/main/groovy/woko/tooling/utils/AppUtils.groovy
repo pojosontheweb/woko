@@ -71,8 +71,8 @@ class AppUtils {
     static def pushFacetSources(PomHelper pomHelper, Logger logger, String url, String username, String password, List<String> sources) {
         def httpParams = [:]
         int index = 0
-        sources.each { k,v ->
-            httpParams["facet.sources[$index]"] = v
+        sources.each { k ->
+            httpParams["facet.sources[$index]"] = k
             index++
         }
         AppHttpClient c = new AppHttpClient(logger, url, AppUtils.isBuiltInAuth(pomHelper))

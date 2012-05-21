@@ -126,11 +126,13 @@ public class WokoProjectComponent implements ProjectComponent {
     public boolean push(String url, String username, String password) {
         // retrieve the facet sources from modified facets
         List<String> facetSources = new ArrayList<String>();
+        List<String> pushedFqcns = new ArrayList<String>();
         for (FacetDescriptor fd : facetDescriptors) {
             if (isModifiedSinceLastRefresh(fd)) {
                 String fqcn = fd.getFacetClass().getName();
                 PsiClass psiClass = getPsiClass(fqcn);
                 facetSources.add(psiClass.getContainingFile().getText());
+                pushedFqcns.add(fqcn);
             }
         }
 
@@ -138,7 +140,21 @@ public class WokoProjectComponent implements ProjectComponent {
         PomHelper pomHelper = AppUtils.getPomHelper(new File(project.getBaseDir().getPath()));
         StringWriter sw = new StringWriter();
         Logger logger = new Logger(sw);
-        AppUtils.pushFacetSources(pomHelper, logger, url, username, password, facetSources);
+        try {
+            AppUtils.pushFacetSources(pomHelper, logger, url, username, password, facetSources);
+        } catch(Exception e) {
+            // TODO log error
+            throw new RuntimeException("unable to push !", e);
+        }
+
+        // refresh stamps : update pushed to last updated file date
+        Map<String,Long> newStamps = new HashMap<String, Long>(refreshStamps);
+        for (String fqcn : pushedFqcns) {
+            newStamps.remove(fqcn);
+            newStamps.put(fqcn, getPsiFile(fqcn).getModificationStamp());
+        }
+        refreshStamps = newStamps;
+
         return true;
     }
 
