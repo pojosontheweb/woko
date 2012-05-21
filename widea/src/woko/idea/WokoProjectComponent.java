@@ -32,16 +32,15 @@ import woko.tooling.utils.PomHelper;
 
 import java.io.File;
 import java.io.StringWriter;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class WokoProjectComponent implements ProjectComponent {
 
     private final Project project;
     private JavaPsiFacade psiFacade;
     private GlobalSearchScope projectScope;
+
+    private PushFacetsDialogWrapper pushDialog = null;
 
     private List<FacetDescriptor> facetDescriptors = Collections.emptyList();
     private Map<String,Long> refreshStamps = Collections.emptyMap();
@@ -125,12 +124,34 @@ public class WokoProjectComponent implements ProjectComponent {
     }
 
     public boolean push(String url, String username, String password) {
+        // retrieve the facet sources from modified facets
+        List<String> facetSources = new ArrayList<String>();
+        for (FacetDescriptor fd : facetDescriptors) {
+            if (isModifiedSinceLastRefresh(fd)) {
+                String fqcn = fd.getFacetClass().getName();
+                PsiClass psiClass = getPsiClass(fqcn);
+                facetSources.add(psiClass.getContainingFile().getText());
+            }
+        }
+
+        // push all this !
         PomHelper pomHelper = AppUtils.getPomHelper(new File(project.getBaseDir().getPath()));
-        List<String> facetSources = null;
         StringWriter sw = new StringWriter();
         Logger logger = new Logger(sw);
         AppUtils.pushFacetSources(pomHelper, logger, url, username, password, facetSources);
         return true;
+    }
+
+    public boolean isModifiedSinceLastRefresh(FacetDescriptor fd) {
+        Long lastRefreshStamp = getLastRefreshStamp(fd);
+        if (lastRefreshStamp!=null) {
+            PsiFile f = getPsiFile(fd.getFacetClass().getName());
+            if (f!=null) {
+                long modifStamp = f.getModificationStamp();
+                return modifStamp!=lastRefreshStamp;
+            }
+        }
+        return false;
     }
 
     public PsiClass getPsiClass(String fqcn) {
@@ -146,10 +167,12 @@ public class WokoProjectComponent implements ProjectComponent {
     }
 
     public void openPushDialog() {
-        PushFacetsDialogWrapper w = new PushFacetsDialogWrapper(project);
-        w.setTitle("Push facets...");
-        w.pack();
-        w.show();
+        if (pushDialog==null) {
+            pushDialog = new PushFacetsDialogWrapper(project);
+            pushDialog.setTitle("Push facets...");
+        }
+        pushDialog.pack();
+        pushDialog.show();
     }
 
 

@@ -63,22 +63,11 @@ class FacetTableCellRenderer extends DefaultTableCellRenderer {
             setBackground(Color.white);
         }
 
-        // check if the file has changed since last refresh
-        Long lastRefreshStamp = w.getLastRefreshStamp(fd);
-        boolean needsPush = false;
-        if (lastRefreshStamp!=null) {
-            // check if the file has been modified since last push
-            if (psiClass!=null) {
-                PsiFile f = psiClass.getContainingFile();
-                if (f!=null) {
-                    long modifStamp = f.getModificationStamp();
-                    needsPush = modifStamp!=lastRefreshStamp;
-                }
-            }
-        }
         super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
         setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.lightGray));
-        if (needsPush) {
+
+        // check if the file has changed since last refresh
+        if (w.isModifiedSinceLastRefresh(fd)) {
             setFont(getFont().deriveFont(Font.BOLD));
         }
         return this;

@@ -31,6 +31,7 @@ class PushFacetsDialogWrapper extends DialogWrapper {
         super(project);
         this.project = project;
         init();
+        this.setResizable(false);
         centerPanel.setAppUrl("http://localhost:8080/" + project.getName());
     }
 
