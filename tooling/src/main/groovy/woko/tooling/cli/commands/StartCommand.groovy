@@ -7,10 +7,8 @@ class StartCommand extends ProcessCmd{
 
     private boolean started = false
 
-    StartCommand(Runner runner, File projectDir, Logger logger) {
+    StartCommand(Runner runner) {
         super(runner,
-                projectDir,
-                logger,
                 "start",
                 "run the application in a local jetty container",
                 "",

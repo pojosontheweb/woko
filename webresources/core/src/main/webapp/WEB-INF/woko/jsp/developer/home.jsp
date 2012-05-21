@@ -16,7 +16,7 @@
 <%@ page import="woko.facets.builtin.WokoFacets" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="/WEB-INF/woko/jsp/taglibs.jsp"%>
-<c:set var="o" value="${actionBean.object}"/>
+<c:set var="o" value="${home.facetContext.targetObject}"/>
 <w:facet facetName="<%=WokoFacets.layout%>" targetObject="${o}"/>
 <w:facet targetObject="${o}" facetName="<%=WokoFacets.renderTitle%>"/>
 <fmt:message bundle="${wokoBundle}" var="pageTitle" key="woko.devel.home.pageTitle"/>

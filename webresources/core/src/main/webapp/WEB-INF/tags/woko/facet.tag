@@ -18,11 +18,13 @@
 <%@ attribute name="targetObject" required="false" type="java.lang.Object" %>
 <%@ attribute name="targetObjectClass" required="false" type="java.lang.Class" %>
 <%@ attribute name="facetName" required="true" type="java.lang.String" %>
+<%@ attribute name="throwIfNotFound" required="false" type="java.lang.Boolean" %>
 <%
+    throwIfNotFound = throwIfNotFound==null ? true : throwIfNotFound;
     if (targetObjectClass==null && targetObject!=null) {
         targetObjectClass = targetObject.getClass();
     }
     Woko woko = Woko.getWoko(application);
     // binds facet to request, throws if not found
-    woko.getFacet(facetName, request, targetObject, targetObjectClass, true);
+    woko.getFacet(facetName, request, targetObject, targetObjectClass, throwIfNotFound);
 %>

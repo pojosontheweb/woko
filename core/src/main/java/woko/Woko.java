@@ -28,6 +28,7 @@ import woko.facets.WokoProfileRepository;
 import woko.persistence.ObjectStore;
 import woko.users.UserManager;
 import woko.users.UsernameResolutionStrategy;
+import woko.util.Util;
 import woko.util.WLogger;
 
 import javax.servlet.ServletContext;
@@ -218,10 +219,17 @@ public class Woko {
     }
 
     public static IFacetDescriptorManager createFacetDescriptorManager(List<String> packageNames) {
+        return createFacetDescriptorManager(packageNames, Woko.class.getClassLoader());
+    }
+
+    public static IFacetDescriptorManager createFacetDescriptorManager(List<String> packageNames, ClassLoader classLoader) {
+        Util.assertArg("packageNames", packageNames);
+        Util.assertArg("classLoader", classLoader);
         logger.info("Creating Annotated Facets, scanning packages : " + packageNames);
-        return new AnnotatedFacetDescriptorManager(packageNames).
-                setDuplicatedKeyPolicy(DuplicatedKeyPolicyType.FirstScannedWins).
-                initialize();
+        return new AnnotatedFacetDescriptorManager(packageNames)
+                .setDuplicatedKeyPolicy(DuplicatedKeyPolicyType.FirstScannedWins)
+                .setClassLoader(classLoader)
+                .initialize();
     }
 
 

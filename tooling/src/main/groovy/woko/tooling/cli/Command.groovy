@@ -37,9 +37,9 @@ abstract class Command {
     private def webXmlSlurped
     private PomHelper pomHelper
 
-    Command(Runner runner, File projectDir, Logger logger, String name, String shortDesc, String argSpec, String longHelp) {
-        this.projectDir = projectDir
-        this.logger = logger
+    Command(Runner runner, String name, String shortDesc, String argSpec, String longHelp) {
+        this.projectDir = runner.workingDir
+        this.logger = runner.logger
         this.name = name
         this.shortDesc = shortDesc
         this.argSpec = argSpec
@@ -104,6 +104,37 @@ abstract class Command {
 
     protected IFacetDescriptorManager getFdm() {
         Woko.createFacetDescriptorManager(computeFacetPackages())
+    }
+
+    protected String makePath(String... parts) {
+        StringBuilder sb = new StringBuilder()
+        for (int i=0;i<parts.length;i++) {
+            sb << parts[i]
+            if (i<parts.length-1) {
+                sb << File.separator
+            }
+        }
+        return sb.toString()
+    }
+
+    protected IFacetDescriptorManager getFdmCustomClassLoader() {
+        def urls = []
+        [
+                makePath(projectDir.absolutePath,"target","classes"),
+                makePath(projectDir.absolutePath,"target",artifactId,"WEB-INF","classes")
+        ].each {
+            urls << new File(it).toURL()
+        }
+        File webInfLib = new File(makePath(projectDir.absolutePath,"target",artifactId,"WEB-INF","lib"))
+        webInfLib.eachFile { File f ->
+            if (f.name.endsWith(".jar")) {
+                urls << f.toURL()
+            }
+        }
+        URL[] ua = new URL[urls.size()]
+        ua = (URL[])urls.toArray(ua)
+        URLClassLoader classLoader = new URLClassLoader(ua, Runner.class.getClassLoader())
+        Woko.createFacetDescriptorManager(computeFacetPackages(), classLoader)
     }
 
     protected void iLog(msg) {
@@ -204,6 +235,6 @@ abstract class Command {
 
 
 
-    abstract void execute(List<String> args)
+    abstract def execute(List<String> args)
 
 }
