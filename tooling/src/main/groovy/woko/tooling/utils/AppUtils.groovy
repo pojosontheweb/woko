@@ -16,6 +16,8 @@
 
 package woko.tooling.utils
 
+import org.apache.maven.model.Dependency
+
 class AppUtils {
 
     static String simpleAsk(String question){
@@ -54,6 +56,44 @@ class AppUtils {
             return [pkg:fqcn[0..i-1], clazz:fqcn[i+1..-1]]
         }
         return [pkg:'',clazz:fqcn]
+    }
+
+    static PomHelper getPomHelper(File projectDir) {
+        File pomFile = new File("$projectDir.absolutePath/pom.xml")
+        if (!pomFile) {
+            return null
+        }
+        PomHelper pomHelper = new PomHelper(pomFile)
+        return pomHelper
+    }
+
+
+    static def pushFacetSources(PomHelper pomHelper, Logger logger, String url, String username, String password, List<String> sources) {
+        def httpParams = [:]
+        int index = 0
+        sources.each { k ->
+            httpParams["facet.sources[$index]"] = k
+            index++
+        }
+        AppHttpClient c = new AppHttpClient(logger, url, AppUtils.isBuiltInAuth(pomHelper))
+        StringBuilder res = new StringBuilder()
+        c.doWithLogin(username, password) {
+            c.post("/push", httpParams) { String resp ->
+                resp.eachLine { l ->
+                    res << l
+                }
+            }
+        }
+        return res
+    }
+
+    static boolean isBuiltInAuth(PomHelper pomHelper) {
+        for (Dependency d : pomHelper.model.dependencies) {
+            if (d.artifactId=="woko-builtin-auth-web") {
+                return true
+            }
+        }
+        return false
     }
 
 }
