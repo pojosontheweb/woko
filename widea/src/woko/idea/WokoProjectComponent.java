@@ -18,7 +18,7 @@ package woko.idea;
 
 import com.intellij.openapi.components.ProjectComponent;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.openapi.vfs.*;
 import com.intellij.psi.JavaPsiFacade;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiFile;
@@ -106,9 +106,15 @@ public class WokoProjectComponent implements ProjectComponent {
         Map<String,Long> newStamps = new HashMap<String, Long>();
         for (FacetDescriptor fd : facetDescriptors) {
             String fqcn = fd.getFacetClass().getName();
-            PsiFile f = getPsiFile(fqcn);
-            if (f!=null) {
-                newStamps.put(fqcn, f.getModificationStamp());
+            // keep old stamp if any
+            Long oldStamp = refreshStamps.get(fqcn);
+            if (oldStamp==null) {
+                PsiFile f = getPsiFile(fqcn);
+                if (f!=null) {
+                    newStamps.put(fqcn, f.getModificationStamp());
+                }
+            } else {
+                newStamps.put(fqcn, oldStamp);
             }
         }
         refreshStamps = newStamps;
