@@ -44,6 +44,7 @@ public class WokoToolWindow implements ToolWindowFactory {
     private JTextField textFieldFilter;
     private JButton clearButton;
     private JCheckBox includeLibsCheckBox;
+    private JButton pushButton;
 
     private Project project;
 
@@ -85,6 +86,11 @@ public class WokoToolWindow implements ToolWindowFactory {
         includeLibsCheckBox.addChangeListener(new ChangeListener() {
             public void stateChanged(ChangeEvent changeEvent) {
                 filter();
+            }
+        });
+        pushButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent actionEvent) {
+                getWpc().openPushDialog();
             }
         });
     }

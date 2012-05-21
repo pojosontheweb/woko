@@ -147,11 +147,7 @@ abstract class Command {
 
     protected PomHelper getPomHelper() {
         if (pomHelper==null) {
-            File pomFile = new File("$projectDir.absolutePath/pom.xml")
-            if (!pomFile) {
-                logger.error("pom file not found in project dir $projectDir")
-            }
-            pomHelper = new PomHelper(pomFile)
+            pomHelper = AppUtils.getPomHelper(projectDir)
         }
         return pomHelper
     }

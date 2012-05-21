@@ -43,37 +43,27 @@ class AppHttpClient {
 
     private final HttpClient httpClient = new DefaultHttpClient()
     private final String url
+    private final boolean useBuiltInAuth
 
     private HttpContext ctx = null
 
     private final Logger logger
-    private final PomHelper pomHelper
 
-    AppHttpClient(Logger logger, String url, PomHelper pomHelper) {
+    AppHttpClient(Logger logger, String url, boolean useBuiltInAuth) {
         this.url = url
         this.logger = logger
-        this.pomHelper = pomHelper
+        this.useBuiltInAuth = useBuiltInAuth
         httpClient.getParams().setBooleanParameter(ClientPNames.HANDLE_REDIRECTS, true)
-    }
-
-    private boolean isBuiltInAuth() {
-        for (Dependency d : pomHelper.model.dependencies) {
-            if (d.artifactId=="woko-builtin-auth-web") {
-                return true
-            }
-        }
-        return false
     }
 
     def doWithLogin(String username, String password, Closure c) {
         HttpContext context = new BasicHttpContext()
         CookieStore cookieStore = new BasicCookieStore()
         context.setAttribute(ClientContext.COOKIE_STORE, cookieStore)
-        def bia = isBuiltInAuth()
-        String usernameParam = bia ? "username" : "j_username"
-        String passwordParam = bia ? "password" : "j_password"
-        String handler = bia ? "login" : "j_security_check"
-        String additionalParam = bia ? "&login=true" : ""
+        String usernameParam = useBuiltInAuth ? "username" : "j_username"
+        String passwordParam = useBuiltInAuth ? "password" : "j_password"
+        String handler = useBuiltInAuth ? "login" : "j_security_check"
+        String additionalParam = useBuiltInAuth ? "&login=true" : ""
 
         String loginUrl = "$url/$handler?$usernameParam=$username&$passwordParam=$password$additionalParam"
         HttpRequest req = new HttpGet(loginUrl)

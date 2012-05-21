@@ -25,7 +25,10 @@ import com.intellij.psi.search.GlobalSearchScope;
 import net.sourceforge.jfacets.FacetDescriptor;
 import org.jetbrains.annotations.NotNull;
 import woko.tooling.cli.Runner;
+import woko.tooling.utils.AppHttpClient;
+import woko.tooling.utils.AppUtils;
 import woko.tooling.utils.Logger;
+import woko.tooling.utils.PomHelper;
 
 import javax.swing.*;
 import javax.swing.table.TableCellRenderer;
@@ -133,6 +136,15 @@ public class WokoProjectComponent implements ProjectComponent {
         return null;
     }
 
+    public boolean push(String url, String username, String password) {
+        PomHelper pomHelper = AppUtils.getPomHelper(new File(project.getBaseDir().getPath()));
+        List<String> facetSources = null;
+        StringWriter sw = new StringWriter();
+        Logger logger = new Logger(sw);
+        AppUtils.pushFacetSources(pomHelper, logger, url, username, password, facetSources);
+        return true;
+    }
+
     public static abstract class FilterCallback {
 
         protected abstract boolean matches(FacetDescriptor fd);
@@ -167,6 +179,14 @@ public class WokoProjectComponent implements ProjectComponent {
             });
         }
     }
+
+    public void openPushDialog() {
+        PushFacetsDialogWrapper w = new PushFacetsDialogWrapper(project);
+        w.setTitle("Push facets...");
+        w.pack();
+        w.show();
+    }
+
 
 }
 
