@@ -39,12 +39,12 @@ class FacetDescriptorTableModel extends AbstractTableModel {
 
     private static final String[] COLUMNS = new String[] { "name", "profileId", "targetObjectType", "facetClass" };
 
-    FacetDescriptorTableModel(Project project, List<FacetDescriptor> descriptors) {
+    FacetDescriptorTableModel(Project project, List<FacetDescriptor> descriptors, Map<String,Long> pushStamps) {
         facetDescriptors = descriptors;
         facetLocalFiles = new String[descriptors.size()];
         psiFacade = JavaPsiFacade.getInstance(project);
         globalSearchScope = GlobalSearchScope.projectScope(project);
-        pushStamps = new HashMap<String, Long>();
+        this.pushStamps = pushStamps != null ? pushStamps : new HashMap<String, Long>();
         // iterate on descriptors and set the local files if
         // any for later use
         for (int i=0 ; i<descriptors.size(); i++) {
@@ -113,6 +113,10 @@ class FacetDescriptorTableModel extends AbstractTableModel {
             return pushStamps.get(facetLocalFile);
         }
         return null;
+    }
+
+    public Map<String,Long> getPushStamps() {
+        return pushStamps;
     }
 
     public PsiClass getPsiClass(String projectFile) {
