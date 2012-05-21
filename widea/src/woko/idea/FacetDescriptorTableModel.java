@@ -17,41 +17,50 @@
 package woko.idea;
 
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.JavaPsiFacade;
 import com.intellij.psi.PsiClass;
+import com.intellij.psi.PsiFile;
 import com.intellij.psi.search.GlobalSearchScope;
 import net.sourceforge.jfacets.FacetDescriptor;
 
 import javax.swing.table.AbstractTableModel;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-/**
- * Created by IntelliJ IDEA.
- * User: vankeisb
- * Date: 18/05/12
- * Time: 10:32
- * To change this template use File | Settings | File Templates.
- */
 class FacetDescriptorTableModel extends AbstractTableModel {
 
     private final List<FacetDescriptor> facetDescriptors;
     private final String[] facetLocalFiles;
+    private final Map<String,Long> pushStamps;
+    private final JavaPsiFacade psiFacade;
+    private final GlobalSearchScope globalSearchScope;
 
     private static final String[] COLUMNS = new String[] { "name", "profileId", "targetObjectType", "facetClass" };
 
-    FacetDescriptorTableModel(Project project, List<FacetDescriptor> descriptors) {
-        this.facetDescriptors = descriptors;
-        this.facetLocalFiles = new String[descriptors.size()];
+    FacetDescriptorTableModel(Project project, List<FacetDescriptor> descriptors, Map<String,Long> pushStamps) {
+        facetDescriptors = descriptors;
+        facetLocalFiles = new String[descriptors.size()];
+        psiFacade = JavaPsiFacade.getInstance(project);
+        globalSearchScope = GlobalSearchScope.projectScope(project);
+        this.pushStamps = pushStamps != null ? pushStamps : new HashMap<String, Long>();
         // iterate on descriptors and set the local files if
         // any for later use
-        JavaPsiFacade psiFacade = JavaPsiFacade.getInstance(project);
-        GlobalSearchScope globalSearchScope = GlobalSearchScope.projectScope(project);
         for (int i=0 ; i<descriptors.size(); i++) {
             // check if the file is defined in the project
             String facetClassName = descriptors.get(i).getFacetClass().getName();
-            PsiClass psiClass = psiFacade.findClass(facetClassName, globalSearchScope);
+            PsiClass psiClass = getPsiClass(facetClassName);
             if (psiClass!=null) {
-                facetLocalFiles[i] = psiClass.getQualifiedName();
+                String fqcn = psiClass.getQualifiedName();
+                facetLocalFiles[i] = fqcn;
+                PsiFile pf = psiClass.getContainingFile();
+                if (pf!=null) {
+                    VirtualFile vf = pf.getVirtualFile();
+                    if (vf!=null) {
+                        pushStamps.put(fqcn, vf.getModificationStamp());
+                    }
+                }
             }
         }
     }
@@ -98,4 +107,19 @@ class FacetDescriptorTableModel extends AbstractTableModel {
         return facetLocalFiles[i];
     }
 
+    public Long getPushStamp(FacetDescriptor fd) {
+        String facetLocalFile = getProjectFile(fd);
+        if (facetLocalFile!=null) {
+            return pushStamps.get(facetLocalFile);
+        }
+        return null;
+    }
+
+    public Map<String,Long> getPushStamps() {
+        return pushStamps;
+    }
+
+    public PsiClass getPsiClass(String projectFile) {
+         return psiFacade.findClass(projectFile, globalSearchScope);
+    }
 }

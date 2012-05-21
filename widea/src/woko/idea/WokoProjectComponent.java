@@ -16,12 +16,8 @@
 
 package woko.idea;
 
-import com.intellij.openapi.actionSystem.DataKeys;
-import com.intellij.openapi.application.Application;
-import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.components.ProjectComponent;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.JavaPsiFacade;
 import com.intellij.psi.PsiClass;
@@ -34,10 +30,12 @@ import woko.tooling.utils.Logger;
 import javax.swing.*;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
+import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import java.io.File;
 import java.io.StringWriter;
 import java.util.List;
+import java.util.Map;
 
 public class WokoProjectComponent implements ProjectComponent {
 
@@ -81,7 +79,7 @@ public class WokoProjectComponent implements ProjectComponent {
         return false;
     }
 
-    private FacetDescriptorTableModel createFacetsTableModel() {
+    private FacetDescriptorTableModel createFacetsTableModel(Map<String,Long> pushStamps) {
         // invoke runner to grab the facets in the project
         VirtualFile baseDir = project.getBaseDir();
         if (baseDir==null) {
@@ -96,7 +94,7 @@ public class WokoProjectComponent implements ProjectComponent {
             if (result instanceof List) {
                 @SuppressWarnings("unchecked")
                 List<FacetDescriptor> descriptors = (List<FacetDescriptor>)result;
-                return new FacetDescriptorTableModel(project, descriptors);
+                return new FacetDescriptorTableModel(project, descriptors, pushStamps);
             }
             return null;
         } catch(Exception e) {
@@ -105,7 +103,14 @@ public class WokoProjectComponent implements ProjectComponent {
     }
 
     public FacetDescriptorTableModel initializeFacetsTable(JTable table) {
-        FacetDescriptorTableModel model = createFacetsTableModel();
+        // retrieve push states for the old model
+        FacetDescriptorTableModel oldModel = getFacetTableModel(table);
+        Map<String,Long> oldPushStamps = null;
+        if (oldModel!=null) {
+            oldPushStamps = oldModel.getPushStamps();
+        }
+
+        FacetDescriptorTableModel model = createFacetsTableModel(oldPushStamps);
         if (model!=null) {
             TableRowSorter<FacetDescriptorTableModel> sorter = new TableRowSorter<FacetDescriptorTableModel>(model);
             table.setModel(model);
@@ -121,7 +126,11 @@ public class WokoProjectComponent implements ProjectComponent {
     }
 
     public FacetDescriptorTableModel getFacetTableModel(JTable table) {
-        return (FacetDescriptorTableModel)table.getModel();
+        TableModel m = table.getModel();
+        if (m instanceof FacetDescriptorTableModel) {
+            return (FacetDescriptorTableModel)m;
+        }
+        return null;
     }
 
     public static abstract class FilterCallback {

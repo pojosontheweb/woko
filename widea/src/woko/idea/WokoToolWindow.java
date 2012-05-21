@@ -118,10 +118,11 @@ public class WokoToolWindow implements ToolWindowFactory {
 
     public void createToolWindowContent(Project project, ToolWindow toolWindow) {
         this.project = project;
-        table1.setModel(new FacetDescriptorTableModel(project, new ArrayList<FacetDescriptor>()));
+        table1.setModel(new FacetDescriptorTableModel(project, new ArrayList<FacetDescriptor>(), null));
         ContentFactory contentFactory = ContentFactory.SERVICE.getInstance();
         Content content = contentFactory.createContent(panel1, "", false);
         toolWindow.getContentManager().addContent(content);
+        refresh();
     }
 
 }

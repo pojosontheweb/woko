@@ -16,12 +16,17 @@
 
 package woko.idea;
 
+import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.psi.PsiClass;
+import com.intellij.psi.PsiFile;
 import net.sourceforge.jfacets.FacetDescriptor;
+import sun.font.Font2D;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableModel;
 import java.awt.*;
+import java.util.Date;
 
 /**
  * Created by IntelliJ IDEA.
@@ -39,13 +44,35 @@ class FacetTableCellRenderer extends DefaultTableCellRenderer {
         FacetDescriptorTableModel model = (FacetDescriptorTableModel)table.getModel();
         // is the class a project class ?
         FacetDescriptor fd = model.getFacetDescriptorAt(table.convertRowIndexToModel(row));
-        if (model.getProjectFile(fd)==null) {
+        String projectFile = model.getProjectFile(fd);
+        if (projectFile==null) {
             setBackground(new Color(230,230,230));
         } else {
             setBackground(Color.white);
         }
+
+        // does it need a push ?
+        Long pushStamp = model.getPushStamp(fd);
+        boolean needsPush = false;
+        if (pushStamp!=null) {
+            // check if the file has been modified since last push
+            PsiClass psiClass = model.getPsiClass(projectFile);
+            if (psiClass!=null) {
+                PsiFile f = psiClass.getContainingFile();
+                if (f!=null) {
+                    VirtualFile vf = f.getVirtualFile();
+                    if (vf!=null) {
+                        long modifStamp = vf.getModificationStamp();
+                        needsPush = modifStamp!=pushStamp;
+                    }
+                }
+            }
+        }
         super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
         setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.lightGray));
+        if (needsPush) {
+            setFont(getFont().deriveFont(Font.BOLD));
+        }
         return this;
     }
 }
