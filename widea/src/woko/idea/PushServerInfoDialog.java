@@ -17,8 +17,6 @@
 package woko.idea;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 /**
  * Created by IntelliJ IDEA.
@@ -32,18 +30,6 @@ public class PushServerInfoDialog {
     private JTextField textFieldUrl;
     private JTextField textFieldUsername;
     private JPasswordField passwordField;
-    private JButton buttonPush;
-
-    public PushServerInfoDialog() {
-        buttonPush.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent actionEvent) {
-                onPush(textFieldUrl.getText(), textFieldUsername.getText(), new String(passwordField.getPassword()));
-            }
-        });
-    }
-
-    protected void onPush(String url, String username, String password) {
-    }
 
     public JComponent getComponent() {
         return mainPanel;
@@ -51,5 +37,17 @@ public class PushServerInfoDialog {
 
     public void setAppUrl(String s) {
         textFieldUrl.setText(s);
+    }
+
+    public String getAppUrl() {
+        return textFieldUrl.getText();
+    }
+
+    public String getUsername() {
+        return textFieldUsername.getText();
+    }
+
+    public String getPassword() {
+        return new String(passwordField.getPassword());
     }
 }

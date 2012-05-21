@@ -37,19 +37,15 @@ class PushFacetsDialogWrapper extends DialogWrapper {
 
     @Override
     protected JComponent createCenterPanel() {
-        centerPanel = new PushServerInfoDialog() {
-            @Override
-            protected void onPush(String url, String username, String password) {
-                // invoke the push routines
-                WokoProjectComponent wpc = project.getComponent(WokoProjectComponent.class);
-                wpc.push(url, username, password);
-            }
-        };
+        centerPanel = new PushServerInfoDialog();
         return centerPanel.getComponent();
     }
 
     @Override
-    protected Action[] createActions() {
-        return new Action[0];
+    protected void doOKAction() {
+        super.doOKAction();
+        // invoke the push routines
+        WokoProjectComponent wpc = project.getComponent(WokoProjectComponent.class);
+        wpc.push(centerPanel.getAppUrl(), centerPanel.getUsername(), centerPanel.getPassword());
     }
 }

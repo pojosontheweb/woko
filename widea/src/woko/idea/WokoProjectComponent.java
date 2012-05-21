@@ -40,7 +40,7 @@ public class WokoProjectComponent implements ProjectComponent {
     private JavaPsiFacade psiFacade;
     private GlobalSearchScope projectScope;
 
-    private PushFacetsDialogWrapper pushDialog = null;
+    private PushServerInfoDialog pushDialog = null;
 
     private List<FacetDescriptor> facetDescriptors = Collections.emptyList();
     private Map<String,Long> refreshStamps = Collections.emptyMap();
@@ -184,11 +184,11 @@ public class WokoProjectComponent implements ProjectComponent {
 
     public void openPushDialog() {
         if (pushDialog==null) {
-            pushDialog = new PushFacetsDialogWrapper(project);
-            pushDialog.setTitle("Push facets...");
+            pushDialog = new PushServerInfoDialog();
         }
-        pushDialog.pack();
-        pushDialog.show();
+        PushFacetsDialogWrapper w = new PushFacetsDialogWrapper(project);
+        w.pack();
+        w.show();
     }
 
 
