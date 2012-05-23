@@ -18,9 +18,15 @@ package woko.idea;
 
 import com.intellij.openapi.components.ProjectComponent;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.*;
 import com.intellij.psi.impl.source.PsiImmediateClassType;
 import com.intellij.psi.search.GlobalSearchScope;
+import com.intellij.psi.xml.XmlDocument;
+import com.intellij.psi.xml.XmlFile;
+import com.intellij.psi.xml.XmlTag;
+import com.intellij.util.xml.DomFileElement;
+import com.intellij.util.xml.DomManager;
 import org.jetbrains.annotations.NotNull;
 import java.util.*;
 
@@ -31,6 +37,7 @@ public class WokoProjectComponent implements ProjectComponent {
     private GlobalSearchScope projectScope;
     private List<WideaFacetDescriptor> facetDescriptors = Collections.emptyList();
     private Map<WideaFacetDescriptor,Long> refreshStamps = Collections.emptyMap();
+    private List<String> packagesFromConfig = Collections.emptyList();
 
     public WokoProjectComponent(Project project) {
         this.project = project;
@@ -74,16 +81,45 @@ public class WokoProjectComponent implements ProjectComponent {
     }
 
     public void refresh() {
-        List<WideaFacetDescriptor> descriptors = new ArrayList<WideaFacetDescriptor>();
-        Map<WideaFacetDescriptor,Long> stamps = new HashMap<WideaFacetDescriptor, Long>();
-        scanForFacets(descriptors, stamps);
-        facetDescriptors = descriptors;
-        refreshStamps = stamps;
+        VirtualFile baseDir = project.getBaseDir();
+        if (baseDir!=null) {
+            VirtualFile f = baseDir.findFileByRelativePath("src/main/webapp/WEB-INF/web.xml");
+            if (f!=null) {
+                PsiFile file = PsiManager.getInstance(project).findFile(f);
+                if (file != null && file instanceof XmlFile) {
+                    XmlFile xmlFile = (XmlFile)file;
+                    XmlDocument doc = xmlFile.getDocument();
+                    XmlTag[] tags = doc.getRootTag().getSubTags();
+                    List<String> pkgsFromConfig = new ArrayList<String>();
+                    for (XmlTag tag : tags) {
+                        if (tag.getName().equals("context-param")) {
+                            String pName = tag.getSubTagText("param-name");
+                            if (pName!=null && pName.equals("Woko.Facet.Packages")) {
+                                String packagesStr = tag.getSubTagText("param-value");
+                                if (packagesStr!=null) {
+                                    pkgsFromConfig.addAll(extractPackagesList(packagesStr));
+                                }
+                            }
+                        }
+                    }
+                    // append woko packages
+                    pkgsFromConfig.add("facets");
+                    pkgsFromConfig.add("woko.facets.builtin");
+                    List<WideaFacetDescriptor> descriptors = new ArrayList<WideaFacetDescriptor>();
+                    Map<WideaFacetDescriptor,Long> stamps = new HashMap<WideaFacetDescriptor, Long>();
+                    scanForFacets(pkgsFromConfig, descriptors, stamps);
+                    facetDescriptors = descriptors;
+                    refreshStamps = stamps;
+                }
+            }
+        } else {
+            facetDescriptors = Collections.emptyList();
+            refreshStamps = Collections.emptyMap();
+        }
     }
 
-    private void scanForFacets(List<WideaFacetDescriptor> scannedDescriptors, Map<WideaFacetDescriptor,Long> scannedStamps) {
+    private void scanForFacets(List<String> packageNamesFromConfig, List<WideaFacetDescriptor> scannedDescriptors, Map<WideaFacetDescriptor,Long> scannedStamps) {
         // scan configured package for classes annotated with @FacetKey[List]
-        List<String> packageNamesFromConfig = Arrays.asList("fr.msm.facets", "woko.facets.builtin"); // TODO get pkgs from web.xml
         for (String pkgName : packageNamesFromConfig) {
             PsiPackage psiPkg = psiFacade.findPackage(pkgName);
             if (psiPkg!=null) {
@@ -240,5 +276,20 @@ public class WokoProjectComponent implements ProjectComponent {
         Long refStamp = refreshStamps.get(fd);
         return refStamp == null || refStamp != f.getModificationStamp();
     }
+
+    public static List<String> extractPackagesList(String packagesStr) {
+        String[] pkgNamesArr = packagesStr.
+                replace('\n', ',').
+                replace(' ', ',').
+                split(",");
+        List<String> pkgNames = new ArrayList<String>();
+        for (String s : pkgNamesArr) {
+            if (s != null && !s.equals("")) {
+                pkgNames.add(s);
+            }
+        }
+        return pkgNames;
+    }
+
 }
 
