@@ -152,7 +152,8 @@ public class WokoToolWindow {
         }
 
         protected boolean fdMatch(WideaFacetDescriptor fd, String filterText) {
-            return strMatch(fd.getName(), filterText)
+            return fd == null
+                    || strMatch(fd.getName(), filterText)
                     || strMatch(fd.getProfileId(), filterText)
                     || strMatch(fd.getTargetObjectTypeName(), filterText)
                     || strMatch(fd.getFacetClassName(), filterText);

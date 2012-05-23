@@ -62,10 +62,7 @@ public class WokoProjectComponent implements ProjectComponent {
         public void contentsChanged(VirtualFileEvent event) {
             VirtualFile vf = event.getFile();
             String path = vf.getPath();
-            WideaFacetDescriptor fdForPath = filesAndDescriptors.get(path);
-            if (fdForPath!=null) {
-                refresh();
-            }
+            refresh();
         }
     }
 
@@ -175,7 +172,7 @@ public class WokoProjectComponent implements ProjectComponent {
                 // we need to check if a descriptor already exists in previously scanned
                 // packages (re-implement JFacets' "first scanned wins" policy)
                 for (WideaFacetDescriptor fd : classDescriptors) {
-                    if (!descriptors.contains(fd)) {
+                    if (fd!=null && !descriptors.contains(fd)) {
                         descriptors.add(fd);
                         // set the files/descriptors entry
                         PsiFile containingFile = psiClass.getContainingFile();
