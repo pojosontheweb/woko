@@ -49,7 +49,6 @@ public class WokoProjectComponent implements ProjectComponent {
     public void projectOpened() {
         psiFacade = JavaPsiFacade.getInstance(project);
         projectScope = GlobalSearchScope.projectScope(project);
-        facetDescriptors = scanForFacets();
     }
 
     public void projectClosed() {
@@ -73,23 +72,43 @@ public class WokoProjectComponent implements ProjectComponent {
         return facetDescriptors;
     }
 
+    public void refresh() {
+        facetDescriptors = scanForFacets();
+    }
+
     private List<WideaFacetDescriptor> scanForFacets() {
         // scan configured package for classes annotated with @FacetKey[List]
-        List<String> packageNamesFromConfig = Arrays.asList("woko.facets.builtin"); // TODO get pkgs from web.xml
+        List<String> packageNamesFromConfig = Arrays.asList("fr.msm.facets", "woko.facets.builtin"); // TODO get pkgs from web.xml
         List<WideaFacetDescriptor> scannedDescriptors = new ArrayList<WideaFacetDescriptor>();
         for (String pkgName : packageNamesFromConfig) {
             PsiPackage psiPkg = psiFacade.findPackage(pkgName);
             if (psiPkg!=null) {
-                PsiClass[] psiClasses = psiPkg.getClasses();
-                for (PsiClass psiClass : psiClasses) {
-                    List<WideaFacetDescriptor> descriptors = getFacetDescriptorsForClass(psiClass);
-                    if (descriptors!=null) {
-                        scannedDescriptors.addAll(descriptors);
+                scanForFacetsRecursive(psiPkg, scannedDescriptors);
+            }
+        }
+        return scannedDescriptors;
+    }
+
+    private void scanForFacetsRecursive(PsiPackage psiPkg, List<WideaFacetDescriptor> descriptors) {
+        // scan classes in package
+        PsiClass[] psiClasses = psiPkg.getClasses();
+        for (PsiClass psiClass : psiClasses) {
+            List<WideaFacetDescriptor> classDescriptors = getFacetDescriptorsForClass(psiClass);
+            if (classDescriptors!=null) {
+                // we need to check if a descriptor already exists in previously scanned
+                // packages (re-implement JFacets' "first scanned wins" policy)
+                for (WideaFacetDescriptor fd : classDescriptors) {
+                    if (!descriptors.contains(fd)) {
+                        descriptors.add(fd);
                     }
                 }
             }
         }
-        return scannedDescriptors;
+        // recurse in sub-packages
+        PsiPackage[] subPackages = psiPkg.getSubPackages();
+        for (PsiPackage subPackage : subPackages) {
+            scanForFacetsRecursive(subPackage, descriptors);
+        }
     }
 
     private List<WideaFacetDescriptor> getFacetDescriptorsForClass(PsiClass psiFacetClass) {
@@ -132,8 +151,9 @@ public class WokoProjectComponent implements ProjectComponent {
 
     private String getNvpValueText(PsiNameValuePair nvp) {
         PsiAnnotationMemberValue pv = nvp.getValue();
-        if (pv instanceof PsiLiteralExpression) {
-            return (String)((PsiLiteralExpression)pv).getValue();
+        if (pv!=null) {
+            String text = pv.getText();
+            return text!=null ? text.replace("\"", "") : null;
         }
         return null;
     }
@@ -167,6 +187,7 @@ public class WokoProjectComponent implements ProjectComponent {
             }
         }
         String facetClassName = psiFacetClass.getQualifiedName();
+        targetObjectType = targetObjectType==null ? "java.lang.Object" : targetObjectType;
         if (name!=null && profileId!=null && targetObjectType!=null && facetClassName!=null) {
             return new WideaFacetDescriptor(name, profileId, targetObjectType, facetClassName);
         }

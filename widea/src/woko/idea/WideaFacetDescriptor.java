@@ -35,4 +35,28 @@ public class WideaFacetDescriptor {
     public String getFacetClassName() {
         return facetClassName;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        WideaFacetDescriptor that = (WideaFacetDescriptor) o;
+
+        if (!facetClassName.equals(that.facetClassName)) return false;
+        if (!name.equals(that.name)) return false;
+        if (!profileId.equals(that.profileId)) return false;
+        if (!targetObjectTypeName.equals(that.targetObjectTypeName)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = name.hashCode();
+        result = 31 * result + profileId.hashCode();
+        result = 31 * result + targetObjectTypeName.hashCode();
+        result = 31 * result + facetClassName.hashCode();
+        return result;
+    }
 }

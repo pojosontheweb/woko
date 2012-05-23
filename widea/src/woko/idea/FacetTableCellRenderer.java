@@ -17,25 +17,12 @@
 package woko.idea;
 
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiClass;
-import com.intellij.psi.PsiFile;
-import net.sourceforge.jfacets.FacetDescriptor;
-import sun.font.Font2D;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.TableModel;
 import java.awt.*;
-import java.util.Date;
 
-/**
- * Created by IntelliJ IDEA.
- * User: vankeisb
- * Date: 18/05/12
- * Time: 10:32
- * To change this template use File | Settings | File Templates.
- */
 class FacetTableCellRenderer extends DefaultTableCellRenderer {
 
     private final Project project;
@@ -53,14 +40,15 @@ class FacetTableCellRenderer extends DefaultTableCellRenderer {
                             boolean isSelected, boolean hasFocus,
                             int row, int column) {
         FacetDescriptorTableModel model = (FacetDescriptorTableModel)table.getModel();
-        WokoProjectComponent w = wpc();
-        // is the class a project class ?
-        FacetDescriptor fd = model.getFacetDescriptorAt(table.convertRowIndexToModel(row));
-        PsiClass psiClass = w.getPsiClass(fd.getFacetClass().getName());
-        if (psiClass==null) {
-            setBackground(new Color(230,230,230));
-        } else {
-            setBackground(Color.white);
+        WideaFacetDescriptor fd = model.getFacetDescriptorAt(row);
+        if (fd!=null) {
+            // is the class a project class ?
+            PsiClass psiClass = wpc().getPsiClass(fd.getFacetClassName());
+            if (psiClass==null) {
+                setBackground(new Color(230,230,230));
+            } else {
+                setBackground(Color.white);
+            }
         }
 
         super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);

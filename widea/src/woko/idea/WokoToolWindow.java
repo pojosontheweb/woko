@@ -24,20 +24,17 @@ import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowFactory;
 import com.intellij.ui.content.Content;
 import com.intellij.ui.content.ContentFactory;
-import net.sourceforge.jfacets.FacetDescriptor;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.ArrayList;
 
 public class WokoToolWindow implements ToolWindowFactory {
 
@@ -75,8 +72,8 @@ public class WokoToolWindow implements ToolWindowFactory {
                     // dbl-clicked : get selected row
                     int row = table1.convertRowIndexToModel(table1.getSelectedRow());
                     FacetDescriptorTableModel model = (FacetDescriptorTableModel)table1.getModel();
-                    FacetDescriptor fd = model.getFacetDescriptorAt(row);
-                    getWpc().openClassInEditor(fd.getFacetClass().getName());
+                    WideaFacetDescriptor fd = model.getFacetDescriptorAt(row);
+                    getWpc().openClassInEditor(fd.getFacetClassName());
                 }
             }
         });
@@ -103,12 +100,10 @@ public class WokoToolWindow implements ToolWindowFactory {
     }
 
     private void refresh() {
-        // trigger a make and reload facets
+        getWpc().refresh();
         reloadButton.setEnabled(false);
-        CompilerManager.getInstance(project).make(new CompileStatusNotification() {
-            public void finished(boolean b, int i, int i1, CompileContext compileContext) {
-                WokoProjectComponent wpc = project.getComponent(WokoProjectComponent.class);
-                wpc.scanForFacets();
+//        CompilerManager.getInstance(project).make(new CompileStatusNotification() {
+//            public void finished(boolean b, int i, int i1, CompileContext compileContext) {
                 FacetDescriptorTableModel model = new FacetDescriptorTableModel(project);
                 TableRowSorter<FacetDescriptorTableModel> sorter = new TableRowSorter<FacetDescriptorTableModel>(model);
                 table1.setModel(model);
@@ -121,22 +116,22 @@ public class WokoToolWindow implements ToolWindowFactory {
                 }
                 textFieldFilter.setEnabled(true);
                 reloadButton.setEnabled(true);
-            }
-        });
+//            }
+//        });
     }
 
     private void filter() {
         final WokoProjectComponent wpc = getWpc();
         setFacetTableFilterCallback(table1, new FilterCallback() {
             @Override
-            protected boolean matches(FacetDescriptor fd) {
+            protected boolean matches(WideaFacetDescriptor fd) {
                 String text = textFieldFilter.getText();
                 boolean fdMatch = fdMatch(fd, text);
                 if (fdMatch) {
                     // do we include libs or not ?
                     if (!includeLibsCheckBox.isSelected()) {
                         // check if class is project class
-                        return wpc.getPsiClass(fd.getFacetClass().getName())!=null;
+                        return wpc.getPsiClass(fd.getFacetClassName())!=null;
                     }
                 }
                 return fdMatch;
@@ -154,7 +149,7 @@ public class WokoToolWindow implements ToolWindowFactory {
 
     public static abstract class FilterCallback {
 
-        protected abstract boolean matches(FacetDescriptor fd);
+        protected abstract boolean matches(WideaFacetDescriptor fd);
 
         protected boolean strMatch(String s, String filterText) {
             return filterText == null
@@ -164,11 +159,11 @@ public class WokoToolWindow implements ToolWindowFactory {
                     || s.toLowerCase().contains(filterText.toLowerCase());
         }
 
-        protected boolean fdMatch(FacetDescriptor fd, String filterText) {
+        protected boolean fdMatch(WideaFacetDescriptor fd, String filterText) {
             return strMatch(fd.getName(), filterText)
                     || strMatch(fd.getProfileId(), filterText)
-                    || strMatch(fd.getTargetObjectType().getName(), filterText)
-                    || strMatch(fd.getFacetClass().getName(), filterText);
+                    || strMatch(fd.getTargetObjectTypeName(), filterText)
+                    || strMatch(fd.getFacetClassName(), filterText);
         }
 
     }
@@ -180,7 +175,7 @@ public class WokoToolWindow implements ToolWindowFactory {
                 @Override
                 public boolean include(Entry<? extends FacetDescriptorTableModel, ? extends Integer> entry) {
                     FacetDescriptorTableModel model = entry.getModel();
-                    FacetDescriptor fd = model.getFacetDescriptorAt(entry.getIdentifier());
+                    WideaFacetDescriptor fd = model.getFacetDescriptorAt(entry.getIdentifier());
                     return callback.matches(fd);
                 }
             });

@@ -17,11 +17,8 @@
 package woko.idea;
 
 import com.intellij.openapi.project.Project;
-import net.sourceforge.jfacets.FacetDescriptor;
 
 import javax.swing.table.AbstractTableModel;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 class FacetDescriptorTableModel extends AbstractTableModel {
@@ -56,11 +53,10 @@ class FacetDescriptorTableModel extends AbstractTableModel {
     }
 
     public Object getValueAt(int row, int col) {
-        List<WideaFacetDescriptor> facetDescriptors = getFds();
-        if (row>facetDescriptors.size()-1) {
+        WideaFacetDescriptor fd = getFacetDescriptorAt(row);
+        if (fd==null) {
             return null;
         }
-        WideaFacetDescriptor fd = facetDescriptors.get(row);
         switch (col) {
             case 0 : return fd.getName();
             case 1 : return fd.getProfileId();
@@ -68,5 +64,13 @@ class FacetDescriptorTableModel extends AbstractTableModel {
             case 3 : return fd.getFacetClassName();
             default: throw new ArrayIndexOutOfBoundsException("col is out of bounds : " + col);
         }
+    }
+
+    public WideaFacetDescriptor getFacetDescriptorAt(int row) {
+        List<WideaFacetDescriptor> facetDescriptors = getFds();
+        if (row>=facetDescriptors.size()) {
+            return null;
+        }
+        return facetDescriptors.get(row);
     }
 }

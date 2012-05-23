@@ -16,18 +16,14 @@
 
 package woko.idea;
 
-import com.intellij.openapi.actionSystem.DataKeys;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.openapi.ui.MessageType;
 import com.intellij.openapi.ui.popup.Balloon;
-import com.intellij.openapi.ui.popup.JBPopup;
 import com.intellij.openapi.ui.popup.JBPopupFactory;
 import com.intellij.openapi.wm.StatusBar;
-import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.WindowManager;
 import com.intellij.ui.awt.RelativePoint;
-import net.sourceforge.jfacets.FacetDescriptor;
 
 import javax.swing.*;
 

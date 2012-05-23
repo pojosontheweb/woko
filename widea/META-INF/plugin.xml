@@ -21,6 +21,8 @@
   <vendor>pojosontheweb.com</vendor>
   <idea-version since-build="8000"/>
 
+    <depends>com.intellij.modules.ultimate</depends>
+
   <application-components>
     <!-- Add your application components here -->
   </application-components>
