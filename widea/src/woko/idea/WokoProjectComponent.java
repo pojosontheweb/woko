@@ -18,7 +18,7 @@ package woko.idea;
 
 import com.intellij.openapi.components.ProjectComponent;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.openapi.vfs.*;
 import com.intellij.psi.*;
 import com.intellij.psi.impl.source.PsiImmediateClassType;
 import com.intellij.psi.search.GlobalSearchScope;
@@ -36,8 +36,9 @@ public class WokoProjectComponent implements ProjectComponent {
     private JavaPsiFacade psiFacade;
     private GlobalSearchScope projectScope;
     private List<WideaFacetDescriptor> facetDescriptors = Collections.emptyList();
-    private Map<WideaFacetDescriptor,Long> refreshStamps = Collections.emptyMap();
+    private Map<String,WideaFacetDescriptor> filesAndDescriptors = Collections.emptyMap();
     private List<String> packagesFromConfig = Collections.emptyList();
+    private MyVfsListener vfsListener = new MyVfsListener();
 
     public WokoProjectComponent(Project project) {
         this.project = project;
@@ -54,14 +55,31 @@ public class WokoProjectComponent implements ProjectComponent {
         return "WokoProjectComponent";
     }
 
+    class MyVfsListener extends VirtualFileAdapter {
+        @Override
+        public void contentsChanged(VirtualFileEvent event) {
+            VirtualFile vf = event.getFile();
+            String path = vf.getPath();
+            WideaFacetDescriptor fdForPath = filesAndDescriptors.get(path);
+            if (fdForPath!=null) {
+                refresh();
+            }
+        }
+    }
+
     public void projectOpened() {
         psiFacade = JavaPsiFacade.getInstance(project);
         projectScope = GlobalSearchScope.projectScope(project);
+        // register project file observer
+        VirtualFileSystem vfs = project.getBaseDir().getFileSystem();
+        vfs.addVirtualFileListener(vfsListener);
     }
 
     public void projectClosed() {
         // called when project is being closed
         facetDescriptors = Collections.emptyList();
+        VirtualFileSystem vfs = project.getBaseDir().getFileSystem();
+        vfs.removeVirtualFileListener(vfsListener);
     }
 
     public boolean openClassInEditor(String fqcn) {
@@ -83,6 +101,7 @@ public class WokoProjectComponent implements ProjectComponent {
     public void refresh() {
         VirtualFile baseDir = project.getBaseDir();
         if (baseDir!=null) {
+            // grab packages from web.xml
             VirtualFile f = baseDir.findFileByRelativePath("src/main/webapp/WEB-INF/web.xml");
             if (f!=null) {
                 PsiFile file = PsiManager.getInstance(project).findFile(f);
@@ -102,28 +121,34 @@ public class WokoProjectComponent implements ProjectComponent {
                             }
                         }
                     }
-                    // append woko packages
+                    // add default Woko packages
                     pkgsFromConfig.add("facets");
                     pkgsFromConfig.add("woko.facets.builtin");
+                    packagesFromConfig = pkgsFromConfig;
+                    // scan
                     List<WideaFacetDescriptor> descriptors = new ArrayList<WideaFacetDescriptor>();
-                    Map<WideaFacetDescriptor,Long> stamps = new HashMap<WideaFacetDescriptor, Long>();
-                    scanForFacets(pkgsFromConfig, descriptors, stamps);
+                    Map<String,WideaFacetDescriptor> filesDescriptors = new HashMap<String, WideaFacetDescriptor>();
+                    scanForFacets(pkgsFromConfig, descriptors, filesDescriptors);
+                    // update fields
                     facetDescriptors = descriptors;
-                    refreshStamps = stamps;
+                    filesAndDescriptors = filesDescriptors;
                 }
             }
         } else {
             facetDescriptors = Collections.emptyList();
-            refreshStamps = Collections.emptyMap();
+            filesAndDescriptors = Collections.emptyMap();
         }
     }
 
-    private void scanForFacets(List<String> packageNamesFromConfig, List<WideaFacetDescriptor> scannedDescriptors, Map<WideaFacetDescriptor,Long> scannedStamps) {
+    private void scanForFacets(
+            List<String> packageNamesFromConfig,
+            List<WideaFacetDescriptor> scannedDescriptors,
+            Map<String,WideaFacetDescriptor> filesDescriptors) {
         // scan configured package for classes annotated with @FacetKey[List]
         for (String pkgName : packageNamesFromConfig) {
             PsiPackage psiPkg = psiFacade.findPackage(pkgName);
             if (psiPkg!=null) {
-                scanForFacetsRecursive(psiPkg, scannedDescriptors, scannedStamps);
+                scanForFacetsRecursive(psiPkg, scannedDescriptors, filesDescriptors);
             }
         }
     }
@@ -131,7 +156,7 @@ public class WokoProjectComponent implements ProjectComponent {
     private void scanForFacetsRecursive(
             PsiPackage psiPkg,
             List<WideaFacetDescriptor> descriptors,
-            Map<WideaFacetDescriptor,Long> refreshStamps) {
+            Map<String,WideaFacetDescriptor> filesDescriptors) {
         // scan classes in package
         PsiClass[] psiClasses = psiPkg.getClasses();
         for (PsiClass psiClass : psiClasses) {
@@ -142,9 +167,13 @@ public class WokoProjectComponent implements ProjectComponent {
                 for (WideaFacetDescriptor fd : classDescriptors) {
                     if (!descriptors.contains(fd)) {
                         descriptors.add(fd);
-                        // also add the refresh stamp for the descriptor
-                        Long modifStamp = psiClass.getContainingFile().getModificationStamp();
-                        refreshStamps.put(fd, modifStamp);
+                        // set the files/descriptors entry
+                        PsiFile containingFile = psiClass.getContainingFile();
+                        VirtualFile vf = containingFile.getVirtualFile();
+                        if (vf!=null) {
+                            String absolutePath = vf.getPath();
+                            filesDescriptors.put(absolutePath, fd);
+                        }
                     }
                 }
             }
@@ -152,7 +181,7 @@ public class WokoProjectComponent implements ProjectComponent {
         // recurse in sub-packages
         PsiPackage[] subPackages = psiPkg.getSubPackages();
         for (PsiPackage subPackage : subPackages) {
-            scanForFacetsRecursive(subPackage, descriptors, refreshStamps);
+            scanForFacetsRecursive(subPackage, descriptors, filesDescriptors);
         }
     }
 
@@ -266,15 +295,6 @@ public class WokoProjectComponent implements ProjectComponent {
             return pc.getContainingFile();
         }
         return null;
-    }
-
-    public boolean isModifiedSinceLastRefresh(WideaFacetDescriptor fd) {
-        PsiFile f = getPsiFile(fd.getFacetClassName());
-        if (f==null) {
-            return false;
-        }
-        Long refStamp = refreshStamps.get(fd);
-        return refStamp == null || refStamp != f.getModificationStamp();
     }
 
     public static List<String> extractPackagesList(String packagesStr) {
