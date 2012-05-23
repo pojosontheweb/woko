@@ -40,6 +40,8 @@ public class WokoProjectComponent implements ProjectComponent {
     private List<String> packagesFromConfig = Collections.emptyList();
     private MyVfsListener vfsListener = new MyVfsListener();
 
+    private WokoToolWindow toolWindow = new WokoToolWindow();
+
     public WokoProjectComponent(Project project) {
         this.project = project;
     }
@@ -67,12 +69,18 @@ public class WokoProjectComponent implements ProjectComponent {
         }
     }
 
+    public WokoToolWindow getToolWindow() {
+        return toolWindow;
+    }
+
     public void projectOpened() {
         psiFacade = JavaPsiFacade.getInstance(project);
         projectScope = GlobalSearchScope.projectScope(project);
         // register project file observer
         VirtualFileSystem vfs = project.getBaseDir().getFileSystem();
         vfs.addVirtualFileListener(vfsListener);
+        // init tool window
+        toolWindow.init(project);
     }
 
     public void projectClosed() {
@@ -138,6 +146,8 @@ public class WokoProjectComponent implements ProjectComponent {
             facetDescriptors = Collections.emptyList();
             filesAndDescriptors = Collections.emptyMap();
         }
+        // fire refresh for the tool window's table model
+        toolWindow.refreshTable();
     }
 
     private void scanForFacets(

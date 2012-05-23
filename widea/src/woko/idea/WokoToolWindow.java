@@ -36,7 +36,7 @@ import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.awt.event.*;
 
-public class WokoToolWindow implements ToolWindowFactory {
+public class WokoToolWindow {
 
     private JPanel panel1;
     private JTable table1;
@@ -51,7 +51,10 @@ public class WokoToolWindow implements ToolWindowFactory {
     public WokoToolWindow() {
         reloadButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent actionEvent) {
-                refresh();
+                reloadButton.setEnabled(false);
+                getWpc().refresh();
+                textFieldFilter.setEnabled(true);
+                reloadButton.setEnabled(true);
             }
         });
         textFieldFilter.getDocument().addDocumentListener(
@@ -99,27 +102,6 @@ public class WokoToolWindow implements ToolWindowFactory {
         return project.getComponent(WokoProjectComponent.class);
     }
 
-    private void refresh() {
-        getWpc().refresh();
-        reloadButton.setEnabled(false);
-//        CompilerManager.getInstance(project).make(new CompileStatusNotification() {
-//            public void finished(boolean b, int i, int i1, CompileContext compileContext) {
-                FacetDescriptorTableModel model = new FacetDescriptorTableModel(project);
-                TableRowSorter<FacetDescriptorTableModel> sorter = new TableRowSorter<FacetDescriptorTableModel>(model);
-                table1.setModel(model);
-                table1.setRowSorter(sorter);
-                TableCellRenderer renderer = new FacetTableCellRenderer(project);
-                TableColumnModel colModel = table1.getColumnModel();
-                colModel.getColumn(0).setWidth(70);
-                for (int colIndex=0;colIndex<model.getColumnCount();colIndex++) {
-                    colModel.getColumn(colIndex).setCellRenderer(renderer);
-                }
-                textFieldFilter.setEnabled(true);
-                reloadButton.setEnabled(true);
-//            }
-//        });
-    }
-
     private void filter() {
         final WokoProjectComponent wpc = getWpc();
         setFacetTableFilterCallback(table1, new FilterCallback() {
@@ -139,12 +121,22 @@ public class WokoToolWindow implements ToolWindowFactory {
         });
     }
 
-    public void createToolWindowContent(Project project, ToolWindow toolWindow) {
+    public void init(Project project) {
         this.project = project;
-        table1.setModel(new FacetDescriptorTableModel(project));
-        ContentFactory contentFactory = ContentFactory.SERVICE.getInstance();
-        Content content = contentFactory.createContent(panel1, "", false);
-        toolWindow.getContentManager().addContent(content);
+        FacetDescriptorTableModel model = new FacetDescriptorTableModel(project);
+        TableRowSorter<FacetDescriptorTableModel> sorter = new TableRowSorter<FacetDescriptorTableModel>(model);
+        table1.setModel(model);
+        table1.setRowSorter(sorter);
+        TableCellRenderer renderer = new FacetTableCellRenderer(project);
+        TableColumnModel colModel = table1.getColumnModel();
+        colModel.getColumn(0).setWidth(70);
+        for (int colIndex=0;colIndex<model.getColumnCount();colIndex++) {
+            colModel.getColumn(colIndex).setCellRenderer(renderer);
+        }
+    }
+
+    public void refreshTable() {
+        ((FacetDescriptorTableModel)table1.getModel()).fireTableDataChanged();
     }
 
     public static abstract class FilterCallback {
@@ -180,6 +172,10 @@ public class WokoToolWindow implements ToolWindowFactory {
                 }
             });
         }
+    }
+
+    public JPanel getMainPanel() {
+        return panel1;
     }
 
 }
