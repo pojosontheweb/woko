@@ -29,6 +29,8 @@ import com.intellij.util.xml.DomFileElement;
 import com.intellij.util.xml.DomManager;
 import org.jetbrains.annotations.NotNull;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class WokoProjectComponent implements ProjectComponent {
 
@@ -216,14 +218,23 @@ public class WokoProjectComponent implements ProjectComponent {
             PsiNameValuePair nvp = nvps[0];
             String name = nvp.getName();
             if (name!=null && name.equals("keys")) {
-                PsiArrayInitializerMemberValue v = (PsiArrayInitializerMemberValue)nvp.getValue();
-                if (v!=null) {
-                    PsiAnnotationMemberValue[] keys = v.getInitializers();
-                    for (PsiAnnotationMemberValue key : keys) {
-                        PsiAnnotation a = (PsiAnnotation)key;
-                        res.add(createDescriptorForKey(psiFacetClass, a));
+                PsiAnnotationMemberValue mv = nvp.getValue();
+                if (mv instanceof PsiArrayInitializerMemberValue) {
+                    PsiArrayInitializerMemberValue v = (PsiArrayInitializerMemberValue)nvp.getValue();
+                    if (v!=null) {
+                        PsiAnnotationMemberValue[] keys = v.getInitializers();
+                        for (PsiAnnotationMemberValue key : keys) {
+                            PsiAnnotation a = (PsiAnnotation)key;
+                            res.add(createDescriptorForKey(psiFacetClass, a));
+                        }
                     }
-
+                } else if (mv!=null) {
+                    PsiElement[] children = mv.getChildren();
+                    for (PsiElement child : children) {
+                        if (child instanceof PsiAnnotation) {
+                            res.add(createDescriptorForKey(psiFacetClass, (PsiAnnotation)child));
+                        }
+                    }
                 }
             }
         }

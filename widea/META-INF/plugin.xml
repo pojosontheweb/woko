@@ -18,10 +18,10 @@
   <name>Woko Plugin</name>
   <description>Plugin for the Woko framework</description>
   <version>1.0</version>
-  <vendor>pojosontheweb.com</vendor>
+    <vendor logo="src/woko/idea/woko.png" url="http://www.pojosontheweb.com">POJOs on the Web</vendor>
   <idea-version since-build="8000"/>
 
-    <depends>com.intellij.modules.ultimate</depends>
+    <depends>org.intellij.groovy</depends>
 
   <application-components>
     <!-- Add your application components here -->
