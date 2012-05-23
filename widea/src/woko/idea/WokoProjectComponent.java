@@ -30,6 +30,7 @@ public class WokoProjectComponent implements ProjectComponent {
     private JavaPsiFacade psiFacade;
     private GlobalSearchScope projectScope;
     private List<WideaFacetDescriptor> facetDescriptors = Collections.emptyList();
+    private Map<WideaFacetDescriptor,Long> refreshStamps = Collections.emptyMap();
 
     public WokoProjectComponent(Project project) {
         this.project = project;
@@ -73,23 +74,28 @@ public class WokoProjectComponent implements ProjectComponent {
     }
 
     public void refresh() {
-        facetDescriptors = scanForFacets();
+        List<WideaFacetDescriptor> descriptors = new ArrayList<WideaFacetDescriptor>();
+        Map<WideaFacetDescriptor,Long> stamps = new HashMap<WideaFacetDescriptor, Long>();
+        scanForFacets(descriptors, stamps);
+        facetDescriptors = descriptors;
+        refreshStamps = stamps;
     }
 
-    private List<WideaFacetDescriptor> scanForFacets() {
+    private void scanForFacets(List<WideaFacetDescriptor> scannedDescriptors, Map<WideaFacetDescriptor,Long> scannedStamps) {
         // scan configured package for classes annotated with @FacetKey[List]
         List<String> packageNamesFromConfig = Arrays.asList("fr.msm.facets", "woko.facets.builtin"); // TODO get pkgs from web.xml
-        List<WideaFacetDescriptor> scannedDescriptors = new ArrayList<WideaFacetDescriptor>();
         for (String pkgName : packageNamesFromConfig) {
             PsiPackage psiPkg = psiFacade.findPackage(pkgName);
             if (psiPkg!=null) {
-                scanForFacetsRecursive(psiPkg, scannedDescriptors);
+                scanForFacetsRecursive(psiPkg, scannedDescriptors, scannedStamps);
             }
         }
-        return scannedDescriptors;
     }
 
-    private void scanForFacetsRecursive(PsiPackage psiPkg, List<WideaFacetDescriptor> descriptors) {
+    private void scanForFacetsRecursive(
+            PsiPackage psiPkg,
+            List<WideaFacetDescriptor> descriptors,
+            Map<WideaFacetDescriptor,Long> refreshStamps) {
         // scan classes in package
         PsiClass[] psiClasses = psiPkg.getClasses();
         for (PsiClass psiClass : psiClasses) {
@@ -100,6 +106,9 @@ public class WokoProjectComponent implements ProjectComponent {
                 for (WideaFacetDescriptor fd : classDescriptors) {
                     if (!descriptors.contains(fd)) {
                         descriptors.add(fd);
+                        // also add the refresh stamp for the descriptor
+                        Long modifStamp = psiClass.getContainingFile().getModificationStamp();
+                        refreshStamps.put(fd, modifStamp);
                     }
                 }
             }
@@ -107,7 +116,7 @@ public class WokoProjectComponent implements ProjectComponent {
         // recurse in sub-packages
         PsiPackage[] subPackages = psiPkg.getSubPackages();
         for (PsiPackage subPackage : subPackages) {
-            scanForFacetsRecursive(subPackage, descriptors);
+            scanForFacetsRecursive(subPackage, descriptors, refreshStamps);
         }
     }
 
@@ -223,5 +232,13 @@ public class WokoProjectComponent implements ProjectComponent {
         return null;
     }
 
+    public boolean isModifiedSinceLastRefresh(WideaFacetDescriptor fd) {
+        PsiFile f = getPsiFile(fd.getFacetClassName());
+        if (f==null) {
+            return false;
+        }
+        Long refStamp = refreshStamps.get(fd);
+        return refStamp == null || refStamp != f.getModificationStamp();
+    }
 }
 

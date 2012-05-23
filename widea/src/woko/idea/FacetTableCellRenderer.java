@@ -55,9 +55,9 @@ class FacetTableCellRenderer extends DefaultTableCellRenderer {
         setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.lightGray));
 
         // check if the file has changed since last refresh
-//        if (w.isModifiedSinceLastRefresh(fd)) {
-//            setFont(getFont().deriveFont(Font.BOLD));
-//        }
+        if (wpc().isModifiedSinceLastRefresh(fd)) {
+            setFont(getFont().deriveFont(Font.BOLD));
+        }
         return this;
     }
 }
