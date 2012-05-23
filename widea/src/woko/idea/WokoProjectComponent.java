@@ -34,6 +34,7 @@ import com.intellij.ui.awt.RelativePoint;
 import com.intellij.util.xml.DomFileElement;
 import com.intellij.util.xml.DomManager;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.plugins.groovy.lang.psi.api.statements.expressions.GrReferenceExpression;
 import woko.tooling.utils.AppUtils;
 import woko.tooling.utils.Logger;
 import woko.tooling.utils.PomHelper;
@@ -277,16 +278,23 @@ public class WokoProjectComponent implements ProjectComponent {
                     profileId = getNvpValueText(nvp);
                 } else if (pName.equals("targetObjectType")) {
                     PsiAnnotationMemberValue pv = nvp.getValue();
+                    PsiType classType = null;
                     if (pv instanceof PsiClassObjectAccessExpression) {
                         PsiClassObjectAccessExpression cae = (PsiClassObjectAccessExpression)pv;
-                        PsiType type = cae.getType();
-                        if (type instanceof PsiImmediateClassType) {
-                            PsiImmediateClassType ict = (PsiImmediateClassType)type;
-                            PsiType[] parameters = ict.getParameters();
-                            if (parameters.length==1) {
-                                targetObjectType = parameters[0].getCanonicalText();
-                            }
+                        classType = cae.getType();
+                    } else if (pv instanceof GrReferenceExpression) {
+                        GrReferenceExpression refExpr = (GrReferenceExpression)pv;
+                        classType = refExpr.getNominalType();
+                    }
+                    if (classType instanceof PsiImmediateClassType) {
+                        PsiImmediateClassType ict = (PsiImmediateClassType)classType;
+                        PsiType[] parameters = ict.getParameters();
+                        if (parameters.length==1) {
+                            targetObjectType = parameters[0].getCanonicalText();
                         }
+                    } else {
+                        targetObjectType = "UNKNOWN!";
+                        System.out.println(classType);
                     }
                 }
             }
