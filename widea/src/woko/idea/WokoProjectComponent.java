@@ -18,16 +18,28 @@ package woko.idea;
 
 import com.intellij.openapi.components.ProjectComponent;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.ui.MessageType;
+import com.intellij.openapi.ui.popup.Balloon;
+import com.intellij.openapi.ui.popup.JBPopupFactory;
 import com.intellij.openapi.vfs.*;
+import com.intellij.openapi.wm.StatusBar;
+import com.intellij.openapi.wm.WindowManager;
 import com.intellij.psi.*;
 import com.intellij.psi.impl.source.PsiImmediateClassType;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.xml.XmlDocument;
 import com.intellij.psi.xml.XmlFile;
 import com.intellij.psi.xml.XmlTag;
+import com.intellij.ui.awt.RelativePoint;
 import com.intellij.util.xml.DomFileElement;
 import com.intellij.util.xml.DomManager;
 import org.jetbrains.annotations.NotNull;
+import woko.tooling.utils.AppUtils;
+import woko.tooling.utils.Logger;
+import woko.tooling.utils.PomHelper;
+
+import java.io.File;
+import java.io.StringWriter;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -43,6 +55,7 @@ public class WokoProjectComponent implements ProjectComponent {
     private MyVfsListener vfsListener = new MyVfsListener();
 
     private WokoToolWindow toolWindow = new WokoToolWindow();
+    private PushServerInfoDialog pushDialog;
 
     public WokoProjectComponent(Project project) {
         this.project = project;
@@ -327,6 +340,61 @@ public class WokoProjectComponent implements ProjectComponent {
             }
         }
         return pkgNames;
+    }
+
+    public void openPushDialog() {
+        if (pushDialog==null) {
+            pushDialog = new PushServerInfoDialog();
+        }
+        PushFacetsDialogWrapper w = new PushFacetsDialogWrapper(project);
+        w.pack();
+        w.show();
+    }
+
+    public boolean push(String url, String username, String password) {
+        StatusBar statusBar = WindowManager.getInstance()
+                        .getStatusBar(project);
+        statusBar.setInfo("Pushing facets to " + url);
+
+        try {
+
+            // retrieve the facet sources from modified facets
+            List<String> facetSources = new ArrayList<String>();
+            for (WideaFacetDescriptor fd : facetDescriptors) {
+                String fqcn = fd.getFacetClassName();
+                PsiClass psiClass = getPsiClass(fqcn);
+                if (psiClass!=null) {
+                    facetSources.add(psiClass.getContainingFile().getText());
+                }
+            }
+
+            // push all this !
+            PomHelper pomHelper = AppUtils.getPomHelper(new File(project.getBaseDir().getPath()));
+            StringWriter sw = new StringWriter();
+            Logger logger = new Logger(sw);
+            AppUtils.pushFacetSources(pomHelper, logger, url, username, password, facetSources);
+
+            JBPopupFactory.getInstance()
+                    .createHtmlTextBalloonBuilder("Facets pushed !", MessageType.INFO, null)
+                    .setFadeoutTime(7500)
+                    .createBalloon()
+                    .show(RelativePoint.getNorthEastOf(statusBar.getComponent()),
+                                                     Balloon.Position.atRight);
+
+            return true;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            String message = "Could not push : " + e.getMessage();
+            statusBar.setInfo(message);
+            JBPopupFactory.getInstance()
+                    .createHtmlTextBalloonBuilder(message, MessageType.ERROR, null)
+                    .setFadeoutTime(7500)
+                    .createBalloon()
+                    .show(RelativePoint.getNorthEastOf( statusBar.getComponent()),
+                                                     Balloon.Position.atRight);
+            return false;
+        }
     }
 
 }

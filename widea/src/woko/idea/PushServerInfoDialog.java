@@ -30,6 +30,7 @@ public class PushServerInfoDialog {
     private JTextField textFieldUrl;
     private JTextField textFieldUsername;
     private JPasswordField passwordField;
+    private JCheckBox donTAskAgainCheckBox;
 
     public JComponent getComponent() {
         return mainPanel;

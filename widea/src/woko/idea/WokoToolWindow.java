@@ -93,7 +93,7 @@ public class WokoToolWindow {
         });
         pushButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent actionEvent) {
-//                getWpc().openPushDialog();
+                getWpc().openPushDialog();
             }
         });
     }

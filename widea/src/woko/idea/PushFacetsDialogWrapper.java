@@ -51,14 +51,6 @@ class PushFacetsDialogWrapper extends DialogWrapper {
         super.doOKAction();
         // invoke the push routines
         WokoProjectComponent wpc = project.getComponent(WokoProjectComponent.class);
-       // wpc.push(centerPanel.getAppUrl(), centerPanel.getUsername(), centerPanel.getPassword());
-        StatusBar statusBar = WindowManager.getInstance()
-                        .getStatusBar(project);
-        JBPopupFactory.getInstance()
-                .createHtmlTextBalloonBuilder("Facets pushed !", MessageType.INFO, null)
-                .setFadeoutTime(7500)
-                .createBalloon()
-                .show(RelativePoint.getCenterOf( statusBar.getComponent()),
-                                                 Balloon.Position.atRight);
+        wpc.push(centerPanel.getAppUrl(), centerPanel.getUsername(), centerPanel.getPassword());
     }
 }
