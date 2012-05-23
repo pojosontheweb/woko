@@ -40,7 +40,7 @@ class FacetTableCellRenderer extends DefaultTableCellRenderer {
                             boolean isSelected, boolean hasFocus,
                             int row, int column) {
         FacetDescriptorTableModel model = (FacetDescriptorTableModel)table.getModel();
-        WideaFacetDescriptor fd = model.getFacetDescriptorAt(row);
+        WideaFacetDescriptor fd = model.getFacetDescriptorAt(table.getRowSorter().convertRowIndexToModel(row));
         if (fd!=null) {
             // is the class a project class ?
             PsiClass psiClass = wpc().getPsiClass(fd.getFacetClassName());
