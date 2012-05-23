@@ -93,7 +93,7 @@ public class WokoToolWindow implements ToolWindowFactory {
         });
         pushButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent actionEvent) {
-                getWpc().openPushDialog();
+//                getWpc().openPushDialog();
             }
         });
     }
@@ -108,7 +108,7 @@ public class WokoToolWindow implements ToolWindowFactory {
         CompilerManager.getInstance(project).make(new CompileStatusNotification() {
             public void finished(boolean b, int i, int i1, CompileContext compileContext) {
                 WokoProjectComponent wpc = project.getComponent(WokoProjectComponent.class);
-                wpc.refresh();
+                wpc.scanForFacets();
                 FacetDescriptorTableModel model = new FacetDescriptorTableModel(project);
                 TableRowSorter<FacetDescriptorTableModel> sorter = new TableRowSorter<FacetDescriptorTableModel>(model);
                 table1.setModel(model);

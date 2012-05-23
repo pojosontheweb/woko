@@ -4,5 +4,8 @@ widea.zip
 .idea
 target
 *.iml
+*.ipr
+*.iws
+classes
 *~
 overlays

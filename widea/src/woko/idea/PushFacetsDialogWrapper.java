@@ -55,7 +55,7 @@ class PushFacetsDialogWrapper extends DialogWrapper {
         super.doOKAction();
         // invoke the push routines
         WokoProjectComponent wpc = project.getComponent(WokoProjectComponent.class);
-        wpc.push(centerPanel.getAppUrl(), centerPanel.getUsername(), centerPanel.getPassword());
+       // wpc.push(centerPanel.getAppUrl(), centerPanel.getUsername(), centerPanel.getPassword());
         StatusBar statusBar = WindowManager.getInstance()
                         .getStatusBar(project);
         JBPopupFactory.getInstance()

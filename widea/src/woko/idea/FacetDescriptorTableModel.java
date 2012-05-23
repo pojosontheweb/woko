@@ -20,6 +20,8 @@ import com.intellij.openapi.project.Project;
 import net.sourceforge.jfacets.FacetDescriptor;
 
 import javax.swing.table.AbstractTableModel;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 class FacetDescriptorTableModel extends AbstractTableModel {
@@ -41,8 +43,12 @@ class FacetDescriptorTableModel extends AbstractTableModel {
         return COLUMNS[i];
     }
 
+    private List<WideaFacetDescriptor> getFds() {
+        return wpc().getFacetDescriptors();
+    }
+
     public int getRowCount() {
-        return wpc().getFacetDescriptors().size();
+        return getFds().size();
     }
 
     public int getColumnCount() {
@@ -50,26 +56,17 @@ class FacetDescriptorTableModel extends AbstractTableModel {
     }
 
     public Object getValueAt(int row, int col) {
-        List<FacetDescriptor> facetDescriptors = wpc().getFacetDescriptors();
+        List<WideaFacetDescriptor> facetDescriptors = getFds();
         if (row>facetDescriptors.size()-1) {
             return null;
         }
-        FacetDescriptor fd = facetDescriptors.get(row);
+        WideaFacetDescriptor fd = facetDescriptors.get(row);
         switch (col) {
             case 0 : return fd.getName();
             case 1 : return fd.getProfileId();
-            case 2 : return fd.getTargetObjectType().getName();
-            case 3 : return fd.getFacetClass().getName();
+            case 2 : return fd.getTargetObjectTypeName();
+            case 3 : return fd.getFacetClassName();
             default: throw new ArrayIndexOutOfBoundsException("col is out of bounds : " + col);
         }
     }
-
-    public FacetDescriptor getFacetDescriptorAt(int i) {
-        List<FacetDescriptor> facetDescriptors = wpc().getFacetDescriptors();
-        if (i>facetDescriptors.size()-1) {
-            return null;
-        }
-        return facetDescriptors.get(i);
-    }
-
 }
