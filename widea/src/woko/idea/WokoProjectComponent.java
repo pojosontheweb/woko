@@ -33,7 +33,10 @@ import com.intellij.psi.xml.XmlTag;
 import com.intellij.ui.awt.RelativePoint;
 import com.intellij.util.xml.DomFileElement;
 import com.intellij.util.xml.DomManager;
+import net.sourceforge.jfacets.annotations.FacetKey;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.plugins.groovy.lang.psi.GrReferenceElement;
+import org.jetbrains.plugins.groovy.lang.psi.api.GroovyResolveResult;
 import org.jetbrains.plugins.groovy.lang.psi.api.statements.expressions.GrReferenceExpression;
 import woko.tooling.utils.AppUtils;
 import woko.tooling.utils.Logger;
@@ -255,50 +258,63 @@ public class WokoProjectComponent implements ProjectComponent {
         return res;
     }
 
-    private String getNvpValueText(PsiNameValuePair nvp) {
-        PsiAnnotationMemberValue pv = nvp.getValue();
+    private String unquote(String text) {
+        return text!=null ? text.replace("\"", "") : null;
+    }
+
+    private String getValueFromResolveResult(ResolveResult rr) {
+        PsiElement elem = rr.getElement();
+        if (elem instanceof PsiField) {
+            PsiField pf = (PsiField)elem;
+            PsiExpression initializer = pf.getInitializer();
+            if (initializer!=null) {
+                return unquote(initializer.getText());
+            }
+        }
+        return null;
+    }
+
+    private String getNvpValueAsText(PsiAnnotationMemberValue pv) {
         if (pv!=null) {
-            String text = pv.getText();
-            return text!=null ? text.replace("\"", "") : null;
+            if (pv instanceof GrReferenceElement<?>) {
+                GrReferenceElement<?> re = (GrReferenceElement<?>)pv;
+                GroovyResolveResult rr = re.advancedResolve();
+                return getValueFromResolveResult(rr);
+            } else if (pv instanceof PsiReferenceExpression) {
+                PsiReferenceExpression re = (PsiReferenceExpression)pv;
+                JavaResolveResult rr = re.advancedResolve(true);
+                return getValueFromResolveResult(rr);
+            } else {
+                return unquote(pv.getText());
+            }
         }
         return null;
     }
 
     private WideaFacetDescriptor createDescriptorForKey(PsiClass psiFacetClass, PsiAnnotation psiFacetKey) {
-        PsiNameValuePair[] nvps = psiFacetKey.getParameterList().getAttributes();
-        String name = null;
-        String profileId = null;
+        String name = getNvpValueAsText(psiFacetKey.findAttributeValue("name"));
+        String profileId = getNvpValueAsText(psiFacetKey.findAttributeValue("profileId"));
+
         String targetObjectType = null;
-        for (PsiNameValuePair nvp : nvps) {
-            String pName = nvp.getName();
-            if (pName!=null) {
-                if (pName.equals("name")) {
-                    name = getNvpValueText(nvp);
-                } else if (pName.equals("profileId")) {
-                    profileId = getNvpValueText(nvp);
-                } else if (pName.equals("targetObjectType")) {
-                    PsiAnnotationMemberValue pv = nvp.getValue();
-                    PsiType classType = null;
-                    if (pv instanceof PsiClassObjectAccessExpression) {
-                        PsiClassObjectAccessExpression cae = (PsiClassObjectAccessExpression)pv;
-                        classType = cae.getType();
-                    } else if (pv instanceof GrReferenceExpression) {
-                        GrReferenceExpression refExpr = (GrReferenceExpression)pv;
-                        classType = refExpr.getNominalType();
-                    }
-                    if (classType instanceof PsiImmediateClassType) {
-                        PsiImmediateClassType ict = (PsiImmediateClassType)classType;
-                        PsiType[] parameters = ict.getParameters();
-                        if (parameters.length==1) {
-                            targetObjectType = parameters[0].getCanonicalText();
-                        }
-                    } else {
-                        targetObjectType = "UNKNOWN!";
-                        System.out.println(classType);
-                    }
-                }
+        PsiAnnotationMemberValue pv = psiFacetKey.findAttributeValue("targetObjectType");
+        PsiType classType = null;
+        if (pv instanceof PsiClassObjectAccessExpression) {
+            PsiClassObjectAccessExpression cae = (PsiClassObjectAccessExpression)pv;
+            classType = cae.getType();
+        } else if (pv instanceof GrReferenceExpression) {
+            GrReferenceExpression refExpr = (GrReferenceExpression)pv;
+            classType = refExpr.getNominalType();
+        } else if (pv instanceof PsiLiteralExpression) {
+            targetObjectType = "UNSUPPORTED YET!";
+        }
+        if (classType instanceof PsiImmediateClassType) {
+            PsiImmediateClassType ict = (PsiImmediateClassType)classType;
+            PsiType[] parameters = ict.getParameters();
+            if (parameters.length==1) {
+                targetObjectType = parameters[0].getCanonicalText();
             }
         }
+
         String facetClassName = psiFacetClass.getQualifiedName();
         targetObjectType = targetObjectType==null ? "java.lang.Object" : targetObjectType;
         if (name!=null && profileId!=null && targetObjectType!=null && facetClassName!=null) {
@@ -362,7 +378,7 @@ public class WokoProjectComponent implements ProjectComponent {
     public boolean push(String url, String username, String password) {
         StatusBar statusBar = WindowManager.getInstance()
                         .getStatusBar(project);
-        statusBar.setInfo("Pushing facets to " + url);
+        statusBar.setInfo("Pushing facets to " + url + "...");
 
         try {
 
@@ -371,7 +387,7 @@ public class WokoProjectComponent implements ProjectComponent {
             for (WideaFacetDescriptor fd : facetDescriptors) {
                 String fqcn = fd.getFacetClassName();
                 PsiClass psiClass = getPsiClass(fqcn);
-                if (psiClass!=null) {
+                if (psiClass!=null && psiClass.getLanguage().getID().equals("Groovy")) {
                     facetSources.add(psiClass.getContainingFile().getText());
                 }
             }
@@ -389,6 +405,7 @@ public class WokoProjectComponent implements ProjectComponent {
                     .show(RelativePoint.getNorthEastOf(statusBar.getComponent()),
                                                      Balloon.Position.atRight);
 
+            statusBar.setInfo("Facets pushed to " + url);
             return true;
 
         } catch (Exception e) {
