@@ -305,6 +305,9 @@ public class WokoProjectComponent implements ProjectComponent {
             GrReferenceExpression refExpr = (GrReferenceExpression)pv;
             classType = refExpr.getNominalType();
         } else if (pv instanceof PsiLiteralExpression) {
+            // don't know why, but in some situations
+            // we get that type of values, which are always null...
+            // happens systematically with code found in dependencies
             targetObjectType = "UNSUPPORTED YET!";
         }
         if (classType instanceof PsiImmediateClassType) {
