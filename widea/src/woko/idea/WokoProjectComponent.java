@@ -23,6 +23,7 @@ import com.intellij.openapi.ui.popup.Balloon;
 import com.intellij.openapi.ui.popup.JBPopupFactory;
 import com.intellij.openapi.vfs.*;
 import com.intellij.openapi.wm.StatusBar;
+import com.intellij.openapi.wm.ToolWindowManager;
 import com.intellij.openapi.wm.WindowManager;
 import com.intellij.psi.*;
 import com.intellij.psi.impl.source.PsiImmediateClassType;
@@ -419,6 +420,10 @@ public class WokoProjectComponent implements ProjectComponent {
                 && isModifiedSinceLastRefresh(fd);
     }
 
+    public void toolWindowBalloon(MessageType messageType, String htmlMessage) {
+        ToolWindowManager.getInstance(project).notifyByBalloon("Woko", messageType, htmlMessage);
+    }
+
     public boolean push(String url, String username, String password) {
         StatusBar statusBar = WindowManager.getInstance()
                         .getStatusBar(project);
@@ -439,12 +444,7 @@ public class WokoProjectComponent implements ProjectComponent {
             }
 
             if (pushedFacets.size()==0) {
-                JBPopupFactory.getInstance()
-                        .createHtmlTextBalloonBuilder("No facets pushed (no changes found in local facets)", MessageType.INFO, null)
-                        .setFadeoutTime(7500)
-                        .createBalloon()
-                        .show(RelativePoint.getNorthEastOf(statusBar.getComponent()),
-                                                         Balloon.Position.atRight);
+                toolWindowBalloon(MessageType.WARNING, "No facets pushed (no changes found in local facets)");
                 statusBar.setInfo("Nothing to push !");
                 return false;
             }
@@ -480,12 +480,7 @@ public class WokoProjectComponent implements ProjectComponent {
             pushMsg.append("</ul>");
             modificationStamps = modifStamps;
 
-            JBPopupFactory.getInstance()
-                    .createHtmlTextBalloonBuilder(pushMsg.toString(), MessageType.INFO, null)
-                    .setFadeoutTime(7500)
-                    .createBalloon()
-                    .show(RelativePoint.getNorthEastOf(statusBar.getComponent()),
-                                                     Balloon.Position.atRight);
+            toolWindowBalloon(MessageType.INFO, pushMsg.toString());
             statusBar.setInfo("Facets pushed to " + url);
             return true;
 
@@ -493,12 +488,7 @@ public class WokoProjectComponent implements ProjectComponent {
             e.printStackTrace();
             String message = "Could not push : " + e.getMessage();
             statusBar.setInfo(message);
-            JBPopupFactory.getInstance()
-                    .createHtmlTextBalloonBuilder(message, MessageType.ERROR, null)
-                    .setFadeoutTime(7500)
-                    .createBalloon()
-                    .show(RelativePoint.getNorthEastOf( statusBar.getComponent()),
-                                                     Balloon.Position.atRight);
+            toolWindowBalloon(MessageType.ERROR, message);
             return false;
         }
     }

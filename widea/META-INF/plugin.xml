@@ -38,7 +38,6 @@
   </actions>
 
   <extensions defaultExtensionNs="com.intellij">
-      <toolWindow id="Woko"   secondary="true" icon="/woko/idea/woko.png" anchor="right" factoryClass="woko.idea.WokoToolWindowFactory">
-      </toolWindow>
+      <facetType id="WokoFacet" implementation="woko.idea.WokoFacetType"/>
   </extensions>
 </idea-plugin>
