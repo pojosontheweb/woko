@@ -122,12 +122,13 @@ public class WokoToolWindow {
         table1.setModel(model);
         table1.setRowSorter(sorter);
         table1.setIntercellSpacing(new Dimension(0, 0));
-
+        table1.setAutoResizeMode(JTable.AUTO_RESIZE_SUBSEQUENT_COLUMNS);
         TableColumnModel colModel = table1.getColumnModel();
         TableColumn c0 = colModel.getColumn(0);
-        c0.setWidth(30);
+        c0.setMinWidth(30);
+        c0.setMaxWidth(30);
+        c0.setResizable(false);
         c0.setCellRenderer(new FacetTypeCellRenderer(project));
-        colModel.getColumn(1).setWidth(70);
         for (int i=1; i<model.getColumnCount(); i++) {
             colModel.getColumn(i).setCellRenderer(new FacetCellRenderer(project));
         }
