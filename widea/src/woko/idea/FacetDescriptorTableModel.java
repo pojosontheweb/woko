@@ -25,7 +25,7 @@ class FacetDescriptorTableModel extends AbstractTableModel {
 
     private final Project project;
 
-    private static final String[] COLUMNS = new String[] { "name", "profileId", "targetObjectType", "facetClass" };
+    private static final String[] COLUMNS = new String[] { "type", "name", "profileId", "targetObjectType", "facetClass" };
 
     FacetDescriptorTableModel(Project project) {
         this.project = project;
@@ -49,7 +49,7 @@ class FacetDescriptorTableModel extends AbstractTableModel {
     }
 
     public int getColumnCount() {
-        return 4;
+        return 5;
     }
 
     public Object getValueAt(int row, int col) {
@@ -58,10 +58,11 @@ class FacetDescriptorTableModel extends AbstractTableModel {
             return null;
         }
         switch (col) {
-            case 0 : return fd.getName();
-            case 1 : return fd.getProfileId();
-            case 2 : return fd.getTargetObjectTypeName();
-            case 3 : return fd.getFacetClassName();
+            case 0 : return fd.getType();
+            case 1 : return fd.getName();
+            case 2 : return fd.getProfileId();
+            case 3 : return fd.getTargetObjectTypeName();
+            case 4 : return fd.getFacetClassName();
             default: throw new ArrayIndexOutOfBoundsException("col is out of bounds : " + col);
         }
     }

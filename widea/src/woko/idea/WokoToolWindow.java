@@ -23,7 +23,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableRowSorter;
 import java.awt.*;
@@ -51,23 +51,25 @@ public class WokoToolWindow {
             }
         });
         textFieldFilter.getDocument().addDocumentListener(
-            new DocumentListener() {
-                public void changedUpdate(DocumentEvent e) {
-                    filter();
-                }
-                public void insertUpdate(DocumentEvent e) {
-                    filter();
-                }
-                public void removeUpdate(DocumentEvent e) {
-                    filter();
-                }
-            });
+                new DocumentListener() {
+                    public void changedUpdate(DocumentEvent e) {
+                        filter();
+                    }
+
+                    public void insertUpdate(DocumentEvent e) {
+                        filter();
+                    }
+
+                    public void removeUpdate(DocumentEvent e) {
+                        filter();
+                    }
+                });
         table1.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent mouseEvent) {
-                if (mouseEvent.getClickCount()==2) {
+                if (mouseEvent.getClickCount() == 2) {
                     // dbl-clicked : get selected row
                     int row = table1.convertRowIndexToModel(table1.getSelectedRow());
-                    FacetDescriptorTableModel model = (FacetDescriptorTableModel)table1.getModel();
+                    FacetDescriptorTableModel model = (FacetDescriptorTableModel) table1.getModel();
                     WideaFacetDescriptor fd = model.getFacetDescriptorAt(row);
                     getWpc().openClassInEditor(fd.getFacetClassName());
                 }
@@ -78,7 +80,6 @@ public class WokoToolWindow {
                 textFieldFilter.setText(null);
             }
         });
-        table1.setIntercellSpacing(new Dimension(0,0));
         includeLibsCheckBox.addChangeListener(new ChangeListener() {
             public void stateChanged(ChangeEvent changeEvent) {
                 filter();
@@ -120,11 +121,15 @@ public class WokoToolWindow {
         TableRowSorter<FacetDescriptorTableModel> sorter = new TableRowSorter<FacetDescriptorTableModel>(model);
         table1.setModel(model);
         table1.setRowSorter(sorter);
-        TableCellRenderer renderer = new FacetTableCellRenderer(project);
+        table1.setIntercellSpacing(new Dimension(0, 0));
+
         TableColumnModel colModel = table1.getColumnModel();
-        colModel.getColumn(0).setWidth(70);
-        for (int colIndex=0;colIndex<model.getColumnCount();colIndex++) {
-            colModel.getColumn(colIndex).setCellRenderer(renderer);
+        TableColumn c0 = colModel.getColumn(0);
+        c0.setWidth(30);
+        c0.setCellRenderer(new FacetTypeCellRenderer(project));
+        colModel.getColumn(1).setWidth(70);
+        for (int i=1; i<model.getColumnCount(); i++) {
+            colModel.getColumn(i).setCellRenderer(new FacetCellRenderer(project));
         }
     }
 
