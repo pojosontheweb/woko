@@ -407,12 +407,25 @@ public class WokoProjectComponent implements ProjectComponent {
 
             // retrieve the facet sources from modified facets
             List<String> facetSources = new ArrayList<String>();
+            List<WideaFacetDescriptor> pushedFacets = new ArrayList<WideaFacetDescriptor>();
             for (WideaFacetDescriptor fd : facetDescriptors) {
                 String fqcn = fd.getFacetClassName();
                 PsiClass psiClass = getPsiClass(fqcn);
-                if (psiClass!=null && psiClass.getLanguage().getID().equals("Groovy")) {
+                if (psiClass!=null && psiClass.getLanguage().getID().equals("Groovy") && isModifiedSinceLastRefresh(fd)) {
                     facetSources.add(psiClass.getContainingFile().getText());
+                    pushedFacets.add(fd);
                 }
+            }
+
+            if (pushedFacets.size()==0) {
+                JBPopupFactory.getInstance()
+                        .createHtmlTextBalloonBuilder("No facets pushed (no changes found in local facets)", MessageType.INFO, null)
+                        .setFadeoutTime(7500)
+                        .createBalloon()
+                        .show(RelativePoint.getNorthEastOf(statusBar.getComponent()),
+                                                         Balloon.Position.atRight);
+                statusBar.setInfo("Nothing to push !");
+                return false;
             }
 
             // push all this !
@@ -421,13 +434,37 @@ public class WokoProjectComponent implements ProjectComponent {
             Logger logger = new Logger(sw);
             AppUtils.pushFacetSources(pomHelper, logger, url, username, password, facetSources);
 
+
+            StringBuilder pushMsg = new StringBuilder();
+            pushMsg.append("The following facets have ben pushed :")
+                    .append("<ul>");
+            List<String> pushedClasses = new ArrayList<String>();
+            Map<WideaFacetDescriptor,Long> modifStamps = new HashMap<WideaFacetDescriptor, Long>(modificationStamps);
+            for (WideaFacetDescriptor fd : pushedFacets) {
+                String fqcn = fd.getFacetClassName();
+                if (!pushedClasses.contains(fqcn)) {
+                    pushedClasses.add(fqcn);
+                    pushMsg.append("<li>")
+                            .append(fqcn)
+                            .append("</li>");
+                }
+
+                // update stamps for pushed classes
+                modifStamps.remove(fd);
+                PsiFile pf = getPsiFile(fqcn);
+                if (pf!=null) {
+                    modifStamps.put(fd, pf.getModificationStamp());
+                }
+            }
+            pushMsg.append("</ul>");
+            modificationStamps = modifStamps;
+
             JBPopupFactory.getInstance()
-                    .createHtmlTextBalloonBuilder("Facets pushed !", MessageType.INFO, null)
+                    .createHtmlTextBalloonBuilder(pushMsg.toString(), MessageType.INFO, null)
                     .setFadeoutTime(7500)
                     .createBalloon()
                     .show(RelativePoint.getNorthEastOf(statusBar.getComponent()),
                                                      Balloon.Position.atRight);
-
             statusBar.setInfo("Facets pushed to " + url);
             return true;
 
