@@ -76,9 +76,10 @@
               <component id="50109" class="javax.swing.JButton" binding="pushButton">
                 <constraints/>
                 <properties>
+                  <enabled value="false"/>
                   <icon value="nodes/deploy.png"/>
                   <text value=""/>
-                  <toolTipText value="Push modified facets to the app"/>
+                  <toolTipText value="Push modified facets to the app (groovy only)"/>
                 </properties>
               </component>
             </children>

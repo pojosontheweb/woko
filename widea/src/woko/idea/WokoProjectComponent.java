@@ -31,9 +31,6 @@ import com.intellij.psi.xml.XmlDocument;
 import com.intellij.psi.xml.XmlFile;
 import com.intellij.psi.xml.XmlTag;
 import com.intellij.ui.awt.RelativePoint;
-import com.intellij.util.xml.DomFileElement;
-import com.intellij.util.xml.DomManager;
-import net.sourceforge.jfacets.annotations.FacetKey;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.plugins.groovy.lang.psi.GrReferenceElement;
 import org.jetbrains.plugins.groovy.lang.psi.api.GroovyResolveResult;
@@ -45,8 +42,6 @@ import woko.tooling.utils.PomHelper;
 import java.io.File;
 import java.io.StringWriter;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class WokoProjectComponent implements ProjectComponent {
 
@@ -76,11 +71,27 @@ public class WokoProjectComponent implements ProjectComponent {
         return "WokoProjectComponent";
     }
 
+    public boolean hasPushableFacets() {
+        for (WideaFacetDescriptor fd : facetDescriptors) {
+            if (isPushable(fd)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isGroovy(WideaFacetDescriptor fd) {
+        return isGroovy(getPsiClass(fd.getFacetClassName()));
+    }
+
+    public boolean isGroovy(PsiClass psiClass) {
+        return psiClass != null && psiClass.getLanguage().getID().equals("Groovy");
+    }
+
     class MyVfsListener extends VirtualFileAdapter {
         @Override
         public void contentsChanged(VirtualFileEvent event) {
-            VirtualFile vf = event.getFile();
-            String path = vf.getPath();
+            // TODO : expensive lookup, we might consider updating only the changed file !!!
             refresh();
         }
     }
@@ -165,7 +176,7 @@ public class WokoProjectComponent implements ProjectComponent {
             modificationStamps = Collections.emptyMap();
         }
         // fire refresh for the tool window's table model
-        toolWindow.refreshTable();
+        toolWindow.refreshContents();
     }
 
     private void scanForFacets(
@@ -398,6 +409,13 @@ public class WokoProjectComponent implements ProjectComponent {
         w.show();
     }
 
+    private boolean isPushable(WideaFacetDescriptor fd) {
+        PsiClass psiClass = getPsiClass(fd.getFacetClassName());
+        return psiClass!=null
+                && isGroovy(psiClass)
+                && isModifiedSinceLastRefresh(fd);
+    }
+
     public boolean push(String url, String username, String password) {
         StatusBar statusBar = WindowManager.getInstance()
                         .getStatusBar(project);
@@ -409,9 +427,9 @@ public class WokoProjectComponent implements ProjectComponent {
             List<String> facetSources = new ArrayList<String>();
             List<WideaFacetDescriptor> pushedFacets = new ArrayList<WideaFacetDescriptor>();
             for (WideaFacetDescriptor fd : facetDescriptors) {
-                String fqcn = fd.getFacetClassName();
-                PsiClass psiClass = getPsiClass(fqcn);
-                if (psiClass!=null && psiClass.getLanguage().getID().equals("Groovy") && isModifiedSinceLastRefresh(fd)) {
+                if (isPushable(fd)) {
+                    String fqcn = fd.getFacetClassName();
+                    PsiClass psiClass = getPsiClass(fqcn);
                     facetSources.add(psiClass.getContainingFile().getText());
                     pushedFacets.add(fd);
                 }

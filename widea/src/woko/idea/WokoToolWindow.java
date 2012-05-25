@@ -16,14 +16,7 @@
 
 package woko.idea;
 
-import com.intellij.openapi.compiler.CompileContext;
-import com.intellij.openapi.compiler.CompileStatusNotification;
-import com.intellij.openapi.compiler.CompilerManager;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.wm.ToolWindow;
-import com.intellij.openapi.wm.ToolWindowFactory;
-import com.intellij.ui.content.Content;
-import com.intellij.ui.content.ContentFactory;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -135,8 +128,12 @@ public class WokoToolWindow {
         }
     }
 
-    public void refreshTable() {
+    public void refreshContents() {
+        // refresh the table
         ((FacetDescriptorTableModel)table1.getModel()).fireTableDataChanged();
+        // do we enable push ?
+        WokoProjectComponent w = project.getComponent(WokoProjectComponent.class);
+        pushButton.setEnabled(w.hasPushableFacets());
     }
 
     public static abstract class FilterCallback {
