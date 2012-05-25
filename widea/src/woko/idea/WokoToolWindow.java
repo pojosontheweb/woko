@@ -106,7 +106,7 @@ public class WokoToolWindow {
                     // do we include libs or not ?
                     if (!includeLibsCheckBox.isSelected()) {
                         // check if class is project class
-                        return wpc.getPsiClass(fd.getFacetClassName())!=null;
+                        return !fd.getType().equals(FdType.Compiled);
                     }
                 }
                 return fdMatch;

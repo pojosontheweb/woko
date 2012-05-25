@@ -80,11 +80,7 @@ public class WokoProjectComponent implements ProjectComponent {
         return false;
     }
 
-    public boolean isGroovy(WideaFacetDescriptor fd) {
-        return isGroovy(getPsiClass(fd.getFacetClassName()));
-    }
-
-    public boolean isGroovy(PsiClass psiClass) {
+    private boolean isGroovy(PsiClass psiClass) {
         return psiClass != null && psiClass.getLanguage().getID().equals("Groovy");
     }
 
@@ -343,7 +339,14 @@ public class WokoProjectComponent implements ProjectComponent {
         String facetClassName = psiFacetClass.getQualifiedName();
         targetObjectType = targetObjectType==null ? "java.lang.Object" : targetObjectType;
         if (name!=null && profileId!=null && targetObjectType!=null && facetClassName!=null) {
-            return new WideaFacetDescriptor(name, profileId, targetObjectType, facetClassName);
+            FdType type = null;
+            PsiClass psiClass = getPsiClass(facetClassName);
+            if (psiClass==null) {
+                type = FdType.Compiled;
+            } else {
+                type = isGroovy(psiClass) ? FdType.Groovy : FdType.Java;
+            }
+            return new WideaFacetDescriptor(name, profileId, targetObjectType, facetClassName, type);
         }
         return null;
     }

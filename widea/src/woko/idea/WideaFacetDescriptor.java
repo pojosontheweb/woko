@@ -8,16 +8,19 @@ public class WideaFacetDescriptor {
     private final String profileId;
     private final String targetObjectTypeName;
     private final String facetClassName;
+    private final FdType type;
 
     public WideaFacetDescriptor(
             @NotNull String name,
             @NotNull String profileId,
             @NotNull String targetObjectTypeName,
-            @NotNull String facetClassName) {
+            @NotNull String facetClassName,
+            @NotNull FdType type) {
         this.name = name;
         this.profileId = profileId;
         this.targetObjectTypeName = targetObjectTypeName;
         this.facetClassName = facetClassName;
+        this.type = type;
     }
 
     public String getName() {
@@ -34,6 +37,10 @@ public class WideaFacetDescriptor {
 
     public String getFacetClassName() {
         return facetClassName;
+    }
+
+    public FdType getType() {
+        return type;
     }
 
     @Override

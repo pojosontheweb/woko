@@ -27,6 +27,9 @@ class FacetTableCellRenderer extends DefaultTableCellRenderer {
 
     private final Project project;
 
+    private static final ImageIcon ICON_COMPILED =
+            new ImageIcon(FacetTableCellRenderer.class.getResource("/woko/idea/javaClass.png"));
+
     private static final ImageIcon ICON_JAVA =
             new ImageIcon(FacetTableCellRenderer.class.getResource("/woko/idea/java.png"));
 
@@ -67,10 +70,11 @@ class FacetTableCellRenderer extends DefaultTableCellRenderer {
 
         // add an icon to first column's label to show the language
         if (column==0) {
-            if (wpc().isGroovy(fd)) {
-                setIcon(ICON_GROOVY);
-            } else {
-                setIcon(ICON_JAVA);
+            FdType t = fd.getType();
+            switch(t) {
+                case Compiled   : setIcon(ICON_COMPILED); break;
+                case Groovy     : setIcon(ICON_GROOVY); break;
+                case Java       : setIcon(ICON_JAVA); break;
             }
         } else {
             setIcon(null);
