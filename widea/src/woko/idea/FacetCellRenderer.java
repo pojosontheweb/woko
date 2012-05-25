@@ -39,6 +39,7 @@ public class FacetCellRenderer extends DefaultTableCellRenderer {
                             JTable table, Object value,
                             boolean isSelected, boolean hasFocus,
                             int row, int column) {
+
         FacetDescriptorTableModel model = (FacetDescriptorTableModel)table.getModel();
         WideaFacetDescriptor fd = model.getFacetDescriptorAt(table.getRowSorter().convertRowIndexToModel(row));
         if (fd!=null) {
@@ -48,17 +49,16 @@ public class FacetCellRenderer extends DefaultTableCellRenderer {
             } else {
                 setBackground(Color.white);
             }
-            // check if the file has changed since last refresh
-            if (wpc().isModifiedSinceLastRefresh(fd)) {
-                setFont(getFont().deriveFont(Font.BOLD));
-            }
         }
 
         super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-
         setDisplayValue(table, value, isSelected, hasFocus, row, column);
-
         setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.lightGray));
+
+        // check if the file has changed since last refresh
+        if (wpc().isModifiedSinceLastRefresh(fd)) {
+            setFont(getFont().deriveFont(Font.BOLD));
+        }
 
         return this;
     }
