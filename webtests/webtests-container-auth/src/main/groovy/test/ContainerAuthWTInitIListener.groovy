@@ -34,9 +34,9 @@ class ContainerAuthWTInitIListener extends HibernateCompassInMemWokoInitListener
     protected ObjectStore createObjectStore() {
         HibernateStore o = super.createObjectStore()
         o.doInTx({ store, session ->
-            EntityWithRelations ewr = new EntityWithRelations(name:"test")
+            EntityWithRelations ewr = new EntityWithRelations(id:1,name:"test")
             store.save(ewr)
-            SubEntity se = new SubEntity(name:"testSub")
+            SubEntity se = new SubEntity(id:1,name:"testSub")
             se.daEntity = ewr
             store.save(se)
         } as TxCallback)

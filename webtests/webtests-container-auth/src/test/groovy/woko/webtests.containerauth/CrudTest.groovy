@@ -205,24 +205,20 @@ class CrudTest extends WebTestBase {
     void testAssociations() {
         webtest('testAssociations') {
             login()
-            goToPage '/create'
-            setSelectField name: 'className', value: 'SubEntity'
-            clickButton name: 'create'
 
-            setInputField name: "object.name", value:"testAssociate"
-            setSelectField name: "object.daEntity", text:"test"
-            clickButton name:'save'
-            verifyText 'Object saved'
+            try {
+                goToPage '/save/SubEntity?object.id=1234'
+                setInputField name: "object.name", value:"testAssociate"
+                setSelectField name: "object.daEntity", value:"1"
+                clickButton name:'save'
+                verifyText 'Object saved'
 
-            setSelectField name: "object.children", text:"test"
-            clickButton name:'save'
-            verifyText 'Object saved'
-
-            clickLink label:'Close editing'
-            verifyXPath xpath:'/html/body/div/div[3]/div/div/div/table/tbody/tr/td/span/span/div/span/span/a',
-                    text: 'test'
-            verifyXPath xpath:'/html/body/div/div[3]/div/div/div/table/tbody/tr[3]/td/span/span/a',
-                    text: 'test'
+                clickLink label:'Close editing'
+                verifyXPath xpath:'/html/body/div/div[3]/div/div/div/table/tbody/tr[3]/td/span/span/a',
+                        text: 'test'
+            } finally {
+                goToPage '/delete/SubEntity/1234?facet.confirm=true'
+            }
         }
     }
 

@@ -50,21 +50,20 @@ class RendererTest extends WebTestBase {
         webtest("testComboForPersistentXToOne") {
             login()
             try {
-                goToPage '/save/EntityWithRelations?object.id=1&object.name=ewr1'
-                goToPage '/save/SubEntity?object.id=1&object.name=sub1'
+                goToPage '/save/EntityWithRelations?object.id=111&object.name=ewr1'
+                goToPage '/save/SubEntity?object.id=111&object.name=sub1'
 
-                goToPage '/edit/SubEntity/1'
-                verifyText 'bar'
+                goToPage '/edit/SubEntity/111'
                 verifySelectField name:'object.daEntity', value:''
 
-                setSelectField name:'object.daEntity', optionIndex:1
+                setSelectField name:'object.daEntity', value:'111'
                 clickButton name:'save'
-                verifySelectField name:'object.daEntity', value:'1'
+                verifySelectField name:'object.daEntity', value:'111'
                 verifySelectField name:'object.daEntity', text:'ewr1'
 
             } finally {
-                goToPage '/delete/EntityWithRelations/1?facet.confirm=true'
-                goToPage '/delete/SubEntity/1?facet.confirm=true'
+                goToPage '/delete/SubEntity/111?facet.confirm=true'
+                goToPage '/delete/EntityWithRelations/111?facet.confirm=true'
             }
         }
     }
