@@ -16,6 +16,7 @@
 
 package woko.ext.usermanagement.hibernate;
 
+import org.hibernate.annotations.NaturalId;
 import woko.ext.usermanagement.core.User;
 
 import javax.persistence.*;
@@ -32,7 +33,7 @@ public class HbUser implements User {
 
     @NotNull
     @Size(min=4, max=50)
-    @Column(unique = true, nullable = false)
+    @NaturalId
     private String username;
 
     @NotNull

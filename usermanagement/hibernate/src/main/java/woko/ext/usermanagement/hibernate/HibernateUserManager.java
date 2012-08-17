@@ -54,12 +54,9 @@ public class HibernateUserManager extends DatabaseUserManager {
     @Override
     public User getUserByUsername(String username) {
         Session s = hibernateStore.getSession();
-        List l = s.createCriteria(getUserClass()).add(Restrictions.eq("username", username)).list();
+        List l = s.createCriteria(getUserClass()).add(Restrictions.naturalId().set("username", username)).list();
         if (l.size()==0) {
             return null;
-        }
-        if (l.size()>1) {
-            throw new IllegalStateException("more than 1 users with username==" + username);
         }
         return (User)l.get(0);
     }
