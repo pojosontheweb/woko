@@ -32,6 +32,7 @@ public class HbUser implements User {
 
     @NotNull
     @Size(min=4, max=50)
+    @Column(unique = true, nullable = false)
     private String username;
 
     @NotNull
