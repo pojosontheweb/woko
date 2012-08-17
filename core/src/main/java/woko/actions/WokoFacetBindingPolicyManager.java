@@ -26,13 +26,18 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import net.sourceforge.jfacets.IFacet;
+import net.sourceforge.jfacets.IFacetContext;
 import net.sourceforge.stripes.action.ActionBeanContext;
 import net.sourceforge.stripes.action.StrictBinding;
 import net.sourceforge.stripes.controller.ParameterName;
 import net.sourceforge.stripes.controller.StripesFilter;
 import net.sourceforge.stripes.exception.StripesRuntimeException;
 import net.sourceforge.stripes.util.Log;
+import net.sourceforge.stripes.util.bean.NodeEvaluation;
 import net.sourceforge.stripes.util.bean.PropertyExpressionEvaluation;
+import woko.facets.ResolutionFacet;
+import woko.facets.WokoFacetContext;
 
 @StrictBinding(defaultPolicy = StrictBinding.Policy.ALLOW)
 public class WokoFacetBindingPolicyManager {
@@ -106,11 +111,25 @@ public class WokoFacetBindingPolicyManager {
      * @return true if binding is allowed; false if not
      */
     public boolean isBindingAllowed(PropertyExpressionEvaluation eval) {
-        // Ensure no-one is trying to bind into the ActionBeanContext!!
-        Type firstNodeType = eval.getRootNode().getValueType();
-        if (firstNodeType instanceof Class<?>
-                && ActionBeanContext.class.isAssignableFrom((Class<?>) firstNodeType)) {
-            return false;
+        NodeEvaluation e = eval.getRootNode();
+        Type firstNodeType = e.getValueType();
+        if (firstNodeType instanceof Class<?>) {
+            Class<?> clazz = (Class<?>)firstNodeType;
+            // can't bind to action bean context
+            if (ActionBeanContext.class.isAssignableFrom(clazz)) {
+                return false;
+            }
+            // can't bind to the facet context...
+            if (ResolutionFacet.class.isAssignableFrom(clazz)) {
+                NodeEvaluation nextEval = e.getNext();
+                if (nextEval!=null) {
+                    Type neType = nextEval.getValueType();
+                    if (neType instanceof Class<?>
+                            && WokoFacetContext.class.isAssignableFrom((Class<?>)neType)) {
+                        return false;
+                    }
+                }
+            }
         }
 
         // check parameter name against access lists
