@@ -68,7 +68,6 @@ class MassAssignAuditCmd extends Command {
     }
 
     private def buildPathsTree(MANode node, Class<?> rootClass) {
-        // grab first level accessible properties (read)
         boolean canBind = false
         if (rootClass && !isExcluded(rootClass)) {
             PropertyDescriptor[] pds = ReflectUtil.getPropertyDescriptors(rootClass);
@@ -117,22 +116,31 @@ class MassAssignAuditCmd extends Command {
     def checkMassAssign() {
         // load all resolution facets
         def descriptors = fdm.descriptors
+        int totalPaths = 0
         descriptors.each { fd ->
             // find the target object type(s)
             if (ResolutionFacet.class.isAssignableFrom(fd.facetClass)) {
                 def type = fd.targetObjectType
+
                 MANode root = new MANode(name:fd.name, type:type)
                 buildPathsTree(root, type)
-                println root
-                root.eachNodeRecurse { node, indent ->
-                    def s = ""
-                    for (int i=0 ; i<indent; i++) {
-                        s += "  "
+
+                int nbPaths = 0
+                root.eachNodeRecurse { MANode node ->
+                    if (!node.children) {
+                        // leaf : print all path
+                        log("  " + node.getAbsolutePath())
+                        nbPaths++
                     }
-                    println "$s$node"
+                }
+
+                if (nbPaths) {
+                    log("=> Found $nbPaths accessible binding(s) in $fd")
+                    totalPaths += nbPaths
                 }
             }
         }
+        log("Found $totalPaths accessible bindings in the app.")
     }
 
 
@@ -166,16 +174,20 @@ class MANode {
         return s
     }
 
-    private def _eachNodeRecurse(Closure c, int indent) {
+    def eachNodeRecurse(Closure c) {
         children.each { child->
-            def newIndent = indent + 1
-            c(child, newIndent)
-            child._eachNodeRecurse(c, newIndent)
+            c(child)
+            child.eachNodeRecurse(c)
         }
     }
 
-    def eachNodeRecurse(Closure c) {
-        _eachNodeRecurse(c, 0)
+    String getAbsolutePath() {
+        String s = ""
+        MANode n = this
+        while (n) {
+            s = n.name + "/" + s
+            n = n.parent
+        }
+        return s
     }
-
 }
