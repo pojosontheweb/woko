@@ -26,8 +26,6 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import net.sourceforge.jfacets.IFacet;
-import net.sourceforge.jfacets.IFacetContext;
 import net.sourceforge.stripes.action.ActionBeanContext;
 import net.sourceforge.stripes.action.StrictBinding;
 import net.sourceforge.stripes.controller.ParameterName;

@@ -284,4 +284,9 @@ The command accepts one argument that can be  :
 
     }
 
+    @Test
+    void testMassAssignmentCheck() {
+        assertCommandResult(["sec-check", "mass-assign"], """foo""")
+    }
+
 }
