@@ -73,5 +73,20 @@ class BindingSecurityTest extends WebTestBase {
         }
     }
 
+    void testCannotBindThroughFacetContext() {
+        webtest("testCannotBindThroughFacetContext") {
+            login()
+            goToPage '/save/MyEntity?object.id=1&object.prop1=val1&facet.facetContext.targetObject.prop2=123456'
+            try {
+                verifyText 'Object saved'
+                goToPage '/view/MyEntity/1'
+                not {
+                    verifyText '123456'
+                }
+            } finally {
+                goToPage '/delete/MyEntity/1?facet.confirm=true'
+            }
+        }
+    }
 
 }
