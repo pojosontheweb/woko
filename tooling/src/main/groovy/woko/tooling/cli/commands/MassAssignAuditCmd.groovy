@@ -10,6 +10,9 @@ import woko.tooling.utils.Logger
 import java.lang.reflect.Method
 import java.lang.reflect.Type
 import java.lang.reflect.ParameterizedType
+import net.sourceforge.stripes.action.StrictBinding
+import net.sourceforge.stripes.action.StrictBinding.Policy
+import woko.actions.WokoFacetBindingPolicyManager
 
 /**
  * Created by IntelliJ IDEA.
@@ -71,7 +74,7 @@ class MassAssignAuditCmd extends Command {
         }
     }
 
-    def buildPathsTree(MANode node, Class<?> rootClass) {
+    def buildPathsTree(MANode node, Class<?> rootClass, WokoFacetBindingPolicyManager pm) {
         boolean canBind = false
         if (rootClass && !isExcluded(rootClass)) {
             PropertyDescriptor[] pds = ReflectUtil.getPropertyDescriptors(rootClass);
@@ -95,8 +98,9 @@ class MassAssignAuditCmd extends Command {
                                 propType = pt.actualTypeArguments[0]
                                 isList = true
                             } catch(Exception e) {
-                                // not a parameterized List, binding impossible anyway
+                                // not a parameterized List, binding impossible to determine anyway !
                                 skip = true
+                                // TODO add some kind of warning in there !
                             }
                         }
                         if (!skip) {
@@ -115,8 +119,10 @@ class MassAssignAuditCmd extends Command {
                                             parent:node,
                                             type:propType,
                                             name:propName)
-                                    node.children << n
-                                    canBind = true
+                                    if (isBindingAllowed(n,pm)) {
+                                        node.children << n
+                                        canBind = true
+                                    }
                                 }
                             } else {
                                 MANode n = new MANode(
@@ -126,9 +132,10 @@ class MassAssignAuditCmd extends Command {
                                         isList:isList)
                                 // recurse and check if it binds below.
                                 // don't add the node if no childs can bind
-                                canBind = buildPathsTree(n, propType)
-                                if (canBind) {
+                                boolean childCanBind = isBindingAllowed(n, pm) && buildPathsTree(n, propType, pm)
+                                if (childCanBind) {
                                     node.children << n
+                                    canBind = true
                                 }
                             }
                         }
@@ -137,6 +144,10 @@ class MassAssignAuditCmd extends Command {
             }
         }
         return canBind
+    }
+
+    boolean isBindingAllowed(MANode node, WokoFacetBindingPolicyManager pm) {
+        return pm.isBindingAllowed(MANode.pathToString(node.absolutePath) { n -> n.name })
     }
 
     def checkMassAssign() {
@@ -148,7 +159,8 @@ class MassAssignAuditCmd extends Command {
             if (ResolutionFacet.class.isAssignableFrom(fd.facetClass)) {
                 def type = fd.targetObjectType
                 MANode root = new MANode(name:fd.name, type:type)
-                buildPathsTree(root, type)
+                WokoFacetBindingPolicyManager pm = WokoFacetBindingPolicyManager.getInstance(fd.facetClass)
+                buildPathsTree(root, type, pm)
                 int nbPaths = 0
                 String prefix = "($fd.name,$fd.profileId,$type.name) [$fd.facetClass.name]"
                 root.eachChildRecurse { MANode node ->
@@ -225,14 +237,11 @@ class MANode {
         return res.reverse()
     }
 
-    static String pathToString(List<MANode> path) {
+    static String pathToString(List<MANode> path, Closure nameClosure) {
         StringBuilder res = new StringBuilder()
         int index = 0
         path.each { n ->
-            res << n.name
-            if (n.isList) {
-                res << "[]"
-            }
+            res << nameClosure(n)
             if (index<path.size()-1) {
                 res << "."
             }
@@ -241,8 +250,28 @@ class MANode {
         return res.toString()
     }
 
+    static String pathToString(List<MANode> path) {
+        pathToString(path) { n ->
+            def s = n.name
+            if (n.isList) {
+                s += "[]"
+            }
+            return s
+        }
+    }
+
 }
 
+
+@StrictBinding(
+defaultPolicy=Policy.ALLOW,
+deny=[
+    "object.dum.dummies"
+]
+)
+class DummyFacetToHoldTheStrictBindingAnnotation {
+
+}
 
 class TopDummy {
 
@@ -253,14 +282,20 @@ class TopDummy {
 class DummyClass {
 
     String dumS
-    List<DummyClass> dummies
+    String dumS2
+    List<Dummy2> dummies
 
 }
 
 class Dummy2 {
 
     Integer yup
+    Dummy3 d3
 
+}
+
+class Dummy3 {
+    String booyaka
 }
 
 class TestMe {
@@ -277,10 +312,13 @@ class TestMe {
         Logger logger = new Logger(out)
         Runner runner = new Runner(logger, new File("/Users/vankeisb/projects/msm"))
         MassAssignAuditCmd cmd = new MassAssignAuditCmd(runner)
-        MANode node = new MANode(name:"root", type:TopDummy.class)
-        cmd.buildPathsTree(node, TopDummy.class)
+        MANode node = new MANode(name:"object", type:TopDummy.class)
+        WokoFacetBindingPolicyManager pm = WokoFacetBindingPolicyManager.getInstance(DummyFacetToHoldTheStrictBindingAnnotation.class)
+        cmd.buildPathsTree(node, TopDummy.class, pm)
         println node
-        node.eachChildRecurse { n -> println n.absolutePath }
+        node.eachChildRecurse { n ->
+            println MANode.pathToString(n.absolutePath)
+        }
     }
 
 }
