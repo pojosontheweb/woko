@@ -30,8 +30,11 @@ import net.sourceforge.stripes.util.Log;
 import net.sourceforge.stripes.util.bean.NodeEvaluation;
 import net.sourceforge.stripes.util.bean.PropertyExpressionEvaluation;
 import net.sourceforge.stripes.validation.ValidationMetadataProvider;
+import woko.Woko;
 import woko.facets.ResolutionFacet;
 import woko.facets.WokoFacetContext;
+
+import javax.servlet.http.HttpServletRequest;
 
 @StrictBinding(defaultPolicy = StrictBinding.Policy.ALLOW)
 public class WokoFacetBindingPolicyManager {
@@ -107,6 +110,17 @@ public class WokoFacetBindingPolicyManager {
         }
     }
 
+    public static final Collection<Class<?>> UNBINDABLE_CLASSES = makeUnbindableClasses();
+
+    private static Collection<Class<?>> makeUnbindableClasses() {
+        HashSet<Class<?>> res = new HashSet<Class<?>>();
+        res.add(ActionBeanContext.class);
+        res.add(HttpServletRequest.class);
+        res.add(Woko.class);
+        res.add(WokoFacetContext.class);
+        return Collections.unmodifiableCollection(res);
+    }
+
     /**
      * Indicates if binding is allowed for the given expression.
      *
@@ -115,24 +129,19 @@ public class WokoFacetBindingPolicyManager {
      */
     public boolean isBindingAllowed(PropertyExpressionEvaluation eval) {
         NodeEvaluation e = eval.getRootNode();
-        Type firstNodeType = e.getValueType();
-        if (firstNodeType instanceof Class<?>) {
-            Class<?> clazz = (Class<?>)firstNodeType;
-            // can't bind to action bean context
-            if (ActionBeanContext.class.isAssignableFrom(clazz)) {
-                return false;
-            }
-            // can't bind to the facet context...
-            if (ResolutionFacet.class.isAssignableFrom(clazz)) {
-                NodeEvaluation nextEval = e.getNext();
-                if (nextEval!=null) {
-                    Type neType = nextEval.getValueType();
-                    if (neType instanceof Class<?>
-                            && WokoFacetContext.class.isAssignableFrom((Class<?>)neType)) {
+        // can't bind to the unbindable classes : there should be
+        // no unbindable class on the path
+        while (e!=null) {
+            Type valueType = e.getValueType();
+            if (valueType instanceof Class<?>) {
+                Class<?> t = (Class<?>)valueType;
+                for (Class<?> unbindableClass : UNBINDABLE_CLASSES) {
+                    if (unbindableClass.isAssignableFrom(t)) {
                         return false;
                     }
                 }
             }
+            e = e.getNext();
         }
 
         // check parameter name against access lists

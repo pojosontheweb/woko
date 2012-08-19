@@ -52,7 +52,7 @@ class MassAssignAuditCmd extends Command {
     ]
 
     private static isExcluded(Class<?> clazz) {
-        return EXCLUDED_TYPES.contains(clazz)
+        return EXCLUDED_TYPES.contains(clazz) || WokoFacetBindingPolicyManager.UNBINDABLE_CLASSES.contains(clazz)
     }
 
     MassAssignAuditCmd(Runner runner) {
