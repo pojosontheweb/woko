@@ -17,12 +17,7 @@
 package woko.actions;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -34,6 +29,7 @@ import net.sourceforge.stripes.exception.StripesRuntimeException;
 import net.sourceforge.stripes.util.Log;
 import net.sourceforge.stripes.util.bean.NodeEvaluation;
 import net.sourceforge.stripes.util.bean.PropertyExpressionEvaluation;
+import net.sourceforge.stripes.validation.ValidationMetadataProvider;
 import woko.facets.ResolutionFacet;
 import woko.facets.WokoFacetContext;
 
@@ -73,6 +69,8 @@ public class WokoFacetBindingPolicyManager {
     /** The regular expression that matches properties with {@literal @Validate} */
     private Pattern validatePattern;
 
+    private ValidationMetadataProvider vmp = null;
+
     protected WokoFacetBindingPolicyManager(Class<?> facetClass) {
         try {
             log.debug("Creating ", getClass().getName(), " for ", facetClass,
@@ -89,6 +87,14 @@ public class WokoFacetBindingPolicyManager {
 
                 // construct the deny pattern
                 this.denyPattern = globToPattern(annotation.deny());
+
+                try {
+                    vmp = StripesFilter.getConfiguration().getValidationMetadataProvider();
+                } catch(Throwable t) {
+                    // forget no validate pattern : for use in tooling, outside of
+                    // the container environment
+                    log.warn("Unable to grab validation metadata provider : OK if used outside of container.", t);
+                }
 
                 // construct the validated properties pattern
                 this.validatePattern = globToPattern(getValidatedProperties(WokoActionBean.class));
@@ -132,6 +138,10 @@ public class WokoFacetBindingPolicyManager {
 
         // check parameter name against access lists
         String paramName = new ParameterName(eval.getExpression().getSource()).getStrippedName();
+        return isBindingAllowed(paramName);
+    }
+
+    public boolean isBindingAllowed(String paramName) {
         boolean deny = denyPattern != null && denyPattern.matcher(paramName).matches();
         boolean allow = (allowPattern != null && allowPattern.matcher(paramName).matches())
                 || (validatePattern != null && validatePattern.matcher(paramName).matches());
@@ -152,6 +162,7 @@ public class WokoFacetBindingPolicyManager {
 
         // any other conditions pass the test
         return true;
+
     }
 
     /**
@@ -174,8 +185,7 @@ public class WokoFacetBindingPolicyManager {
     }
 
     protected String[] getValidatedProperties(Class<?> beanClass) {
-        Set<String> properties = StripesFilter.getConfiguration().getValidationMetadataProvider()
-                .getValidationMetadata(beanClass).keySet();
+        Set<String> properties = vmp!=null ? vmp.getValidationMetadata(beanClass).keySet() : Collections.<String>emptySet();
         return new ArrayList<String>(properties).toArray(new String[properties.size()]);
     }
 

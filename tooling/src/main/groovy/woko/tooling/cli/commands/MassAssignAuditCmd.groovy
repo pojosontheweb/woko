@@ -6,6 +6,10 @@ import woko.tooling.cli.Runner
 import net.sourceforge.stripes.util.ReflectUtil
 import java.beans.PropertyDescriptor
 import woko.facets.ResolutionFacet
+import woko.tooling.utils.Logger
+import java.lang.reflect.Method
+import java.lang.reflect.Type
+import java.lang.reflect.ParameterizedType
 
 /**
  * Created by IntelliJ IDEA.
@@ -67,7 +71,7 @@ class MassAssignAuditCmd extends Command {
         }
     }
 
-    private def buildPathsTree(MANode node, Class<?> rootClass) {
+    def buildPathsTree(MANode node, Class<?> rootClass) {
         boolean canBind = false
         if (rootClass && !isExcluded(rootClass)) {
             PropertyDescriptor[] pds = ReflectUtil.getPropertyDescriptors(rootClass);
@@ -75,35 +79,57 @@ class MassAssignAuditCmd extends Command {
                 pds.each { PropertyDescriptor pd ->
                     String propName = pd.name
                     Class<?> propType = pd.propertyType
+                    boolean isList = false
                     if (propType && !isExcluded(propType)) {
-//                        if (propType.isArray()) {
-//                            propType = propType.getComponentType()
-//                        }
-                        if (node.isSubjectToEndlessLoop(propType)) {
-                            node.children << new MANode(
-                                    parent:node,
-                                    type:propType,
-                                    name:propName + "!",
-                                    wouldRecurse: true)
-                            // TODO not sure what to do with "canBind" here...
-                        } else if (propType.isPrimitive() || isWrapperType(propType)) {
-                            // primitive : check if it's settable
-                            if (pd.writeMethod) {
+                        boolean skip = false
+                        // indexed props handling
+                        if (propType.isArray()) {
+                            propType = propType.getComponentType()
+                            isList = true
+                        } else if (List.class.isAssignableFrom(propType)) {
+                            // grab the actual type of elements in the list if possible
+                            Method readMethod = pd.readMethod
+                            Type genReturnType = readMethod.genericReturnType
+                            try {
+                                ParameterizedType pt = (ParameterizedType)genReturnType
+                                propType = pt.actualTypeArguments[0]
+                                isList = true
+                            } catch(Exception e) {
+                                // not a parameterized List, binding impossible anyway
+                                skip = true
+                            }
+                        }
+                        if (!skip) {
+                            if (node.isSubjectToEndlessLoop(propType)) {
+                                node.children << new MANode(
+                                        parent:node,
+                                        type:propType,
+                                        name:propName,
+                                        wouldRecurse: true,
+                                        isList:isList)
+                                // TODO not sure what to do with "canBind" here...
+                            } else if (propType.isPrimitive() || isWrapperType(propType)) {
+                                // primitive : check if it's settable
+                                if (pd.writeMethod) {
+                                    MANode n = new MANode(
+                                            parent:node,
+                                            type:propType,
+                                            name:propName)
+                                    node.children << n
+                                    canBind = true
+                                }
+                            } else {
                                 MANode n = new MANode(
                                         parent:node,
                                         type:propType,
-                                        name:propName)
-                                node.children << n
-                                canBind = true
-                            }
-                        } else {
-                            MANode n = new MANode(
-                                    parent:node,
-                                    type:propType,
-                                    name:propName)
-                            if (buildPathsTree(n, propType)) {
-                                node.children << n
-                                canBind = true
+                                        name:propName,
+                                        isList:isList)
+                                // recurse and check if it binds below.
+                                // don't add the node if no childs can bind
+                                canBind = buildPathsTree(n, propType)
+                                if (canBind) {
+                                    node.children << n
+                                }
                             }
                         }
                     }
@@ -121,21 +147,20 @@ class MassAssignAuditCmd extends Command {
             // find the target object type(s)
             if (ResolutionFacet.class.isAssignableFrom(fd.facetClass)) {
                 def type = fd.targetObjectType
-
                 MANode root = new MANode(name:fd.name, type:type)
                 buildPathsTree(root, type)
-
                 int nbPaths = 0
-                root.eachNodeRecurse { MANode node ->
-                    if (!node.children) {
-                        // leaf : print all path
-                        log("  " + node.getAbsolutePath())
-                        nbPaths++
-                    }
+                String prefix = "($fd.name,$fd.profileId,$type.name) [$fd.facetClass.name]"
+                root.eachChildRecurse { MANode node ->
+                    List<MANode> fullPath = node.absolutePath
+                    fullPath.remove(0)
+                    String path = MANode.pathToString(fullPath)
+                    log("$prefix $path")
+                    nbPaths++
                 }
 
                 if (nbPaths) {
-                    log("=> Found $nbPaths accessible binding(s) in $fd")
+                    log("=> Found $nbPaths accessible binding(s) in $prefix\n")
                     totalPaths += nbPaths
                 }
             }
@@ -154,16 +179,18 @@ class MANode {
     Class<?> type
     String name
     boolean wouldRecurse = false
+    boolean isList = false
 
     boolean isSubjectToEndlessLoop(Class<?> type) {
-        MANode n = this
-        while (n) {
-            if (n.type==type) {
-                return true
+        boolean res = false
+        eachParentRecurse { p ->
+            if (p.type==type) {
+                res = true
+                return false
             }
-            n = n.parent
+            return true
         }
-        return false
+        return res
     }
 
     String toString() {
@@ -174,20 +201,86 @@ class MANode {
         return s
     }
 
-    def eachNodeRecurse(Closure c) {
+    def eachChildRecurse(Closure c) {
         children.each { child->
             c(child)
-            child.eachNodeRecurse(c)
+            child.eachChildRecurse(c)
         }
     }
 
-    String getAbsolutePath() {
-        String s = ""
-        MANode n = this
-        while (n) {
-            s = n.name + "/" + s
-            n = n.parent
+    def eachParentRecurse(Closure c) {
+        def p = this
+        if (p!=null) {
+            if (c(p)) {
+                if (p.parent) {
+                    p.parent.eachParentRecurse(c)
+                }
+            }
         }
-        return s
     }
+
+    List<MANode> getAbsolutePath() {
+        def res = []
+        eachParentRecurse { p -> res << p }
+        return res.reverse()
+    }
+
+    static String pathToString(List<MANode> path) {
+        StringBuilder res = new StringBuilder()
+        int index = 0
+        path.each { n ->
+            res << n.name
+            if (n.isList) {
+                res << "[]"
+            }
+            if (index<path.size()-1) {
+                res << "."
+            }
+            index++
+        }
+        return res.toString()
+    }
+
+}
+
+
+class TopDummy {
+
+    DummyClass dum
+
+}
+
+class DummyClass {
+
+    String dumS
+    List<DummyClass> dummies
+
+}
+
+class Dummy2 {
+
+    Integer yup
+
+}
+
+class TestMe {
+
+    public static void main(String[] args) {
+//        MANode root = new MANode(name: "foo")
+//        MANode child1 = new MANode(parent: root, name: "bar")
+//        MANode child2 = new MANode(parent: root, name: "baz")
+//        root.children << child1
+//        root.children << child2
+//        println MANode.pathToString(child2.absolutePath)
+
+        Writer out = new PrintWriter(System.out)
+        Logger logger = new Logger(out)
+        Runner runner = new Runner(logger, new File("/Users/vankeisb/projects/msm"))
+        MassAssignAuditCmd cmd = new MassAssignAuditCmd(runner)
+        MANode node = new MANode(name:"root", type:TopDummy.class)
+        cmd.buildPathsTree(node, TopDummy.class)
+        println node
+        node.eachChildRecurse { n -> println n.absolutePath }
+    }
+
 }
