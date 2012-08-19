@@ -158,6 +158,8 @@ class MassAssignAuditCmd extends Command {
         descriptors.each { fd ->
             // find the target object type(s)
             if (ResolutionFacet.class.isAssignableFrom(fd.facetClass)) {
+
+                // facet target type
                 def type = fd.targetObjectType
                 MANode root = new MANode(name:"object", type:type)
                 WokoFacetBindingPolicyManager pm = WokoFacetBindingPolicyManager.getInstance(fd.facetClass, null)
@@ -166,11 +168,21 @@ class MassAssignAuditCmd extends Command {
                 String prefix = "($fd.name,$fd.profileId,$type.name) [$fd.facetClass.name]"
                 root.eachChildRecurse { MANode node ->
                     List<MANode> fullPath = node.absolutePath
-                    fullPath.remove(0)
                     String path = MANode.pathToString(fullPath)
                     log("$prefix $path")
                     nbPaths++
                 }
+
+                // facet direct fields
+                MANode root2 = new MANode(name:"facet", type:fd.facetClass)
+                buildPathsTree(root2, fd.facetClass, pm)
+                root2.eachChildRecurse { MANode node ->
+                    List<MANode> fullPath = node.absolutePath
+                    String path = MANode.pathToString(fullPath)
+                    log("$prefix $path")
+                    nbPaths++
+                }
+
 
                 if (nbPaths) {
                     log("=> Found $nbPaths accessible binding(s) in $prefix\n")
