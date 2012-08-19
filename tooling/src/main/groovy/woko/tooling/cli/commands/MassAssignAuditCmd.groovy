@@ -147,7 +147,9 @@ class MassAssignAuditCmd extends Command {
     }
 
     boolean isBindingAllowed(MANode node, WokoFacetBindingPolicyManager pm) {
-        return pm.isBindingAllowed(MANode.pathToString(node.absolutePath) { n -> n.name })
+        String path = MANode.pathToString(node.absolutePath) { n -> n.name }
+        println "Checking binding for path : $path"
+        return pm.isBindingAllowed(path)
     }
 
     def checkMassAssign() {
@@ -158,7 +160,7 @@ class MassAssignAuditCmd extends Command {
             // find the target object type(s)
             if (ResolutionFacet.class.isAssignableFrom(fd.facetClass)) {
                 def type = fd.targetObjectType
-                MANode root = new MANode(name:fd.name, type:type)
+                MANode root = new MANode(name:"object", type:type)
                 WokoFacetBindingPolicyManager pm = WokoFacetBindingPolicyManager.getInstance(fd.facetClass)
                 buildPathsTree(root, type, pm)
                 int nbPaths = 0
