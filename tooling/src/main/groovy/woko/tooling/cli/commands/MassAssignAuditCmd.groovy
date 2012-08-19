@@ -148,7 +148,6 @@ class MassAssignAuditCmd extends Command {
 
     boolean isBindingAllowed(MANode node, WokoFacetBindingPolicyManager pm) {
         String path = MANode.pathToString(node.absolutePath) { n -> n.name }
-        println "Checking binding for path : $path"
         return pm.isBindingAllowed(path)
     }
 
@@ -161,7 +160,7 @@ class MassAssignAuditCmd extends Command {
             if (ResolutionFacet.class.isAssignableFrom(fd.facetClass)) {
                 def type = fd.targetObjectType
                 MANode root = new MANode(name:"object", type:type)
-                WokoFacetBindingPolicyManager pm = WokoFacetBindingPolicyManager.getInstance(fd.facetClass)
+                WokoFacetBindingPolicyManager pm = WokoFacetBindingPolicyManager.getInstance(fd.facetClass, null)
                 buildPathsTree(root, type, pm)
                 int nbPaths = 0
                 String prefix = "($fd.name,$fd.profileId,$type.name) [$fd.facetClass.name]"
@@ -273,6 +272,9 @@ deny=[
 )
 class DummyFacetToHoldTheStrictBindingAnnotation {
 
+    String foo
+
+
 }
 
 class TopDummy {
@@ -315,7 +317,7 @@ class TestMe {
         Runner runner = new Runner(logger, new File("/Users/vankeisb/projects/msm"))
         MassAssignAuditCmd cmd = new MassAssignAuditCmd(runner)
         MANode node = new MANode(name:"object", type:TopDummy.class)
-        WokoFacetBindingPolicyManager pm = WokoFacetBindingPolicyManager.getInstance(DummyFacetToHoldTheStrictBindingAnnotation.class)
+        WokoFacetBindingPolicyManager pm = WokoFacetBindingPolicyManager.getInstance(DummyFacetToHoldTheStrictBindingAnnotation.class, null)
         cmd.buildPathsTree(node, TopDummy.class, pm)
         println node
         node.eachChildRecurse { n ->

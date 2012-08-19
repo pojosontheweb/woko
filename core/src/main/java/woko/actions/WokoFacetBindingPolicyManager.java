@@ -48,11 +48,17 @@ public class WokoFacetBindingPolicyManager {
     /** Cached instances */
     private static final Map<Class<?>, WokoFacetBindingPolicyManager> instances = new HashMap<Class<?>, WokoFacetBindingPolicyManager>();
 
+
     public static WokoFacetBindingPolicyManager getInstance(Class<?> facetClass) {
+        ValidationMetadataProvider vmp = StripesFilter.getConfiguration().getValidationMetadataProvider();
+        return getInstance(facetClass, vmp);
+    }
+
+    public static WokoFacetBindingPolicyManager getInstance(Class<?> facetClass, ValidationMetadataProvider vmp) {
         if (instances.containsKey(facetClass))
             return instances.get(facetClass);
 
-        WokoFacetBindingPolicyManager instance = new WokoFacetBindingPolicyManager(facetClass);
+        WokoFacetBindingPolicyManager instance = new WokoFacetBindingPolicyManager(facetClass, vmp);
         instances.put(facetClass, instance);
         return instance;
     }
@@ -71,7 +77,8 @@ public class WokoFacetBindingPolicyManager {
 
     private ValidationMetadataProvider vmp = null;
 
-    protected WokoFacetBindingPolicyManager(Class<?> facetClass) {
+    protected WokoFacetBindingPolicyManager(Class<?> facetClass, ValidationMetadataProvider vmp) {
+        this.vmp = vmp;
         try {
             log.debug("Creating ", getClass().getName(), " for ", facetClass,
                     " with default policy ", defaultPolicy);
@@ -87,14 +94,6 @@ public class WokoFacetBindingPolicyManager {
 
                 // construct the deny pattern
                 this.denyPattern = globToPattern(annotation.deny());
-
-                try {
-                    vmp = StripesFilter.getConfiguration().getValidationMetadataProvider();
-                } catch(Throwable t) {
-                    // forget no validate pattern : for use in tooling, outside of
-                    // the container environment
-                    log.warn("Unable to grab validation metadata provider : OK if used outside of container.", t);
-                }
 
                 // construct the validated properties pattern
                 this.validatePattern = globToPattern(getValidatedProperties(WokoActionBean.class));
