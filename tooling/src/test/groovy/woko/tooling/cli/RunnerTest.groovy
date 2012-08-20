@@ -298,10 +298,9 @@ The command accepts one argument that can be  :
 (create,developer,java.lang.Object) [woko.facets.builtin.developer.Create] object.*
 => Found 1 accessible binding(s) in (create,developer,java.lang.Object) [woko.facets.builtin.developer.Create]
 
-(delete,developer,java.lang.Object) [woko.facets.builtin.developer.DeleteImpl] object.*
 (delete,developer,java.lang.Object) [woko.facets.builtin.developer.DeleteImpl] facet.cancel
 (delete,developer,java.lang.Object) [woko.facets.builtin.developer.DeleteImpl] facet.confirm
-=> Found 3 accessible binding(s) in (delete,developer,java.lang.Object) [woko.facets.builtin.developer.DeleteImpl]
+=> Found 2 accessible binding(s) in (delete,developer,java.lang.Object) [woko.facets.builtin.developer.DeleteImpl]
 
 (edit,developer,java.lang.Object) [woko.facets.builtin.developer.EditImpl] object.*
 => Found 1 accessible binding(s) in (edit,developer,java.lang.Object) [woko.facets.builtin.developer.EditImpl]
@@ -351,7 +350,7 @@ The command accepts one argument that can be  :
 (view,developer,java.lang.Object) [woko.facets.builtin.developer.ViewImpl] object.*
 => Found 1 accessible binding(s) in (view,developer,java.lang.Object) [woko.facets.builtin.developer.ViewImpl]
 
-Found 26 accessible bindings in the app.
+Found 25 accessible bindings in the app.
 """)
     }
 

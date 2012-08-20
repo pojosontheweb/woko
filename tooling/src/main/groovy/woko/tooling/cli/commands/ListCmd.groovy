@@ -128,12 +128,18 @@ The command accepts one argument that can be  :
         boolean canBind = false
         if (rootClass && !isExcluded(rootClass)) {
 
+            // special handling for Object.class
             if (rootClass.equals(Object.class)) {
-                node.children << new MANode(
+                // check if binding is allowed or not
+                def n = new MANode(
                         parent:node,
                         type:Object.class,
                         name:"*")
-                return true; // can bind on Object
+                if (isBindingAllowed(n, pm)) {
+                    node.children << n
+                    return true; // can bind on Object but useless to recurse
+                }
+                return false; // protected by @StrictBinding
             }
 
 
