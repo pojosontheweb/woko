@@ -34,7 +34,7 @@ class ListCmd extends Command {
         super(
                 runner,
                 "list",
-                "list facets or roles",
+                "list various application stuff",
                 "facets|roles|bindings",
                 """Lists components of your application by using runtime information.
 The command accepts one argument that can be  :

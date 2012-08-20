@@ -61,7 +61,7 @@ class RunnerTest {
 
 Available commands :
 
-  - list facets|roles		:		list facets or roles
+  - list facets|roles|bindings		:		list various application stuff
   - create facet|entity		:		create project elements
   - crud [<Entity> [<Role> [quiet]		:		Generate the CRUD facets for a given role (view/edit/save/delete)
   - push [resources|quiet]		:		pushes the local facets to a remote application
@@ -70,7 +70,6 @@ Available commands :
   - stop 		:		stop the local jetty container (in case started in background process)
   - build 		:		rebuilds the whole application
   - env list|use <env_name>		:		manage the environments
-  - sec-check mass-assign		:		performs security checks on the app
   - help [command_name]		:		display help about specified command
 
 """
@@ -89,16 +88,17 @@ Available commands :
     @Test
     void testList() {
         assertCommandResult(["list"], """ERROR : invalid list command
-Help for command 'list' : list facets or roles
+Help for command 'list' : list various application stuff
 
 Usage :
 
- - woko list facets|roles
+ - woko list facets|roles|bindings
 
 Lists components of your application by using runtime information.
 The command accepts one argument that can be  :
   * facets   : inits the facets of your app and lists them
   * roles    : lists all the roles defined in your application facets
+  * bindings : lists all possible HTTP request bindings on your facets and action beans
 """)
     }
 
@@ -288,7 +288,6 @@ The command accepts one argument that can be  :
     }
 
     @Test
-    @Ignore
     void testListBindings() {
         assertCommandResult(["list", "bindings"], """Listing bindings, facet packages :
   - test.facet.pkg
