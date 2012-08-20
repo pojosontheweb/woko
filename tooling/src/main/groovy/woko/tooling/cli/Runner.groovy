@@ -106,8 +106,7 @@ class Runner {
                         "",
                         "mvn clean install"
                 ),
-                new EnvironmentsCmd(this),
-                new MassAssignAuditCmd(this)
+                new EnvironmentsCmd(this)
         ])
     }
 
