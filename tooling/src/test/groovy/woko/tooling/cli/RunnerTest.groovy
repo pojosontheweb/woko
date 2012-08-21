@@ -23,6 +23,8 @@ import org.junit.rules.TemporaryFolder
 import org.junit.Rule
 import org.junit.Assume
 import org.junit.Ignore
+import woko.tooling.cli.commands.MANode
+import woko.actions.WokoFacetBindingPolicyManager
 
 class RunnerTest {
 
@@ -31,7 +33,6 @@ class RunnerTest {
         if (woko2dir.endsWith("tooling")) {
             woko2dir = woko2dir[0..woko2dir.length() - (File.separator + "tooling").length()]
         }
-        println "*** $woko2dir"
         return woko2dir + File.separator + "webtests" + File.separator + "webtests-container-auth" // assume we run test from top level woko2 folder
     }
 
@@ -60,7 +61,7 @@ class RunnerTest {
 
 Available commands :
 
-  - list facets|roles		:		list facets or roles
+  - list facets|roles|bindings		:		list various application stuff
   - create facet|entity		:		create project elements
   - crud [<Entity> [<Role> [quiet]		:		Generate the CRUD facets for a given role (view/edit/save/delete)
   - push [resources|quiet]		:		pushes the local facets to a remote application
@@ -69,7 +70,6 @@ Available commands :
   - stop 		:		stop the local jetty container (in case started in background process)
   - build 		:		rebuilds the whole application
   - env list|use <env_name>		:		manage the environments
-  - sec-check mass-assign		:		performs security checks on the app
   - help [command_name]		:		display help about specified command
 
 """
@@ -88,16 +88,17 @@ Available commands :
     @Test
     void testList() {
         assertCommandResult(["list"], """ERROR : invalid list command
-Help for command 'list' : list facets or roles
+Help for command 'list' : list various application stuff
 
 Usage :
 
- - woko list facets|roles
+ - woko list facets|roles|bindings
 
 Lists components of your application by using runtime information.
 The command accepts one argument that can be  :
   * facets   : inits the facets of your app and lists them
   * roles    : lists all the roles defined in your application facets
+  * bindings : lists all possible HTTP request bindings on your facets and action beans
 """)
     }
 
@@ -287,9 +288,81 @@ The command accepts one argument that can be  :
     }
 
     @Test
-    @Ignore
-    void testMassAssignmentCheck() {
-        assertCommandResult(["sec-check", "mass-assign"], """foo""")
+    void testListBindings() {
+        assertCommandResult(["list", "bindings"], """Listing bindings, facet packages :
+  - test.facet.pkg
+  - facets
+  - woko.facets.builtin
+
+(create,developer,java.lang.Object) [woko.facets.builtin.developer.Create] object.*
+=> Found 1 accessible binding(s) in facet (create,developer,java.lang.Object) [woko.facets.builtin.developer.Create]
+
+(delete,developer,java.lang.Object) [woko.facets.builtin.developer.DeleteImpl] facet.cancel
+(delete,developer,java.lang.Object) [woko.facets.builtin.developer.DeleteImpl] facet.confirm
+=> Found 2 accessible binding(s) in facet (delete,developer,java.lang.Object) [woko.facets.builtin.developer.DeleteImpl]
+
+(edit,developer,java.lang.Object) [woko.facets.builtin.developer.EditImpl] object.*
+=> Found 1 accessible binding(s) in facet (edit,developer,java.lang.Object) [woko.facets.builtin.developer.EditImpl]
+
+(find,developer,java.lang.Object) [woko.facets.builtin.developer.Find] object.*
+=> Found 1 accessible binding(s) in facet (find,developer,java.lang.Object) [woko.facets.builtin.developer.Find]
+
+(groovy,developer,java.lang.Object) [woko.facets.builtin.developer.Groovy] object.*
+(groovy,developer,java.lang.Object) [woko.facets.builtin.developer.Groovy] facet.code
+=> Found 2 accessible binding(s) in facet (groovy,developer,java.lang.Object) [woko.facets.builtin.developer.Groovy]
+
+(home,all,java.lang.Object) [woko.facets.builtin.all.HomeImpl] object.*
+=> Found 1 accessible binding(s) in facet (home,all,java.lang.Object) [woko.facets.builtin.all.HomeImpl]
+
+(home,developer,java.lang.Object) [woko.facets.builtin.developer.HomeImpl] object.*
+=> Found 1 accessible binding(s) in facet (home,developer,java.lang.Object) [woko.facets.builtin.developer.HomeImpl]
+
+(json,developer,java.lang.Object) [woko.facets.builtin.developer.JsonImpl] object.*
+=> Found 1 accessible binding(s) in facet (json,developer,java.lang.Object) [woko.facets.builtin.developer.JsonImpl]
+
+(list,developer,java.lang.Object) [woko.facets.builtin.developer.ListImpl] object.*
+(list,developer,java.lang.Object) [woko.facets.builtin.developer.ListImpl] facet.page
+(list,developer,java.lang.Object) [woko.facets.builtin.developer.ListImpl] facet.resultsPerPage
+=> Found 3 accessible binding(s) in facet (list,developer,java.lang.Object) [woko.facets.builtin.developer.ListImpl]
+
+(logout,all,java.lang.Object) [woko.facets.builtin.all.LogoutImpl] object.*
+=> Found 1 accessible binding(s) in facet (logout,all,java.lang.Object) [woko.facets.builtin.all.LogoutImpl]
+
+(save,developer,java.lang.Object) [woko.facets.builtin.developer.SaveImpl] object.*
+=> Found 1 accessible binding(s) in facet (save,developer,java.lang.Object) [woko.facets.builtin.developer.SaveImpl]
+
+(search,developer,java.lang.Object) [woko.facets.builtin.developer.SearchImpl] object.*
+(search,developer,java.lang.Object) [woko.facets.builtin.developer.SearchImpl] facet.page
+(search,developer,java.lang.Object) [woko.facets.builtin.developer.SearchImpl] facet.query
+(search,developer,java.lang.Object) [woko.facets.builtin.developer.SearchImpl] facet.resultsPerPage
+=> Found 4 accessible binding(s) in facet (search,developer,java.lang.Object) [woko.facets.builtin.developer.SearchImpl]
+
+(studio,developer,java.lang.Object) [woko.facets.builtin.developer.WokoStudio] object.*
+(studio,developer,java.lang.Object) [woko.facets.builtin.developer.WokoStudio] facet.facetDescriptors[]
+(studio,developer,java.lang.Object) [woko.facets.builtin.developer.WokoStudio] facet.facetDescriptors[].name
+(studio,developer,java.lang.Object) [woko.facets.builtin.developer.WokoStudio] facet.facetDescriptors[].profileId
+=> Found 4 accessible binding(s) in facet (studio,developer,java.lang.Object) [woko.facets.builtin.developer.WokoStudio]
+
+(toString,developer,java.lang.Object) [woko.facets.builtin.developer.ToString] object.*
+=> Found 1 accessible binding(s) in facet (toString,developer,java.lang.Object) [woko.facets.builtin.developer.ToString]
+
+(view,developer,java.lang.Object) [woko.facets.builtin.developer.ViewImpl] object.*
+=> Found 1 accessible binding(s) in facet (view,developer,java.lang.Object) [woko.facets.builtin.developer.ViewImpl]
+
+Scanning for Action Beans in packages :
+  - some.test.pkg
+  - woko.actions
+
+some.test.pkg.MyAction foo
+some.test.pkg.MyAction nested
+some.test.pkg.MyAction nested.baz
+some.test.pkg.MyAction nestedObjects[]
+some.test.pkg.MyAction nestedObjects[].bar
+=> Found 5 accessible binding(s) in action bean some.test.pkg.MyAction
+
+Found 30 accessible bindings in the app.
+""")
     }
 
 }
+
