@@ -102,6 +102,23 @@ abstract class Command {
         return packages
     }
 
+    protected List<String> computeActionPackages() {
+        def packages = null
+        // TODO UGLY : don't loop if you don't need to !
+        webXml.filter.each { filter->
+            if (filter["filter-class"].text()=="net.sourceforge.stripes.controller.StripesFilter") {
+                filter["init-param"].each { it ->
+                    if (it["param-name"].text() == "ActionResolver.Packages") {
+                        String facetPackages = it["param-value"].text()
+                        packages = []
+                        packages.addAll(WokoInitListener.extractPackagesList(facetPackages))
+                    }
+                }
+            }
+        }
+        return packages
+    }
+
     protected IFacetDescriptorManager getFdm() {
         Woko.createFacetDescriptorManager(computeFacetPackages())
     }

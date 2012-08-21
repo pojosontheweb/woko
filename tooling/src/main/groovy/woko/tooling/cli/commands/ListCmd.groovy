@@ -27,6 +27,11 @@ import java.lang.reflect.Method
 import java.lang.reflect.Type
 import java.lang.reflect.ParameterizedType
 import woko.facets.ResolutionFacet
+import net.sourceforge.stripes.util.ResolverUtil
+import net.sourceforge.stripes.action.ActionBean
+import java.lang.reflect.Modifier
+import woko.actions.WokoActionBean
+import net.sourceforge.stripes.action.ActionBeanContext
 
 class ListCmd extends Command {
 
@@ -115,6 +120,7 @@ The command accepts one argument that can be  :
     }
 
     private static HashSet<Class<?>> EXCLUDED_TYPES = [
+            ActionBeanContext.class,
             Class.class,
             MetaClass.class
     ]
@@ -216,6 +222,12 @@ The command accepts one argument that can be  :
     }
 
     boolean isBindingAllowed(MANode node, WokoFacetBindingPolicyManager pm) {
+        // special handling for ActionBean.context
+        def parent = node.parent
+        if (parent && ActionBean.class.isAssignableFrom(parent.type) && node.name=="context") {
+            return false
+        }
+        // check by path
         String path = MANode.pathToString(node.absolutePath) { n -> n.name }
         return pm.isBindingAllowed(path)
     }
@@ -265,11 +277,45 @@ The command accepts one argument that can be  :
 
 
                 if (nbPaths) {
-                    log("=> Found $nbPaths accessible binding(s) in $prefix\n")
+                    log("=> Found $nbPaths accessible binding(s) in facet $prefix\n")
                     totalPaths += nbPaths
                 }
             }
         }
+
+        // now scan for action beans
+        def actionPackages = computeActionPackages().sort()
+        log("Scanning for Action Beans in packages :")
+        actionPackages.each { pkg ->
+            log("  - $pkg")
+        }
+        log("")
+        ResolverUtil<ActionBean> ru = new ResolverUtil<ActionBean>()
+        String[] pkgs = actionPackages.toArray()
+        ru.findImplementations(ActionBean.class, pkgs)
+        ru.classes.sort { c1,c2 ->
+            c1.name <=> c2.name
+        }.each { actionClazz ->
+            if (!Modifier.isAbstract(actionClazz.modifiers) &&
+                (!WokoActionBean.class.equals(actionClazz))) {
+                int nbPathsActionBean = 0
+                MANode root = new MANode(name:null, type:actionClazz)
+                WokoFacetBindingPolicyManager pm = WokoFacetBindingPolicyManager.getInstance(actionClazz, null)
+                buildPathsTree(root, actionClazz, pm)
+                String prefix = actionClazz.name
+                root.eachChildRecurse { MANode node ->
+                    List<MANode> fullPath = node.absolutePath
+                    String path = MANode.pathToString(fullPath)
+                    log("$prefix $path")
+                    nbPathsActionBean++
+                }
+                if (nbPathsActionBean) {
+                    log("=> Found $nbPathsActionBean accessible binding(s) in action bean $prefix\n")
+                }
+                totalPaths += nbPathsActionBean
+            }
+        }
+
         log("Found $totalPaths accessible bindings in the app.")
     }
 
@@ -334,9 +380,11 @@ class MANode {
         StringBuilder res = new StringBuilder()
         int index = 0
         path.each { n ->
-            res << nameClosure(n)
-            if (index<path.size()-1) {
-                res << "."
+            if (n.name) {
+                res << nameClosure(n)
+                if (index<path.size()-1) {
+                    res << "."
+                }
             }
             index++
         }

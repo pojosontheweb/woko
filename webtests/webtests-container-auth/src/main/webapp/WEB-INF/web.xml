@@ -42,6 +42,7 @@
             <param-name>ActionResolver.Packages</param-name>
             <param-value>
                 woko.actions
+                some.test.pkg
             </param-value>
         </init-param>
         <init-param>

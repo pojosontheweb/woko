@@ -295,61 +295,72 @@ The command accepts one argument that can be  :
   - woko.facets.builtin
 
 (create,developer,java.lang.Object) [woko.facets.builtin.developer.Create] object.*
-=> Found 1 accessible binding(s) in (create,developer,java.lang.Object) [woko.facets.builtin.developer.Create]
+=> Found 1 accessible binding(s) in facet (create,developer,java.lang.Object) [woko.facets.builtin.developer.Create]
 
 (delete,developer,java.lang.Object) [woko.facets.builtin.developer.DeleteImpl] facet.cancel
 (delete,developer,java.lang.Object) [woko.facets.builtin.developer.DeleteImpl] facet.confirm
-=> Found 2 accessible binding(s) in (delete,developer,java.lang.Object) [woko.facets.builtin.developer.DeleteImpl]
+=> Found 2 accessible binding(s) in facet (delete,developer,java.lang.Object) [woko.facets.builtin.developer.DeleteImpl]
 
 (edit,developer,java.lang.Object) [woko.facets.builtin.developer.EditImpl] object.*
-=> Found 1 accessible binding(s) in (edit,developer,java.lang.Object) [woko.facets.builtin.developer.EditImpl]
+=> Found 1 accessible binding(s) in facet (edit,developer,java.lang.Object) [woko.facets.builtin.developer.EditImpl]
 
 (find,developer,java.lang.Object) [woko.facets.builtin.developer.Find] object.*
-=> Found 1 accessible binding(s) in (find,developer,java.lang.Object) [woko.facets.builtin.developer.Find]
+=> Found 1 accessible binding(s) in facet (find,developer,java.lang.Object) [woko.facets.builtin.developer.Find]
 
 (groovy,developer,java.lang.Object) [woko.facets.builtin.developer.Groovy] object.*
 (groovy,developer,java.lang.Object) [woko.facets.builtin.developer.Groovy] facet.code
-=> Found 2 accessible binding(s) in (groovy,developer,java.lang.Object) [woko.facets.builtin.developer.Groovy]
+=> Found 2 accessible binding(s) in facet (groovy,developer,java.lang.Object) [woko.facets.builtin.developer.Groovy]
 
 (home,all,java.lang.Object) [woko.facets.builtin.all.HomeImpl] object.*
-=> Found 1 accessible binding(s) in (home,all,java.lang.Object) [woko.facets.builtin.all.HomeImpl]
+=> Found 1 accessible binding(s) in facet (home,all,java.lang.Object) [woko.facets.builtin.all.HomeImpl]
 
 (home,developer,java.lang.Object) [woko.facets.builtin.developer.HomeImpl] object.*
-=> Found 1 accessible binding(s) in (home,developer,java.lang.Object) [woko.facets.builtin.developer.HomeImpl]
+=> Found 1 accessible binding(s) in facet (home,developer,java.lang.Object) [woko.facets.builtin.developer.HomeImpl]
 
 (json,developer,java.lang.Object) [woko.facets.builtin.developer.JsonImpl] object.*
-=> Found 1 accessible binding(s) in (json,developer,java.lang.Object) [woko.facets.builtin.developer.JsonImpl]
+=> Found 1 accessible binding(s) in facet (json,developer,java.lang.Object) [woko.facets.builtin.developer.JsonImpl]
 
 (list,developer,java.lang.Object) [woko.facets.builtin.developer.ListImpl] object.*
 (list,developer,java.lang.Object) [woko.facets.builtin.developer.ListImpl] facet.page
 (list,developer,java.lang.Object) [woko.facets.builtin.developer.ListImpl] facet.resultsPerPage
-=> Found 3 accessible binding(s) in (list,developer,java.lang.Object) [woko.facets.builtin.developer.ListImpl]
+=> Found 3 accessible binding(s) in facet (list,developer,java.lang.Object) [woko.facets.builtin.developer.ListImpl]
 
 (logout,all,java.lang.Object) [woko.facets.builtin.all.LogoutImpl] object.*
-=> Found 1 accessible binding(s) in (logout,all,java.lang.Object) [woko.facets.builtin.all.LogoutImpl]
+=> Found 1 accessible binding(s) in facet (logout,all,java.lang.Object) [woko.facets.builtin.all.LogoutImpl]
 
 (save,developer,java.lang.Object) [woko.facets.builtin.developer.SaveImpl] object.*
-=> Found 1 accessible binding(s) in (save,developer,java.lang.Object) [woko.facets.builtin.developer.SaveImpl]
+=> Found 1 accessible binding(s) in facet (save,developer,java.lang.Object) [woko.facets.builtin.developer.SaveImpl]
 
 (search,developer,java.lang.Object) [woko.facets.builtin.developer.SearchImpl] object.*
 (search,developer,java.lang.Object) [woko.facets.builtin.developer.SearchImpl] facet.page
 (search,developer,java.lang.Object) [woko.facets.builtin.developer.SearchImpl] facet.query
 (search,developer,java.lang.Object) [woko.facets.builtin.developer.SearchImpl] facet.resultsPerPage
-=> Found 4 accessible binding(s) in (search,developer,java.lang.Object) [woko.facets.builtin.developer.SearchImpl]
+=> Found 4 accessible binding(s) in facet (search,developer,java.lang.Object) [woko.facets.builtin.developer.SearchImpl]
 
 (studio,developer,java.lang.Object) [woko.facets.builtin.developer.WokoStudio] object.*
 (studio,developer,java.lang.Object) [woko.facets.builtin.developer.WokoStudio] facet.facetDescriptors[]
 (studio,developer,java.lang.Object) [woko.facets.builtin.developer.WokoStudio] facet.facetDescriptors[].name
 (studio,developer,java.lang.Object) [woko.facets.builtin.developer.WokoStudio] facet.facetDescriptors[].profileId
-=> Found 4 accessible binding(s) in (studio,developer,java.lang.Object) [woko.facets.builtin.developer.WokoStudio]
+=> Found 4 accessible binding(s) in facet (studio,developer,java.lang.Object) [woko.facets.builtin.developer.WokoStudio]
 
 (toString,developer,java.lang.Object) [woko.facets.builtin.developer.ToString] object.*
-=> Found 1 accessible binding(s) in (toString,developer,java.lang.Object) [woko.facets.builtin.developer.ToString]
+=> Found 1 accessible binding(s) in facet (toString,developer,java.lang.Object) [woko.facets.builtin.developer.ToString]
 
 (view,developer,java.lang.Object) [woko.facets.builtin.developer.ViewImpl] object.*
-=> Found 1 accessible binding(s) in (view,developer,java.lang.Object) [woko.facets.builtin.developer.ViewImpl]
+=> Found 1 accessible binding(s) in facet (view,developer,java.lang.Object) [woko.facets.builtin.developer.ViewImpl]
 
-Found 25 accessible bindings in the app.
+Scanning for Action Beans in packages :
+  - some.test.pkg
+  - woko.actions
+
+some.test.pkg.MyAction foo
+some.test.pkg.MyAction nested
+some.test.pkg.MyAction nested.baz
+some.test.pkg.MyAction nestedObjects[]
+some.test.pkg.MyAction nestedObjects[].bar
+=> Found 5 accessible binding(s) in action bean some.test.pkg.MyAction
+
+Found 30 accessible bindings in the app.
 """)
     }
 
