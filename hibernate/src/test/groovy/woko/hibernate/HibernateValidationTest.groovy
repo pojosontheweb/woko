@@ -104,6 +104,7 @@ class HibernateValidationTest extends TestCase {
 
     void testEntityValidation() {
         WokoActionBean ab = trip("wdevel", "save", "MyEntity", null, [
+                "createTransient": "true",
                 "object.id":"1",
                 "object.name":"foobar",
                 "object.otherProp":"baz"
@@ -113,6 +114,7 @@ class HibernateValidationTest extends TestCase {
 
         // now attempt to save without required value
         ab = trip("wdevel", "save", "MyEntity", null, [
+                "createTransient": "true",
                 "object.id":"2",
                 "object.otherProp":"baz"
         ]).getActionBean(WokoActionBean.class)

@@ -27,6 +27,13 @@ import woko.facets.builtin.RenderTitle;
 import woko.facets.builtin.WokoFacets;
 import woko.util.Util;
 
+@StrictBinding(
+        defaultPolicy = StrictBinding.Policy.DENY,
+        allow = {
+                "facet.confirm",
+                "facet.cancel"
+        }
+)
 @FacetKey(name = WokoFacets.delete, profileId = "developer")
 public class DeleteImpl extends BaseResolutionFacet implements Delete {
 

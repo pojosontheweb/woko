@@ -28,6 +28,7 @@
     }
 %>
 <s:form action="<%=formUrl%>" class="form-horizontal">
+<s:hidden name="createTransient"/>
 <fieldset>
 <%
     for (String pName : propertyNames) {

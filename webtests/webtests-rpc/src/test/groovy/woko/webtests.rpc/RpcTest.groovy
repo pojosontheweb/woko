@@ -33,7 +33,7 @@ class RpcTest extends WebTestBase {
             login()
 
             // create test object
-            goToPage '/save/MyBook?object._id=1111&object.name=Moby&object.nbPages=123&isRpc=true'
+            goToPage '/save/MyBook?createTransient=true&object._id=1111&object.name=Moby&object.nbPages=123&isRpc=true'
             verifyText RESULT_START
             verifyText RESULT_END
 
@@ -110,10 +110,9 @@ class RpcTest extends WebTestBase {
             }
 
             goToPage("/testRpcSearch.html");
-            retry(maxcount: 200) {
+            retry(maxcount: 10) {
                 verifyText "search returned 1 items on 1"
                 verifyText "Removed test objects"
-                sleep 1000
             }
             */
         }

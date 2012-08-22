@@ -17,12 +17,7 @@
 package woko.actions;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -32,7 +27,14 @@ import net.sourceforge.stripes.controller.ParameterName;
 import net.sourceforge.stripes.controller.StripesFilter;
 import net.sourceforge.stripes.exception.StripesRuntimeException;
 import net.sourceforge.stripes.util.Log;
+import net.sourceforge.stripes.util.bean.NodeEvaluation;
 import net.sourceforge.stripes.util.bean.PropertyExpressionEvaluation;
+import net.sourceforge.stripes.validation.ValidationMetadataProvider;
+import woko.Woko;
+import woko.facets.ResolutionFacet;
+import woko.facets.WokoFacetContext;
+
+import javax.servlet.http.HttpServletRequest;
 
 @StrictBinding(defaultPolicy = StrictBinding.Policy.ALLOW)
 public class WokoFacetBindingPolicyManager {
@@ -49,11 +51,17 @@ public class WokoFacetBindingPolicyManager {
     /** Cached instances */
     private static final Map<Class<?>, WokoFacetBindingPolicyManager> instances = new HashMap<Class<?>, WokoFacetBindingPolicyManager>();
 
+
     public static WokoFacetBindingPolicyManager getInstance(Class<?> facetClass) {
+        ValidationMetadataProvider vmp = StripesFilter.getConfiguration().getValidationMetadataProvider();
+        return getInstance(facetClass, vmp);
+    }
+
+    public static WokoFacetBindingPolicyManager getInstance(Class<?> facetClass, ValidationMetadataProvider vmp) {
         if (instances.containsKey(facetClass))
             return instances.get(facetClass);
 
-        WokoFacetBindingPolicyManager instance = new WokoFacetBindingPolicyManager(facetClass);
+        WokoFacetBindingPolicyManager instance = new WokoFacetBindingPolicyManager(facetClass, vmp);
         instances.put(facetClass, instance);
         return instance;
     }
@@ -70,7 +78,10 @@ public class WokoFacetBindingPolicyManager {
     /** The regular expression that matches properties with {@literal @Validate} */
     private Pattern validatePattern;
 
-    protected WokoFacetBindingPolicyManager(Class<?> facetClass) {
+    private ValidationMetadataProvider vmp = null;
+
+    protected WokoFacetBindingPolicyManager(Class<?> facetClass, ValidationMetadataProvider vmp) {
+        this.vmp = vmp;
         try {
             log.debug("Creating ", getClass().getName(), " for ", facetClass,
                     " with default policy ", defaultPolicy);
@@ -99,6 +110,17 @@ public class WokoFacetBindingPolicyManager {
         }
     }
 
+    public static final Collection<Class<?>> UNBINDABLE_CLASSES = makeUnbindableClasses();
+
+    private static Collection<Class<?>> makeUnbindableClasses() {
+        HashSet<Class<?>> res = new HashSet<Class<?>>();
+        res.add(ActionBeanContext.class);
+        res.add(HttpServletRequest.class);
+        res.add(Woko.class);
+        res.add(WokoFacetContext.class);
+        return Collections.unmodifiableCollection(res);
+    }
+
     /**
      * Indicates if binding is allowed for the given expression.
      *
@@ -106,15 +128,28 @@ public class WokoFacetBindingPolicyManager {
      * @return true if binding is allowed; false if not
      */
     public boolean isBindingAllowed(PropertyExpressionEvaluation eval) {
-        // Ensure no-one is trying to bind into the ActionBeanContext!!
-        Type firstNodeType = eval.getRootNode().getValueType();
-        if (firstNodeType instanceof Class<?>
-                && ActionBeanContext.class.isAssignableFrom((Class<?>) firstNodeType)) {
-            return false;
+        NodeEvaluation e = eval.getRootNode();
+        // can't bind to the unbindable classes : there should be
+        // no unbindable class on the path
+        while (e!=null) {
+            Type valueType = e.getValueType();
+            if (valueType instanceof Class<?>) {
+                Class<?> t = (Class<?>)valueType;
+                for (Class<?> unbindableClass : UNBINDABLE_CLASSES) {
+                    if (unbindableClass.isAssignableFrom(t)) {
+                        return false;
+                    }
+                }
+            }
+            e = e.getNext();
         }
 
         // check parameter name against access lists
         String paramName = new ParameterName(eval.getExpression().getSource()).getStrippedName();
+        return isBindingAllowed(paramName);
+    }
+
+    public boolean isBindingAllowed(String paramName) {
         boolean deny = denyPattern != null && denyPattern.matcher(paramName).matches();
         boolean allow = (allowPattern != null && allowPattern.matcher(paramName).matches())
                 || (validatePattern != null && validatePattern.matcher(paramName).matches());
@@ -135,6 +170,7 @@ public class WokoFacetBindingPolicyManager {
 
         // any other conditions pass the test
         return true;
+
     }
 
     /**
@@ -157,8 +193,7 @@ public class WokoFacetBindingPolicyManager {
     }
 
     protected String[] getValidatedProperties(Class<?> beanClass) {
-        Set<String> properties = StripesFilter.getConfiguration().getValidationMetadataProvider()
-                .getValidationMetadata(beanClass).keySet();
+        Set<String> properties = vmp!=null ? vmp.getValidationMetadata(beanClass).keySet() : Collections.<String>emptySet();
         return new ArrayList<String>(properties).toArray(new String[properties.size()]);
     }
 

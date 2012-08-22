@@ -119,13 +119,7 @@ public class HibernateStore implements ObjectStore {
             return null;
         }
         if (key == null) {
-            // create transient instance
-            try {
-                return mappedClass.newInstance();
-            } catch (Exception e) {
-                log.error("Unable to create instance of " + mappedClass + " using no-args constructor.", e);
-                throw new RuntimeException(e);
-            }
+            return null;
         }
 
         Class<?> keyType = getPrimaryKeyClass(mappedClass);
@@ -229,26 +223,26 @@ public class HibernateStore implements ObjectStore {
         }
     }
 
-    public ResultIterator list(String className, Integer start, Integer limit) {
+    public ResultIterator<?> list(String className, Integer start, Integer limit) {
         Class clazz = getMappedClass(className);
         int s = start == null ? 0 : start;
         int l = limit == null ? -1 : limit;
         if (clazz == null) {
-            return new ListResultIterator(Collections.emptyList(), s, l, 0);
+            return new ListResultIterator<Object>(Collections.emptyList(), s, l, 0);
         } else {
             Criteria crit = getSession().createCriteria(clazz).setFirstResult(s);
             if (l != -1) {
                 crit.setMaxResults(l);
             }
             // TODO optimize with scrollable results ?
-            List objects = crit.list();
+            List<?> objects = crit.list();
 
             // compute total count
             String mappedClassName = getClassMapping(clazz);
             String query = new StringBuilder("select count(*) from ").append(mappedClassName).toString();
             Long count = (Long) getSession().createQuery(query).list().get(0);
 
-            return new ListResultIterator(objects, s, l, count.intValue());
+            return new ListResultIterator<Object>(objects, s, l, count.intValue());
         }
     }
 

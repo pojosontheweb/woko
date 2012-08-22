@@ -21,11 +21,13 @@ import woko.tooling.cli.commands.*
 
 class Runner {
 
-    private Logger logger
+    private final Logger logger
+    private final Map<String, Command> commands = [:]
+    private final File workingDir = new File(System.getProperty("user.dir"))
 
-    private Map<String, Command> commands = [:]
-
-    private File workingDir = new File(System.getProperty("user.dir"))
+    File getWorkingDir() {
+        return workingDir
+    }
 
     Runner addCommand(Command c) {
         if (!commands[c]) {
@@ -49,7 +51,7 @@ class Runner {
         logger.log(msg)
     }
 
-    void help(String commandName) {
+    def help(String commandName) {
         if (commandName) {
             def c = commands[commandName]
             if (c) {
@@ -73,45 +75,42 @@ class Runner {
         }
     }
 
+    /**
+     * Create a runner for passed args
+     * @param logger the logger to be used
+     * @param workingDir the working directory (should be the top level project folder)
+     */
     Runner(Logger logger, File workingDir) {
         this.logger = logger
         this.workingDir = workingDir
         addCommands([
-          new ListCmd(this, workingDir, logger),
-          new CreateCmd(this, workingDir, logger),
-          new CrudCmd(this, workingDir, logger),
-          new PushCmd(this, workingDir, logger),
-          new GenerateCmd(this, workingDir, logger),
-          new StartCommand(
-            this,
-            workingDir,
-            logger
-          ),
-          new ProcessCmd(
-            this,
-            workingDir,
-            logger,
-            "stop",
-            "stop the local jetty container (in case started in background process)",
-            "",
-            "",
-            "mvn jetty:stop"
-          ),
-          new ProcessCmd(
-            this,
-            workingDir,
-            logger,
-            "build",
-            "rebuilds the whole application",
-            "",
-            "",
-            "mvn clean install"
-          ),
-          new EnvironmentsCmd(this, workingDir, logger)
+                new ListCmd(this),
+                new CreateCmd(this),
+                new CrudCmd(this),
+                new PushCmd(this),
+                new GenerateCmd(this),
+                new StartCommand(this),
+                new ProcessCmd(
+                        this,
+                        "stop",
+                        "stop the local jetty container (in case started in background process)",
+                        "",
+                        "",
+                        "mvn jetty:stop"
+                ),
+                new ProcessCmd(
+                        this,
+                        "build",
+                        "rebuilds the whole application",
+                        "",
+                        "",
+                        "mvn clean install"
+                ),
+                new EnvironmentsCmd(this)
         ])
     }
 
-    void invokeCommand(args) {
+    def invokeCommand(String... args) {
         if (!args) {
             throw new IllegalArgumentException("0 args specified, we need at least the command name")
         }else if (args[0] == "help") {
@@ -144,10 +143,11 @@ class Runner {
 
     /**
      * Run with passed arguments
-     * @param args an array or list of Strings containing the command line parameters
      */
-    void run(args) {
-        args = args ? args : ["help"]
+    void run(String... args) {
+        if (!args) {
+            args = ["help"]
+        }
         invokeCommand(args)
     }
 

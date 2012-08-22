@@ -5,7 +5,7 @@ import net.sourceforge.stripes.action.OnwardResolution;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class LoginHttpsRedirectResolution extends OnwardResolution {
+public class LoginHttpsRedirectResolution extends OnwardResolution<LoginHttpsRedirectResolution> {
 
     private final String serverName;
     private final int portHttps;

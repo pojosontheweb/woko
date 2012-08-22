@@ -33,7 +33,7 @@ class LocalizationTest extends WebTestBase {
     void testMissingKeysDontGenerateUglyLabels() {
         webtest("testMissingKeysDontGenerateUglyLabels") {
             login()
-            goToPage '/save/MyBook'
+            goToPage '/save/MyBook?createTransient=true'
             verifyText "Number of pages"
             not {
                 verifyText "???MyBook.anotherProp???" // the message doesn't exist for the prop, we check if we don't have an ugly ???xyz??? message

@@ -26,11 +26,9 @@ import woko.tooling.cli.Runner
 
 class CreateCmd extends Command {
 
-    CreateCmd(Runner runner, File projectDir, Logger logger) {
+    CreateCmd(Runner runner) {
         super(
                 runner,
-                projectDir,
-                logger,
                 "create",
                 "create project elements",
                 "facet|entity",
@@ -42,7 +40,7 @@ you want to create :
     }
 
     @Override
-    void execute(List<String> args) {
+    def execute(List<String> args) {
         String arg0 = getArgAt(args, 0)
         switch (arg0) {
             case "facet" :

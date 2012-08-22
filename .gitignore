@@ -1,6 +1,11 @@
+out
+widea.zip
 .DS_Store
 .idea
 target
 *.iml
+*.ipr
+*.iws
+classes
 *~
 overlays

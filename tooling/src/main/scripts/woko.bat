@@ -74,7 +74,7 @@ if exist pom.xml (
     )
 
     echo ^| Generating your project, please wait, it can take a while to download everything...
-    call mvn archetype:generate -DarchetypeArtifactId=woko-archetype -DarchetypeGroupId=com.pojosontheweb -DarchetypeVersion=2.0 -DgroupId="%GROUPID%" -DartifactId="%ARTIFACTID%" -Dversion="%VERSION%" -DinteractiveMode="false" -q
+    call mvn archetype:generate -DarchetypeArtifactId=woko-archetype -DarchetypeGroupId=com.pojosontheweb -DarchetypeVersion=2.0.1 -DgroupId="%GROUPID%" -DartifactId="%ARTIFACTID%" -Dversion="%VERSION%" -DinteractiveMode="false" -q
 
     cd "%ARTIFACTID%"
     call mvn exec:java -Dexec.mainClass="woko.tooling.cli.Runner" -Dexec.classpathScope=runtime -Dexec.args=%EXECARGS% -q

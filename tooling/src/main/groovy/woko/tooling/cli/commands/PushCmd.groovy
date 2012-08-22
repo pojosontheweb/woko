@@ -23,14 +23,13 @@ import woko.tooling.utils.Logger
 import static woko.tooling.utils.AppUtils.*
 import woko.tooling.utils.AppHttpClient
 import com.google.common.io.Files
+import woko.tooling.utils.AppUtils
 
 class PushCmd extends Command {
 
-    PushCmd(Runner runner,File projectDir,Logger logger) {
+    PushCmd(Runner runner) {
         super(
           runner,
-          projectDir,
-          logger,
           "push",
           "pushes the local facets to a remote application",
           "[resources|quiet]",
@@ -52,7 +51,7 @@ server restarts when you change facet code.
     }
 
     @Override
-    void execute(List<String> args) {
+    def execute(List<String> args) {
         String arg1 = getArgAt(args, 0)
         boolean resources = false
         boolean quiet = false
@@ -107,7 +106,7 @@ server restarts when you change facet code.
                 if (quiet || yesNoAsk("Shall we push this")) {
                     // convert to woko-enabled params for the push facet
 
-                    AppHttpClient c = new AppHttpClient(logger, url, pomHelper)
+                    AppHttpClient c = new AppHttpClient(logger, url, AppUtils.isBuiltInAuth(pomHelper))
                     c.doWithLogin(username, password) {
                         c.post("/push", httpParams) { String resp ->
                             resp.eachLine { l ->

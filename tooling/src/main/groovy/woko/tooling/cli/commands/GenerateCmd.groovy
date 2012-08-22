@@ -40,11 +40,9 @@ class GenerateCmd extends Command{
     String wokoPath
     String facetsPath
 
-    GenerateCmd(Runner runner, File projectDir, Logger logger) {
+    GenerateCmd(Runner runner) {
         super(
                 runner,
-                projectDir,
-                logger,
                 "generate",
                 "Generates a new Woko project",
                 "[-use-boostrap {yes|no}] [-use-groovy {yes|no}] [-default-package-name <package name>]",
@@ -53,7 +51,7 @@ class GenerateCmd extends Command{
     }
 
     @Override
-    void execute(List<String> args) {
+    def execute(List<String> args) {
 
         CliBuilder cliBuilder = new CliBuilder(usage: 'woko generate')
 

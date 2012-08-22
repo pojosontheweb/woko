@@ -215,8 +215,9 @@ pkg.Client.prototype.saveObject = function(oArgs) {
         className: className,
         content: u.mixin(content, transformedParams)
     });
-    if (oArgs.key) {
-        args.key = oArgs.key;
+    var objKey = oArgs.key || this.getWokoKey(obj);
+    if (objKey) {
+        args.key = objKey;
     }
     args.isPost = true;
     this.invokeFacet("save", args);

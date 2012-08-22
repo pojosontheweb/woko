@@ -24,7 +24,7 @@ import javax.persistence.OneToMany
 @Entity
 class EntityWithRelations {
 
-    @Id @GeneratedValue
+    @Id
     Long id
 
     String name
