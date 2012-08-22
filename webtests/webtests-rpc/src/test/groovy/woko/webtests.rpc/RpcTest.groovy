@@ -67,14 +67,14 @@ class RpcTest extends WebTestBase {
             verifyText """"totalSize":10"""
             verifyText """"start":0"""
             verifyText """"limit":10"""
-            verifyText """Moby1"""
+            verifyText text:"""Moby*""", regex: true
 
             // search
             goToPage '/search?facet.query=moby*&isRpc=true'
             verifyText """"totalSize":10"""
             verifyText """"start":0"""
             verifyText """"limit":10"""
-            verifyText """Moby1"""
+            verifyText text:"""Moby*""", regex: true
 
             // remove all
             goToPage '/deleteTestObjects'
