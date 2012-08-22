@@ -36,6 +36,8 @@ public class WokoActionBean extends BaseActionBean {
 
     private static final WLogger logger = WLogger.getLogger(WokoActionBean.class);
 
+    public static final String CREATE_TRANSIENT_REQ_PARAM = "createTransient";
+
     private String className;
     private String key;
     @Validate(required = true)
@@ -90,13 +92,32 @@ public class WokoActionBean extends BaseActionBean {
         logger.debug("Loading object for className=" + className + " and key=" + key);
         Woko woko = getContext().getWoko();
         ObjectStore objectStore = woko.getObjectStore();
-        object = objectStore.load(className, key);
-        logger.debug("Loaded " + object + " (className=" + className + ", key=" + key + ")");
+        if (className!=null) {
+            if (key!=null) {
+                object = objectStore.load(className, key);
+                logger.debug("Loaded " + object + " (className=" + className + ", key=" + key + ")");
+            } else {
+                String createTransientStr = req.getParameter(CREATE_TRANSIENT_REQ_PARAM);
+                boolean createTransient = createTransientStr!=null && createTransientStr.equals("true");
+                if (createTransient) {
+                    Class<?> mappedClass = objectStore.getMappedClass(className);
+                    try {
+                        object = mappedClass.newInstance();
+                        logger.debug("Created transient " + object + ", no key provided (className=" + className + ")");
+                    } catch (Exception e) {
+                        logger.error("Unable to create instance of " + mappedClass + " using no-args constructor.", e);
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+        }
         Class targetObjectClass;
         if (object != null) {
             targetObjectClass = object.getClass();
-        } else {
+        } else if (className!=null) {
             targetObjectClass = objectStore.getMappedClass(className);
+        } else {
+            targetObjectClass = Object.class;
         }
         Object f = woko.getFacet(facetName, req, object, targetObjectClass);
         if (f == null) {

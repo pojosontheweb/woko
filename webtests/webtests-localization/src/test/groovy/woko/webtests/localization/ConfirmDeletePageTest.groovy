@@ -27,7 +27,7 @@ class ConfirmDeletePageTest extends WebTestBase {
       login()
 
       // Create an object first
-      goToPage '/save/MyBook?object._id=1&object.name=Moby'
+      goToPage '/save/MyBook?createTransient=true&object._id=1&object.name=Moby'
 
       // Got to ConfirmDelete
       goToPage '/delete/MyBook/1'

@@ -42,6 +42,7 @@
 %>
 <div class="wokoPropertiesEdit">
     <s:form action="<%=formUrl%>">
+        <s:hidden name="createTransient"/>
         <table>
             <tbody>
             <%

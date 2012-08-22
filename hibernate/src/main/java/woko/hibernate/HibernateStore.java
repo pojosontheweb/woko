@@ -119,13 +119,7 @@ public class HibernateStore implements ObjectStore {
             return null;
         }
         if (key == null) {
-            // create transient instance
-            try {
-                return mappedClass.newInstance();
-            } catch (Exception e) {
-                log.error("Unable to create instance of " + mappedClass + " using no-args constructor.", e);
-                throw new RuntimeException(e);
-            }
+            return null;
         }
 
         Class<?> keyType = getPrimaryKeyClass(mappedClass);

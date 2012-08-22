@@ -22,7 +22,7 @@ class BindingSecurityTest extends WebTestBase {
         webtest("testBindingSecurityOnFacet") {
 
             login()
-            goToPage '/save/MyEntity?object.id=1&object.prop1=val1&object.prop2=shouldnotbind'
+            goToPage '/save/MyEntity?createTransient=true&object.id=1&object.prop1=val1&object.prop2=shouldnotbind'
             try {
 
                 goToPage '/bindMe/MyEntity/1'
@@ -57,7 +57,7 @@ class BindingSecurityTest extends WebTestBase {
         webtest("testBindingSecurityOnObject") {
 
             login()
-            goToPage '/save/MyEntity?object.id=1&object.prop1=val1&object.prop2=123456'
+            goToPage '/save/MyEntity?createTransient=true&object.id=1&object.prop1=val1&object.prop2=123456'
             try {
 
                 verifyText 'Object saved'
@@ -76,7 +76,7 @@ class BindingSecurityTest extends WebTestBase {
     void testCannotBindThroughFacetContext() {
         webtest("testCannotBindThroughFacetContext") {
             login()
-            goToPage '/save/MyEntity?object.id=1&object.prop1=val1&facet.facetContext.targetObject.prop2=123456'
+            goToPage '/save/MyEntity?createTransient=true&object.id=1&object.prop1=val1&facet.facetContext.targetObject.prop2=123456'
             try {
                 verifyText 'Object saved'
                 goToPage '/view/MyEntity/1'

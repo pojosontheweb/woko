@@ -63,6 +63,9 @@
 
             cli.saveObject({
                 obj: mobyDick,
+                content: {
+                    createTransient: true
+                },
                 onSuccess: function(savedBook) {
                     log(new Date() + " - Save1 : id = " + savedBook._id + " name = " + savedBook.name);
 

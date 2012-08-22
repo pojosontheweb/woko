@@ -22,7 +22,7 @@ class RendererTest extends WebTestBase {
         webtest('test prop value overrides') {
             login()
             // create test object
-            goToPage '/save/MyBook?object._id=1111&object.name=Moby&object.nbPages=123'
+            goToPage '/save/MyBook?createTransient=true&object._id=1111&object.name=Moby&object.nbPages=123'
 
             // view
             goToPage '/view/MyBook/1111'
@@ -39,9 +39,9 @@ class RendererTest extends WebTestBase {
     void testFlatLayout() {
         webtest("test flat layout") {
             login()
-            goToPage '/save/MyEntity?object.id=1&object.prop1=abc&object.prop2=123'
+            goToPage '/save/MyEntity?createTransient=true&object.id=5566&object.prop1=abc&object.prop2=123'
 
-            goToPage '/view/MyEntity/1'
+            goToPage '/view/MyEntity/5566'
             verifyXPath xpath: '/html/body/div/div[2]/div/div/div/div[2]/div/div[3]/div[2]/span/span', text: '.*abc.*', regex: true
         }
     }
@@ -50,21 +50,22 @@ class RendererTest extends WebTestBase {
         webtest("testComboForPersistentXToOne") {
             login()
             try {
-                goToPage '/save/EntityWithRelations?object.id=1&object.name=ewr1'
-                goToPage '/save/SubEntity?object.id=1&object.name=sub1'
+                goToPage '/save/EntityWithRelations?createTransient=true&object.name=ewr1'
+                storeXPath xpath:'/html/body/div/div[2]/div/div/div[2]/div[2]/div/form/fieldset/div[2]/div/input/@value', property:'id1'
+                goToPage '/save/SubEntity?createTransient=true&object.name=sub1'
+                storeXPath xpath:'/html/body/div/div[2]/div/div/div[2]/div[2]/div/form/fieldset/div[4]/div/input/@value', property:'id2'
 
-                goToPage '/edit/SubEntity/1'
+                goToPage '/edit/SubEntity/#{id2}'
                 verifyText 'bar'
                 verifySelectField name:'object.daEntity', value:''
 
-                setSelectField name:'object.daEntity', optionIndex:1
+                setSelectField name:'object.daEntity', text:"ewr1"
                 clickButton name:'save'
-                verifySelectField name:'object.daEntity', value:'1'
                 verifySelectField name:'object.daEntity', text:'ewr1'
 
             } finally {
-                goToPage '/delete/EntityWithRelations/1?facet.confirm=true'
-                goToPage '/delete/SubEntity/1?facet.confirm=true'
+                goToPage '/delete/EntityWithRelations/#{id1}?facet.confirm=true'
+                goToPage '/delete/SubEntity/#{id2}?facet.confirm=true'
             }
         }
     }

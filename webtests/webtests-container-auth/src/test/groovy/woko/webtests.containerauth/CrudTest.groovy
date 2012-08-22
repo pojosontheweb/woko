@@ -23,7 +23,7 @@ class CrudTest extends WebTestBase {
             login()
 
             // create
-            goToPage '/save/MyBook?object._id=1&object.name=Moby'
+            goToPage '/save/MyBook?createTransient=true&object._id=1&object.name=Moby'
             verifyText 'Object saved'
             verifyXPath xpath: "/html/body/div/div[3]/div/div/div/form/table/tbody/tr[4]/td/span/span/input[@value='Moby']"
             verifyTitle 'Woko - Moby'
@@ -34,7 +34,7 @@ class CrudTest extends WebTestBase {
             text: 'Moby'
 
             // update
-            goToPage '/save/MyBook?object._id=1&object.name=Mobyz'
+            goToPage '/save/MyBook/1?object.name=Mobyz'
             verifyText 'Object saved'
             verifyXPath xpath: "/html/body/div/div[3]/div/div/div/form/table/tbody/tr[4]/td/span/span/input[@value='Mobyz']"
             verifyTitle 'Woko - Mobyz'
@@ -79,7 +79,7 @@ class CrudTest extends WebTestBase {
     void testValidationOnSave() {
         webtest('Validation on Save') {
             login()
-            goToPage '/save/MyBook'
+            goToPage '/save/MyBook?createTransient=true'
             verifyText 'Please fix the following errors'
 
             clickButton name: 'save'
@@ -207,7 +207,7 @@ class CrudTest extends WebTestBase {
             login()
 
             try {
-                goToPage '/save/SubEntity?object.id=1234'
+                goToPage '/save/SubEntity?createTransient=true&object.id=1234'
                 setInputField name: "object.name", value:"testAssociate"
                 setSelectField name: "object.daEntity", value:"1"
                 clickButton name:'save'
