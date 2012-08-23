@@ -234,11 +234,22 @@ public class Woko {
 
 
     /**
+     * Check if some environment has been used to build the app
+     * @param envName the name of the environment to check
+     * @return true if the environment used matches passed parameter (null safe), false otherwise
+     */
+    public static boolean isUsingEnvironment(String envName) {
+        Util.assertArg("envName", envName);
+        String actualEnv = getEnvironment();
+        return actualEnv != null && actualEnv.equals(envName);
+    }
+
+    /**
      * Return the environment used
      * @return the environment used at build-time (as found in the woko.environment file)
      */
-    public String getEnvironment() {
-        InputStream is = getClass().getResourceAsStream("/" + ENVI_FILE);
+    public static String getEnvironment() {
+        InputStream is = Woko.class.getResourceAsStream("/" + ENVI_FILE);
         if (is==null) {
             return null;
         }
