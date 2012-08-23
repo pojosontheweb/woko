@@ -235,13 +235,21 @@ public class Woko {
 
     /**
      * Check if some environment has been used to build the app
-     * @param envName the name of the environment to check
+     * @param ifNoEnv the value to return in case no environment was used at all (getEnvironment()==null)
+     * @param envNames the name of the environments to check
      * @return true if the environment used matches passed parameter (null safe), false otherwise
      */
-    public static boolean isUsingEnvironment(String envName) {
-        Util.assertArg("envName", envName);
+    public static boolean isUsingEnvironment(boolean ifNoEnv, String... envNames) {
         String actualEnv = getEnvironment();
-        return actualEnv != null && actualEnv.equals(envName);
+        if (actualEnv==null) {
+            return ifNoEnv;
+        }
+        for (String en : envNames) {
+            if (actualEnv.equals(en)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
