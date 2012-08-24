@@ -3,8 +3,10 @@ package woko.actions.auth.builtin;
 import net.sourceforge.stripes.action.*;
 import net.sourceforge.stripes.validation.LocalizableError;
 import net.sourceforge.stripes.validation.Validate;
+import woko.Woko;
 import woko.actions.BaseActionBean;
 import woko.actions.WokoActionBeanContext;
+import woko.facets.builtin.auth.PostLoginFacet;
 import woko.util.WLogger;
 
 import javax.servlet.ServletContext;
@@ -96,10 +98,17 @@ public class WokoLogin extends BaseActionBean {
         log.debug("trying to log-in user " + username);
         String user = authenticate();
         if (user != null) {
-            // auth OK, add message and redirect to the target URL
+            // auth OK, invoke PostLogin facet if any
             WokoActionBeanContext context = getContext();
-            context.getMessages().add(new LocalizableMessage(KEY_MSG_LOGIN_SUCCESS));
+            // bind username to http session
             context.getRequest().getSession().setAttribute(SESSION_ATTR_CURRENT_USER, user);
+            Woko woko = context.getWoko();
+            PostLoginFacet pl = (PostLoginFacet)woko.getFacet(PostLoginFacet.FACET_NAME, context.getRequest(), null, Object.class);
+            if (pl!=null) {
+                pl.execute(user);
+            }
+            // add message and redirect to the target URL
+            context.getMessages().add(new LocalizableMessage(KEY_MSG_LOGIN_SUCCESS));
             log.debug(username + " logged in, redirecting to " + targetUrl);
             return new RedirectResolution(targetUrl);
         } else {
