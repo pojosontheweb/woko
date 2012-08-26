@@ -66,7 +66,7 @@ public class Util {
                 }
             }
         } catch (Exception e) {
-            throw new RuntimeException("Error getting property " + propertyName + " on object " + obj + " ! Make sure your renderProperties facet doesn't return incorrect property names.");
+            throw new RuntimeException("Error getting property " + propertyName + " on object " + obj + " ! Make sure your renderProperties facet doesn't return incorrect property names.", e);
         }
         return null;
     }

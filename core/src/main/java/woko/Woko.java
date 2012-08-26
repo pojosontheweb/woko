@@ -45,6 +45,8 @@ public class Woko {
 
     public static final String ENVI_FILE = "woko.environment";
 
+    private static String ENVI = null;
+
     public static final List<String> DEFAULT_FACET_PACKAGES =
             Collections.unmodifiableList(Arrays.asList("facets", "woko.facets.builtin"));
 
@@ -234,25 +236,44 @@ public class Woko {
 
 
     /**
+     * Check if some environment has been used to build the app
+     * @param ifNoEnv the value to return in case no environment was used at all (getEnvironment()==null)
+     * @param envNames the name of the environments to check
+     * @return true if the environment used matches passed parameter (null safe), false otherwise
+     */
+    public static boolean isUsingEnvironment(boolean ifNoEnv, String... envNames) {
+        String actualEnv = getEnvironment();
+        if (actualEnv==null) {
+            return ifNoEnv;
+        }
+        for (String en : envNames) {
+            if (actualEnv.equals(en)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * Return the environment used
      * @return the environment used at build-time (as found in the woko.environment file)
      */
-    public String getEnvironment() {
-        InputStream is = getClass().getResourceAsStream("/" + ENVI_FILE);
-        if (is==null) {
-            return null;
-        }
-        BufferedReader r = new BufferedReader(new InputStreamReader(is));
-        try {
-            try {
-                return r.readLine();
-            } finally {
-                r.close();
+    public static String getEnvironment() {
+        if (ENVI==null) {
+            InputStream is = Woko.class.getResourceAsStream("/" + ENVI_FILE);
+            if (is!=null) {
+                BufferedReader r = new BufferedReader(new InputStreamReader(is));
+                try {
+                    try {
+                        ENVI = r.readLine();
+                    } finally {
+                        r.close();
+                    }
+                } catch(Exception e) {
+                    logger.error("Unable to read environment file at " + ENVI_FILE,e);
+                }
             }
-        } catch(Exception e) {
-            throw new RuntimeException("unable to read envi file !", e);
         }
+        return ENVI;
     }
-
-
 }
