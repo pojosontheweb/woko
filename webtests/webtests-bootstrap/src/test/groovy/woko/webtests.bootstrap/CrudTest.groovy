@@ -25,7 +25,7 @@ class CrudTest extends WebTestBase {
             // create
             goToPage '/save/MyBook?createTransient=true&object._id=1&object.name=Moby'
             verifyText 'Object saved'
-            verifyXPath xpath: "/html/body/div/div[2]/div/div/div[2]/div[2]/div/form/fieldset/div[4]/div/input[@value='Moby']"
+            verifyXPath xpath: "/html/body/div/div[2]/div/div/div[2]/div[2]/div/form/fieldset/div[5]/div/input[@value='Moby']"
             // TODO verifyTitle 'Woko - Moby'
 
             // view
@@ -36,7 +36,7 @@ class CrudTest extends WebTestBase {
             // update
             goToPage '/save/MyBook/1?object.name=Mobyz'
             verifyText 'Object saved'
-            verifyXPath xpath: "/html/body/div/div[2]/div/div/div[2]/div[2]/div/form/fieldset/div[4]/div/input[@value='Mobyz']"
+            verifyXPath xpath: "/html/body/div/div[2]/div/div/div[2]/div[2]/div/form/fieldset/div[5]/div/input[@value='Mobyz']"
             // TODO verifyTitle 'Woko - Mobyz'
 
             // view

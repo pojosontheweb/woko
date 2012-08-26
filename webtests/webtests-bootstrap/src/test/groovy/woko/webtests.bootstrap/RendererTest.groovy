@@ -70,4 +70,38 @@ class RendererTest extends WebTestBase {
         }
     }
 
+    void testEnumEdit() {
+        webtest("testEnumEdit") {
+            login()
+            try {
+
+                goToPage '/save/MyBook?createTransient=true&object._id=98765&object.name=Moby&object.nbPages=123'
+
+                // view
+                goToPage '/view/MyBook/98765'
+                // assert enum is displayed if not null
+                verifyText 'initializedRating'
+                verifyText 'GOOD'
+
+                // edit
+                goToPage '/edit/MyBook/98765'
+                verifySelectField name:'object.rating', value:'' // check it's nullable
+                verifySelectField name:'object.initializedRating', value:'GOOD' // check it's initialized
+
+                setSelectField name:'object.rating', value:'POOR'
+                setSelectField name:'object.initializedRating', value:'AMAZING'
+                clickButton name:'save'
+                verifyText 'POOR'
+                verifyText 'AMAZING'
+
+
+                // TODO set select check object is saved
+
+            } finally {
+                goToPage '/delete/MyBook/98765?facet.confirm=true'
+            }
+        }
+    }
+
+
 }

@@ -15,27 +15,18 @@
   --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="/WEB-INF/woko/jsp/taglibs.jsp"%>
-<%@ page import="woko.facets.WokoFacetContext" %>
-<%@ page import="woko.persistence.ObjectStore" %>
 <%@ page import="woko.facets.builtin.WokoFacets" %>
 <%@ page import="woko.facets.builtin.RenderPropertyValue" %>
 <%
     RenderPropertyValue renderPropertyValue = (RenderPropertyValue)request.getAttribute(WokoFacets.renderPropertyValueEdit);
-    WokoFacetContext fctx = (WokoFacetContext)renderPropertyValue.getFacetContext();
-    ObjectStore os = fctx.getWoko().getObjectStore();
     String propertyName = renderPropertyValue.getPropertyName();
-    String propertyClassName = os.getClassMapping(renderPropertyValue.getPropertyType());
     Object propVal = renderPropertyValue.getPropertyValue();
     String fullFieldName = "object." + propertyName;
     String emptyOptSelected = propVal==null ? "true" : "false";
 %>
-<span class="wokoPropertyValueEdit">
-    <span class="<%=propertyName%> <%=propertyClassName%>">
-        <s:select name="<%=fullFieldName%>">
-            <s:option value="" selected="<%=emptyOptSelected%>"/>
-            <s:options-enumeration enum="<%=renderPropertyValue.getPropertyType().getName()%>"/>
-        </s:select>
-    </span>
-</span>
+<s:select name="<%=fullFieldName%>">
+    <s:option value="" selected="<%=emptyOptSelected%>"/>
+    <s:options-enumeration enum="<%=renderPropertyValue.getPropertyType().getName()%>"/>
+</s:select>
 
 
