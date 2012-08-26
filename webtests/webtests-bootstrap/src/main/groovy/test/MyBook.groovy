@@ -41,6 +41,10 @@ class MyBook {
   @SearchableProperty
   Date creationTime = new Date()
 
+    Rating rating
+
+    Rating initializedRating = Rating.GOOD
+
   /*
   transient List<MyBook> listOfMe = [this, this, this]
   transient MyBook me = this
