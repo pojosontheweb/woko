@@ -17,6 +17,7 @@
 package woko.ext.usermanagement.hibernate;
 
 import org.hibernate.Criteria;
+import org.hibernate.FlushMode;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 import woko.ext.usermanagement.core.DatabaseUserManager;
@@ -54,9 +55,15 @@ public class HibernateUserManager extends DatabaseUserManager {
     @Override
     public User getUserByUsername(String username) {
         Session s = hibernateStore.getSession();
-        List l = s.createCriteria(getUserClass()).add(Restrictions.naturalId().set("username", username)).list();
+        List l = s.createCriteria(getUserClass())
+                .add(Restrictions.eq("username", username))
+                .setFlushMode(FlushMode.MANUAL)
+                .list();
         if (l.size()==0) {
             return null;
+        }
+        if (l.size()>1) {
+            throw new IllegalStateException("more than 1 users with username==" + username);
         }
         return (User)l.get(0);
     }
