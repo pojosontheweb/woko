@@ -29,10 +29,17 @@ import java.util.List;
 @FacetKey(name = WokoFacets.renderPropertyValueEdit, profileId = "all")
 public class RenderPropertyValueEditXToOneRelation extends RenderPropertyValueImpl implements RenderPropertyValueEdit {
 
+    public static final String ENUM_FRAGMENT_PATH = "/WEB-INF/woko/jsp/all/renderPropertyValueEditEnum.jsp";
     public static final String FRAGMENT_PATH = "/WEB-INF/woko/jsp/all/renderPropertyValueEditXToOneRelation.jsp";
 
     public String getPath() {
-        // we check if the target object is persistent or not.
+        // check if the property is an enum
+        Class<?> propType = getPropertyType();
+        if (propType.isEnum()) {
+            return ENUM_FRAGMENT_PATH;
+        }
+
+        // not an enum : we check if the target object is persistent or not.
         // if persistent, then forward to another JSP
         ObjectStore os = getFacetContext().getWoko().getObjectStore();
         List<Class<?>> mappedClasses = os.getMappedClasses();
@@ -42,10 +49,6 @@ public class RenderPropertyValueEditXToOneRelation extends RenderPropertyValueIm
         }
         getRequest().setAttribute(RenderPropertyValue.FACET_NAME, this); // NEEDED because the JSP expects the facet to be found.
         return super.getPath();
-    }
-
-    private Class<?> getPropertyType() {
-        return Util.getPropertyType(getOwningObject().getClass(), getPropertyName());
     }
 
     public List<?> getChoices() {

@@ -35,4 +35,6 @@ public interface RenderPropertyValue extends IFacet, FragmentFacet {
 
   void setPropertyValue(Object v);
 
+    Class<?> getPropertyType();
+
 }

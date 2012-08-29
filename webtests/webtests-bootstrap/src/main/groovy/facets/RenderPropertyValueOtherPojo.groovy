@@ -21,13 +21,10 @@ import net.sourceforge.jfacets.annotations.FacetKey
 import woko.facets.builtin.RenderPropertyValue
 import woko.facets.BaseFragmentFacet
 import javax.servlet.http.HttpServletRequest
+import woko.facets.builtin.all.RenderPropertyValueImpl
 
 @FacetKey(name='renderPropertyValue', profileId='all', targetObjectType=test.OtherPojo.class)
-class RenderPropertyValueOtherPojo extends BaseFragmentFacet implements RenderPropertyValue {
-
-  Object owningObject
-  String propertyName
-  Object propertyValue
+class RenderPropertyValueOtherPojo extends RenderPropertyValueImpl implements RenderPropertyValue {
 
   String getPath() {
     return '/WEB-INF/jsp/renderPropertyValueOtherPojo.jsp' 

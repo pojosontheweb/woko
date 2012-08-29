@@ -20,6 +20,7 @@ import net.sourceforge.jfacets.annotations.FacetKey;
 import woko.facets.BaseFragmentFacet;
 import woko.facets.builtin.RenderPropertyValue;
 import woko.facets.builtin.WokoFacets;
+import woko.util.Util;
 
 @FacetKey(name = WokoFacets.renderPropertyValue, profileId = "all")
 public class RenderPropertyValueImpl extends BaseFragmentFacet implements RenderPropertyValue {
@@ -55,6 +56,10 @@ public class RenderPropertyValueImpl extends BaseFragmentFacet implements Render
 
     public String getPath() {
         return FRAGMENT_PATH;
+    }
+
+    public Class<?> getPropertyType() {
+        return Util.getPropertyType(getOwningObject().getClass(), getPropertyName());
     }
 
 
