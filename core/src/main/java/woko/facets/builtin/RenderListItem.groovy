@@ -8,4 +8,5 @@ interface RenderListItem extends IFacet, FragmentFacet {
 
     static final String FACET_NAME = "renderListItem";
 
+    String getItemWrapperCssClass();
 }
