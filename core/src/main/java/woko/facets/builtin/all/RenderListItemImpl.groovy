@@ -3,8 +3,9 @@ package woko.facets.builtin.all
 import net.sourceforge.jfacets.annotations.FacetKey
 import woko.facets.BaseFragmentFacet
 import woko.facets.builtin.RenderListItem
+import woko.facets.builtin.WokoFacets
 
-@FacetKey(name="renderListItem", profileId="all")
+@FacetKey(name=WokoFacets.renderListItem, profileId="all")
 class RenderListItemImpl extends BaseFragmentFacet implements RenderListItem {
 
     @Override
