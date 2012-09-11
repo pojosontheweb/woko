@@ -25,7 +25,7 @@ class SavePageTest extends WebTestBase{
         webtest('test Save page'){
             login()
 
-            goToPage '/save/MyJavaEntity?createTransient=true'
+            goToPage '/save/MyJavaEntity?createTransient=true&object.id=1'
 
             verifyXPath xpath: "/html/body/div/div[3]/div/div[1]/span", text:'Please fix the following errors:'
 

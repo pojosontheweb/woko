@@ -23,11 +23,12 @@ class RenderListItemTest extends WebTestBase {
             login()
 
             // create
-            goToPage '/save/MyBook?createTransient=true&object._id=1&object.name=Moby'
+            goToPage '/save/MyBook?createTransient=true&object._id=1&object.name=Moby&nbPages=50'
             verifyText 'Object saved'
 
             goToPage '/list/MyBook'
-
+            verifyText 'Moby'
+            verifyXPath xpath: "/html/body/div/div[2]/div/div/ul/li[@class='TestCssClass']"
 
             // delete
             goToPage '/delete/MyBook/1'
