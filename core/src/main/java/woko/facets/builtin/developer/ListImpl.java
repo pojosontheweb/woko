@@ -51,4 +51,8 @@ public class ListImpl extends BaseResultFacet implements woko.facets.builtin.Lis
         }
     }
 
+    @Override
+    public String getListWrapperCssClass() {
+        return super.getClassName();
+    }
 }

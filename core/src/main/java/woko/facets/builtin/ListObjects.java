@@ -22,6 +22,8 @@ public interface ListObjects extends ResolutionFacet, ResultFacet {
 
     static final String FACET_NAME = "list";
 
-  String getClassName();
+    String getClassName();
+
+    String getListWrapperCssClass();
 
 }
