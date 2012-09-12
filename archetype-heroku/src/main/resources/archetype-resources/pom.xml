@@ -124,14 +124,15 @@
             </plugin>
 
             <plugin>
-                <groupId>org.codehaus.groovy.maven</groupId>
+                <groupId>org.codehaus.gmaven</groupId>
                 <artifactId>gmaven-plugin</artifactId>
-                <version>1.0</version>
+                <version>1.4</version>
                 <configuration>
-                    <verbose>true</verbose>
+                    <providerSelection>1.8</providerSelection>
                 </configuration>
                 <executions>
                     <execution>
+                        <phase>generate-resources</phase>
                         <goals>
                             <goal>generateStubs</goal>
                             <goal>compile</goal>
