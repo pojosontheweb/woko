@@ -14,16 +14,23 @@
  * limitations under the License.
  */
 
-package woko.facets.builtin;
+package facets
 
-import woko.facets.ResolutionFacet;
+import net.sourceforge.jfacets.annotations.FacetKey
+import test.MyBook
+import woko.facets.builtin.WokoFacets
+import woko.facets.builtin.all.RenderListItemImpl
 
-public interface ListObjects extends ResolutionFacet, ResultFacet {
+@FacetKey(name=WokoFacets.renderListItem, profileId="all", targetObjectType=MyBook.class)
+class RenderListItemMyBook extends RenderListItemImpl {
 
-    static final String FACET_NAME = "list";
+    @Override
+    String getPath() {
+        return '/WEB-INF/jsp/renderListItemMyBook.jsp'
+    }
 
-    String getClassName();
-
-    String getListWrapperCssClass();
-
+    @Override
+    String getItemWrapperCssClass() {
+        return 'TestCssClass'
+    }
 }

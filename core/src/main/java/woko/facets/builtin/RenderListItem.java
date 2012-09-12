@@ -16,14 +16,12 @@
 
 package woko.facets.builtin;
 
-import woko.facets.ResolutionFacet;
+import net.sourceforge.jfacets.IFacet;
+import woko.facets.FragmentFacet;
 
-public interface ListObjects extends ResolutionFacet, ResultFacet {
+public interface RenderListItem extends IFacet, FragmentFacet {
 
-    static final String FACET_NAME = "list";
-
-    String getClassName();
-
-    String getListWrapperCssClass();
+    static final String FACET_NAME = "renderListItem";
+    public String getItemWrapperCssClass();
 
 }

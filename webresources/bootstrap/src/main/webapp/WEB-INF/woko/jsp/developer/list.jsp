@@ -6,6 +6,7 @@
 <%@ page import="woko.facets.builtin.ListObjects" %>
 <%@ page import="woko.facets.builtin.WokoFacets" %>
 <%@ page import="woko.util.Util" %>
+<%@ page import="woko.facets.builtin.RenderListItem" %>
 
 <w:facet facetName="<%=WokoFacets.layout%>"/>
 
@@ -51,46 +52,17 @@
             </div>
         </c:if>
 
-        <ul>
+        <ul class="<%=list.getListWrapperCssClass()%>">
             <%
               while (results.hasNext()) {
                   Object result = results.next();
-                  String title = Util.getTitle(request, result);
-                  // compute link if view facet is available
-                  String href = null;
-                  String resultKey = woko.getObjectStore().getKey(result);
-                  String resultClassName = woko.getObjectStore().getClassMapping(result.getClass());
-                  if (woko.getFacet(WokoFacets.view, request, result)!=null) {
-                      href = new StringBuilder().
-                              append(request.getContextPath()).
-                              append("/").
-                              append(WokoFacets.view).
-                              append("/").
-                              append(resultClassName).
-                              append("/").
-                              append(resultKey).
-                              toString();
-                  }
+                  RenderListItem renderListItem = (RenderListItem)woko.getFacet(WokoFacets.renderListItem, request, result, result.getClass(),true );
+                  String fragmentPath = renderListItem.getFragmentPath(request);
+
             %>
-                  <li>
-                      <%=resultKey%> - 
-            <%
-                  if (href!=null) {
-            %>
-                    <a href="<%=href%>">
-            <%
-                  }
-            %>
-                    <c:out value="<%=title%>"/>
-            <%
-                  if (href!=null) {
-            %>
-                    </a>
-            <%
-                  }
-            %>
-                      (<%=resultClassName%>)
-                  </li>
+                    <li class="<%=renderListItem.getItemWrapperCssClass()%>">
+                        <jsp:include page="<%=fragmentPath%>"/>
+                    </li>
             <%
               }
             %>

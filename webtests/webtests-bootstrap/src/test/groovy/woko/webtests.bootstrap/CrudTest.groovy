@@ -80,10 +80,10 @@ class CrudTest extends WebTestBase {
         webtest('Validation on Save') {
             login()
             goToPage '/save/MyBook?createTransient=true'
-            verifyText 'Name is a required field'
+            verifyText 'Name may not be null'
 
             clickButton name: 'save'
-            verifyText 'Name is a required field'
+            verifyText 'Name may not be null'
 
             setInputField name: 'object._id', value: '2'
             setInputField name: 'object.name', value: 'Moby Dick'

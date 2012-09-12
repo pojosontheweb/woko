@@ -23,6 +23,7 @@ import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Range;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
