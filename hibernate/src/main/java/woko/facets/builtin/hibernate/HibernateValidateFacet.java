@@ -19,13 +19,10 @@ package woko.facets.builtin.hibernate;
 import net.sourceforge.jfacets.annotations.FacetKey;
 import net.sourceforge.stripes.action.ActionBean;
 import net.sourceforge.stripes.action.ActionBeanContext;
-import net.sourceforge.stripes.validation.LocalizableError;
+import net.sourceforge.stripes.localization.LocalizationUtility;
 import net.sourceforge.stripes.validation.SimpleError;
 import net.sourceforge.stripes.validation.ValidationErrors;
-//import org.hibernate.validator.ClassValidator;
-//import org.hibernate.validator.InvalidValue;
 import woko.actions.WokoActionBean;
-import woko.actions.WokoLocalizableError;
 import woko.facets.BaseFacet;
 import woko.facets.WokoFacetContext;
 import woko.facets.builtin.WokoFacets;
@@ -35,43 +32,13 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.ValidatorFactory;
 import javax.validation.Validator;
-import javax.validation.constraints.Min;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Locale;
 import java.util.Set;
 
-@FacetKey(name= WokoFacets.validate,profileId="all")
+@FacetKey(name = WokoFacets.validate, profileId = "all")
 public class HibernateValidateFacet extends BaseFacet implements woko.facets.builtin.Validate {
 
-    private static final Map<String, String> keyMapping = new HashMap<String, String>();
-    static{
-        keyMapping.put("javax.validation.constraints.AssertFalse.message", "validation.assertFalse");
-        keyMapping.put("javax.validation.constraints.AssertTrue.message", "validation.assertTrue");
-        keyMapping.put("javax.validation.constraints.DecimalMax.message", "validation.maxvalue.valueAboveMaximum");
-        keyMapping.put("javax.validation.constraints.DecimalMin.message", "validation.minvalue.valueBelowMinimum");
-        keyMapping.put("javax.validation.constraints.Digits.message", "validation.digits");
-        keyMapping.put("javax.validation.constraints.Future.message", "validation.future");
-        keyMapping.put("javax.validation.constraints.Max.message", "validation.maxvalue.valueAboveMaximum");
-        keyMapping.put("javax.validation.constraints.Min.message", "validation.minvalue.valueBelowMinimum");
-        keyMapping.put("javax.validation.constraints.NotNull.message", "validation.required.valueNotPresent");
-        keyMapping.put("javax.validation.constraints.Null.message", "validation.null");
-        keyMapping.put("javax.validation.constraints.Past.message", "validation.past");
-        keyMapping.put("javax.validation.constraints.Pattern.message", "validation.pattern");
-        keyMapping.put("javax.validation.constraints.Size.message", "validation.size");
-        keyMapping.put("org.hibernate.validator.constraints.CreditCardNumber.message", "validator.creditCardNumber");
-        keyMapping.put("org.hibernate.validator.constraints.Email.message", "validator.email");
-        keyMapping.put("org.hibernate.validator.constraints.Length.message", "validator.length");
-        keyMapping.put("org.hibernate.validator.constraints.NotBlank.message", "validator.notBlank");
-        keyMapping.put("org.hibernate.validator.constraints.NotEmpty.message", "validator.notEmpty");
-        keyMapping.put("org.hibernate.validator.constraints.Range.message", "validator.range");
-        keyMapping.put("org.hibernate.validator.constraints.SafeHtml.message", "validator.safeHtml");
-        keyMapping.put("org.hibernate.validator.constraints.ScriptAssert.message", "validator.scriptAssert");
-        keyMapping.put("org.hibernate.validator.constraints.URL.message", "validator.url");
-    }
-
     private static final String OBJECT_PREFIX = "object.";
-
-    private static final WLogger log = WLogger.getLogger(HibernateValidateFacet.class);
 
     public boolean validate(ActionBeanContext abc) {
         // call hibernate validator and translate errors
@@ -79,33 +46,63 @@ public class HibernateValidateFacet extends BaseFacet implements woko.facets.bui
         ValidationErrors errs = abc.getValidationErrors();
         WokoFacetContext facetContext = getFacetContext();
         Object targetObject = facetContext.getTargetObject();
-        ActionBean ab = (ActionBean)abc.getRequest().getAttribute("actionBean");
-        Class<? extends ActionBean> abClass = ab!=null ? ab.getClass() : WokoActionBean.class;
+        ActionBean ab = (ActionBean) abc.getRequest().getAttribute("actionBean");
+        Class<? extends ActionBean> abClass = ab != null ? ab.getClass() : WokoActionBean.class;
 
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         Validator validator = factory.getValidator();
 
         Set<ConstraintViolation<Object>> constraintViolations = validator.validate(targetObject);
 
-        for (ConstraintViolation<Object> c : constraintViolations){
+        for (ConstraintViolation<Object> c : constraintViolations) {
             hasErrors = true;
             String fieldName = OBJECT_PREFIX + c.getPropertyPath();
-            String fieldKey = targetObject.getClass().getSimpleName()+"."+c.getPropertyPath();
-            WokoLocalizableError wokoError = new WokoLocalizableError(getStripesKey(c.getMessageTemplate()), fieldKey, c.getConstraintDescriptor().getAttributes().values().toArray());
-            wokoError.setFieldName(fieldName);
-            wokoError.setBeanclass(abClass);
-            errs.add(fieldName, wokoError);
+            String fieldKey = targetObject.getClass().getSimpleName() + "." + c.getPropertyPath();
+            HibernateValidationError error = new HibernateValidationError(
+                    c,
+                    fieldKey
+            );
+            error.setFieldName(fieldName);
+            error.setBeanclass(abClass);
+            errs.add(fieldName, error);
         }
         return !hasErrors;
     }
 
-    private String getStripesKey(String hibernateKey){
-        hibernateKey = hibernateKey.replaceAll("\\{", "");
-        hibernateKey = hibernateKey.replaceAll("\\}", "");
-        if (keyMapping.containsKey(hibernateKey))
-            return keyMapping.get(hibernateKey);
-        else
-            return "hibernate.error.with.no.equivalence.in.stripes";
+    static class HibernateValidationError extends SimpleError {
+
+        private static final WLogger logger = new WLogger(HibernateValidationError.class);
+
+        private String fieldKey;
+        private String humanReadableFieldName;
+
+        public HibernateValidationError(ConstraintViolation<?> c, String fieldKey) {
+            super(c.getMessage());
+            this.fieldKey = fieldKey;
+        }
+
+        protected void resolveFieldName(Locale locale) {
+            logger.debug("Replace fieldName (object.) with its className : MyClass.myProp");
+            if (fieldKey == null) {
+                humanReadableFieldName = "FIELD NAME NOT SUPPLIED IN CODE";
+            } else {
+                humanReadableFieldName =
+                        LocalizationUtility.getLocalizedFieldName(fieldKey,
+                                getActionPath(),
+                                getBeanclass(),
+                                locale);
+                if (humanReadableFieldName == null) {
+                    humanReadableFieldName = LocalizationUtility.makePseudoFriendlyName(fieldKey);
+                }
+            }
+        }
+
+        @Override
+        public String getMessage(Locale locale) {
+            String msg = super.getMessage(locale);
+            return humanReadableFieldName + " " + msg;
+        }
     }
 
 }
+
