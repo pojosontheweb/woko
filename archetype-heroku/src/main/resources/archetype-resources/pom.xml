@@ -26,7 +26,7 @@
     <packaging>war</packaging>
 
     <properties>
-        <woko.version>2.0.4</woko.version>
+        <woko.version>LATEST-SNAPSHOT</woko.version>
         <jetty.version>7.4.5.v20110725</jetty.version>
     </properties>
 
