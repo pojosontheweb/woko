@@ -50,9 +50,4 @@ public class ListImpl extends BaseResultFacet implements woko.facets.builtin.Lis
             return getFacetContext().getWoko().getObjectStore().list(className, start, limit);
         }
     }
-
-    @Override
-    public String getListWrapperCssClass() {
-        return super.getClassName();
-    }
 }

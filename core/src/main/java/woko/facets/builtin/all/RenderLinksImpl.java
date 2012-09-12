@@ -42,7 +42,7 @@ public class RenderLinksImpl extends BaseFragmentFacet implements RenderLinks {
         Woko woko = getFacetContext().getWoko();
         Object o = facetContext.getTargetObject();
         Class<?> oc = o.getClass();
-        HttpServletRequest request = getRequest();
+        HttpServletRequest request = getFacetContext().getRequest();
         ObjectStore store = woko.getObjectStore();
         Locale locale = request.getLocale();
 

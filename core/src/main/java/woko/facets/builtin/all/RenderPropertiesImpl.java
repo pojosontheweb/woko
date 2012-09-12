@@ -64,10 +64,13 @@ public class RenderPropertiesImpl extends BaseFragmentFacet implements RenderPro
     public void setFacetContext(IFacetContext iFacetContext) {
         super.setFacetContext(iFacetContext);
         Object obj = iFacetContext.getTargetObject();
-        propertyNames = Util.getPropertyNames(obj, Arrays.asList("metaClass"));
+        Class<?> objType = obj!=null ? obj.getClass() : iFacetContext.getFacetDescriptor().getTargetObjectType();
+        propertyNames = Util.getPropertyNames(objType, Arrays.asList("metaClass"));
         propertyValues = new HashMap<String, Object>();
-        for (String pName : propertyNames) {
-            propertyValues.put(pName, Util.getPropertyValue(obj, pName));
+        if (obj!=null) {
+            for (String pName : propertyNames) {
+                propertyValues.put(pName, Util.getPropertyValue(obj, pName));
+            }
         }
     }
 

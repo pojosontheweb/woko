@@ -3,10 +3,12 @@
 
 <%@ page import="woko.persistence.ResultIterator" %>
 <%@ page import="woko.Woko" %>
-<%@ page import="woko.facets.builtin.ListObjects" %>
-<%@ page import="woko.facets.builtin.WokoFacets" %>
 <%@ page import="woko.util.Util" %>
-<%@ page import="woko.facets.builtin.RenderListItem" %>
+<%@ page import="java.util.List" %>
+<%@ page import="woko.facets.builtin.*" %>
+<%@ page import="java.util.Map" %>
+<%@ page import="woko.facets.builtin.all.Link" %>
+<%@ page import="woko.util.LinkUtil" %>
 
 <w:facet facetName="<%=WokoFacets.layout%>"/>
 
@@ -24,6 +26,10 @@
             int nbPages = totalSize / resultsPerPage;
             if (totalSize % resultsPerPage != 0) {
               nbPages++;
+            }
+            String listWrapperClass = list.getListWrapperCssClass();
+            if (listWrapperClass==null) {
+                listWrapperClass = "table";
             }
         %>
         <h1 class="page-header">
@@ -52,21 +58,108 @@
             </div>
         </c:if>
 
-        <ul class="<%=list.getListWrapperCssClass()%>">
-            <%
-              while (results.hasNext()) {
-                  Object result = results.next();
-                  RenderListItem renderListItem = (RenderListItem)woko.getFacet(WokoFacets.renderListItem, request, result, result.getClass(),true );
-                  String fragmentPath = renderListItem.getFragmentPath(request);
+        <c:choose>
+            <c:when test="<%=list.isTableDisplay()%>">
+                <table class="<%=listWrapperClass%>">
+                    <thead>
+                    <tr>
+                        <%
+                            // find property names
+                            Class<?> propertyType = woko.getObjectStore().getMappedClass(className);
+                            RenderProperties rp = (RenderProperties)woko.getFacet(
+                                    RenderProperties.FACET_NAME, request, null, propertyType);
+                            List<String> propertyNames = rp.getPropertyNames();
+                            for (String propName : propertyNames) {
+                        %>
+                        <th>
+                            <%=propName%> <%-- TODO find name in bundle or prettify --%>
+                        </th>
+                        <%
+                            }
+                        %>
+                        <th><fmt:message bundle="${wokoBundle}" key="woko.devel.list.actions.column.label"/></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <%
+                      while (results.hasNext()) {
+                          Object result = results.next();
+                          RenderListItem renderListItem = (RenderListItem)woko.getFacet(WokoFacets.renderListItem, request, result, result.getClass(),true );
+                          // need to re-invoke the render properties on the result object
+                          RenderProperties rpResult = (RenderProperties)woko.getFacet(
+                                  RenderProperties.FACET_NAME, request, result, result.getClass());
+                          Map<String,Object> propertyValues = rpResult.getPropertyValues();
+                          String liWrapperClass = renderListItem.getItemWrapperCssClass();
+                          if (listWrapperClass==null) {
+                              listWrapperClass = "";
+                          }
+                    %>
+                            <tr class="<%=liWrapperClass%>">
+                                <%
+                                    for (String propName : propertyNames) {
+                                        Object propVal = propertyValues.get(propName);
+                                        RenderPropertyValue rpv = Util.getRenderPropValueFacet(
+                                                woko, request, result, propName, propVal);
+                                        String pValFragmentPath = rpv.getFragmentPath(request);
+                                %>
+                                <td>
+                                    <jsp:include page="<%=pValFragmentPath%>"/>
+                                </td>
+                                <%
+                                    }
+                                %>
+                                <td>
+                                    <div class="btn-group">
+                                    <%
+                                        View view = (View)woko.getFacet(View.FACET_NAME, request, result);
+                                        if (view!=null) {
+                                            String href = request.getContextPath() + "/" + LinkUtil.getUrl(Woko.getWoko(application), result, "view");
+                                    %>
+                                        <a href="<%=href%>" class="btn view">
+                                            <fmt:message bundle="${wokoBundle}" key="woko.links.view"/>
+                                        </a>
+                                    <%
+                                        }
 
-            %>
-                    <li class="<%=renderListItem.getItemWrapperCssClass()%>">
-                        <jsp:include page="<%=fragmentPath%>"/>
-                    </li>
-            <%
-              }
-            %>
-        </ul>
+                                        // Grab available links !
+                                        RenderLinks rl = (RenderLinks)woko.getFacet(RenderLinks.FACET_NAME, request, result);
+                                        for (Link l : rl.getLinks()) {
+                                            String href = request.getContextPath() + "/" + l.getHref();
+                                            String cssClass = l.getCssClass();
+                                            String text = l.getText();
+                                    %>
+                                        <a href="<%=href%>" class="btn <%=cssClass%>"><c:out value="<%=text%>"/></a>
+                                    <%
+                                        }
+                                    %>
+                                    </div>
+                                </td>
+
+                            </tr>
+                    <%
+                      }
+                    %>
+                    </tbody>
+                </table>
+            </c:when>
+            <c:otherwise>
+                <ul class="<%=list.getListWrapperCssClass()%>">
+                    <%
+                      while (results.hasNext()) {
+                          Object result = results.next();
+                          RenderListItem renderListItem = (RenderListItem)woko.getFacet(WokoFacets.renderListItem, request, result, result.getClass(),true );
+                          String fragmentPath = renderListItem.getFragmentPath(request);
+
+                    %>
+                            <li class="<%=renderListItem.getItemWrapperCssClass()%>">
+                                <jsp:include page="<%=fragmentPath%>"/>
+                            </li>
+                    <%
+                      }
+                    %>
+                </ul>
+            </c:otherwise>
+        </c:choose>
 
         <%
             int nbPagesClickable = nbPages < 10 ? nbPages : 10;
