@@ -30,8 +30,8 @@ class SavePageTest extends WebTestBase{
             verifyXPath xpath: "/html/body/div/div[3]/div/div[1]/span", text:'Please fix the following errors:'
 
             // Check if the 'cannot be null' hibernate error has been transformed in 'FieldName is a required field' Stripes error
-            verifyXPath xpath: "/html/body/div/div[3]/div/div[1]/ul/li[1]", text:'The minimum allowed value for Min is 2'
-            verifyXPath xpath: "/html/body/div/div[3]/div/div[1]/ul/li[2]", text:'Name is a required field'
+            verifyXPath xpath: "/html/body/div/div[3]/div/div[1]/ul/li[1]", text:'Min must be greater than or equal to 2'
+            verifyXPath xpath: "/html/body/div/div[3]/div/div[1]/ul/li[2]", text:'Name may not be null'
             verifyXPath xpath: "/html/body/div/div[3]/div/div[1]/ul/li[3]", text:'Range must be between 2 and 10'
         }
     }

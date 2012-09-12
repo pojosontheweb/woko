@@ -25,18 +25,16 @@ import net.sourceforge.stripes.validation.ValidationErrors;
 import woko.actions.WokoActionBean;
 import woko.facets.BaseFacet;
 import woko.facets.WokoFacetContext;
-import woko.facets.builtin.WokoFacets;
-import woko.util.WLogger;
+import woko.facets.builtin.Validate;
+import woko.hibernate.HibernateValidatorInterceptor;
 
 import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
-import javax.validation.ValidatorFactory;
 import javax.validation.Validator;
 import java.util.Locale;
 import java.util.Set;
 
-@FacetKey(name = WokoFacets.validate, profileId = "all")
-public class HibernateValidateFacet extends BaseFacet implements woko.facets.builtin.Validate {
+@FacetKey(name = Validate.FACET_NAME, profileId = "all")
+public class HibernateValidateFacet extends BaseFacet implements Validate {
 
     private static final String OBJECT_PREFIX = "object.";
 
@@ -49,8 +47,7 @@ public class HibernateValidateFacet extends BaseFacet implements woko.facets.bui
         ActionBean ab = (ActionBean) abc.getRequest().getAttribute("actionBean");
         Class<? extends ActionBean> abClass = ab != null ? ab.getClass() : WokoActionBean.class;
 
-        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-        Validator validator = factory.getValidator();
+        Validator validator = HibernateValidatorInterceptor.getValidator();
 
         Set<ConstraintViolation<Object>> constraintViolations = validator.validate(targetObject);
 
@@ -71,8 +68,6 @@ public class HibernateValidateFacet extends BaseFacet implements woko.facets.bui
 
     static class HibernateValidationError extends SimpleError {
 
-        private static final WLogger logger = new WLogger(HibernateValidationError.class);
-
         private String fieldKey;
         private String humanReadableFieldName;
 
@@ -82,7 +77,6 @@ public class HibernateValidateFacet extends BaseFacet implements woko.facets.bui
         }
 
         protected void resolveFieldName(Locale locale) {
-            logger.debug("Replace fieldName (object.) with its className : MyClass.myProp");
             if (fieldKey == null) {
                 humanReadableFieldName = "FIELD NAME NOT SUPPLIED IN CODE";
             } else {
@@ -100,7 +94,7 @@ public class HibernateValidateFacet extends BaseFacet implements woko.facets.bui
         @Override
         public String getMessage(Locale locale) {
             String msg = super.getMessage(locale);
-            return humanReadableFieldName + " " + msg;
+            return humanReadableFieldName + " " + msg;  // TODO hackish way to concat the field name to the actual message. see #136
         }
     }
 
