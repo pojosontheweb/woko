@@ -9,6 +9,7 @@
 <%@ page import="java.util.Map" %>
 <%@ page import="woko.facets.builtin.all.Link" %>
 <%@ page import="woko.util.LinkUtil" %>
+<%@ page import="java.util.ArrayList" %>
 
 <w:facet facetName="<%=WokoFacets.layout%>"/>
 
@@ -60,15 +61,41 @@
 
         <c:choose>
             <c:when test="<%=list.isTableDisplay()%>">
+                <%
+                    // we need to build the table before we display it : we don't know in
+                    // advance which properties to display.
+                    // We make a union of the property names found for
+                    // each result.
+                    List<String> propertyNames = new ArrayList<String>();
+                    List<Map<String,Object>> propertyValues = new ArrayList<Map<String, Object>>();
+                    List<String> rowCssClasses = new ArrayList<String>();
+                    List<Object> resultsList = new ArrayList<Object>();
+                    while (results.hasNext()) {
+                        Object result = results.next();
+                        resultsList.add(result);
+                        RenderListItem renderListItem = (RenderListItem)woko.getFacet(WokoFacets.renderListItem, request, result, result.getClass(),true );
+                        RenderProperties rpResult = (RenderProperties)woko.getFacet(
+                                RenderProperties.FACET_NAME, request, result, result.getClass());
+                        Map<String,Object> resultPropValues = rpResult.getPropertyValues();
+                        propertyValues.add(resultPropValues);
+                        String liWrapperClass = renderListItem.getItemWrapperCssClass();
+                        if (liWrapperClass==null) {
+                            liWrapperClass = "";
+                        }
+                        rowCssClasses.add(liWrapperClass);
+
+                        List<String> resultPropNames = rpResult.getPropertyNames();
+                        for (String resultPropName : resultPropNames) {
+                            if (!propertyNames.contains(resultPropName)) {
+                                propertyNames.add(resultPropName);
+                            }
+                        }
+                    }
+                %>
                 <table class="<%=listWrapperClass%>">
                     <thead>
                     <tr>
                         <%
-                            // find property names
-                            Class<?> propertyType = woko.getObjectStore().getMappedClass(className);
-                            RenderProperties rp = (RenderProperties)woko.getFacet(
-                                    RenderProperties.FACET_NAME, request, null, propertyType);
-                            List<String> propertyNames = rp.getPropertyNames();
                             for (String propName : propertyNames) {
                         %>
                         <th>
@@ -82,22 +109,17 @@
                     </thead>
                     <tbody>
                     <%
-                      while (results.hasNext()) {
-                          Object result = results.next();
-                          RenderListItem renderListItem = (RenderListItem)woko.getFacet(WokoFacets.renderListItem, request, result, result.getClass(),true );
-                          // need to re-invoke the render properties on the result object
-                          RenderProperties rpResult = (RenderProperties)woko.getFacet(
-                                  RenderProperties.FACET_NAME, request, result, result.getClass());
-                          Map<String,Object> propertyValues = rpResult.getPropertyValues();
-                          String liWrapperClass = renderListItem.getItemWrapperCssClass();
-                          if (listWrapperClass==null) {
+                        for (int i=0; i<resultsList.size(); i++) {
+                            Object result = resultsList.get(i);
+                            String liWrapperClass = rowCssClasses.get(i);
+                            if (listWrapperClass==null) {
                               listWrapperClass = "";
-                          }
+                            }
                     %>
                             <tr class="<%=liWrapperClass%>">
                                 <%
                                     for (String propName : propertyNames) {
-                                        Object propVal = propertyValues.get(propName);
+                                        Object propVal = propertyValues.get(i).get(propName);
                                         RenderPropertyValue rpv = Util.getRenderPropValueFacet(
                                                 woko, request, result, propName, propVal);
                                         String pValFragmentPath = rpv.getFragmentPath(request);
@@ -120,7 +142,6 @@
                                         </a>
                                     <%
                                         }
-
                                         // Grab available links !
                                         RenderLinks rl = (RenderLinks)woko.getFacet(RenderLinks.FACET_NAME, request, result);
                                         for (Link l : rl.getLinks()) {
