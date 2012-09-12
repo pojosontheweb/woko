@@ -28,12 +28,6 @@
     <dependencies>
         <dependency>
             <groupId>com.pojosontheweb</groupId>
-            <artifactId>woko-dojo</artifactId>
-            <version>1.6.1</version>
-            <type>war</type>
-        </dependency>
-        <dependency>
-            <groupId>com.pojosontheweb</groupId>
             <artifactId>woko-container-auth</artifactId>
             <version>${project.version}</version>
             <type>war</type>

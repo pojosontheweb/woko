@@ -69,7 +69,6 @@
         <module>push</module>
         <module>ri</module>
         <module>archetype</module>
-        <module>dojo</module>
         <module>usermanagement</module>
         <module>tooling</module>
         <module>wmaven</module>
