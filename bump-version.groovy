@@ -18,10 +18,11 @@ new File(".").eachFileRecurse { File f ->
         String pomText = f.text
         int nbReplaces = 0
         while (pomText.contains(oldVersion)) {
-            f.text = pomText.replaceFirst(oldVersion,newVersion)
+            pomText = pomText.replaceFirst(oldVersion,newVersion)
             nbReplaces++
         }
         assert "invalid number of replacements in $f.absolutePath", nbReplaces == 1
+        f.text = pomText
         nbPoms++
     }
 }
