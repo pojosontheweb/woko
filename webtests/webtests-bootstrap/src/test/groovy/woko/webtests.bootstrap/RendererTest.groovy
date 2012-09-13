@@ -111,7 +111,7 @@ class RendererTest extends WebTestBase {
                 goToPage '/list/MyEntity'
 
                 // assert some of the DOM
-                verifyXPath xpath:'/html/body/div/div[2]/div/div/table/thead/tr/th', text:'.*class.*', regex: true
+                verifyXPath xpath:'/html/body/div/div[2]/div/div/table/thead/tr/th', text:'.*Class.*', regex: true
                 verifyXPath xpath:'/html/body/div/div[2]/div/div/table/tbody/tr/td', text:'.*test.MyEntity.*', regex: true
                 verifyXPath xpath:'/html/body/div/div[2]/div/div/table/tbody/tr/td[2]/span/span', text: '.*5566.*', regex: true
 
