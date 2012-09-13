@@ -64,14 +64,14 @@
                 List<String> rowCssClasses = new ArrayList<String>();
                 List<Object> resultsList = new ArrayList<Object>();
                 List<String> propertyNames = null;
-                boolean computePropUnion = true;
+                boolean computePropUnion = false;
                 if (list instanceof TabularResultFacet) {
                     TabularResultFacet trf = (TabularResultFacet)list;
                     propertyNames = trf.getPropertyNames();
-                    computePropUnion = false;
                 }
                 if (propertyNames==null) {
                     propertyNames = new ArrayList<String>();
+                    computePropUnion = true;
                 }
 
                 while (results.hasNext()) {

@@ -8,7 +8,7 @@ public class ListTabularImpl extends ListImpl implements TabularResultFacet {
 
     @Override
     public String getPath() {
-        return "/WEB-INF/jsp/developer/list-tabular.jsp";
+        return "/WEB-INF/woko/jsp/developer/listTabular.jsp";
     }
 
     @Override

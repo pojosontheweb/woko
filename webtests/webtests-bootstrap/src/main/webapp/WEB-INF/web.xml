@@ -204,6 +204,7 @@
         </auth-constraint>
     </security-constraint>
 
+    <!-- don't protect list : it's available to guests in this test app
     <security-constraint>
         <web-resource-collection>
             <web-resource-name>List</web-resource-name>
@@ -215,6 +216,7 @@
             <role-name>developer</role-name>
         </auth-constraint>
     </security-constraint>
+    -->
 
     <security-constraint>
         <web-resource-collection>
