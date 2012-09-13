@@ -16,31 +16,44 @@
 
 package woko.facets.builtin.all;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Link {
 
-  private final String href;
-  private final String text;
-  private String cssClass;
+    private final String href;
+    private final String text;
+    private String cssClass;
+    private final Map<String,String> attributes = new HashMap<String, String>();
 
-  public Link(String href, String text) {
-    this.href = href;
-    this.text = text;
-  }
+    public Link(String href, String text) {
+        this.href = href;
+        this.text = text;
+    }
 
-  public String getHref() {
-    return href;
-  }
+    public String getHref() {
+        return href;
+    }
 
-  public String getText() {
-    return text;
-  }
+    public String getText() {
+        return text;
+    }
 
-  public Link setCssClass(String cssClass) {
-    this.cssClass = cssClass;
-    return this;
-  }
+    public Link setCssClass(String cssClass) {
+        this.cssClass = cssClass;
+        return this;
+    }
 
-  public String getCssClass() {
-    return cssClass;
-  }
+    public String getCssClass() {
+        return cssClass;
+    }
+
+    public Link addAttribute(String name, String value) {
+        attributes.put(name,value);
+        return this;
+    }
+
+    public Map<String,String> getAttributes() {
+        return attributes;
+    }
 }

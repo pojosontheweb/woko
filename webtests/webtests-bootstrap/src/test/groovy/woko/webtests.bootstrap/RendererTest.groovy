@@ -142,4 +142,23 @@ class RendererTest extends WebTestBase {
         }
     }
 
+    void testRenderLinkAttributes() {
+        webtest("testRenderLinkAttributes") {
+            login()
+            try {
+
+                goToPage '/save/MyBook?createTransient=true&object._id=11221122&object.name=Moby&object.nbPages=123'
+
+                // close edit link with attribute
+                clickLink xpath:"/html/body/div/div[2]/div/div/div[2]/div/div[2]/div/a[@testmeedit='11221122']"
+
+                // edit with link attribute
+                clickLink xpath:"/html/body/div/div[2]/div/div/div/div/div[2]/div/a[@testme='11221122']"
+            } finally {
+                goToPage '/delete/MyBook/11221122?facet.confirm=true'
+            }
+        }
+    }
+
+
 }
