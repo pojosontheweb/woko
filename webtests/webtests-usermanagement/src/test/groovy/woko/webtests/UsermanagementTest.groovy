@@ -18,21 +18,22 @@
 
 package woko.webtests
 
-class UsermanagementTest extends WebTestBase {
+class UsermanagementTest extends WokoWebTestBase {
 
-//    void testUserManagement() {
-//        webtest("testUserManagement") {
-//            login()
-//
-//            goToPage '/users'
-//
-//            clickLink label:'wdevel'
-//            verifyText 'developer'
-//
-//            goToPage '/users'
-//            clickLink 'add user'
-//        }
-//    }
+    UsermanagementTest() {
+        useContainerAuth = false
+    }
+
+    void testUserManagement() {
+        webtest("testUserManagement") {
+            login()
+            goToPage '/list/MyUser'
+            verifyXPath xpath:'/html/body/div/div[2]/div/div/table/tbody/tr/td[2]/span/span',
+                    text:'.*wdevel.*', regex:true
+            verifyXPath xpath:'/html/body/div/div[2]/div/div/table/tbody/tr[2]/td[2]/span/span',
+                    text:'.*testuser.*', regex:true
+        }
+    }
 
 
 }

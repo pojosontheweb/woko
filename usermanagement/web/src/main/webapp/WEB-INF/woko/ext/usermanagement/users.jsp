@@ -8,29 +8,33 @@
 <%@ page import="woko.facets.builtin.all.Link" %>
 <%@ page import="woko.util.LinkUtil" %>
 <%@ page import="java.util.*" %>
+<%@ page import="woko.ext.usermanagement.facets.Users" %>
+<%@ page import="woko.ext.usermanagement.hibernate.HibernateUserManager" %>
+<%@ page import="woko.ext.usermanagement.facets.ListUsers" %>
 
 <w:facet facetName="<%=Layout.FACET_NAME%>"/>
 
-<fmt:message bundle="${wokoBundle}" var="pageTitle" key="woko.devel.list.pageTitle"/>
+<fmt:message bundle="${wokoBundle}" var="pageTitle" key="woko.ext.usermanagement.users.page.title"/>
 <s:layout-render name="${layout.layoutPath}" layout="${layout}" pageTitle="${pageTitle}">
     <s:layout-component name="body">
         <%
             Woko woko = Woko.getWoko(application);
-            ListObjects list = (ListObjects)request.getAttribute(WokoFacets.list);
-            String className = list.getClassName();
-            ResultIterator results = list.getResults();
+            Users users = (Users)request.getAttribute("users");
+            HibernateUserManager bdUm = (HibernateUserManager)woko.getUserManager();
+            String className = woko.getObjectStore().getClassMapping(bdUm.getUserClass());
+            ResultIterator results = users.getResults();
             int totalSize = results.getTotalSize();
-            int p = list.getPage();
-            int resultsPerPage = list.getResultsPerPage();
+            int p = users.getPage();
+            int resultsPerPage = users.getResultsPerPage();
             int nbPages = totalSize / resultsPerPage;
             if (totalSize % resultsPerPage != 0) {
               nbPages++;
             }
-            String listWrapperClass = list.getListWrapperCssClass();
+            String listWrapperClass = users.getListWrapperCssClass();
             if (listWrapperClass==null) {
                 listWrapperClass = "table " + className;
             }
-            String overridenH1 = list.getPageHeaderTitle();
+            String overridenH1 = users.getPageHeaderTitle();
         %>
         <h1 class="page-header">
             <c:choose>
@@ -46,9 +50,20 @@
             </c:choose>
         </h1>
 
+        <p>
+            This page allows you to manage the users in your application.
+
+            <a href="${pageContext.request.contextPath}/save/<%=className%>?createTransient=true"
+                    class="btn btn-primary pull-right">
+                Create new user
+            </a>
+        </p>
+
+        <h2>All users</h2>
+
         <c:if test="<%=nbPages>1%>">
             <div class="row-fluid">
-                <s:form action="/list" class="form-inline">
+                <s:form action="/users" class="form-inline">
                     <s:hidden name="className"/>
                     <input type="hidden"name="facet.page" value="1"/>
                     <fmt:message bundle="${wokoBundle}" key="woko.devel.list.showing"/>
@@ -69,16 +84,7 @@
                 List<Map<String,Object>> propertyValues = new ArrayList<Map<String, Object>>();
                 List<String> rowCssClasses = new ArrayList<String>();
                 List<Object> resultsList = new ArrayList<Object>();
-                List<String> propertyNames = null;
-                boolean computePropUnion = false;
-                if (list instanceof TabularResultFacet) {
-                    TabularResultFacet trf = (TabularResultFacet)list;
-                    propertyNames = trf.getPropertyNames();
-                }
-                if (propertyNames==null) {
-                    propertyNames = new ArrayList<String>();
-                    computePropUnion = true;
-                }
+                List<String> propertyNames = users.getPropertyNames();
 
                 while (results.hasNext()) {
                     Object result = results.next();
@@ -93,17 +99,6 @@
                         liWrapperClass = "";
                     }
                     rowCssClasses.add(liWrapperClass);
-
-                    if (computePropUnion) {
-                        List<String> resultPropNames = rpResult.getPropertyNames();
-                        // union of all props (TODO intersect is safer and accurate !)
-                        for (String resultPropName : resultPropNames) {
-                            if (!propertyNames.contains(resultPropName)) {
-                                propertyNames.add(resultPropName);
-                            }
-                        }
-                    }
-
                 }
             %>
             <table class="<%=listWrapperClass%>">
@@ -111,7 +106,7 @@
                 <tr>
                     <%
                         for (String propName : propertyNames) {
-                            String labelMsgKey = className + "." + propName;
+                            String labelMsgKey = "User." + propName;
                             String msg = woko.getLocalizedMessage(request, labelMsgKey);
                     %>
                     <th>
@@ -184,7 +179,7 @@
             if (nbPages>1) {
                 int pagerStart = p > nbPagesClickable ? p - (nbPagesClickable-1) : 1;
                 String leftMoveCss = p <= 1 ? "disabled" : "";
-                String leftMoveHref = request.getContextPath() + "/list/" + className +
+                String leftMoveHref = request.getContextPath() + "/users/" + className +
                   "?facet.page=" + (p - 1);
 
                 String rightMoveCss = p == nbPages ? "disabled" : "";
@@ -204,14 +199,14 @@
 
                     %>
                         <li class="<%=css%>">
-                            <a href="${pageContext.request.contextPath}/list/<%=className%>?facet.page=<%=i%>&facet.resultsPerPage=<%=resultsPerPage%>"><%=i%></a>
+                            <a href="${pageContext.request.contextPath}/users/<%=className%>?facet.page=<%=i%>&facet.resultsPerPage=<%=resultsPerPage%>"><%=i%></a>
                         </li>
                     <%
                         }
                     %>
 
                         <li class="<%=rightMoveCss%>">
-                            <a href="${pageContext.request.contextPath}/list/<%=className%>?facet.page=<%=p+1%>&facet.resultsPerPage=<%=resultsPerPage%>">»</a>
+                            <a href="${pageContext.request.contextPath}/users/<%=className%>?facet.page=<%=p+1%>&facet.resultsPerPage=<%=resultsPerPage%>">»</a>
                         </li>
                     </ul>
                 </div>
