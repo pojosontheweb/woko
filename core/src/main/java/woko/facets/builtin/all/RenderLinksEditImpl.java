@@ -53,7 +53,7 @@ public class RenderLinksEditImpl extends RenderLinksImpl {
                 String className = store.getClassMapping(oc);
                 String key = store.getKey(o);
                 if (key != null) {
-                    links.add(new Link(WokoFacets.view + "/" + className + "/" + key, Util.getMessage(locale, "woko.links.close.editing")).setCssClass("close"));
+                    links.add(new Link(WokoFacets.view + "/" + className + "/" + key, Util.getMessage(locale, "woko.links.close.editing")).setCssClass("link-close"));
                 }
             }
 
@@ -62,7 +62,7 @@ public class RenderLinksEditImpl extends RenderLinksImpl {
                 String className = store.getClassMapping(oc);
                 String key = store.getKey(o);
                 if (key != null) {
-                    links.add(new Link(WokoFacets.delete + "/" + className + "/" + key, Util.getMessage(locale, "woko.links.delete")).setCssClass("delete"));
+                    links.add(new Link(WokoFacets.delete + "/" + className + "/" + key, Util.getMessage(locale, "woko.links.delete")).setCssClass("link-delete"));
                 }
             }
         }

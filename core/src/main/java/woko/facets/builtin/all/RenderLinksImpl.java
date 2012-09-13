@@ -52,7 +52,7 @@ public class RenderLinksImpl extends BaseFragmentFacet implements RenderLinks {
             String className = store.getClassMapping(oc);
             String key = store.getKey(o);
             if (key != null) {
-                links.add(new Link(WokoFacets.edit + "/" + className + "/" + key, Util.getMessage(locale, "woko.links.edit")).setCssClass("edit"));
+                links.add(new Link(WokoFacets.edit + "/" + className + "/" + key, Util.getMessage(locale, "woko.links.edit")).setCssClass("link-edit"));
             }
         }
 
@@ -61,7 +61,7 @@ public class RenderLinksImpl extends BaseFragmentFacet implements RenderLinks {
             String className = store.getClassMapping(oc);
             String key = store.getKey(o);
             if (key != null) {
-                links.add(new Link(WokoFacets.delete + "/" + className + "/" + key, Util.getMessage(locale, "woko.links.delete")).setCssClass("delete"));
+                links.add(new Link(WokoFacets.delete + "/" + className + "/" + key, Util.getMessage(locale, "woko.links.delete")).setCssClass("link-delete"));
             }
         }
 
@@ -70,7 +70,7 @@ public class RenderLinksImpl extends BaseFragmentFacet implements RenderLinks {
             String className = store.getClassMapping(oc);
             String key = store.getKey(o);
             if (key != null) {
-                links.add(new Link(WokoFacets.json + "/" + className + "/" + key, Util.getMessage(locale, "woko.links.json")).setCssClass("json"));
+                links.add(new Link(WokoFacets.json + "/" + className + "/" + key, Util.getMessage(locale, "woko.links.json")).setCssClass("link-json"));
             }
         }
 

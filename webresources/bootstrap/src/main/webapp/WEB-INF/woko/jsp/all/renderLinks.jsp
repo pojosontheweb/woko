@@ -27,7 +27,7 @@ RenderLinks renderLinks = (RenderLinks)request.getAttribute(RenderLinks.FACET_NA
         renderLinks = (RenderLinks)request.getAttribute(WokoFacets.renderLinksEdit);
     }
     List<Link> links = renderLinks.getLinks();
-    if (links.size()>0) {
+    if (links.size()>1) {
         Link first = links.get(0);
         first.setCssClass("btn btn-primary " + first.getCssClass());
         String firstLinkAttrs = LinkUtil.computeAllLinkAttributes(first, request);
@@ -50,6 +50,14 @@ RenderLinks renderLinks = (RenderLinks)request.getAttribute(RenderLinks.FACET_NA
     <%      } %>
         </ul>
 </div>
+<%
+    } else if (links.size()==1) {
+        // one link only
+        Link l = links.get(0);
+        l.setCssClass("btn btn-primary " + l.getCssClass());
+        String linkAttrs = LinkUtil.computeAllLinkAttributes(l, request);
+%>
+        <a<%=linkAttrs%>><%=l.getText()%></a>
 <%
     }
 %>
