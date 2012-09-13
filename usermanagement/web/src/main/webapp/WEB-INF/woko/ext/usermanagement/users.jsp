@@ -39,7 +39,7 @@
         <h1 class="page-header">
             <c:choose>
                 <c:when test="<%=overridenH1==null%>">
-                    <fmt:message bundle="${wokoBundle}" key="woko.devel.list.title">
+                    <fmt:message bundle="${wokoBundle}" key="woko.ext.usermanagement.users.page.header">
                         <fmt:param value="<%=totalSize%>"/>
                         <fmt:param value="<%=className%>"/>
                     </fmt:message>
@@ -51,15 +51,14 @@
         </h1>
 
         <p>
-            This page allows you to manage the users in your application.
-
+            <fmt:message bundle="${wokoBundle}" key="woko.ext.usermanagement.users.top.text"/>
             <a href="${pageContext.request.contextPath}/save/<%=className%>?createTransient=true"
                     class="btn btn-primary pull-right">
-                Create new user
+                <fmt:message bundle="${wokoBundle}" key="woko.ext.usermanagement.users.create.user"/>
             </a>
         </p>
 
-        <h2>All users</h2>
+        <h2></h2>
 
         <c:if test="<%=nbPages>1%>">
             <div class="row-fluid">

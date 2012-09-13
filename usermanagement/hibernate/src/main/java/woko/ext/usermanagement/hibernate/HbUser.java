@@ -35,7 +35,6 @@ public class HbUser implements User {
     @Column(unique = true, nullable = false)
     private String username;
 
-    @NotNull
     private String encodedPassword;
 
     @ElementCollection

@@ -34,11 +34,6 @@ public class ListUsers extends ListTabularImpl {
     }
 
     @Override
-    public String getPageHeaderTitle() {
-        return getFacetContext().getWoko().getLocalizedMessage(getRequest(), "woko.ext.usermanagement.list.users.page.header");
-    }
-
-    @Override
     protected ResultIterator<?> createResultIterator(ActionBeanContext abc, int start, int limit) {
         DatabaseUserManager dbUm = (DatabaseUserManager)getWoko().getUserManager();
         return dbUm.listUsers(start, limit);

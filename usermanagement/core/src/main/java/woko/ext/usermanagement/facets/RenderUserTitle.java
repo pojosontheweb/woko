@@ -30,6 +30,11 @@ public class RenderUserTitle extends RenderTitleImpl {
         if (u==null) {
             throw new IllegalStateException("user is null, cannot invoke renderTitle facet on it.");
         }
-        return u.getUsername();
+        String username = u.getUsername();
+        if (username==null) {
+            return getFacetContext().getWoko().getLocalizedMessage(getRequest(),
+                    "woko.ext.usermanagement.users.transient.user.title");
+        }
+        return username;
     }
 }
