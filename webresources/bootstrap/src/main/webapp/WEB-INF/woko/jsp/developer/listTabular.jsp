@@ -113,17 +113,10 @@
                     <%
                         for (String propName : propertyNames) {
                             String labelMsgKey = className + "." + propName;
-                            ResourceBundle b = StripesFilter.getConfiguration().
-                                    getLocalizationBundleFactory().getFormFieldBundle(request.getLocale());
-                            String msg = propName;
-                            try {
-                                msg = b.getString(labelMsgKey);
-                            } catch(MissingResourceException e) {
-                                // just let it through and use property name
-                            }
+                            String msg = woko.getLocalizedMessage(request, labelMsgKey);
                     %>
                     <th>
-                        <%=msg%> <%-- TODO find name in bundle or prettify --%>
+                        <c:out value="<%=msg%>"/>
                     </th>
                     <%
                         }
