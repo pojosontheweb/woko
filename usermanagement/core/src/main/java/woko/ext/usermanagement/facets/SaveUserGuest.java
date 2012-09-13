@@ -11,6 +11,7 @@ import woko.ext.usermanagement.core.DatabaseUserManager;
 import woko.ext.usermanagement.core.User;
 import woko.facets.builtin.Save;
 import woko.facets.builtin.developer.SaveImpl;
+import woko.persistence.ObjectStore;
 
 import java.util.Collections;
 import java.util.List;
@@ -51,7 +52,17 @@ public class SaveUserGuest extends SaveImpl implements IInstanceFacet {
     public boolean matchesTargetObject(Object targetObject) {
         // matches only if there's no logged in user
         Woko woko = getFacetContext().getWoko();
-        return woko.getUsername(getRequest()) == null;
+        if (woko.getUsername(getRequest()) != null) {
+            return false;
+        }
+        // and if the object is transient
+        User user = (User)targetObject;
+        ObjectStore store = woko.getObjectStore();
+        String key = store.getKey(user);
+        if (key!=null) {
+            return false;
+        }
+        return true;
     }
 
 

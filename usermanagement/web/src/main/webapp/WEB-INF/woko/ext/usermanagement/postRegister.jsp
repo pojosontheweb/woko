@@ -17,6 +17,10 @@
             <fmt:param value="${user.email}"/>
         </fmt:message>
 
+        <a class="btn btn-large btn-primary" href="${pageContext.request.contextPath}/view/${postRegister.userClassName}/${user.id}">
+            <fmt:message bundle="${wokoBundle}" key="woko.ext.usermanagement.post.register.account.link.text"/>
+        </a>
+
     </s:layout-component>
 </s:layout-render>
 
