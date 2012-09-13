@@ -22,6 +22,7 @@ public class ListUsers extends ListTabularImpl {
         a.add("id");
         a.add("username");
         a.add("roles");
+        a.add("accountStatus");
         a.add("class");
         PROP_NAMES = Collections.unmodifiableList(a);
     }

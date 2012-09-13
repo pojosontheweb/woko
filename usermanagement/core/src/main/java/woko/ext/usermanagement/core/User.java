@@ -32,4 +32,8 @@ public interface User {
 
     void setRoles(List<String> roles);
 
+    AccountStatus getAccountStatus();
+
+    void setAccountStatus(AccountStatus accountStatus);
+
 }

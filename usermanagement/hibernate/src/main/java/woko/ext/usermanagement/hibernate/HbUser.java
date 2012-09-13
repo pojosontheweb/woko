@@ -16,6 +16,7 @@
 
 package woko.ext.usermanagement.hibernate;
 
+import woko.ext.usermanagement.core.AccountStatus;
 import woko.ext.usermanagement.core.User;
 
 import javax.persistence.*;
@@ -36,6 +37,9 @@ public class HbUser implements User {
     private String username;
 
     private String encodedPassword;
+
+    @NotNull
+    private AccountStatus accountStatus = AccountStatus.Blocked;
 
     @ElementCollection
     private List<String> roles;
@@ -70,5 +74,13 @@ public class HbUser implements User {
 
     public void setRoles(List<String> roles) {
         this.roles = roles;
+    }
+
+    public AccountStatus getAccountStatus() {
+        return accountStatus;
+    }
+
+    public void setAccountStatus(AccountStatus accountStatus) {
+        this.accountStatus = accountStatus;
     }
 }

@@ -20,6 +20,7 @@ import org.hibernate.Criteria;
 import org.hibernate.FlushMode;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
+import woko.ext.usermanagement.core.AccountStatus;
 import woko.ext.usermanagement.core.DatabaseUserManager;
 import woko.ext.usermanagement.core.User;
 import woko.hibernate.HibernateStore;
@@ -33,20 +34,16 @@ import java.util.List;
 public class HibernateUserManager extends DatabaseUserManager {
 
     private final HibernateStore hibernateStore;
-    private final Class<? extends User> userClass;
 
     public HibernateUserManager(HibernateStore hibernateStore) {
         this(hibernateStore, HbUser.class);
     }
 
     public HibernateUserManager(HibernateStore hibernateStore, Class<? extends User> userClass) {
+        super(userClass);
         this.hibernateStore = hibernateStore;
-        this.userClass = userClass;
     }
 
-    public Class<? extends User> getUserClass() {
-        return userClass;
-    }
 
     public HibernateStore getHibernateStore() {
         return hibernateStore;
@@ -104,6 +101,7 @@ public class HibernateUserManager extends DatabaseUserManager {
                     User user = HibernateUserManager.this.getUserClass().newInstance();
                     user.setUsername(username);
                     user.setPassword(encodePassword(password));
+                    user.setAccountStatus(AccountStatus.Active);
                     ArrayList<String> rolesCopy = new ArrayList<String>(roles);
                     user.setRoles(rolesCopy);
                     store.save(user);

@@ -19,6 +19,7 @@ package woko.ext.usermanagement.core;
 import woko.persistence.ResultIterator;
 import woko.users.UserManager;
 import woko.util.Util;
+import woko.util.WLogger;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -28,11 +29,15 @@ import java.util.List;
 
 public abstract class DatabaseUserManager implements UserManager {
 
+    private static final WLogger logger = WLogger.getLogger(DatabaseUserManager.class);
+
     public static final String REQ_PARAM_NAME = "password";
 
     private String reqParamName = REQ_PARAM_NAME;
     private String wDevelUsername = "wdevel";
     private String wDevelPassword = "wdevel";
+
+    private final Class<? extends User> userClass;
 
     private static final List<String> DEFAULT_ROLES;
 
@@ -43,6 +48,14 @@ public abstract class DatabaseUserManager implements UserManager {
     }
 
     private List<String> defaultRoles = DEFAULT_ROLES;
+
+    protected DatabaseUserManager(Class<? extends User> userClass) {
+        this.userClass = userClass;
+    }
+
+    public Class<? extends User> getUserClass() {
+        return userClass;
+    }
 
     public DatabaseUserManager setRequestParameterName(String reqParamName) {
         this.reqParamName = reqParamName;
@@ -114,14 +127,28 @@ public abstract class DatabaseUserManager implements UserManager {
         // retrieve user
         User u = getUserByUsername(username);
         if (u==null) {
+            logger.warn("Authentication failure (no such user) for " + username);
             return false;
         }
+
+        // check if account is active
+        if (!u.getAccountStatus().equals(AccountStatus.Active)) {
+            logger.warn("Authentication attempt on inactive account for " + username);
+            return false;
+        }
+
         // extract password from request and compare
         String clearPassword = extractPassword(request);
         String encodedPassword = encodePassword(clearPassword);
 
         String actualEncodedPassword = u.getPassword();
-        return actualEncodedPassword != null && actualEncodedPassword.equals(encodedPassword);
+        boolean passwordsMatch = actualEncodedPassword != null && actualEncodedPassword.equals(encodedPassword);
+        if (!passwordsMatch) {
+            logger.warn("Authentication failure for " + username);
+            return false;
+        }
+        logger.info("Authentication successful for " + username);
+        return true;
     }
 
 

@@ -16,7 +16,7 @@ class MyUserManager extends HibernateUserManager {
     DatabaseUserManager createDefaultUsers() {
         super.createDefaultUsers()
         for (int i=0; i<1000; i++) {
-            MyUser u1 = createUser("testuser$i", encodePassword("testuser$i"), ["testuser"])
+            MyUser u1 = createUser("testuser$i", "testuser$i", ["testuser"])
             u1.prop1 = "foobar$i"
             hibernateStore.doInTx({ store, session ->
                 store.save(u1)

@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @FacetKey(name= WokoFacets.renderPropertiesEdit, profileId = "usermanager", targetObjectType = User.class)
-public class RenderUserPropertiesEdit extends RenderPropertiesEditImpl {
+public class RenderUserPropertiesEditUserManager extends RenderPropertiesEditImpl {
 
     @Override
     public List<String> getPropertyNames() {
