@@ -4,6 +4,8 @@ import net.sourceforge.jfacets.IInstanceFacet;
 import net.sourceforge.jfacets.annotations.FacetKey;
 import net.sourceforge.stripes.action.ActionBeanContext;
 import net.sourceforge.stripes.action.LocalizableMessage;
+import net.sourceforge.stripes.action.RedirectResolution;
+import net.sourceforge.stripes.action.Resolution;
 import net.sourceforge.stripes.validation.LocalizableError;
 import woko.Woko;
 import woko.ext.usermanagement.core.AccountStatus;
@@ -40,8 +42,13 @@ public class SaveUserGuest extends SaveImpl implements IInstanceFacet {
     }
 
     @Override
-    protected String getTargetFacetAfterSave() {
-        return "postRegister";
+    protected Resolution getNonRpcResolution(ActionBeanContext abc) {
+        User user = (User)getFacetContext().getTargetObject();
+        ObjectStore os = getWoko().getObjectStore();
+        return new RedirectResolution("/postRegister")
+                .addParameter("facet.username", user.getUsername())
+                .addParameter("facet.email", user.getEmail())
+                .addParameter("facet.userId", os.getKey(user));
     }
 
     protected List<String> getDefaultRoles() {
