@@ -121,6 +121,9 @@ class RendererTest extends WebTestBase {
                 verifyXPath xpath:'/html/body/div/div[2]/div/div/table/tbody/tr/td[5]/div/a[3]'
                 verifyXPath xpath:'/html/body/div/div[2]/div/div/table/tbody/tr/td[5]/div/a[4]'
 
+                // verify the page header title is changed
+                verifyText text: "TestPageHeaderTitleOverride"
+
                 logout()
                 goToPage '/list/MyEntity'
 
