@@ -11,6 +11,8 @@
 <%@ page import="woko.ext.usermanagement.facets.Users" %>
 <%@ page import="woko.ext.usermanagement.hibernate.HibernateUserManager" %>
 <%@ page import="woko.ext.usermanagement.facets.ListUsers" %>
+<%@ page import="woko.ext.usermanagement.core.User" %>
+<%@ page import="woko.ext.usermanagement.core.AccountStatus" %>
 
 <w:facet facetName="<%=Layout.FACET_NAME%>"/>
 
@@ -122,10 +124,15 @@
                 <tbody>
                 <%
                     for (int i=0; i<resultsList.size(); i++) {
-                        Object result = resultsList.get(i);
+                        User result = (User)resultsList.get(i);
                         String liWrapperClass = rowCssClasses.get(i);
-                        if (listWrapperClass==null) {
-                          listWrapperClass = "";
+                        if (liWrapperClass==null || liWrapperClass.equals("")) {
+                            AccountStatus s = result.getAccountStatus();
+                            if (s.equals(AccountStatus.Registered)) {
+                                liWrapperClass = "warning";
+                            } else if (s.equals(AccountStatus.Blocked)) {
+                                liWrapperClass = "error";
+                            }
                         }
                 %>
                         <tr class="<%=liWrapperClass%>">
