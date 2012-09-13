@@ -29,7 +29,7 @@ RenderLinks renderLinks = (RenderLinks)request.getAttribute(RenderLinks.FACET_NA
     List<Link> links = renderLinks.getLinks();
     if (links.size()>0) {
         Link first = links.get(0);
-        first.setCssClass("btn btn-primary link-" + first.getCssClass());
+        first.setCssClass("btn btn-primary " + first.getCssClass());
         String firstLinkAttrs = LinkUtil.computeAllLinkAttributes(first, request);
 %>
 <div class="btn-group">
