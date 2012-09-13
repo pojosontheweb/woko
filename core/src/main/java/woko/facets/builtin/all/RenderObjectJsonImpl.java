@@ -29,6 +29,7 @@ import woko.util.Util;
 import woko.util.WLogger;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.Map;
 
 @FacetKey(name = WokoFacets.renderObjectJson, profileId = "all")
@@ -52,14 +53,17 @@ public class RenderObjectJsonImpl extends BaseFacet implements RenderObjectJson 
                 logger.warn("No renderProperties facet found for targetObject $o, as a result no props will be serialized.");
                 return result;
             }
+            List<String> propertyNames = renderProperties.getPropertyNames();
 
             // convert the properties to JSON
             Map<String, Object> propNamesAndValues = renderProperties.getPropertyValues();
             for (String k : propNamesAndValues.keySet()) {
-                Object v = propNamesAndValues.get(k);
-                Object jsonValue = propertyToJson(request, o, k, v);
-                logger.debug("Converted prop $k to json $jsonValue");
-                result.put(k, jsonValue);
+                if (propertyNames.contains(k)) {
+                    Object v = propNamesAndValues.get(k);
+                    Object jsonValue = propertyToJson(request, o, k, v);
+                    logger.debug("Converted prop $k to json $jsonValue");
+                    result.put(k, jsonValue);
+                }
             }
 
             // add object metadata

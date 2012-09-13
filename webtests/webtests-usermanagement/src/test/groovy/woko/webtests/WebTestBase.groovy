@@ -18,9 +18,7 @@
 
 package woko.webtests
 
-import com.canoo.webtest.WebtestCase
-
-abstract class WebTestBase extends WebtestCase {
+abstract class WebTestBase extends WokoWebTestBase {
 
   def homeUrl = 'http://localhost:9999/woko-webtests'
 

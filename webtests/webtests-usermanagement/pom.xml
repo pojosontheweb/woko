@@ -27,33 +27,37 @@
     <packaging>war</packaging>
     <dependencies>
         <dependency>
-            <groupId>com.pojosontheweb</groupId>
-            <artifactId>woko-ri</artifactId>
-            <version>${project.version}</version>
+          <groupId>com.pojosontheweb</groupId>
+          <artifactId>woko-web-bootstrap</artifactId>
+          <version>${project.version}</version>
+          <type>war</type>
+        </dependency>
+        <dependency>
+          <groupId>com.pojosontheweb</groupId>
+          <artifactId>woko-ri</artifactId>
+          <version>${project.version}</version>
+        </dependency>
+        <dependency>
+          <groupId>com.pojosontheweb</groupId>
+          <artifactId>woko-builtin-auth-web</artifactId>
+          <version>${project.version}</version>
+          <type>war</type>
+        </dependency>
+        <dependency>
+          <groupId>javax.servlet</groupId>
+          <artifactId>servlet-api</artifactId>
+          <version>2.3</version>
+        </dependency>
+        <dependency>
+          <groupId>org.codehaus.groovy</groupId>
+          <artifactId>groovy</artifactId>
+          <version>1.8.6</version>
         </dependency>
         <dependency>
             <groupId>com.pojosontheweb</groupId>
-            <artifactId>woko-web-lithium</artifactId>
-                <version>${project.version}</version>
-            <type>war</type>
-        </dependency>
-        <dependency
-            <groupId>com.pojosontheweb</groupId>
-            <artifactId>woko-builtin-auth-web</artifactId>
-                <version>${project.version}</version>
-            <type>war</type>
-        </dependency>
-        <dependency>
-            <groupId>com.pojosontheweb</groupId>
-            <artifactId>woko-usermanagement-web</artifactId>
+            <artifactId>woko-webtests-common</artifactId>
             <version>${project.version}</version>
-            <type>war</type>
-        </dependency>
-        <dependency>
-            <groupId>com.pojosontheweb</groupId>
-            <artifactId>woko-compass-hibernate-web</artifactId>
-            <version>${project.version}</version>
-            <type>war</type>
+            <scope>test</scope>
         </dependency>
     </dependencies>
     <build>
@@ -80,5 +84,5 @@
                 </executions>
             </plugin>
         </plugins>
-    </build>    
+    </build>
 </project>
