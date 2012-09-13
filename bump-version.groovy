@@ -14,6 +14,7 @@ println "Handling all pom.xml files..."
 int nbPoms = 0
 new File(".").eachFileRecurse { File f ->
     if (!f.directory && !f.absolutePath.contains("target") && f.name == "pom.xml") {
+        println "replacing in $f.absolutePath..."
         // replace version in pom
         String pomText = f.text
         int nbReplaces = 0
@@ -23,11 +24,12 @@ new File(".").eachFileRecurse { File f ->
         }
         assert "invalid number of replacements in $f.absolutePath", nbReplaces == 1
         f.text = pomText
+        println "... done with $f.absolutePath"
         nbPoms++
     }
 }
 
-assert nbPoms == 36
+assert nbPoms == 33
 println "Replaced versions in $nbPoms pom files"
 
 println "Handling bash scripts..."
