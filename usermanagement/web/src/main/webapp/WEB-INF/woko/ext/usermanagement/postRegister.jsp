@@ -12,9 +12,9 @@
             </fmt:message>
         </h1>
 
-        <p>
-            Don't really know what to put here !
-        </p>
+        <fmt:message bundle="${wokoBundle}" key="woko.ext.usermanagement.post.register.para.text">
+            <fmt:param value="${postRegister.username}"/>
+        </fmt:message>
 
     </s:layout-component>
 </s:layout-render>
