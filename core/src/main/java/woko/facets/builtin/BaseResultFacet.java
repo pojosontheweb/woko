@@ -34,7 +34,6 @@ public abstract class BaseResultFacet extends BaseForwardRpcResolutionFacet impl
     private Integer resultsPerPage = 10;
     private Integer page = 1;
     private String className;
-    private boolean tableDisplay = false;
 
     private ResultIterator resultIterator;
 
@@ -60,14 +59,6 @@ public abstract class BaseResultFacet extends BaseForwardRpcResolutionFacet impl
 
     public ResultIterator getResults() {
         return resultIterator;
-    }
-
-    public boolean isTableDisplay() {
-        return tableDisplay;
-    }
-
-    public void setTableDisplay(boolean tableDisplay) {
-        this.tableDisplay = tableDisplay;
     }
 
     public Resolution getResolution(ActionBeanContext abc) {

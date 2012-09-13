@@ -26,6 +26,4 @@ public interface ResultFacet {
 
     Integer getResultsPerPage();
 
-    boolean isTableDisplay();
-
 }
