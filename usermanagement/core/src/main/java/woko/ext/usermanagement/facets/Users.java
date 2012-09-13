@@ -2,7 +2,7 @@ package woko.ext.usermanagement.facets;
 
 import net.sourceforge.jfacets.annotations.FacetKey;
 
-@FacetKey(name= "users", profileId="developer")
+@FacetKey(name= "users", profileId="usermanager")
 public class Users extends ListUsers {
 
     @Override

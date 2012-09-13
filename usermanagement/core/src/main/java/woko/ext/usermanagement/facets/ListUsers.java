@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-@FacetKey(name= ListObjects.FACET_NAME, profileId = "developer", targetObjectType = User.class)
+@FacetKey(name= ListObjects.FACET_NAME, profileId = "usermanager", targetObjectType = User.class)
 public class ListUsers extends ListTabularImpl {
 
     public static final List<String> PROP_NAMES;

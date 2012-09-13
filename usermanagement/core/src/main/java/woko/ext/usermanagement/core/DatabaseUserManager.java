@@ -21,6 +21,7 @@ import woko.users.UserManager;
 import woko.util.Util;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -32,6 +33,16 @@ public abstract class DatabaseUserManager implements UserManager {
     private String reqParamName = REQ_PARAM_NAME;
     private String wDevelUsername = "wdevel";
     private String wDevelPassword = "wdevel";
+
+    private static final List<String> DEFAULT_ROLES;
+
+    static {
+        ArrayList<String> defaultRoles = new ArrayList<String>();
+        defaultRoles.add("developer");
+        DEFAULT_ROLES = defaultRoles;
+    }
+
+    private List<String> defaultRoles = DEFAULT_ROLES;
 
     public DatabaseUserManager setRequestParameterName(String reqParamName) {
         this.reqParamName = reqParamName;
@@ -50,6 +61,15 @@ public abstract class DatabaseUserManager implements UserManager {
         return wDevelPassword;
     }
 
+    public DatabaseUserManager setDefaultRoles(List<String> defaultRoles) {
+        this.defaultRoles = defaultRoles;
+        return this;
+    }
+
+    public List<String> getDefaultRoles() {
+        return defaultRoles;
+    }
+
     public DatabaseUserManager setDeveloperUsername(String wDevelUsername) {
         this.wDevelUsername = wDevelUsername;
         return this;
@@ -61,7 +81,7 @@ public abstract class DatabaseUserManager implements UserManager {
     }
 
     public DatabaseUserManager createDefaultUsers() {
-        createUser(wDevelUsername, wDevelPassword, Arrays.asList("developer"));
+        createUser(wDevelUsername, wDevelPassword, defaultRoles);
         return this;
     }
 

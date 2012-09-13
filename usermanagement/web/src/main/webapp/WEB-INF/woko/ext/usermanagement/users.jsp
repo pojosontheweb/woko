@@ -52,10 +52,12 @@
 
         <p>
             <fmt:message bundle="${wokoBundle}" key="woko.ext.usermanagement.users.top.text"/>
-            <a href="${pageContext.request.contextPath}/save/<%=className%>?createTransient=true"
-                    class="btn btn-primary pull-right">
+            <s:link href="/save" class="btn btn-primary pull-right" addSourcePage="true">
+                <s:param name="className" value="<%=className%>"/>
+                <s:param name="createTransient" value="true"/>
+                <s:param name="facet.roles" value="all"/>
                 <fmt:message bundle="${wokoBundle}" key="woko.ext.usermanagement.users.create.user"/>
-            </a>
+            </s:link>
         </p>
 
         <h2></h2>

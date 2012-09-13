@@ -9,6 +9,7 @@ class MyUserManager extends HibernateUserManager {
 
     MyUserManager(HibernateStore hibernateStore) {
         super(hibernateStore, MyUser.class)
+        defaultRoles = ["usermanager","developer"] // need to put usermanahe
     }
 
     @Override

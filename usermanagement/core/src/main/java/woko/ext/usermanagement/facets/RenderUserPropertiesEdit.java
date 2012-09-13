@@ -8,7 +8,7 @@ import woko.facets.builtin.all.RenderPropertiesEditImpl;
 import java.util.ArrayList;
 import java.util.List;
 
-@FacetKey(name= WokoFacets.renderPropertiesEdit, profileId = "developer", targetObjectType = User.class)
+@FacetKey(name= WokoFacets.renderPropertiesEdit, profileId = "usermanager", targetObjectType = User.class)
 public class RenderUserPropertiesEdit extends RenderPropertiesEditImpl {
 
     @Override
@@ -18,6 +18,7 @@ public class RenderUserPropertiesEdit extends RenderPropertiesEditImpl {
         a.remove("encodedPassword");
         a.remove("password");
         a.remove("id");
+        a.remove("class");
         return a;
     }
 }
