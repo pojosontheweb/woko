@@ -324,8 +324,7 @@ The command accepts one argument that can be  :
 (list,developer,java.lang.Object) [woko.facets.builtin.developer.ListImpl] object.*
 (list,developer,java.lang.Object) [woko.facets.builtin.developer.ListImpl] facet.page
 (list,developer,java.lang.Object) [woko.facets.builtin.developer.ListImpl] facet.resultsPerPage
-(list,developer,java.lang.Object) [woko.facets.builtin.developer.ListImpl] facet.tableDisplay
-=> Found 4 accessible binding(s) in facet (list,developer,java.lang.Object) [woko.facets.builtin.developer.ListImpl]
+=> Found 3 accessible binding(s) in facet (list,developer,java.lang.Object) [woko.facets.builtin.developer.ListImpl]
 
 (logout,all,java.lang.Object) [woko.facets.builtin.all.LogoutImpl] object.*
 => Found 1 accessible binding(s) in facet (logout,all,java.lang.Object) [woko.facets.builtin.all.LogoutImpl]
@@ -337,8 +336,7 @@ The command accepts one argument that can be  :
 (search,developer,java.lang.Object) [woko.facets.builtin.developer.SearchImpl] facet.page
 (search,developer,java.lang.Object) [woko.facets.builtin.developer.SearchImpl] facet.query
 (search,developer,java.lang.Object) [woko.facets.builtin.developer.SearchImpl] facet.resultsPerPage
-(search,developer,java.lang.Object) [woko.facets.builtin.developer.SearchImpl] facet.tableDisplay
-=> Found 5 accessible binding(s) in facet (search,developer,java.lang.Object) [woko.facets.builtin.developer.SearchImpl]
+=> Found 4 accessible binding(s) in facet (search,developer,java.lang.Object) [woko.facets.builtin.developer.SearchImpl]
 
 (studio,developer,java.lang.Object) [woko.facets.builtin.developer.WokoStudio] object.*
 (studio,developer,java.lang.Object) [woko.facets.builtin.developer.WokoStudio] facet.facetDescriptors[]
@@ -363,7 +361,7 @@ some.test.pkg.MyAction nestedObjects[]
 some.test.pkg.MyAction nestedObjects[].bar
 => Found 5 accessible binding(s) in action bean some.test.pkg.MyAction
 
-Found 32 accessible bindings in the app.
+Found 30 accessible bindings in the app.
 """)
     }
 

@@ -121,6 +121,21 @@ class RendererTest extends WebTestBase {
                 verifyXPath xpath:'/html/body/div/div[2]/div/div/table/tbody/tr/td[5]/div/a[3]'
                 verifyXPath xpath:'/html/body/div/div[2]/div/div/table/tbody/tr/td[5]/div/a[4]'
 
+                logout()
+                goToPage '/list/MyEntity'
+
+                // there should be no more "class" field
+                verifyText text: '.*5566.*', regex: true
+                not {
+                    verifyText text:'.*test.MyEntity.*', regex: true
+                }
+
+                // only a "view" button
+                verifyXPath xpath:'/html/body/div/div[2]/div/div/table/tbody/tr/td[4]/div/a'
+                not {
+                    verifyXPath xpath:'/html/body/div/div[2]/div/div/table/tbody/tr/td[4]/div/a[2]'
+                }
+
             } finally {
                 goToPage '/delete/MyEntity/887766?facet.confirm=true'
             }
