@@ -135,7 +135,7 @@ class GenerateCmd extends Command{
             Dependency groovyDep = new Dependency()
             groovyDep.groupId = "org.codehaus.groovy"
             groovyDep.artifactId = "groovy"
-            groovyDep.version = "1.7.4"
+            groovyDep.version = "1.8.6"
             pomHelper.addDependency(groovyDep)
 
             // Add the GMAVEN plugin
@@ -143,29 +143,13 @@ class GenerateCmd extends Command{
             // Create plugin description
             gmaven.groupId = "org.codehaus.gmaven"
             gmaven.artifactId = "gmaven-plugin"
-            gmaven.version = "1.2"
+            gmaven.version = "1.4"
             // Add plugin configuration
             Xpp3Dom configNode = new Xpp3Dom('configuration')
             Xpp3Dom providerSelectionNode = new Xpp3Dom('providerSelection')
-            providerSelectionNode.value = '1.7'
+            providerSelectionNode.value = '1.8'
             configNode.addChild(providerSelectionNode)
             gmaven.configuration = configNode
-            // Add dependency on gmaven.runtime
-            Dependency gMavenRuntime = new Dependency()
-            gMavenRuntime.groupId = 'org.codehaus.gmaven.runtime'
-            gMavenRuntime.artifactId = 'gmaven-runtime-1.7'
-            gMavenRuntime.version = '1.2'
-            Exclusion groovyAllExclusion = new Exclusion()
-            groovyAllExclusion.groupId = 'org.codehaus.groovy'
-            groovyAllExclusion.artifactId = 'groovy-all'
-            gMavenRuntime.addExclusion(groovyAllExclusion)
-            gmaven.addDependency(gMavenRuntime)
-            // Add dependency on groovy-all
-            Dependency gMavenGroovyAll = new Dependency()
-            gMavenGroovyAll.groupId = 'org.codehaus.groovy'
-            gMavenGroovyAll.artifactId = 'groovy-all'
-            gMavenGroovyAll.version = '1.7.0'
-            gmaven.addDependency(gMavenGroovyAll)
             // Add execution
             PluginExecution execution = new PluginExecution()
             execution.addGoal('generateStubs')

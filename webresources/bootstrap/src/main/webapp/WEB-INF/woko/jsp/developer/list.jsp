@@ -3,19 +3,16 @@
 
 <%@ page import="woko.persistence.ResultIterator" %>
 <%@ page import="woko.Woko" %>
-<%@ page import="woko.facets.builtin.ListObjects" %>
-<%@ page import="woko.facets.builtin.WokoFacets" %>
-<%@ page import="woko.util.Util" %>
-<%@ page import="woko.facets.builtin.RenderListItem" %>
+<%@ page import="woko.facets.builtin.*" %>
 
-<w:facet facetName="<%=WokoFacets.layout%>"/>
+<w:facet facetName="<%=Layout.FACET_NAME%>"/>
 
 <fmt:message bundle="${wokoBundle}" var="pageTitle" key="woko.devel.list.pageTitle"/>
 <s:layout-render name="${layout.layoutPath}" layout="${layout}" pageTitle="${pageTitle}">
     <s:layout-component name="body">
         <%
             Woko woko = Woko.getWoko(application);
-            ListObjects list = (ListObjects)request.getAttribute(WokoFacets.list);
+            ListObjects list = (ListObjects)request.getAttribute(ListObjects.FACET_NAME);
             String className = list.getClassName();
             ResultIterator results = list.getResults();
             int totalSize = results.getTotalSize();
@@ -25,12 +22,24 @@
             if (totalSize % resultsPerPage != 0) {
               nbPages++;
             }
+            String listWrapperClass = list.getListWrapperCssClass();
+            if (listWrapperClass==null) {
+                listWrapperClass = "list " + className;
+            }
+            String overridenH1 = list.getPageHeaderTitle();
         %>
         <h1 class="page-header">
-            <fmt:message bundle="${wokoBundle}" key="woko.devel.list.title">
-                <fmt:param value="<%=totalSize%>"/>
-                <fmt:param value="<%=className%>"/>
-            </fmt:message>
+            <c:choose>
+                <c:when test="<%=overridenH1==null%>">
+                    <fmt:message bundle="${wokoBundle}" key="woko.devel.list.title">
+                        <fmt:param value="<%=totalSize%>"/>
+                        <fmt:param value="<%=className%>"/>
+                    </fmt:message>
+                </c:when>
+                <c:otherwise>
+                    <%=overridenH1%>
+                </c:otherwise>
+            </c:choose>
         </h1>
 
         <c:if test="<%=nbPages>1%>">
@@ -51,22 +60,25 @@
                 </s:form>
             </div>
         </c:if>
-
-        <ul class="<%=list.getListWrapperCssClass()%>">
-            <%
-              while (results.hasNext()) {
-                  Object result = results.next();
-                  RenderListItem renderListItem = (RenderListItem)woko.getFacet(WokoFacets.renderListItem, request, result, result.getClass(),true );
-                  String fragmentPath = renderListItem.getFragmentPath(request);
-
-            %>
-                    <li class="<%=renderListItem.getItemWrapperCssClass()%>">
-                        <jsp:include page="<%=fragmentPath%>"/>
-                    </li>
-            <%
-              }
-            %>
-        </ul>
+            <ul class="<%=listWrapperClass%>">
+                <%
+                  while (results.hasNext()) {
+                      Object result = results.next();
+                      RenderListItem renderListItem = (RenderListItem)woko.getFacet(
+                              RenderListItem.FACET_NAME, request, result, result.getClass(),true );
+                      String fragmentPath = renderListItem.getFragmentPath(request);
+                      String listItemClass = renderListItem.getItemWrapperCssClass();
+                      if (listItemClass==null) {
+                          listItemClass = "item " + woko.getObjectStore().getClassMapping(result.getClass());
+                      }
+                %>
+                        <li class="<%=listItemClass%>">
+                            <jsp:include page="<%=fragmentPath%>"/>
+                        </li>
+                <%
+                  }
+                %>
+            </ul>
 
         <%
             int nbPagesClickable = nbPages < 10 ? nbPages : 10;

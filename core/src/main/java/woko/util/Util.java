@@ -43,8 +43,12 @@ public class Util {
     }
 
     public static List<String> getPropertyNames(Object obj, List<String> exclusions) {
+        return getPropertyNames(obj.getClass(), exclusions);
+    }
+
+    public static List<String> getPropertyNames(Class<?> clazz, List<String> exclusions) {
         // use stripes reflect utils
-        PropertyDescriptor[] descriptors = ReflectUtil.getPropertyDescriptors(obj.getClass());
+        PropertyDescriptor[] descriptors = ReflectUtil.getPropertyDescriptors(clazz);
         List<String> res = new ArrayList<String>();
         for (PropertyDescriptor pd : descriptors) {
             String name = pd.getName();

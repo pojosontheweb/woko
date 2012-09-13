@@ -22,6 +22,7 @@ import net.sourceforge.jfacets.JFacets;
 import net.sourceforge.jfacets.JFacetsBuilder;
 import net.sourceforge.jfacets.annotations.AnnotatedFacetDescriptorManager;
 import net.sourceforge.jfacets.annotations.DuplicatedKeyPolicyType;
+import net.sourceforge.stripes.controller.StripesFilter;
 import woko.facets.FacetNotFoundException;
 import woko.facets.WokoFacetContextFactory;
 import woko.facets.WokoProfileRepository;
@@ -36,10 +37,8 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.text.MessageFormat;
+import java.util.*;
 
 public class Woko {
 
@@ -275,5 +274,21 @@ public class Woko {
             }
         }
         return ENVI;
+    }
+
+    public String getLocalizedMessage(HttpServletRequest request, String key, String... args) {
+        Locale locale = request.getLocale();
+        ResourceBundle b = StripesFilter.getConfiguration().
+                getLocalizationBundleFactory().getFormFieldBundle(locale);
+        try {
+            String msgTemplate = b.getString(key);
+            if (args.length==0) {
+                return msgTemplate;
+            }
+            MessageFormat f = new MessageFormat(msgTemplate, locale);
+            return f.format(args, new StringBuffer(), null).toString();
+        } catch(MissingResourceException e) {
+            return key;
+        }
     }
 }

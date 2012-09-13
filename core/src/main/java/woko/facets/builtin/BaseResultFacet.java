@@ -61,6 +61,11 @@ public abstract class BaseResultFacet extends BaseForwardRpcResolutionFacet impl
         return resultIterator;
     }
 
+    @Override
+    public String getPageHeaderTitle() {
+        return null;
+    }
+
     public Resolution getResolution(ActionBeanContext abc) {
         className = abc.getRequest().getParameter("className");
         page = page == null ? 1 : page;
@@ -104,5 +109,9 @@ public abstract class BaseResultFacet extends BaseForwardRpcResolutionFacet impl
     }
 
     protected abstract ResultIterator createResultIterator(ActionBeanContext abc, int start, int limit);
+
+    public String getListWrapperCssClass() {
+        return null;
+    }
 
 }

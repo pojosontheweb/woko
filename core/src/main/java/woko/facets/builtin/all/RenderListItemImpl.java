@@ -15,6 +15,6 @@ public class RenderListItemImpl extends BaseFragmentFacet implements RenderListI
 
     @Override
     public String getItemWrapperCssClass() {
-        return super.getFacetContext().getTargetObject().getClass().getSimpleName();
+        return null;
     }
 }

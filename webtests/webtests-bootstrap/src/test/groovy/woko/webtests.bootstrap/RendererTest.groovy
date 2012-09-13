@@ -103,5 +103,65 @@ class RendererTest extends WebTestBase {
         }
     }
 
+    void testTableDisplayInList() {
+        webtest("tableDisplayInList") {
+            login()
+            try {
+                goToPage '/save/MyEntity?createTransient=true&object.id=887766&object.prop1=abc&object.prop2=123'
+                goToPage '/list/MyEntity'
+
+                // assert some of the DOM
+                verifyXPath xpath:'/html/body/div/div[2]/div/div/table/thead/tr/th', text:'.*Class.*', regex: true
+                verifyXPath xpath:'/html/body/div/div[2]/div/div/table/tbody/tr/td', text:'.*test.MyEntity.*', regex: true
+                verifyXPath xpath:'/html/body/div/div[2]/div/div/table/tbody/tr/td[2]/span/span', text: '.*5566.*', regex: true
+
+                // check the links are present
+                verifyXPath xpath:'/html/body/div/div[2]/div/div/table/tbody/tr/td[5]/div/a'
+                verifyXPath xpath:'/html/body/div/div[2]/div/div/table/tbody/tr/td[5]/div/a[2]'
+                verifyXPath xpath:'/html/body/div/div[2]/div/div/table/tbody/tr/td[5]/div/a[3]'
+                verifyXPath xpath:'/html/body/div/div[2]/div/div/table/tbody/tr/td[5]/div/a[4]'
+
+                // verify the page header title is changed
+                verifyText text: "TestPageHeaderTitleOverride"
+
+                logout()
+                goToPage '/list/MyEntity'
+
+                // there should be no more "class" field
+                verifyText text: '.*5566.*', regex: true
+                not {
+                    verifyText text:'.*test.MyEntity.*', regex: true
+                }
+
+                // only a "view" button
+                verifyXPath xpath:'/html/body/div/div[2]/div/div/table/tbody/tr/td[4]/div/a'
+                not {
+                    verifyXPath xpath:'/html/body/div/div[2]/div/div/table/tbody/tr/td[4]/div/a[2]'
+                }
+
+            } finally {
+                goToPage '/delete/MyEntity/887766?facet.confirm=true'
+            }
+        }
+    }
+
+    void testRenderLinkAttributes() {
+        webtest("testRenderLinkAttributes") {
+            login()
+            try {
+
+                goToPage '/save/MyBook?createTransient=true&object._id=11221122&object.name=Moby&object.nbPages=123'
+
+                // close edit link with attribute
+                clickLink xpath:"/html/body/div/div[2]/div/div/div[2]/div/div[2]/div/a[@testmeedit='11221122']"
+
+                // edit with link attribute
+                clickLink xpath:"/html/body/div/div[2]/div/div/div/div/div[2]/div/a[@testme='11221122']"
+            } finally {
+                goToPage '/delete/MyBook/11221122?facet.confirm=true'
+            }
+        }
+    }
+
 
 }

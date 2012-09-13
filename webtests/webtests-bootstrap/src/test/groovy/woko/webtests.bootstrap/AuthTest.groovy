@@ -49,7 +49,6 @@ class AuthTest extends WebTestBase {
             '/save',
             '/json',
             '/find',
-            '/list',
             '/search',
             '/studio'
     ].each { u ->
