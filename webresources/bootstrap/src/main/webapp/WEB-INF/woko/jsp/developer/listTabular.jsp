@@ -4,12 +4,11 @@
 <%@ page import="woko.persistence.ResultIterator" %>
 <%@ page import="woko.Woko" %>
 <%@ page import="woko.util.Util" %>
-<%@ page import="java.util.List" %>
 <%@ page import="woko.facets.builtin.*" %>
-<%@ page import="java.util.Map" %>
 <%@ page import="woko.facets.builtin.all.Link" %>
 <%@ page import="woko.util.LinkUtil" %>
-<%@ page import="java.util.ArrayList" %>
+<%@ page import="net.sourceforge.stripes.controller.StripesFilter" %>
+<%@ page import="java.util.*" %>
 
 <w:facet facetName="<%=Layout.FACET_NAME%>"/>
 
@@ -105,9 +104,18 @@
                 <tr>
                     <%
                         for (String propName : propertyNames) {
+                            String labelMsgKey = className + "." + propName;
+                            ResourceBundle b = StripesFilter.getConfiguration().
+                                    getLocalizationBundleFactory().getFormFieldBundle(request.getLocale());
+                            String msg = propName;
+                            try {
+                                msg = b.getString(labelMsgKey);
+                            } catch(MissingResourceException e) {
+                                // just let it through and use property name
+                            }
                     %>
                     <th>
-                        <%=propName%> <%-- TODO find name in bundle or prettify --%>
+                        <%=msg%> <%-- TODO find name in bundle or prettify --%>
                     </th>
                     <%
                         }
