@@ -102,6 +102,7 @@ public class HibernateUserManager extends DatabaseUserManager {
                     user.setUsername(username);
                     user.setPassword(encodePassword(password));
                     user.setAccountStatus(AccountStatus.Active);
+                    user.setEmail("nobody@nowhere.com");  // TODO we might wanna change this :)
                     ArrayList<String> rolesCopy = new ArrayList<String>(roles);
                     user.setRoles(rolesCopy);
                     store.save(user);

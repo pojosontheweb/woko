@@ -36,4 +36,8 @@ public interface User {
 
     void setAccountStatus(AccountStatus accountStatus);
 
+    String getEmail();
+
+    void setEmail(String email);
+
 }

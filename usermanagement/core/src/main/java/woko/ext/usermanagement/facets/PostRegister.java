@@ -12,8 +12,4 @@ public class PostRegister extends BaseForwardResolutionFacet {
         return "/WEB-INF/woko/ext/usermanagement/postRegister.jsp";
     }
 
-    public String getUsername() {
-        User u = (User)getFacetContext().getTargetObject();
-        return u.getUsername();
-    }
 }

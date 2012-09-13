@@ -16,6 +16,7 @@
 
 package woko.ext.usermanagement.hibernate;
 
+import org.hibernate.validator.constraints.Email;
 import woko.ext.usermanagement.core.AccountStatus;
 import woko.ext.usermanagement.core.User;
 
@@ -43,6 +44,10 @@ public class HbUser implements User {
 
     @ElementCollection
     private List<String> roles;
+
+    @NotNull
+    @Email
+    private String email;
 
     public Long getId() {
         return id;
@@ -82,5 +87,13 @@ public class HbUser implements User {
 
     public void setAccountStatus(AccountStatus accountStatus) {
         this.accountStatus = accountStatus;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }
