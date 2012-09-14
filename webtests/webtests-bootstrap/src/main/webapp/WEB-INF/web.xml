@@ -88,7 +88,7 @@
 
     <listener>
         <display-name>WokoInitListener</display-name>
-        <listener-class>woko.hbcompass.HibernateCompassInMemWokoInitListener</listener-class>
+        <listener-class>test.BootstrapWebtestsInitListener</listener-class>
     </listener>
 
     <context-param>

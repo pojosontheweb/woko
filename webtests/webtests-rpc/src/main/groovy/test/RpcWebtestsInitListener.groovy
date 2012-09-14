@@ -16,23 +16,24 @@
 
 package test
 
-import woko.push.PushFacetDescriptorManager
+
 import woko.WokoIocInitListener
 import woko.hbcompass.HibernateCompassStore
 import woko.inmemory.InMemoryUserManager
-import woko.auth.builtin.SessionUsernameResolutionStrategy
-import woko.ioc.WokoIocContainer
 import woko.ioc.SimpleWokoIocContainer
+import woko.ioc.WokoIocContainer
+import net.sourceforge.jfacets.annotations.AnnotatedFacetDescriptorManager
+import woko.users.RemoteUserStrategy
 
-class BuiltinAuthWTInitIListener extends
-        WokoIocInitListener<HibernateCompassStore,InMemoryUserManager,SessionUsernameResolutionStrategy,PushFacetDescriptorManager> {
+class RpcWebtestsInitListener extends
+        WokoIocInitListener<HibernateCompassStore,InMemoryUserManager,RemoteUserStrategy,AnnotatedFacetDescriptorManager> {
     @Override
     protected WokoIocContainer createIocContainer() {
         return new SimpleWokoIocContainer(
                 new HibernateCompassStore(getPackageNamesFromConfig(HibernateCompassStore.CTX_PARAM_PACKAGE_NAMES, true)),
                 new InMemoryUserManager().addUser("wdevel", "wdevel", ["developer"]),
-                new SessionUsernameResolutionStrategy(),
-                new PushFacetDescriptorManager(createAnnotatedFdm()));
+                new RemoteUserStrategy(),
+                createAnnotatedFdm());
     }
 
 }

@@ -22,6 +22,7 @@ import woko.util.WLogger;
 
 import java.util.List;
 
+@Deprecated
 public abstract class HibernateWokoInitListener extends WokoInitListener {
 
   public static final String CTX_PARAM_PACKAGE_NAMES = "Woko.Hibernate.Packages";

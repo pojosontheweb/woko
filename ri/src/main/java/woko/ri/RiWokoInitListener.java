@@ -24,6 +24,7 @@ import woko.users.UserManager;
 import woko.users.UsernameResolutionStrategy;
 import woko.util.WLogger;
 
+@Deprecated
 public class RiWokoInitListener extends HibernateCompassWokoInitListener {
 
     private static final WLogger logger = WLogger.getLogger(RiWokoInitListener.class);

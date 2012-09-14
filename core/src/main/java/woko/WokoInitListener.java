@@ -31,6 +31,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+@Deprecated
 public abstract class WokoInitListener implements ServletContextListener {
 
     public static final String CTX_PARAM_FACET_PACKAGES = "Woko.Facet.Packages";
@@ -69,12 +70,12 @@ public abstract class WokoInitListener implements ServletContextListener {
         return servletContext;
     }
 
-    public void contextInitialized(ServletContextEvent e) {
+    public final void contextInitialized(ServletContextEvent e) {
         servletContext = e.getServletContext();
         servletContext.setAttribute(Woko.CTX_KEY, createWoko());
     }
 
-    public void contextDestroyed(ServletContextEvent e) {
+    public final void contextDestroyed(ServletContextEvent e) {
         Woko woko = Woko.getWoko(e.getServletContext());
         if (woko != null) {
             woko.close();
