@@ -11,7 +11,7 @@ import java.util.Map;
 
 public class BackCompatContainer implements WokoIocContainer {
 
-    private final Map<String,Object> components = new HashMap<String, Object>();
+    private final Map<Object,Object> components = new HashMap<Object, Object>();
 
     public BackCompatContainer(ObjectStore objectStore, UserManager userManager, UsernameResolutionStrategy usernameResolutionStrategy, IFacetDescriptorManager facetDescriptorManager) {
         addComponent(ObjectStore, objectStore);
@@ -25,7 +25,7 @@ public class BackCompatContainer implements WokoIocContainer {
     }
 
     @Override
-    public <T> T getComponent(String name) {
+    public <T> T getComponent(Object name) {
         @SuppressWarnings("unchecked")
         T o = (T)this.components.get(name);
         return o;

@@ -50,6 +50,11 @@
         </dependency>
         <dependency>
             <groupId>com.pojosontheweb</groupId>
+            <artifactId>woko-ioc-pico</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.pojosontheweb</groupId>
             <artifactId>woko-compass-hibernate-web</artifactId>
             <version>${project.version}</version>
             <type>war</type>

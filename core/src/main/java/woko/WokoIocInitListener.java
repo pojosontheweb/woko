@@ -16,16 +16,58 @@
 
 package woko;
 
+import net.sourceforge.jfacets.IFacetDescriptorManager;
 import woko.ioc.WokoIocContainer;
+import woko.persistence.ObjectStore;
+import woko.users.UserManager;
+import woko.users.UsernameResolutionStrategy;
 import woko.util.WLogger;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
-public abstract class WokoIocInitListener implements ServletContextListener {
+public abstract class WokoIocInitListener<OsType extends ObjectStore,
+        UmType extends UserManager,
+        UnsType extends UsernameResolutionStrategy,
+        FdmType extends IFacetDescriptorManager> implements ServletContextListener {
+
+    public static final String CTX_PARAM_FACET_PACKAGES = "Woko.Facet.Packages";
+
+    protected List<String> getPackageNamesFromConfig(String paramName, boolean throwIfNotFound) {
+        String pkgNamesStr = servletContext.getInitParameter(paramName);
+        if (pkgNamesStr == null || pkgNamesStr.equals("")) {
+            if (throwIfNotFound) {
+                String msg = "No package names specified. You have to set the context init-param '" +
+                        paramName + "' in web.xml to the list of packages you want to be scanned.";
+                logger.error(msg);
+                throw new IllegalStateException(msg);
+            } else {
+                return Collections.emptyList();
+            }
+        }
+
+        return extractPackagesList(pkgNamesStr);
+    }
+
+    public static List<String> extractPackagesList(String packagesStr) {
+        String[] pkgNamesArr = packagesStr.
+                replace('\n', ',').
+                replace(' ', ',').
+                split(",");
+        List<String> pkgNames = new ArrayList<String>();
+        for (String s : pkgNamesArr) {
+            if (s != null && !s.equals("")) {
+                pkgNames.add(s);
+            }
+        }
+        return pkgNames;
+    }
+
 
     private static final WLogger logger = WLogger.getLogger(WokoIocInitListener.class);
 
@@ -43,9 +85,11 @@ public abstract class WokoIocInitListener implements ServletContextListener {
         }
     }
 
-    protected Woko createWoko() {
+    private Woko<OsType,UmType,UnsType,FdmType> createWoko() {
         WokoIocContainer ioc = createIocContainer(servletContext);
-        return new Woko(ioc, createFallbackRoles());
+        Woko<OsType,UmType,UnsType,FdmType> w = new Woko<OsType,UmType,UnsType,FdmType>(ioc, createFallbackRoles());
+        postInit(w);
+        return w;
     }
 
     protected abstract WokoIocContainer createIocContainer(ServletContext servletContext);
@@ -53,6 +97,8 @@ public abstract class WokoIocInitListener implements ServletContextListener {
     protected List<String> createFallbackRoles() {
         return Arrays.asList(Woko.ROLE_GUEST);
     }
+
+    protected void postInit(Woko<OsType,UmType,UnsType,FdmType> w) { }
 
 
 }

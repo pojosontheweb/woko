@@ -22,6 +22,7 @@ import woko.users.UserManager;
 
 import java.util.Arrays;
 
+@Deprecated
 public class InMemoryWokoInitListener extends WokoInitListener {
 
   @Override

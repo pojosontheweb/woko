@@ -22,6 +22,7 @@ import woko.util.WLogger;
 
 import java.util.List;
 
+@Deprecated
 public abstract class HibernateCompassWokoInitListener extends HibernateWokoInitListener {
 
   private static final WLogger logger = WLogger.getLogger(HibernateCompassWokoInitListener.class);

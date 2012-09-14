@@ -16,32 +16,65 @@
 
 package test
 
-import woko.hbcompass.HibernateCompassInMemWokoInitListener
-import net.sourceforge.jfacets.IFacetDescriptorManager
-import woko.push.PushFacetDescriptorManager
-import woko.persistence.ObjectStore
 import woko.hibernate.HibernateStore
 import woko.hibernate.TxCallback
+import woko.WokoIocInitListener
+import woko.ioc.WokoIocContainer
+import javax.servlet.ServletContext
+import org.picocontainer.DefaultPicoContainer
+import net.sourceforge.jfacets.annotations.AnnotatedFacetDescriptorManager
+import org.picocontainer.parameters.ConstantParameter
+import woko.pico.WokoIocPico
+import woko.inmemory.InMemoryUserManager
+import woko.users.RemoteUserStrategy
+import woko.hbcompass.HibernateCompassStore
+import woko.Woko
+import net.sourceforge.jfacets.annotations.DuplicatedKeyPolicyType
 
-class ContainerAuthWTInitIListener extends HibernateCompassInMemWokoInitListener {
+@Deprecated
+class ContainerAuthWTInitIListener extends WokoIocInitListener<HibernateStore,InMemoryUserManager, RemoteUserStrategy, AnnotatedFacetDescriptorManager> {
 
     @Override
-    protected IFacetDescriptorManager createFacetDescriptorManager() {
-        return new PushFacetDescriptorManager(super.createFacetDescriptorManager()) // Enable /push !
+    protected WokoIocContainer createIocContainer(ServletContext servletContext) {
+        List<String> packagesNames = getPackageNamesFromConfig(CTX_PARAM_FACET_PACKAGES, false);
+        List<String> pkgs = new ArrayList<String>();
+        if (packagesNames != null && packagesNames.size() > 0) {
+            pkgs.addAll(packagesNames);
+        }
+        pkgs.addAll(Woko.DEFAULT_FACET_PACKAGES);
+        DefaultPicoContainer pico = new DefaultPicoContainer();
+        pico.addComponent(
+                WokoIocContainer.FacetDescriptorManager,
+                new AnnotatedFacetDescriptorManager(pkgs)
+                    .setDuplicatedKeyPolicy(DuplicatedKeyPolicyType.FirstScannedWins)
+                    .initialize()
+        );
+        pico.addComponent(
+                WokoIocContainer.ObjectStore,
+                HibernateCompassStore.class,
+                new ConstantParameter(getPackageNamesFromConfig(HibernateStore.CTX_PARAM_PACKAGE_NAMES, true))
+        );
+        pico.addComponent(
+                WokoIocContainer.UserManager,
+                new InMemoryUserManager().addUser("wdevel", "wdevel", Arrays.asList("developer"))
+        );
+        pico.addComponent(
+                WokoIocContainer.UsernameResolutionStrategy,
+                RemoteUserStrategy.class
+        );
+        pico.start();
+        return new WokoIocPico(pico);
     }
 
     @Override
-    protected ObjectStore createObjectStore() {
-        HibernateStore o = super.createObjectStore()
-        o.doInTx({ store, session ->
+    protected void postInit(Woko<HibernateStore, InMemoryUserManager, RemoteUserStrategy, AnnotatedFacetDescriptorManager> w) {
+        w.getObjectStore().doInTx({ store, session ->
             EntityWithRelations ewr = new EntityWithRelations(id:1,name:"test")
             store.save(ewr)
             SubEntity se = new SubEntity(id:1,name:"testSub")
             se.daEntity = ewr
             store.save(se)
         } as TxCallback)
-        return o
     }
-
 
 }

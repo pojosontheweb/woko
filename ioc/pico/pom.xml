@@ -22,7 +22,7 @@
         <artifactId>woko-ioc</artifactId>
         <version>LATEST-SNAPSHOT</version>
     </parent>
-    <artifactId>woko-ioc-core</artifactId>
+    <artifactId>woko-ioc-pico</artifactId>
     <packaging>jar</packaging>
     <name>Woko - IOC core</name>
     <dependencies>
@@ -30,6 +30,11 @@
             <groupId>com.pojosontheweb</groupId>
             <artifactId>woko-core</artifactId>
             <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.picocontainer</groupId>
+            <artifactId>picocontainer</artifactId>
+            <version>2.14.1</version>
         </dependency>
     </dependencies>
 </project>

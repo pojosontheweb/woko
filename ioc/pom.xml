@@ -26,6 +26,6 @@
     <name>Woko - Inversion of Control / Dependency Injection</name>
     <packaging>pom</packaging>
     <modules>
-        <module>core</module>
+        <module>pico</module>
     </modules>
 </project>

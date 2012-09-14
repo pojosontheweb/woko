@@ -19,6 +19,7 @@ package woko.ri;
 import net.sourceforge.jfacets.IFacetDescriptorManager;
 import woko.push.PushFacetDescriptorManager;
 
+@Deprecated
 public class RiWokoInitListenerWithPush extends RiWokoInitListener{
     @Override
     protected IFacetDescriptorManager createFacetDescriptorManager() {

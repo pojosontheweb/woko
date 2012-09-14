@@ -7,7 +7,7 @@ public interface WokoIocContainer {
     static final String FacetDescriptorManager = "FacetDescriptorManager";
     static final String UsernameResolutionStrategy = "UsernameResolutionStrategy";
 
-    <T> T getComponent(String name);
+    <T> T getComponent(Object key);
 
     void close();
 

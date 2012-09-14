@@ -21,6 +21,7 @@ import woko.hbcompass.HibernateCompassInMemWokoInitListener
 import woko.push.PushFacetDescriptorManager
 import woko.ri.RiWokoInitListener
 
+@Deprecated
 class BuiltinAuthWTInitIListener extends RiWokoInitListener {
 
     @Override
