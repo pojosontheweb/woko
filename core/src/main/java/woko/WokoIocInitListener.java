@@ -17,6 +17,8 @@
 package woko;
 
 import net.sourceforge.jfacets.IFacetDescriptorManager;
+import net.sourceforge.jfacets.annotations.AnnotatedFacetDescriptorManager;
+import net.sourceforge.jfacets.annotations.DuplicatedKeyPolicyType;
 import woko.ioc.WokoIocContainer;
 import woko.persistence.ObjectStore;
 import woko.users.UserManager;
@@ -73,6 +75,10 @@ public abstract class WokoIocInitListener<OsType extends ObjectStore,
 
     private ServletContext servletContext;
 
+    public ServletContext getServletContext() {
+        return servletContext;
+    }
+
     public final void contextInitialized(ServletContextEvent e) {
         servletContext = e.getServletContext();
         servletContext.setAttribute(Woko.CTX_KEY, createWoko());
@@ -86,13 +92,13 @@ public abstract class WokoIocInitListener<OsType extends ObjectStore,
     }
 
     private Woko<OsType,UmType,UnsType,FdmType> createWoko() {
-        WokoIocContainer ioc = createIocContainer(servletContext);
+        WokoIocContainer ioc = createIocContainer();
         Woko<OsType,UmType,UnsType,FdmType> w = new Woko<OsType,UmType,UnsType,FdmType>(ioc, createFallbackRoles());
         postInit(w);
         return w;
     }
 
-    protected abstract WokoIocContainer createIocContainer(ServletContext servletContext);
+    protected abstract WokoIocContainer createIocContainer();
 
     protected List<String> createFallbackRoles() {
         return Arrays.asList(Woko.ROLE_GUEST);
@@ -100,5 +106,20 @@ public abstract class WokoIocInitListener<OsType extends ObjectStore,
 
     protected void postInit(Woko<OsType,UmType,UnsType,FdmType> w) { }
 
+    protected List<String> getFacetPackages() {
+        List<String> packagesNames = getPackageNamesFromConfig(CTX_PARAM_FACET_PACKAGES, false);
+        List<String> pkgs = new ArrayList<String>();
+        if (packagesNames != null && packagesNames.size() > 0) {
+            pkgs.addAll(packagesNames);
+        }
+        pkgs.addAll(Woko.DEFAULT_FACET_PACKAGES);
+        return pkgs;
+    }
+
+    protected AnnotatedFacetDescriptorManager createAnnotatedFdm() {
+        return new AnnotatedFacetDescriptorManager(getFacetPackages())
+                .setDuplicatedKeyPolicy(DuplicatedKeyPolicyType.FirstScannedWins)
+                .initialize();
+    }
 
 }
