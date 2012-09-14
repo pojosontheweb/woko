@@ -69,6 +69,7 @@
         <module>push</module>
         <module>ri</module>
         <module>archetype</module>
+        <module>mail</module>
         <module>usermanagement</module>
         <module>tooling</module>
         <module>wmaven</module>
