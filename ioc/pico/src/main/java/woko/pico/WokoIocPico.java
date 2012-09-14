@@ -3,7 +3,6 @@ package woko.pico;
 import org.picocontainer.Disposable;
 import org.picocontainer.PicoContainer;
 import woko.ioc.WokoIocContainer;
-import woko.persistence.ObjectStore;
 
 public class WokoIocPico implements WokoIocContainer {
 
