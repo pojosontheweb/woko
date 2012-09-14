@@ -26,7 +26,7 @@ import net.sourceforge.stripes.controller.StripesFilter;
 import woko.facets.FacetNotFoundException;
 import woko.facets.WokoFacetContextFactory;
 import woko.facets.WokoProfileRepository;
-import woko.ioc.BackCompatContainer;
+import woko.ioc.SimpleWokoIocContainer;
 import woko.ioc.WokoIocContainer;
 import woko.persistence.ObjectStore;
 import woko.users.UserManager;
@@ -88,7 +88,7 @@ public class Woko<
                 List<String> fallbackRoles,
                 FdmType facetDescriptorManager,
                 UnsType usernameResolutionStrategy) {
-        iocContainer = new BackCompatContainer(objectStore, userManager, usernameResolutionStrategy, facetDescriptorManager);
+        iocContainer = new SimpleWokoIocContainer(objectStore, userManager, usernameResolutionStrategy, facetDescriptorManager);
         this.fallbackRoles = fallbackRoles;
         init();
     }

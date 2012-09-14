@@ -9,11 +9,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class BackCompatContainer implements WokoIocContainer {
+public class SimpleWokoIocContainer implements WokoIocContainer {
 
     private final Map<Object,Object> components = new HashMap<Object, Object>();
 
-    public BackCompatContainer(ObjectStore objectStore, UserManager userManager, UsernameResolutionStrategy usernameResolutionStrategy, IFacetDescriptorManager facetDescriptorManager) {
+    public SimpleWokoIocContainer(ObjectStore objectStore, UserManager userManager, UsernameResolutionStrategy usernameResolutionStrategy, IFacetDescriptorManager facetDescriptorManager) {
         addComponent(ObjectStore, objectStore);
         addComponent(UserManager, userManager);
         addComponent(UsernameResolutionStrategy, usernameResolutionStrategy);
