@@ -40,7 +40,12 @@ import java.io.InputStreamReader;
 import java.text.MessageFormat;
 import java.util.*;
 
-public class Woko {
+public class Woko<
+        OsType extends ObjectStore,
+        UmType extends UserManager,
+        UnsType extends UsernameResolutionStrategy,
+        FdmType extends IFacetDescriptorManager
+        > {
 
     public static final String ENVI_FILE = "woko.environment";
 
@@ -57,23 +62,32 @@ public class Woko {
     public static final String CTX_KEY = "woko";
     public static final String REQ_ATTR_FACET = "facet";
 
-    private final UserManager userManager;
-    private final ObjectStore objectStore;
+    private final UmType userManager;
+    private final OsType objectStore;
     private final List<String> fallbackRoles;
     private final IFacetDescriptorManager facetDescriptorManager;
-    private UsernameResolutionStrategy usernameResolutionStrategy;
+    private final UnsType usernameResolutionStrategy;
 
-    public static Woko getWoko(ServletContext ctx) {
-        return (Woko) ctx.getAttribute(CTX_KEY);
+    public static <
+            OsType extends ObjectStore,
+            UmType extends UserManager,
+            UnsType extends UsernameResolutionStrategy,
+            FdmType extends IFacetDescriptorManager> Woko<OsType,UmType,UnsType,FdmType> getWoko(ServletContext ctx) {
+        @SuppressWarnings("unchecked")
+        Woko<OsType,UmType,UnsType,FdmType> woko = (Woko<OsType,UmType,UnsType,FdmType>)ctx.getAttribute(CTX_KEY);
+        if (woko==null) {
+            throw new IllegalStateException("Unable to get Woko from servlet context : not bound under " + CTX_KEY);
+        }
+        return woko;
     }
 
     protected JFacets jFacets;
 
-    public Woko(ObjectStore objectStore,
-                UserManager userManager,
+    public Woko(OsType objectStore,
+                UmType userManager,
                 List<String> fallbackRoles,
-                IFacetDescriptorManager facetDescriptorManager,
-                UsernameResolutionStrategy usernameResolutionStrategy) {
+                FdmType facetDescriptorManager,
+                UnsType usernameResolutionStrategy) {
         this.objectStore = objectStore;
         this.userManager = userManager;
         this.fallbackRoles = Collections.unmodifiableList(fallbackRoles);
@@ -82,7 +96,7 @@ public class Woko {
         init();
     }
 
-    private final Woko init() {
+    private Woko init() {
         logger.info("Initializing Woko...");
         initJFacets();
         customInit();
@@ -124,11 +138,11 @@ public class Woko {
         return fallbackRoles;
     }
 
-    public ObjectStore getObjectStore() {
+    public OsType getObjectStore() {
         return objectStore;
     }
 
-    public UserManager getUserManager() {
+    public UmType getUserManager() {
         return userManager;
     }
 
@@ -150,7 +164,7 @@ public class Woko {
         return getFacet(name, request, targetObject, null);
     }
 
-    public Object getFacet(String name, HttpServletRequest request, Object targetObject, Class targetObjectClass, boolean throwIfNotFound) {
+    public Object getFacet(String name, HttpServletRequest request, Object targetObject, Class<?> targetObjectClass, boolean throwIfNotFound) {
         Object f = getFacet(name, request, targetObject, targetObjectClass);
         if (f == null && throwIfNotFound) {
             throw new FacetNotFoundException(name, targetObject, targetObjectClass, getUsername(request));
@@ -158,7 +172,7 @@ public class Woko {
         return f;
     }
 
-    public Object getFacet(String name, HttpServletRequest request, Object targetObject, Class targetObjectClass) {
+    public Object getFacet(String name, HttpServletRequest request, Object targetObject, Class<?> targetObjectClass) {
         logger.debug("Trying to get facet " + name + " for target object " + targetObject + ", targetObjectClass " + targetObjectClass + "...");
         String username = getUsername(request);
         List<String> roles;
@@ -215,7 +229,7 @@ public class Woko {
         return sb.toString();
     }
 
-    public UsernameResolutionStrategy getUsernameResolutionStrategy() {
+    public UnsType getUsernameResolutionStrategy() {
         return usernameResolutionStrategy;
     }
 

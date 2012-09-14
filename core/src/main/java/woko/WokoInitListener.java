@@ -69,12 +69,12 @@ public abstract class WokoInitListener implements ServletContextListener {
         return servletContext;
     }
 
-    public void contextInitialized(ServletContextEvent e) {
+    public final void contextInitialized(ServletContextEvent e) {
         servletContext = e.getServletContext();
         servletContext.setAttribute(Woko.CTX_KEY, createWoko());
     }
 
-    public void contextDestroyed(ServletContextEvent e) {
+    public final void contextDestroyed(ServletContextEvent e) {
         Woko woko = Woko.getWoko(e.getServletContext());
         if (woko != null) {
             woko.close();
