@@ -1,39 +1,38 @@
 package woko.ioc;
 
+import net.sourceforge.jfacets.IFacetDescriptorManager;
 import woko.persistence.ObjectStore;
 import woko.users.UserManager;
 import woko.users.UsernameResolutionStrategy;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-public class BackCompatContainer<OsType extends ObjectStore,
-        UmType extends UserManager,
-        UnsType extends UsernameResolutionStrategy> implements WokoIocContainer {
+public class BackCompatContainer implements WokoIocContainer {
 
-    private final OsType objectStore;
-    private final UmType userManager;
-    private final UnsType usernameResolutionStrategy;
+    private final Map<String,Object> components = new HashMap<String, Object>();
 
-    private final Map<Class<?>,Object> components = new HashMap<Class<?>, Object>();
-
-    public BackCompatContainer(OsType objectStore, UmType userManager, UnsType usernameResolutionStrategy) {
-        this.objectStore = objectStore;
-        this.userManager = userManager;
-        this.usernameResolutionStrategy = usernameResolutionStrategy;
+    public BackCompatContainer(ObjectStore objectStore, UserManager userManager, UsernameResolutionStrategy usernameResolutionStrategy, IFacetDescriptorManager facetDescriptorManager) {
+        addComponent(ObjectStore, objectStore);
+        addComponent(UserManager, userManager);
+        addComponent(UsernameResolutionStrategy, usernameResolutionStrategy);
+        addComponent(FacetDescriptorManager, facetDescriptorManager);
     }
 
-    public void addComponents(Object... components) {
-        for (Object o : components) {
-            this.components.put(o.getClass(), o);
-        }
+    public void addComponent(String name, Object component) {
+        this.components.put(name, component);
     }
 
     @Override
-    public <T> T getComponent(Class<T> componentClass) {
+    public <T> T getComponent(String name) {
         @SuppressWarnings("unchecked")
-        T o = (T)this.components.get(componentClass);
+        T o = (T)this.components.get(name);
         return o;
+    }
+
+    public void close() {
+        components.clear();
     }
 
 }

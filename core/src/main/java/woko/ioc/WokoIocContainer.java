@@ -2,6 +2,13 @@ package woko.ioc;
 
 public interface WokoIocContainer {
 
-    <T> T getComponent(Class<T> componentClass);
+    static final String ObjectStore = "ObjectStore";
+    static final String UserManager = "UserManager";
+    static final String FacetDescriptorManager = "FacetDescriptorManager";
+    static final String UsernameResolutionStrategy = "UsernameResolutionStrategy";
+
+    <T> T getComponent(String name);
+
+    void close();
 
 }

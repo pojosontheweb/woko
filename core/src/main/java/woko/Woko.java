@@ -26,6 +26,8 @@ import net.sourceforge.stripes.controller.StripesFilter;
 import woko.facets.FacetNotFoundException;
 import woko.facets.WokoFacetContextFactory;
 import woko.facets.WokoProfileRepository;
+import woko.ioc.BackCompatContainer;
+import woko.ioc.WokoIocContainer;
 import woko.persistence.ObjectStore;
 import woko.users.UserManager;
 import woko.users.UsernameResolutionStrategy;
@@ -62,12 +64,6 @@ public class Woko<
     public static final String CTX_KEY = "woko";
     public static final String REQ_ATTR_FACET = "facet";
 
-    private final UmType userManager;
-    private final OsType objectStore;
-    private final List<String> fallbackRoles;
-    private final IFacetDescriptorManager facetDescriptorManager;
-    private final UnsType usernameResolutionStrategy;
-
     public static <
             OsType extends ObjectStore,
             UmType extends UserManager,
@@ -83,20 +79,27 @@ public class Woko<
 
     protected JFacets jFacets;
 
+    private WokoIocContainer iocContainer = null;
+    private List<String> fallbackRoles = null;
+
+    @Deprecated
     public Woko(OsType objectStore,
                 UmType userManager,
                 List<String> fallbackRoles,
                 FdmType facetDescriptorManager,
                 UnsType usernameResolutionStrategy) {
-        this.objectStore = objectStore;
-        this.userManager = userManager;
-        this.fallbackRoles = Collections.unmodifiableList(fallbackRoles);
-        this.facetDescriptorManager = facetDescriptorManager;
-        this.usernameResolutionStrategy = usernameResolutionStrategy;
+        iocContainer = new BackCompatContainer(objectStore, userManager, usernameResolutionStrategy, facetDescriptorManager);
+        this.fallbackRoles = fallbackRoles;
         init();
     }
 
-    private Woko init() {
+    public Woko(WokoIocContainer ioc, List<String> fallbackRoles) {
+        this.iocContainer = ioc;
+        this.fallbackRoles = fallbackRoles;
+        init();
+    }
+
+    private void init() {
         logger.info("Initializing Woko...");
         initJFacets();
         customInit();
@@ -108,19 +111,19 @@ public class Woko<
         logger.info("             POJOs on the Web !");
         logger.info("");
         logger.info("Woko is ready :");
-        logger.info(" * userManager : " + userManager);
-        logger.info(" * objectStore : " + objectStore);
+        logger.info(" * userManager : " + getUserManager());
+        logger.info(" * objectStore : " + getObjectStore());
         logger.info(" * jFacets : " + jFacets);
         logger.info(" * fallbackRole : " + fallbackRoles);
-        logger.info(" * usernameResolutionStrategy : " + usernameResolutionStrategy);
-        return this;
+        logger.info(" * usernameResolutionStrategy : " + getUsernameResolutionStrategy());
+        logger.warn("Deprecated initialization... Consider going the IOC way ! Check out the docs...");
     }
 
     protected void initJFacets() {
         logger.info("Initializing JFacets...");
-        WokoProfileRepository profileRepository = new WokoProfileRepository(userManager);
+        WokoProfileRepository profileRepository = new WokoProfileRepository(getUserManager());
         WokoFacetContextFactory facetContextFactory = new WokoFacetContextFactory(this);
-        jFacets = new JFacetsBuilder(profileRepository, facetDescriptorManager).
+        jFacets = new JFacetsBuilder(profileRepository, getFacetDescriptorManager()).
                 setFacetContextFactory(facetContextFactory).
                 build();
         FacetDescriptor[] descriptors = jFacets.getFacetRepository().getFacetDescriptorManager().getDescriptors();
@@ -134,17 +137,30 @@ public class Woko<
     protected void customInit() {
     }
 
-    public List<String> getFallbackRoles() {
-        return fallbackRoles;
+    public final WokoIocContainer getIoc() {
+        return iocContainer;
+    }
+
+    public final List<String> getFallbackRoles() {
+        return Collections.unmodifiableList(fallbackRoles);
     }
 
     public OsType getObjectStore() {
-        return objectStore;
+        return iocContainer.getComponent(WokoIocContainer.ObjectStore);
     }
 
     public UmType getUserManager() {
-        return userManager;
+        return iocContainer.getComponent(WokoIocContainer.UserManager);
     }
+
+    public FdmType getFacetDescriptorManager() {
+        return iocContainer.getComponent(WokoIocContainer.FacetDescriptorManager);
+    }
+
+    public UnsType getUsernameResolutionStrategy() {
+        return iocContainer.getComponent(WokoIocContainer.UsernameResolutionStrategy);
+    }
+
 
     public JFacets getJFacets() {
         return jFacets;
@@ -180,7 +196,7 @@ public class Woko<
             roles = fallbackRoles;
             logger.debug("Username not supplied, using fallback roles : " + fallbackRoles);
         } else {
-            roles = userManager.getRoles(username);
+            roles = getUserManager().getRoles(username);
             if (roles == null || roles.size() == 0) {
                 logger.debug("No roles returned for user '" + username + "', using fallback roles : " + fallbackRoles);
                 roles = fallbackRoles;
@@ -213,10 +229,11 @@ public class Woko<
     }
 
     public String getUsername(HttpServletRequest request) {
-        return usernameResolutionStrategy.getUsername(request);
+        return getUsernameResolutionStrategy().getUsername(request);
     }
 
     public String facetUrl(String facetName, Object obj) {
+        ObjectStore objectStore = getObjectStore();
         String className = objectStore.getClassMapping(obj.getClass());
         String id = objectStore.getKey(obj);
         StringBuilder sb = new StringBuilder("/").
@@ -227,10 +244,6 @@ public class Woko<
             sb.append("/").append(id);
         }
         return sb.toString();
-    }
-
-    public UnsType getUsernameResolutionStrategy() {
-        return usernameResolutionStrategy;
     }
 
     public static IFacetDescriptorManager createFacetDescriptorManager(List<String> packageNames) {
