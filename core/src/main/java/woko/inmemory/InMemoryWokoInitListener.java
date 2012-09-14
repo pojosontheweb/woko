@@ -16,7 +16,6 @@
 
 package woko.inmemory;
 
-import woko.Woko;
 import woko.WokoInitListener;
 import woko.persistence.ObjectStore;
 import woko.users.UserManager;
