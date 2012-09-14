@@ -39,6 +39,8 @@ public class HibernateStore implements ObjectStore {
 
     public static final String DEFAULT_HIBERNATE_CFG_XML = "/woko_default_hibernate.cfg.xml";
 
+    public static final String CTX_PARAM_PACKAGE_NAMES = "Woko.Hibernate.Packages";
+
     private static final WLogger log = WLogger.getLogger(HibernateStore.class);
 
     private final HibernatePrimaryKeyConverter primaryKeyConverter;

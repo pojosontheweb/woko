@@ -21,6 +21,7 @@ import woko.users.UserManager;
 
 import java.util.Arrays;
 
+@Deprecated
 public class HibernateCompassInMemWokoInitListener extends HibernateCompassWokoInitListener {
 
   protected UserManager createUserManager() {

@@ -53,7 +53,7 @@ public class InMemoryUserManager implements UserManager {
     return pwd != null && pwd.equals(extractPassword(request));
   }
 
-  public void addUser(String username, String password, List<String> roles) {
+  public InMemoryUserManager addUser(String username, String password, List<String> roles) {
     if (users.containsKey(username)) {
       throw new IllegalArgumentException("User " + username + " already exists");
     }
@@ -62,6 +62,7 @@ public class InMemoryUserManager implements UserManager {
     imu.setPassword(password);
     imu.setRoles(roles);
     users.put(username, imu);
+    return this;
   }
 
 }
