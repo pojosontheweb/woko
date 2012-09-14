@@ -30,6 +30,8 @@ import woko.users.RemoteUserStrategy
 import woko.hbcompass.HibernateCompassStore
 import woko.Woko
 import net.sourceforge.jfacets.annotations.DuplicatedKeyPolicyType
+import org.picocontainer.behaviors.OptInCaching
+import static org.picocontainer.Characteristics.CACHE;
 
 @Deprecated
 class ContainerAuthWTInitIListener extends WokoIocInitListener<HibernateStore,InMemoryUserManager, RemoteUserStrategy, AnnotatedFacetDescriptorManager> {
@@ -42,14 +44,14 @@ class ContainerAuthWTInitIListener extends WokoIocInitListener<HibernateStore,In
             pkgs.addAll(packagesNames);
         }
         pkgs.addAll(Woko.DEFAULT_FACET_PACKAGES);
-        DefaultPicoContainer pico = new DefaultPicoContainer();
+        DefaultPicoContainer pico = new DefaultPicoContainer(new OptInCaching());
         pico.addComponent(
                 WokoIocContainer.FacetDescriptorManager,
                 new AnnotatedFacetDescriptorManager(pkgs)
                     .setDuplicatedKeyPolicy(DuplicatedKeyPolicyType.FirstScannedWins)
                     .initialize()
         );
-        pico.addComponent(
+        pico.as(CACHE).addComponent(
                 WokoIocContainer.ObjectStore,
                 HibernateCompassStore.class,
                 new ConstantParameter(getPackageNamesFromConfig(HibernateStore.CTX_PARAM_PACKAGE_NAMES, true))
@@ -58,7 +60,7 @@ class ContainerAuthWTInitIListener extends WokoIocInitListener<HibernateStore,In
                 WokoIocContainer.UserManager,
                 new InMemoryUserManager().addUser("wdevel", "wdevel", Arrays.asList("developer"))
         );
-        pico.addComponent(
+        pico.as(CACHE).addComponent(
                 WokoIocContainer.UsernameResolutionStrategy,
                 RemoteUserStrategy.class
         );
