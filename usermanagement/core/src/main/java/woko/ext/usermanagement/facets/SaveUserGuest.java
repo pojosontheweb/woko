@@ -8,14 +8,10 @@ import net.sourceforge.stripes.action.RedirectResolution;
 import net.sourceforge.stripes.action.Resolution;
 import net.sourceforge.stripes.validation.LocalizableError;
 import woko.Woko;
-import woko.ext.usermanagement.core.AccountStatus;
-import woko.ext.usermanagement.core.DatabaseUserManager;
-import woko.ext.usermanagement.core.User;
+import woko.ext.usermanagement.core.*;
 import woko.facets.builtin.Save;
 import woko.facets.builtin.developer.SaveImpl;
 import woko.persistence.ObjectStore;
-
-import java.util.Collections;
 import java.util.List;
 
 @FacetKey(name= Save.FACET_NAME, profileId = "guest", targetObjectType = User.class)
@@ -34,7 +30,18 @@ public class SaveUserGuest extends SaveImpl implements IInstanceFacet {
             if (um.getUserByUsername(username)!=null) {
                 abc.getValidationErrors().addGlobalError(new LocalizableError("woko.ext.usermanagement.user.register.registration.ko.username.already.taken"));
             } else {
-                // username not taken, save the user
+                // username not taken
+                // register user if user manager supports it
+                if (um instanceof RegistrationAwareUserManager) {
+                    @SuppressWarnings("unchecked")
+                    RegistrationAwareUserManager<User> registrationAwareUserManager =
+                            (RegistrationAwareUserManager<User>)um;
+                    RegistrationDetails<User> registration = registrationAwareUserManager.createRegistration(user);
+                    // TODO send email to user with registration details
+                    System.out.println(registration);
+
+                }
+                // save the user
                 abc.getMessages().add(new LocalizableMessage("woko.ext.usermanagement.user.register.registration.ok.message"));
                 woko.getObjectStore().save(user);
             }
