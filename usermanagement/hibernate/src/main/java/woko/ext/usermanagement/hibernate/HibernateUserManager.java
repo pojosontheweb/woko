@@ -31,15 +31,12 @@ import woko.persistence.ResultIterator;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HibernateUserManager extends DatabaseUserManager {
+public class HibernateUserManager<U extends User>
+        extends DatabaseUserManager<HibernateUserManager<U>,U> {
 
     private final HibernateStore hibernateStore;
 
-    public HibernateUserManager(HibernateStore hibernateStore) {
-        this(hibernateStore, HbUser.class);
-    }
-
-    public HibernateUserManager(HibernateStore hibernateStore, Class<? extends User> userClass) {
+    public HibernateUserManager(HibernateStore hibernateStore, Class<U> userClass) {
         super(userClass);
         this.hibernateStore = hibernateStore;
     }
@@ -50,7 +47,8 @@ public class HibernateUserManager extends DatabaseUserManager {
     }
 
     @Override
-    public User getUserByUsername(String username) {
+    @SuppressWarnings("unchecked")
+    public U getUserByUsername(String username) {
         Session s = hibernateStore.getSession();
         List l = s.createCriteria(getUserClass())
                 .add(Restrictions.eq("username", username))
@@ -62,11 +60,11 @@ public class HibernateUserManager extends DatabaseUserManager {
         if (l.size()>1) {
             throw new IllegalStateException("more than 1 users with username==" + username);
         }
-        return (User)l.get(0);
+        return (U)l.get(0);
     }
 
     @Override
-    public ResultIterator<User> listUsers(Integer start, Integer limit) {
+    public ResultIterator<U> listUsers(Integer start, Integer limit) {
         // TODO invoke store "list"
         Session s = hibernateStore.getSession();
         Criteria crit =  s.createCriteria(getUserClass());
@@ -81,24 +79,24 @@ public class HibernateUserManager extends DatabaseUserManager {
             lm = limit;
         }
         @SuppressWarnings("unchecked")
-        List<User> l = (List<User>)crit.list();
+        List<U> l = (List<U>)crit.list();
 
         // second request (count)
         String query = new StringBuilder("select count(*) from ").append(getUserClass().getSimpleName()).toString();
         Long count = (Long)s.createQuery(query).list().get(0);
 
-        return new ListResultIterator<User>(l, st, lm, count.intValue());
+        return new ListResultIterator<U>(l, st, lm, count.intValue());
     }
 
 
     @Override
-    protected User createUser(final String username, final String password, final List<String> roles) {
-        return getHibernateStore().doInTxWithResult(new TxCallbackWithResult<User>() {
+    protected U createUser(final String username, final String password, final List<String> roles) {
+        return getHibernateStore().doInTxWithResult(new TxCallbackWithResult<U>() {
             @Override
-            public User execute(HibernateStore store, Session session) throws Exception {
-                User u = getUserByUsername(username);
+            public U execute(HibernateStore store, Session session) throws Exception {
+                U u = getUserByUsername(username);
                 if (u==null) {
-                    User user = HibernateUserManager.this.getUserClass().newInstance();
+                    U user = HibernateUserManager.this.getUserClass().newInstance();
                     user.setUsername(username);
                     user.setPassword(encodePassword(password));
                     user.setAccountStatus(AccountStatus.Active);

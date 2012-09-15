@@ -42,7 +42,7 @@ import java.io.InputStreamReader;
 import java.text.MessageFormat;
 import java.util.*;
 
-public class Woko<
+public final class Woko<
         OsType extends ObjectStore,
         UmType extends UserManager,
         UnsType extends UsernameResolutionStrategy,
@@ -102,7 +102,6 @@ public class Woko<
     private void init() {
         logger.info("Initializing Woko...");
         initJFacets();
-        customInit();
         logger.info("");
         logger.info("__       __     _  __");
         logger.info("\\ \\  _  / /___ | |/ / ___");
@@ -116,10 +115,9 @@ public class Woko<
         logger.info(" * jFacets : " + jFacets);
         logger.info(" * fallbackRole : " + fallbackRoles);
         logger.info(" * usernameResolutionStrategy : " + getUsernameResolutionStrategy());
-        logger.warn("Deprecated initialization... Consider going the IOC way ! Check out the docs...");
     }
 
-    protected void initJFacets() {
+    private void initJFacets() {
         logger.info("Initializing JFacets...");
         WokoProfileRepository profileRepository = new WokoProfileRepository(getUserManager());
         WokoFacetContextFactory facetContextFactory = new WokoFacetContextFactory(this);
@@ -134,9 +132,6 @@ public class Woko<
         logger.info("JFacets init OK.");
     }
 
-    protected void customInit() {
-    }
-
     public final WokoIocContainer getIoc() {
         return iocContainer;
     }
@@ -145,50 +140,47 @@ public class Woko<
         return Collections.unmodifiableList(fallbackRoles);
     }
 
-    public OsType getObjectStore() {
+    public final OsType getObjectStore() {
         return iocContainer.getComponent(WokoIocContainer.ObjectStore);
     }
 
-    public UmType getUserManager() {
+    public final UmType getUserManager() {
         return iocContainer.getComponent(WokoIocContainer.UserManager);
     }
 
-    public FdmType getFacetDescriptorManager() {
+    public final FdmType getFacetDescriptorManager() {
         return iocContainer.getComponent(WokoIocContainer.FacetDescriptorManager);
     }
 
-    public UnsType getUsernameResolutionStrategy() {
+    public final UnsType getUsernameResolutionStrategy() {
         return iocContainer.getComponent(WokoIocContainer.UsernameResolutionStrategy);
     }
 
-
-    public JFacets getJFacets() {
+    public final JFacets getJFacets() {
         return jFacets;
     }
 
     public final void close() {
-        logger.info("Closing...");
-        doClose();
+        logger.info("Closing IOC container...");
+        iocContainer.close();
         logger.info("Woko has been closed.");
     }
 
-    protected void doClose() {
-        this.getObjectStore().close();
+    @SuppressWarnings("unchecked")
+    public final <T> T getFacet(String name, HttpServletRequest request, Object targetObject) {
+        return (T)getFacet(name, request, targetObject, null);
     }
 
-    public Object getFacet(String name, HttpServletRequest request, Object targetObject) {
-        return getFacet(name, request, targetObject, null);
-    }
-
-    public Object getFacet(String name, HttpServletRequest request, Object targetObject, Class<?> targetObjectClass, boolean throwIfNotFound) {
-        Object f = getFacet(name, request, targetObject, targetObjectClass);
+    public final <T> T getFacet(String name, HttpServletRequest request, Object targetObject, Class<?> targetObjectClass, boolean throwIfNotFound) {
+        @SuppressWarnings("unchecked")
+        T f = getFacet(name, request, targetObject, targetObjectClass);
         if (f == null && throwIfNotFound) {
             throw new FacetNotFoundException(name, targetObject, targetObjectClass, getUsername(request));
         }
         return f;
     }
 
-    public Object getFacet(String name, HttpServletRequest request, Object targetObject, Class<?> targetObjectClass) {
+    public <T> T getFacet(String name, HttpServletRequest request, Object targetObject, Class<?> targetObjectClass) {
         logger.debug("Trying to get facet " + name + " for target object " + targetObject + ", targetObjectClass " + targetObjectClass + "...");
         String username = getUsername(request);
         List<String> roles;
@@ -216,7 +208,8 @@ public class Woko<
         }
         for (String role : roles) {
             logger.debug("Trying role : " + role);
-            Object facet = jFacets.getFacet(name, role, targetObject, targetObjectClass);
+            @SuppressWarnings("unchecked")
+            T facet = (T)jFacets.getFacet(name, role, targetObject, targetObjectClass);
             if (facet != null) {
                 request.setAttribute(name, facet);
                 request.setAttribute(REQ_ATTR_FACET, facet);

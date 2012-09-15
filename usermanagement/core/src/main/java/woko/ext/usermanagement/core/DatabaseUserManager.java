@@ -22,12 +22,13 @@ import woko.util.Util;
 import woko.util.WLogger;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.xml.crypto.Data;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public abstract class DatabaseUserManager implements UserManager {
+public abstract class DatabaseUserManager<T extends DatabaseUserManager<T, U>, U extends User> implements UserManager {
 
     private static final WLogger logger = WLogger.getLogger(DatabaseUserManager.class);
 
@@ -37,7 +38,7 @@ public abstract class DatabaseUserManager implements UserManager {
     private String wDevelUsername = "wdevel";
     private String wDevelPassword = "wdevel";
 
-    private final Class<? extends User> userClass;
+    private final Class<U> userClass;
 
     private static final List<String> DEFAULT_ROLES;
 
@@ -49,17 +50,18 @@ public abstract class DatabaseUserManager implements UserManager {
 
     private List<String> defaultRoles = DEFAULT_ROLES;
 
-    protected DatabaseUserManager(Class<? extends User> userClass) {
+    protected DatabaseUserManager(Class<U> userClass) {
         this.userClass = userClass;
     }
 
-    public Class<? extends User> getUserClass() {
+    public Class<U> getUserClass() {
         return userClass;
     }
 
-    public DatabaseUserManager setRequestParameterName(String reqParamName) {
+    @SuppressWarnings("unchecked")
+    public T setRequestParameterName(String reqParamName) {
         this.reqParamName = reqParamName;
-        return this;
+        return (T)this;
     }
 
     public String getReqParamName() {
@@ -74,31 +76,35 @@ public abstract class DatabaseUserManager implements UserManager {
         return wDevelPassword;
     }
 
-    public DatabaseUserManager setDefaultRoles(List<String> defaultRoles) {
+    @SuppressWarnings("unchecked")
+    public T setDefaultRoles(List<String> defaultRoles) {
         this.defaultRoles = defaultRoles;
-        return this;
+        return (T)this;
     }
 
     public List<String> getDefaultRoles() {
         return defaultRoles;
     }
 
-    public DatabaseUserManager setDeveloperUsername(String wDevelUsername) {
+    @SuppressWarnings("unchecked")
+    public T setDeveloperUsername(String wDevelUsername) {
         this.wDevelUsername = wDevelUsername;
-        return this;
+        return (T)this;
     }
 
-    public DatabaseUserManager setDeveloperPassword(String wDevelPassword) {
+    @SuppressWarnings("unchecked")
+    public T setDeveloperPassword(String wDevelPassword) {
         this.wDevelPassword = wDevelPassword;
-        return this;
+        return (T)this;
     }
 
-    public DatabaseUserManager createDefaultUsers() {
+    @SuppressWarnings("unchecked")
+    public T createDefaultUsers() {
         createUser(wDevelUsername, wDevelPassword, defaultRoles);
-        return this;
+        return (T)this;
     }
 
-    protected abstract User createUser(String username, String password, List<String> roles);
+    protected abstract U createUser(String username, String password, List<String> roles);
 
     @Override
     public List<String> getRoles(String username) {
@@ -116,7 +122,7 @@ public abstract class DatabaseUserManager implements UserManager {
         return roles;
     }
 
-    public abstract User getUserByUsername(String username);
+    public abstract U getUserByUsername(String username);
 
     @Override
     public boolean authenticate(String username, HttpServletRequest request) {
@@ -125,7 +131,7 @@ public abstract class DatabaseUserManager implements UserManager {
         }
         Util.assertArg("request", request);
         // retrieve user
-        User u = getUserByUsername(username);
+        U u = getUserByUsername(username);
         if (u==null) {
             logger.warn("Authentication failure (no such user) for " + username);
             return false;
@@ -161,5 +167,5 @@ public abstract class DatabaseUserManager implements UserManager {
         return Integer.toString(clearPassword.hashCode());
     }
 
-    public abstract ResultIterator<User> listUsers(Integer start, Integer limit);
+    public abstract ResultIterator<U> listUsers(Integer start, Integer limit);
 }
