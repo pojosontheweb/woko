@@ -88,7 +88,7 @@
 
     <listener>
         <display-name>WokoInitListener</display-name>
-        <listener-class>test.UserManagementWTInitIListener</listener-class>
+        <listener-class>test.UserManagementWebtestsInitListener</listener-class>
     </listener>
 
     <context-param>

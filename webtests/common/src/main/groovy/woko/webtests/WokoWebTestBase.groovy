@@ -29,13 +29,17 @@ abstract class WokoWebTestBase extends WebtestCaseFixed {
     }
 
     void login() {
+        login("wdevel", "wdevel")
+    }
+
+    void login(String username, String password) {
         goToPage '/login'
         if (useContainerAuth) {
-            ant.setInputField name: 'j_username', value: 'wdevel'
-            ant.setInputField name: 'j_password', value: 'wdevel'
+            ant.setInputField name: 'j_username', value: username
+            ant.setInputField name: 'j_password', value: password
         } else {
-            ant.setInputField name:'username', value:'wdevel'
-            ant.setInputField name:'password', value:'wdevel'
+            ant.setInputField name:'username', value:username
+            ant.setInputField name:'password', value:password
         }
         ant.clickButton name: 'login'
         ant.verifyText 'You have been logged in'

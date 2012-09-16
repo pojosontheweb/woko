@@ -72,9 +72,7 @@ public abstract class FacetedObjectStore implements ObjectStore {
   private <T> T getFacet(Class<T> facetClass, String name, Object targetObject, Class<?> targetObjectClass) {
     HttpServletRequest request = getRequest();
     Woko<?,?,?,?> woko = getWoko();
-    @SuppressWarnings("unchecked")
-    T result = woko.getFacet(name, request, targetObject, targetObjectClass, true);
-    return result;
+    return woko.getFacet(name, request, targetObject, targetObjectClass, true);
   }
 
   @Override

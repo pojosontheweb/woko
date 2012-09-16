@@ -1,23 +1,23 @@
 package test;
 
-import net.sourceforge.jfacets.annotations.AnnotatedFacetDescriptorManager;
 import woko.WokoIocInitListener;
 import woko.auth.builtin.SessionUsernameResolutionStrategy;
 import woko.hbcompass.HibernateCompassStore;
 import woko.ioc.SimpleWokoIocContainer;
 import woko.ioc.WokoIocContainer;
+import woko.push.PushFacetDescriptorManager;
 
 public class UserManagementWebtestsInitListener
-        extends WokoIocInitListener<HibernateCompassStore,MyUserManager,SessionUsernameResolutionStrategy,AnnotatedFacetDescriptorManager> {
+        extends WokoIocInitListener<HibernateCompassStore, MyUserManager, SessionUsernameResolutionStrategy, PushFacetDescriptorManager> {
 
     @Override
-    protected WokoIocContainer createIocContainer() {
+    protected WokoIocContainer<HibernateCompassStore, MyUserManager, SessionUsernameResolutionStrategy, PushFacetDescriptorManager> createIocContainer() {
         HibernateCompassStore store = new HibernateCompassStore(getPackageNamesFromConfig(HibernateCompassStore.CTX_PARAM_PACKAGE_NAMES, true));
-        return new SimpleWokoIocContainer(
+        return new SimpleWokoIocContainer<HibernateCompassStore, MyUserManager, SessionUsernameResolutionStrategy, PushFacetDescriptorManager>(
                 store,
                 new MyUserManager(store).createDefaultUsers(),
                 new SessionUsernameResolutionStrategy(),
-                new AnnotatedFacetDescriptorManager(getFacetPackages())
+                new PushFacetDescriptorManager(createAnnotatedFdm())
         );
     }
 }

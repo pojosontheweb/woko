@@ -32,7 +32,55 @@ class UsermanagementTest extends WokoWebTestBase {
                     text:'.*wdevel.*', regex:true
             verifyXPath xpath:'/html/body/div/div[2]/div/div/table/tbody/tr[2]/td[2]/span/span',
                     text:'.*testuser.*', regex:true
+
+            goToPage '/users'
+            verifyXPath xpath:'/html/body/div/div[2]/div/div/table/tbody/tr/td[2]/span/span',
+                    text:'.*wdevel.*', regex:true
+            verifyXPath xpath:'/html/body/div/div[2]/div/div/table/tbody/tr[2]/td[2]/span/span',
+                    text:'.*testuser.*', regex:true
         }
+    }
+
+    void testRegister() {
+        webtest("testRegister") {
+
+            // register a new user
+
+            goToPage "/register"
+            verifyText text:"email"
+            verifyText text:"prop1"
+            verifyText text:"username"
+            verifyXPath xpath:"/html/body/div/div[2]/div/div/div[2]/div[2]/div/form/fieldset/div/div/input[@class='error input-xlarge wokoPropertyValueEdit java.lang.String-email']"
+            verifyXPath xpath:"/html/body/div/div[2]/div/div/div[2]/div[2]/div/form/fieldset/div[2]/div/input[@class='input-xlarge wokoPropertyValueEdit java.lang.String-prop1']"
+            verifyXPath xpath:"/html/body/div/div[2]/div/div/div[2]/div[2]/div/form/fieldset/div[3]/div/input[@class='error input-xlarge wokoPropertyValueEdit java.lang.String-username']"
+
+            setInputField name:'object.email', value:'funky@stuff.com'
+            setInputField name:'object.prop1', value:'Some Skunk Funk'
+            setInputField name:'object.username', value:'funkystuff'
+            clickButton xpath:'/html/body/div/div[2]/div/div/div[2]/div[2]/div/form/fieldset/div[4]/input' // save
+
+            verifyText text:'funky@stuff.com'
+
+            // check that user account exists using developer role
+            login()
+            goToPage '/users/MyUser?facet.page=101&facet.resultsPerPage=10'
+            verifyText text:'funkystuff'
+
+            // edit user
+            clickLink xpath:'/html/body/div/div[2]/div/div/table/tbody/tr[2]/td[6]/div/a[2]'
+            setSelectField xpath:'/html/body/div/div[2]/div/div/div/div[2]/div/form/fieldset/div/div/select', value:'Active'
+            setInputField xpath:'/html/body/div/div[2]/div/div/div/div[2]/div/form/fieldset/div[4]/div/input', value:'developer'
+            clickButton xpath: '/html/body/div/div[2]/div/div/div/div[2]/div/form/fieldset/div[6]/input'
+
+            // update user's password so we can log in
+            goToPage '/updateFunkyPassword'
+            verifyText 'OK'
+
+            // logout and try to authenticate with new user
+            logout()
+            login("funkystuff", "funkystuff")
+        }
+
     }
 
 
