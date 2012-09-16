@@ -10,8 +10,8 @@
 
 <%
     RenderListItem listItem = (RenderListItem)request.getAttribute(WokoFacets.renderListItem);
-    WokoFacetContext<?,?,?,?> fctx = (WokoFacetContext)listItem.getFacetContext();
-    Woko<?,?,?,?> woko = fctx.getWoko();
+    WokoFacetContext fctx = (WokoFacetContext)listItem.getFacetContext();
+    Woko woko = fctx.getWoko();
 
     Object result = fctx.getTargetObject();
     String title = Util.getTitle(request, result);

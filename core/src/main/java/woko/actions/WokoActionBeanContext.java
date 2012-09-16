@@ -23,12 +23,14 @@ import woko.persistence.ObjectStore;
 import woko.users.UserManager;
 import woko.users.UsernameResolutionStrategy;
 
-public class WokoActionBeanContext extends ActionBeanContext {
+public class WokoActionBeanContext<
+        OsType extends ObjectStore,
+        UmType extends UserManager,
+        UnsType extends UsernameResolutionStrategy,
+        FdmType extends IFacetDescriptorManager
+        > extends ActionBeanContext {
 
-  public <OsType extends ObjectStore,
-            UmType extends UserManager,
-            UnsType extends UsernameResolutionStrategy,
-            FdmType extends IFacetDescriptorManager> Woko<OsType,UmType,UnsType,FdmType> getWoko() {
+  public Woko<OsType,UmType,UnsType,FdmType> getWoko() {
     return Woko.getWoko(getServletContext());
   }
 

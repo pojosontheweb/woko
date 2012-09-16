@@ -208,7 +208,7 @@
             </thead>
             <tbody>
             <%
-                WokoStudio studio = (WokoStudio)request.getAttribute(WokoFacets.studio);
+                WokoStudio<?,?,?,?> studio = (WokoStudio)request.getAttribute(WokoFacets.studio);
                 int index = 0;
                 for (FacetDescriptor fd : studio.getFacetDescriptors()) {
                     String rowCssClass = index++ % 2 == 0 ? "even" : "odd";

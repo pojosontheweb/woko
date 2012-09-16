@@ -34,7 +34,7 @@ public class WokoStudio<
         UmType extends UserManager,
         UnsType extends UsernameResolutionStrategy,
         FdmType extends IFacetDescriptorManager
-        > extends BaseForwardResolutionFacet {
+        > extends BaseForwardResolutionFacet<OsType,UmType,UnsType,FdmType> {
 
     public static final String FRAGMENT_PATH = "/WEB-INF/woko/jsp/developer/studio.jsp";
 
@@ -43,7 +43,7 @@ public class WokoStudio<
     }
 
     public List<FacetDescriptor> getFacetDescriptors() {
-        IFacetDescriptorManager fdm = getFacetContext().getWoko().getJFacets().getFacetRepository().getFacetDescriptorManager();
+        FdmType fdm = getFacetContext().getWoko().getFacetDescriptorManager();
         FacetDescriptor[] descriptors = fdm.getDescriptors();
         return Arrays.asList(descriptors);
     }

@@ -1,5 +1,6 @@
 package woko.actions.auth.builtin;
 
+import net.sourceforge.jfacets.IFacetDescriptorManager;
 import net.sourceforge.stripes.action.*;
 import net.sourceforge.stripes.validation.LocalizableError;
 import net.sourceforge.stripes.validation.Validate;
@@ -7,13 +8,21 @@ import woko.Woko;
 import woko.actions.BaseActionBean;
 import woko.actions.WokoActionBeanContext;
 import woko.facets.builtin.auth.PostLoginFacet;
+import woko.persistence.ObjectStore;
+import woko.users.UserManager;
+import woko.users.UsernameResolutionStrategy;
 import woko.util.WLogger;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
 @UrlBinding("/login")
-public class WokoLogin extends BaseActionBean {
+public class WokoLogin<
+        OsType extends ObjectStore,
+        UmType extends UserManager,
+        UnsType extends UsernameResolutionStrategy,
+        FdmType extends IFacetDescriptorManager
+        > extends BaseActionBean<OsType,UmType,UnsType,FdmType> {
 
     private static final WLogger log = WLogger.getLogger(WokoLogin.class);
     private static final String KEY_MSG_LOGIN_FAILED = "woko.login.failed";
@@ -99,10 +108,10 @@ public class WokoLogin extends BaseActionBean {
         String user = authenticate();
         if (user != null) {
             // auth OK, invoke PostLogin facet if any
-            WokoActionBeanContext context = getContext();
+            WokoActionBeanContext<OsType,UmType,UnsType,FdmType> context = getContext();
             // bind username to http session
             context.getRequest().getSession().setAttribute(SESSION_ATTR_CURRENT_USER, user);
-            Woko<?,?,?,?> woko = context.getWoko();
+            Woko<OsType,UmType,UnsType,FdmType> woko = context.getWoko();
             PostLoginFacet pl = (PostLoginFacet)woko.getFacet(PostLoginFacet.FACET_NAME, context.getRequest(), null, Object.class);
             if (pl!=null) {
                 pl.execute(user);
