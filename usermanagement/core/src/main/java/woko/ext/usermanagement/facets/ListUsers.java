@@ -1,19 +1,28 @@
 package woko.ext.usermanagement.facets;
 
+import net.sourceforge.jfacets.IFacetDescriptorManager;
 import net.sourceforge.jfacets.annotations.FacetKey;
 import net.sourceforge.stripes.action.ActionBeanContext;
 import woko.ext.usermanagement.core.DatabaseUserManager;
 import woko.ext.usermanagement.core.User;
 import woko.facets.builtin.ListObjects;
 import woko.facets.builtin.developer.ListTabularImpl;
+import woko.persistence.ObjectStore;
 import woko.persistence.ResultIterator;
+import woko.users.UserManager;
+import woko.users.UsernameResolutionStrategy;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 @FacetKey(name= ListObjects.FACET_NAME, profileId = "usermanager", targetObjectType = User.class)
-public class ListUsers extends ListTabularImpl {
+public class ListUsers<
+        OsType extends ObjectStore,
+        UmType extends DatabaseUserManager,
+        UnsType extends UsernameResolutionStrategy,
+        FdmType extends IFacetDescriptorManager
+        > extends ListTabularImpl<OsType,UmType,UnsType,FdmType> {
 
     public static final List<String> PROP_NAMES;
 
@@ -27,8 +36,6 @@ public class ListUsers extends ListTabularImpl {
         PROP_NAMES = Collections.unmodifiableList(a);
     }
 
-    private ResultIterator results = null;
-
     @Override
     public List<String> getPropertyNames() {
         return PROP_NAMES;
@@ -36,7 +43,7 @@ public class ListUsers extends ListTabularImpl {
 
     @Override
     protected ResultIterator<?> createResultIterator(ActionBeanContext abc, int start, int limit) {
-        DatabaseUserManager dbUm = (DatabaseUserManager)getWoko().getUserManager();
+        DatabaseUserManager dbUm = getWoko().getUserManager();
         return dbUm.listUsers(start, limit);
     }
 }

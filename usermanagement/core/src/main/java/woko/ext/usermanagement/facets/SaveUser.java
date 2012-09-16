@@ -1,16 +1,25 @@
 package woko.ext.usermanagement.facets;
 
+import net.sourceforge.jfacets.IFacetDescriptorManager;
 import net.sourceforge.jfacets.annotations.FacetKey;
 import net.sourceforge.stripes.action.ActionBeanContext;
 import net.sourceforge.stripes.validation.Validate;
 import woko.ext.usermanagement.core.User;
 import woko.facets.builtin.Save;
 import woko.facets.builtin.developer.SaveImpl;
+import woko.persistence.ObjectStore;
+import woko.users.UserManager;
+import woko.users.UsernameResolutionStrategy;
 
 import java.util.ArrayList;
 
 @FacetKey(name= Save.FACET_NAME, profileId = "usermanager", targetObjectType = User.class)
-public class SaveUser extends SaveImpl {
+public class SaveUser<
+        OsType extends ObjectStore,
+        UmType extends UserManager,
+        UnsType extends UsernameResolutionStrategy,
+        FdmType extends IFacetDescriptorManager
+        > extends SaveImpl<OsType,UmType,UnsType,FdmType> {
 
     private String roles;
 

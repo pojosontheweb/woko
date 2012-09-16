@@ -16,13 +16,22 @@
 
 package woko.ext.usermanagement.facets;
 
+import net.sourceforge.jfacets.IFacetDescriptorManager;
 import net.sourceforge.jfacets.annotations.FacetKey;
 import woko.ext.usermanagement.core.User;
 import woko.facets.builtin.WokoFacets;
 import woko.facets.builtin.all.RenderTitleImpl;
+import woko.persistence.ObjectStore;
+import woko.users.UserManager;
+import woko.users.UsernameResolutionStrategy;
 
 @FacetKey(name= WokoFacets.renderTitle, profileId="all", targetObjectType = User.class)
-public class RenderUserTitle extends RenderTitleImpl {
+public class RenderUserTitle<
+        OsType extends ObjectStore,
+        UmType extends UserManager,
+        UnsType extends UsernameResolutionStrategy,
+        FdmType extends IFacetDescriptorManager
+        > extends RenderTitleImpl<OsType,UmType,UnsType,FdmType> {
 
     @Override
     public String getTitle() {

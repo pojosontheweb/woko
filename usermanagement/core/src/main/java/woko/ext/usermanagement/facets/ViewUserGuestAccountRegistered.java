@@ -1,5 +1,6 @@
 package woko.ext.usermanagement.facets;
 
+import net.sourceforge.jfacets.IFacetDescriptorManager;
 import net.sourceforge.jfacets.IInstanceFacet;
 import net.sourceforge.jfacets.annotations.FacetKey;
 import woko.Woko;
@@ -7,9 +8,17 @@ import woko.ext.usermanagement.core.AccountStatus;
 import woko.ext.usermanagement.core.User;
 import woko.facets.builtin.View;
 import woko.facets.builtin.developer.ViewImpl;
+import woko.persistence.ObjectStore;
+import woko.users.UserManager;
+import woko.users.UsernameResolutionStrategy;
 
 @FacetKey(name= View.FACET_NAME,profileId = "guest", targetObjectType = User.class)
-public class ViewUserGuestAccountRegistered extends ViewImpl implements IInstanceFacet {
+public class ViewUserGuestAccountRegistered<
+        OsType extends ObjectStore,
+        UmType extends UserManager,
+        UnsType extends UsernameResolutionStrategy,
+        FdmType extends IFacetDescriptorManager
+        > extends ViewImpl implements IInstanceFacet {
 
     @Override
     public String getPath() {

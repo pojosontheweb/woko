@@ -1,15 +1,24 @@
 package woko.ext.usermanagement.facets;
 
+import net.sourceforge.jfacets.IFacetDescriptorManager;
 import net.sourceforge.jfacets.annotations.FacetKey;
 import woko.ext.usermanagement.core.User;
 import woko.facets.builtin.RenderPropertyValueEdit;
 import woko.facets.builtin.all.RenderPropertyValueImpl;
+import woko.persistence.ObjectStore;
+import woko.users.UserManager;
+import woko.users.UsernameResolutionStrategy;
 
 import java.util.Iterator;
 import java.util.List;
 
 @FacetKey(name="renderPropertyValueEdit_roles", profileId="usermanager", targetObjectType = User.class)
-public class RenderPropertyValueEditUserRoles extends RenderPropertyValueImpl implements RenderPropertyValueEdit {
+public class RenderPropertyValueEditUserRoles<
+        OsType extends ObjectStore,
+        UmType extends UserManager,
+        UnsType extends UsernameResolutionStrategy,
+        FdmType extends IFacetDescriptorManager
+        > extends RenderPropertyValueImpl<OsType,UmType,UnsType,FdmType> implements RenderPropertyValueEdit {
 
     @Override
     public String getPath() {

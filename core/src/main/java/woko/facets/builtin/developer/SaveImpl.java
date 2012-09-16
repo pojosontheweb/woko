@@ -51,7 +51,15 @@ public class SaveImpl<
         if (validateFacet != null) {
             logger.debug("Validation facet found, validating before saving...");
             if (validateFacet.validate(abc)) {
+                // validation OK, store nb errors before call to doSave()
+                int nbErrs = abc.getValidationErrors().size();
                 doSave(abc);
+                if (abc.getValidationErrors().size()!=nbErrs) {
+                    logger.debug("doSave raised validation errors, not saving");
+                    // forward to the edit fragment
+                    Edit editFacet = woko.getFacet(WokoFacets.edit, abc.getRequest(), targetObject, clazz, true);
+                    return new ForwardResolution(editFacet.getFragmentPath());
+                }
             } else {
                 logger.debug("Validate facet raised validation errors, not saving");
                 // forward to the edit fragment
