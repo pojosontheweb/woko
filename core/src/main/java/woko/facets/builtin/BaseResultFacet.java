@@ -76,7 +76,7 @@ public abstract class BaseResultFacet extends BaseForwardRpcResolutionFacet impl
         return super.getResolution(abc);
     }
 
-    public static JSONObject resultIteratorToJson(Woko woko, HttpServletRequest request, ResultIterator resultIterator) {
+    public static JSONObject resultIteratorToJson(Woko<?,?,?,?> woko, HttpServletRequest request, ResultIterator<?> resultIterator) {
         try {
             JSONObject r = new JSONObject();
             r.put("totalSize", resultIterator.getTotalSize());

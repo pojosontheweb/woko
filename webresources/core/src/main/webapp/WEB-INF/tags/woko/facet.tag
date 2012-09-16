@@ -24,7 +24,6 @@
     if (targetObjectClass==null && targetObject!=null) {
         targetObjectClass = targetObject.getClass();
     }
-    Woko woko = Woko.getWoko(application);
     // binds facet to request, throws if not found
-    woko.getFacet(facetName, request, targetObject, targetObjectClass, throwIfNotFound);
+    Woko.getWoko(application).getFacet(facetName, request, targetObject, targetObjectClass, throwIfNotFound);
 %>

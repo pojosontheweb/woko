@@ -100,7 +100,7 @@ public class Util {
 
     private static RenderPropertyValue getRenderFacet(
             String facetName,
-            Woko woko,
+            Woko<?,?,?,?> woko,
             HttpServletRequest request,
             Object owningObject,
             String propertyName,
@@ -122,11 +122,11 @@ public class Util {
         return renderPropertyValue;
     }
 
-    public static RenderPropertyValue getRenderPropValueFacet(Woko woko, HttpServletRequest request, Object owningObject, String propertyName, Object propertyValue) {
+    public static RenderPropertyValue getRenderPropValueFacet(Woko<?,?,?,?> woko, HttpServletRequest request, Object owningObject, String propertyName, Object propertyValue) {
         return getRenderFacet(WokoFacets.renderPropertyValue, woko, request, owningObject, propertyName, propertyValue, true);
     }
 
-    public static RenderPropertyValue getRenderPropValueEditFacet(Woko woko, HttpServletRequest request, Object owningObject, String propertyName, Object propertyValue) {
+    public static RenderPropertyValue getRenderPropValueEditFacet(Woko<?,?,?,?> woko, HttpServletRequest request, Object owningObject, String propertyName, Object propertyValue) {
         String fName = WokoFacets.renderPropertyValueEdit;
         RenderPropertyValue renderPropertyValue = getRenderFacet(fName, woko, request, owningObject, propertyName, propertyValue, false);
         if (renderPropertyValue == null) {
@@ -206,7 +206,7 @@ public class Util {
 
     public static String getTitle(HttpServletRequest request, Object object) {
         assertArg("object", object);
-        Woko woko = Woko.getWoko(request.getSession().getServletContext());
+        Woko<?,?,?,?> woko = Woko.getWoko(request.getSession().getServletContext());
         RenderTitle rt = (RenderTitle)woko.getFacet(RenderTitle.FACET_NAME, request, object);
         if (rt==null) {
             return object.toString();

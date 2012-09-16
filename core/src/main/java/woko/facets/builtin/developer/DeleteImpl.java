@@ -78,8 +78,8 @@ public class DeleteImpl extends BaseResolutionFacet implements Delete {
             };
         }
         if (confirm != null) {
-            final WokoFacetContext facetContext = getFacetContext();
-            final Woko woko = facetContext.getWoko();
+            final WokoFacetContext<?,?,?,?> facetContext = getFacetContext();
+            final Woko<?,?,?,?> woko = facetContext.getWoko();
             final Object targetObject = facetContext.getTargetObject();
             woko.getObjectStore().delete(targetObject);
             abc.getMessages().add(new LocalizableMessage("woko.devel.delete.confirm"));

@@ -21,7 +21,7 @@
 <%@ page import="woko.facets.builtin.WokoFacets" %>
 <w:facet facetName="<%=WokoFacets.layout%>"/>
 <%
-    Woko woko = Woko.getWoko(application);
+    Woko<?,?,?,?> woko = Woko.getWoko(application);
 %>
 <c:set var="cp" value="${pageContext.request.contextPath}"/>
 <fmt:message bundle="${wokoBundle}" var="pageTitle" key="woko.devel.studio.pageTitle"/>

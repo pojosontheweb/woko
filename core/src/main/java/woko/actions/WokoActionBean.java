@@ -90,7 +90,7 @@ public class WokoActionBean extends BaseActionBean {
         }
         key = req.getParameter("key");
         logger.debug("Loading object for className=" + className + " and key=" + key);
-        Woko woko = getContext().getWoko();
+        Woko<?,?,?,?> woko = getContext().getWoko();
         ObjectStore objectStore = woko.getObjectStore();
         if (className!=null) {
             if (key!=null) {

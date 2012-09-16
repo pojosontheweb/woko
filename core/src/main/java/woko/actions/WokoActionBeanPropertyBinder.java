@@ -59,7 +59,7 @@ public class WokoActionBeanPropertyBinder extends DefaultActionBeanPropertyBinde
         ValidationErrors errorsSaved =  super.bind(bean, context, validate);
         ValidationErrors errorsUpdated = new ValidationErrors();
         if (bean instanceof WokoActionBean){
-            Woko woko = Woko.getWoko(context.getServletContext());
+            Woko<?,?,?,?> woko = Woko.getWoko(context.getServletContext());
             WokoActionBean wBean = (WokoActionBean)bean;
             String facetName = wBean.getFacetName();
             for(String key : errorsSaved.keySet()){

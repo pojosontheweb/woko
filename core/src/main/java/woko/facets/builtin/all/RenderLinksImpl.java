@@ -38,8 +38,8 @@ public class RenderLinksImpl extends BaseFragmentFacet implements RenderLinks {
 
     public List<Link> getLinks() {
         List<Link> links = new ArrayList<Link>();
-        WokoFacetContext facetContext = getFacetContext();
-        Woko woko = getFacetContext().getWoko();
+        WokoFacetContext<?,?,?,?> facetContext = getFacetContext();
+        Woko<?,?,?,?> woko = getFacetContext().getWoko();
         Object o = facetContext.getTargetObject();
         Class<?> oc = o.getClass();
         HttpServletRequest request = getFacetContext().getRequest();

@@ -34,8 +34,8 @@ public class SaveImpl extends BaseResolutionFacet implements Save {
 
     public Resolution getResolution(final ActionBeanContext abc) {
         // try to find a validation facet for the object
-        final WokoFacetContext facetContext = getFacetContext();
-        final Woko woko = facetContext.getWoko();
+        final WokoFacetContext<?,?,?,?> facetContext = getFacetContext();
+        final Woko<?,?,?,?> woko = facetContext.getWoko();
         final Object targetObject = facetContext.getTargetObject();
         Class<?> clazz = targetObject.getClass();
         Validate validateFacet = (Validate) woko.getFacet(WokoFacets.validate, abc.getRequest(), targetObject, clazz);

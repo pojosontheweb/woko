@@ -102,7 +102,7 @@ public class WokoLogin extends BaseActionBean {
             WokoActionBeanContext context = getContext();
             // bind username to http session
             context.getRequest().getSession().setAttribute(SESSION_ATTR_CURRENT_USER, user);
-            Woko woko = context.getWoko();
+            Woko<?,?,?,?> woko = context.getWoko();
             PostLoginFacet pl = (PostLoginFacet)woko.getFacet(PostLoginFacet.FACET_NAME, context.getRequest(), null, Object.class);
             if (pl!=null) {
                 pl.execute(user);

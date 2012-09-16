@@ -79,7 +79,7 @@ public class Woko<
 
     protected JFacets jFacets;
 
-    private WokoIocContainer iocContainer = null;
+    private WokoIocContainer<OsType,UmType,UnsType,FdmType> iocContainer = null;
     private List<String> fallbackRoles = null;
 
     @Deprecated
@@ -88,12 +88,12 @@ public class Woko<
                 List<String> fallbackRoles,
                 FdmType facetDescriptorManager,
                 UnsType usernameResolutionStrategy) {
-        iocContainer = new SimpleWokoIocContainer(objectStore, userManager, usernameResolutionStrategy, facetDescriptorManager);
+        iocContainer = new SimpleWokoIocContainer<OsType,UmType,UnsType,FdmType>(objectStore, userManager, usernameResolutionStrategy, facetDescriptorManager);
         this.fallbackRoles = fallbackRoles;
         init();
     }
 
-    public Woko(WokoIocContainer ioc, List<String> fallbackRoles) {
+    public Woko(WokoIocContainer<OsType,UmType,UnsType,FdmType> ioc, List<String> fallbackRoles) {
         this.iocContainer = ioc;
         this.fallbackRoles = fallbackRoles;
         init();
@@ -137,7 +137,7 @@ public class Woko<
     protected void customInit() {
     }
 
-    public final WokoIocContainer getIoc() {
+    public final WokoIocContainer<OsType,UmType,UnsType,FdmType> getIoc() {
         return iocContainer;
     }
 
@@ -146,21 +146,20 @@ public class Woko<
     }
 
     public OsType getObjectStore() {
-        return iocContainer.getComponent(WokoIocContainer.ObjectStore);
+        return getIoc().getObjectStore();
     }
 
     public UmType getUserManager() {
-        return iocContainer.getComponent(WokoIocContainer.UserManager);
+        return getIoc().getUserManager();
     }
 
     public FdmType getFacetDescriptorManager() {
-        return iocContainer.getComponent(WokoIocContainer.FacetDescriptorManager);
+        return getIoc().getFacetDescriptorManager();
     }
 
     public UnsType getUsernameResolutionStrategy() {
-        return iocContainer.getComponent(WokoIocContainer.UsernameResolutionStrategy);
+        return getIoc().getUsernameResolutionStrategy();
     }
-
 
     public JFacets getJFacets() {
         return jFacets;
@@ -176,19 +175,20 @@ public class Woko<
         this.getObjectStore().close();
     }
 
-    public Object getFacet(String name, HttpServletRequest request, Object targetObject) {
-        return getFacet(name, request, targetObject, null);
+    @SuppressWarnings("unchecked")
+    public <T> T getFacet(String name, HttpServletRequest request, Object targetObject) {
+        return (T)getFacet(name, request, targetObject, null);
     }
 
-    public Object getFacet(String name, HttpServletRequest request, Object targetObject, Class<?> targetObjectClass, boolean throwIfNotFound) {
-        Object f = getFacet(name, request, targetObject, targetObjectClass);
+    public <T> T getFacet(String name, HttpServletRequest request, Object targetObject, Class<?> targetObjectClass, boolean throwIfNotFound) {
+        T f = getFacet(name, request, targetObject, targetObjectClass);
         if (f == null && throwIfNotFound) {
             throw new FacetNotFoundException(name, targetObject, targetObjectClass, getUsername(request));
         }
         return f;
     }
 
-    public Object getFacet(String name, HttpServletRequest request, Object targetObject, Class<?> targetObjectClass) {
+    public <T> T getFacet(String name, HttpServletRequest request, Object targetObject, Class<?> targetObjectClass) {
         logger.debug("Trying to get facet " + name + " for target object " + targetObject + ", targetObjectClass " + targetObjectClass + "...");
         String username = getUsername(request);
         List<String> roles;
@@ -216,7 +216,8 @@ public class Woko<
         }
         for (String role : roles) {
             logger.debug("Trying role : " + role);
-            Object facet = jFacets.getFacet(name, role, targetObject, targetObjectClass);
+            @SuppressWarnings("unchecked")
+            T facet = (T)jFacets.getFacet(name, role, targetObject, targetObjectClass);
             if (facet != null) {
                 request.setAttribute(name, facet);
                 request.setAttribute(REQ_ATTR_FACET, facet);

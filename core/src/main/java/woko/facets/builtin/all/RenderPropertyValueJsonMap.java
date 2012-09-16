@@ -35,7 +35,7 @@ public class RenderPropertyValueJsonMap extends BaseFacet implements RenderPrope
   public Object propertyToJson(HttpServletRequest request, Object propertyValue) {
       JSONObject result = new JSONObject();
       Map<?,?> map = (Map<?,?>)propertyValue;
-      Woko woko = getWoko();
+      Woko<?,?,?,?> woko = getWoko();
       try {
           for (Object key : map.keySet()) {
               Object val = map.get(key);

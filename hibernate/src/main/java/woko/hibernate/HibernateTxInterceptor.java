@@ -32,8 +32,8 @@ public class HibernateTxInterceptor implements net.sourceforge.stripes.controlle
     private static final WLogger log = WLogger.getLogger(HibernateTxInterceptor.class);
 
     private SessionFactory getSessionFactory(ExecutionContext context) {
-        Woko woko = Woko.getWoko(context.getActionBeanContext().getServletContext());
-        HibernateStore hs = (HibernateStore) woko.getObjectStore();
+        Woko<HibernateStore,?,?,?> woko = Woko.getWoko(context.getActionBeanContext().getServletContext());
+        HibernateStore hs = woko.getObjectStore();
         return hs.getSessionFactory();
     }
 

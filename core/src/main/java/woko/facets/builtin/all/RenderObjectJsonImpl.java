@@ -37,7 +37,7 @@ public class RenderObjectJsonImpl extends BaseFacet implements RenderObjectJson 
     private static final WLogger logger = WLogger.getLogger(RenderObjectJsonImpl.class);
 
     public JSONObject objectToJson(HttpServletRequest request) {
-        WokoFacetContext facetContext = getFacetContext();
+        WokoFacetContext<?,?,?,?> facetContext = getFacetContext();
         Object o = facetContext.getTargetObject();
         try {
             if (o == null) {
@@ -45,7 +45,7 @@ public class RenderObjectJsonImpl extends BaseFacet implements RenderObjectJson 
                 return null;
             }
             JSONObject result = new JSONObject();
-            Woko woko = facetContext.getWoko();
+            Woko<?,?,?,?> woko = facetContext.getWoko();
             // find props to be rendered using renderProperties facet
             RenderProperties renderProperties = (RenderProperties) woko.getFacet(WokoFacets.renderProperties, request, o);
             if (renderProperties == null) {
@@ -71,7 +71,7 @@ public class RenderObjectJsonImpl extends BaseFacet implements RenderObjectJson 
         }
     }
 
-    public static void addWokoMetadata(Woko woko, JSONObject json, Object obj, HttpServletRequest request) {
+    public static void addWokoMetadata(Woko<?,?,?,?> woko, JSONObject json, Object obj, HttpServletRequest request) {
         if (obj!=null) {
             try {
                 JSONObject metadata = new JSONObject();
@@ -98,8 +98,8 @@ public class RenderObjectJsonImpl extends BaseFacet implements RenderObjectJson 
         if (value == null) {
             return null;
         }
-        WokoFacetContext facetContext = getFacetContext();
-        Woko woko = facetContext.getWoko();
+        WokoFacetContext<?,?,?,?> facetContext = getFacetContext();
+        Woko<?,?,?,?> woko = facetContext.getWoko();
         // try name-specific first
         RenderPropertyValueJson rpvj = (RenderPropertyValueJson) woko.getFacet("renderPropertyValueJson_" + propertyName, request, owner);
         if (rpvj == null) {

@@ -15,8 +15,8 @@
     RenderProperties renderProperties = (RenderProperties)request.getAttribute(WokoFacets.renderProperties);
     List<String> propertyNames = renderProperties.getPropertyNames();
     Map<String,Object> propertyValues = renderProperties.getPropertyValues();
-    WokoFacetContext fctx = (WokoFacetContext)renderProperties.getFacetContext();
-    Woko woko = fctx.getWoko();
+    WokoFacetContext<?,?,?,?> fctx = (WokoFacetContext)renderProperties.getFacetContext();
+    Woko<?,?,?,?> woko = fctx.getWoko();
     Object owningObject = fctx.getTargetObject();
 %>
 <%

@@ -33,7 +33,7 @@ public abstract class FacetedObjectStore implements ObjectStore {
     return WokoRequestInterceptor.getRequest();
   }
 
-  private Woko getWoko() {
+  private Woko<?,?,?,?> getWoko() {
     HttpServletRequest request = getRequest();
     if (request==null) {
       throw new IllegalStateException("Unable to get thread-bound request from WokoRequestInterceptor. Interceptor has not been invoked ?");
@@ -71,7 +71,7 @@ public abstract class FacetedObjectStore implements ObjectStore {
 
   private <T> T getFacet(Class<T> facetClass, String name, Object targetObject, Class<?> targetObjectClass) {
     HttpServletRequest request = getRequest();
-    Woko woko = getWoko();
+    Woko<?,?,?,?> woko = getWoko();
     @SuppressWarnings("unchecked")
     T result = (T)woko.getFacet(name, request, targetObject, targetObjectClass, true);
     return result;

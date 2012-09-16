@@ -14,7 +14,7 @@
 <s:layout-render name="${layout.layoutPath}" layout="${layout}" pageTitle="${pageTitle}">
     <s:layout-component name="body">
         <%
-            Woko woko = Woko.getWoko(application);
+            Woko<?,?,?,?> woko = Woko.getWoko(application);
             Search search = (Search)request.getAttribute(WokoFacets.search);
             ResultIterator results = search.getResults();
             String query = search.getQuery();
