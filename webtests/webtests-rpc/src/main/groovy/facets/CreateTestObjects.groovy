@@ -22,9 +22,13 @@ import net.sourceforge.stripes.action.Resolution
 import net.sourceforge.stripes.action.ActionBeanContext
 import net.sourceforge.stripes.action.StreamingResolution
 import test.MyBook
+import net.sourceforge.jfacets.annotations.AnnotatedFacetDescriptorManager
+import woko.users.RemoteUserStrategy
+import woko.inmemory.InMemoryUserManager
+import woko.hbcompass.HibernateCompassStore
 
 @FacetKey(name="createTestObjects", profileId="developer")
-class CreateTestObjects extends BaseResolutionFacet {
+class CreateTestObjects extends BaseResolutionFacet<HibernateCompassStore,InMemoryUserManager,RemoteUserStrategy,AnnotatedFacetDescriptorManager> {
 
     Resolution getResolution(ActionBeanContext abc) {
         def store = facetContext.woko.objectStore

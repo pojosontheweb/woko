@@ -16,6 +16,7 @@
 
 package woko.facets.builtin.developer;
 
+import net.sourceforge.jfacets.IFacetDescriptorManager;
 import net.sourceforge.jfacets.annotations.FacetKey;
 import net.sourceforge.stripes.action.*;
 import net.sourceforge.stripes.rpc.RpcResolutionWrapper;
@@ -23,10 +24,18 @@ import woko.Woko;
 import woko.facets.BaseResolutionFacet;
 import woko.facets.WokoFacetContext;
 import woko.facets.builtin.*;
+import woko.persistence.ObjectStore;
+import woko.users.UserManager;
+import woko.users.UsernameResolutionStrategy;
 import woko.util.WLogger;
 
 @FacetKey(name = WokoFacets.save, profileId = "developer")
-public class SaveImpl extends BaseResolutionFacet implements Save {
+public class SaveImpl<
+        OsType extends ObjectStore,
+        UmType extends UserManager,
+        UnsType extends UsernameResolutionStrategy,
+        FdmType extends IFacetDescriptorManager
+        > extends BaseResolutionFacet<OsType,UmType,UnsType,FdmType> implements Save {
 
     private final static WLogger logger = WLogger.getLogger(SaveImpl.class);
 
@@ -34,8 +43,8 @@ public class SaveImpl extends BaseResolutionFacet implements Save {
 
     public Resolution getResolution(final ActionBeanContext abc) {
         // try to find a validation facet for the object
-        final WokoFacetContext<?,?,?,?> facetContext = getFacetContext();
-        final Woko<?,?,?,?> woko = facetContext.getWoko();
+        final WokoFacetContext<OsType,UmType,UnsType,FdmType> facetContext = getFacetContext();
+        final Woko<OsType,UmType,UnsType,FdmType> woko = facetContext.getWoko();
         final Object targetObject = facetContext.getTargetObject();
         Class<?> clazz = targetObject.getClass();
         Validate validateFacet = (Validate) woko.getFacet(WokoFacets.validate, abc.getRequest(), targetObject, clazz);
@@ -67,7 +76,7 @@ public class SaveImpl extends BaseResolutionFacet implements Save {
     }
 
     protected Resolution getNonRpcResolution(ActionBeanContext abc) {
-        WokoFacetContext fc = getFacetContext();
+        WokoFacetContext<OsType,UmType,UnsType,FdmType> fc = getFacetContext();
         return new RedirectResolution(fc.getWoko().facetUrl(getTargetFacetAfterSave(),fc.getTargetObject()));
     }
 
@@ -76,7 +85,7 @@ public class SaveImpl extends BaseResolutionFacet implements Save {
     }
 
     protected void doSave(ActionBeanContext abc) {
-        WokoFacetContext facetContext = getFacetContext();
+        WokoFacetContext<OsType,UmType,UnsType,FdmType> facetContext = getFacetContext();
         facetContext.getWoko().getObjectStore().save(facetContext.getTargetObject());
         abc.getMessages().add(new LocalizableMessage("woko.object.saved"));
     }

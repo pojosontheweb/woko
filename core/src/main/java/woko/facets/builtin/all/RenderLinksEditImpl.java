@@ -16,6 +16,7 @@
 
 package woko.facets.builtin.all;
 
+import net.sourceforge.jfacets.IFacetDescriptorManager;
 import net.sourceforge.jfacets.annotations.FacetKey;
 import woko.Woko;
 import woko.facets.BaseFragmentFacet;
@@ -25,6 +26,8 @@ import woko.facets.builtin.RenderLinks;
 import woko.facets.builtin.View;
 import woko.facets.builtin.WokoFacets;
 import woko.persistence.ObjectStore;
+import woko.users.UserManager;
+import woko.users.UsernameResolutionStrategy;
 import woko.util.Util;
 
 import javax.servlet.http.HttpServletRequest;
@@ -33,18 +36,23 @@ import java.util.List;
 import java.util.Locale;
 
 @FacetKey(name = WokoFacets.renderLinksEdit, profileId = "all")
-public class RenderLinksEditImpl extends RenderLinksImpl {
+public class RenderLinksEditImpl<
+        OsType extends ObjectStore,
+        UmType extends UserManager,
+        UnsType extends UsernameResolutionStrategy,
+        FdmType extends IFacetDescriptorManager
+        > extends RenderLinksImpl<OsType,UmType,UnsType,FdmType> {
 
     @Override
     public List<Link> getLinks() {
         List<Link> links = new ArrayList<Link>();
-        WokoFacetContext<?,?,?,?> facetContext = getFacetContext();
-        Woko<?,?,?,?> woko = getFacetContext().getWoko();
+        WokoFacetContext<OsType,UmType,UnsType,FdmType> facetContext = getFacetContext();
+        Woko<OsType,UmType,UnsType,FdmType> woko = getFacetContext().getWoko();
         Object o = facetContext.getTargetObject();
         if (o!=null) {
             Class<?> oc = o.getClass();
             HttpServletRequest request = getRequest();
-            ObjectStore store = woko.getObjectStore();
+            OsType store = woko.getObjectStore();
             Locale locale = request.getLocale();
 
             // display view link if object can be displayed

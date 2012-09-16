@@ -16,11 +16,20 @@
 
 package woko.facets;
 
+import net.sourceforge.jfacets.IFacetDescriptorManager;
 import net.sourceforge.stripes.action.ActionBeanContext;
 import net.sourceforge.stripes.action.ForwardResolution;
 import net.sourceforge.stripes.action.Resolution;
+import woko.persistence.ObjectStore;
+import woko.users.UserManager;
+import woko.users.UsernameResolutionStrategy;
 
-public abstract class BaseForwardResolutionFacet extends BaseResolutionFacet {
+public abstract class BaseForwardResolutionFacet<
+        OsType extends ObjectStore,
+        UmType extends UserManager,
+        UnsType extends UsernameResolutionStrategy,
+        FdmType extends IFacetDescriptorManager
+        > extends BaseResolutionFacet<OsType,UmType,UnsType,FdmType> {
 
   public abstract String getPath();
 

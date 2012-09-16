@@ -22,9 +22,13 @@ import net.sourceforge.stripes.action.Resolution
 import net.sourceforge.stripes.action.ActionBeanContext
 import net.sourceforge.stripes.action.StreamingResolution
 import net.sourceforge.stripes.validation.Validate
+import net.sourceforge.jfacets.annotations.AnnotatedFacetDescriptorManager
+import woko.users.RemoteUserStrategy
+import woko.inmemory.InMemoryUserManager
+import woko.hbcompass.HibernateCompassStore
 
 @FacetKey(name = "validationInThere", profileId = "all")
-class ValidationInThere extends BaseResolutionFacet {
+class ValidationInThere extends BaseResolutionFacet<HibernateCompassStore,InMemoryUserManager,RemoteUserStrategy,AnnotatedFacetDescriptorManager> {
 
     @Validate(required=true)
     String myProp

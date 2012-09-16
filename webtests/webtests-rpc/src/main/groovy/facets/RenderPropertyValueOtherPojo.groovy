@@ -20,9 +20,13 @@ import net.sourceforge.jfacets.annotations.FacetKey
 
 import woko.facets.builtin.RenderPropertyValue
 import woko.facets.builtin.all.RenderPropertyValueImpl
+import net.sourceforge.jfacets.annotations.AnnotatedFacetDescriptorManager
+import woko.users.RemoteUserStrategy
+import woko.inmemory.InMemoryUserManager
+import woko.hbcompass.HibernateCompassStore
 
 @FacetKey(name='renderPropertyValue', profileId='all', targetObjectType=test.OtherPojo.class)
-class RenderPropertyValueOtherPojo extends RenderPropertyValueImpl implements RenderPropertyValue {
+class RenderPropertyValueOtherPojo extends RenderPropertyValueImpl<HibernateCompassStore,InMemoryUserManager,RemoteUserStrategy,AnnotatedFacetDescriptorManager> implements RenderPropertyValue {
 
   String getPath() {
     return '/WEB-INF/jsp/renderPropertyValueOtherPojo.jsp' 

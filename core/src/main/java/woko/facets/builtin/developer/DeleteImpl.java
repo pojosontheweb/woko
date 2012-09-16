@@ -16,6 +16,7 @@
 
 package woko.facets.builtin.developer;
 
+import net.sourceforge.jfacets.IFacetDescriptorManager;
 import net.sourceforge.jfacets.annotations.FacetKey;
 import net.sourceforge.stripes.action.*;
 import net.sourceforge.stripes.rpc.RpcResolutionWrapper;
@@ -25,6 +26,9 @@ import woko.facets.WokoFacetContext;
 import woko.facets.builtin.Delete;
 import woko.facets.builtin.RenderTitle;
 import woko.facets.builtin.WokoFacets;
+import woko.persistence.ObjectStore;
+import woko.users.UserManager;
+import woko.users.UsernameResolutionStrategy;
 import woko.util.Util;
 
 @StrictBinding(
@@ -35,7 +39,12 @@ import woko.util.Util;
         }
 )
 @FacetKey(name = WokoFacets.delete, profileId = "developer")
-public class DeleteImpl extends BaseResolutionFacet implements Delete {
+public class DeleteImpl<
+        OsType extends ObjectStore,
+        UmType extends UserManager,
+        UnsType extends UsernameResolutionStrategy,
+        FdmType extends IFacetDescriptorManager
+        > extends BaseResolutionFacet<OsType,UmType,UnsType,FdmType> implements Delete {
 
     public static final String TARGET_FACET_AFTER_DELETE = WokoFacets.home;
 
@@ -65,7 +74,7 @@ public class DeleteImpl extends BaseResolutionFacet implements Delete {
 
     public Resolution getResolution(final ActionBeanContext abc) {
         if (cancel != null) {
-            WokoFacetContext facetContext = getFacetContext();
+            WokoFacetContext<OsType,UmType,UnsType,FdmType> facetContext = getFacetContext();
             abc.getMessages().add(new LocalizableMessage("woko.devel.delete.cancel"));
             return new RpcResolutionWrapper(new RedirectResolution(
                     facetContext.getWoko().facetUrl(
@@ -78,8 +87,8 @@ public class DeleteImpl extends BaseResolutionFacet implements Delete {
             };
         }
         if (confirm != null) {
-            final WokoFacetContext<?,?,?,?> facetContext = getFacetContext();
-            final Woko<?,?,?,?> woko = facetContext.getWoko();
+            final WokoFacetContext<OsType,UmType,UnsType,FdmType> facetContext = getFacetContext();
+            final Woko<OsType,UmType,UnsType,FdmType> woko = facetContext.getWoko();
             final Object targetObject = facetContext.getTargetObject();
             woko.getObjectStore().delete(targetObject);
             abc.getMessages().add(new LocalizableMessage("woko.devel.delete.confirm"));
@@ -102,7 +111,7 @@ public class DeleteImpl extends BaseResolutionFacet implements Delete {
     }
 
     protected Resolution getNonRpcResolution(ActionBeanContext abc) {
-        WokoFacetContext fc = getFacetContext();
+        WokoFacetContext<OsType,UmType,UnsType,FdmType> fc = getFacetContext();
         return new RedirectResolution(fc.getWoko().facetUrl(getTargetFacetAfterDelete(),fc.getTargetObject()));
     }
 

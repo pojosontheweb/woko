@@ -21,12 +21,20 @@ import net.sourceforge.jfacets.IFacetDescriptorManager;
 import net.sourceforge.jfacets.annotations.FacetKey;
 import woko.facets.BaseForwardResolutionFacet;
 import woko.facets.builtin.WokoFacets;
+import woko.persistence.ObjectStore;
+import woko.users.UserManager;
+import woko.users.UsernameResolutionStrategy;
 
 import java.util.Arrays;
 import java.util.List;
 
 @FacetKey(name = WokoFacets.studio, profileId = "developer")
-public class WokoStudio extends BaseForwardResolutionFacet {
+public class WokoStudio<
+        OsType extends ObjectStore,
+        UmType extends UserManager,
+        UnsType extends UsernameResolutionStrategy,
+        FdmType extends IFacetDescriptorManager
+        > extends BaseForwardResolutionFacet {
 
     public static final String FRAGMENT_PATH = "/WEB-INF/woko/jsp/developer/studio.jsp";
 

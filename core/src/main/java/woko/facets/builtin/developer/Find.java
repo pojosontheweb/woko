@@ -16,16 +16,24 @@
 
 package woko.facets.builtin.developer;
 
+import net.sourceforge.jfacets.IFacetDescriptorManager;
 import net.sourceforge.jfacets.annotations.FacetKey;
 import woko.facets.BaseForwardResolutionFacet;
 import woko.facets.builtin.WokoFacets;
 import woko.persistence.ObjectStore;
+import woko.users.UserManager;
+import woko.users.UsernameResolutionStrategy;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @FacetKey(name = WokoFacets.find, profileId = "developer")
-public class Find extends BaseForwardResolutionFacet {
+public class Find<
+        OsType extends ObjectStore,
+        UmType extends UserManager,
+        UnsType extends UsernameResolutionStrategy,
+        FdmType extends IFacetDescriptorManager
+        > extends BaseForwardResolutionFacet<OsType,UmType,UnsType,FdmType> {
 
     public static final String FRAGMENT_PATH = "/WEB-INF/woko/jsp/developer/find.jsp";
 
@@ -35,7 +43,7 @@ public class Find extends BaseForwardResolutionFacet {
 
     public List<String> getMappedClasses() {
         List<String> res = new ArrayList<String>();
-        ObjectStore os = getFacetContext().getWoko().getObjectStore();
+        OsType os = getFacetContext().getWoko().getObjectStore();
         List<Class<?>> mappedClasses = os.getMappedClasses();
         for (Class<?> c : mappedClasses) {
             res.add(os.getClassMapping(c));

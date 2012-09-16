@@ -16,17 +16,26 @@
 
 package woko.facets.builtin.all;
 
+import net.sourceforge.jfacets.IFacetDescriptorManager;
 import net.sourceforge.jfacets.annotations.FacetKey;
 import org.codehaus.groovy.ast.expr.PrefixExpression;
 import woko.facets.BaseFacet;
 import woko.facets.builtin.RenderPropertyValueJson;
 import woko.facets.builtin.WokoFacets;
+import woko.persistence.ObjectStore;
+import woko.users.UserManager;
+import woko.users.UsernameResolutionStrategy;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
 @FacetKey(name= WokoFacets.renderPropertyValueJson, profileId="all", targetObjectType=Date.class)
-public class RenderPropertyValueJsonDate extends BaseFacet implements RenderPropertyValueJson {
+public class RenderPropertyValueJsonDate<
+        OsType extends ObjectStore,
+        UmType extends UserManager,
+        UnsType extends UsernameResolutionStrategy,
+        FdmType extends IFacetDescriptorManager
+        > extends BaseFacet<OsType,UmType,UnsType,FdmType> implements RenderPropertyValueJson {
 
     public static final String JSON_PREFIX = "/Date(";
     public static final String JSON_SUFFIX = ")/";

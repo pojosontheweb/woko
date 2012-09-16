@@ -21,9 +21,13 @@ import woko.facets.BaseResolutionFacet
 import net.sourceforge.stripes.action.Resolution
 import net.sourceforge.stripes.action.ActionBeanContext
 import net.sourceforge.stripes.action.StreamingResolution
+import net.sourceforge.jfacets.annotations.AnnotatedFacetDescriptorManager
+import woko.users.RemoteUserStrategy
+import woko.inmemory.InMemoryUserManager
+import woko.hbcompass.HibernateCompassStore
 
 @FacetKey(name="deleteTestObjects", profileId="developer")
-class DeleteTestObjects extends BaseResolutionFacet {
+class DeleteTestObjects extends BaseResolutionFacet<HibernateCompassStore,InMemoryUserManager,RemoteUserStrategy,AnnotatedFacetDescriptorManager> {
 
     Resolution getResolution(ActionBeanContext abc) {
         def s = facetContext.woko.objectStore
