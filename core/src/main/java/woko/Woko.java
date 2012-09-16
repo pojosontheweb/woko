@@ -177,7 +177,7 @@ public class Woko<
 
     @SuppressWarnings("unchecked")
     public <T> T getFacet(String name, HttpServletRequest request, Object targetObject) {
-        return (T)getFacet(name, request, targetObject, null);
+        return getFacet(name, request, targetObject, null);
     }
 
     public <T> T getFacet(String name, HttpServletRequest request, Object targetObject, Class<?> targetObjectClass, boolean throwIfNotFound) {

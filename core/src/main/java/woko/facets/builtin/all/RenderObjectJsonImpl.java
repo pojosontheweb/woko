@@ -55,7 +55,7 @@ public class RenderObjectJsonImpl<
             JSONObject result = new JSONObject();
             Woko<OsType,UmType,UnsType,FdmType> woko = facetContext.getWoko();
             // find props to be rendered using renderProperties facet
-            RenderProperties renderProperties = (RenderProperties) woko.getFacet(WokoFacets.renderProperties, request, o);
+            RenderProperties renderProperties = woko.getFacet(WokoFacets.renderProperties, request, o);
             if (renderProperties == null) {
                 logger.warn("No renderProperties facet found for targetObject $o, as a result no props will be serialized.");
                 return result;
@@ -114,10 +114,10 @@ public class RenderObjectJsonImpl<
         WokoFacetContext<OsType,UmType,UnsType,FdmType> facetContext = getFacetContext();
         Woko<OsType,UmType,UnsType,FdmType> woko = facetContext.getWoko();
         // try name-specific first
-        RenderPropertyValueJson rpvj = (RenderPropertyValueJson) woko.getFacet("renderPropertyValueJson_" + propertyName, request, owner);
+        RenderPropertyValueJson rpvj = woko.getFacet("renderPropertyValueJson_" + propertyName, request, owner);
         if (rpvj == null) {
             // type-specific
-            rpvj = (RenderPropertyValueJson) woko.getFacet(WokoFacets.renderPropertyValueJson, request, value);
+            rpvj = woko.getFacet(WokoFacets.renderPropertyValueJson, request, value);
         }
         if (rpvj == null) {
             // default to toString()

@@ -84,11 +84,10 @@
                 while (results.hasNext()) {
                     Object result = results.next();
                     resultsList.add(result);
-                    RenderProperties rpResult = (RenderProperties)woko.getFacet(
-                            RenderProperties.FACET_NAME, request, result, result.getClass());
+                    RenderProperties rpResult = woko.getFacet(RenderProperties.FACET_NAME, request, result, result.getClass());
                     Map<String,Object> resultPropValues = rpResult.getPropertyValues();
                     propertyValues.add(resultPropValues);
-                    RenderListItem renderListItem = (RenderListItem)woko.getFacet(WokoFacets.renderListItem, request, result, result.getClass(),true );
+                    RenderListItem renderListItem = woko.getFacet(WokoFacets.renderListItem, request, result, result.getClass(),true );
                     String liWrapperClass = renderListItem.getItemWrapperCssClass();
                     if (liWrapperClass==null) {
                         liWrapperClass = "";
@@ -150,7 +149,7 @@
                             <td>
                                 <div class="btn-group">
                                 <%
-                                    View view = (View)woko.getFacet(View.FACET_NAME, request, result);
+                                    View view = woko.getFacet(View.FACET_NAME, request, result);
                                     if (view!=null) {
                                         String href = request.getContextPath() + "/" + LinkUtil.getUrl(woko, result, "view");
                                 %>
@@ -160,7 +159,7 @@
                                 <%
                                     }
                                     // Grab available links !
-                                    RenderLinks rl = (RenderLinks)woko.getFacet(RenderLinks.FACET_NAME, request, result);
+                                    RenderLinks rl = woko.getFacet(RenderLinks.FACET_NAME, request, result);
                                     for (Link l : rl.getLinks()) {
                                         String href = request.getContextPath() + "/" + l.getHref();
                                         String cssClass = l.getCssClass();

@@ -48,7 +48,8 @@ public class ViewImpl<
     @Override
     protected Resolution getRpcResolution(ActionBeanContext abc) {
         WokoFacetContext<OsType,UmType,UnsType,FdmType> wokoFacetContext = getFacetContext();
-        Json json = (Json) wokoFacetContext.getWoko().getFacet(WokoFacets.json, wokoFacetContext.getRequest(), wokoFacetContext.getTargetObject());
+        Json json = wokoFacetContext.getWoko().getFacet(
+                WokoFacets.json, wokoFacetContext.getRequest(), wokoFacetContext.getTargetObject());
         return json == null ? null : json.getResolution(abc);
     }
 

@@ -47,8 +47,7 @@ public class RenderPropertyValueJsonMap<
           for (Object key : map.keySet()) {
               Object val = map.get(key);
               if (val!=null) {
-                  RenderPropertyValueJson renderPropertyValueJson =
-                                  (RenderPropertyValueJson)woko.getFacet(RenderPropertyValueJson.FACET_NAME, request, val);
+                  RenderPropertyValueJson renderPropertyValueJson = woko.getFacet(RenderPropertyValueJson.FACET_NAME, request, val);
                   Object propToJson = renderPropertyValueJson.propertyToJson(request, val);
                   result.put(key.toString(), propToJson);
               }

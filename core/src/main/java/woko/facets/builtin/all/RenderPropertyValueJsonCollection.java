@@ -49,8 +49,7 @@ public class RenderPropertyValueJsonCollection<
       if (item==null) {
         arr.put(new JSONObject());
       }
-      RenderPropertyValueJson rpvj =
-          (RenderPropertyValueJson)getFacetContext().getWoko().getFacet(WokoFacets.renderPropertyValueJson, request, item);
+      RenderPropertyValueJson rpvj = getFacetContext().getWoko().getFacet(WokoFacets.renderPropertyValueJson, request, item);
       if (rpvj==null) {
         logger.debug("... no renderPropertyValueJson facet found for collection item, adding empty JSON Object");
         arr.put(new JSONObject());

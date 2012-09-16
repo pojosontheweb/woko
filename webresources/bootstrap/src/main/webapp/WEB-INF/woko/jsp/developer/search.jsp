@@ -7,6 +7,7 @@
 <%@ page import="woko.facets.builtin.Search" %>
 <%@ page import="woko.facets.builtin.WokoFacets" %>
 <%@ page import="woko.util.Util" %>
+<%@ page import="woko.facets.builtin.View" %>
 
 <w:facet facetName="<%=WokoFacets.layout%>"/>
 
@@ -71,11 +72,11 @@
                   String href = null;
                   String resultKey = woko.getObjectStore().getKey(result);
                   String className = woko.getObjectStore().getClassMapping(result.getClass());
-                  if (woko.getFacet(WokoFacets.view, request, result)!=null) {
+                  if (woko.getFacet(View.FACET_NAME, request, result)!=null) {
                       href = new StringBuilder().
                               append(request.getContextPath()).
                               append("/").
-                              append(WokoFacets.view).
+                              append(View.FACET_NAME).
                               append("/").
                               append(className).
                               append("/").

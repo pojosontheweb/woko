@@ -102,8 +102,7 @@ public abstract class BaseResultFacet<
                 if (o == null) {
                     items.put((JSONObject) null);
                 } else {
-                    RenderObjectJson roj =
-                            (RenderObjectJson) woko.getFacet(WokoFacets.renderObjectJson, request, o);
+                    RenderObjectJson roj = woko.getFacet(WokoFacets.renderObjectJson, request, o);
                     JSONObject jo = roj.objectToJson(request);
                     items.put(jo);
                 }

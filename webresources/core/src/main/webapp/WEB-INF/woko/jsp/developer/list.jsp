@@ -96,7 +96,7 @@
             <%
                 while (results.hasNext()) {
                     Object result = results.next();
-                    RenderListItem renderListItem = (RenderListItem)woko.getFacet(WokoFacets.renderListItem, request, result, result.getClass(),true );
+                    RenderListItem renderListItem = woko.getFacet(WokoFacets.renderListItem, request, result, result.getClass(),true );
                     String fragmentPath = renderListItem.getFragmentPath(request);
 
             %>

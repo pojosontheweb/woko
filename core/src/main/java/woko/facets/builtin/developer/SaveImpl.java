@@ -47,7 +47,7 @@ public class SaveImpl<
         final Woko<OsType,UmType,UnsType,FdmType> woko = facetContext.getWoko();
         final Object targetObject = facetContext.getTargetObject();
         Class<?> clazz = targetObject.getClass();
-        Validate validateFacet = (Validate) woko.getFacet(WokoFacets.validate, abc.getRequest(), targetObject, clazz);
+        Validate validateFacet = woko.getFacet(WokoFacets.validate, abc.getRequest(), targetObject, clazz);
         if (validateFacet != null) {
             logger.debug("Validation facet found, validating before saving...");
             if (validateFacet.validate(abc)) {
@@ -55,7 +55,7 @@ public class SaveImpl<
             } else {
                 logger.debug("Validate facet raised validation errors, not saving");
                 // forward to the edit fragment
-                Edit editFacet = (Edit) woko.getFacet(WokoFacets.edit, abc.getRequest(), targetObject, clazz, true);
+                Edit editFacet = woko.getFacet(WokoFacets.edit, abc.getRequest(), targetObject, clazz, true);
                 return new ForwardResolution(editFacet.getFragmentPath());
             }
         } else {
@@ -68,7 +68,7 @@ public class SaveImpl<
         return new RpcResolutionWrapper(resolution) {
             @Override
             public Resolution getRpcResolution() {
-                Json json = (Json)woko.getFacet(WokoFacets.json, facetContext.getRequest(), targetObject);
+                Json json = woko.getFacet(WokoFacets.json, facetContext.getRequest(), targetObject);
                 return json==null ? null : json.getResolution(abc);
             }
         };

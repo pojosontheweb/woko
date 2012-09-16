@@ -41,8 +41,7 @@
 
                     Object pVal = propertyValues.get(pName);
 
-                    RenderPropertyName renderPropertyName =
-                        (RenderPropertyName)woko.getFacet(WokoFacets.renderPropertyName, request, owningObject, owningObject.getClass(), true);
+                    RenderPropertyName renderPropertyName = woko.getFacet(WokoFacets.renderPropertyName, request, owningObject, owningObject.getClass(), true);
                     renderPropertyName.setPropertyName(pName);
                     String pNameFragmentPath = renderPropertyName.getFragmentPath(request);
 

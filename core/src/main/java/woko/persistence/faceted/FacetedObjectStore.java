@@ -60,12 +60,12 @@ public abstract class FacetedObjectStore implements ObjectStore {
     if (key==null) {
       logger.debug("Key not specified for className " + className + ", creating transient instance");
       // create transient instance
-      StoreNew storeNew = (StoreNew)woko.getFacet("storeNew", request, null, mappedClass, true);
+      StoreNew storeNew = woko.getFacet("storeNew", request, null, mappedClass, true);
       return storeNew.newInstance(this, mappedClass);
     }
 
     // load object
-    StoreLoad storeLoad = (StoreLoad)woko.getFacet("storeLoad", request, null, mappedClass, true);
+    StoreLoad storeLoad = woko.getFacet("storeLoad", request, null, mappedClass, true);
     return storeLoad.load(this, mappedClass, key);
   }
 
@@ -73,7 +73,7 @@ public abstract class FacetedObjectStore implements ObjectStore {
     HttpServletRequest request = getRequest();
     Woko<?,?,?,?> woko = getWoko();
     @SuppressWarnings("unchecked")
-    T result = (T)woko.getFacet(name, request, targetObject, targetObjectClass, true);
+    T result = woko.getFacet(name, request, targetObject, targetObjectClass, true);
     return result;
   }
 

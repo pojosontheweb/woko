@@ -112,7 +112,7 @@ public class WokoLogin<
             // bind username to http session
             context.getRequest().getSession().setAttribute(SESSION_ATTR_CURRENT_USER, user);
             Woko<OsType,UmType,UnsType,FdmType> woko = context.getWoko();
-            PostLoginFacet pl = (PostLoginFacet)woko.getFacet(PostLoginFacet.FACET_NAME, context.getRequest(), null, Object.class);
+            PostLoginFacet pl = woko.getFacet(PostLoginFacet.FACET_NAME, context.getRequest(), null, Object.class);
             if (pl!=null) {
                 pl.execute(user);
             }
