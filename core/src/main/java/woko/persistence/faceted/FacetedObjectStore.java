@@ -49,7 +49,7 @@ public abstract class FacetedObjectStore implements ObjectStore {
     }
 
     HttpServletRequest request = getRequest();
-    Woko woko = getWoko();
+    Woko<?,?,?,?> woko = getWoko();
 
     logger.debug("Trying to load object for class " + className + ", key " + key);
     Class<?> mappedClass = getMappedClass(className);

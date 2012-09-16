@@ -85,6 +85,7 @@ public class ExpressionNode {
         return res;        
     }
 
+    @SuppressWarnings("unchecked")
     public Object toMap() {
         if (value==null) {
             HashMap res = new HashMap();

@@ -27,8 +27,8 @@ import woko.ioc.SimpleWokoIocContainer
 class BuiltinAuthWTInitIListener extends
         WokoIocInitListener<HibernateCompassStore,InMemoryUserManager,SessionUsernameResolutionStrategy,PushFacetDescriptorManager> {
     @Override
-    protected WokoIocContainer createIocContainer() {
-        return new SimpleWokoIocContainer(
+    protected WokoIocContainer<HibernateCompassStore,InMemoryUserManager,SessionUsernameResolutionStrategy,PushFacetDescriptorManager> createIocContainer() {
+        return new SimpleWokoIocContainer<HibernateCompassStore,InMemoryUserManager,SessionUsernameResolutionStrategy,PushFacetDescriptorManager>(
                 new HibernateCompassStore(getPackageNamesFromConfig(HibernateCompassStore.CTX_PARAM_PACKAGE_NAMES, true)),
                 new InMemoryUserManager().addUser("wdevel", "wdevel", ["developer"]),
                 new SessionUsernameResolutionStrategy(),
