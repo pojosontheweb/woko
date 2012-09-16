@@ -29,7 +29,6 @@ import static org.picocontainer.Characteristics.CACHE
 import org.picocontainer.MutablePicoContainer
 import woko.pico.WokoIocPicoInitListener
 
-@Deprecated
 class ContainerAuthWTInitIListener extends WokoIocPicoInitListener<HibernateStore, InMemoryUserManager, RemoteUserStrategy, AnnotatedFacetDescriptorManager> {
 
     @Override

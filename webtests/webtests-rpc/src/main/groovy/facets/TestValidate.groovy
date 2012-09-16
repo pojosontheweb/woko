@@ -23,9 +23,13 @@ import net.sourceforge.stripes.action.ActionBeanContext
 import net.sourceforge.stripes.action.ForwardResolution
 import net.sourceforge.stripes.validation.Validate
 import net.sourceforge.stripes.action.SimpleMessage
+import net.sourceforge.jfacets.annotations.AnnotatedFacetDescriptorManager
+import woko.users.RemoteUserStrategy
+import woko.inmemory.InMemoryUserManager
+import woko.hbcompass.HibernateCompassStore
 
 @FacetKey(name="testValidate", profileId="all")
-class TestValidate extends BaseResolutionFacet {
+class TestValidate extends BaseResolutionFacet<HibernateCompassStore,InMemoryUserManager,RemoteUserStrategy,AnnotatedFacetDescriptorManager> {
 
   @Validate(required=true)
   String prop

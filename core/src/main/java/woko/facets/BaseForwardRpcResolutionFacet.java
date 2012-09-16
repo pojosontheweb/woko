@@ -16,11 +16,20 @@
 
 package woko.facets;
 
+import net.sourceforge.jfacets.IFacetDescriptorManager;
 import net.sourceforge.stripes.action.ActionBeanContext;
 import net.sourceforge.stripes.action.Resolution;
 import net.sourceforge.stripes.rpc.RpcResolutionWrapper;
+import woko.persistence.ObjectStore;
+import woko.users.UserManager;
+import woko.users.UsernameResolutionStrategy;
 
-public abstract class BaseForwardRpcResolutionFacet extends BaseForwardResolutionFacet {
+public abstract class BaseForwardRpcResolutionFacet<
+        OsType extends ObjectStore,
+        UmType extends UserManager,
+        UnsType extends UsernameResolutionStrategy,
+        FdmType extends IFacetDescriptorManager
+        > extends BaseForwardResolutionFacet<OsType,UmType,UnsType,FdmType> {
 
     @Override
     public Resolution getResolution(final ActionBeanContext abc) {

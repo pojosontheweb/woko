@@ -23,13 +23,13 @@ public abstract class WokoIocPicoInitListener<OsType extends ObjectStore,
     }
 
     @Override
-    protected WokoIocContainer createIocContainer() {
+    protected WokoIocContainer<OsType,UmType,UnsType,FdmType> createIocContainer() {
         MutablePicoContainer pico = createPicoAndInitFdm();
         addObjectStore(pico);
         addUserManager(pico);
         addUsernameResolutionStrategy(pico);
         pico.start();
-        return new WokoIocPico(pico);
+        return new WokoIocPico<OsType,UmType,UnsType,FdmType>(pico);
     }
 
     protected abstract void addUsernameResolutionStrategy(MutablePicoContainer pico);

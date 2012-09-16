@@ -16,17 +16,25 @@
 
 package woko.facets.builtin.developer;
 
+import net.sourceforge.jfacets.IFacetDescriptorManager;
 import net.sourceforge.jfacets.annotations.FacetKey;
 import woko.facets.BaseForwardResolutionFacet;
 import woko.facets.builtin.WokoFacets;
 import woko.persistence.ObjectStore;
+import woko.users.UserManager;
+import woko.users.UsernameResolutionStrategy;
 
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 
 @FacetKey(name = WokoFacets.create, profileId = "developer")
-public class Create extends BaseForwardResolutionFacet {
+public class Create<
+        OsType extends ObjectStore,
+        UmType extends UserManager,
+        UnsType extends UsernameResolutionStrategy,
+        FdmType extends IFacetDescriptorManager
+        > extends BaseForwardResolutionFacet<OsType,UmType,UnsType,FdmType> {
 
     public static final String FRAGMENT_PATH = "/WEB-INF/woko/jsp/developer/create.jsp";
 
@@ -36,7 +44,7 @@ public class Create extends BaseForwardResolutionFacet {
 
     public List<String> getMappedClasses() {
         List<String> res = new ArrayList<String>();
-        ObjectStore os = getFacetContext().getWoko().getObjectStore();
+        OsType os = getFacetContext().getWoko().getObjectStore();
         List<Class<?>> mappedClasses = os.getMappedClasses();
         for (Class<?> c : mappedClasses) {
             if (!Modifier.isAbstract(c.getModifiers())) {

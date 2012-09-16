@@ -16,17 +16,26 @@
 
 package woko.ext.usermanagement.facets;
 
+import net.sourceforge.jfacets.IFacetDescriptorManager;
 import net.sourceforge.jfacets.annotations.FacetKey;
 import woko.ext.usermanagement.core.User;
 import woko.facets.builtin.WokoFacets;
 import woko.facets.builtin.all.RenderPropertiesImpl;
+import woko.persistence.ObjectStore;
+import woko.users.UserManager;
+import woko.users.UsernameResolutionStrategy;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 @FacetKey(name= WokoFacets.renderProperties, profileId="all", targetObjectType = User.class)
-public class RenderUserProperties extends RenderPropertiesImpl {
+public class RenderUserProperties<
+        OsType extends ObjectStore,
+        UmType extends UserManager,
+        UnsType extends UsernameResolutionStrategy,
+        FdmType extends IFacetDescriptorManager
+        > extends RenderPropertiesImpl<OsType,UmType,UnsType,FdmType> {
 
     @Override
     public List<String> getPropertyNames() {

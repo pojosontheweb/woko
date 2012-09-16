@@ -16,19 +16,27 @@
 
 package woko.facets.builtin.all;
 
+import net.sourceforge.jfacets.IFacetDescriptorManager;
 import net.sourceforge.jfacets.annotations.FacetKey;
 import woko.Woko;
 import woko.facets.BaseFragmentFacet;
 import woko.facets.WokoFacetContext;
 import woko.facets.builtin.*;
 import woko.persistence.ObjectStore;
+import woko.users.UserManager;
+import woko.users.UsernameResolutionStrategy;
 import woko.util.Util;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
 @FacetKey(name = WokoFacets.renderLinks, profileId = "all")
-public class RenderLinksImpl extends BaseFragmentFacet implements RenderLinks {
+public class RenderLinksImpl<
+        OsType extends ObjectStore,
+        UmType extends UserManager,
+        UnsType extends UsernameResolutionStrategy,
+        FdmType extends IFacetDescriptorManager
+        > extends BaseFragmentFacet<OsType,UmType,UnsType,FdmType> implements RenderLinks {
 
     public static final String FRAGMENT_PATH = "/WEB-INF/woko/jsp/all/renderLinks.jsp";
 
@@ -38,12 +46,12 @@ public class RenderLinksImpl extends BaseFragmentFacet implements RenderLinks {
 
     public List<Link> getLinks() {
         List<Link> links = new ArrayList<Link>();
-        WokoFacetContext facetContext = getFacetContext();
-        Woko woko = getFacetContext().getWoko();
+        WokoFacetContext<OsType,UmType,UnsType,FdmType> facetContext = getFacetContext();
+        Woko<OsType,UmType,UnsType,FdmType> woko = getFacetContext().getWoko();
         Object o = facetContext.getTargetObject();
         Class<?> oc = o.getClass();
         HttpServletRequest request = getFacetContext().getRequest();
-        ObjectStore store = woko.getObjectStore();
+        OsType store = woko.getObjectStore();
         Locale locale = request.getLocale();
 
         // display edit link if object can be edited (use instanceof because could be a login required facet)

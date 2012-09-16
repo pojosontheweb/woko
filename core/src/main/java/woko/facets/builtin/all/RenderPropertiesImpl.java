@@ -17,10 +17,14 @@
 package woko.facets.builtin.all;
 
 import net.sourceforge.jfacets.IFacetContext;
+import net.sourceforge.jfacets.IFacetDescriptorManager;
 import net.sourceforge.jfacets.annotations.FacetKey;
 import woko.facets.BaseFragmentFacet;
 import woko.facets.builtin.RenderProperties;
 import woko.facets.builtin.WokoFacets;
+import woko.persistence.ObjectStore;
+import woko.users.UserManager;
+import woko.users.UsernameResolutionStrategy;
 import woko.util.Util;
 
 import java.util.Arrays;
@@ -29,7 +33,12 @@ import java.util.List;
 import java.util.Map;
 
 @FacetKey(name = WokoFacets.renderProperties, profileId = "all")
-public class RenderPropertiesImpl extends BaseFragmentFacet implements RenderProperties {
+public class RenderPropertiesImpl<
+        OsType extends ObjectStore,
+        UmType extends UserManager,
+        UnsType extends UsernameResolutionStrategy,
+        FdmType extends IFacetDescriptorManager
+        > extends BaseFragmentFacet<OsType,UmType,UnsType,FdmType> implements RenderProperties {
 
     public static final String FRAGMENT_PATH = "/WEB-INF/woko/jsp/all/renderProperties.jsp";
     public static final String FRAGMENT_PATH_FLAT = "/WEB-INF/woko/jsp/all/renderPropertiesFlatLayout.jsp";

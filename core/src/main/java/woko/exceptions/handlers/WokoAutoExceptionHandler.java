@@ -21,15 +21,12 @@ import net.sourceforge.stripes.action.Resolution;
 import net.sourceforge.stripes.action.StreamingResolution;
 import net.sourceforge.stripes.exception.AutoExceptionHandler;
 import net.sourceforge.stripes.rpc.RpcInterceptor;
-import org.json.JSONException;
 import org.json.JSONObject;
 import woko.facets.FacetNotFoundException;
 import woko.util.WLogger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.util.UUID;
 
 public class WokoAutoExceptionHandler implements AutoExceptionHandler {

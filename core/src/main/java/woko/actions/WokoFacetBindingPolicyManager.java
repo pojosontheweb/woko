@@ -16,6 +16,7 @@
 
 package woko.actions;
 
+import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -133,6 +134,9 @@ public class WokoFacetBindingPolicyManager {
         // no unbindable class on the path
         while (e!=null) {
             Type valueType = e.getValueType();
+            if (valueType instanceof ParameterizedType) {
+                valueType = ((ParameterizedType)valueType).getRawType();
+            }
             if (valueType instanceof Class<?>) {
                 Class<?> t = (Class<?>)valueType;
                 for (Class<?> unbindableClass : UNBINDABLE_CLASSES) {

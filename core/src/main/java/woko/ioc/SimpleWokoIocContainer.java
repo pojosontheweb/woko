@@ -6,10 +6,14 @@ import woko.users.UserManager;
 import woko.users.UsernameResolutionStrategy;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-public class SimpleWokoIocContainer implements WokoIocContainer {
+public class SimpleWokoIocContainer<
+        OsType extends ObjectStore,
+        UmType extends UserManager,
+        UnsType extends UsernameResolutionStrategy,
+        FdmType extends IFacetDescriptorManager
+        > extends AbstractWokoIocContainer<OsType,UmType,UnsType,FdmType> {
 
     private final Map<Object,Object> components = new HashMap<Object, Object>();
 
@@ -31,6 +35,7 @@ public class SimpleWokoIocContainer implements WokoIocContainer {
         return o;
     }
 
+    @Override
     public void close() {
         components.clear();
     }

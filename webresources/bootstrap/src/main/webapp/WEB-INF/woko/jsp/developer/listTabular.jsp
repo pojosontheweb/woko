@@ -16,7 +16,7 @@
 <s:layout-render name="${layout.layoutPath}" layout="${layout}" pageTitle="${pageTitle}">
     <s:layout-component name="body">
         <%
-            Woko woko = Woko.getWoko(application);
+            Woko<?,?,?,?> woko = Woko.getWoko(application);
             ListObjects list = (ListObjects)request.getAttribute(WokoFacets.list);
             String className = list.getClassName();
             ResultIterator results = list.getResults();
@@ -152,7 +152,7 @@
                                 <%
                                     View view = (View)woko.getFacet(View.FACET_NAME, request, result);
                                     if (view!=null) {
-                                        String href = request.getContextPath() + "/" + LinkUtil.getUrl(Woko.getWoko(application), result, "view");
+                                        String href = request.getContextPath() + "/" + LinkUtil.getUrl(woko, result, "view");
                                 %>
                                     <a href="<%=href%>" class="btn view">
                                         <fmt:message bundle="${wokoBundle}" key="woko.links.view"/>

@@ -16,13 +16,22 @@
 
 package woko.facets.builtin.developer;
 
+import net.sourceforge.jfacets.IFacetDescriptorManager;
 import net.sourceforge.jfacets.annotations.FacetKey;
 import woko.facets.BaseFragmentFacet;
 import woko.facets.builtin.NavBar;
 import woko.facets.builtin.WokoFacets;
+import woko.persistence.ObjectStore;
+import woko.users.UserManager;
+import woko.users.UsernameResolutionStrategy;
 
 @FacetKey(name = WokoFacets.navBar, profileId = "developer")
-public class NavBarDev extends BaseFragmentFacet implements NavBar {
+public class NavBarDev<
+        OsType extends ObjectStore,
+        UmType extends UserManager,
+        UnsType extends UsernameResolutionStrategy,
+        FdmType extends IFacetDescriptorManager
+        > extends BaseFragmentFacet<OsType,UmType,UnsType,FdmType> implements NavBar {
 
     public static final String FRAGMENT_PATH = "/WEB-INF/woko/jsp/developer/navBar.jsp";
 

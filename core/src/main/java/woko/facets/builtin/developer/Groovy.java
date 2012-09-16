@@ -19,6 +19,7 @@ package woko.facets.builtin.developer;
 import groovy.lang.Binding;
 import groovy.lang.Closure;
 import groovy.lang.GroovyShell;
+import net.sourceforge.jfacets.IFacetDescriptorManager;
 import net.sourceforge.jfacets.annotations.FacetKey;
 import net.sourceforge.stripes.action.ActionBeanContext;
 import net.sourceforge.stripes.action.Resolution;
@@ -26,12 +27,20 @@ import net.sourceforge.stripes.action.StreamingResolution;
 import org.json.JSONException;
 import org.json.JSONObject;
 import woko.facets.BaseResolutionFacet;
+import woko.persistence.ObjectStore;
+import woko.users.UserManager;
+import woko.users.UsernameResolutionStrategy;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
 @FacetKey(name="groovy",profileId="developer")
-public class Groovy extends BaseResolutionFacet {
+public class Groovy<
+        OsType extends ObjectStore,
+        UmType extends UserManager,
+        UnsType extends UsernameResolutionStrategy,
+        FdmType extends IFacetDescriptorManager
+        > extends BaseResolutionFacet<OsType,UmType,UnsType,FdmType> {
 
   private String code;
 

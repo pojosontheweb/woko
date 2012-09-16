@@ -16,9 +16,19 @@
 
 package woko.facets;
 
+import net.sourceforge.jfacets.IFacetDescriptorManager;
+import woko.persistence.ObjectStore;
+import woko.users.UserManager;
+import woko.users.UsernameResolutionStrategy;
+
 import javax.servlet.http.HttpServletRequest;
 
-public abstract class BaseFragmentFacet extends BaseFacet implements FragmentFacet {
+public abstract class BaseFragmentFacet<
+        OsType extends ObjectStore,
+        UmType extends UserManager,
+        UnsType extends UsernameResolutionStrategy,
+        FdmType extends IFacetDescriptorManager
+        > extends BaseFacet<OsType,UmType,UnsType,FdmType> implements FragmentFacet {
 
   public String getFragmentPath(HttpServletRequest request) {
     return this.getPath();

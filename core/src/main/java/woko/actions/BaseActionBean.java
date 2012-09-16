@@ -16,19 +16,29 @@
 
 package woko.actions;
 
+import net.sourceforge.jfacets.IFacetDescriptorManager;
 import net.sourceforge.stripes.action.ActionBean;
 import net.sourceforge.stripes.action.ActionBeanContext;
+import woko.persistence.ObjectStore;
+import woko.users.UserManager;
+import woko.users.UsernameResolutionStrategy;
 
-public abstract class BaseActionBean implements ActionBean {
+public abstract class BaseActionBean<
+        OsType extends ObjectStore,
+        UmType extends UserManager,
+        UnsType extends UsernameResolutionStrategy,
+        FdmType extends IFacetDescriptorManager
+        > implements ActionBean {
 
-  private WokoActionBeanContext context;
+    private WokoActionBeanContext<OsType, UmType, UnsType, FdmType> context;
 
-  public void setContext(ActionBeanContext context) {
-    this.context = (WokoActionBeanContext)context;
-  }
+    @SuppressWarnings("unchecked")
+    public void setContext(ActionBeanContext context) {
+        this.context = (WokoActionBeanContext<OsType, UmType, UnsType, FdmType>) context;
+    }
 
-  public WokoActionBeanContext getContext() {
-    return context;
-  }
+    public WokoActionBeanContext<OsType, UmType, UnsType, FdmType> getContext() {
+        return context;
+    }
 
 }

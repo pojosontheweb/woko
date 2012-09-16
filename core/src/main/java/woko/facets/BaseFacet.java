@@ -18,30 +18,39 @@ package woko.facets;
 
 import net.sourceforge.jfacets.IFacet;
 import net.sourceforge.jfacets.IFacetContext;
+import net.sourceforge.jfacets.IFacetDescriptorManager;
 import net.sourceforge.jfacets.IInstanceFacet;
 import woko.Woko;
 import woko.facets.WokoFacetContext;
 import woko.persistence.ObjectStore;
+import woko.users.UserManager;
+import woko.users.UsernameResolutionStrategy;
 
 import javax.servlet.http.HttpServletRequest;
 
-public abstract class BaseFacet implements IFacet {
+public abstract class BaseFacet<
+        OsType extends ObjectStore,
+        UmType extends UserManager,
+        UnsType extends UsernameResolutionStrategy,
+        FdmType extends IFacetDescriptorManager
+        > implements IFacet {
 
-  private WokoFacetContext facetContext;
+  private WokoFacetContext<OsType,UmType,UnsType,FdmType> facetContext;
 
-  public WokoFacetContext getFacetContext() {
+  public WokoFacetContext<OsType,UmType,UnsType,FdmType> getFacetContext() {
     return facetContext;
   }
 
+    @SuppressWarnings("unchecked")
   public void setFacetContext(IFacetContext iFacetContext) {
-    this.facetContext = (WokoFacetContext)iFacetContext;
+        this.facetContext = (WokoFacetContext<OsType,UmType,UnsType,FdmType>)iFacetContext;
   }
 
-    public Woko getWoko() {
+    public Woko<OsType,UmType,UnsType,FdmType> getWoko() {
         return getFacetContext().getWoko();
     }
 
-    public ObjectStore getObjectStore() {
+    public OsType getObjectStore() {
         return getWoko().getObjectStore();
     }
 

@@ -16,14 +16,23 @@
 
 package woko.facets.builtin.all;
 
+import net.sourceforge.jfacets.IFacetDescriptorManager;
 import net.sourceforge.jfacets.annotations.FacetKey;
 import woko.facets.BaseFragmentFacet;
 import woko.facets.builtin.RenderPropertyValue;
 import woko.facets.builtin.WokoFacets;
+import woko.persistence.ObjectStore;
+import woko.users.UserManager;
+import woko.users.UsernameResolutionStrategy;
 import woko.util.Util;
 
 @FacetKey(name = WokoFacets.renderPropertyValue, profileId = "all")
-public class RenderPropertyValueImpl extends BaseFragmentFacet implements RenderPropertyValue {
+public class RenderPropertyValueImpl<
+        OsType extends ObjectStore,
+        UmType extends UserManager,
+        UnsType extends UsernameResolutionStrategy,
+        FdmType extends IFacetDescriptorManager
+        > extends BaseFragmentFacet<OsType,UmType,UnsType,FdmType> implements RenderPropertyValue {
 
     public static final String FRAGMENT_PATH = "/WEB-INF/woko/jsp/all/renderPropertyValue.jsp";
     private Object owningObject;

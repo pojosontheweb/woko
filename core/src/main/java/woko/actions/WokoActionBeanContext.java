@@ -16,12 +16,21 @@
 
 package woko.actions;
 
+import net.sourceforge.jfacets.IFacetDescriptorManager;
 import net.sourceforge.stripes.action.ActionBeanContext;
 import woko.Woko;
+import woko.persistence.ObjectStore;
+import woko.users.UserManager;
+import woko.users.UsernameResolutionStrategy;
 
-public class WokoActionBeanContext extends ActionBeanContext {
+public class WokoActionBeanContext<
+        OsType extends ObjectStore,
+        UmType extends UserManager,
+        UnsType extends UsernameResolutionStrategy,
+        FdmType extends IFacetDescriptorManager
+        > extends ActionBeanContext {
 
-  public Woko getWoko() {
+  public Woko<OsType,UmType,UnsType,FdmType> getWoko() {
     return Woko.getWoko(getServletContext());
   }
 

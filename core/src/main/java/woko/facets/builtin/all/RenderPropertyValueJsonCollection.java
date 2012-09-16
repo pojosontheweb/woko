@@ -16,19 +16,28 @@
 
 package woko.facets.builtin.all;
 
+import net.sourceforge.jfacets.IFacetDescriptorManager;
 import net.sourceforge.jfacets.annotations.FacetKey;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import woko.facets.BaseFacet;
 import woko.facets.builtin.RenderPropertyValueJson;
 import woko.facets.builtin.WokoFacets;
+import woko.persistence.ObjectStore;
+import woko.users.UserManager;
+import woko.users.UsernameResolutionStrategy;
 import woko.util.WLogger;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Collection;
 
 @FacetKey(name= WokoFacets.renderPropertyValueJson, profileId="all", targetObjectType=Collection.class)
-public class RenderPropertyValueJsonCollection extends BaseFacet implements RenderPropertyValueJson {
+public class RenderPropertyValueJsonCollection<
+        OsType extends ObjectStore,
+        UmType extends UserManager,
+        UnsType extends UsernameResolutionStrategy,
+        FdmType extends IFacetDescriptorManager
+        > extends BaseFacet<OsType,UmType,UnsType,FdmType> implements RenderPropertyValueJson {
 
   private static final WLogger logger = WLogger.getLogger(RenderPropertyValueJsonCollection.class);
 
