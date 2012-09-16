@@ -17,17 +17,26 @@
 package woko.facets.builtin.all;
 
 
+import net.sourceforge.jfacets.IFacetDescriptorManager;
 import net.sourceforge.jfacets.annotations.FacetKey;
 import woko.facets.BaseFacet;
 import woko.facets.builtin.Layout;
 import woko.facets.builtin.WokoFacets;
+import woko.persistence.ObjectStore;
+import woko.users.UserManager;
+import woko.users.UsernameResolutionStrategy;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 @FacetKey(name= WokoFacets.layout, profileId="all")
-public class LayoutAll extends BaseFacet implements Layout {
+public class LayoutAll<
+        OsType extends ObjectStore,
+        UmType extends UserManager,
+        UnsType extends UsernameResolutionStrategy,
+        FdmType extends IFacetDescriptorManager
+        > extends BaseFacet<OsType,UmType,UnsType,FdmType> implements Layout {
 
     public static final String FRAGMENT_PATH = "/WEB-INF/woko/jsp/all/layout.jsp";
 

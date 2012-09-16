@@ -18,6 +18,10 @@ package facets
 
 import woko.facets.builtin.all.LayoutAll
 import net.sourceforge.jfacets.annotations.FacetKey
+import net.sourceforge.jfacets.annotations.AnnotatedFacetDescriptorManager
+import woko.users.RemoteUserStrategy
+import woko.inmemory.InMemoryUserManager
+import woko.hbcompass.HibernateCompassStore
 
 /**
  * Created by IntelliJ IDEA.
@@ -27,7 +31,7 @@ import net.sourceforge.jfacets.annotations.FacetKey
  * To change this template use File | Settings | File Templates.
  */
 @FacetKey(name="layout", profileId="all")
-class RpcLayout extends LayoutAll {
+class RpcLayout extends LayoutAll<HibernateCompassStore,InMemoryUserManager,RemoteUserStrategy,AnnotatedFacetDescriptorManager> {
 
     @Override
     String getAppTitle() {

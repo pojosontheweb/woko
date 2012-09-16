@@ -18,15 +18,24 @@ package woko.facets;
 
 
 import net.sourceforge.jfacets.FacetDescriptor;
+import net.sourceforge.jfacets.IFacetDescriptorManager;
 import net.sourceforge.jfacets.IProfile;
 import net.sourceforge.jfacets.impl.DefaultFacetContext;
 import woko.Woko;
+import woko.persistence.ObjectStore;
+import woko.users.UserManager;
+import woko.users.UsernameResolutionStrategy;
 
 import javax.servlet.http.HttpServletRequest;
 
-public class WokoFacetContext extends DefaultFacetContext {
+public class WokoFacetContext<
+        OsType extends ObjectStore,
+        UmType extends UserManager,
+        UnsType extends UsernameResolutionStrategy,
+        FdmType extends IFacetDescriptorManager
+        > extends DefaultFacetContext {
 
-  private final Woko woko;
+  private final Woko<OsType,UmType,UnsType,FdmType> woko;
   private final HttpServletRequest request;
 
   public WokoFacetContext(
@@ -34,14 +43,14 @@ public class WokoFacetContext extends DefaultFacetContext {
       IProfile profile,
       Object targetObject,
       FacetDescriptor facetDescriptor,
-      Woko woko,
+      Woko<OsType,UmType,UnsType,FdmType> woko,
       HttpServletRequest request) {
     super(facetName, profile, targetObject, facetDescriptor);
     this.woko = woko;
     this.request = request;
   }
 
-  public Woko getWoko() {
+  public Woko<OsType,UmType,UnsType,FdmType> getWoko() {
     return woko;
   }
 

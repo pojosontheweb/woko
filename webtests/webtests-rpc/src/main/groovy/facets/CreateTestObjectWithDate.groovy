@@ -22,9 +22,13 @@ import net.sourceforge.stripes.action.ActionBeanContext
 import test.MyBook
 import net.sourceforge.stripes.action.StreamingResolution
 import net.sourceforge.jfacets.annotations.FacetKey
+import net.sourceforge.jfacets.annotations.AnnotatedFacetDescriptorManager
+import woko.users.RemoteUserStrategy
+import woko.inmemory.InMemoryUserManager
+import woko.hbcompass.HibernateCompassStore
 
 @FacetKey(name="createTowd", profileId="all")
-class CreateTestObjectWithDate extends BaseResolutionFacet {
+class CreateTestObjectWithDate extends BaseResolutionFacet<HibernateCompassStore,InMemoryUserManager,RemoteUserStrategy,AnnotatedFacetDescriptorManager> {
 
     Resolution getResolution(ActionBeanContext abc) {
         MyBook b = new MyBook([_id: 332211, name: "foobarbaz", creationTime: new Date()])

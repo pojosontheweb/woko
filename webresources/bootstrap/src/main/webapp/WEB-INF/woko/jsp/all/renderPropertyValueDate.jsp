@@ -10,7 +10,7 @@
 
 <%
     RenderPropertyValue renderPropertyValue = (RenderPropertyValue)request.getAttribute(WokoFacets.renderPropertyValue);
-    WokoFacetContext fctx = (WokoFacetContext)renderPropertyValue.getFacetContext();
+    WokoFacetContext<?,?,?,?> fctx = (WokoFacetContext<?,?,?,?>)renderPropertyValue.getFacetContext();
     ObjectStore os = fctx.getWoko().getObjectStore();
     Date propertyValue = (Date)fctx.getTargetObject();
     String propertyName = renderPropertyValue.getPropertyName();

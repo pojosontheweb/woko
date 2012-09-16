@@ -16,6 +16,7 @@
 
 package woko.facets.builtin;
 
+import net.sourceforge.jfacets.IFacetDescriptorManager;
 import net.sourceforge.stripes.action.ActionBeanContext;
 import net.sourceforge.stripes.action.Resolution;
 import net.sourceforge.stripes.action.StreamingResolution;
@@ -25,11 +26,19 @@ import org.json.JSONObject;
 import woko.Woko;
 import woko.facets.BaseForwardRpcResolutionFacet;
 import woko.facets.WokoFacetContext;
+import woko.persistence.ObjectStore;
 import woko.persistence.ResultIterator;
+import woko.users.UserManager;
+import woko.users.UsernameResolutionStrategy;
 
 import javax.servlet.http.HttpServletRequest;
 
-public abstract class BaseResultFacet extends BaseForwardRpcResolutionFacet implements ResultFacet {
+public abstract class BaseResultFacet<
+        OsType extends ObjectStore,
+        UmType extends UserManager,
+        UnsType extends UsernameResolutionStrategy,
+        FdmType extends IFacetDescriptorManager
+        > extends BaseForwardRpcResolutionFacet<OsType,UmType,UnsType,FdmType> implements ResultFacet {
 
     private Integer resultsPerPage = 10;
     private Integer page = 1;
@@ -76,7 +85,12 @@ public abstract class BaseResultFacet extends BaseForwardRpcResolutionFacet impl
         return super.getResolution(abc);
     }
 
-    public static JSONObject resultIteratorToJson(Woko woko, HttpServletRequest request, ResultIterator resultIterator) {
+    public static <
+            OsType extends ObjectStore,
+            UmType extends UserManager,
+            UnsType extends UsernameResolutionStrategy,
+            FdmType extends IFacetDescriptorManager
+            > JSONObject resultIteratorToJson(Woko<OsType,UmType,UnsType,FdmType> woko, HttpServletRequest request, ResultIterator<?> resultIterator) {
         try {
             JSONObject r = new JSONObject();
             r.put("totalSize", resultIterator.getTotalSize());
@@ -88,8 +102,7 @@ public abstract class BaseResultFacet extends BaseForwardRpcResolutionFacet impl
                 if (o == null) {
                     items.put((JSONObject) null);
                 } else {
-                    RenderObjectJson roj =
-                            (RenderObjectJson) woko.getFacet(WokoFacets.renderObjectJson, request, o);
+                    RenderObjectJson roj = woko.getFacet(WokoFacets.renderObjectJson, request, o);
                     JSONObject jo = roj.objectToJson(request);
                     items.put(jo);
                 }

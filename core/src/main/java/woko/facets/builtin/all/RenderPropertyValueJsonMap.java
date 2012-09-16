@@ -16,32 +16,38 @@
 
 package woko.facets.builtin.all;
 
+import net.sourceforge.jfacets.IFacetDescriptorManager;
 import net.sourceforge.jfacets.annotations.FacetKey;
 import org.json.JSONObject;
 import woko.Woko;
 import woko.facets.BaseFacet;
 import woko.facets.builtin.RenderPropertyValueJson;
 import woko.facets.builtin.WokoFacets;
+import woko.persistence.ObjectStore;
+import woko.users.UserManager;
+import woko.users.UsernameResolutionStrategy;
 import woko.util.WLogger;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 @FacetKey(name= WokoFacets.renderPropertyValueJson, profileId="all", targetObjectType=Map.class)
-public class RenderPropertyValueJsonMap extends BaseFacet implements RenderPropertyValueJson {
-
-  private static final WLogger logger = WLogger.getLogger(RenderPropertyValueJsonMap.class);
+public class RenderPropertyValueJsonMap<
+        OsType extends ObjectStore,
+        UmType extends UserManager,
+        UnsType extends UsernameResolutionStrategy,
+        FdmType extends IFacetDescriptorManager
+        > extends BaseFacet<OsType,UmType,UnsType,FdmType> implements RenderPropertyValueJson {
 
   public Object propertyToJson(HttpServletRequest request, Object propertyValue) {
       JSONObject result = new JSONObject();
       Map<?,?> map = (Map<?,?>)propertyValue;
-      Woko woko = getWoko();
+      Woko<OsType,UmType,UnsType,FdmType> woko = getWoko();
       try {
           for (Object key : map.keySet()) {
               Object val = map.get(key);
               if (val!=null) {
-                  RenderPropertyValueJson renderPropertyValueJson =
-                                  (RenderPropertyValueJson)woko.getFacet(RenderPropertyValueJson.FACET_NAME, request, val);
+                  RenderPropertyValueJson renderPropertyValueJson = woko.getFacet(RenderPropertyValueJson.FACET_NAME, request, val);
                   Object propToJson = renderPropertyValueJson.propertyToJson(request, val);
                   result.put(key.toString(), propToJson);
               }

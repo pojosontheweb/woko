@@ -20,9 +20,13 @@ import net.sourceforge.jfacets.annotations.FacetKey
 import woko.facets.BaseResolutionFacet
 import net.sourceforge.stripes.action.Resolution
 import net.sourceforge.stripes.action.ActionBeanContext
+import net.sourceforge.jfacets.annotations.AnnotatedFacetDescriptorManager
+import woko.hbcompass.HibernateCompassStore
+import woko.inmemory.InMemoryUserManager
+import woko.users.RemoteUserStrategy
 
 @FacetKey(name="throw",profileId="all")
-class Throw extends BaseResolutionFacet {
+class Throw extends BaseResolutionFacet<HibernateCompassStore,InMemoryUserManager,RemoteUserStrategy,AnnotatedFacetDescriptorManager> {
 
     Resolution getResolution(ActionBeanContext abc) {
         throw new RuntimeException("ouch !")

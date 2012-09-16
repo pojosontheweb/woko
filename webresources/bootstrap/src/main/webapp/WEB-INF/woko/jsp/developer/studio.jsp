@@ -7,7 +7,7 @@
 <c:set var="cp" value="${pageContext.request.contextPath}"/>
 <w:facet facetName="<%=WokoFacets.layout%>"/>
 <%
-    Woko woko = Woko.getWoko(application);
+    Woko<?,?,?,?> woko = Woko.getWoko(application);
 %>
 <fmt:message bundle="${wokoBundle}" var="pageTitle" key="woko.devel.studio.pageTitle"/>
 <s:layout-render name="${layout.layoutPath}" layout="${layout}" pageTitle="${pageTitle}" bodyClass="claro">

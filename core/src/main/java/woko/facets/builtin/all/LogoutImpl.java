@@ -16,14 +16,23 @@
 
 package woko.facets.builtin.all;
 
+import net.sourceforge.jfacets.IFacetDescriptorManager;
 import net.sourceforge.jfacets.annotations.FacetKey;
 import net.sourceforge.stripes.action.*;
 import woko.facets.BaseResolutionFacet;
 import woko.facets.builtin.Logout;
 import woko.facets.builtin.WokoFacets;
+import woko.persistence.ObjectStore;
+import woko.users.UserManager;
+import woko.users.UsernameResolutionStrategy;
 
 @FacetKey(name= WokoFacets.logout, profileId="all")
-public class LogoutImpl extends BaseResolutionFacet implements Logout {
+public class LogoutImpl<
+        OsType extends ObjectStore,
+        UmType extends UserManager,
+        UnsType extends UsernameResolutionStrategy,
+        FdmType extends IFacetDescriptorManager
+        > extends BaseResolutionFacet<OsType,UmType,UnsType,FdmType> implements Logout {
 
   public Resolution getResolution(ActionBeanContext abc) {
     abc.getRequest().getSession().invalidate();

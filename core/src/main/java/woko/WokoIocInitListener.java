@@ -92,13 +92,12 @@ public abstract class WokoIocInitListener<OsType extends ObjectStore,
     }
 
     private Woko<OsType,UmType,UnsType,FdmType> createWoko() {
-        WokoIocContainer ioc = createIocContainer();
-        Woko<OsType,UmType,UnsType,FdmType> w = new Woko<OsType,UmType,UnsType,FdmType>(ioc, createFallbackRoles());
+        Woko<OsType,UmType,UnsType,FdmType> w = new Woko<OsType,UmType,UnsType,FdmType>(createIocContainer(), createFallbackRoles());
         postInit(w);
         return w;
     }
 
-    protected abstract WokoIocContainer createIocContainer();
+    protected abstract WokoIocContainer<OsType,UmType,UnsType,FdmType> createIocContainer();
 
     protected List<String> createFallbackRoles() {
         return Arrays.asList(Woko.ROLE_GUEST);

@@ -87,6 +87,7 @@ public class ExpressionTree {
         return firstNode;
     }
 
+    @SuppressWarnings("unchecked")
     private Object stringToValue(String str) throws JSONException {
         if (str.startsWith("[")) {
             // array
@@ -142,6 +143,7 @@ public class ExpressionTree {
         return en;
     }
 
+    @SuppressWarnings("unchecked")
     public Map toMap() {
         HashMap res = new HashMap();
         res.put(root.getName(), root.toMap());

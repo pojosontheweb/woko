@@ -20,9 +20,13 @@ import test.MyEntity
 import net.sourceforge.jfacets.annotations.FacetKey
 import woko.facets.builtin.all.RenderPropertiesImpl
 import woko.facets.builtin.WokoFacets
+import net.sourceforge.jfacets.annotations.AnnotatedFacetDescriptorManager
+import woko.users.RemoteUserStrategy
+import woko.inmemory.InMemoryUserManager
+import woko.hibernate.HibernateStore
 
 @FacetKey(name=WokoFacets.renderProperties, profileId="all", targetObjectType=MyEntity.class)
-class RenderPropertiesMyEntityFlat extends RenderPropertiesImpl {
+class RenderPropertiesMyEntityFlat extends RenderPropertiesImpl<HibernateStore, InMemoryUserManager, RemoteUserStrategy, AnnotatedFacetDescriptorManager> {
 
   RenderPropertiesMyEntityFlat() {
     useFlatLayout = true

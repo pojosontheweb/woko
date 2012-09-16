@@ -16,6 +16,7 @@
 
 package woko.actions;
 
+import net.sourceforge.jfacets.IFacetDescriptorManager;
 import net.sourceforge.stripes.action.Before;
 import net.sourceforge.stripes.action.DefaultHandler;
 import net.sourceforge.stripes.action.Resolution;
@@ -27,12 +28,19 @@ import woko.Woko;
 import woko.facets.FacetNotFoundException;
 import woko.facets.ResolutionFacet;
 import woko.persistence.ObjectStore;
+import woko.users.UserManager;
+import woko.users.UsernameResolutionStrategy;
 import woko.util.WLogger;
 
 import javax.servlet.http.HttpServletRequest;
 
 @UrlBinding("/{facetName}/{className}/{key}")
-public class WokoActionBean extends BaseActionBean {
+public class WokoActionBean<
+        OsType extends ObjectStore,
+        UmType extends UserManager,
+        UnsType extends UsernameResolutionStrategy,
+        FdmType extends IFacetDescriptorManager
+        > extends BaseActionBean<OsType,UmType,UnsType,FdmType> {
 
     private static final WLogger logger = WLogger.getLogger(WokoActionBean.class);
 
@@ -90,8 +98,8 @@ public class WokoActionBean extends BaseActionBean {
         }
         key = req.getParameter("key");
         logger.debug("Loading object for className=" + className + " and key=" + key);
-        Woko woko = getContext().getWoko();
-        ObjectStore objectStore = woko.getObjectStore();
+        Woko<OsType,UmType,UnsType,FdmType> woko = getContext().getWoko();
+        OsType objectStore = woko.getObjectStore();
         if (className!=null) {
             if (key!=null) {
                 object = objectStore.load(className, key);

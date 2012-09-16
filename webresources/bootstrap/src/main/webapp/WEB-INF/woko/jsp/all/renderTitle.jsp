@@ -6,7 +6,7 @@
 <%@ page import="woko.facets.builtin.WokoFacets" %>
 
 <%
-    Woko woko = Woko.getWoko(application);
+    Woko<?,?,?,?> woko = Woko.getWoko(application);
     RenderTitle renderTitle = (RenderTitle)request.getAttribute(WokoFacets.renderTitle);
     Object target = renderTitle.getFacetContext().getTargetObject();
     Class<?> targetClass = target.getClass();

@@ -42,7 +42,7 @@ import java.io.InputStreamReader;
 import java.text.MessageFormat;
 import java.util.*;
 
-public final class Woko<
+public class Woko<
         OsType extends ObjectStore,
         UmType extends UserManager,
         UnsType extends UsernameResolutionStrategy,
@@ -79,7 +79,7 @@ public final class Woko<
 
     protected JFacets jFacets;
 
-    private WokoIocContainer iocContainer = null;
+    private WokoIocContainer<OsType,UmType,UnsType,FdmType> iocContainer = null;
     private List<String> fallbackRoles = null;
 
     @Deprecated
@@ -88,12 +88,12 @@ public final class Woko<
                 List<String> fallbackRoles,
                 FdmType facetDescriptorManager,
                 UnsType usernameResolutionStrategy) {
-        iocContainer = new SimpleWokoIocContainer(objectStore, userManager, usernameResolutionStrategy, facetDescriptorManager);
+        iocContainer = new SimpleWokoIocContainer<OsType,UmType,UnsType,FdmType>(objectStore, userManager, usernameResolutionStrategy, facetDescriptorManager);
         this.fallbackRoles = fallbackRoles;
         init();
     }
 
-    public Woko(WokoIocContainer ioc, List<String> fallbackRoles) {
+    public Woko(WokoIocContainer<OsType,UmType,UnsType,FdmType> ioc, List<String> fallbackRoles) {
         this.iocContainer = ioc;
         this.fallbackRoles = fallbackRoles;
         init();
@@ -102,6 +102,7 @@ public final class Woko<
     private void init() {
         logger.info("Initializing Woko...");
         initJFacets();
+        customInit();
         logger.info("");
         logger.info("__       __     _  __");
         logger.info("\\ \\  _  / /___ | |/ / ___");
@@ -117,10 +118,10 @@ public final class Woko<
         logger.info(" * usernameResolutionStrategy : " + getUsernameResolutionStrategy());
     }
 
-    private void initJFacets() {
+    protected void initJFacets() {
         logger.info("Initializing JFacets...");
         WokoProfileRepository profileRepository = new WokoProfileRepository(getUserManager());
-        WokoFacetContextFactory facetContextFactory = new WokoFacetContextFactory(this);
+        WokoFacetContextFactory<OsType,UmType,UnsType,FdmType> facetContextFactory = new WokoFacetContextFactory<OsType,UmType,UnsType,FdmType>(this);
         jFacets = new JFacetsBuilder(profileRepository, getFacetDescriptorManager()).
                 setFacetContextFactory(facetContextFactory).
                 build();
@@ -132,47 +133,53 @@ public final class Woko<
         logger.info("JFacets init OK.");
     }
 
-    public final WokoIocContainer getIoc() {
-        return iocContainer;
+    protected void customInit() {
     }
 
+    public final WokoIocContainer<OsType,UmType,UnsType,FdmType> getIoc() {
+        return iocContainer;
+    }
+    
     public final List<String> getFallbackRoles() {
         return Collections.unmodifiableList(fallbackRoles);
     }
 
-    public final OsType getObjectStore() {
-        return iocContainer.getComponent(WokoIocContainer.ObjectStore);
+    public OsType getObjectStore() {
+        return getIoc().getObjectStore();
     }
 
-    public final UmType getUserManager() {
-        return iocContainer.getComponent(WokoIocContainer.UserManager);
+    public UmType getUserManager() {
+        return getIoc().getUserManager();
     }
 
-    public final FdmType getFacetDescriptorManager() {
-        return iocContainer.getComponent(WokoIocContainer.FacetDescriptorManager);
+    public FdmType getFacetDescriptorManager() {
+        return getIoc().getFacetDescriptorManager();
     }
 
-    public final UnsType getUsernameResolutionStrategy() {
-        return iocContainer.getComponent(WokoIocContainer.UsernameResolutionStrategy);
+    public UnsType getUsernameResolutionStrategy() {
+        return getIoc().getUsernameResolutionStrategy();
     }
 
-    public final JFacets getJFacets() {
+    public JFacets getJFacets() {
         return jFacets;
     }
 
     public final void close() {
-        logger.info("Closing IOC container...");
-        iocContainer.close();
+        logger.info("Closing...");
+        doClose();
         logger.info("Woko has been closed.");
     }
 
-    @SuppressWarnings("unchecked")
-    public final <T> T getFacet(String name, HttpServletRequest request, Object targetObject) {
-        return (T)getFacet(name, request, targetObject, null);
+    protected void doClose() {
+        this.getObjectStore().close();
     }
 
-    public final <T> T getFacet(String name, HttpServletRequest request, Object targetObject, Class<?> targetObjectClass, boolean throwIfNotFound) {
-        @SuppressWarnings("unchecked")
+    @SuppressWarnings("unchecked")
+    public <T> T getFacet(String name, HttpServletRequest request, Object targetObject) {
+        return getFacet(name, request, targetObject, null);
+    }
+
+    public <T> T getFacet(String name, HttpServletRequest request, Object targetObject, Class<?> targetObjectClass, boolean throwIfNotFound) {
         T f = getFacet(name, request, targetObject, targetObjectClass);
         if (f == null && throwIfNotFound) {
             throw new FacetNotFoundException(name, targetObject, targetObjectClass, getUsername(request));

@@ -16,27 +16,28 @@
 
 package woko.facets;
 
-import net.sourceforge.jfacets.FacetDescriptor;
-import net.sourceforge.jfacets.IFacetContext;
-import net.sourceforge.jfacets.IFacetContextFactory;
-import net.sourceforge.jfacets.IProfile;
+import net.sourceforge.jfacets.*;
 import woko.Woko;
 import woko.actions.WokoRequestInterceptor;
+import woko.persistence.ObjectStore;
+import woko.users.UserManager;
+import woko.users.UsernameResolutionStrategy;
 
-import javax.servlet.http.HttpServletRequest;
+public class WokoFacetContextFactory<
+        OsType extends ObjectStore,
+        UmType extends UserManager,
+        UnsType extends UsernameResolutionStrategy,
+        FdmType extends IFacetDescriptorManager
+        > implements IFacetContextFactory {
 
-public class WokoFacetContextFactory implements IFacetContextFactory {
+  private final Woko<OsType,UmType,UnsType,FdmType> woko;
 
-  private final Woko woko;
-
-  private ThreadLocal<HttpServletRequest> requests = new ThreadLocal<HttpServletRequest>();
-
-  public WokoFacetContextFactory(Woko woko) {
+  public WokoFacetContextFactory(Woko<OsType,UmType,UnsType,FdmType> woko) {
     this.woko = woko;
   }
 
   public IFacetContext create(String name, IProfile profile, Object targetObject, FacetDescriptor facetDescriptor) {
-    return new WokoFacetContext(
+    return new WokoFacetContext<OsType,UmType,UnsType,FdmType>(
         name,
         profile,
         targetObject,

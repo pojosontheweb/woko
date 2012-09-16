@@ -6,10 +6,14 @@ import woko.users.UserManager;
 import woko.users.UsernameResolutionStrategy;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-public class SimpleWokoIocContainer implements WokoIocContainer {
+public class SimpleWokoIocContainer<
+        OsType extends ObjectStore,
+        UmType extends UserManager,
+        UnsType extends UsernameResolutionStrategy,
+        FdmType extends IFacetDescriptorManager
+        > extends AbstractWokoIocContainer<OsType,UmType,UnsType,FdmType> {
 
     private final Map<Object,Object> components = new HashMap<Object, Object>();
 
@@ -25,12 +29,11 @@ public class SimpleWokoIocContainer implements WokoIocContainer {
     }
 
     @Override
-    public <T> T getComponent(Object name) {
-        @SuppressWarnings("unchecked")
-        T o = (T)this.components.get(name);
-        return o;
+    public Object getComponent(Object name) {
+        return this.components.get(name);
     }
 
+    @Override
     public void close() {
         components.clear();
     }

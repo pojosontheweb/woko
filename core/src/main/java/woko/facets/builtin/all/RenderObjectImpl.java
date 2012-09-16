@@ -16,13 +16,22 @@
 
 package woko.facets.builtin.all;
 
+import net.sourceforge.jfacets.IFacetDescriptorManager;
 import net.sourceforge.jfacets.annotations.FacetKey;
 import woko.facets.BaseFragmentFacet;
 import woko.facets.builtin.RenderObject;
 import woko.facets.builtin.WokoFacets;
+import woko.persistence.ObjectStore;
+import woko.users.UserManager;
+import woko.users.UsernameResolutionStrategy;
 
 @FacetKey(name = WokoFacets.renderObject, profileId = "all")
-public class RenderObjectImpl extends BaseFragmentFacet implements RenderObject {
+public class RenderObjectImpl<
+        OsType extends ObjectStore,
+        UmType extends UserManager,
+        UnsType extends UsernameResolutionStrategy,
+        FdmType extends IFacetDescriptorManager
+        > extends BaseFragmentFacet<OsType,UmType,UnsType,FdmType> implements RenderObject {
 
     public static final String FRAGMENT_PATH = "/WEB-INF/woko/jsp/all/renderObject.jsp";
 

@@ -21,9 +21,13 @@ import woko.facets.builtin.RenderPropertyValueJson
 import woko.facets.BaseFacet
 import javax.servlet.http.HttpServletRequest
 import org.json.JSONObject
+import net.sourceforge.jfacets.annotations.AnnotatedFacetDescriptorManager
+import woko.users.RemoteUserStrategy
+import woko.inmemory.InMemoryUserManager
+import woko.hbcompass.HibernateCompassStore
 
 @FacetKey(name='renderPropertyValueJson', profileId='all', targetObjectType=test.OtherPojo.class)
-class RenderPropertyValueJsonOtherPojo extends BaseFacet implements RenderPropertyValueJson {
+class RenderPropertyValueJsonOtherPojo extends BaseFacet<HibernateCompassStore,InMemoryUserManager,RemoteUserStrategy,AnnotatedFacetDescriptorManager> implements RenderPropertyValueJson {
 
   def Object propertyToJson(HttpServletRequest request, Object propertyValue) {
     test.OtherPojo op = propertyValue

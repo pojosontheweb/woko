@@ -11,8 +11,8 @@
 
 <%
     RenderPropertyValue renderPropertyValue = (RenderPropertyValue)request.getAttribute(WokoFacets.renderPropertyValue);
-    WokoFacetContext fctx = (WokoFacetContext)renderPropertyValue.getFacetContext();
-    Woko woko = fctx.getWoko();
+    WokoFacetContext<?,?,?,?> fctx = (WokoFacetContext)renderPropertyValue.getFacetContext();
+    Woko<?,?,?,?> woko = fctx.getWoko();
     ObjectStore os = fctx.getWoko().getObjectStore();
     Object propertyValue = fctx.getTargetObject();
     String propertyName = renderPropertyValue.getPropertyName();
@@ -28,7 +28,7 @@
     if (propertyMappedClassName!=null) {
         propertyClassName = propertyMappedClassName;
         if (propertyValue!=null) {
-            RenderTitle rt = (RenderTitle)woko.getFacet(WokoFacets.renderTitle, request, propertyValue, propertyClass, true);
+            RenderTitle rt = woko.getFacet(WokoFacets.renderTitle, request, propertyValue, propertyClass, true);
             linkTitle = rt.getTitle();
             String key = os.getKey(propertyValue);
             if (key!=null) {

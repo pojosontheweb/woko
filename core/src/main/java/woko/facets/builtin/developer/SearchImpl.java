@@ -16,18 +16,27 @@
 
 package woko.facets.builtin.developer;
 
+import net.sourceforge.jfacets.IFacetDescriptorManager;
 import net.sourceforge.jfacets.annotations.FacetKey;
 import net.sourceforge.stripes.action.ActionBeanContext;
 import woko.facets.builtin.BaseResultFacet;
 import woko.facets.builtin.Search;
 import woko.facets.builtin.WokoFacets;
 import woko.persistence.ListResultIterator;
+import woko.persistence.ObjectStore;
 import woko.persistence.ResultIterator;
+import woko.users.UserManager;
+import woko.users.UsernameResolutionStrategy;
 
 import java.util.Collections;
 
 @FacetKey(name = WokoFacets.search, profileId = "developer")
-public class SearchImpl extends BaseResultFacet implements Search {
+public class SearchImpl<
+        OsType extends ObjectStore,
+        UmType extends UserManager,
+        UnsType extends UsernameResolutionStrategy,
+        FdmType extends IFacetDescriptorManager
+        > extends BaseResultFacet<OsType,UmType,UnsType,FdmType> implements Search {
 
     public static final String FRAGMENT_PATH = "/WEB-INF/woko/jsp/developer/search.jsp";
     private String query;

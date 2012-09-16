@@ -82,6 +82,7 @@ public abstract class WokoInitListener implements ServletContextListener {
         }
     }
 
+    @SuppressWarnings("unchecked")
     protected Woko createWoko() {
         objectStore = createObjectStore();
         userManager = createUserManager();

@@ -16,6 +16,7 @@
 
 package woko.facets.builtin.developer;
 
+import net.sourceforge.jfacets.IFacetDescriptorManager;
 import net.sourceforge.jfacets.annotations.FacetKey;
 import net.sourceforge.stripes.action.ActionBeanContext;
 import net.sourceforge.stripes.action.Resolution;
@@ -26,14 +27,21 @@ import woko.facets.WokoFacetContext;
 import woko.facets.builtin.Json;
 import woko.facets.builtin.RenderObjectJson;
 import woko.facets.builtin.WokoFacets;
+import woko.persistence.ObjectStore;
+import woko.users.UserManager;
+import woko.users.UsernameResolutionStrategy;
 
 @FacetKey(name= WokoFacets.json, profileId="developer")
-public class JsonImpl extends BaseFacet implements Json {
+public class JsonImpl<
+        OsType extends ObjectStore,
+        UmType extends UserManager,
+        UnsType extends UsernameResolutionStrategy,
+        FdmType extends IFacetDescriptorManager
+        > extends BaseFacet<OsType,UmType,UnsType,FdmType> implements Json {
 
   public Resolution getResolution(ActionBeanContext abc) {
-    WokoFacetContext facetContext = getFacetContext();
-    RenderObjectJson roj =
-        (RenderObjectJson)facetContext.getWoko().getFacet(WokoFacets.renderObjectJson, abc.getRequest(), facetContext.getTargetObject());
+    WokoFacetContext<OsType,UmType,UnsType,FdmType> facetContext = getFacetContext();
+    RenderObjectJson roj = facetContext.getWoko().getFacet(WokoFacets.renderObjectJson, abc.getRequest(), facetContext.getTargetObject());
     JSONObject json = roj.objectToJson(abc.getRequest());
     String jsonStr = json.toString();
     return new StreamingResolution("text/json", jsonStr);

@@ -47,8 +47,8 @@ public class PushFacet extends BaseResolutionFacet {
     public Resolution getResolution(ActionBeanContext abc) {
         StringBuilder sb = new StringBuilder();
         if (sources.size()>0) {
-            Woko woko = getFacetContext().getWoko();
-            IFacetDescriptorManager fdm = woko.getJFacets().getFacetRepository().getFacetDescriptorManager();
+            Woko<?,?,?,?> woko = getFacetContext().getWoko();
+            IFacetDescriptorManager fdm = woko.getFacetDescriptorManager();
             if (!(fdm instanceof PushFacetDescriptorManager)) {
                 String msg = "Trying to push but facet descriptor manager ain't a PushFacetDescriptorManager !";
                 logger.error(msg);

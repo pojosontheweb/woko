@@ -16,14 +16,23 @@
 
 package woko.facets.builtin.developer;
 
+import net.sourceforge.jfacets.IFacetDescriptorManager;
 import net.sourceforge.jfacets.annotations.FacetKey;
 import net.sourceforge.stripes.action.ActionBeanContext;
 import net.sourceforge.stripes.action.Resolution;
 import net.sourceforge.stripes.action.StreamingResolution;
 import woko.facets.BaseResolutionFacet;
+import woko.persistence.ObjectStore;
+import woko.users.UserManager;
+import woko.users.UsernameResolutionStrategy;
 
 @FacetKey(name="toString", profileId="developer")
-public class ToString extends BaseResolutionFacet {
+public class ToString<
+        OsType extends ObjectStore,
+        UmType extends UserManager,
+        UnsType extends UsernameResolutionStrategy,
+        FdmType extends IFacetDescriptorManager
+        > extends BaseResolutionFacet<OsType,UmType,UnsType,FdmType> {
 
   public Resolution getResolution(ActionBeanContext abc) {
     Object o = getFacetContext().getTargetObject();

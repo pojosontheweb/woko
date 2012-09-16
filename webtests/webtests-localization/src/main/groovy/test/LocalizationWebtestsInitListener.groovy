@@ -13,8 +13,8 @@ class LocalizationWebtestsInitListener extends
         WokoIocInitListener<HibernateCompassStore,InMemoryUserManager,SessionUsernameResolutionStrategy, AnnotatedFacetDescriptorManager> {
 
     @Override
-    protected WokoIocContainer createIocContainer() {
-        return new SimpleWokoIocContainer(
+    protected WokoIocContainer<HibernateCompassStore,InMemoryUserManager,SessionUsernameResolutionStrategy, AnnotatedFacetDescriptorManager> createIocContainer() {
+        return new SimpleWokoIocContainer<HibernateCompassStore,InMemoryUserManager,SessionUsernameResolutionStrategy, AnnotatedFacetDescriptorManager>(
                 new HibernateCompassStore(getPackageNamesFromConfig(HibernateStore.CTX_PARAM_PACKAGE_NAMES, true)),
                 new InMemoryUserManager().addUser("wdevel", "wdevel", ["developer"]),
                 new SessionUsernameResolutionStrategy(),

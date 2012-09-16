@@ -13,8 +13,8 @@ class BootstrapWebtestsInitListener extends
         WokoIocInitListener<HibernateCompassStore,InMemoryUserManager,RemoteUserStrategy,AnnotatedFacetDescriptorManager>{
 
     @Override
-    protected WokoIocContainer createIocContainer() {
-        return new SimpleWokoIocContainer(
+    protected WokoIocContainer<HibernateCompassStore,InMemoryUserManager,RemoteUserStrategy,AnnotatedFacetDescriptorManager> createIocContainer() {
+        return new SimpleWokoIocContainer<HibernateCompassStore,InMemoryUserManager,RemoteUserStrategy,AnnotatedFacetDescriptorManager>(
                 new HibernateCompassStore(getPackageNamesFromConfig(HibernateStore.CTX_PARAM_PACKAGE_NAMES, true)),
                 new InMemoryUserManager().addUser("wdevel", "wdevel", ["developer"]),
                 new RemoteUserStrategy(),
