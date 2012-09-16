@@ -29,10 +29,8 @@ public class SimpleWokoIocContainer<
     }
 
     @Override
-    public <T> T getComponent(Object name) {
-        @SuppressWarnings("unchecked")
-        T o = (T)this.components.get(name);
-        return o;
+    public Object getComponent(Object name) {
+        return this.components.get(name);
     }
 
     @Override

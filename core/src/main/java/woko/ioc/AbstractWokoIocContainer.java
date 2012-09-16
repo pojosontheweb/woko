@@ -13,23 +13,27 @@ public abstract class AbstractWokoIocContainer<
         > implements WokoIocContainer<OsType,UmType,UnsType,FdmType> {
 
     @Override
+    @SuppressWarnings("unchecked")
     public OsType getObjectStore() {
-        return getComponent(ObjectStore);
+        return (OsType)getComponent(ObjectStore);
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public UmType getUserManager() {
-        return getComponent(UserManager);
+        return (UmType)getComponent(UserManager);
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public UnsType getUsernameResolutionStrategy() {
-        return getComponent(UsernameResolutionStrategy);
+        return (UnsType)getComponent(UsernameResolutionStrategy);
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public FdmType getFacetDescriptorManager() {
-        return getComponent(FacetDescriptorManager);
+        return (FdmType)getComponent(FacetDescriptorManager);
     }
 
     @Override
