@@ -1,6 +1,8 @@
 package test;
 
 import org.hibernate.Session;
+import woko.ext.usermanagement.core.RegistrationAwareUserManager;
+import woko.ext.usermanagement.core.RegistrationDetails;
 import woko.ext.usermanagement.hibernate.HibernateUserManager;
 import woko.hibernate.HibernateStore;
 import woko.hibernate.TxCallback;
@@ -29,7 +31,5 @@ public class MyUserManager extends HibernateUserManager<MyUser> {
         }
         return this;
     }
-
-
 
 }

@@ -1,4 +1,4 @@
-package woko.ext.usermanagement.facets;
+package woko.ext.usermanagement.facets.usermanager;
 
 import net.sourceforge.jfacets.IFacetDescriptorManager;
 import net.sourceforge.jfacets.annotations.FacetKey;

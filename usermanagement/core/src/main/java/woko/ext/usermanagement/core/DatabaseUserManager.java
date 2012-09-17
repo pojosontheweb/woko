@@ -102,7 +102,10 @@ public abstract class DatabaseUserManager<T extends DatabaseUserManager<T, U>, U
         return (T)this;
     }
 
-    protected abstract U createUser(String username, String password, List<String> roles);
+    @Deprecated
+    public abstract U createUser(String username, String password, List<String> roles);
+
+    public abstract U createUser(String username, String password, String email, List<String> roles, AccountStatus accountStatus);
 
     @Override
     public List<String> getRoles(String username) {

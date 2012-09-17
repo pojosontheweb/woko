@@ -14,36 +14,35 @@
  * limitations under the License.
  */
 
-package woko.ext.usermanagement.facets;
+package woko.ext.usermanagement.facets.usermanager;
 
 import net.sourceforge.jfacets.IFacetDescriptorManager;
 import net.sourceforge.jfacets.annotations.FacetKey;
 import woko.ext.usermanagement.core.User;
 import woko.facets.builtin.WokoFacets;
-import woko.facets.builtin.all.RenderTitleImpl;
+import woko.facets.builtin.all.RenderPropertiesImpl;
 import woko.persistence.ObjectStore;
 import woko.users.UserManager;
 import woko.users.UsernameResolutionStrategy;
 
-@FacetKey(name= WokoFacets.renderTitle, profileId="all", targetObjectType = User.class)
-public class RenderUserTitle<
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+@FacetKey(name= WokoFacets.renderProperties, profileId="all", targetObjectType = User.class)
+public class RenderUserProperties<
         OsType extends ObjectStore,
         UmType extends UserManager,
         UnsType extends UsernameResolutionStrategy,
         FdmType extends IFacetDescriptorManager
-        > extends RenderTitleImpl<OsType,UmType,UnsType,FdmType> {
+        > extends RenderPropertiesImpl<OsType,UmType,UnsType,FdmType> {
 
     @Override
-    public String getTitle() {
-        User u = (User)getFacetContext().getTargetObject();
-        if (u==null) {
-            throw new IllegalStateException("user is null, cannot invoke renderTitle facet on it.");
-        }
-        String username = u.getUsername();
-        if (username==null) {
-            return getFacetContext().getWoko().getLocalizedMessage(getRequest(),
-                    "woko.ext.usermanagement.users.transient.user.title");
-        }
-        return username;
+    public List<String> getPropertyNames() {
+        List<String> all = super.getPropertyNames();
+        ArrayList<String> withoutPassword = new ArrayList<String>(all);
+        withoutPassword.remove("password");
+        return Collections.unmodifiableList(withoutPassword);
     }
+
 }

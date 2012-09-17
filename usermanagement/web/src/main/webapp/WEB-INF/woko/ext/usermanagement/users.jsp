@@ -8,9 +8,9 @@
 <%@ page import="woko.facets.builtin.all.Link" %>
 <%@ page import="woko.util.LinkUtil" %>
 <%@ page import="java.util.*" %>
-<%@ page import="woko.ext.usermanagement.facets.Users" %>
+<%@ page import="woko.ext.usermanagement.facets.usermanager.Users" %>
 <%@ page import="woko.ext.usermanagement.hibernate.HibernateUserManager" %>
-<%@ page import="woko.ext.usermanagement.facets.ListUsers" %>
+<%@ page import="woko.ext.usermanagement.facets.usermanager.ListUsers" %>
 <%@ page import="woko.ext.usermanagement.core.User" %>
 <%@ page import="woko.ext.usermanagement.core.AccountStatus" %>
 

@@ -19,20 +19,22 @@ package woko.ext.usermanagement.hibernate;
 import org.hibernate.Criteria;
 import org.hibernate.FlushMode;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
-import woko.ext.usermanagement.core.AccountStatus;
-import woko.ext.usermanagement.core.DatabaseUserManager;
-import woko.ext.usermanagement.core.User;
+import woko.ext.usermanagement.core.*;
 import woko.hibernate.HibernateStore;
 import woko.hibernate.TxCallbackWithResult;
 import woko.persistence.ListResultIterator;
 import woko.persistence.ResultIterator;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
-public class HibernateUserManager<U extends User>
-        extends DatabaseUserManager<HibernateUserManager<U>,U> {
+public class HibernateUserManager<U extends HbUser>
+        extends DatabaseUserManager<HibernateUserManager<U>,U>
+        implements RegistrationAwareUserManager<U> {
 
     private final HibernateStore hibernateStore;
 
@@ -88,10 +90,15 @@ public class HibernateUserManager<U extends User>
         return new ListResultIterator<U>(l, st, lm, count.intValue());
     }
 
+    @Override
+    @Deprecated
+    public U createUser(final String username, final String password, final List<String> roles) {
+        return createUser(username,password,"unknown@unknown.com",roles, AccountStatus.Active);
+    }
 
     @Override
-    protected U createUser(final String username, final String password, final List<String> roles) {
-        return getHibernateStore().doInTxWithResult(new TxCallbackWithResult<U>() {
+    public U createUser(final String username, final String password, final String email, final List<String> roles, final AccountStatus accountStatus) {
+        TxCallbackWithResult<U> cb = new TxCallbackWithResult<U>() {
             @Override
             public U execute(HibernateStore store, Session session) throws Exception {
                 U u = getUserByUsername(username);
@@ -99,8 +106,8 @@ public class HibernateUserManager<U extends User>
                     U user = HibernateUserManager.this.getUserClass().newInstance();
                     user.setUsername(username);
                     user.setPassword(encodePassword(password));
-                    user.setAccountStatus(AccountStatus.Active);
-                    user.setEmail("nobody@nowhere.com");  // TODO we might wanna change this :)
+                    user.setAccountStatus(accountStatus);
+                    user.setEmail(email);
                     ArrayList<String> rolesCopy = new ArrayList<String>(roles);
                     user.setRoles(rolesCopy);
                     store.save(user);
@@ -108,6 +115,46 @@ public class HibernateUserManager<U extends User>
                 }
                 return u;
             }
-        });
+        };
+        HibernateStore store = getHibernateStore();
+        Transaction tx = store.getSession().getTransaction();
+        if (tx.isActive()) {
+            try {
+                return cb.execute(store, store.getSession());
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        } else {
+            return getHibernateStore().doInTxWithResult(cb);
+        }
+
+    }
+
+    @Override
+    public RegistrationDetails<U> getRegistrationDetail(String key) {
+        return null;
+    }
+
+    @Override
+    public RegistrationDetails<U> createRegistration(U user) {
+        HbRegistrationDetails<U> registration = new HbRegistrationDetails<U>();
+        registration.setUser(user);
+        registration.setKey(generateRegistrationKey(user));
+        getHibernateStore().save(registration);
+        return registration;
+    }
+
+    protected String generateRegistrationKey(U user) {
+        return UUID.randomUUID().toString();
+    }
+
+    @Override
+    public void save(U user) {
+        getHibernateStore().save(user);
+    }
+
+    @Override
+    public List<String> getRegisteredUserRoles() {
+        return Collections.emptyList();
     }
 }
