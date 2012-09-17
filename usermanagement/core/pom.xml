@@ -31,5 +31,10 @@
             <artifactId>woko-core</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.pojosontheweb</groupId>
+            <artifactId>woko-mail</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 </project>

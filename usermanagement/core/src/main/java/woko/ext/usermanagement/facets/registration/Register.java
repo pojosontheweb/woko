@@ -6,16 +6,19 @@ import net.sourceforge.stripes.action.*;
 import net.sourceforge.stripes.validation.EmailTypeConverter;
 import net.sourceforge.stripes.validation.LocalizableError;
 import net.sourceforge.stripes.validation.Validate;
+import woko.Woko;
 import woko.ext.usermanagement.core.*;
 import woko.facets.BaseResolutionFacet;
+import woko.facets.builtin.Layout;
+import woko.mail.MailService;
 import woko.persistence.ObjectStore;
 import woko.users.UsernameResolutionStrategy;
 
 import java.util.Collections;
 import java.util.List;
 
-@FacetKey(name="register", profileId = "guest")
-public class Register<
+// @FacetKey(name="register", profileId = "guest") to be assigned to your fallback role(s)
+public abstract class Register<
         OsType extends ObjectStore,
         UmType extends DatabaseUserManager,
         UnsType extends UsernameResolutionStrategy,
@@ -99,7 +102,8 @@ public class Register<
 
     public Resolution doRegister(ActionBeanContext abc) {
         // check that no other user with this username already exists
-        DatabaseUserManager<?,?> databaseUserManager = getWoko().getUserManager();
+        Woko<OsType,UmType,UnsType,FdmType> woko = getWoko();
+        DatabaseUserManager<?,?> databaseUserManager = woko.getUserManager();
         if (!(databaseUserManager instanceof RegistrationAwareUserManager)) {
             throw new IllegalStateException("You are using the register facet but your user manager doesn't implement " +
                 "RegistrationAwareUserManager (" + databaseUserManager + ")");
@@ -123,11 +127,39 @@ public class Register<
         // set a session attribute to prevent other users to see this registration !
         getRequest().getSession().setAttribute(SESS_ATTR_WOKO_REGISTERED, true);
 
+        ObjectStore store = getWoko().getObjectStore();
+        String regDetailsClassMapping = store.getClassMapping(regDetails.getClass());
+        String regDetailsKey = store.getKey(regDetails);
+
+        // send email to freshly registered user if mail service is available and user account is
+        // registered
+        if (u.getAccountStatus().equals(AccountStatus.Registered)) {
+            String mailContent = woko.getLocalizedMessage(getRequest(),
+                    "woko.ext.usermanagement.register.mail.content",
+                    u.getUsername(),
+                    getAppName(),
+                    getAppUrl() + "/activate/" + regDetailsClassMapping + "/" + regDetails.getSecretToken());
+
+            MailService mailService = woko.getIoc().getComponent(MailService.KEY);
+            if (mailService!=null) {
+                mailService.sendMail(
+                        getFromEmailAddress(),
+                        u.getEmail(),
+                        mailContent);
+            }
+        }
+
         // redirect to postRegister with all params
         Class<?> regDetailsClass = regDetails.getClass();
-        ObjectStore store = getWoko().getObjectStore();
-        return new RedirectResolution("/view/" + store.getClassMapping(regDetailsClass) +
-                "/" + store.getKey(regDetails));
+        return new RedirectResolution("/view/" + regDetailsClassMapping +
+                "/" + regDetailsKey);
+    }
+
+    protected abstract String getAppUrl();
+
+    protected String getAppName() {
+        Layout layout = getWoko().getFacet(Layout.FACET_NAME, getRequest(), null, Object.class, true);
+        return layout.getAppTitle();
     }
 
     protected User createUser() {
@@ -145,5 +177,11 @@ public class Register<
                 um.getRegisteredAccountStatus()
         );
     }
+
+    protected String getFromEmailAddress() {
+        return "noreply@woko.com";
+    }
+
+
 
 }

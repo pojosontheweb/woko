@@ -15,6 +15,9 @@ public class HbRegistrationDetails<U extends HbUser> implements RegistrationDeta
     @NotNull
     private HbUser user;
 
+    @NotNull
+    private String secretToken;
+
     @Override
     public String getKey() {
         return key;
@@ -22,6 +25,14 @@ public class HbRegistrationDetails<U extends HbUser> implements RegistrationDeta
 
     public void setKey(String key) {
         this.key = key;
+    }
+
+    public String getSecretToken() {
+        return secretToken;
+    }
+
+    public void setSecretToken(String secretToken) {
+        this.secretToken = secretToken;
     }
 
     @Override

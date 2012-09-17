@@ -4,6 +4,8 @@ public interface RegistrationDetails<U extends User> {
 
     String getKey();
 
+    String getSecretToken();
+
     U getUser();
 
 }

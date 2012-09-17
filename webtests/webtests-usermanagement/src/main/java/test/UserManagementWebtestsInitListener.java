@@ -5,6 +5,8 @@ import woko.auth.builtin.SessionUsernameResolutionStrategy;
 import woko.hbcompass.HibernateCompassStore;
 import woko.ioc.SimpleWokoIocContainer;
 import woko.ioc.WokoIocContainer;
+import woko.mail.ConsoleMailService;
+import woko.mail.MailService;
 import woko.push.PushFacetDescriptorManager;
 
 public class UserManagementWebtestsInitListener
@@ -18,6 +20,6 @@ public class UserManagementWebtestsInitListener
                 new MyUserManager(store).createDefaultUsers(),
                 new SessionUsernameResolutionStrategy(),
                 new PushFacetDescriptorManager(createAnnotatedFdm())
-        );
+        ).addComponent(MailService.KEY, new ConsoleMailService());
     }
 }

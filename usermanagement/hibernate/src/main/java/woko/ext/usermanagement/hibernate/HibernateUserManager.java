@@ -139,12 +139,13 @@ public class HibernateUserManager<U extends HbUser>
     public RegistrationDetails<U> createRegistration(U user) {
         HbRegistrationDetails<U> registration = new HbRegistrationDetails<U>();
         registration.setUser(user);
-        registration.setKey(generateRegistrationKey(user));
+        registration.setKey(generateRegistrationKeyOrToken(user));
+        registration.setSecretToken(generateRegistrationKeyOrToken(user));
         getHibernateStore().save(registration);
         return registration;
     }
 
-    protected String generateRegistrationKey(U user) {
+    protected String generateRegistrationKeyOrToken(U user) {
         return UUID.randomUUID().toString();
     }
 
