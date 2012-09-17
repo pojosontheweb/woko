@@ -8,12 +8,12 @@
     <s:layout-component name="body">
 
         <h1 class="page-header">
-            <fmt:message bundle="${wokoBundle}" key="woko.ext.usermanagement.activate.h1.text">
-                <fmt:param value="${regDetails.user.username}"/>
-            </fmt:message>
+            <fmt:message bundle="${wokoBundle}" key="woko.ext.usermanagement.activate.h1.text"/>
         </h1>
 
-        <fmt:message bundle="${wokoBundle}" key="woko.ext.usermanagement.activate.para.text"/>
+        <fmt:message bundle="${wokoBundle}" key="woko.ext.usermanagement.activate.para.text">
+            <fmt:param value="${regDetails.user.username}"/>
+        </fmt:message>
 
     </s:layout-component>
 </s:layout-render>
