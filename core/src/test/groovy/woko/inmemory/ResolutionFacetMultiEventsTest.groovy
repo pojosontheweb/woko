@@ -16,7 +16,7 @@ class ResolutionFacetMultiEventsTest extends InMemRoundtripTestBase {
 
     void testExceptionIsThrownWhenMoreThanOneHandlerMatches() {
         try {
-            MockRoundtrip t = mockRoundtrip("wdevel", "testMultiEvents", null, null, [
+            mockRoundtrip("wdevel", "testMultiEvents", null, null, [
                     "otherEvent":"true",
                     "otherEvent2":"true"
             ])
