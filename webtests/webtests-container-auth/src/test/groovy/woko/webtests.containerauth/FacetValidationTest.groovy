@@ -16,21 +16,40 @@
 
 package woko.webtests.containerauth
 
-class FacetValidationTest extends WebTestBase{
+class FacetValidationTest extends WebTestBase {
 
-  void testFacetValidation(){
-    webtest('test facet validation'){
-      goToPage '/facet-validation-test.jsp'
-      verifyText 'facet validation test'
+    void testFacetValidation() {
+        webtest('testFacetValidation') {
+            goToPage '/facet-validation-test.jsp'
+            verifyText 'facet validation test'
 
-      // submit and check that we have nvalidation errors
-      clickButton(name:'doIt')
-      verifyText 'My facet prop is a required field'
+            // submit and check that we have nvalidation errors
+            clickButton(name: 'doIt')
+            verifyText 'My facet prop is a required field'
 
-      // now fill in the required field, and submit
-      setInputField(name:'facet.prop', value:'foobar')
-      clickButton(name:'doIt')
-      verifyText 'you have entered foobar'
+            // now fill in the required field, and submit
+            setInputField(name: 'facet.prop', value: 'foobar')
+            clickButton(name: 'doIt')
+            verifyText 'you have entered foobar'
+        }
     }
-  }
+
+    void testFacetValidationMultiEventsDontValidate() {
+        webtest('testFacetValidationMultiEventsDontValidate') {
+            goToPage '/multiEventsWithDontValidate'
+            verifyText 'myProp:null'
+
+            goToPage '/multiEventsWithDontValidate?facet.myProp=123'
+            verifyText 'myProp:123'
+
+            goToPage '/facet-validation-test.jsp'
+            clickButton(name: 'doIt2')
+            verifyText 'My Prop is a required field'
+
+            goToPage '/multiEventsWithDontValidate?otherEvent=true&facet.myProp=123'
+            verifyText 'myProp:123'
+        }
+    }
+
+
 }
