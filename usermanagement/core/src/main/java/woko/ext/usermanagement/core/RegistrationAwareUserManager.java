@@ -1,8 +1,10 @@
 package woko.ext.usermanagement.core;
 
+import woko.users.UserManager;
+
 import java.util.List;
 
-public interface RegistrationAwareUserManager<U extends User> {
+public interface RegistrationAwareUserManager<U extends User> extends UserManager{
 
     RegistrationDetails<U> getRegistrationDetail(String key);
 
@@ -10,7 +12,4 @@ public interface RegistrationAwareUserManager<U extends User> {
 
     void save(U user);
 
-    List<String> getRegisteredUserRoles();
-
-    AccountStatus getRegisteredAccountStatus();
 }

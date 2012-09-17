@@ -171,13 +171,4 @@ public class HibernateUserManager<U extends HbUser>
         getHibernateStore().save(user);
     }
 
-    @Override
-    public List<String> getRegisteredUserRoles() {
-        return Collections.emptyList();
-    }
-
-    @Override
-    public AccountStatus getRegisteredAccountStatus() {
-        return AccountStatus.Registered;
-    }
 }

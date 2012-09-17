@@ -131,7 +131,7 @@ public abstract class Register<
             return getResolution(abc);
         } else {
 
-            // all good : atually create and register the user
+            // all good : actually create and register the user
             u = createUser();
 
             @SuppressWarnings("unchecked")
@@ -153,7 +153,8 @@ public abstract class Register<
                         "woko.ext.usermanagement.register.mail.content",
                         u.getUsername(),
                         getAppName(),
-                        getAppUrl() + "/activate/" + regDetailsClassMapping + "/" + regDetails.getSecretToken());
+                        getAppUrl() + "/activate/" + regDetailsClassMapping + "/" + regDetails.getKey() +
+                            "?facet.token=" + regDetails.getSecretToken());
 
                 MailService mailService = woko.getIoc().getComponent(MailService.KEY);
                 if (mailService!=null) {
@@ -190,10 +191,14 @@ public abstract class Register<
                 username,
                 password1,
                 email,
-                um.getRegisteredUserRoles(),
-                um.getRegisteredAccountStatus()
+                getRegisteredUserRoles(),
+                getRegisteredAccountStatus()
         );
     }
+
+    protected abstract AccountStatus getRegisteredAccountStatus();
+
+    protected abstract List<String> getRegisteredUserRoles();
 
     protected String getFromEmailAddress() {
         return "noreply@woko.com";
