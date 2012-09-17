@@ -32,7 +32,7 @@ public class NestedValidationMetadataProviderRoundtripTest extends TestCase {
   private MockServletContext createMockServletContext() {
     Map<String, String> params = new HashMap<String, String>();
     params.put("ActionResolver.Packages", "woko.actions");
-    params.put("Extension.Packages", "woko.actions");
+    params.put("Extension.Packages", "woko.actions.nestedvalidation");
     MockServletContext mockServletContext = new MockServletContext("nestedvalidation");
     mockServletContext.addFilter(StripesFilter.class, "StripesFilter", params);
     mockServletContext.setServlet(DispatcherServlet.class, "DispatcherServlet", null);
