@@ -157,4 +157,9 @@ public class HibernateUserManager<U extends HbUser>
     public List<String> getRegisteredUserRoles() {
         return Collections.emptyList();
     }
+
+    @Override
+    public AccountStatus getRegisteredAccountStatus() {
+        return AccountStatus.Registered;
+    }
 }

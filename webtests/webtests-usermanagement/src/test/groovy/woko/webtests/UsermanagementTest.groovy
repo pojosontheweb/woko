@@ -48,18 +48,21 @@ class UsermanagementTest extends WokoWebTestBase {
 
             goToPage "/register"
             verifyText text:"email"
-            verifyText text:"prop1"
             verifyText text:"username"
-            verifyXPath xpath:"/html/body/div/div[2]/div/div/div[2]/div[2]/div/form/fieldset/div/div/input[@class='error input-xlarge wokoPropertyValueEdit java.lang.String-email']"
-            verifyXPath xpath:"/html/body/div/div[2]/div/div/div[2]/div[2]/div/form/fieldset/div[2]/div/input[@class='input-xlarge wokoPropertyValueEdit java.lang.String-prop1']"
-            verifyXPath xpath:"/html/body/div/div[2]/div/div/div[2]/div[2]/div/form/fieldset/div[3]/div/input[@class='error input-xlarge wokoPropertyValueEdit java.lang.String-username']"
+            verifyXPath xpath:"/html/body/div/div[2]/div/div/div/div/form/fieldset/div/div/div/input"
+            verifyXPath xpath:"/html/body/div/div[2]/div/div/div/div/form/fieldset/div[2]/div/div/input"
+            verifyXPath xpath:"/html/body/div/div[2]/div/div/div/div/form/fieldset/div[3]/div/div/input"
+            verifyXPath xpath:"/html/body/div/div[2]/div/div/div/div/form/fieldset/div[4]/div/div/input"
 
-            setInputField name:'object.email', value:'funky@stuff.com'
-            setInputField name:'object.prop1', value:'Some Skunk Funk'
-            setInputField name:'object.username', value:'funkystuff'
-            clickButton xpath:'/html/body/div/div[2]/div/div/div[2]/div[2]/div/form/fieldset/div[4]/input' // save
+            setInputField name:'facet.username', value:'funkystuff'
+            setInputField name:'facet.email', value:'funky@stuff.com'
+            setInputField name:'facet.password1', value:'funkystuff'
+            setInputField name:'facet.password2', value:'funkystuff'
+            clickButton name:'doRegister'
 
+            verifyText text: 'Account not yet active'
             verifyText text:'funky@stuff.com'
+            verifyText text:'Welcome funkystuff ! Whats next ?'
 
             // check that user account exists using developer role
             login()
@@ -72,13 +75,10 @@ class UsermanagementTest extends WokoWebTestBase {
             setInputField xpath:'/html/body/div/div[2]/div/div/div/div[2]/div/form/fieldset/div[4]/div/input', value:'developer'
             clickButton xpath: '/html/body/div/div[2]/div/div/div/div[2]/div/form/fieldset/div[6]/input'
 
-            // update user's password so we can log in
-            goToPage '/updateFunkyPassword'
-            verifyText 'OK'
-
             // logout and try to authenticate with new user
             logout()
             login("funkystuff", "funkystuff")
+            verifyText text:'Developer Home'
         }
 
     }

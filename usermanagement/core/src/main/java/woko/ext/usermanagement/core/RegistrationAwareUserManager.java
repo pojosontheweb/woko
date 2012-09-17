@@ -12,4 +12,5 @@ public interface RegistrationAwareUserManager<U extends User> {
 
     List<String> getRegisteredUserRoles();
 
+    AccountStatus getRegisteredAccountStatus();
 }

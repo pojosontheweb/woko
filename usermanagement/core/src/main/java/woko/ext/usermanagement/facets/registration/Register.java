@@ -142,7 +142,7 @@ public class Register<
                 password1,
                 email,
                 um.getRegisteredUserRoles(),
-                AccountStatus.Registered
+                um.getRegisteredAccountStatus()
         );
     }
 

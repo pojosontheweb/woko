@@ -21,58 +21,77 @@
 
         <fmt:message bundle="${wokoBundle}" key="woko.ext.usermanagement.register.para.text"/>
 
-        <s:form action="/register" class="form-horizontal">
-            <s:hidden name="_sourcePage" value="<%=encryptedSourcePage%>"/>
-            <fieldset>
+        <div class="row-fluid">
+            <div class="span12">
+                <s:form action="/register" class="form-horizontal">
+                    <s:hidden name="_sourcePage" value="<%=encryptedSourcePage%>"/>
+                    <fieldset>
 
-                <div class="control-group ${empty(actionBean.context.validationErrors['facet.username']) ? '' : 'error'} ">
-                    <s:label for="facet.username" class="control-label">
-                        <fmt:message bundle="${wokoBundle}" key="User.username"/>
-                    </s:label>
-                    <div class="controls">
-                        <s:text name="facet.username"/>
-                        <s:errors field="facet.username"/>
-                    </div>
-                </div>
+                        <div class="control-group ${empty(actionBean.context.validationErrors['facet.username']) ? '' : 'error'} ">
+                            <s:label for="facet.username" class="control-label">
+                                <fmt:message bundle="${wokoBundle}" key="User.username"/>
+                            </s:label>
+                            <div class="controls">
+                                <div class="input-prepend">
+                                    <span class="add-on"><i class="icon-user"> </i></span>
+                                    <s:text name="facet.username" class="span4"/>
+                                </div>
+                                <s:errors field="facet.username"/>
+                            </div>
+                        </div>
 
-                <div class="control-group ${empty(actionBean.context.validationErrors['facet.email']) ? '' : 'error'} ">
-                    <s:label for="facet.email" class="control-label">
-                        <fmt:message bundle="${wokoBundle}" key="User.email"/>
-                    </s:label>
-                    <div class="controls">
-                        <s:text name="facet.email"/>
-                        <s:errors field="facet.email"/>
-                    </div>
-                </div>
+                        <div class="control-group ${empty(actionBean.context.validationErrors['facet.email']) ? '' : 'error'} ">
+                            <s:label for="facet.email" class="control-label">
+                                <fmt:message bundle="${wokoBundle}" key="User.email"/>
+                            </s:label>
+                            <div class="controls">
+                                <div class="input-prepend">
+                                    <span class="add-on">@</span>
+                                    <s:text name="facet.email" class="span4"/>
+                                </div>
+                                <s:errors field="facet.email"/>
+                            </div>
+                        </div>
 
-                <div class="control-group ${empty(actionBean.context.validationErrors['facet.password1']) ? '' : 'error'} ">
-                    <s:label for="facet.password1" class="control-label">
-                        <fmt:message bundle="${wokoBundle}" key="woko.ext.usermanagement.register.password1"/>
-                    </s:label>
-                    <div class="controls">
-                        <s:password name="facet.password1"/>
-                        <s:errors field="facet.password1"/>
-                    </div>
-                </div>
+                        <div class="control-group ${empty(actionBean.context.validationErrors['facet.password1']) ? '' : 'error'} ">
+                            <s:label for="facet.password1" class="control-label">
+                                <fmt:message bundle="${wokoBundle}" key="woko.ext.usermanagement.register.password1"/>
+                            </s:label>
+                            <div class="controls">
+                                <div class="input-prepend">
+                                    <span class="add-on">
+                                        <i class="icon-lock"> </i>
+                                    </span>
+                                    <s:password name="facet.password1" class="span4"/>
+                                </div>
+                                <s:errors field="facet.password1"/>
+                            </div>
+                        </div>
 
-                <div class="control-group ${empty(actionBean.context.validationErrors['facet.password2']) ? '' : 'error'} ">
-                    <s:label for="facet.password2" class="control-label">
-                        <fmt:message bundle="${wokoBundle}" key="woko.ext.usermanagement.register.password2"/>
-                    </s:label>
-                    <div class="controls">
-                        <s:password name="facet.password2"/>
-                        <s:errors field="facet.password2"/>
-                    </div>
-                </div>
+                        <div class="control-group ${empty(actionBean.context.validationErrors['facet.password2']) ? '' : 'error'} ">
+                            <s:label for="facet.password2" class="control-label">
+                                <fmt:message bundle="${wokoBundle}" key="woko.ext.usermanagement.register.password2"/>
+                            </s:label>
+                            <div class="controls">
+                                <div class="input-prepend">
+                                    <span class="add-on">
+                                        <i class="icon-lock"> </i>
+                                    </span>
+                                    <s:password name="facet.password2" class="span4"/>
+                                </div>
+                                <s:errors field="facet.password2"/>
+                            </div>
+                        </div>
 
 
-                <div class="form-actions">
-                    <s:submit name="doRegister" class="btn btn-primary btn-large"/>
-                </div>
+                        <div class="form-actions">
+                            <s:submit name="doRegister" class="btn btn-primary btn-large"/>
+                        </div>
 
-            </fieldset>
-        </s:form>
-
+                    </fieldset>
+                </s:form>
+            </div>
+        </div>
 
     </s:layout-component>
 </s:layout-render>
