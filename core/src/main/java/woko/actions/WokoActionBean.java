@@ -162,7 +162,16 @@ public class WokoActionBean<
             String msg = "Invocation of handler method " + facet.getClass().getName() +
                     "." + handler.getName() + " threw Exception";
             logger.error(msg, e);
-            throw new RuntimeException(msg, e);
+            if (e instanceof InvocationTargetException) {
+                Throwable target = ((InvocationTargetException)e).getTargetException();
+                if (target instanceof RuntimeException) {
+                    throw (RuntimeException)target;
+                } else {
+                    throw new RuntimeException(e);
+                }
+            } else {
+                throw new RuntimeException(e);
+            }
         }
     }
 
