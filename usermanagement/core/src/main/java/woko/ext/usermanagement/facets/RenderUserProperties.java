@@ -44,4 +44,5 @@ public class RenderUserProperties<
         withoutPassword.remove("password");
         return Collections.unmodifiableList(withoutPassword);
     }
+
 }

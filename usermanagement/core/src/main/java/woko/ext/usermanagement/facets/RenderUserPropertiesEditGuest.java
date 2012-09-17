@@ -32,4 +32,9 @@ public class RenderUserPropertiesEditGuest<
         a.remove("accountStatus");
         return a;
     }
+
+    @Override
+    public String getPath() {
+        return "/WEB-INF/woko/ext/usermanagement/renderUserPropertiesEditGuest.jsp";
+    }
 }
