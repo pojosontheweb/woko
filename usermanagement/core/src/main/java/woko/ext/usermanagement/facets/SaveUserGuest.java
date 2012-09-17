@@ -47,21 +47,24 @@ public class SaveUserGuest<
     }
 
     private boolean doValidatePasswords(ActionBeanContext abc) {
+
+        return true;
+
         // TODO more validation (length, strength etc.)
-        boolean valid = true;
-        if (password1==null) {
-            valid = false;
-        }
-        if (valid && password2==null) {
-            valid = false;
-        }
-        if (valid) {
-            valid = password1.equals(password2);
-        }
-        if (!valid) {
-            abc.getValidationErrors().addGlobalError(new LocalizableError("woko.ext.usermanagement.user.register.registration.ko.passwords.invalid"));
-        }
-        return valid;
+//        boolean valid = true;
+//        if (password1==null) {
+//            valid = false;
+//        }
+//        if (valid && password2==null) {
+//            valid = false;
+//        }
+//        if (valid) {
+//            valid = password1.equals(password2);
+//        }
+//        if (!valid) {
+//            abc.getValidationErrors().addGlobalError(new LocalizableError("woko.ext.usermanagement.user.register.registration.ko.passwords.invalid"));
+//        }
+//        return valid;
     }
 
     @Override
