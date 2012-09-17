@@ -1,6 +1,7 @@
 package test;
 
 import org.hibernate.Session;
+import woko.ext.usermanagement.core.AccountStatus;
 import woko.ext.usermanagement.core.RegistrationAwareUserManager;
 import woko.ext.usermanagement.core.RegistrationDetails;
 import woko.ext.usermanagement.hibernate.HibernateUserManager;
@@ -20,7 +21,7 @@ public class MyUserManager extends HibernateUserManager<MyUser> {
     public MyUserManager createDefaultUsers() {
         super.createDefaultUsers();
         for (int i=0; i<1000; i++) {
-            final MyUser u1 = createUser("testuser" + i, "testuser" + i, Arrays.asList("testuser"));
+            final MyUser u1 =  createUser("testuser" + i, "testuser" + i, "testemail" + i,  Arrays.asList("testuser"), AccountStatus.Active);
             u1.setProp1("foobar" + i);
             getHibernateStore().doInTx(new TxCallback() {
                 @Override

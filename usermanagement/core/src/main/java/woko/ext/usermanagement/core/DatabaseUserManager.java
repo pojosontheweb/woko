@@ -125,6 +125,8 @@ public abstract class DatabaseUserManager<T extends DatabaseUserManager<T, U>, U
 
     public abstract U getUserByUsername(String username);
 
+    public abstract U getUserByEmail(String email);
+
     @Override
     public boolean authenticate(String username, HttpServletRequest request) {
         if (username==null) {

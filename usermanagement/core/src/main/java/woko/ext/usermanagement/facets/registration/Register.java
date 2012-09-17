@@ -13,6 +13,7 @@ import woko.facets.builtin.Layout;
 import woko.mail.MailService;
 import woko.persistence.ObjectStore;
 import woko.users.UsernameResolutionStrategy;
+import woko.util.WLogger;
 
 import java.util.Collections;
 import java.util.List;
@@ -24,6 +25,8 @@ public abstract class Register<
         UnsType extends UsernameResolutionStrategy,
         FdmType extends IFacetDescriptorManager
         > extends BaseResolutionFacet<OsType,UmType,UnsType,FdmType> {
+
+    private static final WLogger logger = WLogger.getLogger(Register.class);
 
     public static final String FACET_NAME = "register";
     public static final String SESS_ATTR_WOKO_REGISTERED = "wokoRegistered";
@@ -109,50 +112,64 @@ public abstract class Register<
                 "RegistrationAwareUserManager (" + databaseUserManager + ")");
         }
 
-        // chack that user doesn't already exist
+        // check that user doesn't already exist
         User u = databaseUserManager.getUserByUsername(username);
         if (u!=null) {
+            logger.warn("Attempt to log-in with an already existing username : " + username);
             abc.getValidationErrors().add("facet.username", new LocalizableError("woko.ext.usermanagement.register.ko.username"));
             return getResolution(abc);
         }
-
-        // atually create and register the user
-        u = createUser();
-
-        @SuppressWarnings("unchecked")
-        RegistrationAwareUserManager<User> registrationAwareUserManager =
-                (RegistrationAwareUserManager<User>)databaseUserManager;
-        RegistrationDetails<User> regDetails = registrationAwareUserManager.createRegistration(u);
-
-        // set a session attribute to prevent other users to see this registration !
-        getRequest().getSession().setAttribute(SESS_ATTR_WOKO_REGISTERED, true);
-
-        ObjectStore store = getWoko().getObjectStore();
-        String regDetailsClassMapping = store.getClassMapping(regDetails.getClass());
-        String regDetailsKey = store.getKey(regDetails);
-
-        // send email to freshly registered user if mail service is available and user account is
-        // registered
-        if (u.getAccountStatus().equals(AccountStatus.Registered)) {
-            String mailContent = woko.getLocalizedMessage(getRequest(),
-                    "woko.ext.usermanagement.register.mail.content",
-                    u.getUsername(),
-                    getAppName(),
-                    getAppUrl() + "/activate/" + regDetailsClassMapping + "/" + regDetails.getSecretToken());
-
-            MailService mailService = woko.getIoc().getComponent(MailService.KEY);
-            if (mailService!=null) {
-                mailService.sendMail(
-                        getFromEmailAddress(),
-                        u.getEmail(),
-                        mailContent);
-            }
+        // check that email ain't already taken
+        u = databaseUserManager.getUserByEmail(email);
+        if (u!=null) {
+            logger.warn("Attempt to log-in with an already existing email : " + email);
+            abc.getValidationErrors().add("facet.email", new LocalizableError("woko.ext.usermanagement.register.ko.email"));
+            return getResolution(abc);
         }
 
-        // redirect to postRegister with all params
-        Class<?> regDetailsClass = regDetails.getClass();
-        return new RedirectResolution("/view/" + regDetailsClassMapping +
-                "/" + regDetailsKey);
+        if (!doValidatePasswords(abc)) {
+            return getResolution(abc);
+        } else {
+
+            // all good : atually create and register the user
+            u = createUser();
+
+            @SuppressWarnings("unchecked")
+            RegistrationAwareUserManager<User> registrationAwareUserManager =
+                    (RegistrationAwareUserManager<User>)databaseUserManager;
+            RegistrationDetails<User> regDetails = registrationAwareUserManager.createRegistration(u);
+
+            // set a session attribute to prevent other users to see this registration !
+            getRequest().getSession().setAttribute(SESS_ATTR_WOKO_REGISTERED, true);
+
+            ObjectStore store = getWoko().getObjectStore();
+            String regDetailsClassMapping = store.getClassMapping(regDetails.getClass());
+            String regDetailsKey = store.getKey(regDetails);
+
+            // send email to freshly registered user if mail service is available and user account is
+            // registered
+            if (u.getAccountStatus().equals(AccountStatus.Registered)) {
+                String mailContent = woko.getLocalizedMessage(getRequest(),
+                        "woko.ext.usermanagement.register.mail.content",
+                        u.getUsername(),
+                        getAppName(),
+                        getAppUrl() + "/activate/" + regDetailsClassMapping + "/" + regDetails.getSecretToken());
+
+                MailService mailService = woko.getIoc().getComponent(MailService.KEY);
+                if (mailService!=null) {
+                    mailService.sendMail(
+                            getFromEmailAddress(),
+                            u.getEmail(),
+                            mailContent);
+                } else {
+                    logger.error("No email could be sent : no MailService found in IoC.");
+                }
+            }
+
+            // redirect to postRegister with all params
+            return new RedirectResolution("/view/" + regDetailsClassMapping +
+                    "/" + regDetailsKey);
+        }
     }
 
     protected abstract String getAppUrl();

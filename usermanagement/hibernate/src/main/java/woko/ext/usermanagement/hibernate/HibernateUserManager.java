@@ -66,6 +66,23 @@ public class HibernateUserManager<U extends HbUser>
     }
 
     @Override
+    @SuppressWarnings("unchecked")
+    public U getUserByEmail(String email) {
+        Session s = hibernateStore.getSession();
+        List l = s.createCriteria(getUserClass())
+                .add(Restrictions.eq("email", email))
+                .setFlushMode(FlushMode.MANUAL)
+                .list();
+        if (l.size()==0) {
+            return null;
+        }
+        if (l.size()>1) {
+            throw new IllegalStateException("more than 1 users with email==" + email);
+        }
+        return (U)l.get(0);
+    }
+
+    @Override
     public ResultIterator<U> listUsers(Integer start, Integer limit) {
         // TODO invoke store "list"
         Session s = hibernateStore.getSession();
