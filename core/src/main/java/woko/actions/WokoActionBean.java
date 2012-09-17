@@ -17,10 +17,7 @@
 package woko.actions;
 
 import net.sourceforge.jfacets.IFacetDescriptorManager;
-import net.sourceforge.stripes.action.Before;
-import net.sourceforge.stripes.action.DefaultHandler;
-import net.sourceforge.stripes.action.Resolution;
-import net.sourceforge.stripes.action.UrlBinding;
+import net.sourceforge.stripes.action.*;
 import net.sourceforge.stripes.controller.LifecycleStage;
 import net.sourceforge.stripes.validation.Validate;
 import net.sourceforge.stripes.validation.ValidateNestedProperties;
@@ -33,6 +30,13 @@ import woko.users.UsernameResolutionStrategy;
 import woko.util.WLogger;
 
 import javax.servlet.http.HttpServletRequest;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @UrlBinding("/{facetName}/{className}/{key}")
 public class WokoActionBean<
@@ -141,11 +145,63 @@ public class WokoActionBean<
 
     @DefaultHandler
     public Resolution execute() {
-        Resolution result = facet.getResolution(getContext());
-        if (result == null) {
-            throw new IllegalStateException("Execution of facet " + facet + " returned null !");
+        // cache request param names
+        @SuppressWarnings("unchecked")
+        Set<String> requestParamNames =
+                new HashSet<String>(getContext().getRequest().getParameterMap().keySet());
+
+        // find the method handler in the facet
+        List<Method> matchingMethods = new ArrayList<Method>();
+        for (Method m : facet.getClass().getMethods()) {
+            if (Modifier.isPublic(m.getModifiers()) && Resolution.class.isAssignableFrom(m.getReturnType())) {
+                Class<?>[] paramTypes = m.getParameterTypes();
+                if (paramTypes.length==1 && ActionBeanContext.class.isAssignableFrom(paramTypes[0])) {
+                    // method signature is ok, check if we have a request parameter with that name !
+                    if (requestParamNames.contains(m.getName())) {
+                        matchingMethods.add(m);
+                    }
+                }
+            }
         }
-        return result;
+
+        int nbMatchingMethods = matchingMethods.size();
+        if (nbMatchingMethods>1) {
+            // check that we have only 1 handler matching
+            StringBuilder msg = new StringBuilder();
+            msg.append("More than 1 handler method found in ResolutionFacet : ")
+                    .append(facet.getClass().getName())
+                    .append(" : \n");
+            for (Method m : matchingMethods) {
+                msg.append("  * ").append(m.getName()).append("\n");
+            }
+            throw new IllegalStateException(msg.toString());
+        } else if (nbMatchingMethods==0) {
+            // no methods matched, invoke interface method getResolution
+            Resolution result = facet.getResolution(getContext());
+            if (result==null) {
+                String msg = "Execution of facet " + facet + " returned null (using interface method)";
+                logger.error(msg);
+                throw new IllegalStateException(msg);
+            }
+            return result;
+        } else {
+            // 1 handled matched, invoke it
+            Method handler = matchingMethods.get(0);
+            try {
+                Resolution result = (Resolution)handler.invoke(facet, getContext());
+                if (result==null) {
+                    String msg = "Execution of facet " + facet + " returned null (using handler '" + handler.getName() + "')";
+                    logger.error(msg);
+                    throw new IllegalStateException(msg);
+                }
+                return result;
+            } catch (Exception e) {
+                String msg = "Invocation of handler method " + facet.getClass().getName() +
+                        "." + handler.getName() + " threw Exception";
+                logger.error(msg, e);
+                throw new RuntimeException(msg, e);
+            }
+        }
     }
 
 }
