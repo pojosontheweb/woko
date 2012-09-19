@@ -16,6 +16,7 @@
 
 package woko.actions;
 
+import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.*;
@@ -119,6 +120,7 @@ public class WokoFacetBindingPolicyManager {
         res.add(HttpServletRequest.class);
         res.add(Woko.class);
         res.add(WokoFacetContext.class);
+        res.add(Method.class);
         return Collections.unmodifiableCollection(res);
     }
 

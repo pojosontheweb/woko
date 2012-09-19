@@ -13,11 +13,11 @@ class TestWithMultiEvents extends BaseResolutionFacet {
         return new StreamingResolution("text/plain", "getResolution")
     }
 
-    Resolution otherEvent(ActionBeanContext abc) {
+    Resolution otherEvent() {
         return new StreamingResolution("text/plain", "otherEvent")
     }
 
-    Resolution otherEvent2(ActionBeanContext abc) {
+    Resolution otherEvent2() {
         return new StreamingResolution("text/plain", "otherEvent2")
     }
 

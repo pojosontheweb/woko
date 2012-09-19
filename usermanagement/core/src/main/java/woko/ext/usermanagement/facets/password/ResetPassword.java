@@ -35,8 +35,6 @@ public class ResetPassword<
 
     private String token;
 
-    private String newPassword;
-
     public String getEmail() {
         return email;
     }
@@ -51,10 +49,6 @@ public class ResetPassword<
 
     public void setToken(String token) {
         this.token = token;
-    }
-
-    public String getNewPassword() {
-        return newPassword;
     }
 
     @Override
@@ -112,16 +106,15 @@ public class ResetPassword<
             throw new IllegalArgumentException("invalid request token (not equals to session token)");
         }
 
-        getRequest().getSession().removeAttribute("wokoResetPasswordToken");
         DatabaseUserManager<?,User> um = getWoko().getUserManager();
         User u = um.getUserByEmail(email);
 
         if (u!=null) {
-            newPassword = generatePassword();
+            String newPassword = generatePassword();
+            session.setAttribute("wokoNewPassword", newPassword);
             u.setPassword(um.encodePassword(newPassword));
             um.save(u);
             logger.warn("password reset for email " + email);
-            abc.getMessages().add(new LocalizableMessage("woko.ext.usermanagement.password.reset.message"));
             return new RedirectResolution("/resetPasswordConfirm");
         } else {
             throw new IllegalArgumentException("No user found for email " + email);
