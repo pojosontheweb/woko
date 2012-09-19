@@ -171,4 +171,7 @@ public abstract class DatabaseUserManager<T extends DatabaseUserManager<T, U>, U
     }
 
     public abstract ResultIterator<U> listUsers(Integer start, Integer limit);
+
+    public abstract void save(U user);
+
 }

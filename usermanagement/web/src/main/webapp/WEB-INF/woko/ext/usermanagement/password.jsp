@@ -2,11 +2,10 @@
 <%@include file="/WEB-INF/woko/jsp/taglibs.jsp"%>
 <%@ page import="woko.facets.builtin.*" %>
 <%@ page import="net.sourceforge.stripes.util.CryptoUtil" %>
-<%@ page import="woko.ext.usermanagement.facets.registration.Register" %>
 <%@ page import="woko.ext.usermanagement.facets.password.Password" %>
 <w:facet facetName="<%=Layout.FACET_NAME%>"/>
 <%
-    Password password = (Password)request.getAttribute(Register.FACET_NAME);
+    Password password = (Password)request.getAttribute(Password.FACET_NAME);
     String jspPath = password.getJspPath();
     String encryptedSourcePage = CryptoUtil.encrypt(jspPath);
 %>
@@ -24,7 +23,7 @@
 
         <div class="row-fluid">
             <div class="span12">
-                <s:form action="/register" class="form-horizontal">
+                <s:form action="/password" class="form-horizontal">
                     <s:hidden name="_sourcePage" value="<%=encryptedSourcePage%>"/>
                     <fieldset>
 
@@ -35,7 +34,7 @@
                             <div class="controls">
                                 <div class="input-prepend">
                                     <span class="add-on"><i class="icon-lock"> </i></span>
-                                    <s:text name="facet.currentPassword" class="span4"/>
+                                    <s:password name="facet.currentPassword" class="span4"/>
                                 </div>
                                 <s:errors field="facet.currentPassword"/>
                             </div>
@@ -48,7 +47,7 @@
                             <div class="controls">
                                 <div class="input-prepend">
                                     <span class="add-on"><i class="icon-lock"> </i></span>
-                                    <s:text name="facet.newPassword" class="span4"/>
+                                    <s:password name="facet.newPassword" class="span4"/>
                                 </div>
                                 <s:errors field="facet.newPassword"/>
                             </div>
@@ -61,7 +60,7 @@
                             <div class="controls">
                                 <div class="input-prepend">
                                     <span class="add-on"><i class="icon-lock"> </i></span>
-                                    <s:text name="facet.newPasswordConfirm" class="span4"/>
+                                    <s:password name="facet.newPasswordConfirm" class="span4"/>
                                 </div>
                                 <s:errors field="facet.newPasswordConfirm"/>
                             </div>

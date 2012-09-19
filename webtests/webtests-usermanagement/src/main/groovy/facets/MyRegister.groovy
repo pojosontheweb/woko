@@ -22,5 +22,8 @@ class MyRegister extends Register {
         ["developer"]
     }
 
-
+    @Override
+    protected String getFromEmailAddress() {
+        "fake@wokoland.com"
+    }
 }

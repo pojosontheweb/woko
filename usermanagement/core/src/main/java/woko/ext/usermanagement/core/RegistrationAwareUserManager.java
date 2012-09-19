@@ -10,6 +10,4 @@ public interface RegistrationAwareUserManager<U extends User> extends UserManage
 
     RegistrationDetails<U> createRegistration(U user);
 
-    void save(U user);
-
 }

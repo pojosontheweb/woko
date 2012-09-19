@@ -3,24 +3,29 @@ package woko.ext.usermanagement.facets.password;
 import net.sourceforge.jfacets.IFacetDescriptorManager;
 import net.sourceforge.jfacets.IInstanceFacet;
 import net.sourceforge.jfacets.annotations.FacetKey;
-import net.sourceforge.stripes.action.ActionBeanContext;
-import net.sourceforge.stripes.action.DontValidate;
-import net.sourceforge.stripes.action.ForwardResolution;
-import net.sourceforge.stripes.action.Resolution;
+import net.sourceforge.stripes.action.*;
+import net.sourceforge.stripes.validation.LocalizableError;
 import net.sourceforge.stripes.validation.Validate;
 import woko.ext.usermanagement.core.DatabaseUserManager;
 import woko.ext.usermanagement.core.User;
+import woko.ext.usermanagement.util.PasswordUtil;
 import woko.facets.BaseResolutionFacet;
+import woko.facets.builtin.Layout;
+import woko.mail.MailService;
 import woko.persistence.ObjectStore;
 import woko.users.UsernameResolutionStrategy;
+import woko.util.WLogger;
 
-@FacetKey(name="password", profileId = "all", targetObjectType = User.class)
-public class Password<
+public abstract class Password<
         OsType extends ObjectStore,
-        UmType extends DatabaseUserManager,
+        UmType extends DatabaseUserManager<?,User>,
         UnsType extends UsernameResolutionStrategy,
         FdmType extends IFacetDescriptorManager
         > extends BaseResolutionFacet<OsType,UmType,UnsType,FdmType> implements IInstanceFacet{
+
+    private static final WLogger logger = WLogger.getLogger(Password.class);
+
+    public static final String FACET_NAME = "password";
 
     @Validate(required = true)
     private String currentPassword;
@@ -63,22 +68,66 @@ public class Password<
         return new ForwardResolution(getJspPath());
     }
 
-    public Resolution changePassword() {
-        User u = (User)getFacetContext().getTargetObject();
+    private User getCurrentUser() {
+        String username = getWoko().getUsername(getRequest());
+        return getWoko().getUserManager().getUserByUsername(username);
+    }
 
+    public Resolution changePassword(ActionBeanContext abc) {
+        User u = getCurrentUser();
+        // first off verify old password
+        DatabaseUserManager<?,User> um = getWoko().getUserManager();
+        String encodedPassword = um.encodePassword(currentPassword);
+        boolean hasErrors = false;
+        if (!encodedPassword.equals(u.getPassword())) {
+            abc.getValidationErrors().add("facet.currentPassword", new LocalizableError("woko.ext.usermanagement.password.current.invalid"));
+            hasErrors = true;
+        }
+        // now check new password
+        if (!PasswordUtil.validatePasswords(newPassword, newPasswordConfirm)) {
+            abc.getValidationErrors().addGlobalError(new LocalizableError("woko.ext.usermanagement.register.ko.passwords"));
+            hasErrors = true;
+        }
+        if (hasErrors) {
+            return getResolution(abc);
+        }
+
+        // no errors, update the user's password
+        u.setPassword(um.encodePassword(newPassword));
+        um.save(u);
+
+        // send an email if the mail service is available
+        MailService mailService = getWoko().getIoc().getComponent(MailService.KEY);
+        if (mailService!=null) {
+            String mailContent = getWoko().getLocalizedMessage(getRequest(),
+                    "woko.ext.usermanagement.password.mail.content",
+                    u.getUsername(),
+                    getAppName(),
+                    getAppUrl());
+
+            mailService.sendMail(
+                    getFromEmailAddress(),
+                    u.getEmail(),
+                    mailContent);
+        } else {
+            logger.warn("No email could be sent : no MailService found in IoC.");
+        }
+
+        // redirect to password change confirmation page
+        return new RedirectResolution("/passwordConfirm");
+    }
+
+    protected abstract String getFromEmailAddress();
+
+    protected abstract String getAppUrl();
+
+    protected String getAppName() {
+        Layout layout = getWoko().getFacet(Layout.FACET_NAME, getRequest(), null, Object.class, true);
+        return layout.getAppTitle();
     }
 
     @Override
     public boolean matchesTargetObject(Object targetObject) {
-        User u = (User)targetObject;
-        if (u!=null) {
-            String username = u.getUsername();
-            if (username==null) {
-                return false;
-            }
-            String currentUsername = getWoko().getUsername(getRequest());
-            return currentUsername!=null && currentUsername.equals(u.getUsername());
-        }
-        return false;
+        return getCurrentUser()!=null;
     }
 }

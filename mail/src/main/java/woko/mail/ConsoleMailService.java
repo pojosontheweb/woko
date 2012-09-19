@@ -7,4 +7,5 @@ public class ConsoleMailService implements MailService {
         System.out.println("FAKE Sending email from " + from + " to " +
             to + ", text :\n" + text);
     }
+
 }

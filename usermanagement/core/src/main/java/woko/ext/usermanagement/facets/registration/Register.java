@@ -8,6 +8,7 @@ import net.sourceforge.stripes.validation.LocalizableError;
 import net.sourceforge.stripes.validation.Validate;
 import woko.Woko;
 import woko.ext.usermanagement.core.*;
+import woko.ext.usermanagement.util.PasswordUtil;
 import woko.facets.BaseResolutionFacet;
 import woko.facets.builtin.Layout;
 import woko.mail.MailService;
@@ -75,24 +76,6 @@ public abstract class Register<
         this.password2 = password2;
     }
 
-    private boolean doValidatePasswords(ActionBeanContext abc) {
-        // TODO more validation (length, strength etc.)
-        boolean valid = true;
-        if (password1==null) {
-            valid = false;
-        }
-        if (valid && password2==null) {
-            valid = false;
-        }
-        if (valid) {
-            valid = password1.equals(password2);
-        }
-        if (!valid) {
-            abc.getValidationErrors().addGlobalError(new LocalizableError("woko.ext.usermanagement.register.ko.passwords"));
-        }
-        return valid;
-    }
-
     public String getJspPath() {
         return "/WEB-INF/woko/ext/usermanagement/register.jsp";
     }
@@ -127,7 +110,8 @@ public abstract class Register<
             return getResolution(abc);
         }
 
-        if (!doValidatePasswords(abc)) {
+        if (!PasswordUtil.validatePasswords(password1, password2)) {
+            abc.getValidationErrors().addGlobalError(new LocalizableError("woko.ext.usermanagement.register.ko.passwords"));
             return getResolution(abc);
         } else {
 
@@ -149,21 +133,20 @@ public abstract class Register<
             // send email to freshly registered user if mail service is available and user account is
             // registered
             if (u.getAccountStatus().equals(AccountStatus.Registered)) {
-                String mailContent = woko.getLocalizedMessage(getRequest(),
-                        "woko.ext.usermanagement.register.mail.content",
-                        u.getUsername(),
-                        getAppName(),
-                        getAppUrl() + "/activate/" + regDetailsClassMapping + "/" + regDetails.getKey() +
-                            "?facet.token=" + regDetails.getSecretToken());
-
                 MailService mailService = woko.getIoc().getComponent(MailService.KEY);
                 if (mailService!=null) {
+                    String mailContent = woko.getLocalizedMessage(getRequest(),
+                            "woko.ext.usermanagement.register.mail.content",
+                            u.getUsername(),
+                            getAppName(),
+                            getAppUrl() + "/activate/" + regDetailsClassMapping + "/" + regDetails.getKey() +
+                                "?facet.token=" + regDetails.getSecretToken());
                     mailService.sendMail(
                             getFromEmailAddress(),
                             u.getEmail(),
                             mailContent);
                 } else {
-                    logger.error("No email could be sent : no MailService found in IoC.");
+                    logger.warn("No email could be sent : no MailService found in IoC.");
                 }
             }
 
@@ -172,6 +155,8 @@ public abstract class Register<
                     "/" + regDetailsKey);
         }
     }
+
+    protected abstract String getFromEmailAddress();
 
     protected abstract String getAppUrl();
 
@@ -186,7 +171,6 @@ public abstract class Register<
             throw new IllegalStateException("You are using the register facet but your user manager doesn't implement " +
                 "RegistrationAwareUserManager (" + databaseUserManager + ")");
         }
-        RegistrationAwareUserManager<?> um = (RegistrationAwareUserManager<?>)databaseUserManager;
         return databaseUserManager.createUser(
                 username,
                 password1,
@@ -199,11 +183,5 @@ public abstract class Register<
     protected abstract AccountStatus getRegisteredAccountStatus();
 
     protected abstract List<String> getRegisteredUserRoles();
-
-    protected String getFromEmailAddress() {
-        return "noreply@woko.com";
-    }
-
-
 
 }

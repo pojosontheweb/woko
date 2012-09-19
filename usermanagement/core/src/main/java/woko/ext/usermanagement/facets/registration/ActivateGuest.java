@@ -10,7 +10,7 @@ import woko.users.UsernameResolutionStrategy;
 
 public class ActivateGuest<
         OsType extends ObjectStore,
-        UmType extends RegistrationAwareUserManager<User>,
+        UmType extends DatabaseUserManager<?,User>,
         UnsType extends UsernameResolutionStrategy,
         FdmType extends IFacetDescriptorManager
         > extends BaseResolutionFacet<OsType,UmType,UnsType,FdmType> {
@@ -44,7 +44,7 @@ public class ActivateGuest<
     }
 
     @DontValidate
-    public Resolution display(ActionBeanContext abc) {
+    public Resolution display() {
         return new ForwardResolution("/WEB-INF/woko/ext/usermanagement/activate.jsp");
     }
 }

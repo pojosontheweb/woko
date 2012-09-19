@@ -83,5 +83,25 @@ class UsermanagementTest extends WokoWebTestBase {
 
     }
 
+    void testChangePassword() {
+        webtest("testUserManagement") {
+            not {
+                goToPage "/password"
+            }
+            login()
+            goToPage "/password"
+
+            clickButton xpath: '/html/body/div/div[2]/div/div/div/div/form/fieldset/div[4]/input'
+            verifyText text: "Current Password is a required field"
+            verifyText text: "New Password is a required field"
+            verifyText text: "New Password Confirm is a required field"
+
+            setInputField name:"facet.currentPassword", value: "wdevel"
+            setInputField name:"facet.newPassword", value: "foobarbaz"
+            setInputField name:"facet.newPasswordConfirm", value: "foobarbaz"
+            clickButton xpath: '/html/body/div/div[2]/div/div/div[2]/div/form/fieldset/div[4]/input'
+            verifyText text: "Password changed"
+        }
+    }
 
 }
