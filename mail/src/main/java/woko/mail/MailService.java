@@ -4,6 +4,10 @@ public interface MailService {
 
     public static final String KEY = "MailService";
 
-    void sendMail(String from, String to, String text);
+    void sendMail(String to, String text);
+
+    String getAppUrl();
+
+    String getFromEmailAddress();
 
 }

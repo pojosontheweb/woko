@@ -1,6 +1,7 @@
 package woko.ext.usermanagement.facets.registration;
 
 import net.sourceforge.jfacets.IFacetDescriptorManager;
+import net.sourceforge.jfacets.IInstanceFacet;
 import net.sourceforge.jfacets.annotations.FacetKey;
 import net.sourceforge.stripes.action.*;
 import net.sourceforge.stripes.validation.EmailTypeConverter;
@@ -19,13 +20,13 @@ import woko.util.WLogger;
 import java.util.Collections;
 import java.util.List;
 
-// @FacetKey(name="register", profileId = "guest") to be assigned to your fallback role(s)
-public abstract class Register<
+@FacetKey(name="register", profileId = "all")
+public class Register<
         OsType extends ObjectStore,
         UmType extends DatabaseUserManager,
         UnsType extends UsernameResolutionStrategy,
         FdmType extends IFacetDescriptorManager
-        > extends BaseResolutionFacet<OsType,UmType,UnsType,FdmType> {
+        > extends BaseResolutionFacet<OsType,UmType,UnsType,FdmType> implements IInstanceFacet {
 
     private static final WLogger logger = WLogger.getLogger(Register.class);
 
@@ -98,14 +99,14 @@ public abstract class Register<
         // check that user doesn't already exist
         User u = databaseUserManager.getUserByUsername(username);
         if (u!=null) {
-            logger.warn("Attempt to log-in with an already existing username : " + username);
+            logger.warn("Attempt to register with an already existing username : " + username);
             abc.getValidationErrors().add("facet.username", new LocalizableError("woko.ext.usermanagement.register.ko.username"));
             return getResolution(abc);
         }
         // check that email ain't already taken
         u = databaseUserManager.getUserByEmail(email);
         if (u!=null) {
-            logger.warn("Attempt to log-in with an already existing email : " + email);
+            logger.warn("Attempt to register with an already existing email : " + email);
             abc.getValidationErrors().add("facet.email", new LocalizableError("woko.ext.usermanagement.register.ko.email"));
             return getResolution(abc);
         }
@@ -135,16 +136,14 @@ public abstract class Register<
             if (u.getAccountStatus().equals(AccountStatus.Registered)) {
                 MailService mailService = woko.getIoc().getComponent(MailService.KEY);
                 if (mailService!=null) {
-                    String mailContent = woko.getLocalizedMessage(getRequest(),
-                            "woko.ext.usermanagement.register.mail.content",
-                            u.getUsername(),
-                            getAppName(),
-                            getAppUrl() + "/activate/" + regDetailsClassMapping + "/" + regDetails.getKey() +
-                                "?facet.token=" + regDetails.getSecretToken());
                     mailService.sendMail(
-                            getFromEmailAddress(),
                             u.getEmail(),
-                            mailContent);
+                            woko.getLocalizedMessage(getRequest(),
+                                "woko.ext.usermanagement.register.mail.content",
+                                u.getUsername(),
+                                getAppName(),
+                                mailService.getAppUrl() + "/activate/" + regDetailsClassMapping + "/" + regDetails.getKey() +
+                                    "?facet.token=" + regDetails.getSecretToken()));
                 } else {
                     logger.warn("No email could be sent : no MailService found in IoC.");
                 }
@@ -155,10 +154,6 @@ public abstract class Register<
                     "/" + regDetailsKey);
         }
     }
-
-    protected abstract String getFromEmailAddress();
-
-    protected abstract String getAppUrl();
 
     protected String getAppName() {
         Layout layout = getWoko().getFacet(Layout.FACET_NAME, getRequest(), null, Object.class, true);
@@ -180,8 +175,17 @@ public abstract class Register<
         );
     }
 
-    protected abstract AccountStatus getRegisteredAccountStatus();
+    protected AccountStatus getRegisteredAccountStatus() {
+        return AccountStatus.Registered;
+    }
 
-    protected abstract List<String> getRegisteredUserRoles();
+    protected List<String> getRegisteredUserRoles() {
+        return Collections.emptyList();
+    }
+
+    @Override
+    public boolean matchesTargetObject(Object targetObject) {
+        return getWoko().getUsername(getRequest())==null;
+    }
 
 }

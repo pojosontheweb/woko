@@ -16,7 +16,8 @@ import woko.persistence.ObjectStore;
 import woko.users.UsernameResolutionStrategy;
 import woko.util.WLogger;
 
-public abstract class Password<
+@FacetKey(name="password", profileId = "all")
+public class Password<
         OsType extends ObjectStore,
         UmType extends DatabaseUserManager<?,User>,
         UnsType extends UsernameResolutionStrategy,
@@ -99,16 +100,14 @@ public abstract class Password<
         // send an email if the mail service is available
         MailService mailService = getWoko().getIoc().getComponent(MailService.KEY);
         if (mailService!=null) {
-            String mailContent = getWoko().getLocalizedMessage(getRequest(),
-                    "woko.ext.usermanagement.password.mail.content",
-                    u.getUsername(),
-                    getAppName(),
-                    getAppUrl());
-
             mailService.sendMail(
-                    getFromEmailAddress(),
                     u.getEmail(),
-                    mailContent);
+                    getWoko().getLocalizedMessage(getRequest(),
+                        "woko.ext.usermanagement.password.mail.content",
+                        u.getUsername(),
+                        getAppName(),
+                        mailService.getAppUrl()
+                    ));
         } else {
             logger.warn("No email could be sent : no MailService found in IoC.");
         }
@@ -116,10 +115,6 @@ public abstract class Password<
         // redirect to password change confirmation page
         return new RedirectResolution("/passwordConfirm");
     }
-
-    protected abstract String getFromEmailAddress();
-
-    protected abstract String getAppUrl();
 
     protected String getAppName() {
         Layout layout = getWoko().getFacet(Layout.FACET_NAME, getRequest(), null, Object.class, true);
