@@ -64,17 +64,13 @@ public class Woko<
     public static final String CTX_KEY = "woko";
     public static final String REQ_ATTR_FACET = "facet";
 
+    @SuppressWarnings("unchecked")
     public static <
             OsType extends ObjectStore,
             UmType extends UserManager,
             UnsType extends UsernameResolutionStrategy,
             FdmType extends IFacetDescriptorManager> Woko<OsType,UmType,UnsType,FdmType> getWoko(ServletContext ctx) {
-        @SuppressWarnings("unchecked")
-        Woko<OsType,UmType,UnsType,FdmType> woko = (Woko<OsType,UmType,UnsType,FdmType>)ctx.getAttribute(CTX_KEY);
-        if (woko==null) {
-            throw new IllegalStateException("Unable to get Woko from servlet context : not bound under " + CTX_KEY);
-        }
-        return woko;
+        return (Woko<OsType,UmType,UnsType,FdmType>)ctx.getAttribute(CTX_KEY);
     }
 
     protected JFacets jFacets;
@@ -116,7 +112,6 @@ public class Woko<
         logger.info(" * jFacets : " + jFacets);
         logger.info(" * fallbackRole : " + fallbackRoles);
         logger.info(" * usernameResolutionStrategy : " + getUsernameResolutionStrategy());
-        logger.warn("Deprecated initialization... Consider going the IOC way ! Check out the docs...");
     }
 
     protected void initJFacets() {
@@ -140,7 +135,7 @@ public class Woko<
     public final WokoIocContainer<OsType,UmType,UnsType,FdmType> getIoc() {
         return iocContainer;
     }
-
+    
     public final List<String> getFallbackRoles() {
         return Collections.unmodifiableList(fallbackRoles);
     }

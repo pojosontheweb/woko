@@ -16,6 +16,8 @@
 
 package woko.ext.usermanagement.hibernate;
 
+import org.hibernate.validator.constraints.Email;
+import woko.ext.usermanagement.core.AccountStatus;
 import woko.ext.usermanagement.core.User;
 
 import javax.persistence.*;
@@ -35,11 +37,17 @@ public class HbUser implements User {
     @Column(unique = true, nullable = false)
     private String username;
 
-    @NotNull
     private String encodedPassword;
+
+    @NotNull
+    private AccountStatus accountStatus = AccountStatus.Blocked;
 
     @ElementCollection
     private List<String> roles;
+
+    @NotNull
+    @Email
+    private String email;
 
     public Long getId() {
         return id;
@@ -71,5 +79,21 @@ public class HbUser implements User {
 
     public void setRoles(List<String> roles) {
         this.roles = roles;
+    }
+
+    public AccountStatus getAccountStatus() {
+        return accountStatus;
+    }
+
+    public void setAccountStatus(AccountStatus accountStatus) {
+        this.accountStatus = accountStatus;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

@@ -18,19 +18,21 @@ public class SimpleWokoIocContainer<
     private final Map<Object,Object> components = new HashMap<Object, Object>();
 
     public SimpleWokoIocContainer(ObjectStore objectStore, UserManager userManager, UsernameResolutionStrategy usernameResolutionStrategy, IFacetDescriptorManager facetDescriptorManager) {
-        addComponent(ObjectStore, objectStore);
-        addComponent(UserManager, userManager);
-        addComponent(UsernameResolutionStrategy, usernameResolutionStrategy);
-        addComponent(FacetDescriptorManager, facetDescriptorManager);
+        this.addComponent(ObjectStore, objectStore)
+            .addComponent(UserManager, userManager)
+            .addComponent(UsernameResolutionStrategy, usernameResolutionStrategy)
+            .addComponent(FacetDescriptorManager, facetDescriptorManager);
     }
 
-    public void addComponent(String name, Object component) {
+    public SimpleWokoIocContainer<OsType,UmType,UnsType,FdmType> addComponent(String name, Object component) {
         this.components.put(name, component);
+        return this;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
-    public Object getComponent(Object name) {
-        return this.components.get(name);
+    public <T> T getComponent(Object name) {
+        return (T)this.components.get(name);
     }
 
     @Override

@@ -27,33 +27,48 @@
     <packaging>war</packaging>
     <dependencies>
         <dependency>
+          <groupId>com.pojosontheweb</groupId>
+          <artifactId>woko-usermanagement-web</artifactId>
+          <version>${project.version}</version>
+          <type>war</type>
+        </dependency>
+        <dependency>
+          <groupId>com.pojosontheweb</groupId>
+          <artifactId>woko-web-bootstrap</artifactId>
+          <version>${project.version}</version>
+          <type>war</type>
+        </dependency>
+        <dependency>
+          <groupId>com.pojosontheweb</groupId>
+          <artifactId>woko-ri</artifactId>
+          <version>${project.version}</version>
+        </dependency>
+        <dependency>
+          <groupId>com.pojosontheweb</groupId>
+          <artifactId>woko-builtin-auth-web</artifactId>
+          <version>${project.version}</version>
+          <type>war</type>
+        </dependency>
+        <dependency>
+          <groupId>javax.servlet</groupId>
+          <artifactId>servlet-api</artifactId>
+          <version>2.3</version>
+        </dependency>
+        <dependency>
+          <groupId>org.codehaus.groovy</groupId>
+          <artifactId>groovy</artifactId>
+          <version>1.8.6</version>
+        </dependency>
+        <dependency>
             <groupId>com.pojosontheweb</groupId>
-            <artifactId>woko-ri</artifactId>
+            <artifactId>woko-tooling</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>com.pojosontheweb</groupId>
-            <artifactId>woko-web-lithium</artifactId>
-                <version>${project.version}</version>
-            <type>war</type>
-        </dependency>
-        <dependency
-            <groupId>com.pojosontheweb</groupId>
-            <artifactId>woko-builtin-auth-web</artifactId>
-                <version>${project.version}</version>
-            <type>war</type>
-        </dependency>
-        <dependency>
-            <groupId>com.pojosontheweb</groupId>
-            <artifactId>woko-usermanagement-web</artifactId>
+            <artifactId>woko-webtests-common</artifactId>
             <version>${project.version}</version>
-            <type>war</type>
-        </dependency>
-        <dependency>
-            <groupId>com.pojosontheweb</groupId>
-            <artifactId>woko-compass-hibernate-web</artifactId>
-            <version>${project.version}</version>
-            <type>war</type>
+            <scope>test</scope>
         </dependency>
     </dependencies>
     <build>
@@ -79,6 +94,42 @@
                     </execution>
                 </executions>
             </plugin>
+
+            <plugin>
+                <groupId>org.mortbay.jetty</groupId>
+                <artifactId>maven-jetty-plugin</artifactId>
+                <version>6.1.10</version>
+                <configuration>
+                    <scanIntervalSeconds>10</scanIntervalSeconds>
+                    <!-- Configure the webapp -->
+                    <contextPath>/${artifact.id}</contextPath>
+                    <tmpDir>target/tmp</tmpDir>
+                    <stopKey>foo</stopKey>
+                    <stopPort>9999</stopPort>
+                    <requestLog implementation="org.mortbay.jetty.NCSARequestLog">
+                        <filename>target/yyyy_mm_dd.request.log</filename>
+                        <retainDays>90</retainDays>
+                        <append>true</append>
+                        <extended>false</extended>
+                        <logTimeZone>GMT</logTimeZone>
+                    </requestLog>
+                </configuration>
+            </plugin>
+            <!--
+                We exclude the servlet API jar that tooling requires, we
+                don't want this in our war !
+            -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>2.2</version>
+                <configuration>
+                    <configuration>
+                        <warSourceExcludes>WEB-INF/lib/servlet-api*.jar</warSourceExcludes>
+                    </configuration>
+                </configuration>
+            </plugin>
+
         </plugins>
-    </build>    
+    </build>
 </project>

@@ -19,13 +19,16 @@ package woko.ext.usermanagement.core;
 import woko.persistence.ResultIterator;
 import woko.users.UserManager;
 import woko.util.Util;
+import woko.util.WLogger;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public abstract class DatabaseUserManager implements UserManager {
+public abstract class DatabaseUserManager<T extends DatabaseUserManager<T, U>, U extends User> implements UserManager {
+
+    private static final WLogger logger = WLogger.getLogger(DatabaseUserManager.class);
 
     public static final String REQ_PARAM_NAME = "password";
 
@@ -33,9 +36,30 @@ public abstract class DatabaseUserManager implements UserManager {
     private String wDevelUsername = "wdevel";
     private String wDevelPassword = "wdevel";
 
-    public DatabaseUserManager setRequestParameterName(String reqParamName) {
+    private final Class<U> userClass;
+
+    private static final List<String> DEFAULT_ROLES;
+
+    static {
+        ArrayList<String> defaultRoles = new ArrayList<String>();
+        defaultRoles.add("developer");
+        DEFAULT_ROLES = defaultRoles;
+    }
+
+    private List<String> defaultRoles = DEFAULT_ROLES;
+
+    protected DatabaseUserManager(Class<U> userClass) {
+        this.userClass = userClass;
+    }
+
+    public Class<U> getUserClass() {
+        return userClass;
+    }
+
+    @SuppressWarnings("unchecked")
+    public T setRequestParameterName(String reqParamName) {
         this.reqParamName = reqParamName;
-        return this;
+        return (T)this;
     }
 
     public String getReqParamName() {
@@ -50,22 +74,38 @@ public abstract class DatabaseUserManager implements UserManager {
         return wDevelPassword;
     }
 
-    public DatabaseUserManager setDeveloperUsername(String wDevelUsername) {
+    @SuppressWarnings("unchecked")
+    public T setDefaultRoles(List<String> defaultRoles) {
+        this.defaultRoles = defaultRoles;
+        return (T)this;
+    }
+
+    public List<String> getDefaultRoles() {
+        return defaultRoles;
+    }
+
+    @SuppressWarnings("unchecked")
+    public T setDeveloperUsername(String wDevelUsername) {
         this.wDevelUsername = wDevelUsername;
-        return this;
+        return (T)this;
     }
 
-    public DatabaseUserManager setDeveloperPassword(String wDevelPassword) {
+    @SuppressWarnings("unchecked")
+    public T setDeveloperPassword(String wDevelPassword) {
         this.wDevelPassword = wDevelPassword;
-        return this;
+        return (T)this;
     }
 
-    public DatabaseUserManager createDefaultUsers() {
-        createUser(wDevelUsername, wDevelPassword, Arrays.asList("developer"));
-        return this;
+    @SuppressWarnings("unchecked")
+    public T createDefaultUsers() {
+        createUser(wDevelUsername, wDevelPassword, defaultRoles);
+        return (T)this;
     }
 
-    protected abstract User createUser(String username, String password, List<String> roles);
+    @Deprecated
+    public abstract U createUser(String username, String password, List<String> roles);
+
+    public abstract U createUser(String username, String password, String email, List<String> roles, AccountStatus accountStatus);
 
     @Override
     public List<String> getRoles(String username) {
@@ -83,7 +123,9 @@ public abstract class DatabaseUserManager implements UserManager {
         return roles;
     }
 
-    public abstract User getUserByUsername(String username);
+    public abstract U getUserByUsername(String username);
+
+    public abstract U getUserByEmail(String email);
 
     @Override
     public boolean authenticate(String username, HttpServletRequest request) {
@@ -92,16 +134,30 @@ public abstract class DatabaseUserManager implements UserManager {
         }
         Util.assertArg("request", request);
         // retrieve user
-        User u = getUserByUsername(username);
+        U u = getUserByUsername(username);
         if (u==null) {
+            logger.warn("Authentication failure (no such user) for " + username);
             return false;
         }
+
+        // check if account is active
+        if (!u.getAccountStatus().equals(AccountStatus.Active)) {
+            logger.warn("Authentication attempt on inactive account for " + username);
+            return false;
+        }
+
         // extract password from request and compare
         String clearPassword = extractPassword(request);
         String encodedPassword = encodePassword(clearPassword);
 
         String actualEncodedPassword = u.getPassword();
-        return actualEncodedPassword != null && actualEncodedPassword.equals(encodedPassword);
+        boolean passwordsMatch = actualEncodedPassword != null && actualEncodedPassword.equals(encodedPassword);
+        if (!passwordsMatch) {
+            logger.warn("Authentication failure for " + username);
+            return false;
+        }
+        logger.info("Authentication successful for " + username);
+        return true;
     }
 
 
@@ -114,5 +170,8 @@ public abstract class DatabaseUserManager implements UserManager {
         return Integer.toString(clearPassword.hashCode());
     }
 
-    public abstract ResultIterator<User> listUsers(Integer start, Integer limit);
+    public abstract ResultIterator<U> listUsers(Integer start, Integer limit);
+
+    public abstract void save(U user);
+
 }

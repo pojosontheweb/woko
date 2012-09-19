@@ -7,7 +7,6 @@
 <%@ page import="woko.facets.builtin.*" %>
 <%@ page import="woko.facets.builtin.all.Link" %>
 <%@ page import="woko.util.LinkUtil" %>
-<%@ page import="net.sourceforge.stripes.controller.StripesFilter" %>
 <%@ page import="java.util.*" %>
 
 <w:facet facetName="<%=Layout.FACET_NAME%>"/>

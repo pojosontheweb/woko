@@ -17,7 +17,7 @@ public interface WokoIocContainer<
     static final String FacetDescriptorManager = "FacetDescriptorManager";
     static final String UsernameResolutionStrategy = "UsernameResolutionStrategy";
 
-    Object getComponent(Object key);
+    <T> T getComponent(Object key);
 
     OsType getObjectStore();
 

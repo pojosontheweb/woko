@@ -32,7 +32,7 @@
         <module>webtests-localization</module>
         <module>webtests-rpc</module>
         <module>webtests-bootstrap</module>
-        <!-- module>webtests-usermanagement</module -->
+        <module>webtests-usermanagement</module>
     </modules>
 
     <dependencies>

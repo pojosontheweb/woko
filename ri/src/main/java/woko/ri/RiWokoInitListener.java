@@ -17,6 +17,7 @@
 package woko.ri;
 
 import woko.auth.builtin.SessionUsernameResolutionStrategy;
+import woko.ext.usermanagement.hibernate.HbUser;
 import woko.ext.usermanagement.hibernate.HibernateUserManager;
 import woko.hbcompass.HibernateCompassWokoInitListener;
 import woko.hibernate.HibernateStore;
@@ -39,7 +40,7 @@ public class RiWokoInitListener extends HibernateCompassWokoInitListener {
 
     @Override
     protected UserManager createUserManager() {
-        HibernateUserManager um = new HibernateUserManager((HibernateStore)getObjectStore());
+        HibernateUserManager<HbUser> um = new HibernateUserManager<HbUser>((HibernateStore)getObjectStore(), HbUser.class);
         String wdevelUsername = getServletContext().getInitParameter(CTX_PARAM_WDEVEL_USERNAME);
         if (wdevelUsername!=null) {
             um.setDeveloperUsername(wdevelUsername);

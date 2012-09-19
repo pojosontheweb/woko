@@ -32,4 +32,12 @@ public interface User {
 
     void setRoles(List<String> roles);
 
+    AccountStatus getAccountStatus();
+
+    void setAccountStatus(AccountStatus accountStatus);
+
+    String getEmail();
+
+    void setEmail(String email);
+
 }

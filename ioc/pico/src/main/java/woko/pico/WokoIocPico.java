@@ -22,8 +22,9 @@ public class WokoIocPico<
     }
 
     @Override
-    public Object getComponent(Object key) {
-        return pico.getComponent(key);
+    @SuppressWarnings("unchecked")
+    public <T> T getComponent(Object key) {
+        return (T)pico.getComponent(key);
     }
 
     @Override

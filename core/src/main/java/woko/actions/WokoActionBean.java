@@ -60,6 +60,8 @@ public class WokoActionBean<
     @ValidateNestedProperties({})
     private ResolutionFacet facet;
 
+    private Method eventHandlerMethod = null;    
+    
     public Object getObject() {
         return object;
     }
@@ -91,11 +93,7 @@ public class WokoActionBean<
     public void setFacetName(String facetName) {
         this.facetName = facetName;
     }
-
-    // cache for handlerMethod (don't lookup for each call)
-    private Method handlerMethod = null;
-
-
+    
     @Before(stages = {LifecycleStage.BindingAndValidation})
     public void loadObjectAndFacet() {
         HttpServletRequest req = getContext().getRequest();
@@ -151,6 +149,7 @@ public class WokoActionBean<
     public Resolution execute() {
         Method handler = getEventHandlerMethod();
         try {
+            logger.debug("Executing handler method : " + facet.toString() + "." + handler.getName());            
             Object[] params;
             Class<?>[] paramTypes = handler.getParameterTypes();
             if (paramTypes.length==1) {
@@ -183,8 +182,8 @@ public class WokoActionBean<
     }
 
     public Method getEventHandlerMethod() {
-        if (handlerMethod==null) {
-            // cache request param names
+        if (eventHandlerMethod==null) {
+
             @SuppressWarnings("unchecked")
             Set<String> requestParamNames =
                     new HashSet<String>(getContext().getRequest().getParameterMap().keySet());
@@ -217,7 +216,7 @@ public class WokoActionBean<
             } else if (nbMatchingMethods==0) {
                 // default to interface method
                 try {
-                    handlerMethod = facet.getClass().getMethod("getResolution", ActionBeanContext.class);
+                    eventHandlerMethod = facet.getClass().getMethod("getResolution", ActionBeanContext.class);
                 } catch (NoSuchMethodException e) {
                     // should never happen unless we refactor getResolution()...
                     throw new RuntimeException(e);
@@ -225,9 +224,9 @@ public class WokoActionBean<
 
             } else {
                 // 1 handler matched, just return this one
-                handlerMethod = matchingMethods.get(0);
+                eventHandlerMethod = matchingMethods.get(0);
             }
         }
-        return handlerMethod;
+        return eventHandlerMethod;
     }
 }

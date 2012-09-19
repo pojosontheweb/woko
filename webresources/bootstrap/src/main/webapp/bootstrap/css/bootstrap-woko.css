@@ -31,3 +31,15 @@ label.wokoPropertyName {
     position: relative;
     top: -60px;
 }
+
+.table tbody tr.warning td {
+    background-color: #FCF8E3;
+}
+
+.table tbody tr.error td {
+    background-color: #F2DEDE;
+}
+
+div.input-prepend input {
+    margin-left: -4px;
+}
