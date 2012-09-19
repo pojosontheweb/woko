@@ -151,7 +151,14 @@ public class WokoActionBean<
     public Resolution execute() {
         Method handler = getEventHandlerMethod();
         try {
-            Resolution result = (Resolution)handler.invoke(facet, getContext());
+            Object[] params;
+            Class<?>[] paramTypes = handler.getParameterTypes();
+            if (paramTypes.length==1) {
+                params = new Object[] { getContext() };
+            } else {
+                params = new Object[0];
+            }
+            Resolution result = (Resolution)handler.invoke(facet, params);
             if (result==null) {
                 String msg = "Execution of facet " + facet + " returned null (using handler '" + handler.getName() + "')";
                 logger.error(msg);
@@ -187,7 +194,7 @@ public class WokoActionBean<
             for (Method m : facet.getClass().getMethods()) {
                 if (Modifier.isPublic(m.getModifiers()) && Resolution.class.isAssignableFrom(m.getReturnType())) {
                     Class<?>[] paramTypes = m.getParameterTypes();
-                    if (paramTypes.length==1 && ActionBeanContext.class.isAssignableFrom(paramTypes[0])) {
+                    if (paramTypes.length==0 || paramTypes.length==1 && ActionBeanContext.class.isAssignableFrom(paramTypes[0])) {
                         // method signature is ok, check if we have a request parameter with that name !
                         if (requestParamNames.contains(m.getName())) {
                             matchingMethods.add(m);
