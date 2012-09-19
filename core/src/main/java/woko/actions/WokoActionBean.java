@@ -60,6 +60,8 @@ public class WokoActionBean<
     @ValidateNestedProperties({})
     private ResolutionFacet facet;
 
+    private Method eventHandlerMethod = null;
+
     public Object getObject() {
         return object;
     }
@@ -147,6 +149,7 @@ public class WokoActionBean<
     public Resolution execute() {
         Method handler = getEventHandlerMethod();
         try {
+            logger.debug("Executing handler method : " + facet.toString() + "." + handler.getName());
             Resolution result = (Resolution)handler.invoke(facet, getContext());
             if (result==null) {
                 String msg = "Execution of facet " + facet + " returned null (using handler '" + handler.getName() + "')";
@@ -172,50 +175,51 @@ public class WokoActionBean<
     }
 
     public Method getEventHandlerMethod() {
-        Method handlerMethod = null;
-        // cache request param names
-        @SuppressWarnings("unchecked")
-        Set<String> requestParamNames =
-                new HashSet<String>(getContext().getRequest().getParameterMap().keySet());
+        if (eventHandlerMethod==null) {
 
-        // find the method handler in the facet
-        List<Method> matchingMethods = new ArrayList<Method>();
-        for (Method m : facet.getClass().getMethods()) {
-            if (Modifier.isPublic(m.getModifiers()) && Resolution.class.isAssignableFrom(m.getReturnType())) {
-                Class<?>[] paramTypes = m.getParameterTypes();
-                if (paramTypes.length==1 && ActionBeanContext.class.isAssignableFrom(paramTypes[0])) {
-                    // method signature is ok, check if we have a request parameter with that name !
-                    if (requestParamNames.contains(m.getName())) {
-                        matchingMethods.add(m);
+            @SuppressWarnings("unchecked")
+            Set<String> requestParamNames =
+                    new HashSet<String>(getContext().getRequest().getParameterMap().keySet());
+
+            // find the method handler in the facet
+            List<Method> matchingMethods = new ArrayList<Method>();
+            for (Method m : facet.getClass().getMethods()) {
+                if (Modifier.isPublic(m.getModifiers()) && Resolution.class.isAssignableFrom(m.getReturnType())) {
+                    Class<?>[] paramTypes = m.getParameterTypes();
+                    if (paramTypes.length==1 && ActionBeanContext.class.isAssignableFrom(paramTypes[0])) {
+                        // method signature is ok, check if we have a request parameter with that name !
+                        if (requestParamNames.contains(m.getName())) {
+                            matchingMethods.add(m);
+                        }
                     }
                 }
             }
-        }
 
-        int nbMatchingMethods = matchingMethods.size();
-        if (nbMatchingMethods>1) {
-            // check that we have only 1 handler matching
-            StringBuilder msg = new StringBuilder();
-            msg.append("More than 1 handler method found in ResolutionFacet : ")
-                    .append(facet.getClass().getName())
-                    .append(" : \n");
-            for (Method m : matchingMethods) {
-                msg.append("  * ").append(m.getName()).append("\n");
-            }
-            throw new IllegalStateException(msg.toString());
-        } else if (nbMatchingMethods==0) {
-            // default to interface method
-            try {
-                handlerMethod = facet.getClass().getMethod("getResolution", ActionBeanContext.class);
-            } catch (NoSuchMethodException e) {
-                // should never happen unless we refactor getResolution()...
-                throw new RuntimeException(e);
-            }
+            int nbMatchingMethods = matchingMethods.size();
+            if (nbMatchingMethods>1) {
+                // check that we have only 1 handler matching
+                StringBuilder msg = new StringBuilder();
+                msg.append("More than 1 handler method found in ResolutionFacet : ")
+                        .append(facet.getClass().getName())
+                        .append(" : \n");
+                for (Method m : matchingMethods) {
+                    msg.append("  * ").append(m.getName()).append("\n");
+                }
+                throw new IllegalStateException(msg.toString());
+            } else if (nbMatchingMethods==0) {
+                // default to interface method
+                try {
+                    eventHandlerMethod = facet.getClass().getMethod("getResolution", ActionBeanContext.class);
+                } catch (NoSuchMethodException e) {
+                    // should never happen unless we refactor getResolution()...
+                    throw new RuntimeException(e);
+                }
 
-        } else {
-            // 1 handler matched, just return this one
-            handlerMethod = matchingMethods.get(0);
+            } else {
+                // 1 handler matched, just return this one
+                eventHandlerMethod = matchingMethods.get(0);
+            }
         }
-        return handlerMethod;
+        return eventHandlerMethod;
     }
 }
