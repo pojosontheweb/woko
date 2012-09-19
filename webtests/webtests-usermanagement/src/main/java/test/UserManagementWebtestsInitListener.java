@@ -20,6 +20,6 @@ public class UserManagementWebtestsInitListener
                 new MyUserManager(store).createDefaultUsers(),
                 new SessionUsernameResolutionStrategy(),
                 new PushFacetDescriptorManager(createAnnotatedFdm())
-        ).addComponent(MailService.KEY, new ConsoleMailService());
+        ).addComponent(MailService.KEY, new ConsoleMailService("http://www.pojosontheweb.com", "yikes@pojosontheweb.com"));
     }
 }

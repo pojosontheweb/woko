@@ -8,11 +8,6 @@ import woko.ext.usermanagement.core.AccountStatus
 class MyRegister extends Register {
 
     @Override
-    protected String getAppUrl() {
-        return "http://localhost:8080/woko-webtests"
-    }
-
-    @Override
     protected AccountStatus getRegisteredAccountStatus() {
         AccountStatus.Registered
     }
@@ -22,8 +17,4 @@ class MyRegister extends Register {
         ["developer"]
     }
 
-    @Override
-    protected String getFromEmailAddress() {
-        "fake@wokoland.com"
-    }
 }
