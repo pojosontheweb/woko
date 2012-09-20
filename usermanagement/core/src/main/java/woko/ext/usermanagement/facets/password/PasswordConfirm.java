@@ -2,8 +2,12 @@ package woko.ext.usermanagement.facets.password;
 
 import net.sourceforge.jfacets.IInstanceFacet;
 import net.sourceforge.jfacets.annotations.FacetKey;
+import net.sourceforge.stripes.action.StrictBinding;
 import woko.facets.BaseForwardResolutionFacet;
 
+@StrictBinding(
+        defaultPolicy = StrictBinding.Policy.DENY
+)
 @FacetKey(name="passwordConfirm", profileId="all")
 public class PasswordConfirm extends BaseForwardResolutionFacet implements IInstanceFacet {
 

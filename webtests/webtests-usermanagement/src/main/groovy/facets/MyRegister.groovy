@@ -8,11 +8,6 @@ import woko.ext.usermanagement.core.AccountStatus
 class MyRegister extends Register {
 
     @Override
-    protected AccountStatus getRegisteredAccountStatus() {
-        AccountStatus.Registered
-    }
-
-    @Override
     protected List<String> getRegisteredUserRoles() {
         ["developer"]
     }

@@ -18,6 +18,13 @@ import woko.util.WLogger;
 import javax.servlet.http.HttpSession;
 import java.util.UUID;
 
+@StrictBinding(
+        defaultPolicy = StrictBinding.Policy.DENY,
+        allow = {
+                "facet.email",
+                "facet.token"
+        }
+)
 @FacetKey(name="resetPassword", profileId = "all")
 public class ResetPassword<
         OsType extends ObjectStore,

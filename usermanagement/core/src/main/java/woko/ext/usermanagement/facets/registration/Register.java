@@ -20,6 +20,15 @@ import woko.util.WLogger;
 import java.util.Collections;
 import java.util.List;
 
+@StrictBinding(
+        defaultPolicy = StrictBinding.Policy.DENY,
+        allow = {
+                "facet.username",
+                "facet.email",
+                "facet.password1",
+                "facet.password2"
+        }
+)
 @FacetKey(name="register", profileId = "all")
 public class Register<
         OsType extends ObjectStore,

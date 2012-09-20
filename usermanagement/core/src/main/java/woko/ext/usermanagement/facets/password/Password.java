@@ -16,6 +16,14 @@ import woko.persistence.ObjectStore;
 import woko.users.UsernameResolutionStrategy;
 import woko.util.WLogger;
 
+@StrictBinding(
+        defaultPolicy = StrictBinding.Policy.DENY,
+        allow = {
+                "facet.currentPassword",
+                "facet.newPassword",
+                "facet.newPasswordConfirm"
+        }
+)
 @FacetKey(name="password", profileId = "all")
 public class Password<
         OsType extends ObjectStore,

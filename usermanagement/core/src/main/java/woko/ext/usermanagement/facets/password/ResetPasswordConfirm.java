@@ -2,10 +2,14 @@ package woko.ext.usermanagement.facets.password;
 
 import net.sourceforge.jfacets.IInstanceFacet;
 import net.sourceforge.jfacets.annotations.FacetKey;
+import net.sourceforge.stripes.action.StrictBinding;
 import woko.facets.BaseForwardResolutionFacet;
 
 import javax.servlet.http.HttpSession;
 
+@StrictBinding(
+        defaultPolicy = StrictBinding.Policy.DENY
+)
 @FacetKey(name="resetPasswordConfirm", profileId="all")
 public class ResetPasswordConfirm extends BaseForwardResolutionFacet implements IInstanceFacet {
 

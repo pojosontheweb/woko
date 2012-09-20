@@ -1,6 +1,7 @@
 package woko.ext.usermanagement.facets.registration;
 
 import net.sourceforge.jfacets.IFacetDescriptorManager;
+import net.sourceforge.jfacets.annotations.FacetKey;
 import net.sourceforge.stripes.action.*;
 import net.sourceforge.stripes.validation.Validate;
 import woko.ext.usermanagement.core.*;
@@ -8,6 +9,13 @@ import woko.facets.BaseResolutionFacet;
 import woko.persistence.ObjectStore;
 import woko.users.UsernameResolutionStrategy;
 
+@StrictBinding(
+        defaultPolicy = StrictBinding.Policy.DENY,
+        allow = {
+                "facet.token"
+        }
+)
+@FacetKey(name="activate", profileId="guest", targetObjectType = RegistrationDetails.class)
 public class ActivateGuest<
         OsType extends ObjectStore,
         UmType extends DatabaseUserManager<?,User>,
