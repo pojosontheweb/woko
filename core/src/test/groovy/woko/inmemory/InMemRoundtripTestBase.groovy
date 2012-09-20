@@ -57,31 +57,33 @@ abstract class InMemRoundtripTestBase extends GroovyTestCase {
     return mockServletContext;
   }
 
+    MockRoundtrip mockRoundtrip(String username, String facetName, String className, String key, Map params) {
+        def c = createMockServletContext(username)
+        StringBuilder url = new StringBuilder('/').append(facetName)
+        if (className) {
+          url << '/'
+          url << className
+        }
+        if (key) {
+          url << '/'
+          url << key
+        }
+        MockRoundtrip t = new MockRoundtrip(c, url.toString())
+        if (params) {
+          params.each { k, v ->
+            t.addParameter(k, v)
+          }
+        }
+        t.execute()
+        return t
+    }
+
   WokoActionBean trip(String username, String facetName, String className, String key) {
     return trip(username, facetName, className, key, null)
   }
 
   WokoActionBean trip(String username, String facetName, String className, String key, Map params) {
-    def c = createMockServletContext(username)
-    StringBuilder url = new StringBuilder('/').append(facetName)
-    if (className) {
-      url << '/'
-      url << className
-    }
-    if (key) {
-      url << '/'
-      url << key
-    }
-    MockRoundtrip t = new MockRoundtrip(c, url.toString())
-    if (params) {
-      params.each { k, v ->
-        t.addParameter(k, v)
-      }
-    }
-    t.execute()
-    WokoActionBean ab = t.getActionBean(WokoActionBean.class)
-    assert ab
-    return ab
+      mockRoundtrip(username, facetName, className, key, params).getActionBean(WokoActionBean.class)
   }
 
   void assertFacetNotFound(String username, String facetName, String className, String key) {

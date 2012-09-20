@@ -16,6 +16,7 @@
 
 package woko.facets.builtin.all;
 
+import net.sourceforge.jfacets.IFacetDescriptorManager;
 import net.sourceforge.jfacets.annotations.FacetKey;
 import net.sourceforge.stripes.util.ReflectUtil;
 import woko.facets.BaseFragmentFacet;
@@ -23,6 +24,8 @@ import woko.facets.WokoFacetContext;
 import woko.facets.builtin.RenderTitle;
 import woko.facets.builtin.WokoFacets;
 import woko.persistence.ObjectStore;
+import woko.users.UserManager;
+import woko.users.UsernameResolutionStrategy;
 import woko.util.WLogger;
 
 import java.beans.PropertyDescriptor;
@@ -32,7 +35,12 @@ import java.util.List;
 import java.util.Map;
 
 @FacetKey(name = WokoFacets.renderTitle, profileId = "all")
-public class RenderTitleImpl extends BaseFragmentFacet implements RenderTitle {
+public class RenderTitleImpl<
+        OsType extends ObjectStore,
+        UmType extends UserManager,
+        UnsType extends UsernameResolutionStrategy,
+        FdmType extends IFacetDescriptorManager
+        > extends BaseFragmentFacet<OsType,UmType,UnsType,FdmType> implements RenderTitle {
 
     private static final WLogger logger = WLogger.getLogger(RenderTitleImpl.class);
 
@@ -44,7 +52,7 @@ public class RenderTitleImpl extends BaseFragmentFacet implements RenderTitle {
     }
 
     public String getTitle() {
-        WokoFacetContext facetContext = getFacetContext();
+        WokoFacetContext<OsType,UmType,UnsType,FdmType> facetContext = getFacetContext();
         Object o = facetContext.getTargetObject();
         if (o == null) {
             return "null";
@@ -86,7 +94,7 @@ public class RenderTitleImpl extends BaseFragmentFacet implements RenderTitle {
         }
 
         // nothing matched, compute a meaningful title
-        ObjectStore objectStore = facetContext.getWoko().getObjectStore();
+        OsType objectStore = facetContext.getWoko().getObjectStore();
         String className = objectStore.getClassMapping(o.getClass());
         String key = objectStore.getKey(o);
         if (className != null && key != null) {

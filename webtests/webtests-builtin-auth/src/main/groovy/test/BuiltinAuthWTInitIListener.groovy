@@ -16,17 +16,23 @@
 
 package test
 
-import net.sourceforge.jfacets.IFacetDescriptorManager
-import woko.hbcompass.HibernateCompassInMemWokoInitListener
 import woko.push.PushFacetDescriptorManager
-import woko.ri.RiWokoInitListener
+import woko.WokoIocInitListener
+import woko.hbcompass.HibernateCompassStore
+import woko.inmemory.InMemoryUserManager
+import woko.auth.builtin.SessionUsernameResolutionStrategy
+import woko.ioc.WokoIocContainer
+import woko.ioc.SimpleWokoIocContainer
 
-class BuiltinAuthWTInitIListener extends RiWokoInitListener {
-
+class BuiltinAuthWTInitIListener extends
+        WokoIocInitListener<HibernateCompassStore,InMemoryUserManager,SessionUsernameResolutionStrategy,PushFacetDescriptorManager> {
     @Override
-    protected IFacetDescriptorManager createFacetDescriptorManager() {
-        return new PushFacetDescriptorManager(super.createFacetDescriptorManager()) // Enable /push !
+    protected WokoIocContainer<HibernateCompassStore,InMemoryUserManager,SessionUsernameResolutionStrategy,PushFacetDescriptorManager> createIocContainer() {
+        return new SimpleWokoIocContainer<HibernateCompassStore,InMemoryUserManager,SessionUsernameResolutionStrategy,PushFacetDescriptorManager>(
+                new HibernateCompassStore(getPackageNamesFromConfig(HibernateCompassStore.CTX_PARAM_PACKAGE_NAMES, true)),
+                new InMemoryUserManager().addUser("wdevel", "wdevel", ["developer"]),
+                new SessionUsernameResolutionStrategy(),
+                new PushFacetDescriptorManager(createAnnotatedFdm()));
     }
-
 
 }

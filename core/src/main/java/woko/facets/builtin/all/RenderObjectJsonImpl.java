@@ -17,6 +17,7 @@
 package woko.facets.builtin.all;
 
 
+import net.sourceforge.jfacets.IFacetDescriptorManager;
 import net.sourceforge.jfacets.annotations.FacetKey;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -25,19 +26,27 @@ import woko.facets.BaseFacet;
 import woko.facets.WokoFacetContext;
 import woko.facets.builtin.*;
 import woko.persistence.ObjectStore;
+import woko.users.UserManager;
+import woko.users.UsernameResolutionStrategy;
 import woko.util.Util;
 import woko.util.WLogger;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.Map;
 
 @FacetKey(name = WokoFacets.renderObjectJson, profileId = "all")
-public class RenderObjectJsonImpl extends BaseFacet implements RenderObjectJson {
+public class RenderObjectJsonImpl<
+        OsType extends ObjectStore,
+        UmType extends UserManager,
+        UnsType extends UsernameResolutionStrategy,
+        FdmType extends IFacetDescriptorManager
+        > extends BaseFacet<OsType,UmType,UnsType,FdmType> implements RenderObjectJson {
 
     private static final WLogger logger = WLogger.getLogger(RenderObjectJsonImpl.class);
 
     public JSONObject objectToJson(HttpServletRequest request) {
-        WokoFacetContext facetContext = getFacetContext();
+        WokoFacetContext<OsType,UmType,UnsType,FdmType> facetContext = getFacetContext();
         Object o = facetContext.getTargetObject();
         try {
             if (o == null) {
@@ -45,21 +54,24 @@ public class RenderObjectJsonImpl extends BaseFacet implements RenderObjectJson 
                 return null;
             }
             JSONObject result = new JSONObject();
-            Woko woko = facetContext.getWoko();
+            Woko<OsType,UmType,UnsType,FdmType> woko = facetContext.getWoko();
             // find props to be rendered using renderProperties facet
-            RenderProperties renderProperties = (RenderProperties) woko.getFacet(WokoFacets.renderProperties, request, o);
+            RenderProperties renderProperties = woko.getFacet(WokoFacets.renderProperties, request, o);
             if (renderProperties == null) {
                 logger.warn("No renderProperties facet found for targetObject $o, as a result no props will be serialized.");
                 return result;
             }
+            List<String> propertyNames = renderProperties.getPropertyNames();
 
             // convert the properties to JSON
             Map<String, Object> propNamesAndValues = renderProperties.getPropertyValues();
             for (String k : propNamesAndValues.keySet()) {
-                Object v = propNamesAndValues.get(k);
-                Object jsonValue = propertyToJson(request, o, k, v);
-                logger.debug("Converted prop $k to json $jsonValue");
-                result.put(k, jsonValue);
+                if (propertyNames.contains(k)) {
+                    Object v = propNamesAndValues.get(k);
+                    Object jsonValue = propertyToJson(request, o, k, v);
+                    logger.debug("Converted prop $k to json $jsonValue");
+                    result.put(k, jsonValue);
+                }
             }
 
             // add object metadata
@@ -71,11 +83,16 @@ public class RenderObjectJsonImpl extends BaseFacet implements RenderObjectJson 
         }
     }
 
-    public static void addWokoMetadata(Woko woko, JSONObject json, Object obj, HttpServletRequest request) {
+    public static <
+        OsType extends ObjectStore,
+        UmType extends UserManager,
+        UnsType extends UsernameResolutionStrategy,
+        FdmType extends IFacetDescriptorManager
+        > void addWokoMetadata(Woko<OsType,UmType,UnsType,FdmType> woko, JSONObject json, Object obj, HttpServletRequest request) {
         if (obj!=null) {
             try {
                 JSONObject metadata = new JSONObject();
-                ObjectStore os = woko.getObjectStore();
+                OsType os = woko.getObjectStore();
                 String className = os.getClassMapping(obj.getClass());
                 metadata.put("className", className);
                 String key = os.getKey(obj);
@@ -98,13 +115,13 @@ public class RenderObjectJsonImpl extends BaseFacet implements RenderObjectJson 
         if (value == null) {
             return null;
         }
-        WokoFacetContext facetContext = getFacetContext();
-        Woko woko = facetContext.getWoko();
+        WokoFacetContext<OsType,UmType,UnsType,FdmType> facetContext = getFacetContext();
+        Woko<OsType,UmType,UnsType,FdmType> woko = facetContext.getWoko();
         // try name-specific first
-        RenderPropertyValueJson rpvj = (RenderPropertyValueJson) woko.getFacet("renderPropertyValueJson_" + propertyName, request, owner);
+        RenderPropertyValueJson rpvj = woko.getFacet("renderPropertyValueJson_" + propertyName, request, owner);
         if (rpvj == null) {
             // type-specific
-            rpvj = (RenderPropertyValueJson) woko.getFacet(WokoFacets.renderPropertyValueJson, request, value);
+            rpvj = woko.getFacet(WokoFacets.renderPropertyValueJson, request, value);
         }
         if (rpvj == null) {
             // default to toString()

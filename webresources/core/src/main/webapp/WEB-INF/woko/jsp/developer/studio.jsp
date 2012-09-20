@@ -21,7 +21,7 @@
 <%@ page import="woko.facets.builtin.WokoFacets" %>
 <w:facet facetName="<%=WokoFacets.layout%>"/>
 <%
-    Woko woko = Woko.getWoko(application);
+    Woko<?,?,?,?> woko = Woko.getWoko(application);
 %>
 <c:set var="cp" value="${pageContext.request.contextPath}"/>
 <fmt:message bundle="${wokoBundle}" var="pageTitle" key="woko.devel.studio.pageTitle"/>
@@ -208,7 +208,7 @@
             </thead>
             <tbody>
             <%
-                WokoStudio studio = (WokoStudio)request.getAttribute(WokoFacets.studio);
+                WokoStudio<?,?,?,?> studio = (WokoStudio)request.getAttribute(WokoFacets.studio);
                 int index = 0;
                 for (FacetDescriptor fd : studio.getFacetDescriptors()) {
                     String rowCssClass = index++ % 2 == 0 ? "even" : "odd";

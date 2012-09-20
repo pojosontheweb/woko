@@ -16,32 +16,52 @@
 
 package test
 
-import woko.hbcompass.HibernateCompassInMemWokoInitListener
-import net.sourceforge.jfacets.IFacetDescriptorManager
-import woko.push.PushFacetDescriptorManager
-import woko.persistence.ObjectStore
 import woko.hibernate.HibernateStore
 import woko.hibernate.TxCallback
+import woko.ioc.WokoIocContainer
+import net.sourceforge.jfacets.annotations.AnnotatedFacetDescriptorManager
+import org.picocontainer.parameters.ConstantParameter
+import woko.inmemory.InMemoryUserManager
+import woko.users.RemoteUserStrategy
+import woko.hbcompass.HibernateCompassStore
+import woko.Woko
+import static org.picocontainer.Characteristics.CACHE
+import org.picocontainer.MutablePicoContainer
+import woko.pico.WokoIocPicoInitListener
 
-class ContainerAuthWTInitIListener extends HibernateCompassInMemWokoInitListener {
+class ContainerAuthWTInitIListener extends WokoIocPicoInitListener<HibernateStore, InMemoryUserManager, RemoteUserStrategy, AnnotatedFacetDescriptorManager> {
 
     @Override
-    protected IFacetDescriptorManager createFacetDescriptorManager() {
-        return new PushFacetDescriptorManager(super.createFacetDescriptorManager()) // Enable /push !
+    protected void addUsernameResolutionStrategy(MutablePicoContainer pico) {
+        pico.as(CACHE).addComponent(WokoIocContainer.UsernameResolutionStrategy, RemoteUserStrategy.class);
     }
 
     @Override
-    protected ObjectStore createObjectStore() {
-        HibernateStore o = super.createObjectStore()
-        o.doInTx({ store, session ->
+    protected void addUserManager(MutablePicoContainer pico) {
+        pico.addComponent(
+            WokoIocContainer.UserManager,
+            new InMemoryUserManager().addUser("wdevel", "wdevel", Arrays.asList("developer"))
+        );
+    }
+
+    @Override
+    protected void addObjectStore(MutablePicoContainer pico) {
+        pico.as(CACHE).addComponent(
+            WokoIocContainer.ObjectStore,
+            HibernateCompassStore.class,
+            new ConstantParameter(getPackageNamesFromConfig(HibernateStore.CTX_PARAM_PACKAGE_NAMES, true))
+        );
+    }
+
+    @Override
+    protected void postInit(Woko<HibernateStore, InMemoryUserManager, RemoteUserStrategy, AnnotatedFacetDescriptorManager> w) {
+        w.getObjectStore().doInTx({ store, session ->
             EntityWithRelations ewr = new EntityWithRelations(id:1,name:"test")
             store.save(ewr)
             SubEntity se = new SubEntity(id:1,name:"testSub")
             se.daEntity = ewr
             store.save(se)
         } as TxCallback)
-        return o
     }
-
 
 }

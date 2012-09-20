@@ -7,7 +7,6 @@
 <%@ page import="woko.facets.builtin.*" %>
 <%@ page import="woko.facets.builtin.all.Link" %>
 <%@ page import="woko.util.LinkUtil" %>
-<%@ page import="net.sourceforge.stripes.controller.StripesFilter" %>
 <%@ page import="java.util.*" %>
 
 <w:facet facetName="<%=Layout.FACET_NAME%>"/>
@@ -16,7 +15,7 @@
 <s:layout-render name="${layout.layoutPath}" layout="${layout}" pageTitle="${pageTitle}">
     <s:layout-component name="body">
         <%
-            Woko woko = Woko.getWoko(application);
+            Woko<?,?,?,?> woko = Woko.getWoko(application);
             ListObjects list = (ListObjects)request.getAttribute(WokoFacets.list);
             String className = list.getClassName();
             ResultIterator results = list.getResults();
@@ -84,11 +83,10 @@
                 while (results.hasNext()) {
                     Object result = results.next();
                     resultsList.add(result);
-                    RenderProperties rpResult = (RenderProperties)woko.getFacet(
-                            RenderProperties.FACET_NAME, request, result, result.getClass());
+                    RenderProperties rpResult = woko.getFacet(RenderProperties.FACET_NAME, request, result, result.getClass());
                     Map<String,Object> resultPropValues = rpResult.getPropertyValues();
                     propertyValues.add(resultPropValues);
-                    RenderListItem renderListItem = (RenderListItem)woko.getFacet(WokoFacets.renderListItem, request, result, result.getClass(),true );
+                    RenderListItem renderListItem = woko.getFacet(WokoFacets.renderListItem, request, result, result.getClass(),true );
                     String liWrapperClass = renderListItem.getItemWrapperCssClass();
                     if (liWrapperClass==null) {
                         liWrapperClass = "";
@@ -150,9 +148,9 @@
                             <td>
                                 <div class="btn-group">
                                 <%
-                                    View view = (View)woko.getFacet(View.FACET_NAME, request, result);
+                                    View view = woko.getFacet(View.FACET_NAME, request, result);
                                     if (view!=null) {
-                                        String href = request.getContextPath() + "/" + LinkUtil.getUrl(Woko.getWoko(application), result, "view");
+                                        String href = request.getContextPath() + "/" + LinkUtil.getUrl(woko, result, "view");
                                 %>
                                     <a href="<%=href%>" class="btn view">
                                         <fmt:message bundle="${wokoBundle}" key="woko.links.view"/>
@@ -160,7 +158,7 @@
                                 <%
                                     }
                                     // Grab available links !
-                                    RenderLinks rl = (RenderLinks)woko.getFacet(RenderLinks.FACET_NAME, request, result);
+                                    RenderLinks rl = woko.getFacet(RenderLinks.FACET_NAME, request, result);
                                     for (Link l : rl.getLinks()) {
                                         String href = request.getContextPath() + "/" + l.getHref();
                                         String cssClass = l.getCssClass();

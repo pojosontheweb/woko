@@ -16,12 +16,15 @@
 
 package woko.facets.builtin.all;
 
+import net.sourceforge.jfacets.IFacetDescriptorManager;
 import net.sourceforge.jfacets.annotations.FacetKey;
 import woko.facets.builtin.RenderPropertyValue;
 import woko.facets.builtin.RenderPropertyValueEdit;
 import woko.facets.builtin.WokoFacets;
 import woko.persistence.ObjectStore;
 import woko.persistence.ResultIterator;
+import woko.users.UserManager;
+import woko.users.UsernameResolutionStrategy;
 import woko.util.Util;
 
 import java.lang.reflect.Type;
@@ -29,7 +32,12 @@ import java.util.Collection;
 import java.util.List;
 
 @FacetKey(name = WokoFacets.renderPropertyValueEdit, profileId = "all", targetObjectType = Collection.class)
-public class RenderPropertyValueEditXToManyRelation extends RenderPropertyValueImpl implements RenderPropertyValueEdit {
+public class RenderPropertyValueEditXToManyRelation<
+        OsType extends ObjectStore,
+        UmType extends UserManager,
+        UnsType extends UsernameResolutionStrategy,
+        FdmType extends IFacetDescriptorManager
+        > extends RenderPropertyValueImpl<OsType,UmType,UnsType,FdmType> implements RenderPropertyValueEdit {
 
     public static final String FRAGMENT_PATH = "/WEB-INF/woko/jsp/all/renderPropertyValueEditXToManyRelation.jsp";
 
@@ -60,7 +68,7 @@ public class RenderPropertyValueEditXToManyRelation extends RenderPropertyValueI
     }
 
     public List<?> getChoices() {
-        ObjectStore store = getFacetContext().getWoko().getObjectStore();
+        OsType store = getFacetContext().getWoko().getObjectStore();
         Class<?> compoundType = getCompoundType();
         ResultIterator<?> choices = store.list(store.getClassMapping(compoundType), 0, Integer.MAX_VALUE);
         return choices.toList();

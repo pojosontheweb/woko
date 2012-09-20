@@ -16,6 +16,7 @@
 
 package woko.facets.builtin.developer;
 
+import net.sourceforge.jfacets.IFacetDescriptorManager;
 import net.sourceforge.jfacets.IInstanceFacet;
 import net.sourceforge.jfacets.annotations.FacetKey;
 import net.sourceforge.stripes.action.ActionBeanContext;
@@ -26,9 +27,17 @@ import woko.facets.WokoFacetContext;
 import woko.facets.builtin.Json;
 import woko.facets.builtin.View;
 import woko.facets.builtin.WokoFacets;
+import woko.persistence.ObjectStore;
+import woko.users.UserManager;
+import woko.users.UsernameResolutionStrategy;
 
 @FacetKey(name = WokoFacets.view, profileId = "developer")
-public class ViewImpl extends BaseForwardRpcResolutionFacet implements View, IInstanceFacet {
+public class ViewImpl<
+        OsType extends ObjectStore,
+        UmType extends UserManager,
+        UnsType extends UsernameResolutionStrategy,
+        FdmType extends IFacetDescriptorManager
+        > extends BaseForwardRpcResolutionFacet<OsType,UmType,UnsType,FdmType> implements View, IInstanceFacet {
 
     public static final String FRAGMENT_PATH = "/WEB-INF/woko/jsp/developer/view.jsp";
 
@@ -38,8 +47,9 @@ public class ViewImpl extends BaseForwardRpcResolutionFacet implements View, IIn
 
     @Override
     protected Resolution getRpcResolution(ActionBeanContext abc) {
-        WokoFacetContext wokoFacetContext = getFacetContext();
-        Json json = (Json) wokoFacetContext.getWoko().getFacet(WokoFacets.json, wokoFacetContext.getRequest(), wokoFacetContext.getTargetObject());
+        WokoFacetContext<OsType,UmType,UnsType,FdmType> wokoFacetContext = getFacetContext();
+        Json json = wokoFacetContext.getWoko().getFacet(
+                WokoFacets.json, wokoFacetContext.getRequest(), wokoFacetContext.getTargetObject());
         return json == null ? null : json.getResolution(abc);
     }
 

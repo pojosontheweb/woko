@@ -25,7 +25,7 @@
     </parent>
     <groupId>com.pojosontheweb</groupId>
     <artifactId>woko-parent</artifactId>
-    <version>2.0.5</version>
+    <version>2.1-beta</version>
     <packaging>pom</packaging>
     <name>Woko - parent</name>
     <url>https://github.com/vankeisb/woko2/wiki</url>
@@ -61,6 +61,7 @@
     <modules>
         <module>stripes-plugins</module>
         <module>core</module>
+        <module>ioc</module>
         <module>webresources</module>
         <module>container-auth</module>
         <module>builtin-auth</module>
@@ -69,6 +70,7 @@
         <module>push</module>
         <module>ri</module>
         <module>archetype</module>
+        <module>mail</module>
         <module>usermanagement</module>
         <module>tooling</module>
         <module>wmaven</module>
@@ -89,6 +91,10 @@
                     <configuration>
                         <source>1.6</source>
                         <target>1.6</target>
+                        <showWarnings>true</showWarnings>
+                        <compilerArguments>
+                            <Xlint:unchecked/>
+                        </compilerArguments>
                     </configuration>
                 </plugin>
                 <plugin>

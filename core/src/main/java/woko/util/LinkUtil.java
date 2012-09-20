@@ -28,7 +28,7 @@ import java.util.Set;
 
 public class LinkUtil {
 
-    public static String getUrl(Woko woko, Object o, String facetName) {
+    public static String getUrl(Woko<?,?,?,?> woko, Object o, String facetName) {
         ObjectStore s = woko.getObjectStore();
         String className = s.getClassMapping(o.getClass());
         String key = s.getKey(o);

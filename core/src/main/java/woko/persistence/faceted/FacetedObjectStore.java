@@ -33,7 +33,7 @@ public abstract class FacetedObjectStore implements ObjectStore {
     return WokoRequestInterceptor.getRequest();
   }
 
-  private Woko getWoko() {
+  private Woko<?,?,?,?> getWoko() {
     HttpServletRequest request = getRequest();
     if (request==null) {
       throw new IllegalStateException("Unable to get thread-bound request from WokoRequestInterceptor. Interceptor has not been invoked ?");
@@ -49,7 +49,7 @@ public abstract class FacetedObjectStore implements ObjectStore {
     }
 
     HttpServletRequest request = getRequest();
-    Woko woko = getWoko();
+    Woko<?,?,?,?> woko = getWoko();
 
     logger.debug("Trying to load object for class " + className + ", key " + key);
     Class<?> mappedClass = getMappedClass(className);
@@ -60,21 +60,19 @@ public abstract class FacetedObjectStore implements ObjectStore {
     if (key==null) {
       logger.debug("Key not specified for className " + className + ", creating transient instance");
       // create transient instance
-      StoreNew storeNew = (StoreNew)woko.getFacet("storeNew", request, null, mappedClass, true);
+      StoreNew storeNew = woko.getFacet("storeNew", request, null, mappedClass, true);
       return storeNew.newInstance(this, mappedClass);
     }
 
     // load object
-    StoreLoad storeLoad = (StoreLoad)woko.getFacet("storeLoad", request, null, mappedClass, true);
+    StoreLoad storeLoad = woko.getFacet("storeLoad", request, null, mappedClass, true);
     return storeLoad.load(this, mappedClass, key);
   }
 
   private <T> T getFacet(Class<T> facetClass, String name, Object targetObject, Class<?> targetObjectClass) {
     HttpServletRequest request = getRequest();
-    Woko woko = getWoko();
-    @SuppressWarnings("unchecked")
-    T result = (T)woko.getFacet(name, request, targetObject, targetObjectClass, true);
-    return result;
+    Woko<?,?,?,?> woko = getWoko();
+    return woko.getFacet(name, request, targetObject, targetObjectClass, true);
   }
 
   @Override

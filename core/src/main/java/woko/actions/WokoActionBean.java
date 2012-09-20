@@ -16,10 +16,8 @@
 
 package woko.actions;
 
-import net.sourceforge.stripes.action.Before;
-import net.sourceforge.stripes.action.DefaultHandler;
-import net.sourceforge.stripes.action.Resolution;
-import net.sourceforge.stripes.action.UrlBinding;
+import net.sourceforge.jfacets.IFacetDescriptorManager;
+import net.sourceforge.stripes.action.*;
 import net.sourceforge.stripes.controller.LifecycleStage;
 import net.sourceforge.stripes.validation.Validate;
 import net.sourceforge.stripes.validation.ValidateNestedProperties;
@@ -27,12 +25,26 @@ import woko.Woko;
 import woko.facets.FacetNotFoundException;
 import woko.facets.ResolutionFacet;
 import woko.persistence.ObjectStore;
+import woko.users.UserManager;
+import woko.users.UsernameResolutionStrategy;
 import woko.util.WLogger;
 
 import javax.servlet.http.HttpServletRequest;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @UrlBinding("/{facetName}/{className}/{key}")
-public class WokoActionBean extends BaseActionBean {
+public class WokoActionBean<
+        OsType extends ObjectStore,
+        UmType extends UserManager,
+        UnsType extends UsernameResolutionStrategy,
+        FdmType extends IFacetDescriptorManager
+        > extends BaseActionBean<OsType,UmType,UnsType,FdmType> {
 
     private static final WLogger logger = WLogger.getLogger(WokoActionBean.class);
 
@@ -48,6 +60,8 @@ public class WokoActionBean extends BaseActionBean {
     @ValidateNestedProperties({})
     private ResolutionFacet facet;
 
+    private Method eventHandlerMethod = null;    
+    
     public Object getObject() {
         return object;
     }
@@ -79,7 +93,7 @@ public class WokoActionBean extends BaseActionBean {
     public void setFacetName(String facetName) {
         this.facetName = facetName;
     }
-
+    
     @Before(stages = {LifecycleStage.BindingAndValidation})
     public void loadObjectAndFacet() {
         HttpServletRequest req = getContext().getRequest();
@@ -90,8 +104,8 @@ public class WokoActionBean extends BaseActionBean {
         }
         key = req.getParameter("key");
         logger.debug("Loading object for className=" + className + " and key=" + key);
-        Woko woko = getContext().getWoko();
-        ObjectStore objectStore = woko.getObjectStore();
+        Woko<OsType,UmType,UnsType,FdmType> woko = getContext().getWoko();
+        OsType objectStore = woko.getObjectStore();
         if (className!=null) {
             if (key!=null) {
                 object = objectStore.load(className, key);
@@ -133,11 +147,86 @@ public class WokoActionBean extends BaseActionBean {
 
     @DefaultHandler
     public Resolution execute() {
-        Resolution result = facet.getResolution(getContext());
-        if (result == null) {
-            throw new IllegalStateException("Execution of facet " + facet + " returned null !");
+        Method handler = getEventHandlerMethod();
+        try {
+            logger.debug("Executing handler method : " + facet.toString() + "." + handler.getName());            
+            Object[] params;
+            Class<?>[] paramTypes = handler.getParameterTypes();
+            if (paramTypes.length==1) {
+                params = new Object[] { getContext() };
+            } else {
+                params = new Object[0];
+            }
+            Resolution result = (Resolution)handler.invoke(facet, params);
+            if (result==null) {
+                String msg = "Execution of facet " + facet + " returned null (using handler '" + handler.getName() + "')";
+                logger.error(msg);
+                throw new IllegalStateException(msg);
+            }
+            return result;
+        } catch (Exception e) {
+            String msg = "Invocation of handler method " + facet.getClass().getName() +
+                    "." + handler.getName() + " threw Exception";
+            logger.error(msg, e);
+            if (e instanceof InvocationTargetException) {
+                Throwable target = ((InvocationTargetException)e).getTargetException();
+                if (target instanceof RuntimeException) {
+                    throw (RuntimeException)target;
+                } else {
+                    throw new RuntimeException(e);
+                }
+            } else {
+                throw new RuntimeException(e);
+            }
         }
-        return result;
     }
 
+    public Method getEventHandlerMethod() {
+        if (eventHandlerMethod==null) {
+
+            @SuppressWarnings("unchecked")
+            Set<String> requestParamNames =
+                    new HashSet<String>(getContext().getRequest().getParameterMap().keySet());
+
+            // find the method handler in the facet
+            List<Method> matchingMethods = new ArrayList<Method>();
+            for (Method m : facet.getClass().getMethods()) {
+                if (Modifier.isPublic(m.getModifiers()) && Resolution.class.isAssignableFrom(m.getReturnType())) {
+                    Class<?>[] paramTypes = m.getParameterTypes();
+                    if (paramTypes.length==0 || paramTypes.length==1 && ActionBeanContext.class.isAssignableFrom(paramTypes[0])) {
+                        // method signature is ok, check if we have a request parameter with that name !
+                        if (requestParamNames.contains(m.getName())) {
+                            matchingMethods.add(m);
+                        }
+                    }
+                }
+            }
+
+            int nbMatchingMethods = matchingMethods.size();
+            if (nbMatchingMethods>1) {
+                // check that we have only 1 handler matching
+                StringBuilder msg = new StringBuilder();
+                msg.append("More than 1 handler method found in ResolutionFacet : ")
+                        .append(facet.getClass().getName())
+                        .append(" : \n");
+                for (Method m : matchingMethods) {
+                    msg.append("  * ").append(m.getName()).append("\n");
+                }
+                throw new IllegalStateException(msg.toString());
+            } else if (nbMatchingMethods==0) {
+                // default to interface method
+                try {
+                    eventHandlerMethod = facet.getClass().getMethod("getResolution", ActionBeanContext.class);
+                } catch (NoSuchMethodException e) {
+                    // should never happen unless we refactor getResolution()...
+                    throw new RuntimeException(e);
+                }
+
+            } else {
+                // 1 handler matched, just return this one
+                eventHandlerMethod = matchingMethods.get(0);
+            }
+        }
+        return eventHandlerMethod;
+    }
 }

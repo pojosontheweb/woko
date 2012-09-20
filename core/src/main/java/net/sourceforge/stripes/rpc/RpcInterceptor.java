@@ -103,8 +103,8 @@ public class RpcInterceptor implements Interceptor, ConfigurableComponent {
         // serialize errors to JavaScript
         ActionBeanContext abc = context.getActionBeanContext();
         ValidationErrors errors = abc.getValidationErrors();
-        Woko woko = Woko.getWoko(abc.getServletContext());
-        RenderObjectJson roj = (RenderObjectJson)woko.getFacet(RenderObjectJson.FACET_NAME, abc.getRequest(), errors);
+        Woko<?,?,?,?> woko = Woko.getWoko(abc.getServletContext());
+        RenderObjectJson roj = woko.getFacet(RenderObjectJson.FACET_NAME, abc.getRequest(), errors);
         if (roj==null) {
             return new JavaScriptResolution(errors);
         }

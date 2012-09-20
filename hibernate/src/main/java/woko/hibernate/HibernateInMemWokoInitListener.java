@@ -21,6 +21,7 @@ import woko.users.UserManager;
 
 import java.util.Arrays;
 
+@Deprecated
 public class HibernateInMemWokoInitListener extends HibernateWokoInitListener {
 
   protected UserManager createUserManager() {

@@ -13,8 +13,8 @@
 
 <%
     RenderPropertyName renderPropertyName = (RenderPropertyName)request.getAttribute(WokoFacets.renderPropertyName);
-    WokoFacetContext fctx = (WokoFacetContext)renderPropertyName.getFacetContext();
-    Woko woko = fctx.getWoko();
+    WokoFacetContext<?,?,?,?> fctx = (WokoFacetContext)renderPropertyName.getFacetContext();
+    Woko<?,?,?,?> woko = fctx.getWoko();
     ObjectStore os = woko.getObjectStore();
     String propertyName = renderPropertyName.getPropertyName();
     Object owningObject = fctx.getTargetObject();

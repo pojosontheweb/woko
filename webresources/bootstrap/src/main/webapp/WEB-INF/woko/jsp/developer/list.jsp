@@ -11,7 +11,7 @@
 <s:layout-render name="${layout.layoutPath}" layout="${layout}" pageTitle="${pageTitle}">
     <s:layout-component name="body">
         <%
-            Woko woko = Woko.getWoko(application);
+            Woko<?,?,?,?> woko = Woko.getWoko(application);
             ListObjects list = (ListObjects)request.getAttribute(ListObjects.FACET_NAME);
             String className = list.getClassName();
             ResultIterator results = list.getResults();
@@ -64,7 +64,7 @@
                 <%
                   while (results.hasNext()) {
                       Object result = results.next();
-                      RenderListItem renderListItem = (RenderListItem)woko.getFacet(
+                      RenderListItem renderListItem = woko.getFacet(
                               RenderListItem.FACET_NAME, request, result, result.getClass(),true );
                       String fragmentPath = renderListItem.getFragmentPath(request);
                       String listItemClass = renderListItem.getItemWrapperCssClass();

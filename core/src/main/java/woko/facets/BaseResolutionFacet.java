@@ -16,6 +16,16 @@
 
 package woko.facets;
 
-public abstract class BaseResolutionFacet extends BaseFacet implements ResolutionFacet {
+import net.sourceforge.jfacets.IFacetDescriptorManager;
+import woko.persistence.ObjectStore;
+import woko.users.UserManager;
+import woko.users.UsernameResolutionStrategy;
+
+public abstract class BaseResolutionFacet<
+        OsType extends ObjectStore,
+        UmType extends UserManager,
+        UnsType extends UsernameResolutionStrategy,
+        FdmType extends IFacetDescriptorManager
+        > extends BaseFacet<OsType,UmType,UnsType,FdmType> implements ResolutionFacet {
 
 }

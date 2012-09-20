@@ -23,8 +23,8 @@
 <%@ page import="woko.util.Util" %>
 <%
     RenderPropertyValue renderPropertyValue = (RenderPropertyValue)request.getAttribute(WokoFacets.renderPropertyValue);
-    WokoFacetContext fctx = (WokoFacetContext)renderPropertyValue.getFacetContext();
-    Woko woko = fctx.getWoko();
+    WokoFacetContext<?,?,?,?> fctx = (WokoFacetContext)renderPropertyValue.getFacetContext();
+    Woko<?,?,?,?> woko = fctx.getWoko();
     ObjectStore os = fctx.getWoko().getObjectStore();
     Object propertyValue = fctx.getTargetObject();
     String propertyName = renderPropertyValue.getPropertyName();

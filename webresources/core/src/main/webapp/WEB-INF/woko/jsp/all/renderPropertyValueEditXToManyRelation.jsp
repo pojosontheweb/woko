@@ -24,8 +24,8 @@
 <%@ page import="woko.facets.builtin.all.RenderPropertyValueEditXToManyRelation" %>
 <%
     RenderPropertyValueEditXToManyRelation renderPropertyValue = (RenderPropertyValueEditXToManyRelation)request.getAttribute(RenderPropertyValueEdit.FACET_NAME);
-    WokoFacetContext fctx = renderPropertyValue.getFacetContext();
-    Woko woko = fctx.getWoko();
+    WokoFacetContext<?,?,?,?> fctx = renderPropertyValue.getFacetContext();
+    Woko<?,?,?,?> woko = fctx.getWoko();
     ObjectStore os = woko.getObjectStore();
     String propertyName = renderPropertyValue.getPropertyName();
     Object owningObject = renderPropertyValue.getOwningObject();

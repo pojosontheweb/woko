@@ -26,9 +26,16 @@
 <h1>facet validation test</h1>
 <s:messages/>
 <s:errors/>
+<h2>regular validation</h2>
 <s:form action="/testValidate">
-  <s:text name="facet.prop"/>
-  <s:submit name="doIt"/>
+    <s:text name="facet.prop"/>
+    <s:submit name="doIt"/>
+</s:form>
+<h2>with @DontValidate</h2>
+<s:form action="/multiEventsWithDontValidate">
+    <s:hidden name="otherEvent"/>
+    <s:text name="facet.myProp"/>
+    <s:submit name="doIt2"/>
 </s:form>
 </body>
 </html>

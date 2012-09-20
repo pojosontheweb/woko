@@ -83,7 +83,7 @@
 
     <listener>
         <display-name>WokoInitListener</display-name>
-        <listener-class>woko.ri.</listener-class>
+        <listener-class>DUMMY_WOKO_INIT_LISTENER</listener-class>
     </listener>
 
 </web-app>

@@ -18,44 +18,90 @@
 
 package woko.webtests
 
-class UsermanagementTest extends WebTestBase {
+class UsermanagementTest extends WokoWebTestBase {
 
-    void testAuthenticationWithHome() {
-        webtest("testAuthenticationWithHome") {
-            goToPage '/home'
-            verifyTitle 'Woko - home'
-            verifyText 'This is guest home !'
-            verifyText 'You are not authenticated'
+    UsermanagementTest() {
+        useContainerAuth = false
+    }
 
-            // login...
+    void testUserManagement() {
+        webtest("testUserManagement") {
             login()
+            goToPage '/list/MyUser'
+            verifyXPath xpath:'/html/body/div/div[2]/div/div/table/tbody/tr/td[2]/span/span',
+                    text:'.*wdevel.*', regex:true
+            verifyXPath xpath:'/html/body/div/div[2]/div/div/table/tbody/tr[2]/td[2]/span/span',
+                    text:'.*testuser.*', regex:true
 
-            goToPage '/home'
-            verifyTitle 'Woko - home'
-            verifyText 'This is developer home !'
-
-            // logout
-            logout()
-
-            goToPage '/home'
-            verifyTitle 'Woko - home'
-            verifyText 'This is guest home !'
+            goToPage '/users'
+            verifyXPath xpath:'/html/body/div/div[2]/div/div/table/tbody/tr/td[2]/span/span',
+                    text:'.*wdevel.*', regex:true
+            verifyXPath xpath:'/html/body/div/div[2]/div/div/table/tbody/tr[2]/td[2]/span/span',
+                    text:'.*testuser.*', regex:true
         }
     }
 
-//    void testUserManagement() {
-//        webtest("testUserManagement") {
-//            login()
-//
-//            goToPage '/users'
-//
-//            clickLink label:'wdevel'
-//            verifyText 'developer'
-//
-//            goToPage '/users'
-//            clickLink 'add user'
-//        }
-//    }
+    void testRegister() {
+        webtest("testRegister") {
 
+            // register a new user
+
+            goToPage "/register"
+            verifyText text:"email"
+            verifyText text:"username"
+            verifyXPath xpath:"/html/body/div/div[2]/div/div/div/div/form/fieldset/div/div/div/input"
+            verifyXPath xpath:"/html/body/div/div[2]/div/div/div/div/form/fieldset/div[2]/div/div/input"
+            verifyXPath xpath:"/html/body/div/div[2]/div/div/div/div/form/fieldset/div[3]/div/div/input"
+            verifyXPath xpath:"/html/body/div/div[2]/div/div/div/div/form/fieldset/div[4]/div/div/input"
+
+            setInputField name:'facet.username', value:'funkystuff'
+            setInputField name:'facet.email', value:'funky@stuff.com'
+            setInputField name:'facet.password1', value:'funkystuff'
+            setInputField name:'facet.password2', value:'funkystuff'
+            clickButton name:'doRegister'
+
+            verifyText text: 'Account not yet active'
+            verifyText text:'funky@stuff.com'
+            verifyText text:'Welcome funkystuff ! Whats next ?'
+
+            // check that user account exists using developer role
+            login()
+            goToPage '/users/MyUser?facet.page=101&facet.resultsPerPage=10'
+            verifyText text:'funkystuff'
+
+            // edit user
+            clickLink xpath:'/html/body/div/div[2]/div/div/table/tbody/tr[2]/td[6]/div/a[2]'
+            setSelectField xpath:'/html/body/div/div[2]/div/div/div/div[2]/div/form/fieldset/div/div/select', value:'Active'
+            setInputField xpath:'/html/body/div/div[2]/div/div/div/div[2]/div/form/fieldset/div[4]/div/input', value:'developer'
+            clickButton xpath: '/html/body/div/div[2]/div/div/div/div[2]/div/form/fieldset/div[6]/input'
+
+            // logout and try to authenticate with new user
+            logout()
+            login("funkystuff", "funkystuff")
+            verifyText text:'Developer Home'
+        }
+
+    }
+
+    void testChangePassword() {
+        webtest("testUserManagement") {
+            not {
+                goToPage "/password"
+            }
+            login()
+            goToPage "/password"
+
+            clickButton xpath: '/html/body/div/div[2]/div/div/div/div/form/fieldset/div[4]/input'
+            verifyText text: "Current Password is a required field"
+            verifyText text: "New Password is a required field"
+            verifyText text: "New Password Confirm is a required field"
+
+            setInputField name:"facet.currentPassword", value: "wdevel"
+            setInputField name:"facet.newPassword", value: "foobarbaz"
+            setInputField name:"facet.newPasswordConfirm", value: "foobarbaz"
+            clickButton xpath: '/html/body/div/div[2]/div/div/div[2]/div/form/fieldset/div[4]/input'
+            verifyText text: "Password changed"
+        }
+    }
 
 }

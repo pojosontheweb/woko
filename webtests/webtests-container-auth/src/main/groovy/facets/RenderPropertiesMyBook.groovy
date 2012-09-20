@@ -19,9 +19,13 @@ package facets
 import net.sourceforge.jfacets.annotations.FacetKey
 import test.MyBook
 import woko.facets.builtin.all.RenderPropertiesImpl
+import net.sourceforge.jfacets.annotations.AnnotatedFacetDescriptorManager
+import woko.users.RemoteUserStrategy
+import woko.inmemory.InMemoryUserManager
+import woko.hibernate.HibernateStore
 
 @FacetKey(name="renderProperties", profileId="all", targetObjectType=MyBook.class)
-class RenderPropertiesMyBook extends RenderPropertiesImpl {
+class RenderPropertiesMyBook extends RenderPropertiesImpl<HibernateStore, InMemoryUserManager, RemoteUserStrategy, AnnotatedFacetDescriptorManager> {
 
     @Override
     List<String> getPropertyNames() {
