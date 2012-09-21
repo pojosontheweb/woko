@@ -1,6 +1,7 @@
 package woko.ext.usermanagement.facets.registration;
 
 import net.sourceforge.jfacets.IFacetDescriptorManager;
+import net.sourceforge.jfacets.IInstanceFacet;
 import net.sourceforge.jfacets.annotations.FacetKey;
 import net.sourceforge.stripes.action.*;
 import net.sourceforge.stripes.validation.Validate;
@@ -15,13 +16,13 @@ import woko.users.UsernameResolutionStrategy;
                 "facet.token"
         }
 )
-@FacetKey(name="activate", profileId="guest", targetObjectType = RegistrationDetails.class)
+@FacetKey(name="activate", profileId="all", targetObjectType = RegistrationDetails.class)
 public class ActivateGuest<
         OsType extends ObjectStore,
         UmType extends DatabaseUserManager<?,User>,
         UnsType extends UsernameResolutionStrategy,
         FdmType extends IFacetDescriptorManager
-        > extends BaseResolutionFacet<OsType,UmType,UnsType,FdmType> {
+        > extends BaseResolutionFacet<OsType,UmType,UnsType,FdmType> implements IInstanceFacet {
 
     @Validate(required=true)
     private String token;
@@ -55,4 +56,10 @@ public class ActivateGuest<
     public Resolution display() {
         return new ForwardResolution("/WEB-INF/woko/ext/usermanagement/activate.jsp");
     }
+
+    @Override
+    public boolean matchesTargetObject(Object targetObject) {
+        return getWoko().getUsername(getRequest())==null;
+    }
+
 }

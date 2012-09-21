@@ -124,9 +124,7 @@
                 <artifactId>maven-war-plugin</artifactId>
                 <version>2.2</version>
                 <configuration>
-                    <configuration>
-                        <warSourceExcludes>WEB-INF/lib/servlet-api*.jar</warSourceExcludes>
-                    </configuration>
+                    <warSourceExcludes>WEB-INF/lib/servlet-api*.jar</warSourceExcludes>
                 </configuration>
             </plugin>
 
