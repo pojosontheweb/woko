@@ -45,4 +45,8 @@ public class RenderPropertyValueEditStripesText<
         return FRAGMENT_PATH;
     }
 
+    public boolean isTextArea() {
+        return false;
+    }
+
 }
