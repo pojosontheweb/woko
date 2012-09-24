@@ -1,5 +1,6 @@
 package woko.ext.usermanagement.facets.registration;
 
+import net.sourceforge.jfacets.IFacetContext;
 import net.sourceforge.jfacets.IFacetDescriptorManager;
 import net.sourceforge.jfacets.IInstanceFacet;
 import net.sourceforge.jfacets.annotations.FacetKey;
@@ -20,19 +21,11 @@ import woko.util.WLogger;
 import java.util.Collections;
 import java.util.List;
 
-@StrictBinding(
-        defaultPolicy = StrictBinding.Policy.DENY,
-        allow = {
-                "facet.username",
-                "facet.email",
-                "facet.password1",
-                "facet.password2"
-        }
-)
+// TODO strict bind
 @FacetKey(name="register", profileId = "all")
-public class Register<
+public class Register<T extends User,
         OsType extends ObjectStore,
-        UmType extends DatabaseUserManager,
+        UmType extends DatabaseUserManager<?,T>,
         UnsType extends UsernameResolutionStrategy,
         FdmType extends IFacetDescriptorManager
         > extends BaseResolutionFacet<OsType,UmType,UnsType,FdmType> implements IInstanceFacet {
@@ -53,6 +46,12 @@ public class Register<
 
     @Validate(required=true)
     private String password2;
+
+    private T user;
+
+    public T getUser() {
+        return user;
+    }
 
     public String getUsername() {
         return username;
@@ -90,6 +89,23 @@ public class Register<
         return "/WEB-INF/woko/ext/usermanagement/register.jsp";
     }
 
+    // TODO remove when we have @Before methods ! used to create the user before binding/validation
+    @Override
+    public void setFacetContext(IFacetContext iFacetContext) {
+        super.setFacetContext(iFacetContext);
+        user = createTransientUser();
+    }
+
+    protected T createTransientUser() {
+        DatabaseUserManager<?,T> um = getWoko().getUserManager();
+        Class<? extends T> clazz = um.getUserClass();
+        try {
+            return clazz.newInstance();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     @DontValidate
     @Override
     public Resolution getResolution(ActionBeanContext abc) {
@@ -125,13 +141,12 @@ public class Register<
             return getResolution(abc);
         } else {
 
-            // all good : actually create and register the user
-            u = createUser();
+            // all good : save and register the user
 
             @SuppressWarnings("unchecked")
-            RegistrationAwareUserManager<User> registrationAwareUserManager =
-                    (RegistrationAwareUserManager<User>)databaseUserManager;
-            RegistrationDetails<User> regDetails = registrationAwareUserManager.createRegistration(u);
+            RegistrationAwareUserManager<T> registrationAwareUserManager =
+                    (RegistrationAwareUserManager<T>)databaseUserManager;
+            RegistrationDetails<T> regDetails = registrationAwareUserManager.createRegistration(user);
 
             // set a session attribute to prevent other users to see this registration !
             getRequest().getSession().setAttribute(SESS_ATTR_WOKO_REGISTERED, true);
@@ -142,14 +157,14 @@ public class Register<
 
             // send email to freshly registered user if mail service is available and user account is
             // registered
-            if (u.getAccountStatus().equals(AccountStatus.Registered)) {
+            if (user.getAccountStatus().equals(AccountStatus.Registered)) {
                 MailService mailService = woko.getIoc().getComponent(MailService.KEY);
                 if (mailService!=null) {
                     mailService.sendMail(
-                            u.getEmail(),
+                            user.getEmail(),
                             woko.getLocalizedMessage(getRequest(),
                                 "woko.ext.usermanagement.register.mail.content",
-                                u.getUsername(),
+                                user.getUsername(),
                                 getAppName(),
                                 mailService.getAppUrl() + "/activate/" + regDetailsClassMapping + "/" + regDetails.getKey() +
                                     "?facet.token=" + regDetails.getSecretToken()));

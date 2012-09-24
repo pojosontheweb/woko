@@ -9,6 +9,9 @@ import woko.mail.ConsoleMailService;
 import woko.mail.MailService;
 import woko.push.PushFacetDescriptorManager;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class UserManagementWebtestsInitListener
         extends WokoIocInitListener<HibernateCompassStore, MyUserManager, SessionUsernameResolutionStrategy, PushFacetDescriptorManager> {
 
@@ -21,5 +24,10 @@ public class UserManagementWebtestsInitListener
                 new SessionUsernameResolutionStrategy(),
                 new PushFacetDescriptorManager(createAnnotatedFdm())
         ).addComponent(MailService.KEY, new ConsoleMailService("http://www.pojosontheweb.com", "yikes@pojosontheweb.com"));
+    }
+
+    @Override
+    protected List<String> createFallbackRoles() {
+        return Arrays.asList("myguest");
     }
 }
