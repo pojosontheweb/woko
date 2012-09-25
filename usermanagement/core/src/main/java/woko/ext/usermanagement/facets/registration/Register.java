@@ -22,7 +22,22 @@ import woko.util.WLogger;
 import java.util.Collections;
 import java.util.List;
 
-// TODO strict bind
+@StrictBinding(
+        defaultPolicy = StrictBinding.Policy.DENY,
+        allow = {
+                "facet.username",
+                "facet.email",
+                "facet.password1",
+                "facet.password2",
+                "facet.user.*"
+        },
+        deny = {
+                "facet.user.username",
+                "facet.user.password",
+                "facet.user.roles",
+                "facet.user.accountStatus"
+        }
+)
 @FacetKey(name="register", profileId = "all")
 public class Register<T extends User,
         OsType extends ObjectStore,

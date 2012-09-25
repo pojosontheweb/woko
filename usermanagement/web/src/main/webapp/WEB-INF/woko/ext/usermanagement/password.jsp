@@ -19,8 +19,6 @@
             </fmt:message>
         </h1>
 
-        <fmt:message bundle="${wokoBundle}" key="woko.ext.usermanagement.password.para.text"/>
-
         <div class="row-fluid">
             <div class="span12">
                 <s:form action="/password" class="form-horizontal">

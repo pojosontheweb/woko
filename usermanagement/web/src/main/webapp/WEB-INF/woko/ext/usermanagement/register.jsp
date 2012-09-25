@@ -19,8 +19,6 @@
             </fmt:message>
         </h1>
 
-        <fmt:message bundle="${wokoBundle}" key="woko.ext.usermanagement.register.para.text"/>
-
         <div class="row-fluid">
             <div class="span12">
                 <s:form action="/register" class="form-horizontal">
@@ -28,7 +26,7 @@
                     <fieldset>
 
                         <div class="control-group ${empty(actionBean.context.validationErrors['facet.username']) ? '' : 'error'} ">
-                            <s:label for="facet.username" class="control-label">
+                            <s:label for="facet.username" class="control-label wokoPropertyName">
                                 <fmt:message bundle="${wokoBundle}" key="User.username"/>
                             </s:label>
                             <div class="controls">
@@ -41,7 +39,7 @@
                         </div>
 
                         <div class="control-group ${empty(actionBean.context.validationErrors['facet.email']) ? '' : 'error'} ">
-                            <s:label for="facet.email" class="control-label">
+                            <s:label for="facet.email" class="control-label wokoPropertyName">
                                 <fmt:message bundle="${wokoBundle}" key="User.email"/>
                             </s:label>
                             <div class="controls">
@@ -54,7 +52,7 @@
                         </div>
 
                         <div class="control-group ${empty(actionBean.context.validationErrors['facet.password1']) ? '' : 'error'} ">
-                            <s:label for="facet.password1" class="control-label">
+                            <s:label for="facet.password1" class="control-label wokoPropertyName">
                                 <fmt:message bundle="${wokoBundle}" key="woko.ext.usermanagement.register.password1"/>
                             </s:label>
                             <div class="controls">
@@ -69,7 +67,7 @@
                         </div>
 
                         <div class="control-group ${empty(actionBean.context.validationErrors['facet.password2']) ? '' : 'error'} ">
-                            <s:label for="facet.password2" class="control-label">
+                            <s:label for="facet.password2" class="control-label wokoPropertyName">
                                 <fmt:message bundle="${wokoBundle}" key="woko.ext.usermanagement.register.password2"/>
                             </s:label>
                             <div class="controls">
