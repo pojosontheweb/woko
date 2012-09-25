@@ -142,6 +142,15 @@ public class Register<T extends User,
             return getResolution(abc);
         } else {
 
+            @SuppressWarnings("unchecked")
+            RegistrationAwareUserManager<T> registrationAwareUserManager =
+                    (RegistrationAwareUserManager<T>)databaseUserManager;
+            user.setAccountStatus(registrationAwareUserManager.getRegisteredAccountStatus());
+            user.setRoles(registrationAwareUserManager.getRegisteredRoles());
+            user.setUsername(username);
+            user.setPassword(databaseUserManager.encodePassword(password1));
+            user.setEmail(email);
+
             // use validate facet in order to check the user's validation constraints
             woko.facets.builtin.Validate validateFacet = woko.getFacet(WokoFacets.validate, abc.getRequest(), user, user.getClass());
             if (validateFacet != null) {
@@ -152,20 +161,12 @@ public class Register<T extends User,
                 }
             }
 
-            @SuppressWarnings("unchecked")
-            RegistrationAwareUserManager<T> registrationAwareUserManager =
-                    (RegistrationAwareUserManager<T>)databaseUserManager;
-            // all good : save and register the user
-            user.setAccountStatus(registrationAwareUserManager.getRegisteredAccountStatus());
-            user.setRoles(registrationAwareUserManager.getRegisteredRoles());
-            user.setUsername(username);
-            user.setPassword(databaseUserManager.encodePassword(password1));
-            user.setEmail(email);
+            // all good, save user
             databaseUserManager.save(user);
 
+            // and create registration
             @SuppressWarnings("unchecked")
             RegistrationDetails<T> regDetails = registrationAwareUserManager.createRegistration(user);
-
             OsType store = getWoko().getObjectStore();
             String regDetailsClassMapping = store.getClassMapping(regDetails.getClass());
             String regDetailsKey = store.getKey(regDetails);

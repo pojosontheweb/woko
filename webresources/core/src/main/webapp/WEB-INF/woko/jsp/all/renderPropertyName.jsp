@@ -24,6 +24,7 @@
 <%@ page import="net.sourceforge.stripes.controller.StripesFilter" %>
 <%@ page import="java.util.ResourceBundle" %>
 <%@ page import="java.util.MissingResourceException" %>
+<%@ page import="woko.facets.builtin.RenderPropertiesEdit" %>
 <%
     RenderPropertyName renderPropertyName = (RenderPropertyName)request.getAttribute(WokoFacets.renderPropertyName);
     WokoFacetContext<?,?,?,?> fctx = (WokoFacetContext)renderPropertyName.getFacetContext();
@@ -32,7 +33,15 @@
     String propertyName = renderPropertyName.getPropertyName();
     Object owningObject = fctx.getTargetObject();
     String propertyClassName = os.getClassMapping(Util.getPropertyType(owningObject.getClass(), propertyName));
-    String label = "object." + propertyName;
+
+    // check in request if we have a renderPropertiesEdit facet that we could
+    // use for prefix
+    String prefix = "object";
+    RenderPropertiesEdit rpe = (RenderPropertiesEdit)request.getAttribute(RenderPropertiesEdit.FACET_NAME);
+    if (rpe!=null) {
+        prefix = rpe.getFieldPrefix();
+    }
+    String label = prefix + "." + propertyName;
     String labelMsgKey = os.getClassMapping(owningObject.getClass()) + "." + propertyName;
     ResourceBundle b = StripesFilter.getConfiguration().
             getLocalizationBundleFactory().getFormFieldBundle(request.getLocale());
