@@ -32,11 +32,14 @@ import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
-public class HibernateUserManager<U extends HbUser>
-        extends DatabaseUserManager<HibernateUserManager<U>,U>
+public class HibernateUserManager<T extends HibernateUserManager<T,U>, U extends HbUser>
+        extends DatabaseUserManager<T,U>
         implements RegistrationAwareUserManager<U> {
 
     private final HibernateStore hibernateStore;
+
+    private AccountStatus registeredAccountStatus = AccountStatus.Registered;
+    private List<String> registeredRoles = Collections.emptyList();
 
     public HibernateUserManager(HibernateStore hibernateStore, Class<U> userClass) {
         super(userClass);
@@ -148,11 +151,6 @@ public class HibernateUserManager<U extends HbUser>
     }
 
     @Override
-    public RegistrationDetails<U> getRegistrationDetail(String key) {
-        return null;
-    }
-
-    @Override
     public RegistrationDetails<U> createRegistration(U user) {
         HbRegistrationDetails<U> registration = new HbRegistrationDetails<U>();
         registration.setUser(user);
@@ -169,6 +167,28 @@ public class HibernateUserManager<U extends HbUser>
     @Override
     public void save(U user) {
         getHibernateStore().save(user);
+    }
+
+    @Override
+    public AccountStatus getRegisteredAccountStatus() {
+        return registeredAccountStatus;
+    }
+
+    @Override
+    public List<String> getRegisteredRoles() {
+        return registeredRoles;
+    }
+
+    @SuppressWarnings("unchecked")
+    public T setRegisteredAccountStatus(AccountStatus accountStatus) {
+        this.registeredAccountStatus = accountStatus;
+        return (T)this;
+    }
+
+    @SuppressWarnings("unchecked")
+    public T setRegisteredRoles(List<String> roles) {
+        this.registeredRoles = roles;
+        return (T)this;
     }
 
 }

@@ -9,8 +9,9 @@ import woko.hibernate.HibernateStore;
 import woko.hibernate.TxCallback;
 
 import java.util.Arrays;
+import java.util.List;
 
-public class MyUserManager extends HibernateUserManager<MyUser> {
+public class MyUserManager extends HibernateUserManager<MyUserManager,MyUser> {
 
     public MyUserManager(HibernateStore hibernateStore) {
         super(hibernateStore, MyUser.class);

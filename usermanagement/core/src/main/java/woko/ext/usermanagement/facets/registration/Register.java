@@ -141,17 +141,18 @@ public class Register<T extends User,
             return getResolution(abc);
         } else {
 
+            @SuppressWarnings("unchecked")
+            RegistrationAwareUserManager<T> registrationAwareUserManager =
+                    (RegistrationAwareUserManager<T>)databaseUserManager;
             // all good : save and register the user
-            user.setAccountStatus(getRegisteredAccountStatus());
-            user.setRoles(getRegisteredUserRoles());
+            user.setAccountStatus(registrationAwareUserManager.getRegisteredAccountStatus());
+            user.setRoles(registrationAwareUserManager.getRegisteredRoles());
             user.setUsername(username);
             user.setPassword(databaseUserManager.encodePassword(password1));
             user.setEmail(email);
             databaseUserManager.save(user);
 
             @SuppressWarnings("unchecked")
-            RegistrationAwareUserManager<T> registrationAwareUserManager =
-                    (RegistrationAwareUserManager<T>)databaseUserManager;
             RegistrationDetails<T> regDetails = registrationAwareUserManager.createRegistration(user);
 
             OsType store = getWoko().getObjectStore();
@@ -188,14 +189,6 @@ public class Register<T extends User,
     protected String getAppName() {
         Layout layout = getWoko().getFacet(Layout.FACET_NAME, getRequest(), null, Object.class, true);
         return layout.getAppTitle();
-    }
-
-    protected AccountStatus getRegisteredAccountStatus() {
-        return AccountStatus.Registered;
-    }
-
-    protected List<String> getRegisteredUserRoles() {
-        return Collections.emptyList();
     }
 
     @Override
