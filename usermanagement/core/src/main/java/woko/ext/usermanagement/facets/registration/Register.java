@@ -115,7 +115,7 @@ public class Register<T extends User,
     public Resolution doRegister(ActionBeanContext abc) {
         // check that no other user with this username already exists
         Woko<OsType,UmType,UnsType,FdmType> woko = getWoko();
-        DatabaseUserManager<?,?> databaseUserManager = woko.getUserManager();
+        DatabaseUserManager<?,T> databaseUserManager = woko.getUserManager();
         if (!(databaseUserManager instanceof RegistrationAwareUserManager)) {
             throw new IllegalStateException("You are using the register facet but your user manager doesn't implement " +
                 "RegistrationAwareUserManager (" + databaseUserManager + ")");
@@ -142,18 +142,24 @@ public class Register<T extends User,
         } else {
 
             // all good : save and register the user
+            user.setAccountStatus(getRegisteredAccountStatus());
+            user.setRoles(getRegisteredUserRoles());
+            user.setUsername(username);
+            user.setPassword(password1);
+            user.setEmail(email);
+            databaseUserManager.save(user);
 
             @SuppressWarnings("unchecked")
             RegistrationAwareUserManager<T> registrationAwareUserManager =
                     (RegistrationAwareUserManager<T>)databaseUserManager;
             RegistrationDetails<T> regDetails = registrationAwareUserManager.createRegistration(user);
 
-            // set a session attribute to prevent other users to see this registration !
-            getRequest().getSession().setAttribute(SESS_ATTR_WOKO_REGISTERED, true);
-
-            ObjectStore store = getWoko().getObjectStore();
+            OsType store = getWoko().getObjectStore();
             String regDetailsClassMapping = store.getClassMapping(regDetails.getClass());
             String regDetailsKey = store.getKey(regDetails);
+
+            // set a session attribute to prevent other users to see this registration !
+            getRequest().getSession().setAttribute(SESS_ATTR_WOKO_REGISTERED, regDetails.getSecretToken());
 
             // send email to freshly registered user if mail service is available and user account is
             // registered
@@ -182,21 +188,6 @@ public class Register<T extends User,
     protected String getAppName() {
         Layout layout = getWoko().getFacet(Layout.FACET_NAME, getRequest(), null, Object.class, true);
         return layout.getAppTitle();
-    }
-
-    protected User createUser() {
-        DatabaseUserManager<?,?> databaseUserManager = getWoko().getUserManager();
-        if (!(databaseUserManager instanceof RegistrationAwareUserManager)) {
-            throw new IllegalStateException("You are using the register facet but your user manager doesn't implement " +
-                "RegistrationAwareUserManager (" + databaseUserManager + ")");
-        }
-        return databaseUserManager.createUser(
-                username,
-                password1,
-                email,
-                getRegisteredUserRoles(),
-                getRegisteredAccountStatus()
-        );
     }
 
     protected AccountStatus getRegisteredAccountStatus() {

@@ -28,7 +28,7 @@
     String propertyName = renderPropertyValue.getPropertyName();
     Object owningObject = renderPropertyValue.getOwningObject();
     String propertyClassName = os.getClassMapping(Util.getPropertyType(owningObject.getClass(), propertyName));
-    String fullFieldName = "object." + propertyName;
+    String fullFieldName = renderPropertyValue.getFieldPrefix() + "." + propertyName;
     String className = "input-xlarge wokoPropertyValueEdit " + propertyClassName + "-" + propertyName;
     if (renderPropertyValue.isTextArea()) {
 %>

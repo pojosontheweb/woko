@@ -25,8 +25,6 @@ import woko.persistence.ObjectStore;
 import woko.users.UserManager;
 import woko.users.UsernameResolutionStrategy;
 
-import java.util.Date;
-
 @FacetKeyList(
   keys = {
     @FacetKey(name = WokoFacets.renderPropertyValueEdit, profileId = "all", targetObjectType = String.class),
@@ -37,7 +35,7 @@ public class RenderPropertyValueEditStripesText<
         UmType extends UserManager,
         UnsType extends UsernameResolutionStrategy,
         FdmType extends IFacetDescriptorManager
-        > extends RenderPropertyValueImpl<OsType,UmType,UnsType,FdmType> implements RenderPropertyValueEdit {
+        > extends BaseRenderPropertyValueEdit<OsType,UmType,UnsType,FdmType> implements RenderPropertyValueEdit {
 
     public static final String FRAGMENT_PATH = "/WEB-INF/woko/jsp/all/renderPropertyValueEditStripesText.jsp";
 

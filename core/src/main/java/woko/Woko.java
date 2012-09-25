@@ -103,7 +103,7 @@ public class Woko<
         logger.info("__       __     _  __");
         logger.info("\\ \\  _  / /___ | |/ / ___");
         logger.info(" \\ \\/ \\/ // o \\|   K /   \\");
-        logger.info("  \\__W__/ \\___/|_|\\_\\\\_o_/  2.1-beta");
+        logger.info("  \\__W__/ \\___/|_|\\_\\\\_o_/  LATEST-SNAPSHOT");
         logger.info("             POJOs on the Web !");
         logger.info("");
         logger.info("Woko is ready :");

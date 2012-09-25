@@ -83,6 +83,8 @@
                             </div>
                         </div>
 
+                        <%-- render the properties FORM for the user --%>
+                        <w:includeFacet targetObject="${register.user}" facetName="<%=WokoFacets.renderPropertiesEdit%>"/>
 
                         <div class="form-actions">
                             <s:submit name="doRegister" class="btn btn-primary btn-large"/>

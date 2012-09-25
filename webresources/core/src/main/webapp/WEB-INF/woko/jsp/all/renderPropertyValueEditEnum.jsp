@@ -18,15 +18,15 @@
 <%@ page import="woko.facets.WokoFacetContext" %>
 <%@ page import="woko.persistence.ObjectStore" %>
 <%@ page import="woko.facets.builtin.WokoFacets" %>
-<%@ page import="woko.facets.builtin.RenderPropertyValue" %>
+<%@ page import="woko.facets.builtin.RenderPropertyValueEdit" %>
 <%
-    RenderPropertyValue renderPropertyValue = (RenderPropertyValue)request.getAttribute(WokoFacets.renderPropertyValueEdit);
+    RenderPropertyValueEdit renderPropertyValue = (RenderPropertyValueEdit)request.getAttribute(WokoFacets.renderPropertyValueEdit);
     WokoFacetContext<?,?,?,?> fctx = (WokoFacetContext<?,?,?,?>)renderPropertyValue.getFacetContext();
     ObjectStore os = fctx.getWoko().getObjectStore();
     String propertyName = renderPropertyValue.getPropertyName();
     String propertyClassName = os.getClassMapping(renderPropertyValue.getPropertyType());
     Object propVal = renderPropertyValue.getPropertyValue();
-    String fullFieldName = "object." + propertyName;
+    String fullFieldName = renderPropertyValue.getFieldPrefix() + "." + propertyName;
     String emptyOptSelected = propVal==null ? "true" : "false";
 %>
 <span class="wokoPropertyValueEdit">

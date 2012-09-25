@@ -18,6 +18,7 @@ package woko.facets.builtin.all;
 
 import net.sourceforge.jfacets.IFacetDescriptorManager;
 import net.sourceforge.jfacets.annotations.FacetKey;
+import woko.facets.builtin.RenderPropertiesEdit;
 import woko.facets.builtin.WokoFacets;
 import woko.persistence.ObjectStore;
 import woko.users.UserManager;
@@ -29,7 +30,7 @@ public class RenderPropertiesEditImpl<
         UmType extends UserManager,
         UnsType extends UsernameResolutionStrategy,
         FdmType extends IFacetDescriptorManager
-        > extends RenderPropertiesImpl<OsType,UmType,UnsType,FdmType> {
+        > extends RenderPropertiesImpl<OsType,UmType,UnsType,FdmType> implements RenderPropertiesEdit {
 
     public static final String FRAGMENT_PATH = "/WEB-INF/woko/jsp/all/renderPropertiesEdit.jsp";
 
@@ -37,4 +38,13 @@ public class RenderPropertiesEditImpl<
         return FRAGMENT_PATH;
     }
 
+    @Override
+    public boolean isPartialForm() {
+        return false;
+    }
+
+    @Override
+    public String getFieldPrefix() {
+        return "object";
+    }
 }

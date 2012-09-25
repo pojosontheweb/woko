@@ -44,7 +44,7 @@ public class WokoFacets {
     public static final String renderObjectEdit = RenderObject.FACET_NAME + "Edit";
     public static final String renderObjectJson = RenderObjectJson.FACET_NAME;
     public static final String renderProperties = RenderProperties.FACET_NAME;
-    public static final String renderPropertiesEdit = RenderProperties.FACET_NAME + "Edit";
+    public static final String renderPropertiesEdit = RenderPropertiesEdit.FACET_NAME;
     public static final String renderPropertyName = RenderPropertyName.FACET_NAME;
     public static final String renderPropertyValue = RenderPropertyValue.FACET_NAME;
     public static final String renderPropertyValueEdit = RenderPropertyValueEdit.FACET_NAME;

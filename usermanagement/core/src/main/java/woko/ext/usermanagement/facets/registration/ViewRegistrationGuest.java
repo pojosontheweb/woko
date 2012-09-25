@@ -20,8 +20,14 @@ public class ViewRegistrationGuest extends ViewImpl implements IInstanceFacet {
 
     @Override
     public boolean matchesTargetObject(Object targetObject) {
-        return super.matchesTargetObject(targetObject) &&
-                getWoko().getUsername(getRequest())==null &&
-                getRequest().getSession().getAttribute(Register.SESS_ATTR_WOKO_REGISTERED)!=null;
+        if (targetObject==null) {
+            return false;
+        }
+        if (getWoko().getUsername(getRequest())!=null) {
+            return false;
+        }
+        RegistrationDetails<?> regDetails = (RegistrationDetails<?>)targetObject;
+        String sessionToken = (String)getRequest().getSession().getAttribute(Register.SESS_ATTR_WOKO_REGISTERED);
+        return sessionToken!=null && sessionToken.equals(regDetails.getSecretToken());
     }
 }
