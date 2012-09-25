@@ -58,6 +58,7 @@ class UsermanagementTest extends WokoWebTestBase {
             setInputField name:'facet.email', value:'funky@stuff.com'
             setInputField name:'facet.password1', value:'funkystuff'
             setInputField name:'facet.password2', value:'funkystuff'
+            setInputField name:'facet.user.prop1', value:'funkystuff'
             clickButton name:'doRegister'
 
             verifyText text: 'Account not yet active'
