@@ -75,7 +75,7 @@ class UsermanagementTest extends WokoWebTestBase {
             setSelectField xpath:'/html/body/div/div[2]/div/div/div/div[2]/div/form/fieldset/div/div/select', value:'Active'
             setInputField xpath:'/html/body/div/div[2]/div/div/div/div[2]/div/form/fieldset/div[4]/div/input', value:'developer'
             setSelectField name:'object.accountStatus', value:'Active'
-            clickButton xpath: '/html/body/div/div[2]/div/div/div/div[2]/div/form/fieldset/div[6]/input'
+            clickButton name: 'save'
 
             // logout and try to authenticate with new user
             logout()
