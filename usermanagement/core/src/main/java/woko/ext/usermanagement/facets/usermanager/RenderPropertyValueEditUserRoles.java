@@ -4,7 +4,7 @@ import net.sourceforge.jfacets.IFacetDescriptorManager;
 import net.sourceforge.jfacets.annotations.FacetKey;
 import woko.ext.usermanagement.core.User;
 import woko.facets.builtin.RenderPropertyValueEdit;
-import woko.facets.builtin.all.RenderPropertyValueImpl;
+import woko.facets.builtin.all.BaseRenderPropertyValueEdit;
 import woko.persistence.ObjectStore;
 import woko.users.UserManager;
 import woko.users.UsernameResolutionStrategy;
@@ -18,7 +18,7 @@ public class RenderPropertyValueEditUserRoles<
         UmType extends UserManager,
         UnsType extends UsernameResolutionStrategy,
         FdmType extends IFacetDescriptorManager
-        > extends RenderPropertyValueImpl<OsType,UmType,UnsType,FdmType> implements RenderPropertyValueEdit {
+        > extends BaseRenderPropertyValueEdit<OsType,UmType,UnsType,FdmType> implements RenderPropertyValueEdit {
 
     @Override
     public String getPath() {

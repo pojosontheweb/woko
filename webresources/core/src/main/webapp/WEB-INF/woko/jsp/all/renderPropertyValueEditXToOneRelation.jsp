@@ -30,7 +30,7 @@
     String propertyName = renderPropertyValue.getPropertyName();
     Object owningObject = renderPropertyValue.getOwningObject();
     String propertyClassName = os.getClassMapping(Util.getPropertyType(owningObject.getClass(), propertyName));
-    String fullFieldName = "object." + propertyName;
+    String fullFieldName = renderPropertyValue.getFieldPrefix() + "." + propertyName;
     Object propVal = renderPropertyValue.getPropertyValue();
 %>
 <span class="wokoPropertyValueEdit">
@@ -43,7 +43,7 @@
                     String key = os.getKey(choice);
                     String title = Util.getTitle(request, choice);
                     String selected = propVal!=null && propVal.equals(choice) ?
-                            selected = "selected=\"selected\"" :
+                            "selected=\"selected\"" :
                             "";
             %>
                 <option value="<%=key%>" <%=selected%> ><c:out value="<%=title%>"/></option>

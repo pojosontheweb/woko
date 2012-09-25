@@ -25,7 +25,6 @@ import woko.persistence.ObjectStore;
 import woko.persistence.ResultIterator;
 import woko.users.UserManager;
 import woko.users.UsernameResolutionStrategy;
-import woko.util.Util;
 
 import java.util.List;
 
@@ -35,7 +34,7 @@ public class RenderPropertyValueEditXToOneRelation<
         UmType extends UserManager,
         UnsType extends UsernameResolutionStrategy,
         FdmType extends IFacetDescriptorManager
-        > extends RenderPropertyValueImpl<OsType,UmType,UnsType,FdmType> implements RenderPropertyValueEdit {
+        > extends BaseRenderPropertyValueEdit<OsType,UmType,UnsType,FdmType> implements RenderPropertyValueEdit {
 
     public static final String ENUM_FRAGMENT_PATH = "/WEB-INF/woko/jsp/all/renderPropertyValueEditEnum.jsp";
     public static final String FRAGMENT_PATH = "/WEB-INF/woko/jsp/all/renderPropertyValueEditXToOneRelation.jsp";

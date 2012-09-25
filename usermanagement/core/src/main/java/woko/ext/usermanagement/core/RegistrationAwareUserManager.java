@@ -6,8 +6,9 @@ import java.util.List;
 
 public interface RegistrationAwareUserManager<U extends User> extends UserManager{
 
-    RegistrationDetails<U> getRegistrationDetail(String key);
-
     RegistrationDetails<U> createRegistration(U user);
 
+    AccountStatus getRegisteredAccountStatus();
+
+    List<String> getRegisteredRoles();
 }

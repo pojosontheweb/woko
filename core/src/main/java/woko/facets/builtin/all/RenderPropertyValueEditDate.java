@@ -32,7 +32,7 @@ public class RenderPropertyValueEditDate<
         UmType extends UserManager,
         UnsType extends UsernameResolutionStrategy,
         FdmType extends IFacetDescriptorManager
-        > extends RenderPropertyValueImpl<OsType,UmType,UnsType,FdmType> implements RenderPropertyValueEdit {
+        > extends BaseRenderPropertyValueEdit<OsType,UmType,UnsType,FdmType> implements RenderPropertyValueEdit {
 
     public static final String FRAGMENT_PATH = "/WEB-INF/woko/jsp/all/renderPropertyValueEditDate.jsp";
 

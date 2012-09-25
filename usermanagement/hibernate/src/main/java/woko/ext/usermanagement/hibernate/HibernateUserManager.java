@@ -38,6 +38,9 @@ public class HibernateUserManager<U extends HbUser>
 
     private final HibernateStore hibernateStore;
 
+    private AccountStatus registeredAccountStatus = AccountStatus.Registered;
+    private List<String> registeredRoles = Collections.emptyList();
+
     public HibernateUserManager(HibernateStore hibernateStore, Class<U> userClass) {
         super(userClass);
         this.hibernateStore = hibernateStore;
@@ -148,11 +151,6 @@ public class HibernateUserManager<U extends HbUser>
     }
 
     @Override
-    public RegistrationDetails<U> getRegistrationDetail(String key) {
-        return null;
-    }
-
-    @Override
     public RegistrationDetails<U> createRegistration(U user) {
         HbRegistrationDetails<U> registration = new HbRegistrationDetails<U>();
         registration.setUser(user);
@@ -169,6 +167,28 @@ public class HibernateUserManager<U extends HbUser>
     @Override
     public void save(U user) {
         getHibernateStore().save(user);
+    }
+
+    @Override
+    public AccountStatus getRegisteredAccountStatus() {
+        return registeredAccountStatus;
+    }
+
+    @Override
+    public List<String> getRegisteredRoles() {
+        return registeredRoles;
+    }
+
+    @SuppressWarnings("unchecked")
+    public HibernateUserManager<U> setRegisteredAccountStatus(AccountStatus accountStatus) {
+        this.registeredAccountStatus = accountStatus;
+        return this;
+    }
+
+    @SuppressWarnings("unchecked")
+    public HibernateUserManager<U> setRegisteredRoles(List<String> roles) {
+        this.registeredRoles = roles;
+        return this;
     }
 
 }

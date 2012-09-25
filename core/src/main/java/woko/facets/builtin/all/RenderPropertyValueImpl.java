@@ -70,6 +70,4 @@ public class RenderPropertyValueImpl<
     public Class<?> getPropertyType() {
         return Util.getPropertyType(getOwningObject().getClass(), getPropertyName());
     }
-
-
 }
