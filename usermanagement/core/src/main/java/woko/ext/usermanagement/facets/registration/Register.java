@@ -13,6 +13,7 @@ import woko.ext.usermanagement.core.*;
 import woko.ext.usermanagement.util.PasswordUtil;
 import woko.facets.BaseResolutionFacet;
 import woko.facets.builtin.Layout;
+import woko.facets.builtin.WokoFacets;
 import woko.mail.MailService;
 import woko.persistence.ObjectStore;
 import woko.users.UsernameResolutionStrategy;
@@ -21,7 +22,22 @@ import woko.util.WLogger;
 import java.util.Collections;
 import java.util.List;
 
-// TODO strict bind
+@StrictBinding(
+        defaultPolicy = StrictBinding.Policy.DENY,
+        allow = {
+                "facet.username",
+                "facet.email",
+                "facet.password1",
+                "facet.password2",
+                "facet.user.*"
+        },
+        deny = {
+                "facet.user.username",
+                "facet.user.password",
+                "facet.user.roles",
+                "facet.user.accountStatus"
+        }
+)
 @FacetKey(name="register", profileId = "all")
 public class Register<T extends User,
         OsType extends ObjectStore,
@@ -144,17 +160,28 @@ public class Register<T extends User,
             @SuppressWarnings("unchecked")
             RegistrationAwareUserManager<T> registrationAwareUserManager =
                     (RegistrationAwareUserManager<T>)databaseUserManager;
-            // all good : save and register the user
             user.setAccountStatus(registrationAwareUserManager.getRegisteredAccountStatus());
             user.setRoles(registrationAwareUserManager.getRegisteredRoles());
             user.setUsername(username);
             user.setPassword(databaseUserManager.encodePassword(password1));
             user.setEmail(email);
+
+            // use validate facet in order to check the user's validation constraints
+            woko.facets.builtin.Validate validateFacet = woko.getFacet(WokoFacets.validate, abc.getRequest(), user, user.getClass());
+            if (validateFacet != null) {
+                logger.debug("Validation facet found, validating before saving...");
+                if (!validateFacet.validate(abc)) {
+                    // validation issue : forward
+                    return getResolution(abc);
+                }
+            }
+
+            // all good, save user
             databaseUserManager.save(user);
 
+            // and create registration
             @SuppressWarnings("unchecked")
             RegistrationDetails<T> regDetails = registrationAwareUserManager.createRegistration(user);
-
             OsType store = getWoko().getObjectStore();
             String regDetailsClassMapping = store.getClassMapping(regDetails.getClass());
             String regDetailsKey = store.getKey(regDetails);

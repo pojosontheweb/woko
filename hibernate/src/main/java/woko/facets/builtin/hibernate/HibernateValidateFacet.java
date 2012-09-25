@@ -25,6 +25,7 @@ import net.sourceforge.stripes.validation.ValidationErrors;
 import woko.actions.WokoActionBean;
 import woko.facets.BaseFacet;
 import woko.facets.WokoFacetContext;
+import woko.facets.builtin.RenderPropertiesEdit;
 import woko.facets.builtin.Validate;
 import woko.hibernate.HibernateValidatorInterceptor;
 
@@ -36,7 +37,7 @@ import java.util.Set;
 @FacetKey(name = Validate.FACET_NAME, profileId = "all")
 public class HibernateValidateFacet extends BaseFacet implements Validate {
 
-    private static final String OBJECT_PREFIX = "object.";
+    private static final String OBJECT_PREFIX = "object";
 
     public boolean validate(ActionBeanContext abc) {
         // call hibernate validator and translate errors
@@ -51,9 +52,17 @@ public class HibernateValidateFacet extends BaseFacet implements Validate {
 
         Set<ConstraintViolation<Object>> constraintViolations = validator.validate(targetObject);
 
+        // try to find prefix in renderPropertiesEdit for the object
+        RenderPropertiesEdit rpe = (RenderPropertiesEdit)getWoko().getFacet(
+                RenderPropertiesEdit.FACET_NAME, getRequest(), targetObject);
+        String prefix = OBJECT_PREFIX;
+        if (rpe!=null) {
+            prefix = rpe.getFieldPrefix();
+        }
+
         for (ConstraintViolation<Object> c : constraintViolations) {
             hasErrors = true;
-            String fieldName = OBJECT_PREFIX + c.getPropertyPath();
+            String fieldName = prefix + "." + c.getPropertyPath();
             String fieldKey = targetObject.getClass().getSimpleName() + "." + c.getPropertyPath();
             HibernateValidationError error = new HibernateValidationError(
                     c,
