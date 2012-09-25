@@ -32,8 +32,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
-public class HibernateUserManager<T extends HibernateUserManager<T,U>, U extends HbUser>
-        extends DatabaseUserManager<T,U>
+public class HibernateUserManager<U extends HbUser>
+        extends DatabaseUserManager<HibernateUserManager<U>,U>
         implements RegistrationAwareUserManager<U> {
 
     private final HibernateStore hibernateStore;
@@ -180,15 +180,15 @@ public class HibernateUserManager<T extends HibernateUserManager<T,U>, U extends
     }
 
     @SuppressWarnings("unchecked")
-    public T setRegisteredAccountStatus(AccountStatus accountStatus) {
+    public HibernateUserManager<U> setRegisteredAccountStatus(AccountStatus accountStatus) {
         this.registeredAccountStatus = accountStatus;
-        return (T)this;
+        return this;
     }
 
     @SuppressWarnings("unchecked")
-    public T setRegisteredRoles(List<String> roles) {
+    public HibernateUserManager<U> setRegisteredRoles(List<String> roles) {
         this.registeredRoles = roles;
-        return (T)this;
+        return this;
     }
 
 }
