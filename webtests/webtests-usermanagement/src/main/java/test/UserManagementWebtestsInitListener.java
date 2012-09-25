@@ -26,12 +26,30 @@ public class UserManagementWebtestsInitListener
     protected WokoIocContainer<HibernateCompassStore, HibernateUserManager<MyUser>, SessionUsernameResolutionStrategy, PushFacetDescriptorManager> createIocContainer() {
         HibernateCompassStore store = new HibernateCompassStore(getPackageNamesFromConfig(HibernateCompassStore.CTX_PARAM_PACKAGE_NAMES, true));
         HibernateUserManager<MyUser> userManager = new HibernateUserManager<MyUser>(store, MyUser.class)
-                .setDefaultRoles(Arrays.asList("usermanager", "developer")) // usermanager has to come first otherwise /list/Myuser fallbacks to developer's list
-                .createDefaultUsers()
                 .setRegisteredRoles(Arrays.asList("developer"));
 
+        final MyUser wdevel = new MyUser();
+        wdevel.setUsername("wdevel");
+        wdevel.setPassword(userManager.encodePassword("wdevel"));
+        wdevel.setAccountStatus(AccountStatus.Active);
+        wdevel.setEmail("wdevel@woko.com");
+        wdevel.setRoles(Arrays.asList("usermanager", "developer")); // user manager has to be first to avoid developer's list facet to take precedence
+        wdevel.setAccountStatus(AccountStatus.Active);
+        wdevel.setProp1("not null in there"); // need to set not null prop
+        store.doInTx(new TxCallback() {
+            @Override
+            public void execute(HibernateStore store, Session session) throws Exception {
+                store.save(wdevel);
+            }
+        });
+
         for (int i=0; i<1000; i++) {
-            final MyUser u1 =  userManager.createUser("testuser" + i, "testuser" + i, "testemail" + i + "@foo.bar",  Arrays.asList("testuser"), AccountStatus.Active);
+            final MyUser u1 = new MyUser();
+            u1.setUsername("testuser" + i);
+            u1.setPassword(userManager.encodePassword("testuser" + i));
+            u1.setAccountStatus(AccountStatus.Active);
+            u1.setEmail("testemail" + i + "@foo.bar");
+            u1.setRoles(Arrays.asList("testuser"));
             u1.setProp1("foobar" + i);
             store.doInTx(new TxCallback() {
                 @Override
