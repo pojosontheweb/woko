@@ -145,7 +145,7 @@ public class Register<T extends User,
             user.setAccountStatus(getRegisteredAccountStatus());
             user.setRoles(getRegisteredUserRoles());
             user.setUsername(username);
-            user.setPassword(password1);
+            user.setPassword(databaseUserManager.encodePassword(password1));
             user.setEmail(email);
             databaseUserManager.save(user);
 
