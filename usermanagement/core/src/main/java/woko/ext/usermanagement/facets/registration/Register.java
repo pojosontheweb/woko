@@ -13,6 +13,7 @@ import woko.ext.usermanagement.core.*;
 import woko.ext.usermanagement.util.PasswordUtil;
 import woko.facets.BaseResolutionFacet;
 import woko.facets.builtin.Layout;
+import woko.facets.builtin.WokoFacets;
 import woko.mail.MailService;
 import woko.persistence.ObjectStore;
 import woko.users.UsernameResolutionStrategy;
@@ -140,6 +141,16 @@ public class Register<T extends User,
             abc.getValidationErrors().addGlobalError(new LocalizableError("woko.ext.usermanagement.register.ko.passwords"));
             return getResolution(abc);
         } else {
+
+            // use validate facet in order to check the user's validation constraints
+            woko.facets.builtin.Validate validateFacet = woko.getFacet(WokoFacets.validate, abc.getRequest(), user, user.getClass());
+            if (validateFacet != null) {
+                logger.debug("Validation facet found, validating before saving...");
+                if (!validateFacet.validate(abc)) {
+                    // validation issue : forward
+                    return getResolution(abc);
+                }
+            }
 
             @SuppressWarnings("unchecked")
             RegistrationAwareUserManager<T> registrationAwareUserManager =
