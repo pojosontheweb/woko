@@ -10,7 +10,7 @@ import woko.facets.builtin.developer.ViewImpl;
 @StrictBinding(
         defaultPolicy = StrictBinding.Policy.DENY
 )
-@FacetKey(name= View.FACET_NAME, profileId="guest", targetObjectType = RegistrationDetails.class)
+@FacetKey(name= View.FACET_NAME, profileId="all", targetObjectType = RegistrationDetails.class)
 public class ViewRegistrationGuest extends ViewImpl implements IInstanceFacet {
 
     @Override
@@ -20,7 +20,14 @@ public class ViewRegistrationGuest extends ViewImpl implements IInstanceFacet {
 
     @Override
     public boolean matchesTargetObject(Object targetObject) {
-        return super.matchesTargetObject(targetObject) &&
-                getRequest().getSession().getAttribute(Register.SESS_ATTR_WOKO_REGISTERED)!=null;
+        if (targetObject==null) {
+            return false;
+        }
+        if (getWoko().getUsername(getRequest())!=null) {
+            return false;
+        }
+        RegistrationDetails<?> regDetails = (RegistrationDetails<?>)targetObject;
+        String sessionToken = (String)getRequest().getSession().getAttribute(Register.SESS_ATTR_WOKO_REGISTERED);
+        return sessionToken!=null && sessionToken.equals(regDetails.getSecretToken());
     }
 }

@@ -20,4 +20,6 @@ public interface RenderPropertyValueEdit extends RenderPropertyValue {
 
     static final String FACET_NAME = "renderPropertyValueEdit";
 
+    String getFieldPrefix();
+
 }

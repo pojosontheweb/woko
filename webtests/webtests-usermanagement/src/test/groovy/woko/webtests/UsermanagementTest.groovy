@@ -58,6 +58,7 @@ class UsermanagementTest extends WokoWebTestBase {
             setInputField name:'facet.email', value:'funky@stuff.com'
             setInputField name:'facet.password1', value:'funkystuff'
             setInputField name:'facet.password2', value:'funkystuff'
+            setInputField name:'facet.user.prop1', value:'funkystuff'
             clickButton name:'doRegister'
 
             verifyText text: 'Account not yet active'
@@ -73,7 +74,8 @@ class UsermanagementTest extends WokoWebTestBase {
             clickLink xpath:'/html/body/div/div[2]/div/div/table/tbody/tr[2]/td[6]/div/a[2]'
             setSelectField xpath:'/html/body/div/div[2]/div/div/div/div[2]/div/form/fieldset/div/div/select', value:'Active'
             setInputField xpath:'/html/body/div/div[2]/div/div/div/div[2]/div/form/fieldset/div[4]/div/input', value:'developer'
-            clickButton xpath: '/html/body/div/div[2]/div/div/div/div[2]/div/form/fieldset/div[6]/input'
+            setSelectField name:'object.accountStatus', value:'Active'
+            clickButton name: 'save'
 
             // logout and try to authenticate with new user
             logout()

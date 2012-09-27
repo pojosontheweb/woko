@@ -20,7 +20,7 @@
     <parent>
         <groupId>com.pojosontheweb</groupId>
         <artifactId>woko-webtests</artifactId>
-        <version>2.1-beta</version>
+        <version>2.1-beta2</version>
     </parent>
     <artifactId>woko-webtests-usermanagement</artifactId>
     <name>Woko - web tests user management</name>
@@ -124,12 +124,45 @@
                 <artifactId>maven-war-plugin</artifactId>
                 <version>2.2</version>
                 <configuration>
-                    <configuration>
-                        <warSourceExcludes>WEB-INF/lib/servlet-api*.jar</warSourceExcludes>
-                    </configuration>
+                    <warSourceExcludes>WEB-INF/lib/servlet-api*.jar</warSourceExcludes>
                 </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>com.pojosontheweb</groupId>
+                <artifactId>woko-maven-plugin</artifactId>
+                <version>${project.version}</version>
+                <executions>
+                    <execution>
+                        <id>woko.environment</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>env</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
 
         </plugins>
     </build>
+    <profiles>
+        <profile>
+            <id>mysql</id>
+            <properties>
+                <woko.env>mysql</woko.env>
+            </properties>
+            <dependencies>
+                <dependency>
+                    <groupId>mysql</groupId>
+                    <artifactId>mysql-connector-java</artifactId>
+                    <version>5.0.2</version>
+                </dependency>
+                <dependency>
+                    <groupId>org.hibernate</groupId>
+                    <artifactId>hibernate-c3p0</artifactId>
+                    <version>3.5.6-Final</version>
+                </dependency>
+            </dependencies>
+        </profile>
+    </profiles>
 </project>

@@ -34,6 +34,10 @@ import woko.facets.builtin.RenderObjectJson;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * Interceptor for RPC calls. Looks for a specific request param and handles
+ * {@link RpcResolution} resolutions.
+ */
 @Intercepts({
         LifecycleStage.BindingAndValidation,
         LifecycleStage.CustomValidation,

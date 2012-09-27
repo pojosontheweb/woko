@@ -1,19 +1,16 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="/WEB-INF/woko/jsp/taglibs.jsp"%>
 
-<%@ page import="woko.facets.builtin.RenderProperties" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Map" %>
 <%@ page import="woko.facets.WokoFacetContext" %>
 <%@ page import="woko.Woko" %>
 <%@ page import="woko.util.Util" %>
-<%@ page import="woko.facets.builtin.RenderPropertyName" %>
 <%@ page import="woko.persistence.ObjectStore" %>
-<%@ page import="woko.facets.builtin.RenderPropertyValue" %>
-<%@ page import="woko.facets.builtin.WokoFacets" %>
+<%@ page import="woko.facets.builtin.*" %>
 
 <%
-    RenderProperties editProperties = (RenderProperties)request.getAttribute(WokoFacets.renderPropertiesEdit);
+    RenderPropertiesEdit editProperties = (RenderPropertiesEdit)request.getAttribute(WokoFacets.renderPropertiesEdit);
     List<String> propertyNames = editProperties.getPropertyNames();
     Map<String,Object> propertyValues = editProperties.getPropertyValues();
     WokoFacetContext<?,?,?,?> fctx = (WokoFacetContext)editProperties.getFacetContext();
@@ -26,9 +23,12 @@
     if (key!=null) {
         formUrl += "/" + key;
     }
+    boolean partial = editProperties.isPartialForm();
 %>
-<s:form action="<%=formUrl%>" class="form-horizontal">
-<s:hidden name="createTransient"/>
+<s:form action="<%=formUrl%>" class="form-horizontal" partial="<%=partial%>">
+    <c:if test="<%=!partial%>">
+        <s:hidden name="createTransient"/>
+    </c:if>
 <fieldset>
 <%
     for (String pName : propertyNames) {
@@ -42,7 +42,12 @@
         RenderPropertyValue editPropertyValue = Util.getRenderPropValueEditFacet(woko, request, owningObject, pName, pVal);
         String pValFragmentPath = editPropertyValue.getFragmentPath(request);
 
-        String fullFieldName = "object." + pName;
+        String prefix = "object";
+        if (editPropertyValue instanceof RenderPropertyValueEdit) {
+            prefix = ((RenderPropertyValueEdit)editPropertyValue).getFieldPrefix();
+        }
+
+        String fullFieldName = prefix + "." + pName;
 %>
         <c:set var="fullFieldNameStripes" value="<%=fullFieldName%>"/>
         <div class="control-group ${empty(actionBean.context.validationErrors[fullFieldNameStripes]) ? '' : 'error'} ">
@@ -55,8 +60,10 @@
 <%
     }
 %>
-    <div class="form-actions">
-        <s:submit name="save" class="btn btn-primary btn-large"/>
-    </div>
+    <c:if test="<%=!partial%>">
+        <div class="form-actions">
+            <s:submit name="save" class="btn btn-primary btn-large"/>
+        </div>
+    </c:if>
 </fieldset>
 </s:form>

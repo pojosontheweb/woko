@@ -16,12 +16,12 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="/WEB-INF/woko/jsp/taglibs.jsp"%>
 <%@ page import="woko.facets.builtin.WokoFacets" %>
-<%@ page import="woko.facets.builtin.RenderPropertyValue" %>
+<%@ page import="woko.facets.builtin.RenderPropertyValueEdit" %>
 <%
-    RenderPropertyValue renderPropertyValue = (RenderPropertyValue)request.getAttribute(WokoFacets.renderPropertyValueEdit);
+    RenderPropertyValueEdit renderPropertyValue = (RenderPropertyValueEdit)request.getAttribute(WokoFacets.renderPropertyValueEdit);
     String propertyName = renderPropertyValue.getPropertyName();
     Object propVal = renderPropertyValue.getPropertyValue();
-    String fullFieldName = "object." + propertyName;
+    String fullFieldName = renderPropertyValue.getFieldPrefix() + "." + propertyName;
     String emptyOptSelected = propVal==null ? "true" : "false";
 %>
 <s:select name="<%=fullFieldName%>">

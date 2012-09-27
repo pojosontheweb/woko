@@ -87,12 +87,7 @@ public class DeleteImpl<
             };
         }
         if (confirm != null) {
-            final WokoFacetContext<OsType,UmType,UnsType,FdmType> facetContext = getFacetContext();
-            final Woko<OsType,UmType,UnsType,FdmType> woko = facetContext.getWoko();
-            final Object targetObject = facetContext.getTargetObject();
-            woko.getObjectStore().delete(targetObject);
-            abc.getMessages().add(new LocalizableMessage("woko.devel.delete.confirm"));
-
+            doDelete(abc);
             Resolution resolution = getNonRpcResolution(abc);
             return new RpcResolutionWrapper(resolution) {
                 @Override
@@ -118,6 +113,14 @@ public class DeleteImpl<
     protected String getTargetFacetAfterDelete() {
         return TARGET_FACET_AFTER_DELETE;
     }
+
+    protected void doDelete(ActionBeanContext abc){
+        WokoFacetContext<OsType,UmType,UnsType,FdmType> facetContext = getFacetContext();
+        facetContext.getWoko().getObjectStore().delete(facetContext.getTargetObject());
+        abc.getMessages().add(new LocalizableMessage("woko.devel.delete.confirm"));
+    }
+
+
 
 
 }

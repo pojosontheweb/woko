@@ -19,6 +19,7 @@ package woko.facets.builtin.all;
 import net.sourceforge.jfacets.IFacetDescriptorManager;
 import net.sourceforge.jfacets.annotations.FacetKey;
 import woko.facets.BaseFragmentFacet;
+import woko.facets.builtin.RenderPropertiesEdit;
 import woko.facets.builtin.RenderPropertyValue;
 import woko.facets.builtin.WokoFacets;
 import woko.persistence.ObjectStore;
@@ -71,5 +72,17 @@ public class RenderPropertyValueImpl<
         return Util.getPropertyType(getOwningObject().getClass(), getPropertyName());
     }
 
-
+    /**
+     * Introduced to maintain backward compat for "renderPropertyValueEdit" facets extending RenderPropertyValueImpl.
+     * Those classes should now extend BaseRenderPropertyValueEdit.
+     *
+     * This method is deprecated and will be removed in next major release. Will be replaced by
+     * {@link woko.facets.builtin.all.BaseRenderPropertyValueEdit#getFieldPrefix()}
+     *
+     * @return "object"
+     */
+    @Deprecated
+    public String getFieldPrefix() {
+        return "object";
+    }
 }
