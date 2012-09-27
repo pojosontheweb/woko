@@ -75,8 +75,13 @@ public class RenderPropertyValueImpl<
     /**
      * Introduced to maintain backward compat for "renderPropertyValueEdit" facets extending RenderPropertyValueImpl.
      * Those classes should now extend BaseRenderPropertyValueEdit.
+     *
+     * This method is deprecated and will be removed in next major release. Will be replaced by
+     * {@link woko.facets.builtin.all.BaseRenderPropertyValueEdit#getFieldPrefix()}
+     *
      * @return "object"
      */
+    @Deprecated
     public String getFieldPrefix() {
         return "object";
     }
