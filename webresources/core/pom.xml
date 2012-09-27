@@ -20,7 +20,7 @@
     <parent>
         <groupId>com.pojosontheweb</groupId>
         <artifactId>woko-webresources</artifactId>
-        <version>2.1-beta2</version>
+        <version>LATEST-SNAPSHOT</version>
     </parent>
     <artifactId>woko-web-core</artifactId>
     <name>Woko - web : core JSPs and tags (no skinning)</name>
