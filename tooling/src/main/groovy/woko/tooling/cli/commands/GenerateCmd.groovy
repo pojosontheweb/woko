@@ -21,11 +21,8 @@ import org.apache.maven.model.Dependency
 import woko.tooling.cli.Command
 import woko.tooling.cli.Runner
 import woko.tooling.utils.AppUtils
-import woko.tooling.utils.Logger
 import org.apache.maven.model.Plugin
-import groovy.xml.MarkupBuilder
 import org.codehaus.plexus.util.xml.Xpp3Dom
-import org.apache.maven.model.Exclusion
 import org.apache.maven.model.PluginExecution
 
 class GenerateCmd extends Command{
@@ -39,6 +36,7 @@ class GenerateCmd extends Command{
     String modelPath
     String wokoPath
     String facetsPath
+    Boolean useRegistration
 
     GenerateCmd(Runner runner) {
         super(
@@ -62,6 +60,7 @@ class GenerateCmd extends Command{
             b longOpt: 'use-boostrap', args: 1, argName: 'yes|no', 'boostrap usage'
             g longOpt: 'use-groovy', args: 1, argName: 'yes|no', 'groovy usage'
             p longOpt: 'default-package-name', args: 1, argName: 'com.example.myapp', 'default package name'
+            r longOpt: 'registration', args: 1, argName: 'yes|no', 'use registration'
         }
 
         String defaultPackageName = groupId
@@ -99,6 +98,13 @@ class GenerateCmd extends Command{
             packageName = options.p
         } else {
             packageName = AppUtils.askWithDefault("Specify your default package name", defaultPackageName)
+        }
+
+        if (options.r)
+        {
+            useRegistration =(options.r=='yes')
+        } else {
+            useRegistration = AppUtils.yesNoAsk("Do you want usermanagement and registration")
         }
 
         addSpecificsDependencies()
@@ -164,6 +170,15 @@ class GenerateCmd extends Command{
         }else{
             iLog("You will use pure Java")
         }
+        if (useRegistration) {
+            // dependency on user management war
+            pomHelper.addDependency(new Dependency(
+                    groupId:"com.pojosontheweb",
+                    artifactId: "woko-usermanagement-web",
+                    version: '${woko.version}', // NOT a Gstring !!
+                    type: "war"
+            ))
+        }
     }
 
     /**
@@ -215,14 +230,18 @@ class GenerateCmd extends Command{
 
     private void createWebXml(){
 
-        def binding = [:]
-        binding['name'] = artifactId
-        binding['modelPackage'] = packageName+'.model'
-        binding['facetsPackage'] = packageName+'.facets'
-        binding['packageName'] = packageName
+        StringBuilder facetPackages = new StringBuilder("${packageName}.facets")
+        if (useRegistration) {
+            facetPackages << " woko.ext.usermanagement.facets"
+        }
 
         FileWriter writer = new FileWriter(webApp+File.separator+'web.xml')
-        generateTemplate(binding, 'web-xml', false, writer)
+        generateTemplate([
+                name: artifactId,
+                modelPackage: packageName+'.model',
+                facetsPackage: facetPackages.toString(),
+                packageName: packageName
+        ], 'web-xml', false, writer)
 
         // Summary
         iLog("- web.xml file created : " + 'src'+File.separator+'main'+ File.separator+'webapp'+File.separator+
