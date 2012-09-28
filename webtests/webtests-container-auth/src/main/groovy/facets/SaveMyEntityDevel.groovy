@@ -16,7 +16,6 @@
 
 package facets
 
-import net.sourceforge.stripes.action.StrictBinding.Policy
 import net.sourceforge.stripes.action.StrictBinding
 import net.sourceforge.jfacets.annotations.FacetKey
 import test.MyEntity
@@ -25,7 +24,7 @@ import woko.facets.builtin.developer.SaveImpl
 
 
 @StrictBinding(
-    defaultPolicy=Policy.ALLOW,
+    defaultPolicy= StrictBinding.Policy.ALLOW,
     deny=[
         "object.prop2"
     ]
