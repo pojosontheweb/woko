@@ -18,24 +18,32 @@ package woko.facets;
 
 import net.sourceforge.jfacets.IProfile;
 import net.sourceforge.jfacets.IProfileRepository;
+import woko.actions.WokoRequestInterceptor;
 import woko.users.UserManager;
+import woko.util.WLogger;
 
-import java.util.ArrayList;
-import java.util.List;
+import javax.servlet.http.HttpServletRequest;
+import java.util.*;
 
 public class WokoProfileRepository implements IProfileRepository {
 
     private final UserManager userManager;
 
-    public WokoProfileRepository(UserManager userManager) {
+    private final boolean enableRequestCaching;
+
+    private static final WLogger logger = WLogger.getLogger(WokoProfileRepository.class);
+
+    public WokoProfileRepository(UserManager userManager, boolean enableRequestCaching) {
         this.userManager = userManager;
+        this.enableRequestCaching = enableRequestCaching;
+        logger.info("Request profile caching is " + (enableRequestCaching ? "enabled" : "disabled"));
     }
 
     public IProfile getProfileById(String profileId) {
         return new WokoProfile(profileId);
     }
 
-    public IProfile[] getSuperProfiles(IProfile profile) {
+    private IProfile[] handleSuperProfilesNoCache(IProfile profile) {
         List<String> roles = userManager.getRoles(profile.getId());
         List<IProfile> profiles = new ArrayList<IProfile>();
         for (String role : roles) {
@@ -43,6 +51,25 @@ public class WokoProfileRepository implements IProfileRepository {
         }
         IProfile[] result = new IProfile[profiles.size()];
         return profiles.toArray(result);
+    }
+
+    public IProfile[] getSuperProfiles(IProfile profile) {
+        if (enableRequestCaching) {
+            HttpServletRequest request = WokoRequestInterceptor.getRequest();
+            if (request==null) {
+                // Request caching enabled but WokoRequestInterceptor has returned no request. Out of container or interceptor not reached ? Using default behavior anyway.
+                return handleSuperProfilesNoCache(profile);
+            }
+            String reqAttrName = "wokoSuperProfilesCache_" + profile.getId();
+            IProfile[] superProfiles = (IProfile[])request.getAttribute(reqAttrName);
+            if (superProfiles==null) {
+                superProfiles = handleSuperProfilesNoCache(profile);
+                request.setAttribute(reqAttrName, superProfiles);
+            }
+            return superProfiles;
+        } else {
+            return handleSuperProfilesNoCache(profile);
+        }
     }
 
 }

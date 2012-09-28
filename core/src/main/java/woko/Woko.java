@@ -118,7 +118,7 @@ public class Woko<
 
     protected void initJFacets() {
         logger.info("Initializing JFacets...");
-        WokoProfileRepository profileRepository = new WokoProfileRepository(getUserManager());
+        WokoProfileRepository profileRepository = new WokoProfileRepository(getUserManager(), true);
         WokoFacetContextFactory<OsType,UmType,UnsType,FdmType> facetContextFactory = new WokoFacetContextFactory<OsType,UmType,UnsType,FdmType>(this);
         jFacets = new JFacetsBuilder(profileRepository, getFacetDescriptorManager()).
                 setFacetContextFactory(facetContextFactory).
