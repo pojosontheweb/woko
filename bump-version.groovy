@@ -36,5 +36,11 @@ println "Handling bash scripts..."
 ["woko", "woko.bat"].each {
     File f = new File("./tooling/src/main/scripts/$it")
     f.text = f.text.replace("-DarchetypeVersion=$oldVersion", "-DarchetypeVersion=$newVersion")
+    f.text = f.text.replace("/  " + oldVersion, "/  " + newVersion)
 }
+
+println "Handling static VERSION in Woko.class"
+File woko = new File("./core/src/main/java/woko/Woko.java")
+woko.text = woko.text.replace(oldVersion, newVersion)
+
 println "Done. Version bumped from $oldVersion to $newVersion"

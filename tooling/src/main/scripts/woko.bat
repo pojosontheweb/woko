@@ -3,7 +3,7 @@
 echo __       __     _  __
 echo \ \  _  / /___ ^| ^|/ / ___
 echo  \ \/ \/ // o \^|   K /   \
-echo   \__W__/ \___/^|_^|\_\\_o_/  2.0
+echo   \__W__/ \___/^|_^|\_\\_o_/  LATEST-SNAPSHOT
 echo              POJOs on the Web !
 echo.
 
