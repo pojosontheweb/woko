@@ -20,11 +20,10 @@ import net.sourceforge.jfacets.annotations.FacetKey
 import woko.facets.BaseForwardResolutionFacet
 import test.OtherPojo
 import net.sourceforge.stripes.action.StrictBinding
-import net.sourceforge.stripes.action.StrictBinding.Policy
 import test.MyEntity
 
 @StrictBinding(
-    defaultPolicy=Policy.ALLOW,
+    defaultPolicy=StrictBinding.Policy.ALLOW,
     deny=[
         "facet.neverBound",
         "facet.other.foo"

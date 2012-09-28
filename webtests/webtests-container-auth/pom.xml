@@ -26,20 +26,6 @@
     <name>Woko - web tests container auth</name>
     <packaging>war</packaging>
     <dependencies>
-
-
-        <!-- need to override the groovy version here, for cross compile -->
-        <dependency>
-            <groupId>org.codehaus.groovy</groupId>
-            <artifactId>groovy-all</artifactId>
-            <version>1.7.0</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.pojosontheweb</groupId>
-            <artifactId>woko-push</artifactId>
-            <version>${project.version}</version>
-        </dependency>
         <dependency>
             <groupId>com.pojosontheweb</groupId>
             <artifactId>woko-container-auth</artifactId>
@@ -79,6 +65,11 @@
             <artifactId>woko-tooling</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.pojosontheweb</groupId>
+            <artifactId>woko-push</artifactId>
+            <version>${project.version}</version>
+        </dependency>
         <!-- needed for tooling : TODO filter out from generated war ? -->
         <dependency>
             <groupId>javax.servlet</groupId>
@@ -109,7 +100,7 @@
                     </execution>
                 </executions>
             </plugin>
-            <!-- need to downgrade gmaven for cross compile -->
+            <!-- need to downgrade gmaven for enum constant bug -->
             <plugin>
                 <groupId>org.codehaus.gmaven</groupId>
                 <artifactId>gmaven-plugin</artifactId>
@@ -132,7 +123,7 @@
                     <dependency>
                         <groupId>org.codehaus.groovy</groupId>
                         <artifactId>groovy-all</artifactId>
-                        <version>1.7.0</version>
+                        <version>${groovy.version}</version>
                     </dependency>
                 </dependencies>
                 <executions>

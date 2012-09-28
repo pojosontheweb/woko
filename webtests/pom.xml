@@ -100,13 +100,16 @@
             </plugins>
         </pluginManagement>
         <plugins>
+            <!-- config gmaven for cross compile -->
             <plugin>
                 <groupId>org.codehaus.gmaven</groupId>
                 <artifactId>gmaven-plugin</artifactId>
                 <executions>
                     <execution>
                         <goals>
+                            <goal>generateStubs</goal>
                             <goal>compile</goal>
+                            <goal>generateTestStubs</goal>
                             <goal>testCompile</goal>
                         </goals>
                     </execution>
