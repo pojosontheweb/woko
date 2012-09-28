@@ -136,7 +136,7 @@ class GenerateCmd extends Command{
             Dependency groovyDep = new Dependency()
             groovyDep.groupId = "org.codehaus.groovy"
             groovyDep.artifactId = "groovy"
-            groovyDep.version = "1.8.6"
+            groovyDep.version = "2.0.4"
             pomHelper.addDependency(groovyDep)
 
             // Add the GMAVEN plugin
