@@ -193,7 +193,8 @@ The command accepts one argument that can be  :
                " -b,--use-boostrap <yes|no>                      boostrap usage\n" +
                " -g,--use-groovy <yes|no>                        groovy usage\n" +
                " -h,--help                                       Show usage information\n" +
-               " -p,--default-package-name <com.example.myapp>   default package name\n"
+               " -p,--default-package-name <com.example.myapp>   default package name\n" +
+               " -r,--registration <yes|no>                      use registration\n"
                ,folder.getRoot())
 
     }
@@ -209,7 +210,7 @@ The command accepts one argument that can be  :
             }
         }
 
-        assertCommandResult(["generate","-b","yes", "-g", "no", "-p", "foo.bar"],
+        assertCommandResult(["generate","-b","yes", "-g", "no", "-p", "foo.bar", "-r", "yes"],
                 "|  You will use pure Java\n" +
                 "|  - web.xml file created : src" + File.separator + "main"+File.separator+"webapp"+File.separator+"WEB-INF"+File.separator+"web.xml\n" +
                 "|  - Layout facet created : foo.bar.facets.MyLayout\n" +
@@ -232,7 +233,7 @@ The command accepts one argument that can be  :
             }
         }
 
-        assertCommandResult(["generate","-b","no", "-g", "yes", "-p", "foo.bar"],
+        assertCommandResult(["generate","-b","no", "-g", "yes", "-p", "foo.bar", "-r", "yes"],
                         "|  - web.xml file created : src" + File.separator + "main" + File.separator + "webapp" + File.separator + "WEB-INF" + File.separator + "web.xml\n" +
                         "|  - Layout facet created : foo.bar.facets.MyLayout\n" +
                         "|  - resource bundle created : src" + File.separator + "main" + File.separator + "resources" + File.separator + "application.properties\n" +
@@ -254,7 +255,7 @@ The command accepts one argument that can be  :
             }
         }
 
-        assertCommandResult(["generate","-b","no", "-g", "no", "-p", "foo.bar"],
+        assertCommandResult(["generate","-b","no", "-g", "no", "-p", "foo.bar", "-r", "yes"],
                 "|  You will use pure Java\n" +
                         "|  - web.xml file created : src" + File.separator + "main" + File.separator + "webapp" + File.separator + "WEB-INF" + File.separator + "web.xml\n" +
                         "|  - Layout facet created : foo.bar.facets.MyLayout\n" +
@@ -277,7 +278,7 @@ The command accepts one argument that can be  :
             }
         }
 
-        assertCommandResult(["generate","-b","yes", "-g", "yes", "-p", "foo.bar"],
+        assertCommandResult(["generate","-b","yes", "-g", "yes", "-p", "foo.bar", "-r", "yes"],
                         "|  - web.xml file created : src" + File.separator + "main" + File.separator + "webapp" + File.separator + "WEB-INF" + File.separator + "web.xml\n" +
                         "|  - Layout facet created : foo.bar.facets.MyLayout\n" +
                         "|  - resource bundle created : src" + File.separator + "main" + File.separator + "resources" + File.separator + "application.properties\n" +

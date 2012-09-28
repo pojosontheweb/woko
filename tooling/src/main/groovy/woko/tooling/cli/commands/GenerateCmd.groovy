@@ -288,9 +288,6 @@ class GenerateCmd extends Command{
                     , useGroovy,
                     w)
         }
-
-        // Summary
-        iLog("- Init Listener file created : $f.absolutePath")
     }
 
     private void copyResources(){
