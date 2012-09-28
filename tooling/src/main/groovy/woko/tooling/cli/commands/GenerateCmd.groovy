@@ -104,6 +104,7 @@ class GenerateCmd extends Command{
         addSpecificsDependencies()
         createPackage()
         createWebXml()
+        createInitListener()
         createClass()
         copyResources()
 
@@ -218,6 +219,7 @@ class GenerateCmd extends Command{
         binding['name'] = artifactId
         binding['modelPackage'] = packageName+'.model'
         binding['facetsPackage'] = packageName+'.facets'
+        binding['packageName'] = packageName
 
         FileWriter writer = new FileWriter(webApp+File.separator+'web.xml')
         generateTemplate(binding, 'web-xml', false, writer)
@@ -243,6 +245,33 @@ class GenerateCmd extends Command{
         writer = new FileWriter(facetsPath+File.separator+"MyLayout" + (useGroovy ? ".groovy" : ".java"))
         generateTemplate(bindingFacets, 'layout', useGroovy, writer)
         iLog("- Layout facet created : " + packageName+".facets.MyLayout")
+    }
+
+    private void createInitListener() {
+        String initListenerClassName = "${artifactId.capitalize()}InitListener"
+
+        String fileName = "$wokoPath$File.separator${initListenerClassName}"
+        if (useGroovy) {
+            fileName += ".groovy"
+        } else {
+            fileName += ".java"
+        }
+
+        File f = new File(fileName)
+        f.withWriter { w ->
+            generateTemplate(
+                    [
+                        name:artifactId,
+                        packageName: "${packageName}.woko",
+                        className: initListenerClassName
+                    ],
+                    'init-listener'
+                    , useGroovy,
+                    w)
+        }
+
+        // Summary
+        iLog("- Init Listener file created : $f.absolutePath")
     }
 
     private void copyResources(){

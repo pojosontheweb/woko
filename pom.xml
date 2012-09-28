@@ -77,7 +77,7 @@
     </modules>
     <properties>
         <stripes.version>1.5.5</stripes.version>
-        <groovy.version>1.7.0</groovy.version>
+        <groovy.version>1.8.0</groovy.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>

@@ -72,7 +72,7 @@
 
     <listener>
         <display-name>WokoInitListener</display-name>
-        <listener-class>woko.ri.RiWokoInitListenerWithPush</listener-class>
+        <listener-class>${packageName}.${name.capitalize()}</listener-class>
     </listener>
 
     <context-param>
@@ -84,8 +84,8 @@
     </context-param>
 
     <context-param>
-        <param-value>$facetsPackage</param-value>
         <param-name>Woko.Facet.Packages</param-name>
+        <param-value>$facetsPackage</param-value>
     </context-param>
 
 </web-app>
