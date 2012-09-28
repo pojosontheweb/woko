@@ -48,7 +48,7 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.7</version>
+            <version>4.8.2</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -77,7 +77,7 @@
     </modules>
     <properties>
         <stripes.version>1.5.5</stripes.version>
-        <groovy.version>1.7.0</groovy.version>
+        <groovy.version>2.0.4</groovy.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
@@ -119,15 +119,15 @@
                 <plugin>
                     <groupId>org.codehaus.gmaven</groupId>
                     <artifactId>gmaven-plugin</artifactId>
-                    <version>1.2</version>
+                    <version>1.4</version>
                     <configuration>
-                        <providerSelection>1.7</providerSelection>
+                        <providerSelection>2.0</providerSelection>
                     </configuration>
                     <dependencies>
                         <dependency>
                             <groupId>org.codehaus.gmaven.runtime</groupId>
-                            <artifactId>gmaven-runtime-1.7</artifactId>
-                            <version>1.2</version>
+                            <artifactId>gmaven-runtime-2.0</artifactId>
+                            <version>1.4</version>
                             <exclusions>
                                 <exclusion>
                                     <groupId>org.codehaus.groovy</groupId>
@@ -137,14 +137,13 @@
                         </dependency>
                         <dependency>
                             <groupId>org.codehaus.groovy</groupId>
-                            <artifactId>groovy</artifactId>
+                            <artifactId>groovy-all</artifactId>
                             <version>${groovy.version}</version>
                         </dependency>
                     </dependencies>
                     <executions>
                         <execution>
                             <goals>
-                                <goal>generateTestStubs</goal>
                                 <goal>testCompile</goal>
                             </goals>
                         </execution>
