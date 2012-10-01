@@ -109,14 +109,16 @@
                                 </c:choose>
                             </c:if>
                         </p>
+
+                        <c:if test="${not empty username}">
+                            <s:form action="/search" class="navbar-search pull-right" style="margin-right: 15px;">
+                                <fmt:message bundle="${wokoBundle}" key="search" var="ph"/>
+                                <s:text name="facet.query" class="search-query" placeholder="${ph}"/>
+                            </s:form>
+                        </c:if>
+
                     </div>
 
-                    <c:if test="${not empty username}">
-                        <s:form action="/search" class="navbar-search pull-right" style="margin-right: 15px;">
-                            <fmt:message bundle="${wokoBundle}" key="search" var="ph"/>
-                            <s:text name="facet.query" class="search-query" placeholder="${ph}"/>
-                        </s:form>
-                    </c:if>
 
                 </div>
             </div>
