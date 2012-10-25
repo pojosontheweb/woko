@@ -86,6 +86,7 @@
                                 <cargo.servlet.port>9999</cargo.servlet.port>
                                 <cargo.servlet.users>wdevel:wdevel:developer</cargo.servlet.users>
                                 <cargo.container.timeout>600000</cargo.container.timeout>
+                                <cargo.tomcat.ajp.port>9009</cargo.tomcat.ajp.port>
                             </properties>
                         </configuration>
                     </configuration>
