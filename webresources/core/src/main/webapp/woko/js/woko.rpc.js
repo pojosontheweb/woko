@@ -62,6 +62,7 @@ pkg.Client.prototype.getWokoKey = function(wokoObject) {
  * @param oArgs.handleAs {String} the type of the response as a string ("text" or "json") - defaults to "json"
  * @param oArgs.onSuccess {Function} the callback to be called if the XHR call was successful (response is passed to the callback)
  * @param oArgs.onError {Function} the error callback (in case something went wrong during the XHR process)
+ * @param oArgs.onValidationError {Function} the callback to be called if the XHR call returned Validation Errors
  * @param oArgs.isPost {boolean} true if the request has to be POSTed, GET otherwise (defaults to GET)
  */
 pkg.Client.prototype.invokeFacet = function(facetName, oArgs) {
@@ -80,6 +81,23 @@ pkg.Client.prototype.invokeFacet = function(facetName, oArgs) {
         content: u.mixin(oArgs.content || {}, {isRpc: true})
     };
     if (oArgs.onSuccess) {
+        // use our own function for XHR response callback so that
+        // we handle Validation Errors properly
+        xhrArgs.load = function(resp) {
+            if (resp.error && resp.validation) {
+                // validation errors : delegate to appropriate callback
+                if (oArgs.onValidationError) {
+                    oArgs.onValidationError(resp);
+                } else {
+                    // no specific validation error callback, default to onSuccess
+                    oArgs.onSuccess(resp);
+                }
+            } else {
+                // no errors, call onSuccess
+                oArgs.onSuccess(resp);
+            }
+        };
+
         xhrArgs.load = oArgs.onSuccess;
     }
     xhrArgs.error =
@@ -107,6 +125,7 @@ pkg.Client.prototype.invokeFacet = function(facetName, oArgs) {
  * @param oArgs.handleAs {String} the type of the response as a string ("text" or "json") - defaults to "json"
  * @param oArgs.onSuccess {Function} the callback to be called if the XHR call was successful (response is passed to the callback)
  * @param oArgs.onError {Function} the error callback (in case something went wrong during the XHR process)
+ * @param oArgs.onValidationError {Function} the callback to be called if the XHR call returned Validation Errors
  * @param oArgs.isPost {boolean} true if the request has to be POSTed, GET otherwise (defaults to GET)
  */
 pkg.Client.prototype.loadObject = function(className, key, oArgs) {
@@ -144,6 +163,7 @@ pkg.Client.prototype._setPaginationDetails = function(from, to) {
  * @param oArgs.handleAs {String} the type of the response as a string ("text" or "json") - defaults to "json"
  * @param oArgs.onSuccess {Function} the callback to be called if the XHR call was successful (response is passed to the callback)
  * @param oArgs.onError {Function} the error callback (in case something went wrong during the XHR process)
+ * @param oArgs.onValidationError {Function} the callback to be called if the XHR call returned Validation Errors
  * @param oArgs.isPost {boolean} true if the request has to be POSTed, GET otherwise (defaults to GET)
  */
 pkg.Client.prototype.findObjects = function(className, oArgs) {
@@ -166,6 +186,7 @@ pkg.Client.prototype.findObjects = function(className, oArgs) {
  * @param oArgs.handleAs {String} the type of the response as a string ("text" or "json") - defaults to "json"
  * @param oArgs.onSuccess {Function} the callback to be called if the XHR call was successful (response is passed to the callback)
  * @param oArgs.onError {Function} the error callback (in case something went wrong during the XHR process)
+ * @param oArgs.onValidationError {Function} the callback to be called if the XHR call returned Validation Errors
  * @param oArgs.isPost {boolean} true if the request has to be POSTed, GET otherwise (defaults to GET)
  */
 pkg.Client.prototype.searchObjects = function(query, oArgs) {
@@ -192,6 +213,7 @@ pkg.Client.prototype.searchObjects = function(query, oArgs) {
  * @param oArgs.handleAs {String} the type of the response as a string ("text" or "json") - defaults to "json"
  * @param oArgs.onSuccess {Function} the callback to be called if the XHR call was successful (response is passed to the callback)
  * @param oArgs.onError {Function} the error callback (in case something went wrong during the XHR process)
+ * @param oArgs.onValidationError {Function} the callback to be called if the XHR call returned Validation Errors
  * @param oArgs.isPost {boolean} true if the request has to be POSTed, GET otherwise (defaults to POST)
  */
 pkg.Client.prototype.saveObject = function(oArgs) {
@@ -236,6 +258,7 @@ pkg.Client.prototype.saveObject = function(oArgs) {
  * @param oArgs.handleAs {String} the type of the response as a string ("text" or "json") - defaults to "json"
  * @param oArgs.onSuccess {Function} the callback to be called if the XHR call was successful (response is passed to the callback)
  * @param oArgs.onError {Function} the error callback (in case something went wrong during the XHR process)
+ * @param oArgs.onValidationError {Function} the callback to be called if the XHR call returned Validation Errors
  * @param oArgs.isPost {boolean} true if the request has to be POSTed, GET otherwise (defaults to POST)
  */
 pkg.Client.prototype.removeObject = function(oArgs) {
