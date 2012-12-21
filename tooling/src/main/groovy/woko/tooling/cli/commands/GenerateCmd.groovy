@@ -21,11 +21,8 @@ import org.apache.maven.model.Dependency
 import woko.tooling.cli.Command
 import woko.tooling.cli.Runner
 import woko.tooling.utils.AppUtils
-import woko.tooling.utils.Logger
 import org.apache.maven.model.Plugin
-import groovy.xml.MarkupBuilder
 import org.codehaus.plexus.util.xml.Xpp3Dom
-import org.apache.maven.model.Exclusion
 import org.apache.maven.model.PluginExecution
 
 class GenerateCmd extends Command{
@@ -39,6 +36,7 @@ class GenerateCmd extends Command{
     String modelPath
     String wokoPath
     String facetsPath
+    Boolean useRegistration
 
     GenerateCmd(Runner runner) {
         super(
@@ -62,6 +60,7 @@ class GenerateCmd extends Command{
             b longOpt: 'use-boostrap', args: 1, argName: 'yes|no', 'boostrap usage'
             g longOpt: 'use-groovy', args: 1, argName: 'yes|no', 'groovy usage'
             p longOpt: 'default-package-name', args: 1, argName: 'com.example.myapp', 'default package name'
+            r longOpt: 'registration', args: 1, argName: 'yes|no', 'use registration'
         }
 
         String defaultPackageName = groupId
@@ -101,9 +100,17 @@ class GenerateCmd extends Command{
             packageName = AppUtils.askWithDefault("Specify your default package name", defaultPackageName)
         }
 
+        if (options.r)
+        {
+            useRegistration =(options.r=='yes')
+        } else {
+            useRegistration = AppUtils.yesNoAsk("Do you want usermanagement and registration")
+        }
+
         addSpecificsDependencies()
         createPackage()
         createWebXml()
+        createInitListener()
         createClass()
         copyResources()
 
@@ -135,7 +142,7 @@ class GenerateCmd extends Command{
             Dependency groovyDep = new Dependency()
             groovyDep.groupId = "org.codehaus.groovy"
             groovyDep.artifactId = "groovy"
-            groovyDep.version = "1.8.6"
+            groovyDep.version = "2.0.4"
             pomHelper.addDependency(groovyDep)
 
             // Add the GMAVEN plugin
@@ -162,6 +169,15 @@ class GenerateCmd extends Command{
 
         }else{
             iLog("You will use pure Java")
+        }
+        if (useRegistration) {
+            // dependency on user management war
+            pomHelper.addDependency(new Dependency(
+                    groupId:"com.pojosontheweb",
+                    artifactId: "woko-usermanagement-web",
+                    version: '${woko.version}', // NOT a Gstring !!
+                    type: "war"
+            ))
         }
     }
 
@@ -214,13 +230,18 @@ class GenerateCmd extends Command{
 
     private void createWebXml(){
 
-        def binding = [:]
-        binding['name'] = artifactId
-        binding['modelPackage'] = packageName+'.model'
-        binding['facetsPackage'] = packageName+'.facets'
+        StringBuilder facetPackages = new StringBuilder("${packageName}.facets")
+        if (useRegistration) {
+            facetPackages << " woko.ext.usermanagement.facets"
+        }
 
         FileWriter writer = new FileWriter(webApp+File.separator+'web.xml')
-        generateTemplate(binding, 'web-xml', false, writer)
+        generateTemplate([
+                name: artifactId,
+                modelPackage: packageName+'.model',
+                facetsPackage: facetPackages.toString(),
+                packageName: packageName
+        ], 'web-xml', false, writer)
 
         // Summary
         iLog("- web.xml file created : " + 'src'+File.separator+'main'+ File.separator+'webapp'+File.separator+
@@ -243,6 +264,30 @@ class GenerateCmd extends Command{
         writer = new FileWriter(facetsPath+File.separator+"MyLayout" + (useGroovy ? ".groovy" : ".java"))
         generateTemplate(bindingFacets, 'layout', useGroovy, writer)
         iLog("- Layout facet created : " + packageName+".facets.MyLayout")
+    }
+
+    private void createInitListener() {
+        String initListenerClassName = "${artifactId.capitalize()}InitListener"
+
+        String fileName = "$wokoPath$File.separator${initListenerClassName}"
+        if (useGroovy) {
+            fileName += ".groovy"
+        } else {
+            fileName += ".java"
+        }
+
+        File f = new File(fileName)
+        f.withWriter { w ->
+            generateTemplate(
+                    [
+                        name:artifactId,
+                        packageName: "${packageName}.woko",
+                        className: initListenerClassName
+                    ],
+                    'init-listener'
+                    , useGroovy,
+                    w)
+        }
     }
 
     private void copyResources(){

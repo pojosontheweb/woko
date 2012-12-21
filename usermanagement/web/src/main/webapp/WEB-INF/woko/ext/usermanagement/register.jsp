@@ -32,7 +32,7 @@
                             <div class="controls">
                                 <div class="input-prepend">
                                     <span class="add-on"><i class="icon-user"> </i></span>
-                                    <s:text name="facet.username" class="span4"/>
+                                    <s:text name="facet.username" class="input-xlarge"/>
                                 </div>
                                 <s:errors field="facet.username"/>
                             </div>
@@ -45,7 +45,7 @@
                             <div class="controls">
                                 <div class="input-prepend">
                                     <span class="add-on">@</span>
-                                    <s:text name="facet.email" class="span4"/>
+                                    <s:text name="facet.email" class="input-xlarge"/>
                                 </div>
                                 <s:errors field="facet.email"/>
                             </div>
@@ -60,7 +60,7 @@
                                     <span class="add-on">
                                         <i class="icon-lock"> </i>
                                     </span>
-                                    <s:password name="facet.password1" class="span4"/>
+                                    <s:password name="facet.password1" class="input-xlarge"/>
                                 </div>
                                 <s:errors field="facet.password1"/>
                             </div>
@@ -75,7 +75,7 @@
                                     <span class="add-on">
                                         <i class="icon-lock"> </i>
                                     </span>
-                                    <s:password name="facet.password2" class="span4"/>
+                                    <s:password name="facet.password2" class="input-xlarge"/>
                                 </div>
                                 <s:errors field="facet.password2"/>
                             </div>

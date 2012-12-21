@@ -14,7 +14,7 @@
     <packaging>war</packaging>
 
     <properties>
-        <woko.version>2.1-beta2</woko.version>
+        <woko.version>2.1-beta3</woko.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
@@ -124,9 +124,7 @@
                 <artifactId>maven-war-plugin</artifactId>
                 <version>2.2</version>
                 <configuration>
-                    <configuration>
-                        <warSourceExcludes>WEB-INF/lib/servlet-api*.jar</warSourceExcludes>
-                    </configuration>
+                    <warSourceExcludes>WEB-INF/lib/servlet-api*.jar</warSourceExcludes>
                 </configuration>
             </plugin>
             <!--

@@ -64,6 +64,8 @@ public class Woko<
     public static final String CTX_KEY = "woko";
     public static final String REQ_ATTR_FACET = "facet";
 
+    public static final String VERSION = "2.1-beta3";
+
     @SuppressWarnings("unchecked")
     public static <
             OsType extends ObjectStore,
@@ -103,7 +105,7 @@ public class Woko<
         logger.info("__       __     _  __");
         logger.info("\\ \\  _  / /___ | |/ / ___");
         logger.info(" \\ \\/ \\/ // o \\|   K /   \\");
-        logger.info("  \\__W__/ \\___/|_|\\_\\\\_o_/  LATEST-SNAPSHOT");
+        logger.info("  \\__W__/ \\___/|_|\\_\\\\_o_/  " + VERSION);
         logger.info("             POJOs on the Web !");
         logger.info("");
         logger.info("Woko is ready :");
@@ -116,7 +118,7 @@ public class Woko<
 
     protected void initJFacets() {
         logger.info("Initializing JFacets...");
-        WokoProfileRepository profileRepository = new WokoProfileRepository(getUserManager());
+        WokoProfileRepository profileRepository = new WokoProfileRepository(getUserManager(), true);
         WokoFacetContextFactory<OsType,UmType,UnsType,FdmType> facetContextFactory = new WokoFacetContextFactory<OsType,UmType,UnsType,FdmType>(this);
         jFacets = new JFacetsBuilder(profileRepository, getFacetDescriptorManager()).
                 setFacetContextFactory(facetContextFactory).
