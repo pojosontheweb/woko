@@ -37,12 +37,27 @@
         formUrl += "/" + key;
     }
     boolean partial = editProperties.isPartialForm();
+    Map<String,Object> hiddenFields = editProperties.getHiddenFields();
 %>
 <div class="wokoPropertiesEdit">
     <s:form action="<%=formUrl%>" partial="<%=partial%>">
-        <c:if test="<%=!partial%>">
-            <s:hidden name="createTransient"/>
-        </c:if>
+    <%
+        // generate the input fields
+        if (hiddenFields!=null) {
+            for (String fieldName : hiddenFields.keySet()) {
+                Object fieldVal = hiddenFields.get(fieldName);
+                if (fieldVal!=null) {
+    %>
+                    <s:hidden name="<%=fieldName%>"/>
+    <%
+                } else {
+    %>
+                    <s:hidden name="<%=fieldName%>" value="<%=fieldVal%>"/>
+    <%
+                }
+            }
+        }
+    %>
         <table>
             <tbody>
             <%

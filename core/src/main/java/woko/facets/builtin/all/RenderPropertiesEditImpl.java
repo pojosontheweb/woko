@@ -24,6 +24,10 @@ import woko.persistence.ObjectStore;
 import woko.users.UserManager;
 import woko.users.UsernameResolutionStrategy;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
 @FacetKey(name = WokoFacets.renderPropertiesEdit, profileId = "all")
 public class RenderPropertiesEditImpl<
         OsType extends ObjectStore,
@@ -46,5 +50,14 @@ public class RenderPropertiesEditImpl<
     @Override
     public String getFieldPrefix() {
         return "object";
+    }
+
+    @Override
+    public Map<String, Object> getHiddenFields() {
+        Map<String,Object> res = new HashMap<String, Object>();
+        if (!isPartialForm()) {
+            res.put("createTransient", null);
+        }
+        return res;
     }
 }
