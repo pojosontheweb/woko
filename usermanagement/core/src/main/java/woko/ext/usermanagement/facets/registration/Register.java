@@ -196,12 +196,20 @@ public class Register<T extends User,
                 if (mailService!=null) {
                     mailService.sendMail(
                             user.getEmail(),
-                            woko.getLocalizedMessage(getRequest(),
-                                "woko.ext.usermanagement.register.mail.content",
-                                user.getUsername(),
-                                getAppName(),
-                                mailService.getAppUrl() + "/activate/" + regDetailsClassMapping + "/" + regDetails.getKey() +
-                                    "?facet.token=" + regDetails.getSecretToken()));
+                            woko.getLocalizedMessage(
+                                    getRequest(),
+                                    "woko.ext.usermanagement.register.mail.subject",
+                                    getAppName()
+                            ),
+                            woko.getLocalizedMessage(
+                                    getRequest(),
+                                    "woko.ext.usermanagement.register.mail.content",
+                                    user.getUsername(),
+                                    getAppName(),
+                                    mailService.getAppUrl() + "/activate/" + regDetailsClassMapping + "/" + regDetails.getKey() +
+                                        "?facet.token=" + regDetails.getSecretToken()
+                            )
+                    );
                 } else {
                     logger.warn("No email could be sent : no MailService found in IoC.");
                 }

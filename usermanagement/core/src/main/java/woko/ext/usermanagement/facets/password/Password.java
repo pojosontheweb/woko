@@ -111,6 +111,10 @@ public class Password<
             mailService.sendMail(
                     u.getEmail(),
                     getWoko().getLocalizedMessage(getRequest(),
+                        "woko.ext.usermanagement.password.mail.subject",
+                        getAppName()
+                    ),
+                    getWoko().getLocalizedMessage(getRequest(),
                         "woko.ext.usermanagement.password.mail.content",
                         u.getUsername(),
                         getAppName(),

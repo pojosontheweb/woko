@@ -11,9 +11,9 @@ public class ConsoleMailService implements MailService {
     }
 
     @Override
-    public void sendMail(String to, String text) {
+    public void sendMail(String to, String subject, String text) {
         System.out.println("FAKE Sending email from " + getFromEmailAddress() + " to " +
-            to + ", text :\n" + text);
+            to + ",subject : " + subject + "\n, text :\n" + text);
     }
 
     @Override
