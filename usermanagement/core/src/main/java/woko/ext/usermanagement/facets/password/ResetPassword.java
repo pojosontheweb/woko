@@ -81,7 +81,13 @@ public class ResetPassword<
                 // sent email with link containing the reset token
                 mailService.sendMail(
                         u.getEmail(),
-                        getWoko().getLocalizedMessage(getRequest(),
+                        getWoko().getLocalizedMessage(
+                                getRequest(),
+                                "woko.ext.usermanagement.password.reset.email.subject",
+                                getAppName()
+                        ),
+                        getWoko().getLocalizedMessage(
+                                getRequest(),
                                 "woko.ext.usermanagement.password.reset.email.content",
                                 getAppName(),
                                 mailService.getAppUrl() + "/resetPassword?doReset=true&facet.email=" + email + "&facet.token=" + token
