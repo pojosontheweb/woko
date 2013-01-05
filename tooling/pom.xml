@@ -70,6 +70,7 @@
                 <executions>
                     <execution>
                         <goals>
+                            <goal>generateStubs</goal> <!-- needed in order to produce the javadoc jar ? -->
                             <goal>compile</goal>
                             <goal>testCompile</goal>
                         </goals>
