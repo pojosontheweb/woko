@@ -55,6 +55,11 @@
             <version>${project.version}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>com.pojosontheweb</groupId>
+            <artifactId>woko-groovy-init</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
     <build>
         <finalName>woko-webtests</finalName>
