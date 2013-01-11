@@ -1,25 +1,69 @@
 package woko.groovyinit;
 
+import groovy.lang.Binding;
+import groovy.lang.GroovyShell;
 import net.sourceforge.jfacets.IFacetDescriptorManager;
-import woko.WokoIocInitListener;
-import woko.ioc.WokoIocContainer;
+import woko.Woko;
 import woko.persistence.ObjectStore;
 import woko.users.UserManager;
 import woko.users.UsernameResolutionStrategy;
+import woko.util.WLogger;
+
+import javax.servlet.ServletContext;
+import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletContextListener;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 
 public class GroovyInitListener<OsType extends ObjectStore,
         UmType extends UserManager,
         UnsType extends UsernameResolutionStrategy,
-        FdmType extends IFacetDescriptorManager> extends WokoIocInitListener<OsType,UmType,UnsType,FdmType> {
+        FdmType extends IFacetDescriptorManager> implements ServletContextListener {
 
+    public static final String SCRIPT_FILE_NAME = "/woko-init.groovy";
+    public static final String SERVLET_CONTEXT_BINDING_VAR = "servletContext";
+
+    private static final WLogger logger = WLogger.getLogger(GroovyInitListener.class);
+
+    private ServletContext servletContext;
+
+    public ServletContext getServletContext() {
+        return servletContext;
+    }
 
     @Override
-    protected WokoIocContainer<OsType, UmType, UnsType, FdmType> createIocContainer() {
-        // read the groovy startup script
-        //GroovySh
+    public final void contextInitialized(ServletContextEvent e) {
+        servletContext = e.getServletContext();
+        logger.info("Initializing Woko");
+        servletContext.setAttribute(Woko.CTX_KEY, createWoko());
+    }
 
-        return null;
+    @Override
+    public final void contextDestroyed(ServletContextEvent e) {
+        Woko woko = Woko.getWoko(e.getServletContext());
+        if (woko != null) {
+            woko.close();
+        }
+    }
 
+    protected Woko<OsType, UmType, UnsType, FdmType> createWoko() {
+        InputStream scriptStream = getClass().getResourceAsStream(SCRIPT_FILE_NAME);
+        if (scriptStream==null) {
+            logger.error("/woko-init.groovy not found in classpath, unable to startup !");
+            throw new IllegalStateException("Could not find /woko-init.groovy script in your classpath : make sure the " +
+                "script is there before using GroovyInitListener !");
+        } else {
+            logger.info("Starting-up using /woko-init.groovy found in classpath");
+        }
+        Reader scriptReader = new InputStreamReader(scriptStream);
+
+        Binding binding = new Binding();
+        binding.setVariable(SERVLET_CONTEXT_BINDING_VAR, getServletContext());
+        GroovyShell shell = new GroovyShell(binding);
+        @SuppressWarnings("unchecked")
+        Woko<OsType, UmType, UnsType, FdmType> res = (Woko<OsType, UmType, UnsType, FdmType>)shell.evaluate(scriptReader);
+        return res;
     }
 
 
