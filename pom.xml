@@ -73,6 +73,7 @@
         <module>mail</module>
         <module>usermanagement</module>
         <module>tooling</module>
+        <module>groovy-init</module>
         <module>wmaven</module>
     </modules>
     <properties>
