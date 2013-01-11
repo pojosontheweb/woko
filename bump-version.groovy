@@ -29,7 +29,7 @@ new File(".").eachFileRecurse { File f ->
     }
 }
 
-assert nbPoms == 36
+assert nbPoms == 37
 println "Replaced versions in $nbPoms pom files"
 
 println "Handling bash scripts..."

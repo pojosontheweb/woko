@@ -22,26 +22,19 @@
         <artifactId>woko-parent</artifactId>
         <version>2.1-beta6</version>
     </parent>
-    <artifactId>stripes-woko-plugins</artifactId>
-    <name>Woko - Stripes plugins</name>
+    <artifactId>woko-groovy-init</artifactId>
     <packaging>jar</packaging>
+    <name>Woko - Groovy init : initialize Woko using a Groovy Script</name>
     <dependencies>
         <dependency>
-            <groupId>net.sourceforge.stripes</groupId>
-            <artifactId>stripes</artifactId>
-            <version>${stripes.version}</version>
+            <groupId>com.pojosontheweb</groupId>
+            <artifactId>woko-core</artifactId>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>servlet-api</artifactId>
-            <version>2.3</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>javax.servlet.jsp</groupId>
-            <artifactId>jsp-api</artifactId>
-            <version>2.1</version>
-            <scope>test</scope>
+            <groupId>org.codehaus.groovy</groupId>
+            <artifactId>groovy-all</artifactId>
+            <version>${groovy.version}</version>
         </dependency>
     </dependencies>
 </project>
