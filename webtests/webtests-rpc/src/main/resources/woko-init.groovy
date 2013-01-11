@@ -10,8 +10,7 @@ HibernateCompassStore objectStore = new HibernateCompassStore(["test"])
 InMemoryUserManager userManager = new InMemoryUserManager().addUser("wdevel", "wdevel", ["developer"])
 RemoteUserStrategy urs = new RemoteUserStrategy()
 
-def facetPackages = ["test.facet.pkg"]
-facetPackages.addAll(Woko.DEFAULT_FACET_PACKAGES)
+def facetPackages = ["test.facet.pkg"]  + Woko.DEFAULT_FACET_PACKAGES
 
 AnnotatedFacetDescriptorManager fdm = new AnnotatedFacetDescriptorManager(facetPackages)
     .setDuplicatedKeyPolicy(DuplicatedKeyPolicyType.FirstScannedWins)
