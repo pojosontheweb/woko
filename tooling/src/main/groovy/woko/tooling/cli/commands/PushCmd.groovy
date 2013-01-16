@@ -74,7 +74,10 @@ server restarts when you change facet code.
             // scan the local facet sources
             def baseDir = "$projectDir.absolutePath/src/main/groovy"
             def facetPackages = []
-            facetPackages.addAll(computeUserFacetPackages())
+            def userPkgs = computeUserFacetPackages()
+            if (userPkgs) {
+                facetPackages.addAll(userPkgs)
+            }
             facetPackages << "facets"
             def facetSources = [:]
             facetPackages.each { facetPkg ->

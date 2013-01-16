@@ -235,17 +235,19 @@ abstract class Command {
     protected String getBaseFacetPackage() {
         def basePackage = getGroupId()
         def userFacetPgkList = computeUserFacetPackages()
-        if (userFacetPgkList.size() > 1) {
-            log('Several facets package found :')
-            int i=1
-            userFacetPgkList.each {
-                iLog("$i : $it")
-                i++
+        if (userFacetPgkList!=null) {
+            if (userFacetPgkList.size() > 1) {
+                log('Several facets package found :')
+                int i=1
+                userFacetPgkList.each {
+                    iLog("$i : $it")
+                    i++
+                }
+                def facetsPkg = Integer.valueOf(AppUtils.askWithDefault("In which package would you like to create this facet ?", "0"))
+                basePackage = userFacetPgkList.get(facetsPkg)
+            } else {
+                basePackage = userFacetPgkList.get(0)
             }
-            def facetsPkg = Integer.valueOf(AppUtils.askWithDefault("In which package would you like to create this facet ?", "0"))
-            basePackage = userFacetPgkList.get(facetsPkg)
-        } else {
-            basePackage = userFacetPgkList.get(0)
         }
         return basePackage
     }
