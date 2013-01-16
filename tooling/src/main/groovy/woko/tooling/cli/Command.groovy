@@ -72,7 +72,11 @@ abstract class Command {
 
     protected List<String> computeFacetPackages() {
         def packages = computeUserFacetPackages()
-        packages.addAll(Woko.DEFAULT_FACET_PACKAGES);
+        if (packages) {
+            packages.addAll(Woko.DEFAULT_FACET_PACKAGES);
+        } else {
+            packages = Woko.DEFAULT_FACET_PACKAGES
+        }
         return packages
     }
 
