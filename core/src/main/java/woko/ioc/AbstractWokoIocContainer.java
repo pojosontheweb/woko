@@ -1,6 +1,7 @@
 package woko.ioc;
 
 import net.sourceforge.jfacets.IFacetDescriptorManager;
+import woko.Closeable;
 import woko.persistence.ObjectStore;
 import woko.users.UserManager;
 import woko.users.UsernameResolutionStrategy;
@@ -10,7 +11,7 @@ public abstract class AbstractWokoIocContainer<
         UmType extends UserManager,
         UnsType extends UsernameResolutionStrategy,
         FdmType extends IFacetDescriptorManager
-        > implements WokoIocContainer<OsType,UmType,UnsType,FdmType> {
+        > implements WokoIocContainer<OsType,UmType,UnsType,FdmType>, Closeable {
 
     @Override
     @SuppressWarnings("unchecked")
@@ -36,7 +37,4 @@ public abstract class AbstractWokoIocContainer<
         return (FdmType)getComponent(FacetDescriptorManager);
     }
 
-    @Override
-    public void close() {
-    }
 }

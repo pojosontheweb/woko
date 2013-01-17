@@ -47,7 +47,7 @@ public class Woko<
         UmType extends UserManager,
         UnsType extends UsernameResolutionStrategy,
         FdmType extends IFacetDescriptorManager
-        > {
+        > implements Closeable {
 
     public static final String ENVI_FILE = "woko.environment";
 
@@ -164,12 +164,16 @@ public class Woko<
 
     public final void close() {
         logger.info("Closing...");
+        WokoIocContainer<?,?,?,?> ioc = getIoc();
+        if (ioc instanceof Closeable) {
+            logger.info("Closing IOC...");
+            ((Closeable)ioc).close();
+        }
         doClose();
         logger.info("Woko has been closed.");
     }
 
     protected void doClose() {
-        this.getObjectStore().close();
     }
 
     @SuppressWarnings("unchecked")
