@@ -95,7 +95,7 @@ public class RpcInterceptor implements Interceptor, ConfigurableComponent {
                         }
                     } else {
                         // not an RpcResolution, return the regular resolution
-                        logger.warn("RPC Resolution not found for request ", context.getActionBeanContext().getRequest().getQueryString() + ", returning original resolution " + result);
+                        logger.debug("RPC Resolution not found for request ", context.getActionBeanContext().getRequest().getQueryString() + ", returning original resolution " + result);
                     }
                 }
             }
