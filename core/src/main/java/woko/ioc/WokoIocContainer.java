@@ -27,6 +27,4 @@ public interface WokoIocContainer<
 
     FdmType getFacetDescriptorManager();
 
-    void close();
-
 }

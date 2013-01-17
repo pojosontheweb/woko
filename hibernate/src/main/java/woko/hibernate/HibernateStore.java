@@ -25,6 +25,7 @@ import org.hibernate.annotations.Entity;
 import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.metadata.ClassMetadata;
+import woko.Closeable;
 import woko.persistence.ListResultIterator;
 import woko.persistence.ObjectStore;
 import woko.persistence.ResultIterator;
@@ -35,7 +36,7 @@ import java.io.Serializable;
 import java.net.URL;
 import java.util.*;
 
-public class HibernateStore implements ObjectStore {
+public class HibernateStore implements ObjectStore, Closeable {
 
     public static final String DEFAULT_HIBERNATE_CFG_XML = "/woko_default_hibernate.cfg.xml";
 
