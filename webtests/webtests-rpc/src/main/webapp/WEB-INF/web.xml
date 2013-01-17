@@ -86,6 +86,11 @@
         <dispatcher>FORWARD</dispatcher>
     </filter-mapping>
 
+    <context-param>
+        <param-name>Woko.Facet.Packages</param-name>
+        <param-value>test.facet.pkg</param-value>
+    </context-param>
+
     <listener>
         <display-name>WokoInitListener</display-name>
         <listener-class>woko.groovyinit.GroovyInitListener</listener-class>
