@@ -4,6 +4,7 @@ import groovy.lang.Binding;
 import groovy.lang.GroovyShell;
 import net.sourceforge.jfacets.IFacetDescriptorManager;
 import woko.Woko;
+import woko.WokoIocInitListener;
 import woko.persistence.ObjectStore;
 import woko.users.UserManager;
 import woko.users.UsernameResolutionStrategy;
@@ -15,6 +16,9 @@ import javax.servlet.ServletContextListener;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class GroovyInitListener<OsType extends ObjectStore,
         UmType extends UserManager,
@@ -65,6 +69,32 @@ public class GroovyInitListener<OsType extends ObjectStore,
         Woko<OsType, UmType, UnsType, FdmType> res = (Woko<OsType, UmType, UnsType, FdmType>)shell.evaluate(scriptReader);
         return res;
     }
+
+    public static List<String> getPackageNamesFromConfig(ServletContext servletContext, String paramName, boolean throwIfNotFound) {
+        String pkgNamesStr = servletContext.getInitParameter(paramName);
+        if (pkgNamesStr == null || pkgNamesStr.equals("")) {
+            if (throwIfNotFound) {
+                String msg = "No package names specified. You have to set the context init-param '" +
+                        paramName + "' in web.xml to the list of packages you want to be scanned.";
+                logger.error(msg);
+                throw new IllegalStateException(msg);
+            } else {
+                return Collections.emptyList();
+            }
+        }
+        return WokoIocInitListener.extractPackagesList(pkgNamesStr);
+    }
+
+    public static List<String> getFacetPackagesFromWebXml(ServletContext servletContext) {
+        List<String> packagesNames = getPackageNamesFromConfig(servletContext, WokoIocInitListener.CTX_PARAM_FACET_PACKAGES, false);
+        List<String> pkgs = new ArrayList<String>();
+        if (packagesNames != null && packagesNames.size() > 0) {
+            pkgs.addAll(packagesNames);
+        }
+        pkgs.addAll(Woko.DEFAULT_FACET_PACKAGES);
+        return pkgs;
+    }
+
 
 
 }
