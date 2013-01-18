@@ -28,9 +28,7 @@ public class MailTemplateResetPassword extends PropertyBasedMailTemplate {
     protected List<String> getArgsBody(Woko woko, Locale locale, Map<String, Object> binding) {
         String resetUrl = getBindingValueSafe(binding, RESET_PASSWORD_URL);
         return Arrays.asList(
-                getUsername(binding),
                 getAppName(binding),
-                resetUrl,
-                getAppUrl(binding));
+                resetUrl);
     }
 }
