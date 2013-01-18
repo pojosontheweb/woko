@@ -8,6 +8,8 @@ import net.sourceforge.stripes.validation.LocalizableError;
 import net.sourceforge.stripes.validation.Validate;
 import woko.ext.usermanagement.core.DatabaseUserManager;
 import woko.ext.usermanagement.core.User;
+import woko.ext.usermanagement.mail.BindingHelper;
+import woko.ext.usermanagement.mail.MailTemplatePassword;
 import woko.ext.usermanagement.util.PasswordUtil;
 import woko.facets.BaseResolutionFacet;
 import woko.facets.builtin.Layout;
@@ -15,6 +17,9 @@ import woko.mail.MailService;
 import woko.persistence.ObjectStore;
 import woko.users.UsernameResolutionStrategy;
 import woko.util.WLogger;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.Locale;
 
 @StrictBinding(
         defaultPolicy = StrictBinding.Policy.DENY,
@@ -109,17 +114,12 @@ public class Password<
         MailService mailService = getWoko().getIoc().getComponent(MailService.KEY);
         if (mailService!=null) {
             mailService.sendMail(
+                    getWoko(),
                     u.getEmail(),
-                    getWoko().getLocalizedMessage(getRequest(),
-                        "woko.ext.usermanagement.password.mail.subject",
-                        getAppName()
-                    ),
-                    getWoko().getLocalizedMessage(getRequest(),
-                        "woko.ext.usermanagement.password.mail.content",
-                        u.getUsername(),
-                        getAppName(),
-                        mailService.getAppUrl()
-                    ));
+                    getEmailLocale(getRequest()),
+                    mailService.getMailTemplate(getTemplateName()),
+                    BindingHelper.newBinding(u, getAppName(), mailService)
+            );
         } else {
             logger.warn("No email could be sent : no MailService found in IoC.");
         }
@@ -132,6 +132,15 @@ public class Password<
         Layout layout = getWoko().getFacet(Layout.FACET_NAME, getRequest(), null, Object.class, true);
         return layout.getAppTitle();
     }
+
+    protected Locale getEmailLocale(HttpServletRequest request) {
+        return request.getLocale();
+    }
+
+    protected String getTemplateName() {
+        return MailTemplatePassword.TEMPLATE_NAME;
+    }
+
 
     @Override
     public boolean matchesTargetObject(Object targetObject) {
