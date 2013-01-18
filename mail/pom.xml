@@ -27,9 +27,9 @@
     <name>Woko - mail utilities</name>
     <dependencies>
         <dependency>
-            <groupId>net.sourceforge.stripes</groupId>
-            <artifactId>stripes</artifactId>
-            <version>${stripes.version}</version>
+            <groupId>com.pojosontheweb</groupId>
+            <artifactId>woko-core</artifactId>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>javax.mail</groupId>

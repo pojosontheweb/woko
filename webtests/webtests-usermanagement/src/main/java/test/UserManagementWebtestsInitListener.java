@@ -6,6 +6,7 @@ import woko.auth.builtin.SessionUsernameResolutionStrategy;
 import woko.ext.usermanagement.core.AccountStatus;
 import woko.ext.usermanagement.core.DatabaseUserManager;
 import woko.ext.usermanagement.hibernate.HibernateUserManager;
+import woko.ext.usermanagement.mail.BindingHelper;
 import woko.hbcompass.HibernateCompassStore;
 import woko.hibernate.HibernateStore;
 import woko.hibernate.TxCallback;
@@ -64,7 +65,14 @@ public class UserManagementWebtestsInitListener
                 userManager,
                 new SessionUsernameResolutionStrategy(),
                 new PushFacetDescriptorManager(createAnnotatedFdm())
-        ).addComponent(MailService.KEY, new ConsoleMailService("http://www.pojosontheweb.com", "yikes@pojosontheweb.com"));
+        ).addComponent(
+                MailService.KEY,
+                new ConsoleMailService(
+                        "http://www.pojosontheweb.com",
+                        "yikes@pojosontheweb.com",
+                        BindingHelper.createDefaultMailTemplates()
+                )
+        );
     }
 
     @Override
