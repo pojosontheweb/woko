@@ -1,6 +1,5 @@
 package woko.ext.usermanagement.mail;
 
-import woko.Woko;
 import woko.ext.usermanagement.core.User;
 import woko.mail.MailService;
 import woko.mail.MailTemplate;

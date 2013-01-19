@@ -14,6 +14,7 @@ import woko.ioc.SimpleWokoIocContainer;
 import woko.ioc.WokoIocContainer;
 import woko.mail.ConsoleMailService;
 import woko.mail.MailService;
+import woko.mail.SmtpMailService;
 import woko.push.PushFacetDescriptorManager;
 import woko.users.UserManager;
 
@@ -60,19 +61,30 @@ public class UserManagementWebtestsInitListener
             });
         }
 
+        MailService mailService;
+        String smtpHost = System.getProperty("woko.webtests.smtp.host");
+        if (smtpHost!=null) {
+            mailService = new SmtpMailService("http://www.pojosontheweb.com",
+                    "yikes@pojosontheweb.com",
+                    BindingHelper.createDefaultMailTemplates(),
+                    smtpHost,
+                    Integer.parseInt(System.getProperty("woko.webtests.smtp.port")),
+                    true)
+                    .setSmtpAuthUsername(System.getProperty("woko.webtests.smtp.username"))
+                    .setSmtpAuthPassword(System.getProperty("woko.webtests.smtp.password"));
+        }  else {
+            mailService = new ConsoleMailService(
+                    "http://www.pojosontheweb.com",
+                    "yikes@pojosontheweb.com",
+                    BindingHelper.createDefaultMailTemplates());
+        }
+
         return new SimpleWokoIocContainer<HibernateCompassStore, HibernateUserManager<MyUser>, SessionUsernameResolutionStrategy, PushFacetDescriptorManager>(
                 store,
                 userManager,
                 new SessionUsernameResolutionStrategy(),
                 new PushFacetDescriptorManager(createAnnotatedFdm())
-        ).addComponent(
-                MailService.KEY,
-                new ConsoleMailService(
-                        "http://www.pojosontheweb.com",
-                        "yikes@pojosontheweb.com",
-                        BindingHelper.createDefaultMailTemplates()
-                )
-        );
+        ).addComponent(MailService.KEY, mailService);
     }
 
     @Override
