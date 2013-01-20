@@ -20,6 +20,7 @@ import woko.users.UserManager;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Properties;
 
 public class UserManagementWebtestsInitListener
         extends WokoIocInitListener<HibernateCompassStore, HibernateUserManager<MyUser>, SessionUsernameResolutionStrategy, PushFacetDescriptorManager> {
@@ -62,16 +63,19 @@ public class UserManagementWebtestsInitListener
         }
 
         MailService mailService;
-        String smtpHost = System.getProperty("woko.webtests.smtp.host");
-        if (smtpHost!=null) {
-            mailService = new SmtpMailService("http://www.pojosontheweb.com",
+        final String username = System.getProperty("woko.webtests.smtp.username");
+        if (username!=null) {
+            mailService = new SmtpMailService("http://localhost:8080/woko-webtests",
                     "yikes@pojosontheweb.com",
-                    BindingHelper.createDefaultMailTemplates(),
-                    smtpHost,
-                    Integer.parseInt(System.getProperty("woko.webtests.smtp.port")),
-                    true)
-                    .setSmtpAuthUsername(System.getProperty("woko.webtests.smtp.username"))
-                    .setSmtpAuthPassword(System.getProperty("woko.webtests.smtp.password"));
+                    BindingHelper.createDefaultMailTemplates()) {
+                @Override
+                protected Properties getMailSessionProperties() {
+                    Properties props = super.getMailSessionProperties();
+                    props.put("mail.smtp.username", username);
+                    props.put("mail.smtp.password", System.getProperty("woko.webtests.smtp.password"));
+                    return props;
+                }
+            };
         }  else {
             mailService = new ConsoleMailService(
                     "http://www.pojosontheweb.com",

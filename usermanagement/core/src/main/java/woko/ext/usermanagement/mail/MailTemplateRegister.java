@@ -30,7 +30,7 @@ public class MailTemplateRegister extends PropertyBasedMailTemplate {
         return Arrays.asList(
                 getUsername(binding),
                 getAppName(binding),
-                registerUrl,
-                getAppUrl(binding));
+                getAppUrl(binding),
+                registerUrl);
     }
 }

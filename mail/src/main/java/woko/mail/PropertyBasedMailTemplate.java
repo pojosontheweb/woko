@@ -38,8 +38,7 @@ public abstract class PropertyBasedMailTemplate implements MailTemplate {
 
     protected String[] listToArray(List<String> argsBody) {
         String[] res = new String[argsBody.size()];
-        res = (String[])argsBody.toArray(res);
-        return res;
+        return argsBody.toArray(res);
     }
 
     protected abstract List<String> getArgsBody(Woko woko, Locale locale, Map<String, Object> binding);
