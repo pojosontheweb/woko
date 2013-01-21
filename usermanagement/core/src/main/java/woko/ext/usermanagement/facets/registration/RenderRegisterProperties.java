@@ -1,12 +1,10 @@
 package woko.ext.usermanagement.facets.registration;
 
 import net.sourceforge.jfacets.IFacetDescriptorManager;
-import net.sourceforge.jfacets.IInstanceFacet;
 import net.sourceforge.jfacets.annotations.FacetKey;
 import woko.ext.usermanagement.core.DatabaseUserManager;
 import woko.ext.usermanagement.core.User;
 import woko.facets.BaseFragmentFacet;
-import woko.facets.BaseResolutionFacet;
 import woko.persistence.ObjectStore;
 import woko.users.UsernameResolutionStrategy;
 
@@ -21,19 +19,27 @@ public class RenderRegisterProperties<T extends User,
     public static final String FACET_NAME = "renderRegisterProperties";
     public static final String FRAGMENT_PATH = "/WEB-INF/woko/ext/usermanagement/renderRegisterProperties.jsp";
 
+    private Register registerFacet;
+
     public String getPath() {
         return FRAGMENT_PATH;
     }
 
     public String getReCaptchaPublicKey() {
-        return null;
+        return registerFacet.getReCaptchaPublicKey();
     }
 
     public String getReCaptchaPrivateKey() {
-        return null;
+        return registerFacet.getReCaptchaPrivateKey();
     }
 
     public boolean isUseCaptcha() {
-        return false;
+        return registerFacet.isUseCaptcha();
+    }
+
+    public Register getRegisterFacet(){
+        if (registerFacet==null)
+            registerFacet = getWoko().getFacet("register", getRequest(), null);
+        return registerFacet;
     }
 }
