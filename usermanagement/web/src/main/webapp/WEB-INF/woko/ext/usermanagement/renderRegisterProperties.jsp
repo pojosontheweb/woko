@@ -68,7 +68,7 @@
 </div>
 
 <%-- Include captcha --%>
-<c:if test="${register.useCaptcha}">
+<c:if test="${renderRegisterProperties.useCaptcha}">
     <div class="control-group">
         <s:label for="recaptcha_challenge_field" class="control-label wokoPropertyName">
             <fmt:message bundle="${wokoBundle}" key="woko.ext.usermanagement.register.captcha"/>

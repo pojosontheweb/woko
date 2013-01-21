@@ -32,4 +32,8 @@ public class RenderRegisterProperties<T extends User,
     public String getReCaptchaPrivateKey() {
         return null;
     }
+
+    public boolean isUseCaptcha() {
+        return false;
+    }
 }

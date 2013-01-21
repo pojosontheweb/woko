@@ -1,11 +1,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="/WEB-INF/woko/jsp/taglibs.jsp"%>
-<%@ page import="woko.facets.builtin.*" %>
 <%@ page import="net.sourceforge.stripes.util.CryptoUtil" %>
 <%@ page import="woko.ext.usermanagement.facets.registration.Register" %>
-<%@ page import="net.tanesha.recaptcha.ReCaptchaFactory" %>
-<%@ page import="net.tanesha.recaptcha.ReCaptcha" %>
 <%@ page import="woko.ext.usermanagement.facets.registration.RenderRegisterProperties" %>
+<%@ page import="woko.facets.builtin.Layout" %>
+<%@ page import="woko.facets.builtin.WokoFacets" %>
 <w:facet facetName="<%=Layout.FACET_NAME%>"/>
 <%
     Register register = (Register)request.getAttribute(Register.FACET_NAME);
