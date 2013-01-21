@@ -63,7 +63,7 @@ class UsermanagementTest extends WokoWebTestBase {
 
             verifyText text: 'Account not yet active'
             verifyText text:'funky@stuff.com'
-            verifyText text:'Welcome funkystuff ! Whats next ?'
+            verifyText text:"Welcome funkystuff ! What's next ?"
 
             // check that user account exists using developer role
             login()
