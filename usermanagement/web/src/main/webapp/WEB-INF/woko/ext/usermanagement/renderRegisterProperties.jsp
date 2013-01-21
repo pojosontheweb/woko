@@ -1,8 +1,5 @@
-<%@ page import="net.sourceforge.stripes.util.CryptoUtil" %>
-<%@ page import="woko.ext.usermanagement.facets.registration.Register" %>
 <%@ page import="woko.ext.usermanagement.facets.registration.RenderRegisterProperties" %>
 <%@ page import="net.tanesha.recaptcha.ReCaptcha" %>
-<%@ page import="woko.facets.builtin.WokoFacets" %>
 <%@ page import="net.tanesha.recaptcha.ReCaptchaFactory" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="/WEB-INF/woko/jsp/taglibs.jsp"%>

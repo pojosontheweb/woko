@@ -39,7 +39,7 @@ public class RenderRegisterProperties<T extends User,
 
     public Register getRegisterFacet(){
         if (registerFacet==null)
-            registerFacet = getWoko().getFacet("register", getRequest(), null);
+            registerFacet = getWoko().getFacet("register", getRequest(), null, Object.class, true);
         return registerFacet;
     }
 }
