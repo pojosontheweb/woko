@@ -6,9 +6,19 @@ import net.sourceforge.jfacets.annotations.FacetKey;
 import net.sourceforge.stripes.action.*;
 import net.sourceforge.stripes.validation.Validate;
 import woko.ext.usermanagement.core.*;
+import woko.ext.usermanagement.mail.BindingHelper;
+import woko.ext.usermanagement.mail.MailTemplateAccountActivated;
 import woko.facets.BaseResolutionFacet;
+import woko.facets.builtin.Layout;
+import woko.mail.MailService;
+import woko.mail.MailTemplate;
 import woko.persistence.ObjectStore;
 import woko.users.UsernameResolutionStrategy;
+import woko.util.WLogger;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.Locale;
+import java.util.Map;
 
 @StrictBinding(
         defaultPolicy = StrictBinding.Policy.DENY,
@@ -24,6 +34,8 @@ public class ActivateGuest<
         FdmType extends IFacetDescriptorManager
         > extends BaseResolutionFacet<OsType,UmType,UnsType,FdmType> implements IInstanceFacet {
 
+    private static final WLogger logger = WLogger.getLogger(ActivateGuest.class);
+
     @Validate(required=true)
     private String token;
 
@@ -35,6 +47,19 @@ public class ActivateGuest<
         this.token = token;
     }
 
+    protected String getTemplateName() {
+        return MailTemplateAccountActivated.TEMPLATE_NAME;
+    }
+
+    protected String getAppName() {
+        Layout layout = getWoko().getFacet(Layout.FACET_NAME, getRequest(), null, Object.class, true);
+        return layout.getAppTitle();
+    }
+
+    protected Locale getEmailLocale(HttpServletRequest request) {
+        return request.getLocale();
+    }
+
     @Override
     public Resolution getResolution(ActionBeanContext abc) {
         @SuppressWarnings("unchecked")
@@ -44,6 +69,24 @@ public class ActivateGuest<
             User user = regDetails.getUser();
             user.setAccountStatus(AccountStatus.Active);
             getWoko().getUserManager().save(user);
+
+            logger.info("Activated account for user " + user.getUsername());
+
+            // send activation email
+            MailService mailService = getWoko().getIoc().getComponent(MailService.KEY);
+           if (mailService != null) {
+               MailTemplate template = mailService.getMailTemplate(getTemplateName());
+               Map<String, Object> binding = BindingHelper.newBinding(user, getAppName(), mailService);
+               mailService.sendMail(
+                       getWoko(),
+                       user.getEmail(),
+                       getEmailLocale(getRequest()),
+                       template,
+                       binding);
+           } else {
+               logger.warn("No email could be sent : no MailService found in IoC.");
+           }
+
             return new RedirectResolution("/activate/" + store.getClassMapping(regDetails.getClass())
                 + "/" + regDetails.getKey() + "?display");
         } else {

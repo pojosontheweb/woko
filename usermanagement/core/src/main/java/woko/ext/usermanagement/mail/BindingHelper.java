@@ -47,6 +47,7 @@ public final class BindingHelper {
         res.put(MailTemplateRegister.TEMPLATE_NAME, new MailTemplateRegister());
         res.put(MailTemplatePassword.TEMPLATE_NAME, new MailTemplatePassword());
         res.put(MailTemplateResetPassword.TEMPLATE_NAME, new MailTemplateResetPassword());
+        res.put(MailTemplateAccountActivated.TEMPLATE_NAME, new MailTemplateAccountActivated());
         return res;
     }
 }
