@@ -116,6 +116,7 @@
       <context-param>
           <param-name>Woko.Facet.Packages</param-name>
           <param-value>
+              webtests.usermanagement.facets
               woko.ext.usermanagement.facets
           </param-value>
       </context-param>

@@ -8,6 +8,8 @@ import net.sourceforge.stripes.action.*;
 import net.sourceforge.stripes.validation.EmailTypeConverter;
 import net.sourceforge.stripes.validation.LocalizableError;
 import net.sourceforge.stripes.validation.Validate;
+import net.tanesha.recaptcha.ReCaptchaImpl;
+import net.tanesha.recaptcha.ReCaptchaResponse;
 import woko.Woko;
 import woko.ext.usermanagement.core.*;
 import woko.ext.usermanagement.mail.BindingHelper;
@@ -137,6 +139,23 @@ public class Register<T extends User,
     }
 
     public Resolution doRegister(ActionBeanContext abc) {
+
+        // verify captcha if needed
+        if (isUseCaptcha()) {
+            HttpServletRequest request = getRequest();
+            String remoteAddr = request.getRemoteAddr();
+            ReCaptchaImpl reCaptcha = new ReCaptchaImpl();
+            reCaptcha.setPrivateKey(getReCaptchaPrivateKey());
+            String challenge = request.getParameter("recaptcha_challenge_field");
+            String uresponse = request.getParameter("recaptcha_response_field");
+            ReCaptchaResponse reCaptchaResponse = reCaptcha.checkAnswer(remoteAddr, challenge, uresponse);
+            if (!reCaptchaResponse.isValid()) {
+                logger.warn("Recaptcha failure, username:" + username);
+                abc.getValidationErrors().addGlobalError(new LocalizableError("woko.ext.usermanagement.register.ko.captcha"));
+                return getResolution(abc);
+            }
+        }
+
         // check that no other user with this username already exists
         Woko<OsType, UmType, UnsType, FdmType> woko = getWoko();
         DatabaseUserManager<?, T> databaseUserManager = woko.getUserManager();
@@ -241,4 +260,17 @@ public class Register<T extends User,
     protected String getTemplateName() {
         return MailTemplateRegister.TEMPLATE_NAME;
     }
+
+    public boolean isUseCaptcha() {
+        return false;
+    }
+
+    public String getReCaptchaPublicKey() {
+        return null;
+    }
+
+    public String getReCaptchaPrivateKey() {
+        return null;
+    }
+
 }

@@ -3,6 +3,8 @@
 <%@ page import="woko.facets.builtin.*" %>
 <%@ page import="net.sourceforge.stripes.util.CryptoUtil" %>
 <%@ page import="woko.ext.usermanagement.facets.registration.Register" %>
+<%@ page import="net.tanesha.recaptcha.ReCaptchaFactory" %>
+<%@ page import="net.tanesha.recaptcha.ReCaptcha" %>
 <w:facet facetName="<%=Layout.FACET_NAME%>"/>
 <%
     Register register = (Register)request.getAttribute(Register.FACET_NAME);
@@ -83,6 +85,21 @@
 
                         <%-- render the properties FORM for the user --%>
                         <w:includeFacet targetObject="${register.user}" facetName="<%=WokoFacets.renderPropertiesEdit%>"/>
+
+                        <%-- Include captcha --%>
+                        <c:if test="${register.useCaptcha}">
+                            <div class="control-group">
+                                <s:label for="recaptcha_challenge_field" class="control-label wokoPropertyName">
+                                    <fmt:message bundle="${wokoBundle}" key="woko.ext.usermanagement.register.captcha"/>
+                                </s:label>
+                                <div class="controls">
+                                    <%
+                                        ReCaptcha c = ReCaptchaFactory.newReCaptcha(register.getReCaptchaPublicKey(), register.getReCaptchaPrivateKey(), false);
+                                    %>
+                                    <%=c.createRecaptchaHtml(null, null)%>
+                                </div>
+                            </div>
+                        </c:if>
 
                         <div class="form-actions">
                             <s:submit name="doRegister" class="btn btn-primary btn-large"/>
