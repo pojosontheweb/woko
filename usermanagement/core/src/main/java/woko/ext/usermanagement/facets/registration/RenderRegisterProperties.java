@@ -26,15 +26,15 @@ public class RenderRegisterProperties<T extends User,
     }
 
     public String getReCaptchaPublicKey() {
-        return registerFacet.getReCaptchaPublicKey();
+        return getRegisterFacet().getReCaptchaPublicKey();
     }
 
     public String getReCaptchaPrivateKey() {
-        return registerFacet.getReCaptchaPrivateKey();
+        return getRegisterFacet().getReCaptchaPrivateKey();
     }
 
     public boolean isUseCaptcha() {
-        return registerFacet.isUseCaptcha();
+        return getRegisterFacet().isUseCaptcha();
     }
 
     public Register getRegisterFacet(){
