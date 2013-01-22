@@ -76,6 +76,7 @@
         <module>tooling</module>
         <module>groovy-init</module>
         <module>wmaven</module>
+        <module>asyncjobs</module>
     </modules>
     <properties>
         <stripes.version>1.5.5</stripes.version>
