@@ -1,5 +1,7 @@
 package woko.async;
 
+import java.util.Date;
+
 public interface JobDetails {
 
     String getJobUuid();
@@ -12,4 +14,11 @@ public interface JobDetails {
 
     void updateKilled(Job job);
 
+    Date getStartTime();
+
+    Date getEndTime();
+
+    Date getKillTime();
+
+    String getExceptionString();
 }

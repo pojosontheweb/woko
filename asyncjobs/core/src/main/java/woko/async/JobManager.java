@@ -4,7 +4,9 @@ import woko.Closeable;
 import woko.util.WLogger;
 
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -15,6 +17,7 @@ public class JobManager implements Closeable {
     private static final WLogger logger = WLogger.getLogger(JobManager.class);
 
     private final ExecutorService pool;
+    private final Map<String,Job> runningJobs = new ConcurrentHashMap<String, Job>();
 
     public JobManager() {
         this(Executors.newSingleThreadExecutor());
@@ -30,8 +33,13 @@ public class JobManager implements Closeable {
         pool.submit(new Callable<Object>() {
             @Override
             public Object call() throws Exception {
-                job.execute(listeners);
-                return null;
+                runningJobs.put(job.getUuid(), job);
+                try {
+                    job.execute(listeners);
+                    return null;
+                } finally {
+                    runningJobs.remove(job.getUuid());
+                }
             }
         });
     }
@@ -39,5 +47,9 @@ public class JobManager implements Closeable {
     public void close() {
         logger.debug("Closing pool : " + pool);
         pool.shutdown();
+    }
+
+    public Job getRunningJob(String uuid) {
+        return runningJobs.get(uuid);
     }
 }
