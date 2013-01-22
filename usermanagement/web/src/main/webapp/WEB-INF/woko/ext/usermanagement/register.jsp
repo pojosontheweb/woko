@@ -1,13 +1,13 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="/WEB-INF/woko/jsp/taglibs.jsp"%>
 <%@ page import="net.sourceforge.stripes.util.CryptoUtil" %>
-<%@ page import="woko.ext.usermanagement.facets.registration.Register" %>
-<%@ page import="woko.ext.usermanagement.facets.registration.RenderRegisterProperties" %>
+<%@ page import="woko.ext.usermanagement.facets.registration.RegisterGuest" %>
+<%@ page import="woko.ext.usermanagement.facets.registration.RegisterFragmentGuest" %>
 <%@ page import="woko.facets.builtin.Layout" %>
 <%@ page import="woko.facets.builtin.WokoFacets" %>
 <w:facet facetName="<%=Layout.FACET_NAME%>"/>
 <%
-    Register register = (Register)request.getAttribute(Register.FACET_NAME);
+    RegisterGuest register = (RegisterGuest)request.getAttribute(RegisterGuest.FACET_NAME);
     String jspPath = register.getJspPath();
     String encryptedSourcePage = CryptoUtil.encrypt(jspPath);
 %>
@@ -22,24 +22,7 @@
         </h1>
 
         <div class="row-fluid">
-            <div class="span12">
-                <s:form action="/register" class="form-horizontal">
-                    <s:hidden name="_sourcePage" value="<%=encryptedSourcePage%>"/>
-                    <fieldset>
-
-                        <%-- render the properties FORM for the basic registration --%>
-                        <w:includeFacet facetName="<%=RenderRegisterProperties.FACET_NAME%>"/>
-
-                        <%-- render the properties FORM for the user --%>
-                        <w:includeFacet targetObject="${register.user}" facetName="<%=WokoFacets.renderPropertiesEdit%>"/>
-
-                        <div class="form-actions">
-                            <s:submit name="doRegister" class="btn btn-primary btn-large"/>
-                        </div>
-
-                    </fieldset>
-                </s:form>
-            </div>
+               <w:includeFacet facetName="<%=RegisterFragmentGuest.FACET_NAME%>"/>
         </div>
 
     </s:layout-component>

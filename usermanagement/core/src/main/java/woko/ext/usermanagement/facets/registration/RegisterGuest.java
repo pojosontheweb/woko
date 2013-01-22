@@ -45,14 +45,14 @@ import java.util.Map;
         }
 )
 @FacetKey(name="register", profileId = "all")
-public class Register<T extends User,
+public class RegisterGuest<T extends User,
         OsType extends ObjectStore,
         UmType extends DatabaseUserManager<?,T>,
         UnsType extends UsernameResolutionStrategy,
         FdmType extends IFacetDescriptorManager
         > extends BaseResolutionFacet<OsType,UmType,UnsType,FdmType> implements IInstanceFacet {
 
-    private static final WLogger logger = WLogger.getLogger(Register.class);
+    private static final WLogger logger = WLogger.getLogger(RegisterGuest.class);
 
     public static final String FACET_NAME = "register";
     public static final String SESS_ATTR_WOKO_REGISTERED = "wokoRegistered";

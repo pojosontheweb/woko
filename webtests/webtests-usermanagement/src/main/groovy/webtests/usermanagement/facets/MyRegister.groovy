@@ -1,10 +1,10 @@
 package webtests.usermanagement.facets
 
 import net.sourceforge.jfacets.annotations.FacetKey
-import woko.ext.usermanagement.facets.registration.Register
+import woko.ext.usermanagement.facets.registration.RegisterGuest
 
-@FacetKey(name = Register.FACET_NAME, profileId = "all")
-class MyRegister extends Register {
+@FacetKey(name = RegisterGuest.FACET_NAME, profileId = "all")
+class MyRegister extends RegisterGuest {
 
     @Override
     boolean isUseCaptcha() {
