@@ -15,7 +15,7 @@ public class JobManager implements Closeable {
     private final ExecutorService pool;
 
     public JobManager() {
-        this(Executors.newFixedThreadPool(1));
+        this(Executors.newSingleThreadExecutor());
     }
 
     public JobManager(ExecutorService pool) {

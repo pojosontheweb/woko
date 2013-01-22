@@ -127,6 +127,44 @@ class JobManagerTest {
         }
     }
 
+    @Test
+    void testJobConcurrentSerialized() {
+        JobManager jm = new JobManager(Executors.newFixedThreadPool(1)) // 1 thread only ! will serialize...
+        def start = now()
+        try {
+
+            // start 2 jobs
+            List<MyJobListener> listeners = []
+            for (def i in 1..2) {
+                def l = new MyJobListener()
+                listeners << l
+                MySimpleJob j = new MySimpleJob(jobId:"simple$i")
+                jm.submit(j, [l])
+            }
+
+            // first one should have blocked the second so we should have
+            // ended the first before the second
+            boolean firstEndedSecondStarted = false
+            while (now()-start<10000 && !firstEndedSecondStarted) {
+                Thread.sleep(100)
+                firstEndedSecondStarted = listeners[0].ended && listeners[1].started
+            }
+            assert firstEndedSecondStarted
+
+            // wait for second thread to end
+            boolean secondEnded = false
+            while (now()-start<10000 && !secondEnded) {
+                Thread.sleep(100)
+                secondEnded = listeners[1].ended
+            }
+            assert secondEnded
+
+        } finally {
+            jm.close()
+        }
+    }
+
+
 }
 
 class MySimpleJob extends JobBase {
