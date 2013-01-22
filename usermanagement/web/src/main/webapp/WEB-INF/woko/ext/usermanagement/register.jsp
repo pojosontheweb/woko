@@ -6,11 +6,7 @@
 <%@ page import="woko.facets.builtin.Layout" %>
 <%@ page import="woko.facets.builtin.WokoFacets" %>
 <w:facet facetName="<%=Layout.FACET_NAME%>"/>
-<%
-    RegisterGuest register = (RegisterGuest)request.getAttribute(RegisterGuest.FACET_NAME);
-    String jspPath = register.getJspPath();
-    String encryptedSourcePage = CryptoUtil.encrypt(jspPath);
-%>
+
 <fmt:message bundle="${wokoBundle}" var="pageTitle" key="woko.ext.usermanagement.register.page.title"/>
 <s:layout-render name="${layout.layoutPath}" layout="${layout}" pageTitle="${pageTitle}">
     <s:layout-component name="body">
@@ -22,7 +18,9 @@
         </h1>
 
         <div class="row-fluid">
+            <div class="span12">
                <w:includeFacet facetName="<%=RegisterFragmentGuest.FACET_NAME%>"/>
+            </div>
         </div>
 
     </s:layout-component>
