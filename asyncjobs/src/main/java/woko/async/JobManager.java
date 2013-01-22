@@ -1,11 +1,15 @@
 package woko.async;
 
+import woko.util.WLogger;
+
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class JobManager {
+
+    private static final WLogger logger = WLogger.getLogger(JobManager.class);
 
     private final ExecutorService pool;
 
@@ -14,10 +18,12 @@ public class JobManager {
     }
 
     public JobManager(ExecutorService pool) {
+        logger.info("Created with ExecutorService : " + pool);
         this.pool = pool;
     }
 
     public void submit(final Job job, final List<JobListener> listeners) {
+        logger.debug("Submitting Job : " + job + " with listeners : " + listeners);
         pool.submit(new Callable<Object>() {
             @Override
             public Object call() throws Exception {
@@ -25,5 +31,10 @@ public class JobManager {
                 return null;
             }
         });
+    }
+
+    void close() {
+        logger.debug("Closing pool : " + pool);
+        pool.shutdown();
     }
 }

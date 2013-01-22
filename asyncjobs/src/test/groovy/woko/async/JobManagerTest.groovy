@@ -1,48 +1,81 @@
 package woko.async
 
+import org.junit.Ignore
 import org.junit.Test
 import static org.junit.Assert.*
 
 class JobManagerTest {
 
-    private void assertListenerStartedAndSleep(def start, MyJobListener listener) {
+    private def now() {
+        System.currentTimeMillis()
+    }
+
+    private void assertListenerStarted(def start, MyJobListener listener) {
         println "Waiting for start..."
-        while (System.currentTimeMillis()-start<500 && !listener.started) {
+        while (now()-start<500 && !listener.started) {
             Thread.sleep(100)
         }
         assert listener.started
         assert !listener.ended
-        println "started, sleeping for max 10 secs..."
-        while (System.currentTimeMillis()-start < 10000 && !listener.ended) {
+        println "started"
+    }
+
+    private void assertListenerStartedAndSleep(def start, MyJobListener listener) {
+        assertListenerStarted(start, listener)
+        println "sleeping for max 10 secs..."
+        while (now()-start < 10000 && !listener.ended) {
             Thread.sleep(1000)
             print "z"
         }
         println "\nback to life !"
     }
 
+    private void doWithTestObjects(Closure c) {
+        JobManager jm = new JobManager()
+        MyJobListener listener = new MyJobListener();
+        def start = now()
+        try {
+            c.call(jm, listener)
+        } finally {
+            jm.close()
+        }
+    }
+
     @Test
     void testSimpleJob() {
-        JobManager jm = new JobManager()
-        Job simple = new MySimpleJob()
-        MyJobListener listener = new MyJobListener();
-        def start = System.currentTimeMillis()
-        jm.submit(simple, [listener])
-        assertListenerStartedAndSleep(start, listener)
-        assert listener.ended
+        doWithTestObjects { JobManager jm, MyJobListener listener ->
+            Job simple = new MySimpleJob()
+            def start = now()
+            jm.submit(simple, [listener])
+            assertListenerStartedAndSleep(start, listener)
+            assert listener.ended
+        }
     }
 
     @Test
     void testJobWithProgress() {
-        JobManager jobManager = new JobManager()
-        Job myJob = new MyJobWithProgress()
-        def start = System.currentTimeMillis()
-        MyJobListener listener = new MyJobListener();
-        jobManager.submit(myJob, [listener])
-        assertListenerStartedAndSleep(start, listener)
-        assert listener.ended
-        assert listener.nbProgress == 10
+        doWithTestObjects { JobManager jm, MyJobListener listener ->
+            Job myJob = new MyJobWithProgress()
+            def start = now()
+            jm.submit(myJob, [listener])
+            assertListenerStartedAndSleep(start, listener)
+            assert listener.ended
+            assert listener.nbProgress == 10
+        }
     }
 
+    @Test
+    @Ignore
+    void testJobKill() {
+        doWithTestObjects { JobManager jm, MyJobListener listener ->
+            Job myJob = new MyJobWithProgress()
+            def start = now()
+            assertListenerStarted(start, listener)
+            j.kill()
+            Thread.sleep(2000)
+            assert listener.killed
+        }
+    }
 }
 
 class MySimpleJob extends JobBase {
