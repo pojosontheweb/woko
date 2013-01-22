@@ -8,19 +8,25 @@ import net.sourceforge.stripes.action.*;
 import net.sourceforge.stripes.validation.EmailTypeConverter;
 import net.sourceforge.stripes.validation.LocalizableError;
 import net.sourceforge.stripes.validation.Validate;
+import net.tanesha.recaptcha.ReCaptchaImpl;
+import net.tanesha.recaptcha.ReCaptchaResponse;
 import woko.Woko;
 import woko.ext.usermanagement.core.*;
+import woko.ext.usermanagement.mail.BindingHelper;
+import woko.ext.usermanagement.mail.MailTemplateRegister;
 import woko.ext.usermanagement.util.PasswordUtil;
 import woko.facets.BaseResolutionFacet;
 import woko.facets.builtin.Layout;
 import woko.facets.builtin.WokoFacets;
 import woko.mail.MailService;
+import woko.mail.MailTemplate;
 import woko.persistence.ObjectStore;
 import woko.users.UsernameResolutionStrategy;
 import woko.util.WLogger;
 
-import java.util.Collections;
-import java.util.List;
+import javax.servlet.http.HttpServletRequest;
+import java.util.Locale;
+import java.util.Map;
 
 @StrictBinding(
         defaultPolicy = StrictBinding.Policy.DENY,
@@ -39,14 +45,14 @@ import java.util.List;
         }
 )
 @FacetKey(name="register", profileId = "all")
-public class Register<T extends User,
+public class RegisterGuest<T extends User,
         OsType extends ObjectStore,
         UmType extends DatabaseUserManager<?,T>,
         UnsType extends UsernameResolutionStrategy,
         FdmType extends IFacetDescriptorManager
         > extends BaseResolutionFacet<OsType,UmType,UnsType,FdmType> implements IInstanceFacet {
 
-    private static final WLogger logger = WLogger.getLogger(Register.class);
+    private static final WLogger logger = WLogger.getLogger(RegisterGuest.class);
 
     public static final String FACET_NAME = "register";
     public static final String SESS_ATTR_WOKO_REGISTERED = "wokoRegistered";
@@ -128,25 +134,46 @@ public class Register<T extends User,
         return new ForwardResolution(getJspPath());
     }
 
+    protected Locale getEmailLocale(HttpServletRequest request) {
+        return request.getLocale();
+    }
+
     public Resolution doRegister(ActionBeanContext abc) {
+
+        // verify captcha if needed
+        if (isUseCaptcha()) {
+            HttpServletRequest request = getRequest();
+            String remoteAddr = request.getRemoteAddr();
+            ReCaptchaImpl reCaptcha = new ReCaptchaImpl();
+            reCaptcha.setPrivateKey(getReCaptchaPrivateKey());
+            String challenge = request.getParameter("recaptcha_challenge_field");
+            String uresponse = request.getParameter("recaptcha_response_field");
+            ReCaptchaResponse reCaptchaResponse = reCaptcha.checkAnswer(remoteAddr, challenge, uresponse);
+            if (!reCaptchaResponse.isValid()) {
+                logger.warn("Recaptcha failure, username:" + username);
+                abc.getValidationErrors().addGlobalError(new LocalizableError("woko.ext.usermanagement.register.ko.captcha"));
+                return getResolution(abc);
+            }
+        }
+
         // check that no other user with this username already exists
-        Woko<OsType,UmType,UnsType,FdmType> woko = getWoko();
-        DatabaseUserManager<?,T> databaseUserManager = woko.getUserManager();
+        Woko<OsType, UmType, UnsType, FdmType> woko = getWoko();
+        DatabaseUserManager<?, T> databaseUserManager = woko.getUserManager();
         if (!(databaseUserManager instanceof RegistrationAwareUserManager)) {
             throw new IllegalStateException("You are using the register facet but your user manager doesn't implement " +
-                "RegistrationAwareUserManager (" + databaseUserManager + ")");
+                    "RegistrationAwareUserManager (" + databaseUserManager + ")");
         }
 
         // check that user doesn't already exist
         User u = databaseUserManager.getUserByUsername(username);
-        if (u!=null) {
+        if (u != null) {
             logger.warn("Attempt to register with an already existing username : " + username);
             abc.getValidationErrors().add("facet.username", new LocalizableError("woko.ext.usermanagement.register.ko.username"));
             return getResolution(abc);
         }
         // check that email ain't already taken
         u = databaseUserManager.getUserByEmail(email);
-        if (u!=null) {
+        if (u != null) {
             logger.warn("Attempt to register with an already existing email : " + email);
             abc.getValidationErrors().add("facet.email", new LocalizableError("woko.ext.usermanagement.register.ko.email"));
             return getResolution(abc);
@@ -159,7 +186,7 @@ public class Register<T extends User,
 
             @SuppressWarnings("unchecked")
             RegistrationAwareUserManager<T> registrationAwareUserManager =
-                    (RegistrationAwareUserManager<T>)databaseUserManager;
+                    (RegistrationAwareUserManager<T>) databaseUserManager;
             user.setAccountStatus(registrationAwareUserManager.getRegisteredAccountStatus());
             user.setRoles(registrationAwareUserManager.getRegisteredRoles());
             user.setUsername(username);
@@ -193,23 +220,22 @@ public class Register<T extends User,
             // registered
             if (user.getAccountStatus().equals(AccountStatus.Registered)) {
                 MailService mailService = woko.getIoc().getComponent(MailService.KEY);
-                if (mailService!=null) {
-                    mailService.sendMail(
-                            user.getEmail(),
-                            woko.getLocalizedMessage(
-                                    getRequest(),
-                                    "woko.ext.usermanagement.register.mail.subject",
-                                    getAppName()
-                            ),
-                            woko.getLocalizedMessage(
-                                    getRequest(),
-                                    "woko.ext.usermanagement.register.mail.content",
-                                    user.getUsername(),
-                                    getAppName(),
-                                    mailService.getAppUrl() + "/activate/" + regDetailsClassMapping + "/" + regDetails.getKey() +
-                                        "?facet.token=" + regDetails.getSecretToken()
-                            )
+                if (mailService != null) {
+                    MailTemplate template = mailService.getMailTemplate(getTemplateName());
+                    Map<String, Object> binding = BindingHelper.newBinding(user, getAppName(), mailService);
+                    binding.put(
+                            MailTemplateRegister.REGISTER_URL,
+                            mailService.getAppUrl() + "/activate/" +
+                                    regDetailsClassMapping + "/" +
+                                    regDetails.getKey() + "?facet.token=" +
+                                    regDetails.getSecretToken()
                     );
+                    mailService.sendMail(
+                            woko,
+                            user.getEmail(),
+                            getEmailLocale(getRequest()),
+                            template,
+                            binding);
                 } else {
                     logger.warn("No email could be sent : no MailService found in IoC.");
                 }
@@ -229,6 +255,22 @@ public class Register<T extends User,
     @Override
     public boolean matchesTargetObject(Object targetObject) {
         return getWoko().getUsername(getRequest())==null;
+    }
+
+    protected String getTemplateName() {
+        return MailTemplateRegister.TEMPLATE_NAME;
+    }
+
+    public boolean isUseCaptcha() {
+        return false;
+    }
+
+    public String getReCaptchaPublicKey() {
+        return null;
+    }
+
+    public String getReCaptchaPrivateKey() {
+        return null;
     }
 
 }

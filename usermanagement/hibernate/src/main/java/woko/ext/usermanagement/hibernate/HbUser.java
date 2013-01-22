@@ -33,7 +33,7 @@ public class HbUser implements User {
     private Long id;
 
     @NotNull
-    @Size(min=4, max=50)
+    @Size(min=4, max=250)
     @Column(unique = true, nullable = false)
     private String username;
 

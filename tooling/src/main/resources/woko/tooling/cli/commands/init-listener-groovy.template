@@ -11,6 +11,7 @@ import woko.ioc.SimpleWokoIocContainer
 import woko.push.PushFacetDescriptorManager
 import woko.mail.MailService
 import woko.mail.ConsoleMailService
+woko.ext.usermanagement.mail.BindingHelper
 
 /**
  * Example Woko init listener class that configures all default components (ObjectStore, UserManager etc.) using Simple IoC.
@@ -47,7 +48,7 @@ class $className extends WokoIocInitListener<
         // sample MailService that logs emails to stdout, used in usermanagement (password
         // reset, registration/activation etc). Replace by a real implementation if you
         // need it, otherwise remove from IoC
-        def mailService = new ConsoleMailService("http://www.${name}.com", "info@${name}.com")
+        def mailService = new ConsoleMailService("http://www.${name}.com", "info@${name}.com", BindingHelper.createDefaultMailTemplates())
 
         return new SimpleWokoIocContainer<
             HibernateCompassStore,

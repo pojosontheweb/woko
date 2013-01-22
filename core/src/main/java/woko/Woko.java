@@ -64,7 +64,7 @@ public class Woko<
     public static final String CTX_KEY = "woko";
     public static final String REQ_ATTR_FACET = "facet";
 
-    public static final String VERSION = "2.1-beta8";
+    public static final String VERSION = "2.1-beta9";
 
     @SuppressWarnings("unchecked")
     public static <
@@ -307,6 +307,10 @@ public class Woko<
 
     public String getLocalizedMessage(HttpServletRequest request, String key, String... args) {
         Locale locale = request.getLocale();
+        return getLocalizedMessage(locale, key, args);
+    }
+
+    public String getLocalizedMessage(Locale locale, String key, String... args) {
         ResourceBundle b = StripesFilter.getConfiguration().
                 getLocalizationBundleFactory().getFormFieldBundle(locale);
         try {
@@ -320,4 +324,5 @@ public class Woko<
             return key;
         }
     }
+
 }

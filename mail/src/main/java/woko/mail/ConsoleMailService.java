@@ -1,28 +1,23 @@
 package woko.mail;
 
-public class ConsoleMailService implements MailService {
+import woko.Woko;
 
-    private final String appUrl;
-    private final String fromEmailAddress;
+import java.util.Locale;
+import java.util.Map;
 
-    public ConsoleMailService(String appUrl, String fromEmailAddress) {
-        this.appUrl = appUrl;
-        this.fromEmailAddress = fromEmailAddress;
+public class ConsoleMailService extends MailServiceBase {
+
+    public ConsoleMailService(String appUrl, String fromEmailAddress, Map<String, MailTemplate> templates) {
+        super(appUrl, fromEmailAddress, templates);
     }
 
     @Override
-    public void sendMail(String to, String subject, String text) {
-        System.out.println("FAKE Sending email from " + getFromEmailAddress() + " to " +
-            to + ",subject : " + subject + "\n, text :\n" + text);
-    }
-
-    @Override
-    public String getAppUrl() {
-        return appUrl;
-    }
-
-    @Override
-    public String getFromEmailAddress() {
-        return fromEmailAddress;
+    public void sendMail(Woko woko, String to, Locale locale, MailTemplate template, Map<String, Object> binding) {
+        System.out.println("FAKE Sending email from " + getFromEmailAddress() +
+                " to " + to +
+                ",subject : " + template.processSubject(woko, locale, binding) +
+                "\n, text :\n" + template.processBody(woko, locale, binding));
     }
 }
+
+

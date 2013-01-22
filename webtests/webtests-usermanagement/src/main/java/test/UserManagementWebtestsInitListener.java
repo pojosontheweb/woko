@@ -6,6 +6,7 @@ import woko.auth.builtin.SessionUsernameResolutionStrategy;
 import woko.ext.usermanagement.core.AccountStatus;
 import woko.ext.usermanagement.core.DatabaseUserManager;
 import woko.ext.usermanagement.hibernate.HibernateUserManager;
+import woko.ext.usermanagement.mail.BindingHelper;
 import woko.hbcompass.HibernateCompassStore;
 import woko.hibernate.HibernateStore;
 import woko.hibernate.TxCallback;
@@ -13,11 +14,13 @@ import woko.ioc.SimpleWokoIocContainer;
 import woko.ioc.WokoIocContainer;
 import woko.mail.ConsoleMailService;
 import woko.mail.MailService;
+import woko.mail.SmtpMailService;
 import woko.push.PushFacetDescriptorManager;
 import woko.users.UserManager;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Properties;
 
 public class UserManagementWebtestsInitListener
         extends WokoIocInitListener<HibernateCompassStore, HibernateUserManager<MyUser>, SessionUsernameResolutionStrategy, PushFacetDescriptorManager> {
@@ -59,12 +62,33 @@ public class UserManagementWebtestsInitListener
             });
         }
 
+        MailService mailService;
+        final String username = System.getProperty("woko.webtests.smtp.username");
+        if (username!=null) {
+            mailService = new SmtpMailService("http://localhost:8080/woko-webtests",
+                    "yikes@pojosontheweb.com",
+                    BindingHelper.createDefaultMailTemplates()) {
+                @Override
+                protected Properties getMailSessionProperties() {
+                    Properties props = super.getMailSessionProperties();
+                    props.put("mail.smtp.username", username);
+                    props.put("mail.smtp.password", System.getProperty("woko.webtests.smtp.password"));
+                    return props;
+                }
+            };
+        }  else {
+            mailService = new ConsoleMailService(
+                    "http://www.pojosontheweb.com",
+                    "yikes@pojosontheweb.com",
+                    BindingHelper.createDefaultMailTemplates());
+        }
+
         return new SimpleWokoIocContainer<HibernateCompassStore, HibernateUserManager<MyUser>, SessionUsernameResolutionStrategy, PushFacetDescriptorManager>(
                 store,
                 userManager,
                 new SessionUsernameResolutionStrategy(),
                 new PushFacetDescriptorManager(createAnnotatedFdm())
-        ).addComponent(MailService.KEY, new ConsoleMailService("http://www.pojosontheweb.com", "yikes@pojosontheweb.com"));
+        ).addComponent(MailService.KEY, mailService);
     }
 
     @Override

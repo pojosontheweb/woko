@@ -8,6 +8,8 @@ import net.sourceforge.stripes.validation.EmailTypeConverter;
 import net.sourceforge.stripes.validation.Validate;
 import woko.ext.usermanagement.core.DatabaseUserManager;
 import woko.ext.usermanagement.core.User;
+import woko.ext.usermanagement.mail.BindingHelper;
+import woko.ext.usermanagement.mail.MailTemplateResetPassword;
 import woko.facets.BaseResolutionFacet;
 import woko.facets.builtin.Layout;
 import woko.mail.MailService;
@@ -15,7 +17,10 @@ import woko.persistence.ObjectStore;
 import woko.users.UsernameResolutionStrategy;
 import woko.util.WLogger;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.Locale;
+import java.util.Map;
 import java.util.UUID;
 
 @StrictBinding(
@@ -78,20 +83,17 @@ public class ResetPassword<
             if (mailService!=null) {
                 String token = UUID.randomUUID().toString();
                 getRequest().getSession().setAttribute("wokoResetPasswordToken", token);
-                // sent email with link containing the reset token
+                Map<String,Object> binding = BindingHelper.newBinding(u, getAppName(), mailService);
+                binding.put(
+                        MailTemplateResetPassword.RESET_PASSWORD_URL,
+                        mailService.getAppUrl() + "/resetPassword?doReset=true&facet.email=" + email + "&facet.token=" + token
+                );
                 mailService.sendMail(
+                        getWoko(),
                         u.getEmail(),
-                        getWoko().getLocalizedMessage(
-                                getRequest(),
-                                "woko.ext.usermanagement.password.reset.email.subject",
-                                getAppName()
-                        ),
-                        getWoko().getLocalizedMessage(
-                                getRequest(),
-                                "woko.ext.usermanagement.password.reset.email.content",
-                                getAppName(),
-                                mailService.getAppUrl() + "/resetPassword?doReset=true&facet.email=" + email + "&facet.token=" + token
-                        )
+                        getEmailLocale(getRequest()),
+                        mailService.getMailTemplate(MailTemplateResetPassword.TEMPLATE_NAME),
+                        binding
                 );
             } else {
                 throw new IllegalStateException("User tries to reset its password but there ain't no MailService ! email = " + email);
@@ -146,4 +148,13 @@ public class ResetPassword<
     public String getJspPath() {
         return "/WEB-INF/woko/ext/usermanagement/resetPassword.jsp";
     }
+    protected String getTemplateName() {
+        return MailTemplateResetPassword.TEMPLATE_NAME;
+    }
+
+
+    protected Locale getEmailLocale(HttpServletRequest request) {
+        return request.getLocale();
+    }
+
 }
