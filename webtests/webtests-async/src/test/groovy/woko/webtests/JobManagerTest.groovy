@@ -27,17 +27,12 @@ class JobManagerTest extends WokoWebTestBase {
     void testAsync() {
         webtest("testAsync") {
             login()
-//            goToPage '/list/MyUser'
-//            verifyXPath xpath:'/html/body/div/div[2]/div/div/table/tbody/tr/td[2]/span/span',
-//                    text:'.*wdevel.*', regex:true
-//            verifyXPath xpath:'/html/body/div/div[2]/div/div/table/tbody/tr[2]/td[2]/span/span',
-//                    text:'.*testuser.*', regex:true
-//
-//            goToPage '/users'
-//            verifyXPath xpath:'/html/body/div/div[2]/div/div/table/tbody/tr/td[2]/span/span',
-//                    text:'.*wdevel.*', regex:true
-//            verifyXPath xpath:'/html/body/div/div[2]/div/div/table/tbody/tr[2]/td[2]/span/span',
-//                    text:'.*testuser.*', regex:true
+            goToPage "/startJobs"
+            verifyText text:"object(s) found for class HbJobDetails"
+            verifyXPath xpath:'/html/body/div/div[2]/div/div/table/tbody/tr/td[4]/span/span', text: ''
+            Thread.sleep(5000)
+            goToPage "/list/HbJobDetails"
+            verifyXPath xpath:'/html/body/div/div[2]/div/div/table/tbody/tr/td[4]/span/span', text: '.*,.*', regex:true
         }
     }
 

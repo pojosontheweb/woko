@@ -11,12 +11,9 @@ import woko.facets.BaseResolutionFacet
 class StartJobs extends BaseResolutionFacet {
 
     Resolution getResolution(ActionBeanContext abc) {
-        int lower = 100;
-        int higher = 500;
         JobManager jobManager = woko.ioc.getComponent(JobManager.KEY)
         for (def i in 1..10) {
-            int random = (int)(Math.random() * (higher-lower)) + lower;
-            jobManager.submit(new MyJob(random), [new MyJobDetailsListener(woko.objectStore) ])
+            jobManager.submit(new MyJob(i), [new MyJobDetailsListener(woko.objectStore) ])
         }
         return new RedirectResolution("/list/HbJobDetails")
     }

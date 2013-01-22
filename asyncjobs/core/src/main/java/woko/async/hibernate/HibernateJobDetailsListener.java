@@ -5,25 +5,25 @@ import woko.async.JobDetailsListener;
 import woko.hibernate.HibernateStore;
 import woko.persistence.ObjectStore;
 
-public class HibernateJobDetailsListener<S extends HibernateStore> extends JobDetailsListener {
+public class HibernateJobDetailsListener extends JobDetailsListener {
 
-    private final S store;
+    private final HibernateStore store;
 
-    public HibernateJobDetailsListener(S store) {
+    public HibernateJobDetailsListener(HibernateStore store) {
         this.store = store;
     }
 
     @Override
-    protected ObjectStore getStore() {
+    protected HibernateStore getStore() {
         return store;
     }
 
     @Override
     protected HbJobDetails createNewJobDetails(Job job) {
-        Class<HbJobDetails> clazz = getJobDetailsClass();
+        Class<?> clazz = getJobDetailsClass();
         HbJobDetails res;
         try {
-            res = clazz.newInstance();
+            res = (HbJobDetails)clazz.newInstance();
             res.setJobUuid(job.getUuid());
             return res;
         } catch (Exception e) {
@@ -32,7 +32,7 @@ public class HibernateJobDetailsListener<S extends HibernateStore> extends JobDe
     }
 
     @Override
-    protected Class<HbJobDetails> getJobDetailsClass() {
+    protected Class<?> getJobDetailsClass() {
         return HbJobDetails.class;
     }
 }

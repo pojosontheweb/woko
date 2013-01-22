@@ -27,5 +27,6 @@
     <name>Woko - asynchronous jobs</name>
     <modules>
         <module>core</module>
+        <module>web</module>
     </modules>
 </project>
