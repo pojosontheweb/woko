@@ -19,13 +19,29 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.pojosontheweb</groupId>
-        <artifactId>woko-parent</artifactId>
+        <artifactId>woko-asyncjobs</artifactId>
         <version>LATEST-SNAPSHOT</version>
     </parent>
-    <artifactId>woko-asyncjobs</artifactId>
-    <packaging>pom</packaging>
-    <name>Woko - asynchronous jobs</name>
-    <modules>
-        <module>core</module>
-    </modules>
+    <artifactId>woko-asyncjobs-core</artifactId>
+    <packaging>jar</packaging>
+    <name>Woko - asynchronous jobs core</name>
+    <dependencies>
+        <dependency>
+            <groupId>com.pojosontheweb</groupId>
+            <artifactId>woko-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.pojosontheweb</groupId>
+            <artifactId>woko-hibernate</artifactId>
+            <version>${project.version}</version>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.codehaus.groovy</groupId>
+            <artifactId>groovy-all</artifactId>
+            <version>${groovy.version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 </project>

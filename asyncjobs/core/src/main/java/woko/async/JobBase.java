@@ -3,10 +3,17 @@ package woko.async;
 import woko.util.WLogger;
 
 import java.util.List;
+import java.util.UUID;
 
 public abstract class JobBase implements Job {
 
     private static final WLogger logger = WLogger.getLogger(JobBase.class);
+
+    private final String uuid = UUID.randomUUID().toString();
+
+    public String getUuid() {
+        return uuid;
+    }
 
     protected boolean isKilled() {
         return false;

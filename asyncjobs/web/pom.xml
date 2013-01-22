@@ -19,13 +19,18 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.pojosontheweb</groupId>
-        <artifactId>woko-parent</artifactId>
+        <artifactId>woko-asyncjobs</artifactId>
         <version>LATEST-SNAPSHOT</version>
     </parent>
-    <artifactId>woko-asyncjobs</artifactId>
-    <packaging>pom</packaging>
-    <name>Woko - asynchronous jobs</name>
-    <modules>
-        <module>core</module>
-    </modules>
+    <artifactId>woko-asyncjobs-web</artifactId>
+    <packaging>war</packaging>
+    <name>Woko - async jobs web resources</name>
+    <dependencies>
+        <dependency>
+            <groupId>com.pojosontheweb</groupId>
+            <artifactId>woko-asyncjobs-core</artifactId>
+            <version>${project.version}</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
 </project>
