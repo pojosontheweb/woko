@@ -20,9 +20,15 @@ public class HibernateJobDetailsListener<S extends HibernateStore> extends JobDe
 
     @Override
     protected HbJobDetails createNewJobDetails(Job job) {
-        HbJobDetails res = new HbJobDetails();
-        res.setJobUuid(job.getUuid());
-        return res;
+        Class<HbJobDetails> clazz = getJobDetailsClass();
+        HbJobDetails res;
+        try {
+            res = clazz.newInstance();
+            res.setJobUuid(job.getUuid());
+            return res;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
