@@ -45,7 +45,7 @@ public class RegisterFragmentGuest<T extends User,
 
     public RegisterGuest getRegisterFacet(){
         if (registerFacet==null)
-            registerFacet = getWoko().getFacet("register", getRequest(), null);
+            registerFacet = getWoko().getFacet("register", getRequest(), null, Object.class, true);
         return registerFacet;
     }
 }
