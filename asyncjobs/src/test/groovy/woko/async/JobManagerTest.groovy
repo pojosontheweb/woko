@@ -1,7 +1,9 @@
 package woko.async
 
-import org.junit.Ignore
 import org.junit.Test
+
+import java.util.concurrent.Executors
+
 import static org.junit.Assert.*
 
 class JobManagerTest {
@@ -44,7 +46,7 @@ class JobManagerTest {
     @Test
     void testSimpleJob() {
         doWithTestObjects { JobManager jm, MyJobListener listener ->
-            Job simple = new MySimpleJob()
+            Job simple = new MySimpleJob(jobId: "simple")
             def start = now()
             jm.submit(simple, [listener])
             assertListenerStartedAndSleep(start, listener)
@@ -76,14 +78,65 @@ class JobManagerTest {
             assert listener.killed
         }
     }
+
+
+    @Test
+    void testJobConcurrent() {
+        JobManager jm = new JobManager(Executors.newFixedThreadPool(5))
+        def start = now()
+        try {
+
+            // start concurrent jobs
+            def listeners = []
+            for (def i in 1..5) {
+                def l = new MyJobListener()
+                listeners << l
+                MySimpleJob j = new MySimpleJob(jobId:"simple$i")
+                jm.submit(j, [l])
+            }
+
+            // assert all jobs have been started
+            boolean allStarted = false
+            while (now()-start<10000 && !allStarted) {
+                boolean hasNotStarted = false
+                for (MyJobListener l : listeners) {
+                    if (!l.started) {
+                        hasNotStarted = true
+                        break
+                    }
+                }
+                allStarted = !hasNotStarted
+            }
+            assert allStarted
+
+            // assert all jobs have finished before timeout
+            boolean allFinished = false
+            while (now()-start<10000 && !allFinished) {
+                boolean hasNotFinished = false
+                for (MyJobListener l : listeners) {
+                    if (!l.ended) {
+                        hasNotFinished = true
+                        break
+                    }
+                }
+                allFinished = !hasNotFinished
+            }
+            assert allFinished
+        } finally {
+            jm.close()
+        }
+    }
+
 }
 
 class MySimpleJob extends JobBase {
 
     boolean done = false
+    def jobId
 
     @Override
     protected void doExecute(List<JobListener> listeners) {
+        println "Hey $jobId"
         Thread.sleep(5000)
         done = true
     }

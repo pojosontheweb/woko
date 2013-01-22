@@ -18,6 +18,7 @@ public abstract class JobBase implements Job {
 
     @Override
     public void execute(List<JobListener> listeners) {
+        logger.info("Starting " + this);
         for (JobListener l : listeners) {
             try {
                 l.onStart(this);
@@ -27,6 +28,7 @@ public abstract class JobBase implements Job {
         }
         try {
             doExecute(listeners);
+            logger.info("Executed " + this);
             for (JobListener l : listeners) {
                 try {
                     l.onEnd(this, isKilled());
@@ -35,6 +37,7 @@ public abstract class JobBase implements Job {
                 }
             }
         } catch(Exception e) {
+            logger.error("Caught exception executing " + this);
             for (JobListener l : listeners) {
                 try {
                     l.onException(this, e); // Exception onException... looks pretty ugly but we need to guard against bad code anyway...

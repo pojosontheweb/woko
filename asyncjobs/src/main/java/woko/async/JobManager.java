@@ -1,5 +1,6 @@
 package woko.async;
 
+import woko.Closeable;
 import woko.util.WLogger;
 
 import java.util.List;
@@ -7,7 +8,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class JobManager {
+public class JobManager implements Closeable {
 
     private static final WLogger logger = WLogger.getLogger(JobManager.class);
 
@@ -33,7 +34,7 @@ public class JobManager {
         });
     }
 
-    void close() {
+    public void close() {
         logger.debug("Closing pool : " + pool);
         pool.shutdown();
     }
