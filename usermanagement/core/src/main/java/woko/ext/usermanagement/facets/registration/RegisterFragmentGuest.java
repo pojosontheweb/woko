@@ -21,8 +21,6 @@ public class RegisterFragmentGuest<T extends User,
 
     private RegisterGuest registerFacet;
 
-    private T user;
-
     public String getPath() {
         return FRAGMENT_PATH;
     }
