@@ -15,6 +15,6 @@ public class JobAdapter implements JobListener {
     }
 
     @Override
-    public void onEnd(Job job) {
+    public void onEnd(Job job, boolean killed) {
     }
 }

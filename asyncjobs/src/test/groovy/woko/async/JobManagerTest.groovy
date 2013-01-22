@@ -65,13 +65,13 @@ class JobManagerTest {
     }
 
     @Test
-    @Ignore
     void testJobKill() {
         doWithTestObjects { JobManager jm, MyJobListener listener ->
             Job myJob = new MyJobWithProgress()
             def start = now()
+            jm.submit(myJob, [listener])
             assertListenerStarted(start, listener)
-            j.kill()
+            myJob.kill()
             Thread.sleep(2000)
             assert listener.killed
         }
@@ -87,6 +87,7 @@ class MySimpleJob extends JobBase {
         Thread.sleep(5000)
         done = true
     }
+
 }
 
 class MyJobWithProgress extends JobWithProgressBase {
@@ -111,6 +112,7 @@ class MyJobListener extends JobAdapter {
     boolean started = false
     boolean ended = false
     int nbProgress = 0
+    boolean killed = false
 
     @Override
     void onStart(Job job) {
@@ -118,7 +120,6 @@ class MyJobListener extends JobAdapter {
     }
 
     @Override
-
     void onProgress(Job job) {
         nbProgress++
     }
@@ -129,8 +130,10 @@ class MyJobListener extends JobAdapter {
         fail("Caught exception " + e)
     }
 
-    void onEnd(Job job) {
+    @Override
+    void onEnd(Job job, boolean killed) {
         ended = true
+        this.killed = killed
     }
 
 }

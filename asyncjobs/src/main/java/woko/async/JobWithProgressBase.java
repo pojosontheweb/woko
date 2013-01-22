@@ -8,18 +8,42 @@ public abstract class JobWithProgressBase extends JobBase {
 
     private static final WLogger logger = WLogger.getLogger(JobWithProgressBase.class);
 
+    private boolean killRequired = false;
+    private boolean killed = false;
+
     @Override
     protected void doExecute(List<JobListener> listeners) {
         while (hasNextStep()) {
-            for (JobListener l : listeners) {
-                try {
-                    l.onProgress(this);
-                } catch(Exception e) {
-                    logger.error("Caught exception invoking listener " + l, e);
+            if (killRequired) {
+                logger.info("Kill required for " + this);
+                killed = true;
+                break;
+            } else {
+                for (JobListener l : listeners) {
+                    try {
+                        l.onProgress(this);
+                    } catch(Exception e) {
+                        logger.error("Caught exception invoking listener " + l, e);
+                    }
                 }
+                doExecuteNextStep();
             }
-            doExecuteNextStep();
         }
+    }
+
+    @Override
+    protected boolean isKilled() {
+        return killed;
+    }
+
+    @Override
+    public void kill() {
+        logger.info("Killing " + this);
+        killRequired = true;
+    }
+
+    protected boolean isKillRequired() {
+        return killRequired;
     }
 
     protected abstract void doExecuteNextStep();

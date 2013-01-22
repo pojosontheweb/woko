@@ -8,6 +8,14 @@ public abstract class JobBase implements Job {
 
     private static final WLogger logger = WLogger.getLogger(JobBase.class);
 
+    protected boolean isKilled() {
+        return false;
+    }
+
+    @Override
+    public void kill() {
+    }
+
     @Override
     public void execute(List<JobListener> listeners) {
         for (JobListener l : listeners) {
@@ -21,7 +29,7 @@ public abstract class JobBase implements Job {
             doExecute(listeners);
             for (JobListener l : listeners) {
                 try {
-                    l.onEnd(this);
+                    l.onEnd(this, isKilled());
                 } catch(Exception e) {
                     logger.error("Caught exception invoking listener " + l, e);
                 }
@@ -38,4 +46,5 @@ public abstract class JobBase implements Job {
     }
 
     protected abstract void doExecute(List<JobListener> listeners);
+
 }

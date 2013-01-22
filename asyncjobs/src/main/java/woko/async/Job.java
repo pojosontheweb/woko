@@ -6,4 +6,6 @@ public interface Job {
 
     void execute(List<JobListener> listeners);
 
+    void kill();
+
 }
