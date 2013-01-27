@@ -39,6 +39,7 @@ public abstract class JobDetailsListener extends JobAdapter {
             @Override
             public void execute() {
                 JobDetails details = createNewJobDetails(job);
+                details.updateStarted(job);
                 getStore().save(details);
             }
         });

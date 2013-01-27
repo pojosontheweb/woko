@@ -13,7 +13,7 @@ public class HbJobDetails implements JobDetails {
     @Id
     private String jobUuid;
 
-    private Date startTime = new Date();
+    private Date startTime = null;
     private Date endTime = null;
     private Date killTime = null;
     private String exceptionString = null;
@@ -62,4 +62,8 @@ public class HbJobDetails implements JobDetails {
         killTime = new Date();
     }
 
+    @Override
+    public void updateStarted(Job job) {
+        startTime = new Date();
+    }
 }

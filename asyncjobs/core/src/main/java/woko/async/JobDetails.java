@@ -14,6 +14,8 @@ public interface JobDetails {
 
     void updateKilled(Job job);
 
+    void updateStarted(Job job);
+
     Date getStartTime();
 
     Date getEndTime();
