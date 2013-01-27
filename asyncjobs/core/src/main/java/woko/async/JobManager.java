@@ -12,7 +12,7 @@ import java.util.concurrent.Executors;
 
 public class JobManager implements Closeable {
 
-    public static final String KEY = "MailService";
+    public static final String KEY = "JobManager";
 
     private static final WLogger logger = WLogger.getLogger(JobManager.class);
 
