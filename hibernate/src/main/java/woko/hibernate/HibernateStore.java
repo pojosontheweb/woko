@@ -26,9 +26,7 @@ import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.metadata.ClassMetadata;
 import woko.Closeable;
-import woko.persistence.ListResultIterator;
-import woko.persistence.ObjectStore;
-import woko.persistence.ResultIterator;
+import woko.persistence.*;
 import woko.util.WLogger;
 
 import javax.persistence.MappedSuperclass;
@@ -36,7 +34,7 @@ import java.io.Serializable;
 import java.net.URL;
 import java.util.*;
 
-public class HibernateStore implements ObjectStore, Closeable {
+public class HibernateStore implements ObjectStore, TransactionalStore, Closeable {
 
     public static final String DEFAULT_HIBERNATE_CFG_XML = "/woko_default_hibernate.cfg.xml";
 
@@ -300,5 +298,23 @@ public class HibernateStore implements ObjectStore, Closeable {
         }
     }
 
+    @Override
+    public <RES> RES doInTransactionWithResult(final TransactionCallbackWithResult<RES> callback) {
+        return doInTxWithResult(new TxCallbackWithResult<RES>() {
+            @Override
+            public RES execute(HibernateStore store, Session session) throws Exception {
+                return callback.execute();
+            }
+        });
+    }
 
+    @Override
+    public void doInTransaction(final TransactionCallback callback) {
+        doInTx(new TxCallback() {
+            @Override
+            public void execute(HibernateStore store, Session session) throws Exception {
+                callback.execute();
+            }
+        });
+    }
 }

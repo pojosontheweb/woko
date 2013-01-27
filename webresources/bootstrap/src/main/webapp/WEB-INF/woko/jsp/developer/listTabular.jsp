@@ -148,8 +148,8 @@
                             <td>
                                 <div class="btn-group">
                                 <%
-                                    View view = woko.getFacet(View.FACET_NAME, request, result);
-                                    if (view!=null) {
+                                    Object view = woko.getFacet(View.FACET_NAME, request, result);
+                                    if (view!=null && view instanceof View) {
                                         String href = request.getContextPath() + "/" + LinkUtil.getUrl(woko, result, "view");
                                 %>
                                     <a href="<%=href%>" class="btn view">
