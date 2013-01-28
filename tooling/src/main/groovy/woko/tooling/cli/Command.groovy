@@ -81,12 +81,11 @@ abstract class Command {
     }
 
     protected List<String> computeUserFacetPackages() {
-        def packages = null
+        def packages = []
         // TODO UGLY : don't loop if you don't need to !
         webXml["context-param"].each { it ->
             if (it["param-name"].text() == "Woko.Facet.Packages") {
                 String facetPackages = it["param-value"].text()
-                packages = []
                 packages.addAll(WokoInitListener.extractPackagesList(facetPackages))
             }
         }
@@ -94,12 +93,11 @@ abstract class Command {
     }
 
     protected List<String> computeModelPackages() {
-        def packages = null
+        def packages = []
         // TODO UGLY : don't loop if you don't need to !
         webXml["context-param"].each { it ->
             if (it["param-name"].text() == "Woko.Hibernate.Packages") {
                 String facetPackages = it["param-value"].text()
-                packages = []
                 packages.addAll(WokoInitListener.extractPackagesList(facetPackages))
             }
         }
@@ -107,14 +105,13 @@ abstract class Command {
     }
 
     protected List<String> computeActionPackages() {
-        def packages = null
+        def packages = []
         // TODO UGLY : don't loop if you don't need to !
         webXml.filter.each { filter->
             if (filter["filter-class"].text()=="net.sourceforge.stripes.controller.StripesFilter") {
                 filter["init-param"].each { it ->
                     if (it["param-name"].text() == "ActionResolver.Packages") {
                         String facetPackages = it["param-value"].text()
-                        packages = []
                         packages.addAll(WokoInitListener.extractPackagesList(facetPackages))
                     }
                 }

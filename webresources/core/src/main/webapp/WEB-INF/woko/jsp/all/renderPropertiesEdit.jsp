@@ -21,6 +21,7 @@
 <%@ page import="woko.util.Util" %>
 <%@ page import="woko.persistence.ObjectStore" %>
 <%@ page import="woko.facets.builtin.*" %>
+<%@ page import="java.util.Collections" %>
 <%@include file="/WEB-INF/woko/jsp/taglibs.jsp"%>
 <%
     RenderPropertiesEdit editProperties = (RenderPropertiesEdit)request.getAttribute(WokoFacets.renderPropertiesEdit);
@@ -38,6 +39,10 @@
     }
     boolean partial = editProperties.isPartialForm();
     Map<String,Object> hiddenFields = editProperties.getHiddenFields();
+    List<String> readOnlyProps = editProperties.getReadOnlyPropertyNames();
+    if (readOnlyProps==null) {
+        readOnlyProps = Collections.emptyList();
+    }
 %>
 <div class="wokoPropertiesEdit">
     <s:form action="<%=formUrl%>" partial="<%=partial%>">
@@ -69,7 +74,14 @@
                     renderPropertyName.setPropertyName(pName);
                     String pNameFragmentPath = renderPropertyName.getFragmentPath(request);
 
-                    RenderPropertyValue editPropertyValue = Util.getRenderPropValueEditFacet(woko, request, owningObject, pName, pVal);
+                    RenderPropertyValue editPropertyValue;
+                    if (readOnlyProps.contains(pName)) {
+                        // read-only view... use renderPropertyValue !
+                        editPropertyValue = Util.getRenderPropValueFacet(woko,  request, owningObject, pName, pVal);
+                    } else {
+                        // editable : use Edit facet
+                        editPropertyValue = Util.getRenderPropValueEditFacet(woko, request, owningObject, pName, pVal);
+                    }
                     String pValFragmentPath = editPropertyValue.getFragmentPath(request);
 
                     String prefix = "object";

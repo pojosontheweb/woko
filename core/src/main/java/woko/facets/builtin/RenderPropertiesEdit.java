@@ -1,5 +1,6 @@
 package woko.facets.builtin;
 
+import java.util.List;
 import java.util.Map;
 
 public interface RenderPropertiesEdit extends RenderProperties {
@@ -22,4 +23,11 @@ public interface RenderPropertiesEdit extends RenderProperties {
      * @return a Map of key/value hidden params
      */
     Map<String,Object> getHiddenFields();
+
+    /**
+     * Return a list of read-only properties for the object. Those properties
+     * will be rendered using renderPropertyValue as if they were by renderProperties.
+     * @return a list of Strings
+     */
+    public List<String> getReadOnlyPropertyNames();
 }

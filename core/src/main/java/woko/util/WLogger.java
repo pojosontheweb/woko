@@ -33,6 +33,10 @@ public class WLogger {
     this.stripesLog = Log.getInstance(categoryClass);
   }
 
+    public boolean isDebugEnabled() {
+        return stripesLog.getRealLog().isDebugEnabled();
+    }
+
   public void debug(String msg) {
     stripesLog.debug(msg);
   }

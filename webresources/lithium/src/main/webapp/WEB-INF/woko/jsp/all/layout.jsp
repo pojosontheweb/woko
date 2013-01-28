@@ -1,5 +1,5 @@
 <%--
-~ Copyright 2001-2012 Remi Vankeisbelck
+~ Copyright 2001-2013 Remi Vankeisbelck
 ~
 ~ Licensed under the Apache License, Version 2.0 (the "License");
 ~ you may not use this file except in compliance with the License.
@@ -17,12 +17,14 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="/WEB-INF/woko/jsp/taglibs.jsp"%>
 <w:username var="username"/>
-<c:set var="cp" value="${pageContext.request.contextPath}"/>
+<c:set var="cp" value="${pageContext.request.contextPath}" scope="request"/>
+<w:cacheToken paramName="cacheToken" tokenValue="cacheTokenValue"/>
+<c:set var="cacheTokenParams" value="${cacheToken}=${cacheTokenValue}"/>
 <s:layout-definition>
     <html>
         <head>
             <link rel="shortcut icon"
-                 href="${cp}/favicon.ico" />
+                 href="${cp}/favicon.ico?${cacheTokenParams}" />
             <c:choose>
                 <c:when test="${not empty pageTitle}">
                     <title>${layout.appTitle} - ${pageTitle}</title>
@@ -31,15 +33,15 @@
                     <title>${layout.appTitle}</title>
                 </c:otherwise>
             </c:choose>
-            <link rel="stylesheet" href="${cp}/woko/css/layout-all.css" type="text/css">
-            <link rel="stylesheet" href="${cp}/woko/css/lithium/assets/style.css" type="text/css">
+            <link rel="stylesheet" href="${cp}/woko/css/layout-all.css?${cacheTokenParams}" type="text/css">
+            <link rel="stylesheet" href="${cp}/woko/css/lithium/assets/style.css?${cacheTokenParams}" type="text/css">
             <c:forEach items="${layout.cssIncludes}" var="cssLink">
                 <link rel="stylesheet" href="${pageContext.request.contextPath}${cssLink}" type="text/css">
             </c:forEach>
             <c:forEach items="${layout.jsIncludes}" var="jsLink">
                 <script type="text/javascript" src="${pageContext.request.contextPath}${jsLink}"></script>
             </c:forEach>
-            <script type="text/javascript" src="${pageContext.request.contextPath}/woko/js/woko.base.js"></script>
+            <script type="text/javascript" src="${pageContext.request.contextPath}/woko/js/woko.base.js?${cacheTokenParams}"></script>
             <s:layout-component name="customCss"/>
             <s:layout-component name="customJs"/>
         </head>
@@ -47,7 +49,7 @@
             <div id="wrap">
                 <div id="header-space">
                     <div id="logo">
-                        <img src="${pageContext.request.contextPath}/woko/woko-logo-small.png" alt="logo">
+                        <img src="${pageContext.request.contextPath}/woko/woko-logo-small.png?${cacheTokenParams}" alt="logo">
                     </div>
                     <div id="tagline">
                         <c:if test="${skipLoginLink==null}">

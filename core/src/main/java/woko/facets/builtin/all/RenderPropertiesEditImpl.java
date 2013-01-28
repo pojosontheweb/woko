@@ -26,6 +26,7 @@ import woko.users.UsernameResolutionStrategy;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @FacetKey(name = WokoFacets.renderPropertiesEdit, profileId = "all")
@@ -50,6 +51,11 @@ public class RenderPropertiesEditImpl<
     @Override
     public String getFieldPrefix() {
         return "object";
+    }
+
+    @Override
+    public List<String> getReadOnlyPropertyNames() {
+        return Collections.emptyList();
     }
 
     @Override
