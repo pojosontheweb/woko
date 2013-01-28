@@ -27,13 +27,6 @@
     <packaging>pom</packaging>
     <modules>
         <module>common</module>
-        <module>webtests-container-auth</module>
-        <module>webtests-builtin-auth</module>
-        <module>webtests-localization</module>
-        <module>webtests-rpc</module>
-        <module>webtests-bootstrap</module>
-        <module>webtests-usermanagement</module>
-        <module>webtests-async</module>
     </modules>
 
     <dependencies>
@@ -137,5 +130,19 @@
                 </dependency>
             </dependencies>
         </profile>
+
+        <profile>
+            <id>webtests</id>
+            <modules>
+                <module>webtests-container-auth</module>
+                <module>webtests-builtin-auth</module>
+                <module>webtests-localization</module>
+                <module>webtests-rpc</module>
+                <module>webtests-bootstrap</module>
+                <module>webtests-usermanagement</module>
+                <module>webtests-async</module>
+            </modules>
+        </profile>
+
     </profiles>
 </project>
