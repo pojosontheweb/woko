@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright 2001-2012 Remi Vankeisbelck
+  ~ Copyright 2001-2013 Remi Vankeisbelck
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="/WEB-INF/woko/jsp/taglibs.jsp"%>
 <w:username var="username"/>
-<c:set var="cp" value="${pageContext.request.contextPath}"/>
+<c:set var="cp" value="${pageContext.request.contextPath}" scope="request"/>
 <s:layout-definition>
     <html>
         <head>
