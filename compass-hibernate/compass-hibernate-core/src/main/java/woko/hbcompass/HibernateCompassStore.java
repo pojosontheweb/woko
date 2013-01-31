@@ -24,6 +24,9 @@ import woko.util.WLogger;
 
 import java.util.List;
 
+/**
+ * HibernateStore extension that uses Compass search engine for index/search operations.
+ */
 public class HibernateCompassStore extends HibernateStore {
 
   public static final String DEFAULT_HIBERNATE_CFG_XML = "/woko_default_hibernate_compass.cfg.xml";
