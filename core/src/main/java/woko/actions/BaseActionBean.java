@@ -23,6 +23,9 @@ import woko.persistence.ObjectStore;
 import woko.users.UserManager;
 import woko.users.UsernameResolutionStrategy;
 
+/**
+ * Base action class that handles <code>WokoActionBeanContext</code> instead of Stripes' defaults.
+ */
 public abstract class BaseActionBean<
         OsType extends ObjectStore,
         UmType extends UserManager,

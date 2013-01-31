@@ -21,6 +21,9 @@ import net.sourceforge.stripes.action.Resolution;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * Abstract helper class for RPC resolutions.
+ */
 public abstract class RpcResolutionWrapper implements Resolution, RpcResolution {
 
     private final Resolution originalResolution;
