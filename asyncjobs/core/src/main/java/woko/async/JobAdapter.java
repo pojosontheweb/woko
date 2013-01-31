@@ -1,5 +1,8 @@
 package woko.async;
 
+/**
+ * Adapter for JobListener.
+ */
 public class JobAdapter implements JobListener {
 
     @Override
