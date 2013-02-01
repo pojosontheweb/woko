@@ -239,17 +239,19 @@ public class NestedValidationMetadataProvider extends DefaultValidationMetadataP
         }
 
         // Print out a pretty debug message showing what validations got configured
-        StringBuilder builder = new StringBuilder(128);
-        for (Map.Entry<String, ValidationMetadata> entry : meta.entrySet()) {
-            if (builder.length() > 0) {
-                builder.append(", ");
+        if (logger.getRealLog().isDebugEnabled()) {
+            StringBuilder builder = new StringBuilder(128);
+            for (Map.Entry<String, ValidationMetadata> entry : meta.entrySet()) {
+                if (builder.length() > 0) {
+                    builder.append(", ");
+                }
+                builder.append(entry.getKey());
+                builder.append("->");
+                builder.append(entry.getValue());
             }
-            builder.append(entry.getKey());
-            builder.append("->");
-            builder.append(entry.getValue());
+            logger.debug("Loaded @ValidateNestedProperties validations for ", object, ": ", builder
+                    .length() > 0 ? builder : "<none>");
         }
-        logger.debug("Loaded @ValidateNestedProperties validations for ", object, ": ", builder
-                .length() > 0 ? builder : "<none>");
 
         return Collections.unmodifiableMap(meta);
     }
