@@ -153,7 +153,7 @@ class JobManagerTest {
 
             // wait for second thread to end
             boolean secondEnded = false
-            while (now()-start<10000 && !secondEnded) {
+            while (now()-start<20000 && !secondEnded) {
                 Thread.sleep(100)
                 secondEnded = listeners[1].ended
             }
