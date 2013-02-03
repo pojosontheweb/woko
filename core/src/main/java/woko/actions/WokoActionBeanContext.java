@@ -23,6 +23,9 @@ import woko.persistence.ObjectStore;
 import woko.users.UserManager;
 import woko.users.UsernameResolutionStrategy;
 
+/**
+ * Woko-aware <code>ActionBeanContext</code>.
+ */
 public class WokoActionBeanContext<
         OsType extends ObjectStore,
         UmType extends UserManager,

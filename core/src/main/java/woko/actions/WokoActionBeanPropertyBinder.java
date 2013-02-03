@@ -26,8 +26,21 @@ import woko.Woko;
 
 import java.util.List;
 
+/**
+ * Woko-specific <code>ActionBeanPropertyBinder</code> : performs some additional checks for Strict Binding
+ * of <code>facet.*</code> and <code>object.*</code> properties.
+ * Also replaces the prefixes with actual class names in Stripes errors, for easy localisation.
+ *
+ * @see WokoActionBean
+ * @see WokoFacetBindingPolicyManager
+ */
 public class WokoActionBeanPropertyBinder extends DefaultActionBeanPropertyBinder {
 
+    /**
+     * Performs the Woko-specific binding checks
+     * @param eval the expression to check for
+     * @return <code>true</code> if binding is allowed, false otherwise.
+     */
     @Override
     protected boolean isBindingAllowed(PropertyExpressionEvaluation eval) {
         if (super.isBindingAllowed(eval)) {
@@ -54,6 +67,9 @@ public class WokoActionBeanPropertyBinder extends DefaultActionBeanPropertyBinde
         return true;
     }
 
+    /**
+     * Replaces <code>facet</code> and <code>object</code> prefixes in stripes errors.
+     */
     @Override
     public ValidationErrors bind(ActionBean bean, ActionBeanContext context, boolean validate) {
         ValidationErrors errorsSaved =  super.bind(bean, context, validate);
