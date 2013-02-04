@@ -33,11 +33,22 @@ import net.sourceforge.stripes.util.bean.NodeEvaluation;
 import net.sourceforge.stripes.util.bean.PropertyExpressionEvaluation;
 import net.sourceforge.stripes.validation.ValidationMetadataProvider;
 import woko.Woko;
-import woko.facets.ResolutionFacet;
 import woko.facets.WokoFacetContext;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * Woko binding policy manager : handles binding security for <code>WokoActionBean</code>'s
+ * <code>object</code> and <code>facet</code> properties.
+ *
+ * Stripes only checks for <code>@StrictBinding</code> on <code>ActionBean</code>s. Woko has only one action
+ * by default ({@link WokoActionBean}), so we use ({@link WokoActionBeanPropertyBinder}) and this modified
+ * policy manager in order to allow <code>@StrictBinding</code> on {@link woko.facets.ResolutionFacet}s.
+ *
+ * @see WokoActionBean
+ * @see WokoActionBeanPropertyBinder
+ *
+ */
 @StrictBinding(defaultPolicy = StrictBinding.Policy.ALLOW)
 public class WokoFacetBindingPolicyManager {
 

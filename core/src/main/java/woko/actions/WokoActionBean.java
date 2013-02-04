@@ -167,13 +167,17 @@ public class WokoActionBean<
             throw new RuntimeException("facetName parameter not found in request");
         }
         key = req.getParameter("key");
-        logger.debug("Loading object for className=" + className + " and key=" + key);
+        if (logger.isDebugEnabled()) {
+            logger.debug("Loading object for className=" + className + " and key=" + key);
+        }
         Woko<OsType,UmType,UnsType,FdmType> woko = getContext().getWoko();
         OsType objectStore = woko.getObjectStore();
         if (className!=null) {
             if (key!=null) {
                 object = objectStore.load(className, key);
-                logger.debug("Loaded " + object + " (className=" + className + ", key=" + key + ")");
+                if (logger.isDebugEnabled()) {
+                    logger.debug("Loaded " + object + " (className=" + className + ", key=" + key + ")");
+                }
             } else {
                 String createTransientStr = req.getParameter(CREATE_TRANSIENT_REQ_PARAM);
                 boolean createTransient = createTransientStr!=null && createTransientStr.equals("true");
@@ -181,7 +185,9 @@ public class WokoActionBean<
                     Class<?> mappedClass = objectStore.getMappedClass(className);
                     try {
                         object = mappedClass.newInstance();
-                        logger.debug("Created transient " + object + ", no key provided (className=" + className + ")");
+                        if (logger.isDebugEnabled()) {
+                            logger.debug("Created transient " + object + ", no key provided (className=" + className + ")");
+                        }
                     } catch (Exception e) {
                         logger.error("Unable to create instance of " + mappedClass + " using no-args constructor.", e);
                         throw new RuntimeException(e);
@@ -206,7 +212,9 @@ public class WokoActionBean<
             throw new IllegalStateException("Facet " + f + " of class " + f.getClass() + " does not implement ResolutionFacet.");
         }
         facet = (ResolutionFacet) f;
-        logger.debug("Resolution facet " + facet + " loaded");
+        if (logger.isDebugEnabled()) {
+            logger.debug("Resolution facet " + facet + " loaded");
+        }
     }
 
     /**
@@ -218,7 +226,9 @@ public class WokoActionBean<
     public Resolution execute() {
         Method handler = getEventHandlerMethod();
         try {
-            logger.debug("Executing handler method : " + facet.toString() + "." + handler.getName());            
+            if (logger.isDebugEnabled()) {
+                logger.debug("Executing handler method : " + facet.toString() + "." + handler.getName());
+            }
             Object[] params;
             Class<?>[] paramTypes = handler.getParameterTypes();
             if (paramTypes.length==1) {

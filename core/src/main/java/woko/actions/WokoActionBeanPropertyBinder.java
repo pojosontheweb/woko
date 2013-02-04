@@ -27,8 +27,9 @@ import woko.Woko;
 import java.util.List;
 
 /**
- * Woko-specific <code>ActionBeanPropertyBinder</code> : performs some additional checks for Strict Binding
- * of <code>facet.*</code> and <code>object.*</code> properties.
+ * Woko-specific <code>ActionBeanPropertyBinder</code> : enables <code>@StrictBinding</code> to be used on
+ * <code>ResolutionFacet</code>s, and thereby to restrict binding of <code>WokoActionBean</code>'s
+ * <code>facet.*</code> and <code>object.*</code> properties.
  * Also replaces the prefixes with actual class names in Stripes errors, for easy localisation.
  *
  * @see WokoActionBean

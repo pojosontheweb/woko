@@ -23,6 +23,11 @@ import woko.facets.builtin.all.RenderPropertyValueJsonDate;
 import java.util.Collection;
 import java.util.Date;
 
+/**
+ * Date type converter that handles JSON dates.
+ *
+ * @see RenderPropertyValueJsonDate
+ */
 public class WokoDateTypeConverter extends DateTypeConverter {
 
     @Override

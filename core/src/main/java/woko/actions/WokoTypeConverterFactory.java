@@ -24,8 +24,25 @@ import woko.persistence.ObjectStore;
 import java.util.Date;
 import java.util.Locale;
 
+/**
+ * Custom <code>TypeConverterFactory</code> that handles the loading of
+ * Woko-managed POJOs via <code>ObjectStore</code>.
+ *
+ * @see WokoTypeConverter
+ */
 public class WokoTypeConverterFactory extends DefaultTypeConverterFactory {
 
+    /**
+     * Return a converter (if any) for passed class and locale. If the class
+     * corresponds to a Woko-managed POJO, then use <code>WokoTypeConverter</code>. Otherwise,
+     * just use the <code>DefaultTypeConverterFactory</code>'s registered Type Converter.
+     *
+     * @param aClass the target class we want to convert to
+     * @param locale the locale
+     * @return a <code>TypeConverter</code> for passed class and locale
+     *
+     * @throws Exception if an error occurs while trying to retrieve the Type Converter.
+     */
     public TypeConverter getTypeConverter(Class aClass, Locale locale) throws Exception {
         // check if the class is a Woko mapped class
         TypeConverter tc;
