@@ -19,6 +19,9 @@ package woko.facets.builtin.all;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Helper class for creating HTML hyperlinks or buttons.
+ */
 public class Link {
 
     private final String href;
@@ -26,6 +29,11 @@ public class Link {
     private String cssClass;
     private final Map<String,String> attributes = new HashMap<String, String>();
 
+    /**
+     * Create the link with passed href and text
+     * @param href the href
+     * @param text the text
+     */
     public Link(String href, String text) {
         this.href = href;
         this.text = text;

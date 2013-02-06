@@ -25,6 +25,9 @@ import woko.persistence.ObjectStore;
 import woko.users.UserManager;
 import woko.users.UsernameResolutionStrategy;
 
+/**
+ * <code>navBar</code> fragment facet for unauthenticated, guest users.
+ */
 @FacetKey(name = WokoFacets.navBar, profileId = "all")
 public class NavBarAll<
         OsType extends ObjectStore,

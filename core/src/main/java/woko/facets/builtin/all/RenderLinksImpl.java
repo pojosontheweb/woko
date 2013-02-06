@@ -30,6 +30,11 @@ import woko.util.Util;
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
+/**
+ * Generic <code>renderLinks</code> facet for unauthenticated users. Tries to retrieve
+ * <code>view</code> and <code>edit</code> facets in order to create the links
+ * to be displayed for the target object.
+ */
 @FacetKey(name = WokoFacets.renderLinks, profileId = "all")
 public class RenderLinksImpl<
         OsType extends ObjectStore,

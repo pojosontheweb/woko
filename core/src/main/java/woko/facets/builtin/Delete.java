@@ -18,8 +18,25 @@ package woko.facets.builtin;
 
 import woko.facets.ResolutionFacet;
 
+/**
+ * <code>delete</code> facet : used to delete managed POJOs with urls like :
+ *
+ * <pre>http://.../delete/MyClass/123</pre>
+ */
 public interface Delete extends ResolutionFacet {
 
     static final String FACET_NAME = "delete";
+
+    /**
+     * Confirmation flag : actually delete the object if <code>true</code>
+     * @return <code>true</code> if the target object has to be deleted
+     */
+    Boolean getConfirm();
+
+    /**
+     * Cancel flag : cancel deletion of the object if <code>true</code>
+     * @return <code>true</code> if the operation is cancelled
+     */
+    Boolean getCancel();
 
 }

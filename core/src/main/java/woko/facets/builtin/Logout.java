@@ -18,6 +18,9 @@ package woko.facets.builtin;
 
 import woko.facets.ResolutionFacet;
 
+/**
+ * <code>logout</code> facet allows currently logged-in user to disconnect.
+ */
 public interface Logout extends ResolutionFacet {
 
     static final String FACET_NAME = "logout";

@@ -24,6 +24,9 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Utility class that groups all Woko facets and provides plumbing for tooling module.
+ */
 public class WokoFacets {
 
     public static final String create = "create";

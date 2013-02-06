@@ -18,8 +18,8 @@
             <w:objectKey var="key" object="${o}"/>
         </p>
         <s:form action="${pageContext.request.contextPath}/delete/${className}/${key}" class="form-inline">
-            <s:submit name="facet.confirm" class="btn btn-primary"/>
-            <s:submit name="facet.cancel" class="btn"/>
+            <s:submit name="facet.confirm" class="btn btn-primary" value="true"/>
+            <s:submit name="facet.cancel" class="btn" value="true"/>
         </s:form>
 
     </s:layout-component>

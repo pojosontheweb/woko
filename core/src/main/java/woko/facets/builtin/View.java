@@ -18,6 +18,13 @@ package woko.facets.builtin;
 
 import woko.facets.ResolutionFacet;
 
+/**
+ * <code>view</code> resolution facets are used to display Woko-managed POJOs as HTML pages.
+ *
+ * One can completely replace the Object Renderer for objects displayed in view mode by overriding this facet.
+ * For more fine-grained control, override some Object Renderer fragment facets (<code>renderObject</code>,
+ * <code>renderProperties</code>, etc.).
+ */
 public interface View extends ResolutionFacet {
 
     static final String FACET_NAME = "view";

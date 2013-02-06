@@ -18,10 +18,17 @@ package woko.facets.builtin;
 
 import woko.facets.ResolutionFacet;
 
+/**
+ * <code>search</code> resolution facets allow to search for Woko managed POJOs in a full text fashion.
+ */
 public interface Search extends ResolutionFacet, ResultFacet {
 
     static final String FACET_NAME = "search";
 
-  String getQuery();
+    /**
+     * Return the query supplied for the search
+     * @return the query supplied for the search
+     */
+    String getQuery();
 
 }

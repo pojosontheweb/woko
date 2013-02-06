@@ -7,6 +7,9 @@ import woko.persistence.ObjectStore;
 import woko.users.UserManager;
 import woko.users.UsernameResolutionStrategy;
 
+/**
+ * Base class for <code>RenderPropertyValueEdit</code> facets.
+ */
 public class BaseRenderPropertyValueEdit<
         OsType extends ObjectStore,
         UmType extends UserManager,

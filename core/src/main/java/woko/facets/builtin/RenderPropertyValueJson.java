@@ -18,11 +18,21 @@ package woko.facets.builtin;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * <code>renderPropertyValueJson</code> allows to convert an object property to JSON. It is used
+ * by default by <code>renderObjectJson</code>, and can be overriden in order to customize the JSON
+ * conversion of object properties for your classes and users.
+ */
 public interface RenderPropertyValueJson {
 
     static final String FACET_NAME = "renderPropertyValueJson";
 
-
-  Object propertyToJson(HttpServletRequest request, Object propertyValue);
+    /**
+     * Convert the property value to JSON. Can return basic types or JSONObject/JSONArray.
+     * @param request the request
+     * @param propertyValue the property value
+     * @return the property as JSON
+     */
+    Object propertyToJson(HttpServletRequest request, Object propertyValue);
 
 }

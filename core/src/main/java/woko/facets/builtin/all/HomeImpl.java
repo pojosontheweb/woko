@@ -25,6 +25,12 @@ import woko.persistence.ObjectStore;
 import woko.users.UserManager;
 import woko.users.UsernameResolutionStrategy;
 
+/**
+ * <code>home</code> facet for role <code>all</code> : used for unauthenticated (guest) users.
+ *
+ * Assigned to profile <code>all</code> so that one can override for default <code>guest</code> easily without
+ * using a custom default role (fallback profile).
+ */
 @FacetKey(name= WokoFacets.home, profileId="all")
 public class HomeImpl<
         OsType extends ObjectStore,

@@ -22,10 +22,21 @@ import woko.facets.builtin.all.Link;
 
 import java.util.List;
 
+/**
+ * <code>renderLinks</code> fragment facets are used to display links for objects
+ * in view or edit mode.
+ *
+ * The default, generic hehavior allows for CRUD operations, based on the presence of
+ * CRUD facets on the target object (<code>view</code>, <code>edit</code> etc).
+ */
 public interface RenderLinks extends IFacet, FragmentFacet {
 
     static final String FACET_NAME = "renderLinks";
 
-  List<Link> getLinks();
+    /**
+     * Return a list of links to be displayed for the rendered object
+     * @return a list of links
+     */
+    List<Link> getLinks();
 
 }

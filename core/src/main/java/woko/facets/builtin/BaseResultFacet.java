@@ -33,6 +33,9 @@ import woko.users.UsernameResolutionStrategy;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * Base abstract class for implementing {@link ResultFacet}.
+ */
 public abstract class BaseResultFacet<
         OsType extends ObjectStore,
         UmType extends UserManager,
@@ -121,6 +124,13 @@ public abstract class BaseResultFacet<
         return new StreamingResolution("text/json", r.toString());
     }
 
+    /**
+     * To be implemented by concrete subclasses : create and return the results for passed parameters
+     * @param abc the action bean context
+     * @param start the start index (>=0)
+     * @param limit the limit
+     * @return the results to be displayed
+     */
     protected abstract ResultIterator createResultIterator(ActionBeanContext abc, int start, int limit);
 
     public String getListWrapperCssClass() {

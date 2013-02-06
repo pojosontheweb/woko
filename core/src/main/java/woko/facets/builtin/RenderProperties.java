@@ -22,12 +22,31 @@ import net.sourceforge.jfacets.IFacet;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * <code>renderProperties</code> fragment facets are used to display the properties
+ * of target objects in the page.
+ *
+ * By default, it uses reflection in order to get the first level properties of the target object
+ * and then delegates to other Object Renderer facets (<code>renderPropertyName</code> and
+ * <code>renderPropertyValue</code>).
+ *
+ * One can override this facet in order to customize the properties section of rendered objects
+ * for the various classes and roles of the app.
+ */
 public interface RenderProperties extends IFacet, FragmentFacet {
 
     static final String FACET_NAME = "renderProperties";
 
-  List<String> getPropertyNames();
+    /**
+     * Return a list of the property names to be displayed
+     * @return a list of property names to be displayed
+     */
+    List<String> getPropertyNames();
 
-  Map<String,Object> getPropertyValues();
+    /**
+     * Return a map of the property names and values to be displayed
+     * @return a map of property names and values to be displayed
+     */
+    Map<String, Object> getPropertyValues();
 
 }

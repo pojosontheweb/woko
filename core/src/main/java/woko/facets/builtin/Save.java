@@ -18,6 +18,9 @@ package woko.facets.builtin;
 
 import woko.facets.ResolutionFacet;
 
+/**
+ * <code>save</code> resolution facets are used to persist changes to the target object.
+ */
 public interface Save extends ResolutionFacet {
 
     static final String FACET_NAME = "save";
