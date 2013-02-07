@@ -27,6 +27,12 @@ import woko.users.UsernameResolutionStrategy;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Allows to find any Woko-managed POJO (by class or using full-text search).
+ *
+ * Available only to <code>developer</code> users by default. Override for your role(s) in
+ * order to make this available for your users.
+ */
 @FacetKey(name = WokoFacets.find, profileId = "developer")
 public class Find<
         OsType extends ObjectStore,

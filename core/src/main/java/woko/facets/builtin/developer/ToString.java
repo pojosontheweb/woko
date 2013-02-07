@@ -26,17 +26,21 @@ import woko.persistence.ObjectStore;
 import woko.users.UserManager;
 import woko.users.UsernameResolutionStrategy;
 
-@FacetKey(name="toString", profileId="developer")
+/**
+ * Resolution facet that just returns the result of <code>toString()</code> on the target
+ * object as text.
+ */
+@FacetKey(name = "toString", profileId = "developer")
 public class ToString<
         OsType extends ObjectStore,
         UmType extends UserManager,
         UnsType extends UsernameResolutionStrategy,
         FdmType extends IFacetDescriptorManager
-        > extends BaseResolutionFacet<OsType,UmType,UnsType,FdmType> {
+        > extends BaseResolutionFacet<OsType, UmType, UnsType, FdmType> {
 
-  public Resolution getResolution(ActionBeanContext abc) {
-    Object o = getFacetContext().getTargetObject();
-    return new StreamingResolution("text/plain", o!=null ? o.toString() : "null");
-  }
+    public Resolution getResolution(ActionBeanContext abc) {
+        Object o = getFacetContext().getTargetObject();
+        return new StreamingResolution("text/plain", o != null ? o.toString() : "null");
+    }
 
 }

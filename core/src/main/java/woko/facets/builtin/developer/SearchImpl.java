@@ -30,6 +30,12 @@ import woko.users.UsernameResolutionStrategy;
 
 import java.util.Collections;
 
+/**
+ * <code>search</code> resolution facet : performs a full text search and displays the results.
+ *
+ * Available only to <code>developer</code> users by default. Override for your role(s) in
+ * order to make this available for your users.
+ */
 @FacetKey(name = WokoFacets.search, profileId = "developer")
 public class SearchImpl<
         OsType extends ObjectStore,
@@ -39,6 +45,10 @@ public class SearchImpl<
         > extends BaseResultFacet<OsType,UmType,UnsType,FdmType> implements Search {
 
     public static final String FRAGMENT_PATH = "/WEB-INF/woko/jsp/developer/search.jsp";
+
+    /**
+     * The full-text search query
+     */
     private String query;
 
     public String getQuery() {
@@ -53,6 +63,14 @@ public class SearchImpl<
         return FRAGMENT_PATH;
     }
 
+    /**
+     * Perform the search and return a <code>ResultIterator</code>
+     * @param abc the action bean context
+     * @param start the start index (>=0)
+     * @param limit the limit (-1 for no limit)
+     *
+     * @return a ResultIterator with the search results
+     */
     protected ResultIterator<?> createResultIterator(ActionBeanContext abc, int start, int limit) {
         if (query == null) {
             return new ListResultIterator<Object>(Collections.emptyList(), start, limit, 0);

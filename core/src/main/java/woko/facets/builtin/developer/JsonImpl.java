@@ -31,21 +31,27 @@ import woko.persistence.ObjectStore;
 import woko.users.UserManager;
 import woko.users.UsernameResolutionStrategy;
 
-@FacetKey(name= WokoFacets.json, profileId="developer")
+/**
+ * <code>json</code> resolution facet, for converting Woko-managed POJOs to JSON.
+ *
+ * Available only to <code>developer</code> users by default. Override for your role(s) in
+ * order to make this available for your users.
+ */
+@FacetKey(name = WokoFacets.json, profileId = "developer")
 public class JsonImpl<
         OsType extends ObjectStore,
         UmType extends UserManager,
         UnsType extends UsernameResolutionStrategy,
         FdmType extends IFacetDescriptorManager
-        > extends BaseFacet<OsType,UmType,UnsType,FdmType> implements Json {
+        > extends BaseFacet<OsType, UmType, UnsType, FdmType> implements Json {
 
-  public Resolution getResolution(ActionBeanContext abc) {
-    WokoFacetContext<OsType,UmType,UnsType,FdmType> facetContext = getFacetContext();
-    RenderObjectJson roj = facetContext.getWoko().getFacet(WokoFacets.renderObjectJson, abc.getRequest(), facetContext.getTargetObject());
-    JSONObject json = roj.objectToJson(abc.getRequest());
-    String jsonStr = json.toString();
-    return new StreamingResolution("text/json", jsonStr);
-  }
+    public Resolution getResolution(ActionBeanContext abc) {
+        WokoFacetContext<OsType, UmType, UnsType, FdmType> facetContext = getFacetContext();
+        RenderObjectJson roj = facetContext.getWoko().getFacet(WokoFacets.renderObjectJson, abc.getRequest(), facetContext.getTargetObject());
+        JSONObject json = roj.objectToJson(abc.getRequest());
+        String jsonStr = json.toString();
+        return new StreamingResolution("text/json", jsonStr);
+    }
 
 
 }

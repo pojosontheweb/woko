@@ -37,6 +37,12 @@ import woko.users.UsernameResolutionStrategy;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Collections;
 
+/**
+ * Generic <code>list</code> resolution facet.
+ *
+ * Available only to <code>developer</code> users by default. Override for your role(s) in
+ * order to make this available for your users.
+ */
 @FacetKey(name = WokoFacets.list, profileId = "developer")
 public class ListImpl<
         OsType extends ObjectStore,

@@ -29,6 +29,12 @@ import woko.users.UserManager;
 import woko.users.UsernameResolutionStrategy;
 import woko.util.WLogger;
 
+/**
+ * Generic <code>save</code> facet : saves or updates any Woko-managed POJO to the Store.
+ *
+ * Available only to <code>developer</code> users by default. Override for your role(s) in
+ * order to make this available for your users.
+ */
 @FacetKey(name = WokoFacets.save, profileId = "developer")
 public class SaveImpl<
         OsType extends ObjectStore,
@@ -41,6 +47,11 @@ public class SaveImpl<
 
     public static final String TARGET_FACET_AFTER_SAVE = WokoFacets.edit;
 
+    /**
+     * Perform validation (using <code>validate</code> facet) and save the target object.
+     * @param abc the action bean context
+     * @return a Resolution that redirects to the post-save page, or returns the updated object as JSON (RPC resolution)
+     */
     public Resolution getResolution(final ActionBeanContext abc) {
         // try to find a validation facet for the object
         final WokoFacetContext<OsType,UmType,UnsType,FdmType> facetContext = getFacetContext();
@@ -83,15 +94,30 @@ public class SaveImpl<
 
     }
 
+    /**
+     * Create and return the non-RPC resolution. Redirects to the facet returned by
+     * <code>getTargetFacetAfterSave()</code>.
+     * @param abc the action bean context
+     * @return a RedirectResolution to the target facet after save
+     */
     protected Resolution getNonRpcResolution(ActionBeanContext abc) {
         WokoFacetContext<OsType,UmType,UnsType,FdmType> fc = getFacetContext();
         return new RedirectResolution(fc.getWoko().facetUrl(getTargetFacetAfterSave(),fc.getTargetObject()));
     }
 
+    /**
+     * Return the name of the resolution facet to be used for redirect, after the target object
+     * has been saved.
+     * @return the name of the facet to be used for post-save redirect
+     */
     protected String getTargetFacetAfterSave() {
         return TARGET_FACET_AFTER_SAVE;
     }
 
+    /**
+     * Actually save the object in the store, and toss a message to the action bean context.
+     * @param abc the action bean context
+     */
     protected void doSave(ActionBeanContext abc) {
         WokoFacetContext<OsType,UmType,UnsType,FdmType> facetContext = getFacetContext();
         facetContext.getWoko().getObjectStore().save(facetContext.getTargetObject());

@@ -25,6 +25,9 @@ import woko.persistence.ObjectStore;
 import woko.users.UserManager;
 import woko.users.UsernameResolutionStrategy;
 
+/**
+ * <code>navBar</code> facet for <code>developer</code> role.
+ */
 @FacetKey(name = WokoFacets.navBar, profileId = "developer")
 public class NavBarDev<
         OsType extends ObjectStore,

@@ -25,6 +25,9 @@ import woko.persistence.ObjectStore;
 import woko.users.UserManager;
 import woko.users.UsernameResolutionStrategy;
 
+/**
+ * <code>home</code> resolution facet for <code>developer</code> role.
+ */
 @FacetKey(name = WokoFacets.home, profileId = "developer")
 public class HomeImpl<
         OsType extends ObjectStore,
