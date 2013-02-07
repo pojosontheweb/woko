@@ -24,17 +24,30 @@ import woko.persistence.ObjectStore;
 import woko.users.UserManager;
 import woko.users.UsernameResolutionStrategy;
 
+/**
+ * Base class for <code>ResolutionFacet</code>s that forward to a JSP.
+ */
 public abstract class BaseForwardResolutionFacet<
         OsType extends ObjectStore,
         UmType extends UserManager,
         UnsType extends UsernameResolutionStrategy,
         FdmType extends IFacetDescriptorManager
-        > extends BaseResolutionFacet<OsType,UmType,UnsType,FdmType> {
+        > extends BaseResolutionFacet<OsType, UmType, UnsType, FdmType> {
 
-  public abstract String getPath();
+    /**
+     * Return the path to the JSP to be forwarded to
+     * @return the JSP path to forward to
+     */
+    public abstract String getPath();
 
-  public Resolution getResolution(ActionBeanContext abc) {
-    return new ForwardResolution(getPath());
-  }
+    /**
+     * Return a <code>ForwardResolution</code> that uses the path returned by
+     * <code>getPath()</code>.
+     * @param abc the action bean context
+     * @return a ForwardResolution to the path returned by <code>getPath()</code>
+     */
+    public Resolution getResolution(ActionBeanContext abc) {
+        return new ForwardResolution(getPath());
+    }
 
 }
