@@ -10,6 +10,9 @@ import woko.util.WLogger;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Simple implementation of the IOC container for use cases where no heavy IOC is needed.
+ */
 public class SimpleWokoIocContainer<
         OsType extends ObjectStore,
         UmType extends UserManager,
@@ -21,6 +24,13 @@ public class SimpleWokoIocContainer<
 
     private static final WLogger logger = WLogger.getLogger(SimpleWokoIocContainer.class);
 
+    /**
+     * Create the simple IOC container with passed parameters
+     * @param objectStore the <code>ObjectStore</code> to be used
+     * @param userManager the <code>UserManager</code> to be used
+     * @param usernameResolutionStrategy the <code>UsernameResolutionStrategy</code> to be used
+     * @param facetDescriptorManager the <code>IFacetDescriptorManager</code> to be used
+     */
     public SimpleWokoIocContainer(ObjectStore objectStore, UserManager userManager, UsernameResolutionStrategy usernameResolutionStrategy, IFacetDescriptorManager facetDescriptorManager) {
         this.addComponent(ObjectStore, objectStore)
             .addComponent(UserManager, userManager)
@@ -28,17 +38,33 @@ public class SimpleWokoIocContainer<
             .addComponent(FacetDescriptorManager, facetDescriptorManager);
     }
 
+    /**
+     * Add a managed component to the IOC.
+     * @param name the name (key) of the component
+     * @param component the component
+     * @return <code>this</code> for chained calls
+     */
     public SimpleWokoIocContainer<OsType,UmType,UnsType,FdmType> addComponent(String name, Object component) {
         this.components.put(name, component);
         return this;
     }
 
+    /**
+     * Return the component for passed name (key)
+     * @param name the name of the component
+     * @param <T> the component type
+     * @return the component for passed key
+     */
     @SuppressWarnings("unchecked")
     @Override
     public <T> T getComponent(Object name) {
         return (T)this.components.get(name);
     }
 
+    /**
+     * Close the container : close all contained components that implement the
+     * <code>Closeable</code> interface, and clear the components map.
+     */
     @Override
     public void close() {
         logger.info("Closing components if needed...");

@@ -6,6 +6,10 @@ import woko.persistence.ObjectStore;
 import woko.users.UserManager;
 import woko.users.UsernameResolutionStrategy;
 
+/**
+ * Base class for <code>Woko</code> IOC containers. Provides implementation of mandatory components
+ * accessor methods.
+ */
 public abstract class AbstractWokoIocContainer<
         OsType extends ObjectStore,
         UmType extends UserManager,
