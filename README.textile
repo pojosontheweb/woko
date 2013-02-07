@@ -1,4 +1,4 @@
-h1. Welcome to Woko2
+h1. Welcome to Woko
 
 Woko is a **Full-Stack Web Framework** for the Java Platform that aims to put your POJOs
 on the Web for nothing (or almost !). The main idea behind Woko is "do more with less" :
