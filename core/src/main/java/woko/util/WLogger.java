@@ -21,48 +21,51 @@ import net.sourceforge.stripes.util.Log;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
+/**
+ * Woko Logger. We use this in order to ease logger replacement if needed.
+ */
 public class WLogger {
 
-  public static WLogger getLogger(Class categoryClass) {
-    return new WLogger(categoryClass);
-  }
+    public static WLogger getLogger(Class categoryClass) {
+        return new WLogger(categoryClass);
+    }
 
-  private final Log stripesLog;
+    private final Log stripesLog;
 
-  public WLogger(Class categoryClass) {
-    this.stripesLog = Log.getInstance(categoryClass);
-  }
+    public WLogger(Class categoryClass) {
+        this.stripesLog = Log.getInstance(categoryClass);
+    }
 
     public boolean isDebugEnabled() {
         return stripesLog.getRealLog().isDebugEnabled();
     }
 
-  public void debug(String msg) {
-    stripesLog.debug(msg);
-  }
+    public void debug(String msg) {
+        stripesLog.debug(msg);
+    }
 
-  public void info(String msg) {
-    stripesLog.info(msg);
-  }
+    public void info(String msg) {
+        stripesLog.info(msg);
+    }
 
-  public void warn(String msg) {
-    stripesLog.warn(msg);
-  }
+    public void warn(String msg) {
+        stripesLog.warn(msg);
+    }
 
-  public void error(String msg) {
-    stripesLog.error(msg);
-  }
+    public void error(String msg) {
+        stripesLog.error(msg);
+    }
 
-  public void warn(String msg,Exception e) {
-    StringWriter sw = new StringWriter();
-    e.printStackTrace(new PrintWriter(sw));
-    stripesLog.warn(msg, "\nStack:\n", sw.toString());
-  }
+    public void warn(String msg, Exception e) {
+        StringWriter sw = new StringWriter();
+        e.printStackTrace(new PrintWriter(sw));
+        stripesLog.warn(msg, "\nStack:\n", sw.toString());
+    }
 
-  public void error(String msg,Exception e) {
-    StringWriter sw = new StringWriter();
-    e.printStackTrace(new PrintWriter(sw));
-    stripesLog.error(msg, "\nStack:\n", sw.toString());
-  }
+    public void error(String msg, Exception e) {
+        StringWriter sw = new StringWriter();
+        e.printStackTrace(new PrintWriter(sw));
+        stripesLog.error(msg, "\nStack:\n", sw.toString());
+    }
 
 }

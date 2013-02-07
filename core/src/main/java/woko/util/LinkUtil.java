@@ -26,8 +26,18 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * Utility class for managing links and URLs
+ */
 public class LinkUtil {
 
+    /**
+     * Create and return an URL for passed parameters
+     * @param woko the Woko instance
+     * @param o the target object for the link
+     * @param facetName the name of the resolution facet for the link
+     * @return a link to the resolution facet (like view/MyClass/123)
+     */
     public static String getUrl(Woko<?,?,?,?> woko, Object o, String facetName) {
         ObjectStore s = woko.getObjectStore();
         String className = s.getClassMapping(o.getClass());
@@ -42,6 +52,12 @@ public class LinkUtil {
         }
     }
 
+    /**
+     * Create and return a String with all attributes for the link
+     * @param l the Link
+     * @param request the request
+     * @return a String with all attributes of passed link
+     */
     public static String computeAllLinkAttributes(Link l, HttpServletRequest request) {
         StringBuilder sb = new StringBuilder();
         String href = l.getHref();
