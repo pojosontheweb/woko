@@ -19,42 +19,80 @@ package woko.persistence;
 import java.util.Iterator;
 import java.util.List;
 
+/**
+ * List-based <code>ResultIterator</code> implementation.
+ * @param <T> the type of iterator objects
+ */
 public class ListResultIterator<T> extends ResultIterator<T> {
 
-  private final int start;
-  private final int limit;
-  private final int totalSize;
-  private final Iterator<? extends T> delegate;
+    private final int start;
+    private final int limit;
+    private final int totalSize;
+    private final Iterator<? extends T> delegate;
 
-  public ListResultIterator(List<? extends T> objects, int start, int limit, int totalSize) {
-    this(objects.iterator(), start, limit, totalSize);
-  }
+    /**
+     * Create the iterator with passed parameters
+     * @param objects the list of objects to be used
+     * @param start the start offset
+     * @param limit the limit
+     * @param totalSize the total size
+     */
+    public ListResultIterator(List<? extends T> objects, int start, int limit, int totalSize) {
+        this(objects.iterator(), start, limit, totalSize);
+    }
 
-  public ListResultIterator(Iterator<? extends T> objects, int start, int limit, int totalSize) {
-    this.start = start;
-    this.limit = limit;
-    this.totalSize = totalSize;
-    delegate = objects;
-  }
+    /**
+     * Create the iterator with passed parameters
+     * @param objects an iterator of objects to be used
+     * @param start the start offset
+     * @param limit the limit
+     * @param totalSize the total size
+     */
+    public ListResultIterator(Iterator<? extends T> objects, int start, int limit, int totalSize) {
+        this.start = start;
+        this.limit = limit;
+        this.totalSize = totalSize;
+        delegate = objects;
+    }
 
-  public T next() {
-    return delegate.next();
-  }
+    /**
+     * Return the next object if any
+     * @return the next object if any
+     */
+    public T next() {
+        return delegate.next();
+    }
 
-  public boolean hasNext() {
-    return delegate.hasNext();
-  }
+    /**
+     * Return <code>true</code> if the iterator has more elements, <code>false</code> otherwise
+     * @return <code>true</code> if the iterator has more elements, <code>false</code> otherwise
+     */
+    public boolean hasNext() {
+        return delegate.hasNext();
+    }
 
-  public int getStart() {
-    return start;
-  }
+    /**
+     * Return the start offset, as passed at construction time
+     * @return the start offset, as passed at construction time
+     */
+    public int getStart() {
+        return start;
+    }
 
-  public int getLimit() {
-    return limit;
-  }
+    /**
+     * Return the limit, as passed at construction time
+     * @return the limit, as passed at construction time
+     */
+    public int getLimit() {
+        return limit;
+    }
 
-  public int getTotalSize() {
-    return totalSize;
-  }
+    /**
+     * Return the total size, as passed at construction time
+     * @return the total size, as passed at construction time
+     */
+    public int getTotalSize() {
+        return totalSize;
+    }
 
 }

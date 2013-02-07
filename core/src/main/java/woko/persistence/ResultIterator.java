@@ -16,23 +16,50 @@
 
 package woko.persistence;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * ResultIterator allows for paginated lists.
+ * @param <T> the type of elements returned by the iterator
+ */
 public abstract class ResultIterator<T> {
 
+    /**
+     * Return the next element if any
+     * @return the next element if any
+     */
     public abstract T next();
 
+    /**
+     * Return <code>true</code> if the iterator has more elements, <code>false</code> otherwise
+     * @return <code>true</code> if the iterator has more elements, <code>false</code> otherwise
+     */
     public abstract boolean hasNext();
 
+    /**
+     * Return the start offset (used for pagination of the results)
+     * @return the start offset
+     */
     public abstract int getStart();
 
+    /**
+     * Return the limit (used for pagination of the results)
+     * @return the limit
+     */
     public abstract int getLimit();
 
+    /**
+     * Return the total size (used for pagination of the results)
+     * @return the total size
+     */
     public abstract int getTotalSize();
 
+    /**
+     * Convert iterator elements to a <code>List</code>
+     * @return a List of elements in the iterator
+     */
     public List<T> toList() {
         ArrayList<T> result = new ArrayList<T>();
         while (hasNext()) {
