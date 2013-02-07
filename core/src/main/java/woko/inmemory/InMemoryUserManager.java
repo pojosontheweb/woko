@@ -24,45 +24,49 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * In-memory implementation of <code>UserManager</code>.
+ * Clearly not for production use !
+ */
 public class InMemoryUserManager implements UserManager {
 
-  private Map<String,InMemoryUser> users = new HashMap<String,InMemoryUser>();
+    private Map<String, InMemoryUser> users = new HashMap<String, InMemoryUser>();
 
-  private InMemoryUser getUser(String username) {
-    return users.get(username);
-  }
-
-  public List<String> getRoles(String username) {
-    InMemoryUser u = getUser(username);
-    if (u==null) {
-      return Collections.emptyList();
+    private InMemoryUser getUser(String username) {
+        return users.get(username);
     }
-    return u.getRoles();
-  }
 
-  protected String extractPassword(HttpServletRequest request) {
-    return request.getParameter("password");
-  }
-
-  public boolean authenticate(String username, HttpServletRequest request) {
-    InMemoryUser u = getUser(username);
-    if (u==null) {
-      return false;
+    public List<String> getRoles(String username) {
+        InMemoryUser u = getUser(username);
+        if (u == null) {
+            return Collections.emptyList();
+        }
+        return u.getRoles();
     }
-    String pwd = u.getPassword();
-    return pwd != null && pwd.equals(extractPassword(request));
-  }
 
-  public InMemoryUserManager addUser(String username, String password, List<String> roles) {
-    if (users.containsKey(username)) {
-      throw new IllegalArgumentException("User " + username + " already exists");
+    protected String extractPassword(HttpServletRequest request) {
+        return request.getParameter("password");
     }
-    InMemoryUser imu = new InMemoryUser();
-    imu.setUsername(username);
-    imu.setPassword(password);
-    imu.setRoles(roles);
-    users.put(username, imu);
-    return this;
-  }
+
+    public boolean authenticate(String username, HttpServletRequest request) {
+        InMemoryUser u = getUser(username);
+        if (u == null) {
+            return false;
+        }
+        String pwd = u.getPassword();
+        return pwd != null && pwd.equals(extractPassword(request));
+    }
+
+    public InMemoryUserManager addUser(String username, String password, List<String> roles) {
+        if (users.containsKey(username)) {
+            throw new IllegalArgumentException("User " + username + " already exists");
+        }
+        InMemoryUser imu = new InMemoryUser();
+        imu.setUsername(username);
+        imu.setPassword(password);
+        imu.setRoles(roles);
+        users.put(username, imu);
+        return this;
+    }
 
 }
