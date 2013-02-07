@@ -26,6 +26,10 @@ import org.hibernate.Transaction;
 import woko.Woko;
 import woko.util.WLogger;
 
+/**
+ * Hibernate OSIV pattern (implemented as a Stripes Interceptor) : begins and commits transactions
+ * for each incoming HTTP request.
+ */
 @Intercepts({LifecycleStage.RequestInit, LifecycleStage.RequestComplete})
 public class HibernateTxInterceptor implements net.sourceforge.stripes.controller.Interceptor {
 

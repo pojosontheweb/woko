@@ -34,6 +34,10 @@ import java.io.Serializable;
 import java.net.URL;
 import java.util.*;
 
+/**
+ * Hibernate-backed <code>ObjectStore</code> implementation. Uses Hibernate and JPA to persist the
+ * Woko-managed POJOs.
+ */
 public class HibernateStore implements ObjectStore, TransactionalStore, Closeable {
 
     public static final String DEFAULT_HIBERNATE_CFG_XML = "/woko_default_hibernate.cfg.xml";
@@ -46,6 +50,14 @@ public class HibernateStore implements ObjectStore, TransactionalStore, Closeabl
     private final SessionFactory sessionFactory;
     private List<Class<?>> mappedClasses;
 
+    /**
+     * Create the store with passed packages. Will look for <code>@Entity</code>-annotated classes in specified
+     * packaged.
+     * If no <code>hibernate.cfg.xml</code> is supplied, will default to
+     * <code>woko_default_hibernate.cfg.xml</code>. Simply place a <code>hibernate.cfg.xml</code> to your CLASSPATH
+     * root in order to customize the session factory details.
+     * @param packageNames a list of packages to scan entities for
+     */
     public HibernateStore(List<String> packageNames) {
         log.info("Creating with package names : " + packageNames);
         Configuration cfg = createConfiguration(packageNames);
@@ -68,18 +80,35 @@ public class HibernateStore implements ObjectStore, TransactionalStore, Closeabl
         }
     }
 
+    /**
+     * Return the default <code>woko_default_hibernate.cfg.xml</code> session factory configuration file
+     * @return the default session factory config
+     */
     protected String getDefaultHibernateCfgXml() {
         return DEFAULT_HIBERNATE_CFG_XML;
     }
 
+    /**
+     * Return the hibernate Session Factory
+     * @return the Session Factory
+     */
     public SessionFactory getSessionFactory() {
         return sessionFactory;
     }
 
+    /**
+     * Create and return the primary key converter
+     * @return the primary key converter
+     */
     protected HibernatePrimaryKeyConverter createPrimaryKeyConverter() {
         return new HibernatePrimaryKeyConverter();
     }
 
+    /**
+     * Create the Hibernate <code>Configuration</code> for specified packages
+     * @param packageNames the packages to scan for entities
+     * @return the Hibernate Configuration
+     */
     protected Configuration createConfiguration(List<String> packageNames) {
         mappedClasses = new ArrayList<Class<?>>();
         if (packageNames == null) {
@@ -106,10 +135,20 @@ public class HibernateStore implements ObjectStore, TransactionalStore, Closeabl
         return cfg;
     }
 
+    /**
+     * Return the current Hibernate Session
+     * @return the current Hibernate Session
+     */
     public Session getSession() {
         return sessionFactory.getCurrentSession();
     }
 
+    /**
+     * Load persistent object from the database using the current Hibernate Session.
+     * @param className the (mapped) class name of the object to load
+     * @param key the key (ID) of the object to load
+     * @return the object if found, <code>null</code> otherwise
+     */
     public Object load(String className, String key) {
         log.debug("Loading object for className " + className + ", key=" + key);
         if (className == null && key == null) {
@@ -139,6 +178,11 @@ public class HibernateStore implements ObjectStore, TransactionalStore, Closeabl
         return s.get(mappedClass, id);
     }
 
+    /**
+     * Save or update passed object (<code>Session.saveOrUpdate()</code>)
+     * @param obj a Woko-managed POJO
+     * @return the saved object
+     */
     public Object save(Object obj) {
         if (obj == null) {
             return null;
@@ -147,6 +191,11 @@ public class HibernateStore implements ObjectStore, TransactionalStore, Closeabl
         return obj;
     }
 
+    /**
+     * Delete passed object (<code>Session.delete()</code>)
+     * @param obj a Woko-managed POJO
+     * @return the deleted object
+     */
     public Object delete(Object obj) {
         if (obj == null) {
             return null;
@@ -155,6 +204,11 @@ public class HibernateStore implements ObjectStore, TransactionalStore, Closeabl
         return obj;
     }
 
+    /**
+     * Uses primary key converter in order to get the key for passed object
+     * @param obj a Woko-managed POJO
+     * @return the key for passed object
+     */
     public String getKey(Object obj) {
         if (obj == null) {
             return null;
@@ -259,6 +313,14 @@ public class HibernateStore implements ObjectStore, TransactionalStore, Closeabl
         sessionFactory.close();
     }
 
+    /**
+     * Execute passed callback in a Transaction and return the result
+     * @param callback the callback to execute
+     * @param <RES> the type of the result
+     * @return the callback result
+     * @deprecated use <code>doInTransactionWithResult</code> instead
+     */
+    @Deprecated
     public <RES> RES doInTxWithResult(TxCallbackWithResult<RES> callback) {
         Session session = getSessionFactory().getCurrentSession();
         Transaction tx = session.getTransaction();
@@ -279,6 +341,12 @@ public class HibernateStore implements ObjectStore, TransactionalStore, Closeabl
         }
     }
 
+    /**
+     * Execute passed callback in a Transaction
+     * @param callback the callback to execute
+     * @deprecated use <code>doInTransaction</code> instead
+     */
+    @Deprecated
     public void doInTx(TxCallback callback) {
         Session session = getSessionFactory().getCurrentSession();
         Transaction tx = session.getTransaction();
