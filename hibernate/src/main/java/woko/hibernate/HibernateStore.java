@@ -368,21 +368,42 @@ public class HibernateStore implements ObjectStore, TransactionalStore, Closeabl
 
     @Override
     public <RES> RES doInTransactionWithResult(final TransactionCallbackWithResult<RES> callback) {
-        return doInTxWithResult(new TxCallbackWithResult<RES>() {
-            @Override
-            public RES execute(HibernateStore store, Session session) throws Exception {
-                return callback.execute();
+        Session session = getSessionFactory().getCurrentSession();
+        Transaction tx = session.getTransaction();
+        if (tx==null || !tx.isActive()) {
+            tx = session.beginTransaction();
+        }
+        try {
+            RES res = callback.execute();
+            tx.commit();
+            return res;
+        } catch(Exception e) {
+            tx.rollback();
+            throw new RuntimeException(e);
+        } finally {
+            if (session.isOpen()) {
+                session.close();
             }
-        });
+        }
     }
 
     @Override
     public void doInTransaction(final TransactionCallback callback) {
-        doInTx(new TxCallback() {
-            @Override
-            public void execute(HibernateStore store, Session session) throws Exception {
-                callback.execute();
+        Session session = getSessionFactory().getCurrentSession();
+        Transaction tx = session.getTransaction();
+        if (tx==null || !tx.isActive()) {
+            tx = session.beginTransaction();
+        }
+        try {
+            callback.execute();
+            tx.commit();
+        } catch(Exception e) {
+            tx.rollback();
+            throw new RuntimeException(e);
+        } finally {
+            if (session.isOpen()) {
+                session.close();
             }
-        });
+        }
     }
 }

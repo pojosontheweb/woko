@@ -23,9 +23,9 @@ import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
 import woko.ext.usermanagement.core.*;
 import woko.hibernate.HibernateStore;
-import woko.hibernate.TxCallbackWithResult;
 import woko.persistence.ListResultIterator;
 import woko.persistence.ResultIterator;
+import woko.persistence.TransactionCallbackWithResult;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -118,9 +118,10 @@ public class HibernateUserManager<U extends HbUser>
 
     @Override
     public U createUser(final String username, final String password, final String email, final List<String> roles, final AccountStatus accountStatus) {
-        TxCallbackWithResult<U> cb = new TxCallbackWithResult<U>() {
+        final HibernateStore store = getHibernateStore();
+        TransactionCallbackWithResult<U> cb = new TransactionCallbackWithResult<U>() {
             @Override
-            public U execute(HibernateStore store, Session session) throws Exception {
+            public U execute() throws Exception {
                 U u = getUserByUsername(username);
                 if (u==null) {
                     U user = HibernateUserManager.this.getUserClass().newInstance();
@@ -136,16 +137,15 @@ public class HibernateUserManager<U extends HbUser>
                 return u;
             }
         };
-        HibernateStore store = getHibernateStore();
         Transaction tx = store.getSession().getTransaction();
         if (tx.isActive()) {
             try {
-                return cb.execute(store, store.getSession());
+                return cb.execute();
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
         } else {
-            return getHibernateStore().doInTxWithResult(cb);
+            return getHibernateStore().doInTransactionWithResult(cb);
         }
 
     }

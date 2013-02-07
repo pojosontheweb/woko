@@ -1,6 +1,5 @@
 package test;
 
-import org.hibernate.Session;
 import woko.WokoIocInitListener;
 import woko.async.JobManager;
 import woko.auth.builtin.SessionUsernameResolutionStrategy;
@@ -8,10 +7,9 @@ import woko.ext.usermanagement.core.AccountStatus;
 import woko.ext.usermanagement.hibernate.HbUser;
 import woko.ext.usermanagement.hibernate.HibernateUserManager;
 import woko.hbcompass.HibernateCompassStore;
-import woko.hibernate.HibernateStore;
-import woko.hibernate.TxCallback;
 import woko.ioc.SimpleWokoIocContainer;
 import woko.ioc.WokoIocContainer;
+import woko.persistence.TransactionCallback;
 import woko.push.PushFacetDescriptorManager;
 
 import java.util.Arrays;
@@ -22,7 +20,7 @@ public class AsyncWebtestsInitListener
 
     @Override
     protected WokoIocContainer<HibernateCompassStore, HibernateUserManager<HbUser>, SessionUsernameResolutionStrategy, PushFacetDescriptorManager> createIocContainer() {
-        HibernateCompassStore store = new HibernateCompassStore(getPackageNamesFromConfig(HibernateCompassStore.CTX_PARAM_PACKAGE_NAMES, true));
+        final HibernateCompassStore store = new HibernateCompassStore(getPackageNamesFromConfig(HibernateCompassStore.CTX_PARAM_PACKAGE_NAMES, true));
         HibernateUserManager<HbUser> userManager = new HibernateUserManager<HbUser>(store, HbUser.class)
                 .setRegisteredRoles(Arrays.asList("developer"));
 
@@ -33,9 +31,9 @@ public class AsyncWebtestsInitListener
         wdevel.setEmail("wdevel@woko.com");
         wdevel.setRoles(Arrays.asList("usermanager", "developer")); // user manager has to be first to avoid developer's list facet to take precedence
         wdevel.setAccountStatus(AccountStatus.Active);
-        store.doInTx(new TxCallback() {
+        store.doInTransaction(new TransactionCallback() {
             @Override
-            public void execute(HibernateStore store, Session session) throws Exception {
+            public void execute() throws Exception {
                 store.save(wdevel);
             }
         });

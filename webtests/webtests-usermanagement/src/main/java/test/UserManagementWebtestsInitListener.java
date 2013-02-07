@@ -1,22 +1,18 @@
 package test;
 
-import org.hibernate.Session;
 import woko.WokoIocInitListener;
 import woko.auth.builtin.SessionUsernameResolutionStrategy;
 import woko.ext.usermanagement.core.AccountStatus;
-import woko.ext.usermanagement.core.DatabaseUserManager;
 import woko.ext.usermanagement.hibernate.HibernateUserManager;
 import woko.ext.usermanagement.mail.BindingHelper;
 import woko.hbcompass.HibernateCompassStore;
-import woko.hibernate.HibernateStore;
-import woko.hibernate.TxCallback;
 import woko.ioc.SimpleWokoIocContainer;
 import woko.ioc.WokoIocContainer;
 import woko.mail.ConsoleMailService;
 import woko.mail.MailService;
 import woko.mail.SmtpMailService;
+import woko.persistence.TransactionCallback;
 import woko.push.PushFacetDescriptorManager;
-import woko.users.UserManager;
 
 import java.util.Arrays;
 import java.util.List;
@@ -27,7 +23,7 @@ public class UserManagementWebtestsInitListener
 
     @Override
     protected WokoIocContainer<HibernateCompassStore, HibernateUserManager<MyUser>, SessionUsernameResolutionStrategy, PushFacetDescriptorManager> createIocContainer() {
-        HibernateCompassStore store = new HibernateCompassStore(getPackageNamesFromConfig(HibernateCompassStore.CTX_PARAM_PACKAGE_NAMES, true));
+        final HibernateCompassStore store = new HibernateCompassStore(getPackageNamesFromConfig(HibernateCompassStore.CTX_PARAM_PACKAGE_NAMES, true));
         HibernateUserManager<MyUser> userManager = new HibernateUserManager<MyUser>(store, MyUser.class)
                 .setRegisteredRoles(Arrays.asList("developer"));
 
@@ -39,9 +35,9 @@ public class UserManagementWebtestsInitListener
         wdevel.setRoles(Arrays.asList("usermanager", "developer")); // user manager has to be first to avoid developer's list facet to take precedence
         wdevel.setAccountStatus(AccountStatus.Active);
         wdevel.setProp1("not null in there"); // need to set not null prop
-        store.doInTx(new TxCallback() {
+        store.doInTransaction(new TransactionCallback() {
             @Override
-            public void execute(HibernateStore store, Session session) throws Exception {
+            public void execute() throws Exception {
                 store.save(wdevel);
             }
         });
@@ -54,9 +50,9 @@ public class UserManagementWebtestsInitListener
             u1.setEmail("testemail" + i + "@foo.bar");
             u1.setRoles(Arrays.asList("testuser"));
             u1.setProp1("foobar" + i);
-            store.doInTx(new TxCallback() {
+            store.doInTransaction(new TransactionCallback() {
                 @Override
-                public void execute(HibernateStore store, Session session) throws Exception {
+                public void execute() throws Exception {
                     store.save(u1);
                 }
             });
