@@ -25,6 +25,10 @@ import woko.persistence.ObjectStore;
 import woko.users.UserManager;
 import woko.users.UsernameResolutionStrategy;
 
+/**
+ * <code>renderObject</code> generic fragment facet : displays the target object in read-only mode
+ * using Object Renderer facets.
+ */
 @FacetKey(name = WokoFacets.renderObject, profileId = "all")
 public class RenderObjectImpl<
         OsType extends ObjectStore,

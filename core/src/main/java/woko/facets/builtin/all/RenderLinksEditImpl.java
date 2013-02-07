@@ -37,7 +37,7 @@ import java.util.Locale;
 
 /**
  * Generic <code>renderLinksEdit</code> facet for unauthenticated users. Tries to retrieve
- * <code>view</code> and <code>delete</code> facets in order to create the links
+ * <code>view</code>, <code>delete</code> and other CRUD resolution facets in order to create the links
  * to be displayed for the target object.
  */
 @FacetKey(name = WokoFacets.renderLinksEdit, profileId = "all")

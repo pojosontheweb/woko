@@ -35,6 +35,10 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * <code>renderObjectJson</code> generic facet : converts the target object to JSON using
+ * Object Renderer facets.
+ */
 @FacetKey(name = WokoFacets.renderObjectJson, profileId = "all")
 public class RenderObjectJsonImpl<
         OsType extends ObjectStore,

@@ -26,6 +26,10 @@ import woko.users.UsernameResolutionStrategy;
 
 import java.util.Date;
 
+/**
+ * <code>renderPropertyValueEdit</code> for properties of type <code>Date</code> : input field
+ * with date formatting and calendar widget.
+ */
 @FacetKey(name = WokoFacets.renderPropertyValueEdit, profileId = "all", targetObjectType = Date.class)
 public class RenderPropertyValueEditDate<
         OsType extends ObjectStore,

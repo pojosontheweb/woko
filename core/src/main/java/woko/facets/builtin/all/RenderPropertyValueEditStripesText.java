@@ -25,6 +25,10 @@ import woko.persistence.ObjectStore;
 import woko.users.UserManager;
 import woko.users.UsernameResolutionStrategy;
 
+/**
+ * Generic <code>renderPropertyValueEdit</code> that renders the property value as a <code><stripes:text/></code>
+ * element, for easy binding, FORM repop etc.
+ */
 @FacetKeyList(
   keys = {
     @FacetKey(name = WokoFacets.renderPropertyValueEdit, profileId = "all", targetObjectType = String.class),
@@ -43,6 +47,11 @@ public class RenderPropertyValueEditStripesText<
         return FRAGMENT_PATH;
     }
 
+    /**
+     * Return <code>true</code> in order to generate a <code><s:textarea/></code>, <code>false</code> for a <code><s:text/></code>.
+     * Defaults to <code>false</code> (regular <code><s:text/></code>)
+     * @return <code>true</code> to use a <code><s:textarea/></code>
+     */
     public boolean isTextArea() {
         return false;
     }

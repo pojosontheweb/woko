@@ -31,9 +31,24 @@ import woko.util.WLogger;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Generic <code>renderTitle</code> facet, assigned to <code>Object</code>.
+ *
+ * Looks for properties that could be used to render the title :
+ * <ul>
+ *     <li>title</li>
+ *     <li>name</li>
+ *     <li>id</li>
+ *     <li>_id</li>
+ * </ul>
+ *
+ * Defaults to <code>toString()</code> on the target object if no candidate property
+ * could be found.
+ */
 @FacetKey(name = WokoFacets.renderTitle, profileId = "all")
 public class RenderTitleImpl<
         OsType extends ObjectStore,
@@ -44,7 +59,12 @@ public class RenderTitleImpl<
 
     private static final WLogger logger = WLogger.getLogger(RenderTitleImpl.class);
 
-    private static final List<String> PROP_NAMES = Arrays.asList("title", "name", "id", "_id");
+    /**
+     * Candidate properties
+     */
+    public static final List<String> PROP_NAMES =
+            Collections.unmodifiableList(Arrays.asList("title", "name", "id", "_id"));
+
     public static final String FRAGMENT_PATH = "/WEB-INF/woko/jsp/all/renderTitle.jsp";
 
     public String getPath() {

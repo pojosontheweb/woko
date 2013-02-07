@@ -25,6 +25,10 @@ import woko.persistence.ObjectStore;
 import woko.users.UserManager;
 import woko.users.UsernameResolutionStrategy;
 
+/**
+ * Generic <code>renderPropertyName</code> : displays the name of the property using
+ * the owning type and property name, for easy localization in the application's resource bundle(s).
+ */
 @FacetKey(name = WokoFacets.renderPropertyName, profileId = "all")
 public class RenderPropertyNameImpl<
         OsType extends ObjectStore,

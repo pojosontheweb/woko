@@ -34,6 +34,10 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Locale;
 
+/**
+ * <code>renderObjectJson</code> for Stripes <code>ValidationErrors</code>. Allows to stream
+ * validation errors to the client when using RPC.
+ */
 @FacetKey(name= RenderObjectJson.FACET_NAME,profileId = "all", targetObjectType = ValidationErrors.class)
 public class RenderValidationErrorsJson<
         OsType extends ObjectStore,

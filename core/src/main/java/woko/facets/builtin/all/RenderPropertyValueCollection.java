@@ -25,6 +25,10 @@ import woko.users.UsernameResolutionStrategy;
 
 import java.util.Collection;
 
+/**
+ * <code>renderPropertyValue</code> for properties of type <code>Collection</code> : iterates on
+ * the collection's elements and delegates to <code>renderPropertyValue</code>.
+ */
 @FacetKey(name = WokoFacets.renderPropertyValue, profileId = "all", targetObjectType = Collection.class)
 public class RenderPropertyValueCollection<
         OsType extends ObjectStore,

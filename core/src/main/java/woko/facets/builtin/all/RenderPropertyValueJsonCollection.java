@@ -31,35 +31,51 @@ import woko.util.WLogger;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Collection;
 
-@FacetKey(name= WokoFacets.renderPropertyValueJson, profileId="all", targetObjectType=Collection.class)
+/**
+ * <code>renderPropertyValueJson</code> for properties of type <code>Collection</code>. Converts the
+ * property value to a JSON array and uses <code>renderPropertyValueJson</code> for the items contained.
+ */
+@FacetKey(name = WokoFacets.renderPropertyValueJson, profileId = "all", targetObjectType = Collection.class)
 public class RenderPropertyValueJsonCollection<
         OsType extends ObjectStore,
         UmType extends UserManager,
         UnsType extends UsernameResolutionStrategy,
         FdmType extends IFacetDescriptorManager
-        > extends BaseFacet<OsType,UmType,UnsType,FdmType> implements RenderPropertyValueJson {
+        > extends BaseFacet<OsType, UmType, UnsType, FdmType> implements RenderPropertyValueJson {
 
-  private static final WLogger logger = WLogger.getLogger(RenderPropertyValueJsonCollection.class);
+    private static final WLogger logger = WLogger.getLogger(RenderPropertyValueJsonCollection.class);
 
-  public Object propertyToJson(HttpServletRequest request, Object propertyValue) {
-    JSONArray arr = new JSONArray();
-    Collection<?> c = (Collection<?>)propertyValue;
-    for (Object item : c) {
-      logger.debug("converting collection item $item to json...");
-      if (item==null) {
-        arr.put(new JSONObject());
-      }
-      RenderPropertyValueJson rpvj = getFacetContext().getWoko().getFacet(WokoFacets.renderPropertyValueJson, request, item);
-      if (rpvj==null) {
-        logger.debug("... no renderPropertyValueJson facet found for collection item, adding empty JSON Object");
-        arr.put(new JSONObject());
-      } else {
-        Object json = rpvj.propertyToJson(request, item);
-        logger.debug("... converted item $item to $json");
-        arr.put(json);
-      }
+    /**
+     * Return the property value as a <code>JSONArray</code>
+     * @param request the request
+     * @param propertyValue the property value
+     * @return the property value as a <code>JSONArray</code>
+     */
+    public Object propertyToJson(HttpServletRequest request, Object propertyValue) {
+        JSONArray arr = new JSONArray();
+        Collection<?> c = (Collection<?>) propertyValue;
+        for (Object item : c) {
+            if (logger.isDebugEnabled()) {
+                logger.debug("converting collection item $item to json...");
+            }
+            if (item == null) {
+                arr.put(new JSONObject());
+            }
+            RenderPropertyValueJson rpvj = getFacetContext().getWoko().getFacet(WokoFacets.renderPropertyValueJson, request, item);
+            if (rpvj == null) {
+                if (logger.isDebugEnabled()) {
+                    logger.debug("... no renderPropertyValueJson facet found for collection item, adding empty JSON Object");
+                }
+                arr.put(new JSONObject());
+            } else {
+                Object json = rpvj.propertyToJson(request, item);
+                if (logger.isDebugEnabled()) {
+                    logger.debug("... converted item $item to $json");
+                }
+                arr.put(json);
+            }
+        }
+        return arr;
     }
-    return arr;
-  }
 
 }

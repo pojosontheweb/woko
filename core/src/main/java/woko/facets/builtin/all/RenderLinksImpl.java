@@ -32,7 +32,7 @@ import java.util.*;
 
 /**
  * Generic <code>renderLinks</code> facet for unauthenticated users. Tries to retrieve
- * <code>view</code> and <code>edit</code> facets in order to create the links
+ * <code>view</code>, <code>edit</code> and other CRUD resolution facets in order to create the links
  * to be displayed for the target object.
  */
 @FacetKey(name = WokoFacets.renderLinks, profileId = "all")

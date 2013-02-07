@@ -25,6 +25,10 @@ import woko.users.UsernameResolutionStrategy;
 
 import java.util.Date;
 
+/**
+ * <code>renderPropertyValue</code> for properties of type <code>Date</code> : formats the property
+ * value according to the user's locale.
+ */
 @FacetKey(name = WokoFacets.renderPropertyValue, profileId = "all", targetObjectType = Date.class)
 public class RenderPropertyValueDate<
         OsType extends ObjectStore,

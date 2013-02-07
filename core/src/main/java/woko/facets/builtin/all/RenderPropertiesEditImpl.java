@@ -29,6 +29,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Generic <code>renderPropertiesEdit</code> fragment facet : renders the properties of the
+ * target object as a FORM using Object Renderer facets.
+ */
 @FacetKey(name = WokoFacets.renderPropertiesEdit, profileId = "all")
 public class RenderPropertiesEditImpl<
         OsType extends ObjectStore,

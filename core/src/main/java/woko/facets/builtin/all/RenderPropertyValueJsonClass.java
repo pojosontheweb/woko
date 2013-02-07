@@ -27,17 +27,27 @@ import woko.users.UsernameResolutionStrategy;
 
 import javax.servlet.http.HttpServletRequest;
 
-@FacetKey(name= WokoFacets.renderPropertyValueJson, profileId="all", targetObjectType=Class.class)
+/**
+ * <code>renderPropertyValueJson</code> facet for <code>Class</code>-typed properties. Uses
+ * <code>ObjectStore</code> to return the Woko class mapping for the actual class.
+ */
+@FacetKey(name = WokoFacets.renderPropertyValueJson, profileId = "all", targetObjectType = Class.class)
 public class RenderPropertyValueJsonClass<
         OsType extends ObjectStore,
         UmType extends UserManager,
         UnsType extends UsernameResolutionStrategy,
         FdmType extends IFacetDescriptorManager
-        > extends BaseFacet<OsType,UmType,UnsType,FdmType> implements RenderPropertyValueJson {
+        > extends BaseFacet<OsType, UmType, UnsType, FdmType> implements RenderPropertyValueJson {
 
-  public Object propertyToJson(HttpServletRequest request, Object propertyValue) {
-    return getFacetContext().getWoko().getObjectStore().getClassMapping((Class)propertyValue);
-  }
+    /**
+     * Return the mapped class corresponding to the Java <code>Class</code> passed as <code>propertyValue</code>
+     * @param request the request
+     * @param propertyValue the property value
+     * @return the mapped class
+     */
+    public Object propertyToJson(HttpServletRequest request, Object propertyValue) {
+        return getFacetContext().getWoko().getObjectStore().getClassMapping((Class) propertyValue);
+    }
 
 
 }
