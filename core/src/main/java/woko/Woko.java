@@ -31,6 +31,7 @@ import woko.ioc.WokoIocContainer;
 import woko.persistence.ObjectStore;
 import woko.users.UserManager;
 import woko.users.UsernameResolutionStrategy;
+import woko.util.LinkUtil;
 import woko.util.Util;
 import woko.util.WLogger;
 
@@ -42,6 +43,17 @@ import java.io.InputStreamReader;
 import java.text.MessageFormat;
 import java.util.*;
 
+/**
+ * The infamous Woko !
+ * This is the top-level component in a Woko application. It provides access to the various
+ * components of the system ({@link ObjectStore}, {@link UserManager}, etc.) and to the facet
+ * retrieval APIs.
+ *
+ * @param <OsType> the type of the ObjectStore
+ * @param <UmType> the type of the UserManager
+ * @param <UnsType> the type of the UsernameResolutionStrategy
+ * @param <FdmType> the type of the IFacetDescriptorManager
+ */
 public class Woko<
         OsType extends ObjectStore,
         UmType extends UserManager,
@@ -49,23 +61,54 @@ public class Woko<
         FdmType extends IFacetDescriptorManager
         > implements Closeable {
 
+    public static final WLogger logger = WLogger.getLogger(Woko.class);
+
+    /**
+     * Environment file name
+     */
     public static final String ENVI_FILE = "woko.environment";
 
+    /**
+     * Cached environment name
+     */
     private static String ENVI = null;
 
+    /**
+     * List of the default facet packages
+     */
     public static final List<String> DEFAULT_FACET_PACKAGES =
             Collections.unmodifiableList(Arrays.asList("facets", "woko.facets.builtin"));
 
+    /**
+     * Default role "all"
+     */
     public static final String ROLE_ALL = "all";
+
+    /**
+     * Default role "guest"
+     */
     public static final String ROLE_GUEST = "guest";
 
-    public static final WLogger logger = WLogger.getLogger(Woko.class);
-
+    /**
+     * ServletContext attribute name for binding Woko
+     */
     public static final String CTX_KEY = "woko";
+
+    /**
+     * facet request attribute name
+     */
     public static final String REQ_ATTR_FACET = "facet";
 
+    /**
+     * Woko version
+     */
     public static final String VERSION = "LATEST-SNAPSHOT";
 
+    /**
+     * Return the Woko instance for passed servletContext
+     * @param ctx the servlet context
+     * @return the Woko instance bound to the servlet context
+     */
     @SuppressWarnings("unchecked")
     public static <
             OsType extends ObjectStore,
@@ -75,11 +118,25 @@ public class Woko<
         return (Woko<OsType,UmType,UnsType,FdmType>)ctx.getAttribute(CTX_KEY);
     }
 
+    /**
+     * Reference to JFacets (created at init)
+     */
     protected JFacets jFacets;
 
+    /**
+     * Reference to the IOC container (passed at init)
+     */
     private WokoIocContainer<OsType,UmType,UnsType,FdmType> iocContainer = null;
+
+    /**
+     * List of the fallback role(s) (role(s) for unauthenticated users)
+     */
     private List<String> fallbackRoles = null;
 
+    /**
+     * Create and initialize Woko with passed parameters
+     * @deprecated use constructor that takes IOC container as argument
+     */
     @Deprecated
     public Woko(OsType objectStore,
                 UmType userManager,
@@ -91,12 +148,20 @@ public class Woko<
         init();
     }
 
+    /**
+     * Create and initialize Woko with passed parameters
+     * @param ioc the IOC container
+     * @param fallbackRoles the fallback role(s)
+     */
     public Woko(WokoIocContainer<OsType,UmType,UnsType,FdmType> ioc, List<String> fallbackRoles) {
         this.iocContainer = ioc;
         this.fallbackRoles = fallbackRoles;
         init();
     }
 
+    /**
+     * Init JFacets and call customInit().
+     */
     private void init() {
         logger.info("Initializing Woko...");
         initJFacets();
@@ -116,6 +181,9 @@ public class Woko<
         logger.info(" * usernameResolutionStrategy : " + getUsernameResolutionStrategy());
     }
 
+    /**
+     * Initialize JFacets for the application (invoked at init).
+     */
     protected void initJFacets() {
         logger.info("Initializing JFacets...");
         WokoProfileRepository profileRepository = new WokoProfileRepository(getUserManager(), true);
@@ -131,37 +199,71 @@ public class Woko<
         logger.info("JFacets init OK.");
     }
 
+    /**
+     * Post-init hook, called after JFacets init. Does nothing, by default.
+     */
     protected void customInit() {
     }
 
+    /**
+     * Return the IOC container
+     * @return the IOC container
+     */
     public final WokoIocContainer<OsType,UmType,UnsType,FdmType> getIoc() {
         return iocContainer;
     }
-    
+
+    /**
+     * Return the fallback roles, used when there is no user authenticated
+     * @return the configured fallback roles
+     */
     public final List<String> getFallbackRoles() {
         return Collections.unmodifiableList(fallbackRoles);
     }
 
+    /**
+     * Return the <code>ObjectStore</code> from IOC
+     * @return the <code>ObjectStore</code> from IOC
+     */
     public OsType getObjectStore() {
         return getIoc().getObjectStore();
     }
 
+    /**
+     * Return the <code>UserManager</code> from IOC
+     * @return the <code>UserManager</code> from IOC
+     */
     public UmType getUserManager() {
         return getIoc().getUserManager();
     }
 
+    /**
+     * Return the <code>IFacetDescriptorManager</code> from IOC
+     * @return the <code>IFacetDescriptorManager</code> from IOC
+     */
     public FdmType getFacetDescriptorManager() {
         return getIoc().getFacetDescriptorManager();
     }
 
+    /**
+     * Return the <code>UsernameResolutionStrategy</code> from IOC
+     * @return the <code>UsernameResolutionStrategy</code> from IOC
+     */
     public UnsType getUsernameResolutionStrategy() {
         return getIoc().getUsernameResolutionStrategy();
     }
 
+    /**
+     * Return the JFacets instance
+     * @return the JFacets instance
+     */
     public JFacets getJFacets() {
         return jFacets;
     }
 
+    /**
+     * Close Woko (close IOC).
+     */
     public final void close() {
         logger.info("Closing...");
         WokoIocContainer<?,?,?,?> ioc = getIoc();
@@ -173,14 +275,36 @@ public class Woko<
         logger.info("Woko has been closed.");
     }
 
+    /**
+     * Post-close hook, invoked after IOC has been closed.
+     * Does nothing by default.
+     */
     protected void doClose() {
     }
 
+    /**
+     * Return the facet for passed parameters.
+     * @param name the facet name
+     * @param request the request
+     * @param targetObject the target object (not null)
+     * @param <T> the facet type
+     * @return the facet if any (<code>null</code> if no such facet exists)
+     */
     @SuppressWarnings("unchecked")
     public <T> T getFacet(String name, HttpServletRequest request, Object targetObject) {
         return getFacet(name, request, targetObject, null);
     }
 
+    /**
+     * Return the facet for passed parameters
+     * @param name the facet name
+     * @param request the request
+     * @param targetObject the target object (can be null)
+     * @param targetObjectClass the target object class (not null)
+     * @param throwIfNotFound throw a <code>FacetNotFoundException</code> if the facet is not found and this flag is <code>true</code>
+     * @param <T> the type of the facet
+     * @return the facet if found (or null or throws <code>FacetNotFoundException</code> depending on passed args)
+     */
     public <T> T getFacet(String name, HttpServletRequest request, Object targetObject, Class<?> targetObjectClass, boolean throwIfNotFound) {
         T f = getFacet(name, request, targetObject, targetObjectClass);
         if (f == null && throwIfNotFound) {
@@ -189,6 +313,15 @@ public class Woko<
         return f;
     }
 
+    /**
+     * Return the facet for passed parameters
+     * @param name the facet name
+     * @param request the request
+     * @param targetObject the target object (can be null)
+     * @param targetObjectClass the target object class (not null)
+     * @param <T> the facet type
+     * @return the facet if found, <code>null</code> otherwise
+     */
     public <T> T getFacet(String name, HttpServletRequest request, Object targetObject, Class<?> targetObjectClass) {
         logger.debug("Trying to get facet " + name + " for target object " + targetObject + ", targetObjectClass " + targetObjectClass + "...");
         String username = getUsername(request);
@@ -230,28 +363,41 @@ public class Woko<
         return null;
     }
 
+    /**
+     * Return the username for passed request, using configured
+     * <code>UsernameResolutionStrategy</code>.
+     * @param request the request
+     * @return the username for the request if any, <code>null</code> otherwise
+     */
     public String getUsername(HttpServletRequest request) {
         return getUsernameResolutionStrategy().getUsername(request);
     }
 
+    /**
+     * Return the URL for passed (resolution) facet name and target object
+     * @param facetName the facet name
+     * @param obj the target object
+     * @return the URL to the resolution facet
+     */
     public String facetUrl(String facetName, Object obj) {
-        ObjectStore objectStore = getObjectStore();
-        String className = objectStore.getClassMapping(obj.getClass());
-        String id = objectStore.getKey(obj);
-        StringBuilder sb = new StringBuilder("/").
-                append(facetName).
-                append("/").
-                append(className);
-        if (id != null) {
-            sb.append("/").append(id);
-        }
-        return sb.toString();
+        return LinkUtil.getUrl(this, obj, facetName);
     }
 
+    /**
+     * Create facet descriptor manager for passed package names and the app's classloader.
+     * @param packageNames the facet package names
+     * @return a freshly created and initialized <code>IFacetDescriptorManager</code>
+     */
     public static IFacetDescriptorManager createFacetDescriptorManager(List<String> packageNames) {
         return createFacetDescriptorManager(packageNames, Woko.class.getClassLoader());
     }
 
+    /**
+     * Create facet descriptor manager for passed package names and classloader.
+     * @param packageNames the facet package names
+     * @param classLoader the classloader to be used for facet class lookup
+     * @return a freshly created and initialized <code>IFacetDescriptorManager</code>
+     */
     public static IFacetDescriptorManager createFacetDescriptorManager(List<String> packageNames, ClassLoader classLoader) {
         Util.assertArg("packageNames", packageNames);
         Util.assertArg("classLoader", classLoader);
@@ -305,11 +451,27 @@ public class Woko<
         return ENVI;
     }
 
+    /**
+     * Return the localized message for passed key and args, looking up in the
+     * configured resource bundles.
+     * @param request the request
+     * @param key the message key
+     * @param args the message arguments
+     * @return the formatted message
+     */
     public String getLocalizedMessage(HttpServletRequest request, String key, String... args) {
         Locale locale = request.getLocale();
         return getLocalizedMessage(locale, key, args);
     }
 
+    /**
+     * Return the localized message for passed locale, key and args, looking up in the
+     * configured resource bundles.
+     * @param locale the locale
+     * @param key the message key
+     * @param args the message arguments
+     * @return the formatted message
+     */
     public String getLocalizedMessage(Locale locale, String key, String... args) {
         ResourceBundle b = StripesFilter.getConfiguration().
                 getLocalizationBundleFactory().getFormFieldBundle(locale);

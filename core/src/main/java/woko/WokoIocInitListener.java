@@ -33,13 +33,27 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Servlet context listener used for initializing Woko. Grabs most of the configuration from
+ * init parameters in web.xml (facet packages etc) and leaves the bare minimum to be done
+ * by the implementor.
+ */
 public abstract class WokoIocInitListener<OsType extends ObjectStore,
         UmType extends UserManager,
         UnsType extends UsernameResolutionStrategy,
         FdmType extends IFacetDescriptorManager> implements ServletContextListener {
 
+    /**
+     * The facet packages context init param name
+     */
     public static final String CTX_PARAM_FACET_PACKAGES = "Woko.Facet.Packages";
 
+    /**
+     * Helper for grabbing the package names from web.xml init params.
+     * @param paramName the name of the servlet context init param
+     * @param throwIfNotFound throw an exception if the init param is not found ?
+     * @return a list of the configured facet packages
+     */
     protected List<String> getPackageNamesFromConfig(String paramName, boolean throwIfNotFound) {
         String pkgNamesStr = servletContext.getInitParameter(paramName);
         if (pkgNamesStr == null || pkgNamesStr.equals("")) {
@@ -52,10 +66,14 @@ public abstract class WokoIocInitListener<OsType extends ObjectStore,
                 return Collections.emptyList();
             }
         }
-
         return extractPackagesList(pkgNamesStr);
     }
 
+    /**
+     * Split passed packages list to a list (commas, spaces etc).
+     * @param packagesStr the packages string
+     * @return the list of packages
+     */
     public static List<String> extractPackagesList(String packagesStr) {
         String[] pkgNamesArr = packagesStr.
                 replace('\n', ',').
@@ -79,11 +97,17 @@ public abstract class WokoIocInitListener<OsType extends ObjectStore,
         return servletContext;
     }
 
+    /**
+     * Create Woko and bind to servlet context
+     */
     public final void contextInitialized(ServletContextEvent e) {
         servletContext = e.getServletContext();
         servletContext.setAttribute(Woko.CTX_KEY, createWoko());
     }
 
+    /**
+     * Close Woko
+     */
     public final void contextDestroyed(ServletContextEvent e) {
         Woko woko = Woko.getWoko(e.getServletContext());
         if (woko != null) {
@@ -91,6 +115,10 @@ public abstract class WokoIocInitListener<OsType extends ObjectStore,
         }
     }
 
+    /**
+     * Create and init the Woko instance
+     * @return a freshly created Woko
+     */
     private Woko<OsType,UmType,UnsType,FdmType> createWoko() {
         WokoIocContainer<OsType,UmType,UnsType,FdmType> c = createIocContainer();
         logger.info("Creating Woko using IOC container : " + c);
@@ -99,14 +127,30 @@ public abstract class WokoIocInitListener<OsType extends ObjectStore,
         return w;
     }
 
+    /**
+     * To be implemented by concrete subclasses : create and configure IOC container.
+     * @return the configured IOC container to be used
+     */
     protected abstract WokoIocContainer<OsType,UmType,UnsType,FdmType> createIocContainer();
 
+    /**
+     * Create and return a list of fallback roles ("guest" by default)
+     * @return a list of fallback roles
+     */
     protected List<String> createFallbackRoles() {
         return Arrays.asList(Woko.ROLE_GUEST);
     }
 
+    /**
+     * post-init hook, called after Woko has been created initialized. Does nothing by default.
+     * @param w the freshly created and initialized Woko
+     */
     protected void postInit(Woko<OsType,UmType,UnsType,FdmType> w) { }
 
+    /**
+     * Return the facet packages as defined in web.xml
+     * @return the facet packages
+     */
     protected List<String> getFacetPackages() {
         List<String> packagesNames = getPackageNamesFromConfig(CTX_PARAM_FACET_PACKAGES, false);
         List<String> pkgs = new ArrayList<String>();
@@ -117,6 +161,10 @@ public abstract class WokoIocInitListener<OsType extends ObjectStore,
         return pkgs;
     }
 
+    /**
+     * Create and init the default <code>AnnotatedFacetDescriptorManager</code> for the app.
+     * @return the facet descriptor manager
+     */
     protected AnnotatedFacetDescriptorManager createAnnotatedFdm() {
         return new AnnotatedFacetDescriptorManager(getFacetPackages())
                 .setDuplicatedKeyPolicy(DuplicatedKeyPolicyType.FirstScannedWins)
