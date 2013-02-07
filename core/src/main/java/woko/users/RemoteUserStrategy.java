@@ -18,10 +18,19 @@ package woko.users;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * Username resolution strategy that uses the request's remote user as the username,
+ * for use with container authentication.
+ */
 public class RemoteUserStrategy implements UsernameResolutionStrategy {
 
-  public String getUsername(HttpServletRequest request) {
-    return request.getRemoteUser();
-  }
+    /**
+     * Return the request's remote user
+     * @param request the request
+     * @return the remote user
+     */
+    public String getUsername(HttpServletRequest request) {
+        return request.getRemoteUser();
+    }
 
 }
