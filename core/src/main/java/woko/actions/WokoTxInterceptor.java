@@ -2,6 +2,7 @@ package woko.actions;
 
 import net.sourceforge.stripes.action.Resolution;
 import net.sourceforge.stripes.controller.ExecutionContext;
+import net.sourceforge.stripes.controller.Intercepts;
 import net.sourceforge.stripes.controller.LifecycleStage;
 import woko.Woko;
 import woko.persistence.ObjectStore;
@@ -9,6 +10,7 @@ import woko.persistence.StoreTransaction;
 import woko.persistence.TransactionalStore;
 import woko.util.WLogger;
 
+@Intercepts({LifecycleStage.RequestInit, LifecycleStage.RequestComplete})
 public class WokoTxInterceptor implements net.sourceforge.stripes.controller.Interceptor {
 
     private static final WLogger log = WLogger.getLogger(WokoTxInterceptor.class);
