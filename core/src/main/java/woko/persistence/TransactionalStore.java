@@ -20,4 +20,18 @@ public interface TransactionalStore {
      */
     void doInTransaction(TransactionCallback callback);
 
+    /**
+     * Return the current transaction if any.
+     * @return the current transaction if any, <code>null</code> is no tx is open
+     */
+    StoreTransaction getCurrentTransaction();
+
+    /**
+     * Create and return a new, active transaction. This should fire begin transaction in
+     * the underlying database system.
+     * If a transaction is already running, then it should simply return this one
+     * and do no additional work.
+     * @return a new transaction if there was no tx open, the current tx otherwise
+     */
+    StoreTransaction beginTransaction();
 }

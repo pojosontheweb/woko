@@ -32,7 +32,7 @@ import java.util.Date;
  */
 public class HibernatePrimaryKeyConverter {
 
-    private static final WLogger logger = WLogger.getLogger(HibernateTxInterceptor.class);
+    private static final WLogger logger = WLogger.getLogger(HibernatePrimaryKeyConverter.class);
 
     /**
      * Convert passed string value to a Serializable primary key for passed target conversion type

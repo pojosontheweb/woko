@@ -406,4 +406,49 @@ public class HibernateStore implements ObjectStore, TransactionalStore, Closeabl
             }
         }
     }
+
+    @Override
+    public StoreTransaction getCurrentTransaction() {
+        Session session = getSession();
+        Transaction tx = session.getTransaction();
+        if (tx==null) {
+            return null;
+        }
+        return new HibernateStoreTransaction(tx);
+    }
+
+    @Override
+    public StoreTransaction beginTransaction() {
+        Session session = getSession();
+        Transaction tx = session.beginTransaction();
+        return new HibernateStoreTransaction(tx);
+    }
+
+    /**
+     * Adapter for Hibernate Transactions.
+     */
+    private class HibernateStoreTransaction implements StoreTransaction {
+
+        private final Transaction hbTx;
+
+        HibernateStoreTransaction(Transaction hbTx) {
+            this.hbTx = hbTx;
+        }
+
+        @Override
+        public boolean isActive() {
+            return hbTx.isActive();
+        }
+
+        @Override
+        public void commit() {
+            hbTx.commit();
+        }
+
+        @Override
+        public void rollback() {
+            hbTx.rollback();
+        }
+    }
+
 }
