@@ -28,14 +28,12 @@ public interface Delete extends ResolutionFacet {
     static final String FACET_NAME = "delete";
 
     /**
-     * Confirmation flag : actually delete the object if <code>true</code>
-     * @return <code>true</code> if the target object has to be deleted
+     * Confirmation flag : actually delete the object if not null
      */
-    Boolean getConfirm();
+    String getConfirm();
 
     /**
-     * Cancel flag : cancel deletion of the object if <code>true</code>
-     * @return <code>true</code> if the operation is cancelled
+     * Cancel flag : cancel deletion if not null
      */
     Boolean getCancel();
 
