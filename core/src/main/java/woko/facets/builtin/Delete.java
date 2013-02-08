@@ -35,6 +35,6 @@ public interface Delete extends ResolutionFacet {
     /**
      * Cancel flag : cancel deletion if not null
      */
-    Boolean getCancel();
+    String getCancel();
 
 }
