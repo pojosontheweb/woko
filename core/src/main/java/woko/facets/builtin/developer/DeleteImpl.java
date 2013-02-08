@@ -55,22 +55,23 @@ public class DeleteImpl<
     public static final String TARGET_FACET_AFTER_DELETE = WokoFacets.home;
 
     public static final String FRAGMENT_PATH = "/WEB-INF/woko/jsp/developer/confirmDelete.jsp";
-    private Boolean confirm;
-    private Boolean cancel;
 
-    public Boolean getConfirm() {
+    private String confirm;
+    private String cancel;
+
+    public String getConfirm() {
         return confirm;
     }
 
-    public void setConfirm(Boolean confirm) {
+    public void setConfirm(String confirm) {
         this.confirm = confirm;
     }
 
-    public Boolean getCancel() {
+    public String getCancel() {
         return cancel;
     }
 
-    public void setCancel(Boolean cancel) {
+    public void setCancel(String cancel) {
         this.cancel = cancel;
     }
 
@@ -79,7 +80,7 @@ public class DeleteImpl<
     }
 
     public Resolution getResolution(final ActionBeanContext abc) {
-        if (cancel != null && cancel.booleanValue()) {
+        if (cancel != null) {
             WokoFacetContext<OsType,UmType,UnsType,FdmType> facetContext = getFacetContext();
             abc.getMessages().add(new LocalizableMessage("woko.devel.delete.cancel"));
             return new RpcResolutionWrapper(new RedirectResolution(
@@ -92,7 +93,7 @@ public class DeleteImpl<
                 }
             };
         }
-        if (confirm != null && confirm.booleanValue()) {
+        if (confirm != null) {
             doDelete(abc);
             Resolution resolution = getNonRpcResolution(abc);
             return new RpcResolutionWrapper(resolution) {
