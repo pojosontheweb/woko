@@ -377,10 +377,10 @@ public class Woko<
      * Return the URL for passed (resolution) facet name and target object
      * @param facetName the facet name
      * @param obj the target object
-     * @return the URL to the resolution facet
+     * @return the URL to the resolution facet (like /view/MyClass/123)
      */
     public String facetUrl(String facetName, Object obj) {
-        return LinkUtil.getUrl(this, obj, facetName);
+        return "/" + LinkUtil.getUrl(this, obj, facetName);
     }
 
     /**
