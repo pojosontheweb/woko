@@ -27,18 +27,17 @@
     <!DOCTYPE html>
     <html>
     <head>
-
-        <link rel="shortcut icon"
-             href="${cp}/favicon.ico?${cacheTokenParams}" />
-
+        <%-- Add the woko favicon --%>
+        <link rel="shortcut icon" href="${cp}/favicon.ico?${cacheTokenParams}" />
+        <%-- Needed by bootstrap to be responsive --%>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta charset="utf-8">
-
         <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
         <!--[if lt IE 9]>
-          <script src="http://html5shim.googlecode.com/svn/trunk/html5.js?${cacheTokenParams}"></script>
+        <script src="http://html5shim.googlecode.com/svn/trunk/html5.js?${cacheTokenParams}"></script>
         <![endif]-->
 
+        <%-- Display the pageTitle set in jsp's if any --%>
         <c:choose>
             <c:when test="${not empty pageTitle}">
                 <title>${layout.appTitle} - ${pageTitle}</title>
@@ -48,49 +47,37 @@
             </c:otherwise>
         </c:choose>
 
-        <script type="text/javascript" src="${cp}/bootstrap/js/jquery.min.js?${cacheTokenParams}"></script>
-        <script type="text/javascript" src="${cp}/plugins/jquery-ui/js/jquery-ui-1.8.17.custom.min.js?${cacheTokenParams}"></script>
-        <%
-            Locale l = request.getLocale();
-        %>
-        <script type="text/javascript">
-            $(document).ready(function() {
-                $.datepicker.setDefaults($.datepicker.regional['<%=l%>']);
-            });
-        </script>
-        <%
-            if (l.toString().equals("fr")) {
-        %>
-            <script type="text/javascript" src="${cp}/plugins/jquery-ui/js/ui.datepicker-fr.js?${cacheTokenParams}"></script>
-        <%
-            }
-        %>
-        <script type="text/javascript" src="${cp}/bootstrap/js/bootstrap.min.js?${cacheTokenParams}"></script>
 
-        <c:forEach items="${layout.cssIncludes}" var="cssLink">
-            <link rel="stylesheet" href="${cp}${cssLink}" type="text/css">
-        </c:forEach>
+        <%--  Import javascript
+                - JQuery
+                - Less compiler
+                - Bootstrap
+                - Woko
+                - JS from layout facet
+                - CustomJS
+        ========================================================== --%>
+        <script type="text/javascript" src="${cp}/js/jQuery-V1.9.1/jquery.min.js?${cacheTokenParams}"></script>
+            <script src="${cp}/js/less-v1.3.3/less.min.js?${cacheTokenParams}" type="text/javascript"></script>
+        <script type="text/javascript" src="${cp}/js/bootstrap-v2.3.0/bootstrap.min.js?${cacheTokenParams}"></script>
+        <script src="${cp}/woko/js/woko.base.js" type="text/javascript"></script>
+        <script src="${cp}/woko/js/woko.jquery.js" type="text/javascript"></script>
+        <script src="${cp}/woko/js/woko.rpc.js" type="text/javascript"></script>
         <c:forEach items="${layout.jsIncludes}" var="jsLink">
             <script type="text/javascript" src="${cp}${jsLink}"></script>
         </c:forEach>
-        <s:layout-component name="customCss"/>
         <s:layout-component name="customJs"/>
 
-        <link rel="stylesheet" type="text/css" href="${cp}/bootstrap/css/bootstrap.min.css?${cacheTokenParams}">
-        <link rel="stylesheet" type="text/css" href="${cp}/plugins/jquery-ui/css/ui-lightness/jquery-ui-1.8.17.custom.css?${cacheTokenParams}">
 
-        <style type="text/css">
-            .main-content {
-                padding-top: 60px;
-                padding-bottom: 40px;
-            }
-
-            .sidebar-nav {
-                padding: 9px 0;
-            }
-        </style>
-        <link rel="stylesheet" type="text/css" href="${cp}/bootstrap/css/bootstrap-responsive.min.css?${cacheTokenParams}">
-        <link rel="stylesheet" type="text/css" href="${cp}/bootstrap/css/bootstrap-woko.css?${cacheTokenParams}">
+        <%--  Import stylesheet
+                - Woko less file (which include the bootstrap less files)
+                - CSS from layout facet
+                - CustomCSS
+        ========================================================== --%>
+        <link rel="stylesheet/less" type="text/css" href="${cp}/less/woko.less?${cacheTokenParams}">
+        <c:forEach items="${layout.cssIncludes}" var="cssLink">
+            <link rel="stylesheet" href="${cp}${cssLink}" type="text/css">
+        </c:forEach>
+        <s:layout-component name="customCss"/>
 
     </head>
 
@@ -155,7 +142,7 @@
         <div class="container-fluid">
             <div class="pull-right">
                 Powered by <a href="http://www.pojosontheweb.com"><img src="${cp}/woko/woko-logo-small.png?${cacheTokenParams}"
-                                                                            alt="logo" height="24px"/></a>
+                                                                       alt="logo" height="24px"/></a>
             </div>
         </div>
     </footer>
