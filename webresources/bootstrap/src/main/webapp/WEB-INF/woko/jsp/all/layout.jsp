@@ -140,9 +140,11 @@
                 <div class="container">
                     <div class="row-fluid">
                         <s:messages/>
-                        <s:errors/>
-                        <s:layout-component name="body"/>
                     </div>
+                    <div class="row-fluid">
+                        <s:errors/>
+                    </div>
+                    <s:layout-component name="body"/>
                 </div>
             </div>
 
