@@ -9,6 +9,7 @@ import javax.validation.constraints.NotNull;
 public class HbRegistrationDetails<U extends HbUser> implements RegistrationDetails<U> {
 
     @Id
+    @Column(name = "registration_key")
     private String key;
 
     @ManyToOne(fetch = FetchType.LAZY)
