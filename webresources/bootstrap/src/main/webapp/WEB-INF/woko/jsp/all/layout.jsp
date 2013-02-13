@@ -47,6 +47,17 @@
             </c:otherwise>
         </c:choose>
 
+        <%--  Import stylesheet
+                - Woko less file (which include the bootstrap less files)
+                - CSS from layout facet
+                - CustomCSS
+        ========================================================== --%>
+        <link rel="stylesheet/less" type="text/css" href="${cp}/less/woko.less?${cacheTokenParams}">
+        <c:forEach items="${layout.cssIncludes}" var="cssLink">
+            <link rel="stylesheet" href="${cp}${cssLink}" type="text/css">
+        </c:forEach>
+        <s:layout-component name="customCss"/>
+
 
         <%--  Import javascript
                 - JQuery
@@ -68,16 +79,7 @@
         <s:layout-component name="customJs"/>
 
 
-        <%--  Import stylesheet
-                - Woko less file (which include the bootstrap less files)
-                - CSS from layout facet
-                - CustomCSS
-        ========================================================== --%>
-        <link rel="stylesheet/less" type="text/css" href="${cp}/less/woko.less?${cacheTokenParams}">
-        <c:forEach items="${layout.cssIncludes}" var="cssLink">
-            <link rel="stylesheet" href="${cp}${cssLink}" type="text/css">
-        </c:forEach>
-        <s:layout-component name="customCss"/>
+
 
     </head>
 
