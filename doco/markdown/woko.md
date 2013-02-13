@@ -51,17 +51,34 @@ Woko uses a main `ActionBean` for serving the requests (excepted for static reso
 ### WokoActionBean ###
 It's the main Controller for the Woko app. Kind-of a "super dispatcher" that handles all requests and delegates to the appropriate facet. Unlike a typical Stripes app, a Woko application doesn't use many `ActionBean`s. They are replaced by `ResolutionFacet`s : facets that handle the http request, and return a Stripes `Resolution`.   
 
-`WokoActionBean` also defines Woko's URL scheme. It responds to all requests that match its URL binding : `{facetName}/{className}/{key}`. The following URLs are typical Woko URLs that WokoActionBean will handle by delegating to the appropriate components :
+`WokoActionBean` also defines Woko's URL scheme. It responds to all requests that match its URL binding : 
 
-* foo
-* bar
- 
+    {facetName}[/{className}[/{key}]]
+
+The following URLs are typical Woko URLs that WokoActionBean will handle by delegating to the appropriate components :
+
+* `/view/Product/123`
+* `/list/Product`
+* `/home`
+* `/doSomeFunkyStuff/MyClass/123?facet.myProp=123&object.myOtherProp=cool`
+
+The URL scheme is an important part of Woko. The URLs reflect what they mean, they show the intent and target object. The different parts of the URL (`facetName`, `className` and `key`) are used by WokoActionBean in order to resolve the target object and Resolution Facet to be applied.
+
+All parameters are prefixed with either `facet.` or `object.` : they will be bound respectively to the Resolution Facet and target Object, provided they satisfy the validation constraints if any. Like their cousins Action Beans, Resolution Facets has at least one event handler method, that returns a `Resolution`.
 ### Stripes extensions ###
-
-TODO
+Woko adds several extensions to Stripes in order to make Resolution Facets work like Action Beans, with respect to Binding & Validation, Security, etc. They are implemented as Stripes `Interceptor`s and other components. Woko also registers custom `TypeConverter`s for transparent binding of Domain Objects.
 ### The Woko instance ###
+There's only one `Woko`! At least in your webapp… 
 
-### Pluggable Components ###
+When the application starts up, a `Woko` instance is created, initialized, and bound to the `ServletContext`. Then, from anywhere in the app, the `Woko` instance can be retrieved and used as an top-level entry point for executing various tasks.
+
+There are various ways to configure and boot Woko. TODO link to startup section in dev guide.   
+### Mandatory Components ###
+Woko delegates most of the job to sub-components :
+
+* `ObjectStore` : Manages Object-Oriented persistence for your POJOs. Implements basic CRUD operations used by the default Woko features.
+* `UserManager` : Handles users/roles and authentication. Simple contract that allows the framework to obtain the roles of the currently logged in user.   
+
 
 ## Typical Request Handling flow ##
 
