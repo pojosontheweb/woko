@@ -78,9 +78,6 @@
         </c:forEach>
         <s:layout-component name="customJs"/>
 
-
-
-
     </head>
 
     <body>
@@ -90,19 +87,25 @@
             <div class="navbar navbar-fixed-top">
                 <div class="navbar-inner">
                     <div class="container">
+                        <%-- Display a button bar on tablet and phone --%>
                         <a data-target=".nav-collapse" data-toggle="collapse" class="btn btn-navbar">
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </a>
+
+                        <%-- The app name --%>
                         <a href="${cp}" class="brand">${layout.appTitle}</a>
 
+                        <%-- The navBar --%>
                         <div class="nav-collapse">
 
+                            <%-- First display the navBar facet --%>
                             <ul class="nav nav-pills">
                                 <w:includeFacet facetName="<%=WokoFacets.navBar%>" targetObject="${layout.facetContext.targetObject}"/>
                             </ul>
 
+                            <%-- Display user/connexion info --%>
                             <p class="navbar-text pull-right">
                                 <c:if test="${skipLoginLink==null}">
                                     <c:choose>
@@ -119,6 +122,7 @@
                             </p>
                         </div>
 
+                        <%-- Display the search input only for connected user --%>
                         <c:if test="${not empty username}">
                             <s:form action="/search" class="navbar-search pull-right" style="margin-right: 15px;">
                                 <fmt:message bundle="${wokoBundle}" key="search" var="ph"/>
@@ -150,8 +154,10 @@
     <footer>
         <div class="container">
             <div class="pull-right">
-                Powered by <a href="http://www.pojosontheweb.com"><img src="${cp}/woko/woko-logo-small.png?${cacheTokenParams}"
-                                                                       alt="logo" height="24px"/></a>
+                Powered by
+                <a href="http://www.pojosontheweb.com">
+                    <img src="${cp}/woko/woko-logo-small.png?${cacheTokenParams}" alt="logo" height="24px"/>
+                </a>
             </div>
         </div>
     </footer>
