@@ -24,8 +24,8 @@
 <w:cacheToken paramName="cacheToken" tokenValue="cacheTokenValue"/>
 <c:set var="cacheTokenParams" value="${cacheToken}=${cacheTokenValue}"/>
 <s:layout-definition>
-    <!DOCTYPE html>
-    <html>
+<!DOCTYPE html>
+<html>
     <head>
         <%-- Add the woko favicon --%>
         <link rel="shortcut icon" href="${cp}/favicon.ico?${cacheTokenParams}" />
@@ -84,64 +84,71 @@
     </head>
 
     <body>
-    <div class="wrapper">
-        <div class="navbar navbar-fixed-top">
-            <div class="navbar-inner">
-                <div class="container-fluid">
-                    <a data-target=".nav-collapse" data-toggle="collapse" class="btn btn-navbar">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </a>
-                    <a href="${cp}" class="brand">${layout.appTitle}</a>
+        <div id="wrapper">
 
-                    <div class="nav-collapse">
+            <%-- Header : the static navBar --%>
+            <div class="navbar navbar-fixed-top">
+                <div class="navbar-inner">
+                    <div class="container">
+                        <a data-target=".nav-collapse" data-toggle="collapse" class="btn btn-navbar">
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </a>
+                        <a href="${cp}" class="brand">${layout.appTitle}</a>
 
-                        <ul class="nav nav-pills">
-                            <w:includeFacet facetName="<%=WokoFacets.navBar%>" targetObject="${layout.facetContext.targetObject}"/>
-                        </ul>
+                        <div class="nav-collapse">
 
-                        <p class="navbar-text pull-right">
-                            <c:if test="${skipLoginLink==null}">
-                                <c:choose>
-                                    <c:when test="${username != null}">
-                                        <fmt:message bundle="${wokoBundle}" key="woko.layout.loggedAs"/> <strong>${username}</strong> -
-                                        <a href="${cp}/logout"><fmt:message bundle="${wokoBundle}" key="woko.layout.logout"/> </a>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <fmt:message bundle="${wokoBundle}" key="woko.layout.notLogged"/>
-                                        <a href="${cp}/login"><fmt:message bundle="${wokoBundle}" key="woko.layout.login"/> </a>
-                                    </c:otherwise>
-                                </c:choose>
-                            </c:if>
-                        </p>
+                            <ul class="nav nav-pills">
+                                <w:includeFacet facetName="<%=WokoFacets.navBar%>" targetObject="${layout.facetContext.targetObject}"/>
+                            </ul>
+
+                            <p class="navbar-text pull-right">
+                                <c:if test="${skipLoginLink==null}">
+                                    <c:choose>
+                                        <c:when test="${username != null}">
+                                            <fmt:message bundle="${wokoBundle}" key="woko.layout.loggedAs"/> <strong>${username}</strong> -
+                                            <a href="${cp}/logout"><fmt:message bundle="${wokoBundle}" key="woko.layout.logout"/> </a>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <fmt:message bundle="${wokoBundle}" key="woko.layout.notLogged"/>
+                                            <a href="${cp}/login"><fmt:message bundle="${wokoBundle}" key="woko.layout.login"/> </a>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </c:if>
+                            </p>
+                        </div>
+
+                        <c:if test="${not empty username}">
+                            <s:form action="/search" class="navbar-search pull-right" style="margin-right: 15px;">
+                                <fmt:message bundle="${wokoBundle}" key="search" var="ph"/>
+                                <s:text name="facet.query" class="search-query" placeholder="${ph}"/>
+                            </s:form>
+                        </c:if>
+
                     </div>
-
-                    <c:if test="${not empty username}">
-                        <s:form action="/search" class="navbar-search pull-right" style="margin-right: 15px;">
-                            <fmt:message bundle="${wokoBundle}" key="search" var="ph"/>
-                            <s:text name="facet.query" class="search-query" placeholder="${ph}"/>
-                        </s:form>
-                    </c:if>
-
                 </div>
             </div>
-        </div>
 
-        <div class="main-content">
-            <div class="container-fluid">
-                <div class="row-fluid">
-                    <s:messages/>
-                    <s:errors/>
-                    <s:layout-component name="body"/>
+
+            <%-- Main content --%>
+            <div class="main-content">
+                <div class="container">
+                    <div class="row-fluid">
+                        <s:messages/>
+                        <s:errors/>
+                        <s:layout-component name="body"/>
+                    </div>
                 </div>
-                <div class="push"></div>
             </div>
-        </div>
+
+            <%-- Needed by the Sticky footer--%>
+            <div id="push"></div>
+
     </div>
 
     <footer>
-        <div class="container-fluid">
+        <div class="container">
             <div class="pull-right">
                 Powered by <a href="http://www.pojosontheweb.com"><img src="${cp}/woko/woko-logo-small.png?${cacheTokenParams}"
                                                                        alt="logo" height="24px"/></a>
@@ -149,6 +156,6 @@
         </div>
     </footer>
 
-    </body>
-    </html>
+</body>
+</html>
 </s:layout-definition>
