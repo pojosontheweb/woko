@@ -25,10 +25,8 @@
         </div>
     </div>
 
-
-
-    <%-- Call the renderTitle facet in order to display the title --%>
-    <div class="wokoProperties wokoPropertiesEdit">
+    <%-- Call the renderTitle facet in order to display the title properties --%>
+    <div class="wokoPropertiesEdit">
         <w:includeFacet targetObject="<%=o%>" facetName="<%=WokoFacets.renderPropertiesEdit%>"/>
     </div>
 
