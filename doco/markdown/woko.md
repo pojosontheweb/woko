@@ -291,7 +291,35 @@ In short : all CRUD operations on your Domain Classes (plus full text search) ar
 ### RPC and JavaScript ###
 Woko includes out of the box support for RPC. All default features are available as JSON/HTTP services by default. Every feature covered by this tutorial so far can be realized using any code that speaks HTTP and JSON, using a simple protocol. 
 
-With the app still running, try this :
+With the app still running, log in as wdevel and try this :
+
+[http://localhost:8080/myapp/save/MyEntity?object.id=123&object.myProp=foobar&createTransient=true&isRpc=true](http://localhost:8080/myapp/save/MyEntity?object.id=123&object.myProp=foobar&createTransient=true&isRpc=true)
+
+The `isRpc` request parameter tells Woko that the request is to be handled as JSON/HTTP. Woko does the same job as usual, except that it returns the result of the operation as JSON. In this example, it returns the freshly created object :
+
+```
+{
+    "id": 123,
+    "myProp": "foobar",
+    "class": "MyEntity",
+    "_wokoInfo": {
+        "title": "123",
+        "className": "MyEntity",
+        "key": "123"
+    }
+}
+```
+
+Again, all the features are available out of the box. For AJAX situations, it's even simpler using the `woko.rpc.Client` JavaScript API. It provides all default features, plus arbitrary facet invocation. 
+
+Log in again as developer, open firebug and go to :
+
+[http://localhost:8080/myapp/save/MyEntity?object.id=123&object.myProp=foobar&createTransient=true](http://localhost:8080/myapp/save/MyEntity?object.id=123&object.myProp=foobar&createTransient=true)
+
+You have saved the object. Now go to firebug console and play :
+
+
+
 
 
    
