@@ -13,15 +13,19 @@
 %>
 <div class="wokoObject <%=className%>">
 
-    <%-- Call the renderTitle facet in order to display the title --%>
-    <div class="wokoTitle">
-        <w:includeFacet targetObject="<%=o%>" facetName="<%=WokoFacets.renderTitle%>"/>
+    <%-- Display title and wokoLinks in the same row --%>
+    <div class="row-fluid">
+        <%-- Call the renderTitle facet in order to display the title --%>
+        <div class="wokoTitle">
+            <w:includeFacet targetObject="<%=o%>" facetName="<%=WokoFacets.renderTitle%>"/>
+        </div>
+        <%-- Call the renderTitle facet in order to display the available links --%>
+        <div class="wokoLinks">
+            <w:includeFacet targetObject="<%=o%>" facetName="<%=WokoFacets.renderLinksEdit%>"/>
+        </div>
     </div>
 
-    <%-- Call the renderTitle facet in order to display the available links --%>
-    <div class="wokoLinks">
-        <w:includeFacet targetObject="<%=o%>" facetName="<%=WokoFacets.renderLinksEdit%>"/>
-    </div>
+
 
     <%-- Call the renderTitle facet in order to display the title --%>
     <div class="wokoProperties wokoPropertiesEdit">
