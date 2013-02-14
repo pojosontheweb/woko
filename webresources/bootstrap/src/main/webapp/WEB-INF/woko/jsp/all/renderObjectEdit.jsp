@@ -12,17 +12,20 @@
     String className = Woko.getWoko(application).getObjectStore().getClassMapping(c);
 %>
 <div class="wokoObject <%=className%>">
-    <div class="row-fluid">
-        <div class="wokoTitle">
-            <w:includeFacet targetObject="<%=o%>" facetName="<%=WokoFacets.renderTitle%>"/>
-        </div>
-        <div class="wokoLinks pull-right">
-            <w:includeFacet targetObject="<%=o%>" facetName="<%=WokoFacets.renderLinksEdit%>"/>
-        </div>
+
+    <%-- Call the renderTitle facet in order to display the title --%>
+    <div class="wokoTitle">
+        <w:includeFacet targetObject="<%=o%>" facetName="<%=WokoFacets.renderTitle%>"/>
     </div>
-    <div class="row-fluid">
-        <div class="wokoProperties wokoPropertiesEdit">
-            <w:includeFacet targetObject="<%=o%>" facetName="<%=WokoFacets.renderPropertiesEdit%>"/>
-        </div>
+
+    <%-- Call the renderTitle facet in order to display the available links --%>
+    <div class="wokoLinks">
+        <w:includeFacet targetObject="<%=o%>" facetName="<%=WokoFacets.renderLinksEdit%>"/>
     </div>
+
+    <%-- Call the renderTitle facet in order to display the title --%>
+    <div class="wokoProperties wokoPropertiesEdit">
+        <w:includeFacet targetObject="<%=o%>" facetName="<%=WokoFacets.renderPropertiesEdit%>"/>
+    </div>
+
 </div>
