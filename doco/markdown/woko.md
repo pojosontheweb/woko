@@ -111,7 +111,182 @@ It's a typical Stripes flow, spiced up with target object and facet loading :
 4. __Resolution execution__ - Stripes executes the returned `Resolution`, producing the HTTP response.
 
 # Tutorial #
-Step-by step tutorial 
+
+This tutorial aims at covering the main aspects of Woko through practical examples.
+
+> We'll be using the default "Reference Implementation" (hibernate etc.), but the same concepts applies to other implementations of `ObjectStore`, `UserManager` etc. 
+
+## Environment setup
+
+You'll need to install the `woko` shell script to go through this tutorial. TODO link to section 
+
+Make sure the `woko` command is available in your PATH before you start.
+
+## Let's go !
+
+First off, open a command prompt, switch to a folder of your choice and initiate a new project :
+
+```
+$ woko init
+```
+
+The command will ask you for some basic info about your project. You can pick default values for everything excepted the `groupId` and `artifactId` :
+
+```
+$ woko init
+__       __     _  __
+\ \  _  / /___ | |/ / ___
+ \ \/ \/ // o \|   K /   \
+  \__W__/ \___/|_|\_\\_o_/  2.0
+             POJOs on the Web !
+
+Initializing project
+> Project name ? myapp
+> Maven groupId ? com.myco.myapp
+> Your project's version ? [1.0-SNAPSHOT] 
+| Generating your project, please wait, it can take a while to download everything...
+> Would you like to use Bootstrap for UI ? [y] :
+> Would you like to use Groovy ? [y] :
+> Specify your default package name [com.myco.myapp] :
+> Would you like enable the woko 'push' command ? [y] :
+|  - web.xml file created : src/main/webapp/WEB-INF/web.xml
+|  - Layout facet created : com.myco.myapp.facets.MyLayout
+|  - resource bundle created : myapp/src/main/resources/application.properties
+|  
+|  Your project has been generated in : myapp.
+|  Run 'woko start' in order to launch your app in a local Jetty container
+```
+
+This creates a `myapp` project in the current directory. The project contains a sample Domain Class, and is ready for use.
+
+## Domain Classes
+
+The very first step when starting a Woko app is to define the Domain Classes : the entities that represent your model. 
+
+Here's the example that has been generated in our project :
+
+```
+// src/main/groovy/myapp/com/myco/myapp/model/MyEntity.groovy
+
+package com.myco.myapp.model
+
+import org.compass.annotations.Searchable
+import org.compass.annotations.SearchableId
+import org.compass.annotations.SearchableProperty
+import javax.validation.constraints.NotNull
+
+import javax.persistence.Entity
+import javax.persistence.Id
+
+@Entity
+@Searchable
+class MyEntity {
+
+    @Id
+    @SearchableId
+    Long id
+
+    @NotNull
+    @SearchableProperty
+    String myProp
+
+    Date myOtherProp
+
+}
+```
+
+And that's it. A `MyEntity` POJO with persistence, validation and full-text search enabled. Your class will be scanned at startup, and ready for use. 
+
+> The built-in `HibernateCompassStore` supports Hibernate, Hibernate Validator and Compass mapping annotations. Refer to their docs for more infos about them.
+
+## Full Defaults !
+
+You don't have to write anything more than a Domain Class to start playing with your application. Build the app, and start the server :
+
+```
+$ woko start
+```
+
+This will compile and build the project, start jetty, and deploy your application. You can now point your browser to :
+
+[http://localhost:8080/myapp](http://localhost:8080/myapp)
+
+### Guest Home
+
+What you'll see when visiting the app is the guest home page. That's what unauthenticated users see of your application by default. 
+
+![Guest Home](img/woko1.PNG)
+
+We have chosen not to show Domain Objects to guest users by default, so there's nothing more to see than this home page at the moment. Of course, you can easily change the contents of the default guest home page. 
+
+### The developer role
+
+By default, your Woko application includes a specific user, of role `developer`. This user has all CRUD privileges on your Domain Objects, plus a few "power features" that we'll explain later.
+
+You can use the default credentials in order to log-in :
+
+* username : wdevel
+* password : wdevel
+
+> Of course, you'll change these later in order to avoid a big security hole in your app ! Check the section TODO link for more info.
+
+As you can see, developers also have their home page, but this time with a few items in the nav bar :
+
+![Guest Home](img/woko2.PNG)
+
+For now, let's try the CRUD features on our `MyEntity` Domain Class. 
+
+### Zero-LOC CRUD 
+
+Let's first create an instance of our Domain Class. Click the _create_ link in the nav bar :
+
+![Guest Home](img/woko3.PNG)
+
+As you can see, Woko has found your Domain Class, you can select `MyEntity` from the list, and submit :
+
+![Guest Home](img/woko4.PNG)
+
+A FORM is generated for your POJO, with input fields for first-level properties :
+
+![Guest Home](img/woko5.PNG)
+
+A few things to notice here :
+
+* Constraint Validations are taken into account (the `@NotNull` on `myProp`)
+* Input fields are generated based on the type of the object's properties (there's even a date picker component for `myOtherProp`
+
+![Guest Home](img/woko6.PNG)
+
+Woko has dynamically introspected your Domain Class, and rendered a FORM that allows to change its state. 
+
+Now fill in some values and save :
+
+![Guest Home](img/woko7.PNG)
+
+The object has been saved. We can now close the edit mode :
+
+![Guest Home](img/woko7-1.PNG)
+
+And now get a "read-only" view of our `MyEntity` instance :
+
+![Guest Home](img/woko8.PNG)
+
+As you can see, Woko has now generated plain HTML for the object's properties. Again, it's using the types and metadatas found on the object (e.g. the formatted date). 
+
+Developer users can also list objects by class :
+
+![Guest Home](img/woko9.PNG)
+
+![Guest Home](img/woko10.PNG)
+
+![Guest Home](img/woko11.PNG)
+
+And use full text search, as defined in the POJO's annotations :
+
+![Guest Home](img/woko12.PNG)
+
+In short : all CRUD operations on your Domain Classes (plus full text search) are available for free. Woko generates the User Interface dynamically without you writing any single line of code for it... unless you start customizing stuff !
+
 # Developer Guide #
 Dev guide
 # Performance #
