@@ -286,8 +286,24 @@ And use full text search, as defined in the POJO's annotations :
 
 ![Guest Home](img/woko12.PNG)
 
-In short : all CRUD operations on your Domain Classes (plus full text search) are available for free. Woko generates the User Interface dynamically without you writing any single line of code for it... unless you start customizing stuff !
+In short : all CRUD operations on your Domain Classes (plus full text search) are available for free. Woko generates the User Interface dynamically without you writing any single line of code for it.
 
+### RPC and JavaScript ###
+Woko includes out of the box support for RPC. All default features are available as JSON/HTTP services by default. Every feature covered by this tutorial so far can be realized using any code that speaks HTTP and JSON, using a simple protocol. 
+
+With the app still running, try this :
+
+
+   
+
+## Overriding the defaults ##
+This section explains how the default features can be customized. It shows some typical examples of changing Woko's behavior when you need it. It also gives a glance of how you can write Resolution Facets in your app to perform various tasks.
+### Overriding the Object Rendrerer ###
+TODO explain how you can override the title, properties etc. Show an example in edit mode.
+### Resolution Facets ###
+TODO explain how to completely override /view, and how to write a sample Resolution Facet that does something
+### Templating ###
+TODO explain how to change the layout for a given role (and object ?)
 # Developer Guide #
 Dev guide
 # Performance #
