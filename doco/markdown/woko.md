@@ -130,7 +130,7 @@ First off, open a command prompt, switch to a folder of your choice and initiate
 $ woko init
 ```
 
-The command will ask you for some basic info about your project. You can pick default values for everything excepted the `groupId` and `artifactId` :
+The command will ask you for some basic info about your project. You can pick default values for everything excepted the `groupId` and `artifactId`  :
 
 ```
 $ woko init
@@ -154,7 +154,8 @@ Initializing project
 |  - resource bundle created : myapp/src/main/resources/application.properties
 |  
 |  Your project has been generated in : myapp.
-|  Run 'woko start' in order to launch your app in a local Jetty container
+|  Run 'woko start' in order to launch your app in a local Jetty container  
+
 ```
 
 This creates a `myapp` project in the current directory. The project contains a sample Domain Class, and is ready for use.
