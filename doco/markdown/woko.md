@@ -1,14 +1,23 @@
-# Woko : POJOs on the Web! #
+<center>
+<img src="woko3d.png"/>
+</center>
+
+
+# POJOs on the Web! #
 Woko is a Full-Stack, Domain Driven framework for building webapps efficiently in Java. It provides transversal plumbing and solutions to the recurrent webapp programming issues, as well as a unique approach for developing iteratively and in a consistent manner.
-## Some History ##
-Y2K, corbaweb etc.
-# Big Picture #
-Woko is basically about displaying Domain Objects to end users, and allow them to interact. That's what every application is about. We use GUI paradigms and widgets in order to represent some state to the end user, allow her(him) to change that state and trigger behavior based upon user interaction. Strangely, few frameworks or tools are making it obvious, because business logic is often buried under loads of glue code. Woko is designed around this basic principle.
-## Domain Driven, Object-Oriented User Interface ##
 
-TODO explainhow Woko inspires from Naked Objects for OOUI
+Woko is about displaying Domain Objects to end users, and allow them to interact. That's what every application is about. We use GUI paradigms and widgets in order to represent some state to the end user, allow her(him) to change that state and trigger behavior based upon user interaction. 
 
-## The Object Oriented Wiki ##
+Strangely, few frameworks or tools are making it obvious, because business logic is often buried under loads of glue code. You often spend more time on recurrent, non-productive issues instead of solving the problem. And you often end up with non-expressive code, so far from the requirement that all intent is lost. 
+
+Woko is designed around a few basic principles that allow to code better webapps faster :
+
+* Domain and Role Driven : Woko works with Objects, and aims at allowing your users to work with them too.
+* Use metadata : Woko tries to grab the most it can from your code, so that it can provide many features out of the box. It does everything dynamically, without code generation.
+* Sensible defaults : No config, excepted when you really need it. 
+* KISS : Woko is simple, that's why it works.
+
+# The Object Oriented Wiki #
 Woko stands for "The Object Oriented Wiki". The idea is that, like in a regular wiki, end users can view/edit/delete (the usual CRUD suspects) pages, and navigate from a page to another using hyperlinks. Wikis usually provides ACLs or other persmissions so that admins can decide "who can do what" with the pages. 
 
 Woko applies this principle to Object Oriented Programming : instead of manipulating "Pages", end users deal directly with Domain Objects in their browser. Woko handles all CRUD operations out of the box on your Domain Objects, and lets you fine-tune everything as you want so that your users can interact with your Objects. 
@@ -68,7 +77,7 @@ All parameters are prefixed with either `facet.` or `object.` : they will be bou
 ### Stripes extensions ###
 Woko adds several extensions to Stripes in order to make Resolution Facets work like Action Beans, with respect to Binding & Validation, Security, etc. They are implemented as Stripes `Interceptor`s and other components. Woko also registers custom `TypeConverter`s for transparent binding of Domain Objects.
 ### The Woko instance ###
-There's only one `Woko`! At least in your webapp… 
+There's only one Woko ! At least in your webapp… 
 
 When the application starts up, a `Woko` instance is created, initialized, and bound to the `ServletContext`. Then, from anywhere in the app, the `Woko` instance can be retrieved and used as an top-level entry point for executing various tasks.
 
@@ -76,11 +85,30 @@ There are various ways to configure and boot Woko. TODO link to startup section 
 ### Mandatory Components ###
 Woko delegates most of the job to sub-components :
 
-* `ObjectStore` : Manages Object-Oriented persistence for your POJOs. Implements basic CRUD operations used by the default Woko features.
-* `UserManager` : Handles users/roles and authentication. Simple contract that allows the framework to obtain the roles of the currently logged in user.   
+* `ObjectStore` : Manages Object-Oriented persistence for your POJOs. Implements basic CRUD operations used by the default Woko features. Woko ships with a fully functional Hibernate implementation that uses JPA annotations for the mapping. 
+* `UserManager` : Handles users/roles and authentication. Simple contract that allows the framework to obtain the roles of the currently logged in user. Woko handles container (JEE) authentication and roles, as well as a built-in implementation for storing users in the database.
+* `Facets` : a configured JFacets instance with built-in and application facets. By default Woko uses Annotated Facets (`@FacetKey`) and classpath scanning in order to avoid configuration.
 
+Those components are made available to Woko following the Inversion Of Control (IoC) principle. A container holds all the components (mandatory and user-defined if needed) and can manage their dependencies. Woko retrieves the required components from the IoC container when needed.  
 
+Of course, all those components are configurable, and completely pluggable. They are defined as interfaces and you can replace their implementation as you see fit.
 ## Typical Request Handling flow ##
+Here is a dynamic view of a typical Woko request handling  :
+
+<center>
+<img src="requestflow.png"/>
+</center>
+
+It's a typical Stripes flow, spiced up with target object and facet loading :
+
+1. __Before__ - Stripes has created a WokoActionBean instance for the request, and invokes the _before_ interceptor. 
+    * Request parameters `className` and `key` are used for retrieving the target Object using the `ObjectStore`. When using Hibernate, this ends up calling `session.load()` for the class and primary key. Here, we load the `Product` object with ID `123`.
+    * Once the target `Product` object is loaded, it is used in order to retrieve the `ResolutionFacet` for requested name (`facetName` request parameter). If no facet is found, a 404 is raised. 
+2. __Binding__ - Stripes binds the request parameters, with type converters and dynamic validation on the facet and target object :
+	* `object.price=10` sets the `price` property of the `Product` target object
+	* `facet.coupon=XYZ` sets the `coupon` property of the `ResolutionFacet` object  
+3. __Event execution__ - Stripes invokes the event handler on `WokoActionBean`. This one delegates to the `ResolutionFacet`'s event handler, returning the `Resolution` to be used.
+4. __Resolution execution__ - Stripes executes the returned `Resolution`, producing the HTTP response.
 
 # Tutorial #
 Step-by step tutorial 
