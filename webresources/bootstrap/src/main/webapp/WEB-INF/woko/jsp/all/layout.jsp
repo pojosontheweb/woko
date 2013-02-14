@@ -63,13 +63,15 @@
                 - JQuery
                 - Less compiler
                 - Bootstrap
+                - Bootstrap datepicker
                 - Woko
                 - JS from layout facet
                 - CustomJS
         ========================================================== --%>
         <script type="text/javascript" src="${cp}/js/jQuery-V1.9.1/jquery.min.js?${cacheTokenParams}"></script>
-            <script src="${cp}/js/less-v1.3.3/less.min.js?${cacheTokenParams}" type="text/javascript"></script>
+        <script src="${cp}/js/less-v1.3.3/less.min.js?${cacheTokenParams}" type="text/javascript"></script>
         <script type="text/javascript" src="${cp}/js/bootstrap-v2.3.0/bootstrap.min.js?${cacheTokenParams}"></script>
+        <script type="text/javascript" src="${cp}/js/bootstrap-datepicker/bootstrap-datepicker.min.js?${cacheTokenParams}"></script>
         <script src="${cp}/woko/js/woko.base.js" type="text/javascript"></script>
         <script src="${cp}/woko/js/woko.jquery.js" type="text/javascript"></script>
         <script src="${cp}/woko/js/woko.rpc.js" type="text/javascript"></script>
@@ -77,6 +79,18 @@
             <script type="text/javascript" src="${cp}${jsLink}"></script>
         </c:forEach>
         <s:layout-component name="customJs"/>
+
+        <%-- Set the locale to the datepicker --%>
+        <% Locale l = request.getLocale(); %>
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $('input[rel="datepicker"]').datepicker({language: "<%=l%>"});
+            });
+        </script>
+
+        <% if (l.toString().equals("fr")) { %>
+            <script type="text/javascript" src="${cp}/js/bootstrap-datepicker/bootstrap-datepicker.fr.min.js?${cacheTokenParams}"></script>
+        <% } %>
 
     </head>
 
