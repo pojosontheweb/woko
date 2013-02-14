@@ -95,6 +95,9 @@
         <script type="text/javascript" src="${cp}/woko/js/woko.base.js?${cacheTokenParams}"></script>
         <script type="text/javascript" src="${cp}/woko/js/woko.jquery.js?${cacheTokenParams}"></script>
         <script type="text/javascript" src="${cp}/woko/js/woko.rpc.js?${cacheTokenParams}"></script>
+        <script type="text/javascript">
+            window.wokoClient = new woko.rpc.Client("${cp}");
+        </script>
 
     </head>
 

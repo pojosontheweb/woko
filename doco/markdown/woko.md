@@ -318,10 +318,37 @@ Log in again as developer, open firebug and go to :
 
 You have saved the object. Now go to firebug console and play :
 
+```
+// load MyEntity with ID 123 and store to global for the example
+wokoClient.loadObject("MyEntity", 123, { 
+    onSuccess: function(o) { 
+        myEntity = o;
+        console.log(myEntity);
+    }
+});
+```
 
+You can even update the object :
 
+```
+myEntity.myProp = "this is funky";
+wokoClient.saveObject({
+    obj:myEntity, 
+    onSuccess:function(savedObject) {
+        console.log(savedObject.myProp); 
+    }
+});
+```
 
+And check that it's been saved :
 
+```
+wokoClient.loadObject("MyEntity", 123, { 
+    onSuccess: function(o) { 
+        console.log(o.myProp);
+    }
+});
+```
    
 
 ## Overriding the defaults ##
