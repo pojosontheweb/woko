@@ -359,6 +359,17 @@ TODO explain how you can override the title, properties etc. Show an example in 
 TODO explain how to completely override /view, and how to write a sample Resolution Facet that does something
 ### Templating ###
 TODO explain how to change the layout for a given role (and object ?)
+# Iterative-friendly #
+TODO explain how Woko inherently supports Iterative-style development. 
+
+* quick validation : something to show almost instantly (code while you speak example), no time lost
+* Good for prototyping, but not only a mockup tool : the proto IS the app...
+* Drawing with the cycle
+* Follow the use cases (roles !) - remember UML ?
+* String semantics in the code - @FacetKey
+* Split stories as you split the code (facets for roles / objects)
+* Replaceable base building blocks : replacement of ObjectStore etc.
+
 # Developer Guide #
 Dev guide
 # Performance #
