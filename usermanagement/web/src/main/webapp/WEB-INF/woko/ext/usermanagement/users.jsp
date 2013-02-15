@@ -64,7 +64,7 @@
 
         <h2></h2>
 
-        <c:if test="<%=nbPages>1%>">                                                                                           <
+        <c:if test="<%=nbPages>1%>">
             <div class="row-fluid">
                 <s:form action="/users" class="form-inline">
                     <s:hidden name="className"/>
