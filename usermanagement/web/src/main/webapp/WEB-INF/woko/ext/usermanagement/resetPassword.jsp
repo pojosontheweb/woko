@@ -21,33 +21,29 @@
 
         <fmt:message bundle="${wokoBundle}" key="woko.ext.usermanagement.password.reset.para.text"/>
 
-        <div class="row-fluid">
-            <div class="span12">
-                <s:form action="/resetPassword" class="form-horizontal">
-                    <s:hidden name="_sourcePage" value="<%=encryptedSourcePage%>"/>
-                    <fieldset>
+        <s:form action="/resetPassword" class="form-horizontal">
+            <s:hidden name="_sourcePage" value="<%=encryptedSourcePage%>"/>
+            <fieldset>
 
-                        <div class="control-group ${empty(actionBean.context.validationErrors['facet.email']) ? '' : 'error'} ">
-                            <s:label for="facet.email" class="control-label">
-                                <fmt:message bundle="${wokoBundle}" key="User.email"/>
-                            </s:label>
-                            <div class="controls">
-                                <div class="input-prepend">
-                                    <span class="add-on">@</span>
-                                    <s:text name="facet.email" class="span4"/>
-                                </div>
-                                <s:errors field="facet.email"/>
-                            </div>
+                <div class="control-group ${empty(actionBean.context.validationErrors['facet.email']) ? '' : 'error'} ">
+                    <s:label for="facet.email" class="control-label">
+                        <fmt:message bundle="${wokoBundle}" key="User.email"/>
+                    </s:label>
+                    <div class="controls">
+                        <div class="input-prepend">
+                            <span class="add-on">@</span>
+                            <s:text name="facet.email" class="input-xlarge"/>
                         </div>
+                        <s:errors field="facet.email"/>
+                    </div>
+                </div>
 
-                        <div class="form-actions">
-                            <s:submit name="emailToken" class="btn btn-primary btn-large"/>
-                        </div>
+                <div class="form-actions">
+                    <s:submit name="emailToken" class="btn btn-primary btn-large"/>
+                </div>
 
-                    </fieldset>
-                </s:form>
-            </div>
-        </div>
+            </fieldset>
+        </s:form>
 
     </s:layout-component>
 </s:layout-render>
