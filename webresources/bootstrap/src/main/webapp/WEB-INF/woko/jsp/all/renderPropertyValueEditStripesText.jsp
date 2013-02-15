@@ -31,9 +31,12 @@
     String fullFieldName = renderPropertyValue.getFieldPrefix() + "." + propertyName;
     String className = "wokoPropertyValueEdit " + propertyClassName + "-" + propertyName;
     if (renderPropertyValue.isTextArea()) {
+        className += " input-xxlarge";
 %>
-        <s:textarea name="<%=fullFieldName%>" class="<%=className%>"/>
-<% } else { %>
+        <s:textarea name="<%=fullFieldName%>" class="<%=className%>" />
+<% } else {
+        className += " input-xlarge";
+%>
         <s:text name="<%=fullFieldName%>" class="<%=className%>"/>
 <% } %>
 
