@@ -51,7 +51,7 @@ printErrorHelpAndExit()
 echo "__       __     _  __"
 echo "\\ \\  _  / /___ | |/ / ___"
 echo " \\ \\/ \\/ // o \\|   K /   \\"
-echo "  \\__W__/ \\___/|_|\\_\\\\_o_/  LATEST-SNAPSHOT"
+echo "  \\__W__/ \\___/|_|\\_\\\\_o_/  2.2-beta2"
 echo "             POJOs on the Web !"
 echo ""
 
@@ -89,7 +89,7 @@ init_project()
     echo "Initializing project"
     read_init_project_values
     echo "| Generating your project, please wait, it can take a while to download everything..."
-    mvn archetype:generate -DarchetypeVersion=LATEST-SNAPSHOT -DarchetypeArtifactId=woko-archetype -DarchetypeGroupId=com.pojosontheweb\
+    mvn archetype:generate -DarchetypeVersion=2.2-beta2 -DarchetypeArtifactId=woko-archetype -DarchetypeGroupId=com.pojosontheweb\
         -DgroupId="$groupId" -DartifactId="$artifactId" -Dversion="$version" -DinteractiveMode="false" -q
     cd "$artifactId"
     mvn exec:java -Dexec.mainClass="woko.tooling.cli.Runner" -Dexec.classpathScope=runtime -Dexec.args="$execargs" -q
