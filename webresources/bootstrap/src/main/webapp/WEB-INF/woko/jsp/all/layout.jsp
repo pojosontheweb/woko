@@ -138,7 +138,7 @@
 
                         <%-- Display the search input only for connected user --%>
                         <c:if test="${not empty username}">
-                            <s:form action="/search" class="navbar-search pull-right" style="margin-right: 15px;">
+                            <s:form action="/search" class="navbar-search pull-right hidden-phone hidden-tablet" style="margin-right: 15px;">
                                 <fmt:message bundle="${wokoBundle}" key="search" var="ph"/>
                                 <s:text name="facet.query" class="search-query" placeholder="${ph}"/>
                             </s:form>
