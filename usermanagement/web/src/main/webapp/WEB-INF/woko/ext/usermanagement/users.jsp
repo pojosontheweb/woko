@@ -64,13 +64,13 @@
 
         <h2></h2>
 
-        <c:if test="<%=nbPages>1%>">
+        <c:if test="<%=nbPages>1%>">                                                                                           <
             <div class="row-fluid">
                 <s:form action="/users" class="form-inline">
                     <s:hidden name="className"/>
                     <input type="hidden"name="facet.page" value="1"/>
                     <fmt:message bundle="${wokoBundle}" key="woko.devel.list.showing"/>
-                    <s:select name="facet.resultsPerPage" onchange="this.form.submit()">
+                    <s:select name="facet.resultsPerPage" onchange="this.form.submit()" class="input-small">
                         <s:option value="10">10</s:option>
                         <s:option value="25">25</s:option>
                         <s:option value="50">50</s:option>
@@ -187,10 +187,13 @@
             if (nbPages>1) {
                 int pagerStart = p > nbPagesClickable ? p - (nbPagesClickable-1) : 1;
                 String leftMoveCss = p <= 1 ? "disabled" : "";
-                String leftMoveHref = request.getContextPath() + "/users/" + className +
-                  "?facet.page=" + (p - 1);
-
+                String leftMoveHref = leftMoveCss.equals("disabled") ? "" : request.getContextPath() + "/users/" + className +
+                        "?facet.page=" + (p - 1) + "&facet.resultsPerPage=" + resultsPerPage;
                 String rightMoveCss = p == nbPages ? "disabled" : "";
+                String rightMoveHref = rightMoveCss.equals("disabled") ? "" : request.getContextPath() + "/users/" + className +
+                        "?facet.page=" + (p + 1) + "&facet.resultsPerPage=" + resultsPerPage;
+
+
         %>
             <div class="row-fluid">
                 <div class="pagination">
@@ -214,7 +217,7 @@
                     %>
 
                         <li class="<%=rightMoveCss%>">
-                            <a href="${pageContext.request.contextPath}/users/<%=className%>?facet.page=<%=p+1%>&facet.resultsPerPage=<%=resultsPerPage%>">»</a>
+                            <a href="<%=rightMoveHref%>">»</a>
                         </li>
                     </ul>
                 </div>
