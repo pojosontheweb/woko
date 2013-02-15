@@ -11,7 +11,7 @@ import woko.ioc.SimpleWokoIocContainer
 import woko.push.PushFacetDescriptorManager
 import woko.mail.MailService
 import woko.mail.ConsoleMailService
-woko.ext.usermanagement.mail.BindingHelper
+import woko.ext.usermanagement.mail.BindingHelper
 
 /**
  * Example Woko init listener class that configures all default components (ObjectStore, UserManager etc.) using Simple IoC.

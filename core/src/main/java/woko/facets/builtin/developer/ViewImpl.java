@@ -31,6 +31,12 @@ import woko.persistence.ObjectStore;
 import woko.users.UserManager;
 import woko.users.UsernameResolutionStrategy;
 
+/**
+ * Generic <code>view</code> Resolution Facet : allows to display any Woko-managed POJO as read-only HTML.
+ *
+ * Available only to <code>developer</code> users by default. Override for your role(s) in
+ * order to make this available for your users.
+ */
 @FacetKey(name = WokoFacets.view, profileId = "developer")
 public class ViewImpl<
         OsType extends ObjectStore,
@@ -45,6 +51,11 @@ public class ViewImpl<
         return FRAGMENT_PATH;
     }
 
+    /**
+     * Return the target object as JSON (using <code>renderObjectJson</code> if available) for RPC calls
+     * @param abc the action bean context
+     * @return the target object as JSON
+     */
     @Override
     protected Resolution getRpcResolution(ActionBeanContext abc) {
         WokoFacetContext<OsType,UmType,UnsType,FdmType> wokoFacetContext = getFacetContext();
@@ -53,6 +64,11 @@ public class ViewImpl<
         return json == null ? null : json.getResolution(abc);
     }
 
+    /**
+     * Don't match null target objects
+     * @param targetObject the target object
+     * @return <code>true</code> if <code>targetObject</code> is not null, <code>false</code> otherwise
+     */
     @Override
     public boolean matchesTargetObject(Object targetObject) {
         return targetObject != null;

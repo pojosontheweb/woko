@@ -21,10 +21,22 @@ import net.sourceforge.jfacets.IFacet;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * <code>renderObjectJson</code> facets allow to transform a POJO into JSON. Woko includes a
+ * generic implementation, so that any object can be converted to JSON for free.
+ *
+ * One can override this facet in order to customize the JSON representation of objects for the various
+ * roles and classes of the app.
+ */
 public interface RenderObjectJson extends IFacet {
 
     static final String FACET_NAME = "renderObjectJson";
 
+    /**
+     * Return the facet's target object as JSON
+     * @param request the request
+     * @return a JSON representation of this facet's target object
+     */
     JSONObject objectToJson(HttpServletRequest request);
 
 }

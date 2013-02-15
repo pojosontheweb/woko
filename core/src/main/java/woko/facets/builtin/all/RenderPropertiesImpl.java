@@ -32,6 +32,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Generic <code>renderProperties</code> fragment facet : renders the properties of the
+ * target object as HTML using Object Renderer facets.
+ */
 @FacetKey(name = WokoFacets.renderProperties, profileId = "all")
 public class RenderPropertiesImpl<
         OsType extends ObjectStore,

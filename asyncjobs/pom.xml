@@ -20,13 +20,12 @@
     <parent>
         <groupId>com.pojosontheweb</groupId>
         <artifactId>woko-parent</artifactId>
-        <version>2.2-beta</version>
+        <version>2.2-beta2</version>
     </parent>
     <artifactId>woko-asyncjobs</artifactId>
     <packaging>pom</packaging>
     <name>Woko - asynchronous jobs</name>
     <modules>
         <module>core</module>
-        <module>web</module>
     </modules>
 </project>

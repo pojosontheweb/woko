@@ -10,6 +10,14 @@ import woko.facets.builtin.WokoFacets;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * Facet that forces the user to log-in. This facet is assigned by default
+ * to all CRUD facets for <code>guest</code> role, to that when a guest user tries to
+ * reach a "login required" facet, (s)he is prompted to authenticate first.
+ *
+ * You can override your own facets for your own role so that guest users are
+ * forced to login when they try to reach some facets, instead of getting a 404 (FacetNotFound).
+ */
 @FacetKeyList(keys ={
     @FacetKey(name = WokoFacets.view, profileId = "guest"),
     @FacetKey(name = WokoFacets.edit, profileId = "guest"),

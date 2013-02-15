@@ -28,6 +28,12 @@ import woko.persistence.ObjectStore;
 import woko.users.UserManager;
 import woko.users.UsernameResolutionStrategy;
 
+/**
+ * Allows to edit any Woko-managed POJO.
+ *
+ * Available only to <code>developer</code> users by default. Override for your role(s) in
+ * order to make this available for your users.
+ */
 @FacetKey(name = WokoFacets.edit, profileId = "developer")
 public class EditImpl<
         OsType extends ObjectStore,

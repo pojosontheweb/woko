@@ -22,19 +22,22 @@ import woko.users.UserManager;
 
 import java.util.Arrays;
 
+/**
+ * In-mem init listener. Not for production  use.
+ */
 @Deprecated
 public class InMemoryWokoInitListener extends WokoInitListener {
 
-  @Override
-  protected ObjectStore createObjectStore() {
-    return new InMemoryObjectStore();
-  }
+    @Override
+    protected ObjectStore createObjectStore() {
+        return new InMemoryObjectStore();
+    }
 
-  @Override
-  protected UserManager createUserManager() {
-    InMemoryUserManager um = new InMemoryUserManager();
-    um.addUser("wdevel", "wdevel", Arrays.asList("developer"));
-    return um;
-  }
+    @Override
+    protected UserManager createUserManager() {
+        InMemoryUserManager um = new InMemoryUserManager();
+        um.addUser("wdevel", "wdevel", Arrays.asList("developer"));
+        return um;
+    }
 
 }

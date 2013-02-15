@@ -27,6 +27,17 @@ import woko.users.UserManager;
 import woko.users.UsernameResolutionStrategy;
 import woko.util.Util;
 
+/**
+ * Generic <code>renderPropertyValue</code> facet. Assigned to target type <code>Object</code>, it
+ * acts as a fallback when no other, more specific <code>renderPropertyValue</code> facet could be
+ * found for the property.
+ *
+ * If the property is a Woko-managed POJO, then displays the property as a link to the object. Otherwise,
+ * just call <code>toString()</code> on the property value and display that.
+ *
+ * This class can also be used as a base class when you write your own
+ * <code>renderPropertyValue</code> facets.
+ */
 @FacetKey(name = WokoFacets.renderPropertyValue, profileId = "all")
 public class RenderPropertyValueImpl<
         OsType extends ObjectStore,

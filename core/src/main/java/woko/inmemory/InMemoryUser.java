@@ -18,6 +18,9 @@ package woko.inmemory;
 
 import java.util.List;
 
+/**
+ * In-memory user. Clearly not for production use !
+ */
 public class InMemoryUser {
 
   private String username;

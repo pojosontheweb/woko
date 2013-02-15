@@ -7,6 +7,11 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.util.Date;
 
+/**
+ * Base class for {@link JobDetails} implementation with Hibernate.
+ * Override <code>updateXyz</code> methods in order to change the state
+ * for job events.
+ */
 @Entity
 public class HbJobDetails implements JobDetails {
 

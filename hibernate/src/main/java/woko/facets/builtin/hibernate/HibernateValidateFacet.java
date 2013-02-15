@@ -34,11 +34,20 @@ import javax.validation.Validator;
 import java.util.Locale;
 import java.util.Set;
 
+/**
+ * <code>validate</code> facet that uses Hibernate Validator and javax.validation constraints.
+ * Converts Hibernate Validator errors to Stripes Errors for transparent integration.
+ */
 @FacetKey(name = Validate.FACET_NAME, profileId = "all")
 public class HibernateValidateFacet extends BaseFacet implements Validate {
 
     private static final String OBJECT_PREFIX = "object";
 
+    /**
+     * Delegate validation to hibernate validator and converts errors if any
+     * @param abc the action bean context to add errors to
+     * @return <code>true</code> if validation succeeded, <code>false</code> otherwise
+     */
     public boolean validate(ActionBeanContext abc) {
         // call hibernate validator and translate errors
         boolean hasErrors = false;
@@ -75,6 +84,9 @@ public class HibernateValidateFacet extends BaseFacet implements Validate {
         return !hasErrors;
     }
 
+    /**
+     * Stripes SimpleError extension for converting Hibernate Validation errors to Stripes errors
+     */
     static class HibernateValidationError extends SimpleError {
 
         private String fieldKey;

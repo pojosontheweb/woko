@@ -29,6 +29,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Generic <code>renderPropertiesEdit</code> fragment facet : renders the properties of the
+ * target object as a FORM using Object Renderer facets.
+ */
 @FacetKey(name = WokoFacets.renderPropertiesEdit, profileId = "all")
 public class RenderPropertiesEditImpl<
         OsType extends ObjectStore,
@@ -38,6 +42,7 @@ public class RenderPropertiesEditImpl<
         > extends RenderPropertiesImpl<OsType,UmType,UnsType,FdmType> implements RenderPropertiesEdit {
 
     public static final String FRAGMENT_PATH = "/WEB-INF/woko/jsp/all/renderPropertiesEdit.jsp";
+    public static final String DEFAULT_FIELD_PREFIX = "object";
 
     public String getPath() {
         return FRAGMENT_PATH;
@@ -50,7 +55,7 @@ public class RenderPropertiesEditImpl<
 
     @Override
     public String getFieldPrefix() {
-        return "object";
+        return DEFAULT_FIELD_PREFIX;
     }
 
     @Override

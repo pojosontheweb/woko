@@ -16,6 +16,9 @@ import woko.util.WLogger;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * Stripes <code>ActionBean</code> that manages built-in authentication.
+*/
 @UrlBinding("/login")
 public class WokoLogin<
         OsType extends ObjectStore,
@@ -66,6 +69,10 @@ public class WokoLogin<
         return new ForwardResolution("/WEB-INF/woko/jsp/login.jsp");
     }
 
+    /**
+     * Default handler : displays the login form.
+     * Handles switch to HTTPS if needed.
+     */
     @DefaultHandler
     @DontValidate
     public Resolution displayForm() {
@@ -102,7 +109,18 @@ public class WokoLogin<
     }
 
 
-
+    /**
+     * <code>login</code> handler : attempts to authenticate using the configured
+     * {@link UserManager}.
+     *
+     * If authentication succeeds, sets the <code>username</code> in the HTTP session,
+     * invokes <code>postLogin</code> facet and redirects to the <code>targetUrl</code>.
+     *
+     * If authentication fails, tosses error messages in the <code>WokoActionBeanContext</code>
+     * and shows login FORM again.
+     *
+     * @see UserManager#authenticate(String, javax.servlet.http.HttpServletRequest)
+     */
     public Resolution login() {
         log.debug("trying to log-in user " + username);
         String user = authenticate();

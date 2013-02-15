@@ -29,21 +29,44 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.UUID;
 
+/**
+ * Stripes Exception Handler that manages RPC calls and error ticket.
+ * For RPC calls, Exceptions will be serialized to JSON.
+ * An error ticket (UUID) is generated when an exception is caught, and added to the response,
+ * so that it can be displayed in the UI and used to grep the logs.
+ */
 public class WokoAutoExceptionHandler implements AutoExceptionHandler {
 
     private static final String REQ_ATTR_TICKET = "wokoErrorTicket";
     private static final WLogger logger = WLogger.getLogger(WokoAutoExceptionHandler.class);
 
+    /**
+     * Generates a new ticket and binds it to the request
+     * @param request the request
+     * @return a freshly generated ticket
+     */
     private String genTicket(HttpServletRequest request) {
         String ticket = UUID.randomUUID().toString();
         request.setAttribute(REQ_ATTR_TICKET, ticket);
         return ticket;
     }
 
+    /**
+     * Return the ticket bound to passed request (if any)
+     * @param request the request
+     * @return the ticket found in request if any, null otherwise
+     */
     public static String getTicket(HttpServletRequest request) {
         return (String)request.getAttribute(REQ_ATTR_TICKET);
     }
 
+    /**
+     * Helper method that creates a <code>Resolution</code> with JSON data used
+     * to handle the error client side, for RPC calls
+     * @param message the error message
+     * @param ticket the ticket
+     * @return a JSON representation (streamed) of the error
+     */
     public Resolution createResolutionForRpc(String message, String ticket) {
         JSONObject j = new JSONObject();
         try {
@@ -56,6 +79,13 @@ public class WokoAutoExceptionHandler implements AutoExceptionHandler {
         return new StreamingResolution("text/json", j.toString());
     }
 
+    /**
+     * Invoked on {@link FacetNotFoundException} : set response 404 header, and forwards to the 404 error JSP (or returns JSON for RPC)
+     * @param exc the exception
+     * @param request the request
+     * @param response the response
+     * @return a <code>Resolution</code> for the exception
+     */
     public Resolution handleFacetNotFoundException(FacetNotFoundException exc, HttpServletRequest request, HttpServletResponse response) {
         String ticket = genTicket(request);
         logger.warn("FacetNotFoundException caught by the WokoAutoExceptionHandler - ticket : " + ticket, exc);
@@ -67,6 +97,13 @@ public class WokoAutoExceptionHandler implements AutoExceptionHandler {
         return new ForwardResolution("/WEB-INF/woko/jsp/exception-404.jsp");
     }
 
+    /**
+     * Invoked on generic exceptions : set response 500 header, forwards to the 500 error JSP (or returns JSON for RPC)
+     * @param e the exception
+     * @param request the request
+     * @param response the response
+     * @return a <code>Resolution</code> for the exception
+     */
     public Resolution handleGenericException(Exception e, HttpServletRequest request, HttpServletResponse response) {
         String ticket = genTicket(request);
         logger.error("Exception caught by the WokoAutoExceptionHandler - ticket : " + ticket, e);

@@ -5,6 +5,12 @@ import woko.util.WLogger;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Base abstract class for async jobs. Handles UUID and listeners notification for
+ * <code>start</code>, <code>end</code>, and <code>exception</code>.
+ *
+ * @see JobWithProgressBase
+ */
 public abstract class JobBase implements Job {
 
     private static final WLogger logger = WLogger.getLogger(JobBase.class);
@@ -19,10 +25,17 @@ public abstract class JobBase implements Job {
         return false;
     }
 
+    /**
+     * Does nothing. To be overriden in order to manage kill.
+     */
     @Override
     public void kill() {
     }
 
+    /**
+     * Wraps invocation of <code>doExecute</code> with calls to listeners.
+     * @param listeners a list of job listeners to notify on execution of the job
+     */
     @Override
     public void execute(List<JobListener> listeners) {
         logger.info("Starting " + this);
@@ -55,6 +68,10 @@ public abstract class JobBase implements Job {
         }
     }
 
+    /**
+     * Template method to be implemented by subclasses. Place job logic here.
+     * @param listeners the listeners to be invoked for events not handled by this class (e.g. progress)
+     */
     protected abstract void doExecute(List<JobListener> listeners);
 
 }

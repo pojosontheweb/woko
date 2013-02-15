@@ -38,6 +38,35 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * WokoActionBean is the heart of Woko : it handles incoming requests by :
+ * <el>
+ *     <li>Loading the target object using <code>className</code> and <code>key</code> request parameters</li>
+ *     <li>Retrieving the {@link ResolutionFacet} for request parameter <code>facetName</code> and loaded target object</li>
+ *     <li>Perform dynamic validation on the facet and target object</li>
+ *     <li>Invoke the facet's event handler</li>
+ * </el>
+ *
+ * This action is bound to <code>/{facetName}/{className}/{key}</code>, which provides a consistent URL scheme. DMF should
+ * be used in order to make it 0-config.
+ *
+ * <h2>Target Object loading (before binding/validation)</h2>
+ *
+ * Grab <code>className</code> and <code>key</code> request parameters and try to load
+ * the target object using configured {@link ObjectStore}.
+ * If <code>key</code> is not supplied, then look for <code>createTransient</code> request param and
+ * create new instance of the specified <code>className</code> using no-args constructor.
+ * If <code>createTransient</code> is not specified, then don't create or load the target object at all.
+ *
+ * <h2>Resolution Facet loading (before binding/validation)</h2>
+ *
+ * Using <code>facetName</code> request parameter, try to load a {@link ResolutionFacet} for loaded target
+ * object (or target object class, in case no target object was loaded).
+ *
+ * If the resolution facet is found, then invoke its event handler (using request param names, "a la Stripes").
+ *
+ * If no resolution facet is found, then throw a {@link FacetNotFoundException}.
+ */
 @UrlBinding("/{facetName}/{className}/{key}")
 public class WokoActionBean<
         OsType extends ObjectStore,
@@ -60,40 +89,75 @@ public class WokoActionBean<
     @ValidateNestedProperties({})
     private ResolutionFacet facet;
 
-    private Method eventHandlerMethod = null;    
-    
+    private Method eventHandlerMethod = null;
+
+    /**
+     * Return the target object, loaded before binding and validation.
+     * @return the target object if any (null otherwise)
+     */
     public Object getObject() {
         return object;
     }
 
+    /**
+     * Return the resolution facet, loaded before binding and validation.
+     * @return the resolution facet
+     */
     public ResolutionFacet getFacet() {
         return facet;
     }
 
+    /**
+     * Return the <code>className</code> used to load the target object (bound request param)
+     * @return the target object's <code>className</code>
+     */
     public String getClassName() {
         return className;
     }
 
+    /**
+     * Set the <code>className</code> used to load the target object (bound request param)
+     * @param className the target object's <code>className</code>
+     */
     public void setClassName(String className) {
         this.className = className;
     }
 
+    /**
+     * Return the <code>key</code> (identifier) used to load the target object (bound request param)
+     * @return the target object's <code>key</code>
+     */
     public String getKey() {
         return key;
     }
 
+    /**
+     * Set the <code>key</code> (identifier) used to load the target object (bound request param)
+     * @param key the target object's <code>key</code>
+     */
     public void setKey(String key) {
         this.key = key;
     }
 
+    /**
+     * Return the <code>facetName</code> used to load the resolution facet (bound request param)
+     * @return the <code>facetName</code>
+     */
     public String getFacetName() {
         return facetName;
     }
 
+    /**
+     * Set the <code>facetName</code> used to load the resolution facet (bound request param)
+     * @param facetName the <code>facetName</code>
+     */
     public void setFacetName(String facetName) {
         this.facetName = facetName;
     }
-    
+
+    /**
+     * Interceptor method that loads the target object and facet.
+     */
     @Before(stages = {LifecycleStage.BindingAndValidation})
     public void loadObjectAndFacet() {
         HttpServletRequest req = getContext().getRequest();
@@ -103,13 +167,17 @@ public class WokoActionBean<
             throw new RuntimeException("facetName parameter not found in request");
         }
         key = req.getParameter("key");
-        logger.debug("Loading object for className=" + className + " and key=" + key);
+        if (logger.isDebugEnabled()) {
+            logger.debug("Loading object for className=" + className + " and key=" + key);
+        }
         Woko<OsType,UmType,UnsType,FdmType> woko = getContext().getWoko();
         OsType objectStore = woko.getObjectStore();
         if (className!=null) {
             if (key!=null) {
                 object = objectStore.load(className, key);
-                logger.debug("Loaded " + object + " (className=" + className + ", key=" + key + ")");
+                if (logger.isDebugEnabled()) {
+                    logger.debug("Loaded " + object + " (className=" + className + ", key=" + key + ")");
+                }
             } else {
                 String createTransientStr = req.getParameter(CREATE_TRANSIENT_REQ_PARAM);
                 boolean createTransient = createTransientStr!=null && createTransientStr.equals("true");
@@ -117,7 +185,9 @@ public class WokoActionBean<
                     Class<?> mappedClass = objectStore.getMappedClass(className);
                     try {
                         object = mappedClass.newInstance();
-                        logger.debug("Created transient " + object + ", no key provided (className=" + className + ")");
+                        if (logger.isDebugEnabled()) {
+                            logger.debug("Created transient " + object + ", no key provided (className=" + className + ")");
+                        }
                     } catch (Exception e) {
                         logger.error("Unable to create instance of " + mappedClass + " using no-args constructor.", e);
                         throw new RuntimeException(e);
@@ -142,14 +212,23 @@ public class WokoActionBean<
             throw new IllegalStateException("Facet " + f + " of class " + f.getClass() + " does not implement ResolutionFacet.");
         }
         facet = (ResolutionFacet) f;
-        logger.debug("Resolution facet " + facet + " loaded");
+        if (logger.isDebugEnabled()) {
+            logger.debug("Resolution facet " + facet + " loaded");
+        }
     }
 
+    /**
+     * Resolve the <code>ResolutionFacet</code>'s handler method and invoke it.
+     *
+     * @return the <code>Resolution</code> returned by the <code>ResolutionFacet</code>'s event handler
+     */
     @DefaultHandler
     public Resolution execute() {
         Method handler = getEventHandlerMethod();
         try {
-            logger.debug("Executing handler method : " + facet.toString() + "." + handler.getName());            
+            if (logger.isDebugEnabled()) {
+                logger.debug("Executing handler method : " + facet.toString() + "." + handler.getName());
+            }
             Object[] params;
             Class<?>[] paramTypes = handler.getParameterTypes();
             if (paramTypes.length==1) {
@@ -181,6 +260,11 @@ public class WokoActionBean<
         }
     }
 
+    /**
+     * Resolve the even handler method on the <code>ResolutionFacet</code> using request parameter names.
+     *
+     * @return the event handler method
+     */
     public Method getEventHandlerMethod() {
         if (eventHandlerMethod==null) {
 

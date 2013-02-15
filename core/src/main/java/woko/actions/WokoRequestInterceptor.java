@@ -23,6 +23,11 @@ import net.sourceforge.stripes.controller.LifecycleStage;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * Interceptor that makes the http request available everywhere in the app via static
+ * method.
+ * Uses a <code>ThreadLocal</code> in order to store the request and make it available.
+ */
 @Intercepts({LifecycleStage.RequestInit, LifecycleStage.RequestComplete})
 public class WokoRequestInterceptor implements net.sourceforge.stripes.controller.Interceptor {
 

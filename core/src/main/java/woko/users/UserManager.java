@@ -19,10 +19,28 @@ package woko.users;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
+/**
+ * Woko UserManager interface : abstraction of the underlying users management system.
+ *
+ * No User type is provided on purpose : we want to keep the API very simple and lightweight.
+ * Thereby the <code>UserManager</code> contract is very simple and manipulates basic types only.
+ */
 public interface UserManager {
 
-  List<String> getRoles(String username);
+    /**
+     * Return the roles for passed username
+     * @param username the username to get roles for
+     * @return the roles for passed username, if any
+     */
+    List<String> getRoles(String username);
 
-  boolean authenticate(String username, HttpServletRequest request);
+    /**
+     * Authenticates (or not) passed username. Grabs additional credentials info (such as password)
+     * from request and uses underlying system to perform authentication.
+     * @param username the username
+     * @param request the request
+     * @return <code>true</code> if the user has been succesfuly authenticated, <code>false</code> otherwise
+     */
+    boolean authenticate(String username, HttpServletRequest request);
 
 }

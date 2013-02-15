@@ -16,10 +16,20 @@
 
 package woko.facets.builtin;
 
+/**
+ * <code>renderPropertyValueEdit</code> is the couterpart of <code>renderPropertyValue</code> for
+ * objects displayed in edit mode.
+ *
+ * @see RenderPropertyValue
+ */
 public interface RenderPropertyValueEdit extends RenderPropertyValue {
 
     static final String FACET_NAME = "renderPropertyValueEdit";
 
+    /**
+     * Return the field prefix for the HTML FORM element. Defaults to "object".
+     * @return the field prefix.
+     */
     String getFieldPrefix();
 
 }

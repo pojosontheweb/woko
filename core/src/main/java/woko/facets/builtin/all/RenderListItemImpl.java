@@ -9,6 +9,9 @@ import woko.persistence.ObjectStore;
 import woko.users.UserManager;
 import woko.users.UsernameResolutionStrategy;
 
+/**
+ * Generic <code>renderListItem</code> facet for unauthenticated users.
+ */
 @FacetKey(name=WokoFacets.renderListItem, profileId="all")
 public class RenderListItemImpl<
         OsType extends ObjectStore,

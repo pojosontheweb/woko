@@ -38,6 +38,16 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.*;
 
+/**
+ * Replacement for the default Stripes <code>ValidationMetadataProvider</code> that handles dynamic validation constraints.
+ *
+ * By default, Stripes' validation mechanism is fully static : it uses action bean classes static definitions
+ * and doesn't check for dynamic typing information. Also, it doesn't recurse in bean properties to check for nested
+ * <code>@Validate</code> annotations.
+ *
+ * This validation metadata provider implementation adds dynamic behavior : it recurses at run-time in the properties
+ * of the action bean and checks for <code>@Validate</code> annotations.
+ */
 @Intercepts({LifecycleStage.BindingAndValidation})
 public class NestedValidationMetadataProvider extends DefaultValidationMetadataProvider implements Interceptor {
 
@@ -229,17 +239,19 @@ public class NestedValidationMetadataProvider extends DefaultValidationMetadataP
         }
 
         // Print out a pretty debug message showing what validations got configured
-        StringBuilder builder = new StringBuilder(128);
-        for (Map.Entry<String, ValidationMetadata> entry : meta.entrySet()) {
-            if (builder.length() > 0) {
-                builder.append(", ");
+        if (logger.getRealLog().isDebugEnabled()) {
+            StringBuilder builder = new StringBuilder(128);
+            for (Map.Entry<String, ValidationMetadata> entry : meta.entrySet()) {
+                if (builder.length() > 0) {
+                    builder.append(", ");
+                }
+                builder.append(entry.getKey());
+                builder.append("->");
+                builder.append(entry.getValue());
             }
-            builder.append(entry.getKey());
-            builder.append("->");
-            builder.append(entry.getValue());
+            logger.debug("Loaded @ValidateNestedProperties validations for ", object, ": ", builder
+                    .length() > 0 ? builder : "<none>");
         }
-        logger.debug("Loaded @ValidateNestedProperties validations for ", object, ": ", builder
-                .length() > 0 ? builder : "<none>");
 
         return Collections.unmodifiableMap(meta);
     }

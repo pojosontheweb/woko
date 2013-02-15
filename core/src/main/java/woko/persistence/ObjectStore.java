@@ -18,26 +18,83 @@ package woko.persistence;
 
 import java.util.List;
 
+/**
+ * Object Store contract. The store provides access to CRUD operations on
+ * Woko-managed POJOs.
+ */
 public interface ObjectStore {
 
-  Object load(String className, String key);
+    /**
+     * Load an object from the store using passed parameters
+     * @param className the (mapped) class name of the object to load
+     * @param key the key (ID) of the object to load
+     * @return the loaded object if any, <code>null</code> otherwise
+     */
+    Object load(String className, String key);
 
-  Object save(Object obj);
+    /**
+     * Save or update passed object to the store
+     * @param obj a Woko-managed POJO
+     * @return the saved object
+     */
+    Object save(Object obj);
 
-  Object delete(Object obj);
+    /**
+     * Delete passed object permanently from the store
+     * @param obj a Woko-managed POJO to delete
+     * @return
+     */
+    Object delete(Object obj);
 
-  String getKey(Object obj);
+    /**
+     * Return the key (ID) for passed object
+     * @param obj a Woko-managed POJO
+     * @return the key for passed object
+     */
+    String getKey(Object obj);
 
-  String getClassMapping(Class<?> clazz);
+    /**
+     * Return the class mapping for passed class
+     * @param clazz the Java Class to get the mapping for
+     * @return the mapping for passed class if any
+     */
+    String getClassMapping(Class<?> clazz);
 
-  Class<?> getMappedClass(String className);
+    /**
+     * Return the Java Class for passed mapped class name
+     * @param className the mapped class name
+     * @return the Java class for passed mapped class name
+     */
+    Class<?> getMappedClass(String className);
 
-  ResultIterator<?> list(String className, Integer start, Integer limit);
+    /**
+     * List instances of the passed mapped class, with pagination enabled
+     * @param className the mapped class name
+     * @param start the start offset
+     * @param limit the limit
+     * @return a <code>ResultIterator</code> of the listed objects
+     */
+    ResultIterator<?> list(String className, Integer start, Integer limit);
 
-  List<Class<?>> getMappedClasses();
+    /**
+     * Return a list of all Woko-managed (mapped) classes
+     * @return a list of all Woko-managed (mapped) classes
+     */
+    List<Class<?>> getMappedClasses();
 
-  ResultIterator<?> search(Object query, Integer start, Integer limit);
+    /**
+     * Search instances in a full-text fashion, with pagination enabled
+     * @param query the full text query
+     * @param start the start offset
+     * @param limit the limit
+     * @return a <code>ResultIterator</code> of the matching objects
+     */
+    ResultIterator<?> search(Object query, Integer start, Integer limit);
 
-  void close();
+    /**
+     * Close the store and release all resources (database connection, etc.).
+     * Invoked when the app shuts down.
+     */
+    void close();
 
 }

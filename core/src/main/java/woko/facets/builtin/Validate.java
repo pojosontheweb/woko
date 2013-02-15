@@ -18,10 +18,20 @@ package woko.facets.builtin;
 
 import net.sourceforge.stripes.action.ActionBeanContext;
 
+/**
+ * <code>validate</code> facet is used to validate the state of a Woko managed POJO before
+ * is is saved. It can perform some additional validation routines, e.g. using the database layer.
+ */
 public interface Validate {
 
     static final String FACET_NAME = "validate";
 
-  boolean validate(ActionBeanContext abc);
+    /**
+     * Check for validation constraints on the target object's state, and adds errors to the
+     * action bean context if needed.
+     * @param abc the action bean context to add errors to
+     * @return <code>true</code> if there are no errors, <code>false</code> if some validation constraints were violated
+     */
+    boolean validate(ActionBeanContext abc);
 
 }

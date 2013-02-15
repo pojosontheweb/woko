@@ -29,6 +29,12 @@ import woko.users.UsernameResolutionStrategy;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
+/**
+ * <code>renderPropertyValueJson</code> for properties of type <code>Date</code>. Converts the
+ * property value to our JSON date representation.
+ *
+ * http://stackoverflow.com/questions/206384/how-to-format-a-json-date
+ */
 @FacetKey(name= WokoFacets.renderPropertyValueJson, profileId="all", targetObjectType=Date.class)
 public class RenderPropertyValueJsonDate<
         OsType extends ObjectStore,
@@ -51,7 +57,11 @@ public class RenderPropertyValueJsonDate<
         return dateToJsonString((Date) propertyValue);
     }
 
-    // http://stackoverflow.com/questions/206384/how-to-format-a-json-date
+    /**
+     * Convert passed Date to a JSON-enabled representation
+     * @param d the Date to be converted
+     * @return
+     */
     public static String dateToJsonString(Date d) {
         return new StringBuilder().
           append(JSON_PREFIX).
@@ -60,6 +70,11 @@ public class RenderPropertyValueJsonDate<
           toString();
     }
 
+    /**
+     * Create date from JSON-enabled representation
+     * @param s the JSON-enabled representation of the date
+     * @return a Java <code>Date</code>
+     */
     public static Date dateFromJsonString(String s) {
         if (s==null)
             return null;
@@ -76,6 +91,11 @@ public class RenderPropertyValueJsonDate<
         throw new IllegalArgumentException("supplied string ain't a valid JSON String : " + s);
     }
 
+    /**
+     * Check if passed String looks liks a JSON-enabled date
+     * @param s the String to check
+     * @return <code>true</code> if passed string looks like a JSON-enabled date, <code>false</code> otherwise
+     */
     public static boolean isJsonDate(String s) {
         return s.startsWith(JSON_PREFIX) && s.endsWith(JSON_SUFFIX);
     }

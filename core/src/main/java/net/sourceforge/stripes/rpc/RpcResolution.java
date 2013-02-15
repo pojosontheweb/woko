@@ -18,6 +18,13 @@ package net.sourceforge.stripes.rpc;
 
 import net.sourceforge.stripes.action.Resolution;
 
+/**
+ * Interface for Resolutions that have a RPC counterpart.
+ * Allows the RPC interceptor to use one or the other Resolution
+ * depending on the context.
+ *
+ * @see RpcInterceptor
+ */
 public interface RpcResolution {
 
     Resolution getRpcResolution();

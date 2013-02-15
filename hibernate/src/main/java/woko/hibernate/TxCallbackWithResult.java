@@ -19,6 +19,10 @@ package woko.hibernate;
 import org.hibernate.Session;
 import woko.hibernate.HibernateStore;
 
+/**
+ * @deprecated use {@link woko.persistence.TransactionalStore}
+ */
+@Deprecated
 public interface TxCallbackWithResult<RES> {
     RES execute(HibernateStore store, Session session) throws Exception;
 }

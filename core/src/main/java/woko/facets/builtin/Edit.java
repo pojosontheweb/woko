@@ -18,11 +18,31 @@ package woko.facets.builtin;
 
 import woko.facets.ResolutionFacet;
 
+/**
+ * <code>edit</code> facet : used to edit managed POJOs with urls like :
+ * <p/>
+ * <pre>http://.../edit/MyClass/123</pre>
+ * <p/>
+ * This facet is the entry point of the Object Renderer in edit mode. By default, it delegates
+ * to the other ObjectRenderer facets (<code>renderPropertiesEdit</code>,
+ * <code>renderProperyValueEdit</code> etc.), in order to create a FORM for the target object.
+ * <p/>
+ * You can completely replace the edit JSP for your target objects / roles by overriding this facet.
+ * For finer-grained control over the ObjectRenderer, simply assign this facet to your class / role and
+ * override sub-parts of the renderer.
+ */
 public interface Edit extends ResolutionFacet {
 
+    /**
+     * Facet name constant
+     */
     static final String FACET_NAME = "edit";
 
-
-  String getFragmentPath();
+    /**
+     * Return the JSP path to be used. By default, returns the ObjectRenderer JSP for editing
+     * objects. Override to replace the "edit" page for your Class(es)/Role(s).
+     * @return the JSP path
+     */
+    String getFragmentPath();
 
 }

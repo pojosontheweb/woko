@@ -23,21 +23,29 @@ import woko.users.UsernameResolutionStrategy;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * Base class for <code>FragmentFacet</code>s.
+ */
 public abstract class BaseFragmentFacet<
         OsType extends ObjectStore,
         UmType extends UserManager,
         UnsType extends UsernameResolutionStrategy,
         FdmType extends IFacetDescriptorManager
-        > extends BaseFacet<OsType,UmType,UnsType,FdmType> implements FragmentFacet {
+        > extends BaseFacet<OsType, UmType, UnsType, FdmType> implements FragmentFacet {
 
-  public String getFragmentPath(HttpServletRequest request) {
-    return this.getPath();
-  }
+    /**
+     * Return the path to the JSP fragment (as returned by <code>getPath()</code>)
+     * @param request the request
+     * @return the path to the JSP fragment
+     */
+    public String getFragmentPath(HttpServletRequest request) {
+        return this.getPath();
+    }
 
-  public abstract String getPath();
-
-  public HttpServletRequest getRequest() {
-    return getFacetContext().getRequest();
-  }
+    /**
+     * Return the path to the JSP fragment
+     * @return the path to the JSP fragment
+     */
+    public abstract String getPath();
 
 }

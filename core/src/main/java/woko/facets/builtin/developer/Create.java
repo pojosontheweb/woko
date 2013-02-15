@@ -28,6 +28,12 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Forwards to the new object creation page.
+ *
+ * Available only to <code>developer</code> users by default. Override for your role(s) in
+ * order to make this available for your users.
+ */
 @FacetKey(name = WokoFacets.create, profileId = "developer")
 public class Create<
         OsType extends ObjectStore,
@@ -42,6 +48,10 @@ public class Create<
         return FRAGMENT_PATH;
     }
 
+    /**
+     * Return a list of all non-abstract mapped classes (Woko-managed types).
+     * @return a list of non abstract mapped classes
+     */
     public List<String> getMappedClasses() {
         List<String> res = new ArrayList<String>();
         OsType os = getFacetContext().getWoko().getObjectStore();

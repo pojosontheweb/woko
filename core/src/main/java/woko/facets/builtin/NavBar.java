@@ -18,6 +18,14 @@ package woko.facets.builtin;
 
 import woko.facets.FragmentFacet;
 
+/**
+ * <code>navBar</code> facet, used to display the navigation block.
+ *
+ * This facet can be overriden for your role(s) in order to change the nav bar for the various
+ * users of the app. The target type can be used as well, but won't be available everywhere (basically only
+ * for built-in facets that use a target object, like <code>view</code> or <code>edit</code>, but not
+ * for facets like <code>home</code> that are not assigned to a particular target type).
+ */
 public interface NavBar extends FragmentFacet {
 
     static final String FACET_NAME = "navBar";

@@ -18,8 +18,18 @@ package woko.users;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * Strategy interface for retrieving the <code>username</code> from the request. Allows
+ * for various implementations (cookie, session, remote user...) and full user session
+ * pluggability.
+ */
 public interface UsernameResolutionStrategy {
 
-  String getUsername(HttpServletRequest request);
+    /**
+     * Return the username (if any : return null for unauthenticated users) for passed request
+     * @param request the request
+     * @return the username if found (user already authenticated), or <code>null</code> if there is no authenticated user for the request
+     */
+    String getUsername(HttpServletRequest request);
 
 }

@@ -15,6 +15,11 @@ import woko.users.UserManager;
 import woko.users.UsernameResolutionStrategy;
 import woko.util.LinkUtil;
 
+/**
+ * Kills the job associated to target {@link JobDetails} if any. Facet doesn't
+ * match if target <code>JobDetails</code> is null or if there is no
+ * {@link JobManager} in IOC.
+ */
 @FacetKey(name="kill", profileId = "developer", targetObjectType = JobDetails.class)
 public class KillJobDeveloper<
         OsType extends ObjectStore,
@@ -23,6 +28,9 @@ public class KillJobDeveloper<
         FdmType extends IFacetDescriptorManager
         > extends BaseResolutionFacet<OsType,UmType,UnsType,FdmType> implements IInstanceFacet {
 
+    /**
+     * Default handler : retrieves running {@link Job} if any, and invokes <code>kill()</code> on it.
+     */
     @Override
     public Resolution getResolution(ActionBeanContext abc) {
         JobDetails jd = (JobDetails)getFacetContext().getTargetObject();
@@ -44,6 +52,11 @@ public class KillJobDeveloper<
         return getWoko().getIoc().getComponent(JobManager.KEY);
     }
 
+    /**
+     * Don't match if JobDetails is null or there is no JobManager found in IOC
+     * @param targetObject
+     * @return
+     */
     @Override
     public boolean matchesTargetObject(Object targetObject) {
         JobDetails jd = (JobDetails)getFacetContext().getTargetObject();

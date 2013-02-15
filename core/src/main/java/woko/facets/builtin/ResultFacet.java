@@ -18,14 +18,34 @@ package woko.facets.builtin;
 
 import woko.persistence.ResultIterator;
 
-public interface ResultFacet {
+/**
+ * Base interface for facets that handle a paginated list of results (like
+ * <code>list</code> and <code>search</code>).
+ */
+public interface ResultFacet<T> {
 
-    ResultIterator getResults();
+    /**
+     * Return the results
+     * @return the results
+     */
+    ResultIterator<T> getResults();
 
+    /**
+     * Return the currently displayed page
+     * @return the current page
+     */
     Integer getPage();
 
+    /**
+     * Return the number of results to be displayed per page
+     * @return the number of results per page
+     */
     Integer getResultsPerPage();
 
+    /**
+     * Return the title for the page
+     * @return the title for the page
+     */
     String getPageHeaderTitle();
 
 }

@@ -25,6 +25,10 @@ import woko.persistence.ObjectStore;
 import woko.users.UserManager;
 import woko.users.UsernameResolutionStrategy;
 
+/**
+ * <code>renderObjectEdit</code> generic facet : displays the target object in edit mode
+ * using Object Renderer facets.
+ */
 @FacetKey(name = WokoFacets.renderObjectEdit, profileId = "all")
 public class RenderObjectEditImpl<
         OsType extends ObjectStore,

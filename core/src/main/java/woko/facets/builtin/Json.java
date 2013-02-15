@@ -18,6 +18,13 @@ package woko.facets.builtin;
 
 import woko.facets.ResolutionFacet;
 
+/**
+ * Base interface for <code>json</code> facets. Should return the target object as JSON in the
+ * http response.
+ *
+ * This facet can be overriden for your role(s) and class(es) in order to customize the JSON data
+ * for you model and users.
+ */
 public interface Json extends ResolutionFacet {
 
     static final String FACET_NAME = "json";

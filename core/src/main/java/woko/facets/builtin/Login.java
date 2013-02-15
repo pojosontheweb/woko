@@ -18,9 +18,11 @@ package woko.facets.builtin;
 
 import woko.facets.ResolutionFacet;
 
+/**
+ * Login facet contract, for use with built-auth.
+ */
 public interface Login extends ResolutionFacet {
 
     static final String FACET_NAME = "login";
-
 
 }

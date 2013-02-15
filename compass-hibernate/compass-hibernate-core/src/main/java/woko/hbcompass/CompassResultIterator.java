@@ -22,6 +22,9 @@ import woko.persistence.ResultIterator;
 
 import java.util.Iterator;
 
+/**
+ * ResultIterator implementation backed by <code>CompassHitsOperations</code> object.
+ */
 public class CompassResultIterator<T> extends ResultIterator<T> {
 
   private final int start;

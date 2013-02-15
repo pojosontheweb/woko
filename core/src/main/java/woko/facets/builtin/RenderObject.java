@@ -19,6 +19,15 @@ package woko.facets.builtin;
 import woko.facets.FragmentFacet;
 import net.sourceforge.jfacets.IFacet;
 
+/**
+ * <code>renderObject</code> fragment facets are used to render the target object
+ * in a page, including the title, links and properties.
+ *
+ * This facet can be overriden in order to replace the whole rendering of an object
+ * for your role(s) and class(es). For more fine-grained customization, one can also
+ * override the other Object Renderer facets (<code>renderTitle</code>, <code>renderProperties</code>
+ * etc.).
+ */
 public interface RenderObject extends IFacet, FragmentFacet {
 
     static final String FACET_NAME = "renderObject";

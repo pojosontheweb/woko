@@ -31,6 +31,12 @@ import woko.users.UserManager;
 import woko.users.UsernameResolutionStrategy;
 import woko.util.Util;
 
+/**
+ * Allows to delete any Woko-managed POJO.
+ *
+ * Available only to <code>developer</code> users by default. Override for your role(s) in
+ * order to make this available for your users.
+ */
 @StrictBinding(
         defaultPolicy = StrictBinding.Policy.DENY,
         allow = {
@@ -49,6 +55,7 @@ public class DeleteImpl<
     public static final String TARGET_FACET_AFTER_DELETE = WokoFacets.home;
 
     public static final String FRAGMENT_PATH = "/WEB-INF/woko/jsp/developer/confirmDelete.jsp";
+
     private String confirm;
     private String cancel;
 

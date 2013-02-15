@@ -25,6 +25,12 @@ import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+/**
+ * Woko-specific <code>LocalizationBundleFactory</code> that handles the different
+ * resource bundles (<code>application.properties</code>, <code>woko.properties</code> and
+ * <code>stripes.properties</code>.
+ * Allows to split applicative and framework messages in separate bundles.
+ */
 public class WokoLocalizationBundleFactory implements LocalizationBundleFactory {
 
     private static final String[] DEFAULT_BUNDLES = {"application","woko","stripes"};

@@ -18,6 +18,9 @@ package woko.facets;
 
 import net.sourceforge.jfacets.IProfile;
 
+/**
+ * Woko implementation of JFacet's profile. Simply wraps the profile ID.
+ */
 public class WokoProfile implements IProfile {
 
   private final String id;

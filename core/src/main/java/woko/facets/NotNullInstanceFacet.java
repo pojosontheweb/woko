@@ -18,11 +18,15 @@ package woko.facets;
 
 import net.sourceforge.jfacets.IInstanceFacet;
 
+/**
+ * @deprecated Useless class : will be removed in next major version
+ */
+@Deprecated
 public class NotNullInstanceFacet implements IInstanceFacet {
 
-  public boolean matchesTargetObject(Object targetObject) {
-    return targetObject != null;
-  }
+    public boolean matchesTargetObject(Object targetObject) {
+        return targetObject != null;
+    }
 
 
 }

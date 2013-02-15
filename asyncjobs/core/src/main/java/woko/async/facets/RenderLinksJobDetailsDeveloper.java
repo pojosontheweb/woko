@@ -14,6 +14,9 @@ import woko.util.LinkUtil;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Adds <code>kill</code> link for target {@link JobDetails} if killable.
+ */
 @FacetKey(name= RenderLinks.FACET_NAME,profileId = "developer",targetObjectType = JobDetails.class)
 public class RenderLinksJobDetailsDeveloper<
         OsType extends ObjectStore,

@@ -20,6 +20,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Alternative init listener that uses a Groovy script to startup Woko.
+ * The <code>woko-init.groovy</code> script has to be available be placed at CLASSPATH root.
+ * It has to return a fully configured Woko instance.
+ * The only variable available to the binding of the init script is the <code>ServletContext</code>,
+ * under the name <code>servletContext</code>.
+ */
 public class GroovyInitListener<OsType extends ObjectStore,
         UmType extends UserManager,
         UnsType extends UsernameResolutionStrategy,
@@ -36,6 +43,9 @@ public class GroovyInitListener<OsType extends ObjectStore,
         return servletContext;
     }
 
+    /**
+     * Invoked at application startup. Creates Woko and binds to servlet context.
+     */
     @Override
     public final void contextInitialized(ServletContextEvent e) {
         servletContext = e.getServletContext();
@@ -43,6 +53,9 @@ public class GroovyInitListener<OsType extends ObjectStore,
         servletContext.setAttribute(Woko.CTX_KEY, createWoko());
     }
 
+    /**
+     * Close woko on application shutdown
+     */
     @Override
     public final void contextDestroyed(ServletContextEvent e) {
         Woko woko = Woko.getWoko(e.getServletContext());
@@ -51,6 +64,9 @@ public class GroovyInitListener<OsType extends ObjectStore,
         }
     }
 
+    /**
+     * Create and return a configured Woko by evaluating the woko-init.groovy script.
+     */
     protected Woko<OsType, UmType, UnsType, FdmType> createWoko() {
         InputStream scriptStream = getClass().getResourceAsStream(SCRIPT_FILE_NAME);
         if (scriptStream==null) {
@@ -70,6 +86,9 @@ public class GroovyInitListener<OsType extends ObjectStore,
         return res;
     }
 
+    /**
+     * Static helper for grabbing package names from web.xml
+     */
     public static List<String> getPackageNamesFromConfig(ServletContext servletContext, String paramName, boolean throwIfNotFound) {
         String pkgNamesStr = servletContext.getInitParameter(paramName);
         if (pkgNamesStr == null || pkgNamesStr.equals("")) {
@@ -85,6 +104,9 @@ public class GroovyInitListener<OsType extends ObjectStore,
         return WokoIocInitListener.extractPackagesList(pkgNamesStr);
     }
 
+    /**
+     * Static helper for grabbing facet package names from web.xml
+     */
     public static List<String> getFacetPackagesFromWebXml(ServletContext servletContext) {
         List<String> packagesNames = getPackageNamesFromConfig(servletContext, WokoIocInitListener.CTX_PARAM_FACET_PACKAGES, false);
         List<String> pkgs = new ArrayList<String>();

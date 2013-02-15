@@ -114,10 +114,12 @@
             if (nbPages>1) {
                 int pagerStart = p > nbPagesClickable ? p - (nbPagesClickable-1) : 1;
                 String leftMoveCss = p <= 1 ? "disabled" : "";
-                String leftMoveHref = request.getContextPath() + "/search?facet.query=" + query +
-                  "&facet.page=" + (p - 1);
+                String leftMoveHref = leftMoveCss.equals("disabled") ? "" : request.getContextPath() + "/search?facet.query=" + query +
+                        "&facet.page=" + (p - 1) + "&facet.resultsPerPage=" + resultsPerPage;
 
                 String rightMoveCss = p == nbPages ? "disabled" : "";
+                String rightMoveHref = rightMoveCss.equals("disabled") ? "" : request.getContextPath() + "/search?facet.query=" + query +
+                        "&facet.page=" + (p + 1) + "&facet.resultsPerPage=" + resultsPerPage;
         %>
             <div class="row-fluid">
                 <div class="pagination">
@@ -141,7 +143,7 @@
                     %>
 
                         <li class="<%=rightMoveCss%>">
-                            <a href="${pageContext.request.contextPath}/search?facet.query=<%=query%>&facet.page=<%=p+1%>&facet.resultsPerPage=<%=resultsPerPage%>">»</a>
+                            <a href="<%=rightMoveHref%>">»</a>
                         </li>
                     </ul>
                 </div>

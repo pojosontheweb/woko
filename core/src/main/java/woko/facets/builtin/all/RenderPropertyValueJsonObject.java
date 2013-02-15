@@ -32,6 +32,11 @@ import woko.users.UsernameResolutionStrategy;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * Catch-all <code>renderPropertyValueJson</code>, assigned to <code>Object</code>. Just
+ * adds the Woko metadata to the property value, as we don't know what else to do with the
+ * object.
+ */
 @FacetKey(name = WokoFacets.renderPropertyValueJson, profileId = "all")
 public class RenderPropertyValueJsonObject<
         OsType extends ObjectStore,
@@ -40,6 +45,12 @@ public class RenderPropertyValueJsonObject<
         FdmType extends IFacetDescriptorManager
         > extends BaseFacet<OsType,UmType,UnsType,FdmType> implements RenderPropertyValueJson {
 
+    /**
+     * Add the Woko metadata to the property value
+     * @param request the request
+     * @param propertyValue the property value
+     * @return a JSONObject with the woko metadata for the property value
+     */
     public Object propertyToJson(HttpServletRequest request, Object propertyValue) {
         if (propertyValue == null) {
             return null;

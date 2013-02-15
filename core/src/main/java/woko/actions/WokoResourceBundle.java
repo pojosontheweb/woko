@@ -18,6 +18,9 @@ package woko.actions;
 
 import java.util.*;
 
+/**
+ * Customized <code>ResourceBundle</code> that doesn't throw exceptions.
+ */
 public class WokoResourceBundle extends ResourceBundle {
 
     private Locale locale;

@@ -29,23 +29,33 @@ import woko.users.UsernameResolutionStrategy;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
+/**
+ * Default <code>renderPropertyValueJson</code> facet for basic types <code>Number</code>,
+ * <code>String</code> and <code>Boolean</code>
+ */
 @FacetKeyList(
-keys={
-  @FacetKey(name= WokoFacets.renderPropertyValueJson, profileId="all", targetObjectType=Number.class),
-  @FacetKey(name= WokoFacets.renderPropertyValueJson, profileId="all", targetObjectType=String.class),
-  @FacetKey(name= WokoFacets.renderPropertyValueJson, profileId="all", targetObjectType=Boolean.class)
-})
+        keys = {
+                @FacetKey(name = WokoFacets.renderPropertyValueJson, profileId = "all", targetObjectType = Number.class),
+                @FacetKey(name = WokoFacets.renderPropertyValueJson, profileId = "all", targetObjectType = String.class),
+                @FacetKey(name = WokoFacets.renderPropertyValueJson, profileId = "all", targetObjectType = Boolean.class)
+        })
 public class RenderPropertyValueJsonBasicTypes<
         OsType extends ObjectStore,
         UmType extends UserManager,
         UnsType extends UsernameResolutionStrategy,
         FdmType extends IFacetDescriptorManager
-        > extends BaseFacet<OsType,UmType,UnsType,FdmType> implements RenderPropertyValueJson {
+        > extends BaseFacet<OsType, UmType, UnsType, FdmType> implements RenderPropertyValueJson {
 
-  public Object propertyToJson(HttpServletRequest request, Object propertyValue) {
-    // catch-all : return the target object itself
-    return propertyValue;
-  }
+    /**
+     * Return the property value itself (no need for conversion here).
+     * @param request the request
+     * @param propertyValue the property value
+     * @return <code>propertyValue</code>
+     */
+    public Object propertyToJson(HttpServletRequest request, Object propertyValue) {
+        // catch-all : return the target object itself
+        return propertyValue;
+    }
 
 
 }

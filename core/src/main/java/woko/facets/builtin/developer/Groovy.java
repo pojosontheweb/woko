@@ -34,53 +34,74 @@ import woko.users.UsernameResolutionStrategy;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
-@FacetKey(name="groovy",profileId="developer")
+/**
+ * Execute arbitrary Groovy code on the server.
+ *
+ * Available only to <code>developer</code> users by default. Override for your role(s) in
+ * order to make this available for your users.
+ */
+@FacetKey(name = "groovy", profileId = "developer")
 public class Groovy<
         OsType extends ObjectStore,
         UmType extends UserManager,
         UnsType extends UsernameResolutionStrategy,
         FdmType extends IFacetDescriptorManager
-        > extends BaseResolutionFacet<OsType,UmType,UnsType,FdmType> {
+        > extends BaseResolutionFacet<OsType, UmType, UnsType, FdmType> {
 
-  private String code;
+    /**
+     * The Groovy code to be executed
+     */
+    private String code;
 
-  public String getCode() {
-    return code;
-  }
-
-  public void setCode(String code) {
-    this.code = code;
-  }
-
-  public Resolution getResolution(ActionBeanContext abc) {
-    JSONObject result = new JSONObject();
-    StringWriter sw = new StringWriter();
-    PrintWriter out = new PrintWriter(sw);
-    Binding b = new Binding();
-    b.setVariable("request", abc.getRequest());
-    b.setVariable("woko", getFacetContext().getWoko());
-    b.setVariable("log", out);
-    GroovyShell shell = new GroovyShell(b);
-    long time = System.currentTimeMillis();
-    try {
-      shell.evaluate(code);
-    } catch(Throwable t) {
-      out.write("ERROR !\n");
-      t.printStackTrace(out);
-    } finally {
-      out.flush();
-      out.close();
+    public String getCode() {
+        return code;
     }
-    long elapsed = System.currentTimeMillis() - time;
 
-    String outStr = "Code executed, Took " + elapsed + "ms.\nLog :\n" + sw.toString();
-    try {
-      result.put("log", outStr);
-    } catch (JSONException e) {
-      e.printStackTrace();
+    public void setCode(String code) {
+        this.code = code;
     }
-    return new StreamingResolution("text/json", result.toString());
-  }
+
+    /**
+     * Execute the Groovy code in a <code>GroovyShell</code>.
+     * Available binding variables are :
+     * <ul>
+     *     <li>request (HttpServletRequest) : the request</li>
+     *     <li>woko (Woko) : the Woko instance for the app</li>
+     *     <li>log (PrintWriter) : a logging buffer that will be returned after execution</li>
+     * </ul>
+
+     * @param abc the action bean context
+     * @return a JSON representation of the exec (with the log or exception if any)
+     */
+    public Resolution getResolution(ActionBeanContext abc) {
+        JSONObject result = new JSONObject();
+        StringWriter sw = new StringWriter();
+        PrintWriter out = new PrintWriter(sw);
+        Binding b = new Binding();
+        b.setVariable("request", abc.getRequest());
+        b.setVariable("woko", getFacetContext().getWoko());
+        b.setVariable("log", out);
+        GroovyShell shell = new GroovyShell(b);
+        long time = System.currentTimeMillis();
+        try {
+            shell.evaluate(code);
+        } catch (Throwable t) {
+            out.write("ERROR !\n");
+            t.printStackTrace(out);
+        } finally {
+            out.flush();
+            out.close();
+        }
+        long elapsed = System.currentTimeMillis() - time;
+
+        String outStr = "Code executed, Took " + elapsed + "ms.\nLog :\n" + sw.toString();
+        try {
+            result.put("log", outStr);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return new StreamingResolution("text/json", result.toString());
+    }
 
 
 }

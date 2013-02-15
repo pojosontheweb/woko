@@ -28,6 +28,12 @@ import woko.users.UsernameResolutionStrategy;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * <code>studio</code> resolution facet : provides access to the Woko Studio page.
+ *
+ * Available only to <code>developer</code> users by default. Override for your role(s) in
+ * order to make this available for your users.
+ */
 @FacetKey(name = WokoFacets.studio, profileId = "developer")
 public class WokoStudio<
         OsType extends ObjectStore,
@@ -42,6 +48,10 @@ public class WokoStudio<
         return FRAGMENT_PATH;
     }
 
+    /**
+     * Return a list of all <code>FacetDescriptor</code>s for the app.
+     * @return a list of all <code>FacetDescriptor</code>s
+     */
     public List<FacetDescriptor> getFacetDescriptors() {
         FdmType fdm = getFacetContext().getWoko().getFacetDescriptorManager();
         FacetDescriptor[] descriptors = fdm.getDescriptors();

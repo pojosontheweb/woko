@@ -19,10 +19,19 @@ package woko.facets.builtin;
 import woko.facets.FragmentFacet;
 import net.sourceforge.jfacets.IFacet;
 
+/**
+ * <code>renderTitle</code> fragment facets are used to display a title for rendered objects.
+ *
+ * Can be ovverriden to customize the titles for objects and roles of your app.
+ */
 public interface RenderTitle extends IFacet, FragmentFacet {
 
     static final String FACET_NAME = "renderTitle";
 
+    /**
+     * Return a human-readable title for the target object
+     * @return the target object's title
+     */
     String getTitle();
 
 }

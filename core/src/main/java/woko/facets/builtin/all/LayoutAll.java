@@ -30,31 +30,53 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-@FacetKey(name= WokoFacets.layout, profileId="all")
+/**
+ * <code>layout</code> facet for profile <code>all</code>.
+ *
+ * Assigned to profile <code>all</code> so that one can override for default <code>guest</code> easily without
+ * using a custom default role (fallback profile).
+ */
+@FacetKey(name = WokoFacets.layout, profileId = "all")
 public class LayoutAll<
         OsType extends ObjectStore,
         UmType extends UserManager,
         UnsType extends UsernameResolutionStrategy,
         FdmType extends IFacetDescriptorManager
-        > extends BaseFacet<OsType,UmType,UnsType,FdmType> implements Layout {
+        > extends BaseFacet<OsType, UmType, UnsType, FdmType> implements Layout {
 
     public static final String FRAGMENT_PATH = "/WEB-INF/woko/jsp/all/layout.jsp";
 
+    /**
+     * Return "Woko" (default app title)
+     * @return the default "Woko" app title
+     */
     public String getAppTitle() {
-    return "Woko";
-  }
+        return "Woko";
+    }
 
-  public List<String> getCssIncludes() {
-    return Collections.emptyList();
-  }
+    /**
+     * Return an empty list (no specific CSS)
+     * @return an empty list
+     */
+    public List<String> getCssIncludes() {
+        return Collections.emptyList();
+    }
 
-  public List<String> getJsIncludes() {
-    return Collections.emptyList();
-  }
+    /**
+     * Return an empty list (no specific JS)
+     * @return an empty list
+     */
+    public List<String> getJsIncludes() {
+        return Collections.emptyList();
+    }
 
-  public String getLayoutPath() {
-    return FRAGMENT_PATH;
-  }
+    /**
+     * Return the path to the layout to be used for unauthenticated users
+     * @return the path to the layout
+     */
+    public String getLayoutPath() {
+        return FRAGMENT_PATH;
+    }
 
 
 }

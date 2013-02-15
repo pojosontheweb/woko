@@ -28,6 +28,11 @@ import woko.users.UsernameResolutionStrategy;
 
 import java.util.List;
 
+/**
+ * Generic <code>renderPropertyValueEdit</code> facet for x-to-one properties (relationships
+ * between Woko-managed POJOs). Should allow to change the end of the relation by selecting from
+ * a list of candidates.
+ */
 @FacetKey(name = WokoFacets.renderPropertyValueEdit, profileId = "all")
 public class RenderPropertyValueEditXToOneRelation<
         OsType extends ObjectStore,
@@ -39,6 +44,14 @@ public class RenderPropertyValueEditXToOneRelation<
     public static final String ENUM_FRAGMENT_PATH = "/WEB-INF/woko/jsp/all/renderPropertyValueEditEnum.jsp";
     public static final String FRAGMENT_PATH = "/WEB-INF/woko/jsp/all/renderPropertyValueEditXToOneRelation.jsp";
 
+    /**
+     * Return the appropriate JSP, depending on the type of the relation end.
+     * Basically checks if the target type is a Woko-managed class, and defaults to
+     * <code>renderPropertyValue</code> if the relation cannot be modified.
+     * Also handles enumerated types (Java enums).
+     *
+     * @return the path to the JSP fragment to be used
+     */
     public String getPath() {
         // check if the property is an enum
         Class<?> propType = getPropertyType();
@@ -58,6 +71,10 @@ public class RenderPropertyValueEditXToOneRelation<
         return super.getPath();
     }
 
+    /**
+     * Return a list of elements to choose from for assigning the relation end.
+     * @return a list of choices for the relation end
+     */
     public List<?> getChoices() {
         OsType store = getFacetContext().getWoko().getObjectStore();
         ResultIterator<?> choices = store.list(store.getClassMapping(getPropertyType()), 0, Integer.MAX_VALUE);

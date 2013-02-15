@@ -31,6 +31,11 @@ import java.lang.reflect.Type;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * Generic <code>renderPropertyValueEdit</code> facet for x-to-many properties (relationships
+ * between Woko-managed POJOs). Should allow to change the contents of the Collection by selecting
+ * or deselecting items.
+ */
 @FacetKey(name = WokoFacets.renderPropertyValueEdit, profileId = "all", targetObjectType = Collection.class)
 public class RenderPropertyValueEditXToManyRelation<
         OsType extends ObjectStore,
@@ -41,6 +46,12 @@ public class RenderPropertyValueEditXToManyRelation<
 
     public static final String FRAGMENT_PATH = "/WEB-INF/woko/jsp/all/renderPropertyValueEditXToManyRelation.jsp";
 
+    /**
+     * Return the appropriate JSP depending on the compound type of the Collection.
+     * Basically check if the target Class is a Woko-managed POJO. If not, just display the
+     * Collection read-only.
+     * @return the path to the JSP fragment
+     */
     public String getPath() {
         // we check if the target object is persistent or not.
         // if persistent, then forward to another JSP
@@ -67,6 +78,11 @@ public class RenderPropertyValueEditXToManyRelation<
         return null;
     }
 
+    /**
+     * Return a list of all available elements in the target Collection.
+     * This allows the user to select n items from that list for populating the relation.
+     * @return a list of all items in the target Collection
+     */
     public List<?> getChoices() {
         OsType store = getFacetContext().getWoko().getObjectStore();
         Class<?> compoundType = getCompoundType();

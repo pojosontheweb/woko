@@ -31,32 +31,43 @@ import woko.util.WLogger;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
-@FacetKey(name= WokoFacets.renderPropertyValueJson, profileId="all", targetObjectType=Map.class)
+/**
+ * <code>renderPropertyValueJson</code> facet for properties of type <code>Map</code>.
+ */
+@FacetKey(name = WokoFacets.renderPropertyValueJson, profileId = "all", targetObjectType = Map.class)
 public class RenderPropertyValueJsonMap<
         OsType extends ObjectStore,
         UmType extends UserManager,
         UnsType extends UsernameResolutionStrategy,
         FdmType extends IFacetDescriptorManager
-        > extends BaseFacet<OsType,UmType,UnsType,FdmType> implements RenderPropertyValueJson {
+        > extends BaseFacet<OsType, UmType, UnsType, FdmType> implements RenderPropertyValueJson {
 
-  public Object propertyToJson(HttpServletRequest request, Object propertyValue) {
-      JSONObject result = new JSONObject();
-      Map<?,?> map = (Map<?,?>)propertyValue;
-      Woko<OsType,UmType,UnsType,FdmType> woko = getWoko();
-      try {
-          for (Object key : map.keySet()) {
-              Object val = map.get(key);
-              if (val!=null) {
-                  RenderPropertyValueJson renderPropertyValueJson = woko.getFacet(RenderPropertyValueJson.FACET_NAME, request, val);
-                  Object propToJson = renderPropertyValueJson.propertyToJson(request, val);
-                  result.put(key.toString(), propToJson);
-              }
 
-          }
-          return result;
-      } catch(Exception e) {
-          throw new RuntimeException(e);
-      }
-  }
+    /**
+     * Convert passed <code>propertyValue</code> Map to a JSONObject. Delegates to
+     * <code>renderPropertyValueJson</code> facets for Map entries.
+     * @param request the request
+     * @param propertyValue the Map property value
+     * @return a JSONObject for passed Map
+     */
+    public Object propertyToJson(HttpServletRequest request, Object propertyValue) {
+        JSONObject result = new JSONObject();
+        Map<?, ?> map = (Map<?, ?>) propertyValue;
+        Woko<OsType, UmType, UnsType, FdmType> woko = getWoko();
+        try {
+            for (Object key : map.keySet()) {
+                Object val = map.get(key);
+                if (val != null) {
+                    RenderPropertyValueJson renderPropertyValueJson = woko.getFacet(RenderPropertyValueJson.FACET_NAME, request, val);
+                    Object propToJson = renderPropertyValueJson.propertyToJson(request, val);
+                    result.put(key.toString(), propToJson);
+                }
+
+            }
+            return result;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 }

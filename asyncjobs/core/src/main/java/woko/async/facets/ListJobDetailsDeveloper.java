@@ -11,6 +11,10 @@ import woko.users.UsernameResolutionStrategy;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Overriden <code>list</code> facet to show {@link JobDetails} in a tabular fashion
+ * and with relevant properties only.
+ */
 @FacetKey(name="list", profileId = "developer", targetObjectType = JobDetails.class)
 public class ListJobDetailsDeveloper<
         OsType extends ObjectStore,

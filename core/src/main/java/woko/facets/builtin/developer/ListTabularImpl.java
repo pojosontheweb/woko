@@ -8,6 +8,9 @@ import woko.users.UsernameResolutionStrategy;
 
 import java.util.List;
 
+/**
+ * Base class for <code>list</code> facets that show the results as a table.
+ */
 public class ListTabularImpl<
         OsType extends ObjectStore,
         UmType extends UserManager,

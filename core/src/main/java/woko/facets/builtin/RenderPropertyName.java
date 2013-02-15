@@ -19,11 +19,24 @@ package woko.facets.builtin;
 import woko.facets.FragmentFacet;
 import net.sourceforge.jfacets.IFacet;
 
+/**
+ * <code>renderPropertyName</code> fragment facets are used to display the names of an object's
+ * properties.
+ *
+ */
 public interface RenderPropertyName extends IFacet, FragmentFacet {
 
     static final String FACET_NAME = "renderPropertyName";
 
+    /**
+     * Set the name of the property to be displayed
+     * @param name the name of the property
+     */
     void setPropertyName(String name);
 
+    /**
+     * Return the name of the property to be displayed
+     * @return the name of the property
+     */
     String getPropertyName();
 }

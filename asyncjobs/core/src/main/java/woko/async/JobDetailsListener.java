@@ -4,6 +4,11 @@ import woko.persistence.ObjectStore;
 import woko.persistence.TransactionCallback;
 import woko.persistence.TransactionalStore;
 
+/**
+ * Listener base class that allows to automatically update Woko-managed {@link JobDetails} instances
+ * based on {@link Job} execution.
+ * Bridges notifications from the job execution on <code>JobDetails.updateXxx()</code> methods.
+ */
 public abstract class JobDetailsListener extends JobAdapter {
 
     public static interface Callback {

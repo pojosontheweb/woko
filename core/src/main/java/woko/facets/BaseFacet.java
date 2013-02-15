@@ -28,6 +28,9 @@ import woko.users.UsernameResolutionStrategy;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * Base facet class.
+ */
 public abstract class BaseFacet<
         OsType extends ObjectStore,
         UmType extends UserManager,
@@ -35,25 +38,48 @@ public abstract class BaseFacet<
         FdmType extends IFacetDescriptorManager
         > implements IFacet {
 
-  private WokoFacetContext<OsType,UmType,UnsType,FdmType> facetContext;
+    /**
+     * Ref to the facet context
+     */
+    private WokoFacetContext<OsType, UmType, UnsType, FdmType> facetContext;
 
-  public WokoFacetContext<OsType,UmType,UnsType,FdmType> getFacetContext() {
-    return facetContext;
-  }
+    /**
+     * Return the <code>WokoFacetContext</code> for this facet
+     * @return the <code>WokoFacetContext</code>
+     */
+    public WokoFacetContext<OsType, UmType, UnsType, FdmType> getFacetContext() {
+        return facetContext;
+    }
 
+    /**
+     * Set the <code>WokoFacetContext</code> for this facet
+     * @param iFacetContext the <code>WokoFacetContext</code>
+     */
     @SuppressWarnings("unchecked")
-  public void setFacetContext(IFacetContext iFacetContext) {
-        this.facetContext = (WokoFacetContext<OsType,UmType,UnsType,FdmType>)iFacetContext;
-  }
+    public void setFacetContext(IFacetContext iFacetContext) {
+        this.facetContext = (WokoFacetContext<OsType, UmType, UnsType, FdmType>) iFacetContext;
+    }
 
-    public Woko<OsType,UmType,UnsType,FdmType> getWoko() {
+    /**
+     * Return the <code>Woko</code> instance
+     * @return the <code>Woko</code> instance
+     */
+    public Woko<OsType, UmType, UnsType, FdmType> getWoko() {
         return getFacetContext().getWoko();
     }
 
+    /**
+     * Return the <code>ObjectStore</code>
+     * @return the <code>ObjectStore</code>
+     */
     public OsType getObjectStore() {
         return getWoko().getObjectStore();
     }
 
+    /**
+     * Return the <code>request</code>
+     * @return the <code>request</code>
+     */
     public HttpServletRequest getRequest() {
         return facetContext.getRequest();
     }

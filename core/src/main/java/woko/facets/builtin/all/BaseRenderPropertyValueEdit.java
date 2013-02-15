@@ -7,6 +7,9 @@ import woko.persistence.ObjectStore;
 import woko.users.UserManager;
 import woko.users.UsernameResolutionStrategy;
 
+/**
+ * Base class for <code>RenderPropertyValueEdit</code> facets.
+ */
 public class BaseRenderPropertyValueEdit<
         OsType extends ObjectStore,
         UmType extends UserManager,
@@ -20,7 +23,7 @@ public class BaseRenderPropertyValueEdit<
     public String getFieldPrefix() {
         if (fieldPrefix==null) {
             fieldPrefix = "object";
-            // try to lookup for an editProperties facet in the request,
+            // try to lookup for a renderPropertiesEdit facet in the request,
             // that could have an overriden field prefix to apply
             RenderPropertiesEdit renderPropertiesEdit = (RenderPropertiesEdit)getRequest().getAttribute(RenderPropertiesEdit.FACET_NAME);
             if (renderPropertiesEdit!=null) {

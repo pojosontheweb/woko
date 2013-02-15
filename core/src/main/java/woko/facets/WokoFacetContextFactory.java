@@ -23,6 +23,9 @@ import woko.persistence.ObjectStore;
 import woko.users.UserManager;
 import woko.users.UsernameResolutionStrategy;
 
+/**
+ * Woko-specific facet context factory. Creates <code>WokoFacetContext</code>s.
+ */
 public class WokoFacetContextFactory<
         OsType extends ObjectStore,
         UmType extends UserManager,
@@ -30,21 +33,31 @@ public class WokoFacetContextFactory<
         FdmType extends IFacetDescriptorManager
         > implements IFacetContextFactory {
 
-  private final Woko<OsType,UmType,UnsType,FdmType> woko;
+    private final Woko<OsType, UmType, UnsType, FdmType> woko;
 
-  public WokoFacetContextFactory(Woko<OsType,UmType,UnsType,FdmType> woko) {
-    this.woko = woko;
-  }
+    public WokoFacetContextFactory(Woko<OsType, UmType, UnsType, FdmType> woko) {
+        this.woko = woko;
+    }
 
-  public IFacetContext create(String name, IProfile profile, Object targetObject, FacetDescriptor facetDescriptor) {
-    return new WokoFacetContext<OsType,UmType,UnsType,FdmType>(
-        name,
-        profile,
-        targetObject,
-        facetDescriptor,
-        woko,
-        WokoRequestInterceptor.getRequest());
-  }
+    /**
+     * Create and return the facet context for passed parameters. Uses
+     * <code>WokoRequestInterceptor</code> in order to ser the request for
+     * the context.
+     * @param name the facet name
+     * @param profile the profile
+     * @param targetObject the target object
+     * @param facetDescriptor the facet descriptor
+     * @return a freshly created <code>WokoFacetContext</code>
+     */
+    public IFacetContext create(String name, IProfile profile, Object targetObject, FacetDescriptor facetDescriptor) {
+        return new WokoFacetContext<OsType, UmType, UnsType, FdmType>(
+                name,
+                profile,
+                targetObject,
+                facetDescriptor,
+                woko,
+                WokoRequestInterceptor.getRequest());
+    }
 
 
 }

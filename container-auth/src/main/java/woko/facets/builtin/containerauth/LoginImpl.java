@@ -22,6 +22,11 @@ import woko.facets.BaseResolutionFacet;
 import woko.facets.builtin.Login;
 import woko.facets.builtin.WokoFacets;
 
+/**
+ * <code>login</code> facet that simply redirects to <code>/home</code>. When using container authentication
+ * the <code>/login</code> URL is supposed to be protected (in web.xml) so that container will
+ * prompt for authentication before the user can reach this facet.
+ */
 @FacetKey(name= WokoFacets.login, profileId="all")
 public class LoginImpl extends BaseResolutionFacet implements Login {
 

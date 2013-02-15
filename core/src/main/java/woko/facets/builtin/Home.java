@@ -18,6 +18,12 @@ package woko.facets.builtin;
 
 import woko.facets.ResolutionFacet;
 
+/**
+ * <code>home</code> facet : should display the user's home page.
+ *
+ * This facet can be overriden for your role(s) in order to show a profiled home page for
+ * your users.
+ */
 public interface Home extends ResolutionFacet {
 
     static final String FACET_NAME = "home";
