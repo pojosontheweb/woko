@@ -19,7 +19,7 @@ package woko.inmemory
 import net.sourceforge.stripes.mock.MockRoundtrip
 import woko.actions.WokoActionBean
 
-class TypeConverterRoundtripTests extends InMemRoundtripTestBase {
+class TypeConverterRoundtripTest extends InMemRoundtripTestBase {
 
   void testWokoTypeConverter() {
     def c = createMockServletContext('wdevel')

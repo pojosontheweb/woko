@@ -21,17 +21,20 @@ import woko.actions.WokoActionBean
 import woko.actions.TestActionBean
 import woko.facets.builtin.developer.SaveImpl
 
-class NestedValidationRoundtripTests extends InMemRoundtripTestBase {
+class NestedValidationRoundtripTest extends InMemRoundtripTestBase {
 
     // make sure Stripes validation works as expected (not really useful but shows how the test works)
     void testBeanValidation() {
-        def c = createMockServletContext('wdevel')
-        MockRoundtrip trip = new MockRoundtrip(c, '/testValidate.action')
-        trip.execute()
-        def ab = trip.getActionBean(TestActionBean.class)
-        def errors = ab.context.validationErrors
-        assert errors.size() == 1
-        assert errors.keySet().iterator().next() == "myProp"
+        CloseableMockRoundtrip trip = createRoundtrip('wdevel', '/testValidate.action')
+        try {
+            trip.execute()
+            def ab = trip.getActionBean(TestActionBean.class)
+            def errors = ab.context.validationErrors
+            assert errors.size() == 1
+            assert errors.keySet().iterator().next() == "myProp"
+        } finally {
+            trip.close()
+        }
     }
 
     void testFacetValidation() {
