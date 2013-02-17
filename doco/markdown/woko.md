@@ -379,6 +379,9 @@ TODO explain how Woko inherently supports Iterative-style development.
 ## Resolution Facets ##
 ## Fragment Facets ##
 ## Build ##
+### Dependencies and War Overlays ###
+### Environments ###
+## Tooling ##
 # Add-ons #
 ## User Management ##
 
