@@ -17,16 +17,18 @@
 package facets
 
 import net.sourceforge.jfacets.annotations.FacetKey
+import net.sourceforge.stripes.action.ActionBeanContext
+import net.sourceforge.stripes.action.Resolution
+import net.sourceforge.stripes.action.StreamingResolution
 import woko.facets.BaseForwardResolutionFacet
+import woko.facets.BaseResolutionFacet
 import woko.inmemory.Book
 
 @FacetKey(name = "testWithRoute", profileId = "all", targetObjectType = Book.class)
-class TestWithRoute extends BaseForwardResolutionFacet {
+class TestWithRoute extends BaseResolutionFacet {
 
-    @Override
-    String getPath() {
-        return "BOOK${facetContext.targetObject.name}"
+    Resolution getResolution(ActionBeanContext abc) {
+        return new StreamingResolution("text/plain", "FUNKY")
     }
-
 
 }

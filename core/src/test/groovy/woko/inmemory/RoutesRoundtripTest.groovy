@@ -1,25 +1,24 @@
 package woko.inmemory
 
-import facets.TestWithRoute
+import net.sourceforge.stripes.mock.MockRoundtrip
 import net.sourceforge.stripes.mock.MockServletContext
-import woko.actions.WokoActionBean
 
 class RoutesRoundtripTest extends InMemRoundtripTestBase {
 
+    /**
+     * Simple route using an ActionBean
+     * @see woko.actions.MyRoute
+     */
     void testSimpleRoute() {
-
-        def doTest = { MockServletContext ctx, String url ->
-            WokoActionBean wokoActionBean =
-                mockRoundtrip(ctx, url, null).getActionBean(WokoActionBean.class)
-            assert wokoActionBean.facet.getClass() == TestWithRoute.class
-        }
-
         doWithMockContext("wdevel") { MockServletContext ctx ->
             // test regular URL
-            doTest(ctx, "/testWithRoute/woko.inmemory.Book/1")
+            def defaultUrl = "/testWithRoute/woko.inmemory.Book/1"
+            MockRoundtrip t = mockRoundtrip(ctx, defaultUrl, null)
+            assert t.outputString == "FUNKY"
 
             // test simple route
-//            doTest(ctx, "/route/to/book/1")
+            MockRoundtrip t2 = mockRoundtrip(ctx, "/route/to/book/1", null)
+            t2.forwardUrl == defaultUrl
         }
     }
 
