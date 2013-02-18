@@ -74,15 +74,21 @@ The following URLs are typical Woko URLs that WokoActionBean will handle by dele
 The URL scheme is an important part of Woko. The URLs reflect what they mean, they show the intent and target object. The different parts of the URL (`facetName`, `className` and `key`) are used by WokoActionBean in order to resolve the target object and Resolution Facet to be applied.
 
 All parameters are prefixed with either `facet.` or `object.` : they will be bound respectively to the Resolution Facet and target Object, provided they satisfy the validation constraints if any. Like their cousins Action Beans, Resolution Facets has at least one event handler method, that returns a `Resolution`.
+
 ### Stripes extensions ###
+
 Woko adds several extensions to Stripes in order to make Resolution Facets work like Action Beans, with respect to Binding & Validation, Security, etc. They are implemented as Stripes `Interceptor`s and other components. Woko also registers custom `TypeConverter`s for transparent binding of Domain Objects.
-### The Woko instance ###
+
+## The Woko instance ##
+
 There's only one Woko ! At least in your webapp… 
 
 When the application starts up, a `Woko` instance is created, initialized, and bound to the `ServletContext`. Then, from anywhere in the app, the `Woko` instance can be retrieved and used as an top-level entry point for executing various tasks.
 
 There are various ways to configure and boot Woko. TODO link to startup section in dev guide.   
+
 ### Mandatory Components ###
+
 Woko delegates most of the job to sub-components :
 
 * `ObjectStore` : Manages Object-Oriented persistence for your POJOs. Implements basic CRUD operations used by the default Woko features. Woko ships with a fully functional Hibernate implementation that uses JPA annotations for the mapping. 
@@ -92,7 +98,9 @@ Woko delegates most of the job to sub-components :
 Those components are made available to Woko following the Inversion Of Control (IoC) principle. A container holds all the components (mandatory and user-defined if needed) and can manage their dependencies. Woko retrieves the required components from the IoC container when needed.  
 
 Of course, all those components are configurable, and completely pluggable. They are defined as interfaces and you can replace their implementation as you see fit.
+
 ## Typical Request Handling flow ##
+
 Here is a dynamic view of a typical Woko request handling  :
 
 <center>
@@ -126,37 +134,33 @@ Make sure the `woko` command is available in your PATH before you start.
 
 First off, open a command prompt, switch to a folder of your choice and initiate a new project :
 
-```
-$ woko init
-```
+    $ woko init
 
 The command will ask you for some basic info about your project. You can pick default values for everything excepted the `groupId` and `artifactId`  :
 
-```
-$ woko init
-__       __     _  __
-\ \  _  / /___ | |/ / ___
- \ \/ \/ // o \|   K /   \
-  \__W__/ \___/|_|\_\\_o_/  2.0
-             POJOs on the Web !
+    $ woko init
+    __       __     _  __
+    \ \  _  / /___ | |/ / ___
+     \ \/ \/ // o \|   K /   \
+      \__W__/ \___/|_|\_\\_o_/  2.0
+                 POJOs on the Web !
 
-Initializing project
-> Project name ? myapp
-> Maven groupId ? com.myco.myapp
-> Your project's version ? [1.0-SNAPSHOT] 
-| Generating your project, please wait, it can take a while to download everything...
-> Would you like to use Bootstrap for UI ? [y] :
-> Would you like to use Groovy ? [y] :
-> Specify your default package name [com.myco.myapp] :
-> Would you like enable the woko 'push' command ? [y] :
-|  - web.xml file created : src/main/webapp/WEB-INF/web.xml
-|  - Layout facet created : com.myco.myapp.facets.MyLayout
-|  - resource bundle created : myapp/src/main/resources/application.properties
-|  
-|  Your project has been generated in : myapp.
-|  Run 'woko start' in order to launch your app in a local Jetty container  
+    Initializing project
+    > Project name ? myapp
+    > Maven groupId ? com.myco.myapp
+    > Your project's version ? [1.0-SNAPSHOT] 
+    | Generating your project, please wait, it can take a while to download everything...
+    > Would you like to use Bootstrap for UI ? [y] :
+    > Would you like to use Groovy ? [y] :
+    > Specify your default package name [com.myco.myapp] :
+    > Would you like enable the woko 'push' command ? [y] :
+    |  - web.xml file created : src/main/webapp/WEB-INF/web.xml
+    |  - Layout facet created : com.myco.myapp.facets.MyLayout
+    |  - resource bundle created : myapp/src/main/resources/application.properties
+    |  
+    |  Your project has been generated in : myapp.
+    |  Run 'woko start' in order to launch your app in a local Jetty container  
 
-```
 
 This creates a `myapp` project in the current directory. The project contains a sample Domain Class, and is ready for use.
 
@@ -166,35 +170,33 @@ The very first step when starting a Woko app is to define the Domain Classes : t
 
 Here's the example that has been generated in our project :
 
-```
-// src/main/groovy/myapp/com/myco/myapp/model/MyEntity.groovy
+    // src/main/groovy/myapp/com/myco/myapp/model/MyEntity.groovy
 
-package com.myco.myapp.model
+    package com.myco.myapp.model
 
-import org.compass.annotations.Searchable
-import org.compass.annotations.SearchableId
-import org.compass.annotations.SearchableProperty
-import javax.validation.constraints.NotNull
+    import org.compass.annotations.Searchable
+    import org.compass.annotations.SearchableId
+    import org.compass.annotations.SearchableProperty
+    import javax.validation.constraints.NotNull
 
-import javax.persistence.Entity
-import javax.persistence.Id
+    import javax.persistence.Entity
+    import javax.persistence.Id
 
-@Entity
-@Searchable
-class MyEntity {
+    @Entity
+    @Searchable
+    class MyEntity {
 
-    @Id
-    @SearchableId
-    Long id
+        @Id
+        @SearchableId
+        Long id
 
-    @NotNull
-    @SearchableProperty
-    String myProp
+        @NotNull
+        @SearchableProperty
+        String myProp
 
-    Date myOtherProp
+        Date myOtherProp
 
-}
-```
+    }
 
 And that's it. A `MyEntity` POJO with persistence, validation and full-text search enabled. Your class will be scanned at startup, and ready for use. 
 
@@ -204,9 +206,7 @@ And that's it. A `MyEntity` POJO with persistence, validation and full-text sear
 
 You don't have to write anything more than a Domain Class to start playing with your application. Build the app, and start the server :
 
-```
-$ woko start
-```
+    $ woko start
 
 This will compile and build the project, start jetty, and deploy your application. You can now point your browser to :
 
@@ -297,18 +297,16 @@ With the app still running, log in as wdevel and try this :
 
 The `isRpc` request parameter tells Woko that the request is to be handled as JSON/HTTP. Woko does the same job as usual, except that it returns the result of the operation as JSON. In this example, it returns the freshly created object :
 
-```
-{
-    "id": 123,
-    "myProp": "foobar",
-    "class": "MyEntity",
-    "_wokoInfo": {
-        "title": "123",
-        "className": "MyEntity",
-        "key": "123"
+    {
+        "id": 123,
+        "myProp": "foobar",
+        "class": "MyEntity",
+        "_wokoInfo": {
+            "title": "123",
+            "className": "MyEntity",
+            "key": "123"
+        }
     }
-}
-```
 
 Again, all the features are available out of the box. For AJAX situations, it's even simpler using the `woko.rpc.Client` JavaScript API. It provides all default features, plus arbitrary facet invocation. 
 
@@ -318,38 +316,31 @@ Log in again as developer, open firebug and go to :
 
 You have saved the object. Now go to firebug console and play :
 
-```
-// load MyEntity with ID 123 and store to global for the example
-wokoClient.loadObject("MyEntity", 123, { 
-    onSuccess: function(o) { 
-        myEntity = o;
-        console.log(myEntity);
-    }
-});
-```
-
+    // load MyEntity with ID 123 and store to global for the example
+    wokoClient.loadObject("MyEntity", 123, { 
+        onSuccess: function(o) { 
+            myEntity = o;
+            console.log(myEntity);
+        }
+    });
+    
 You can even update the object :
 
-```
-myEntity.myProp = "this is funky";
-wokoClient.saveObject({
-    obj:myEntity, 
-    onSuccess:function(savedObject) {
-        console.log(savedObject.myProp); 
-    }
-});
-```
+    myEntity.myProp = "this is funky";
+    wokoClient.saveObject({
+        obj:myEntity, 
+        onSuccess:function(savedObject) {
+            console.log(savedObject.myProp); 
+        }
+    });
 
 And check that it's been saved :
 
-```
-wokoClient.loadObject("MyEntity", 123, { 
-    onSuccess: function(o) { 
-        console.log(o.myProp);
-    }
-});
-```
-   
+    wokoClient.loadObject("MyEntity", 123, { 
+        onSuccess: function(o) { 
+            console.log(o.myProp);
+        }
+    });   
 
 ## Overriding the defaults ##
 This section explains how the default features can be customized. It shows some typical examples of changing Woko's behavior when you need it. It also gives a glance of how you can write Resolution Facets in your app to perform various tasks.
@@ -460,80 +451,71 @@ Woko (and its sub componenents) is created and initialized at application startu
 Here is an example using the `SimpleWokoIocContainer` (Groovy version) :
 
 
-```
-package com.myco.myapp
+    package com.myco.myapp
 
-class MyWokoInitListener extends WokoIocInitListener {
+    class MyWokoInitListener extends WokoIocInitListener {
 
-    @Override
-    protected WokoIocContainer createIocContainer() {
-    	
-    	// create and init our store
-    	ObjectStore store = new MyStore()
+        @Override
+        protected WokoIocContainer createIocContainer() {
+        	
+        	// create and init our store
+        	ObjectStore store = new MyStore()
+        
+        	// create and init our user manager
+        	UserManager userManager = 
+        		new MyUserManager().addUser("wdevel", "wdevel", ["developer"])
     
-    	// create and init our user manager
-    	UserManager userManager = 
-    		new MyUserManager().addUser("wdevel", "wdevel", ["developer"])
+        	// create and init the U.N.R.S (container auth)
+        	UsernameResolutionStrategy unrs = new RemoteUserStrategy()
+        
+        	// create the annotated facet descriptor using 
+        	// superclass method : it inits the F.D.M. with 
+        	// the facet packages found in web.xml
+        	IFacetDescriptorManager fdm = createAnnotatedFdm()
     
-    	// create and init the U.N.R.S (container auth)
-    	UsernameResolutionStrategy unrs = new RemoteUserStrategy()
-    
-    	// create the annotated facet descriptor using 
-    	// superclass method : it inits the F.D.M. with 
-    	// the facet packages found in web.xml
-    	IFacetDescriptorManager fdm = createAnnotatedFdm()
-    
-    	// create and return the IoC container
-        return new SimpleWokoIocContainer(
-                store,
-                userManager,
-                unrs,
-                fdm);
+        	// create and return the IoC container
+            return new SimpleWokoIocContainer(
+                    store,
+                    userManager,
+                    unrs,
+                    fdm);
+        }
+        
+        @Override
+        protected List<String> createFallbackRoles() {
+        	// return the default role(s) for our app
+            return ["myguest"]
+        }
     }
-    
-    @Override
-    protected List<String> createFallbackRoles() {
-    	// return the default role(s) for our app
-        return ["myguest"]
-    }
-
-
-}
-
-```
 
 The init listener has to be configured in web.xml :
 
-```
-<?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns="http://java.sun.com/xml/ns/j2ee"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee
-         http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
-         version="2.4">
-
-	…
-
-	<!-- Woko init listener : starts up Woko -->
-    <listener>
-        <display-name>WokoInitListener</display-name>
-        <listener-class>com.myco.myapp.MyWokoInitListener</listener-class>
-    </listener>
-
+    <?xml version="1.0" encoding="UTF-8"?>
+    <web-app xmlns="http://java.sun.com/xml/ns/j2ee"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee
+             http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
+             version="2.4">
+    
+    	…
+    
+    	<!-- Woko init listener : starts up Woko -->
+        <listener>
+            <display-name>WokoInitListener</display-name>
+            <listener-class>com.myco.myapp.MyWokoInitListener</listener-class>
+        </listener>
+    
+        … 
+    
+        <!-- facet packages -->
+        <context-param>
+            <param-name>Woko.Facet.Packages</param-name>
+            <param-value>com.myco.myapp.facets</param-value>
+        </context-param>
+         
     … 
-
-    <!-- facet packages -->
-    <context-param>
-        <param-name>Woko.Facet.Packages</param-name>
-        <param-value>com.myco.myapp.facets</param-value>
-    </context-param>
     
-    …
-    
-    
-    
-</web-app>
-```
+    </web-app>
 
 #### Groovy Init ####
 Groovy Init is an alternative, more flexible way to startup Woko. It also uses a Servlet Context Listener in order to create Woko when the application starts, but this one delegates all the initialization to a Groovy script.
@@ -542,46 +524,40 @@ This is particularly handly when used in combination with [environments](Environ
 
 To enable it, first you need to add the dependency to your ```pom.xml``` :
 
-```
-<dependency>
-  <groupId>com.pojosontheweb</groupId>
-  <artifactId>woko-groovy-init</artifactId>
-  <version>${woko.version}</version>
-</dependency>  
-```
+    <dependency>
+      <groupId>com.pojosontheweb</groupId>
+      <artifactId>woko-groovy-init</artifactId>
+      <version>${woko.version}</version>
+    </dependency>  
 
 Then declare the init listener in ```web.xml``` (instead of a `WokoIocInitListener` subclass) :
 
-```
-<listener>
-  <display-name>WokoInitListener</display-name>
-  <listener-class>woko.groovyinit.GroovyInitListener</listener-class>
-</listener>
-```
+    <listener>
+      <display-name>WokoInitListener</display-name>
+      <listener-class>woko.groovyinit.GroovyInitListener</listener-class>
+    </listener>
 
 Last, you need a ```/woko-init.groovy``` available in your CLASSPATH, that creates, configures and returns a Woko instance. 
 
 Here is an example :
 
-```
-// store
-MyStore store = new MyStore()
-
-// user manager
-MyUserManager userManager = new MyUserManager(...).createDefaultUsers()
-
-// facets
-def facetPackages = ["com.myco.myapp.facets"] + Woko.DEFAULT_FACET_PACKAGES
-AnnotatedFacetDescriptorManager fdm = new AnnotatedFacetDescriptorManager(facetPackages)
-    .setDuplicatedKeyPolicy(DuplicatedKeyPolicyType.FirstScannedWins)
-    .initialize()
-
-// ioc
-SimpleWokoIocContainer ioc = new SimpleWokoIocContainer(store, userManager, new RemoteUserStrategy(), fdm)
-
-// create and return woko !
-return new Woko(ioc, ["myguest"])
-```
+    // store
+    MyStore store = new MyStore()
+    
+    // user manager
+    MyUserManager userManager = new MyUserManager(...).createDefaultUsers()
+    
+    // facets
+    def facetPackages = ["com.myco.myapp.facets"] + Woko.DEFAULT_FACET_PACKAGES
+    AnnotatedFacetDescriptorManager fdm = new AnnotatedFacetDescriptorManager(facetPackages)
+        .setDuplicatedKeyPolicy(DuplicatedKeyPolicyType.FirstScannedWins)
+        .initialize()
+    
+    // ioc
+    SimpleWokoIocContainer ioc = new SimpleWokoIocContainer(store, userManager, new RemoteUserStrategy(), fdm)
+    
+    // create and return woko !
+    return new Woko(ioc, ["myguest"])
 
 ## Domain Objects ##
 Domain Objects in Woko are POJOs. We don't use no meta-framework of any kind, only the Java type system. 
@@ -610,45 +586,41 @@ Nevertheless, there are several important differences between the two :
 ### URL Scheme ###
 `WokoActionBean` dispatches incoming requests to Resolution Facets using the following URL binding :
 
-```
-@UrlBinding("/{facetName}/{className}/{key}")
-```
+    @UrlBinding("/{facetName}/{className}/{key}")
 
 When a matching request is handled, WokoActionBean first loads the target object using `className` and `key` (if provided). Then it retrieves the resolution facet with name `facetName` using the target object. If no `key` is provided, then Woko tries to find the facet by type. If no `className` is provided, then Woko tries to find the facet for the type `java.lang.Object`. 
 
 The `@FacetKey` in Resolution Facets determines its URL. Here are a few examples :
 
-```
-/*
-	/foo/MyClass/123
-	/foo/MyClass
-*/
-@FacetKey(name="foo", profileId="myrole", targetObjectType=MyClass.class)
-class MyResolutionFacet extends BaseResolutionFacet { 
-
-	@Override
-    Resolution getResolution(ActionBeanContext abc) {
-    	return new StreamingResolution("text/plain", "bar !")
+    /*
+    	/foo/MyClass/123
+    	/foo/MyClass
+    */
+    @FacetKey(name="foo", profileId="myrole", targetObjectType=MyClass.class)
+    class MyResolutionFacet extends BaseResolutionFacet { 
+    
+    	@Override
+        Resolution getResolution(ActionBeanContext abc) {
+        	return new StreamingResolution("text/plain", "bar !")
+        }
+    
     }
-
-}
-
-
-/*
-	/bar/MyClass/123
-	/bar/OtherClass/456
-	/bar
-*/
-@FacetKey(name="bar", profileId="myrole") // no targetObjectType defaults to java.lang.Object
-class MyResolutionFacet extends BaseResolutionFacet { 
-
-	@Override
-    Resolution getResolution(ActionBeanContext abc) {
-    	return new StreamingResolution("text/plain", "bar !")
+    
+    
+    /*
+    	/bar/MyClass/123
+    	/bar/OtherClass/456
+    	/bar
+    */
+    @FacetKey(name="bar", profileId="myrole") // no targetObjectType defaults to java.lang.Object
+    class MyResolutionFacet extends BaseResolutionFacet { 
+    
+    	@Override
+        Resolution getResolution(ActionBeanContext abc) {
+        	return new StreamingResolution("text/plain", "bar !")
+        }
+    
     }
-
-}
-```
 
 Of course Resolution Facets can return any type of Stripes `Resolution` (foward, redirect, stream, etc.).
 
@@ -658,27 +630,24 @@ The Facet Context can be accessed at runtime in order to retrieve various inform
 
 Here is an example of a Resolution Facet that retrieves the target object, calls `toString()` on it, and streams that back to the caller :
 
-```
-@FacetKey(name="toString", profileId="myrole", targetObjectType=MyClass.class) 
-class ToStringResolutionFacet extends BaseResolutionFacet { 
-
-	@Override
-    Resolution getResolution(ActionBeanContext abc) {
-    	
-    	// retrieve the target object in facet context
-    	MyClass my = (MyClass)getFacetContext().getTargetObject()
-    	
-    	// the object can be null (if the facet was requested with 
-    	// classname only) so we check that...
-    	String result = my != null ? my.toString() : "the object is null"
-    	
-    	// and we stram back result
-    	return new StreamingResolution("text/plain", result)
-    }
-
-}
-
-```  
+    @FacetKey(name="toString", profileId="myrole", targetObjectType=MyClass.class) 
+    class ToStringResolutionFacet extends BaseResolutionFacet { 
+    
+    	@Override
+        Resolution getResolution(ActionBeanContext abc) {
+        	
+        	// retrieve the target object in facet context
+        	MyClass my = (MyClass)getFacetContext().getTargetObject()
+        	
+        	// the object can be null (if the facet was requested with 
+        	// classname only) so we check that…
+        	String result = my != null ? my.toString() : "the object is null"
+        	
+        	// and we stram back result
+        	return new StreamingResolution("text/plain", result)
+        }
+    
+    } 
 
 ### Data binding and Validation ###
 
@@ -691,44 +660,36 @@ Here is an example.
 
 The POJO :
 
-```
-class MyClass {
-
-	...
-	String foo = "init value"
-
-}
-```
+    class MyClass {
+    
+    	…
+    	String foo = "init value"
+    
+    }
 
 The Resolution Facet :
 
-```
-@FacetKey(name="doIt", profileId="myrole", targetObjectType=MyClass.class)
-class DoIt extends BaseResolutionFacet {
-
-	@Validate(required=true)
-	String bar
-
-	@Override
-    Resolution getResolution(ActionBeanContext abc) {
-    	MyClass c = (MyClass)getFacetContext().getTargetObject()
-		return new StreamingResolution("text/plain", "$c.foo $bar !")
-    }
+    @FacetKey(name="doIt", profileId="myrole", targetObjectType=MyClass.class)
+    class DoIt extends BaseResolutionFacet {
     
-}
-```
+	    @Validate(required=true)
+    	String bar
+    
+    	@Override
+        Resolution getResolution(ActionBeanContext abc) {
+        	MyClass c = (MyClass)getFacetContext().getTargetObject()
+    		return new StreamingResolution("text/plain", "$c.foo $bar !")
+        }
+        
+    }
 
 The request :
 
-```
-GET /doIt/MyClass/123?object.foo=no&facet.bar=way
-```
+    GET /doIt/MyClass/123?object.foo=no&facet.bar=way
 
 And the response :
 
-```
-no way !
-```
+    no way !
 
 For that request, `MyClass.foo` and `DoIt.bar` have been bound using the parameters `facet.foo` and `object.bar`.
 
@@ -738,33 +699,27 @@ Woko automatically registers Type Converters into Stripes for your managed POJOs
 
 The following example binds a List of MyClass objects :
 
-```
-// no target type needed for this demo, applies
-// to all Objects or null
-@FacetKey(name="bindMyPojo", profileId="myrole")
-class BindMyPojo extends BaseResolutionFacet {
-
-	List<MyClass> myClass
-
-	@Override
-    Resolution getResolution(ActionBeanContext abc) {
-		return new StreamingResolution("text/plain", "count=${myClass.size()}")
-    }
+    // no target type needed for this demo, applies
+    // to all Objects or null
+    @FacetKey(name="bindMyPojo", profileId="myrole")
+    class BindMyPojo extends BaseResolutionFacet {
     
-}
-```
+    	List<MyClass> myClass
+    
+    	@Override
+        Resolution getResolution(ActionBeanContext abc) {
+    		return new StreamingResolution("text/plain", "count=${myClass.size()}")
+        }
+        
+    }
 
 The request :
 
-```
-GET /bindMyPojo?facet.myClass[0]=123&facet.myClass[1]=456
-```
+    GET /bindMyPojo?facet.myClass[0]=123&facet.myClass[1]=456
 
 And the response :
 
-```
-count=2
-```
+    count=2
 
 Woko's Type Converters use supplied ID and introspected property types in order to load your POJOs from the store during the binding/validation phase.  
 
@@ -776,7 +731,6 @@ TODO explain dynamic validation metadata provider
 
 Like Stripes ActionBeans, Woko's ResolutionFacets can have several event handlers. Woko will invoke one of them based on the presence of a request parameter. 
 
-
 ## Fragment Facets ##
 ## Views and Tags ##
 ## Object Renderer ##
@@ -786,86 +740,82 @@ Like Stripes ActionBeans, Woko's ResolutionFacets can have several event handler
 ### Environments ###
 ## Tooling ##
 ## Unit Testing ##
+
 Woko includes utility classes for out-of-container unit testing (see `woko.mock.MockUtil`). It is based on Stripes' [MockRoundtrip](http://www.stripesframework.org/display/stripes/Unit+Testing) and allows to emulate a running WokoActionBean and unit-test your facets.
 
 The beauty of Mockroundtrip is that you can invoke ActionBeans via URLs in your unit tests, with all Stripes features enabled (binding/validation, type conversion etc). 
 
 Here's an example (Groovy version) :
 
-```
-import woko.mock.MockUtil
-...
-
-class MyTest {
-
-	// create, init and return a new Woko : you can configure 
-	// your testing Woko as you want. Either the same as your webapp
-	// or using different components/configurations
-	Woko createWoko(String username) {
-		return new Woko(...) 
-	}
-	
-	@Test
-	void testIt() {
-		// need a Woko to run our tests... 
-		Woko woko = createWoko('myuser')
+    import woko.mock.MockUtil
+    
+    class MyTest {
+    
+    	// create, init and return a new Woko : you can configure 
+    	// your testing Woko as you want. Either the same as your webapp
+    	// or using different components/configurations
+    	Woko createWoko(String username) {
+    		return new Woko(…) 
+    	}
+    	
+    	@Test
+    	void testIt() {
+    	
+    		// need a Woko to run our tests… 
+    		Woko woko = createWoko('myuser')
 		
-		// use Callback to wrap execution and use an automatically
-		// initialized/destroyed MockServletContext 
-        new MockUtil().withServletContext(createWoko(), { MockServletContext ctx ->
-        
-        	// trip and retrieve a facet via its URL        
-			def myFacet = MockUtil.tripAndGetFacet(ctx, "/doIt/MyClass/123")
-			// make sure the facet class is the expected one
-			assert myFacet.getClass() == MyFacet.class
-			// make sure myFacet.myProp is null
-			assert myFacet.myProp == null
-			
-			// now trip with parameters
-			myFacet = MockUtil.tripAndGetFacet(ctx, "/doIt/MyClass/123", ['facet.myProp':'foobar'])
-			// make sure the facet class is still the expected one
-			assert myFacet.getClass() == MyFacet.class
-			// make sure myFacet.myProp has been bound
-			assert myFacet.myProp == 'foobar'
-			
-        } as MockUtil.Callback)
-	}
-
-}
-
-```
+    		// use Callback to wrap execution and use an automatically
+    		// initialized/destroyed MockServletContext 
+            new MockUtil().withServletContext(createWoko(), { MockServletContext ctx ->
+            
+            	// trip and retrieve a facet via its URL        
+    			def myFacet = MockUtil.tripAndGetFacet(ctx, "/doIt/MyClass/123")
+    			// make sure the facet class is the expected one
+    			assert myFacet.getClass() == MyFacet.class
+    			// make sure myFacet.myProp is null
+    			assert myFacet.myProp == null
+    			
+    			// now trip with parameters
+    			myFacet = MockUtil.tripAndGetFacet(ctx, "/doIt/MyClass/123", ['facet.myProp':'foobar'])
+    			// make sure the facet class is still the expected one
+    			assert myFacet.getClass() == MyFacet.class
+    			// make sure myFacet.myProp has been bound
+    			assert myFacet.myProp == 'foobar'
+    			
+            } as MockUtil.Callback)
+    	}
+    
+    }
 
 As you can see, `MockUtil` provides a simple way to create the MockServletContext (and close it automatically), as well as several static methods that eases test writing. The only thing you need to do is to create a `Woko` instance and feed it to MockUtil.
 
 Here's an example of how you can do this easily (Groovy again), with your own Object Store etc. :
 
-```
-Woko createWoko(String username) {
-
-	// create store using my own ObjectStore implementation
-	// and pre-populated with some testing objects
-	ObjectStore myStore = createObjectStoreWithTestObjects()
-	
-	// same for user manager : init with test users/roles  
-    UserManager userManager = createUserManagerWithTestUsers()
+    Woko createWoko(String username) {
     
-    // use mock UNRS so that we can emulate logged in users
-	UsernameResolutionStrategy unrs = new MockUsernameResolutionStrategy(username)
-	
-	// create FDM : we provide our facet packages just like in web.xml
-	List facetPackages = ['com.myco.myapp.facets'] + Woko.DEFAULT_FACET_PACKAGES
-	IFacetDescriptorManager fdm = Woko.createFacetDescriptorManager(facetPackages)
-	
-	// create IoC
-    SimpleWokoIocContainer ioc = new SimpleWokoIocContainer(
-            store,
-            userManager,
-            unrs)
-            
-    // create and return Woko with fallback guest roles
-    return new Woko(ioc, ['myguest'])
-}
-```
+    	// create store using my own ObjectStore implementation
+    	// and pre-populated with some testing objects
+    	ObjectStore myStore = createObjectStoreWithTestObjects()
+    	    
+    	// same for user manager : init with test users/roles  
+        UserManager userManager = createUserManagerWithTestUsers()
+        
+        // use mock UNRS so that we can emulate logged in users
+    	UsernameResolutionStrategy unrs = new MockUsernameResolutionStrategy(username)
+    	
+    	// create FDM : we provide our facet packages just like in web.xml
+    	List facetPackages = ['com.myco.myapp.facets'] + Woko.DEFAULT_FACET_PACKAGES
+	    IFacetDescriptorManager fdm = Woko.createFacetDescriptorManager(facetPackages)
+    	
+    	// create IoC
+        SimpleWokoIocContainer ioc = new SimpleWokoIocContainer(
+                store,
+                userManager,
+                unrs)
+                
+        // create and return Woko with fallback guest roles
+        return new Woko(ioc, ['myguest'])
+    }
 
 > If your ObjectStore is a `TransactionalStore`, the mock testing will use `WokoTxInterceptor`, and demarcate the transactions for each call to `tripXyz()`, just like it'd be done in a regular servlet request handling. On the other hand, be careful to properly handle transactions for all code that uses your ObjectStore in your test besides calls to `tripXyz()` : the tx interceptor is fired only when MockRoundtrip executes, so other calls in your tests should handle the transactions themselves. 
  
@@ -874,3 +824,4 @@ Woko createWoko(String username) {
 
 # Performance #
 Fine tuning
+        
