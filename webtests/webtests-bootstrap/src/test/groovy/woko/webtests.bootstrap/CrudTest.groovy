@@ -25,23 +25,23 @@ class CrudTest extends WebTestBase {
             // create
             goToPage '/save/MyBook?createTransient=true&object._id=1&object.name=Moby'
             verifyText 'Object saved'
-            verifyXPath xpath: "/html/body/div/div[2]/div/div/div[2]/div[2]/div/form/fieldset/div[5]/div/input[@value='Moby']"
+            verifyXPath xpath: "/html/body/div/div[2]/div/div[3]/div[2]/form/fieldset/div[6]/div/input[@value='Moby']"
             // TODO verifyTitle 'Woko - Moby'
 
             // view
             goToPage '/view/MyBook/1'
-            verifyXPath xpath: "/html/body/div/div[2]/div/div/div/div[2]/div/div[4]/div[2]/span/span"
+            verifyXPath xpath: "/html/body/div/div[2]/div/div[3]/div[2]/div/div[2]/span/span"
             text: 'Moby'
 
             // update
             goToPage '/save/MyBook/1?object.name=Mobyz'
             verifyText 'Object saved'
-            verifyXPath xpath: "/html/body/div/div[2]/div/div/div[2]/div[2]/div/form/fieldset/div[5]/div/input[@value='Mobyz']"
+            verifyXPath xpath: "/html/body/div/div[2]/div/div[3]/div[2]/form/fieldset/div[6]/div/input[@value='Mobyz']"
             // TODO verifyTitle 'Woko - Mobyz'
 
             // view
             goToPage '/view/MyBook/1'
-            verifyXPath xpath: "/html/body/div/div[2]/div/div/div/div[2]/div/div[4]/div[2]/span/span"
+            verifyXPath xpath: "/html/body/div/div[2]/div/div[3]/div[2]/div/div[2]/span/span"
             text: 'Mobyz'
 
             // delete
@@ -136,13 +136,13 @@ class CrudTest extends WebTestBase {
                 clickLink label: 'MyBook'
 
                 verifyText '400 object(s) found for class MyBook'
-                verifyXPath xpath: "/html/body/div/div[2]/div/div/div[2]/div/ul/li[11]/a" // check that link to page 10 exists
+                verifyXPath xpath: "/html/body/div/div[2]/div/div[4]/ul/li[11]/a" // check that link to page 10 exists
                 verifyText 'Moby test100'
-                clickLink xpath: '/html/body/div/div[2]/div/div/div[2]/div/ul/li[3]/a' // click page 2
+                clickLink xpath: '/html/body/div/div[2]/div/div[4]/ul/li[3]/a' // click page 2
                 verifyText 'Moby test110'
-                clickLink xpath: '/html/body/div/div[2]/div/div/div[2]/div/ul/li[4]/a' // click page 3
+                clickLink xpath: '/html/body/div/div[2]/div/div[4]/ul/li[4]/a' // click page 3
                 verifyText 'Moby test120'
-                clickLink xpath: '/html/body/div/div[2]/div/div/div[2]/div/ul/li[12]/a' // click "next"
+                clickLink xpath: '/html/body/div/div[2]/div/div[4]/ul/li[12]/a' // click "next"
                 verifyText 'Moby test130'
 
 
@@ -170,21 +170,20 @@ class CrudTest extends WebTestBase {
             verifyText 'all good'
 
             goToPage "/search"
-            setInputField xpath: '/html/body/div/div[2]/div/div/div/form/input', value: 'moby'
+            setInputField xpath: '/html/body/div/div[2]/div/div[3]/form/input', value: 'moby'
             clickButton name: 'search'
 
             verifyText '400 object(s) found'
-
-            verifyXPath xpath: "/html/body/div/div[2]/div/div/div[3]/div/ul/li[11]/a" // check that link to page 10 exists
+            verifyXPath xpath: "/html/body/div/div[2]/div/div[4]/ul/li[11]/a" // check that link to page 10 exists
             verifyText 'Moby test100'
-            clickLink xpath: '/html/body/div/div[2]/div/div/div[3]/div/ul/li[3]/a' // click page 2
-            verifyText text: 'Moby test'
-            clickLink xpath: "/html/body/div/div[2]/div/div/div[3]/div/ul/li[4]/a" // click page 3
-            verifyText text: 'Moby test'
-            clickLink xpath: '/html/body/div/div[2]/div/div/div[3]/div/ul/li[12]/a' // click "next"
-            verifyText text: 'Moby test'
+            clickLink xpath: '/html/body/div/div[2]/div/div[4]/ul/li[3]/a' // click page 2
+            verifyText 'Moby test'
+            clickLink xpath: '/html/body/div/div[2]/div/div[4]/ul/li[4]/a' // click page 3
+            verifyText 'Moby test'
+            clickLink xpath: '/html/body/div/div[2]/div/div[4]/ul/li[12]/a' // click "next"
+            verifyText 'Moby test'
 
-            setSelectField xpath: '/html/body/div/div[2]/div/div/div[2]/form/select', value: '500'
+            setSelectField xpath: '/html/body/div/div[2]/div/div[4]/form/select', value: '500'
             verifyText 'Moby test'
             not {
                 verifyXPath xpath: "//div[@class='pagination']"
@@ -222,9 +221,9 @@ class CrudTest extends WebTestBase {
             verifyText 'Object saved'
 
             clickLink label: 'Close editing'
-            verifyXPath xpath: '/html/body/div/div[2]/div/div/div/div[2]/div/div/div[2]/span/span/div/span/span/a',
+            verifyXPath xpath: '/html/body/div/div[2]/div/div[3]/div[2]/div/div[2]/span/span/div/span/span/a',
                     text: 'test'
-            verifyXPath xpath: '/html/body/div/div[2]/div/div/div/div[2]/div/div[3]/div[2]/span/span/a',
+            verifyXPath xpath: '/html/body/div/div[2]/div/div[3]/div[2]/div[3]/div[2]/span/span/a',
                     text: 'test'
         }
     }

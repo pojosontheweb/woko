@@ -42,7 +42,9 @@ class RendererTest extends WebTestBase {
             goToPage '/save/MyEntity?createTransient=true&object.id=5566&object.prop1=abc&object.prop2=123'
 
             goToPage '/view/MyEntity/5566'
-            verifyXPath xpath: '/html/body/div/div[2]/div/div/div/div[2]/div/div[3]/div[2]/span/span', text: '.*abc.*', regex: true
+            verifyXPath xpath: '/html/body/div/div[2]/div/div[3]/div[2]/div[3]/div[2]/span/span', text: '.*abc.*', regex: true
+
+            goToPage '/delete/MyEntity/5566?facet.confirm=true'
         }
     }
 
@@ -51,9 +53,9 @@ class RendererTest extends WebTestBase {
             login()
             try {
                 goToPage '/save/EntityWithRelations?createTransient=true&object.name=ewr1'
-                storeXPath xpath:'/html/body/div/div[2]/div/div/div[2]/div[2]/div/form/fieldset/div[2]/div/input/@value', property:'id1'
+                storeXPath xpath:'/html/body/div/div[2]/div/div[3]/div[2]/form/fieldset/div[2]/div/input/@value', property:'id1'
                 goToPage '/save/SubEntity?createTransient=true&object.name=sub1'
-                storeXPath xpath:'/html/body/div/div[2]/div/div/div[2]/div[2]/div/form/fieldset/div[4]/div/input/@value', property:'id2'
+                storeXPath xpath:'/html/body/div/div[2]/div/div[3]/div[2]/form/fieldset/div[4]/div/input/@value', property:'id2'
 
                 goToPage '/edit/SubEntity/#{id2}'
                 verifyText 'bar'
@@ -111,15 +113,15 @@ class RendererTest extends WebTestBase {
                 goToPage '/list/MyEntity'
 
                 // assert some of the DOM
-                verifyXPath xpath:'/html/body/div/div[2]/div/div/table/thead/tr/th', text:'.*Class.*', regex: true
-                verifyXPath xpath:'/html/body/div/div[2]/div/div/table/tbody/tr/td', text:'.*test.MyEntity.*', regex: true
-                verifyXPath xpath:'/html/body/div/div[2]/div/div/table/tbody/tr/td[2]/span/span', text: '.*5566.*', regex: true
+                verifyXPath xpath:'/html/body/div/div[2]/div/table/thead/tr/th', text:'.*Class.*', regex: true
+                verifyXPath xpath:'/html/body/div/div[2]/div/table/tbody/tr/td', text:'.*test.MyEntity.*', regex: true
+                verifyXPath xpath:'/html/body/div/div[2]/div/table/tbody/tr/td[2]/span/span', text: '.*887766.*', regex: true
 
                 // check the links are present
-                verifyXPath xpath:'/html/body/div/div[2]/div/div/table/tbody/tr/td[5]/div/a'
-                verifyXPath xpath:'/html/body/div/div[2]/div/div/table/tbody/tr/td[5]/div/a[2]'
-                verifyXPath xpath:'/html/body/div/div[2]/div/div/table/tbody/tr/td[5]/div/a[3]'
-                verifyXPath xpath:'/html/body/div/div[2]/div/div/table/tbody/tr/td[5]/div/a[4]'
+                verifyXPath xpath:'/html/body/div/div[2]/div/table/tbody/tr/td[5]/div/a'
+                verifyXPath xpath:'/html/body/div/div[2]/div/table/tbody/tr/td[5]/div/a[2]'
+                verifyXPath xpath:'/html/body/div/div[2]/div/table/tbody/tr/td[5]/div/a[3]'
+                verifyXPath xpath:'/html/body/div/div[2]/div/table/tbody/tr/td[5]/div/a[4]'
 
                 // verify the page header title is changed
                 verifyText text: "TestPageHeaderTitleOverride"
@@ -128,15 +130,15 @@ class RendererTest extends WebTestBase {
                 goToPage '/list/MyEntity'
 
                 // there should be no more "class" field
-                verifyText text: '.*5566.*', regex: true
+                verifyText text: '.*887766.*', regex: true
                 not {
                     verifyText text:'.*test.MyEntity.*', regex: true
                 }
 
                 // only a "view" button
-                verifyXPath xpath:'/html/body/div/div[2]/div/div/table/tbody/tr/td[4]/div/a'
+                verifyXPath xpath:'/html/body/div/div[2]/div/table/tbody/tr/td[4]/div/a'
                 not {
-                    verifyXPath xpath:'/html/body/div/div[2]/div/div/table/tbody/tr/td[4]/div/a[2]'
+                    verifyXPath xpath:'/html/body/div/div[2]/div/table/tbody/tr/td[4]/div/a[2]'
                 }
 
             } finally {
@@ -153,10 +155,10 @@ class RendererTest extends WebTestBase {
                 goToPage '/save/MyBook?createTransient=true&object._id=11221122&object.name=Moby&object.nbPages=123'
 
                 // close edit link with attribute
-                clickLink xpath:"/html/body/div/div[2]/div/div/div[2]/div/div[2]/div/a[@testmeedit='11221122']"
+                clickLink xpath:"/html/body/div/div[2]/div/div[3]/div/div[2]/div/a[@testmeedit='11221122']"
 
                 // edit with link attribute
-                clickLink xpath:"/html/body/div/div[2]/div/div/div/div/div[2]/div/a[@testme='11221122']"
+                clickLink xpath:"/html/body/div/div[2]/div/div[3]/div/div[2]/div/a[@testme='11221122']"
             } finally {
                 goToPage '/delete/MyBook/11221122?facet.confirm=true'
             }
