@@ -67,7 +67,7 @@
                 - JS from layout facet
                 - CustomJS
         ========================================================== --%>
-        <script type="text/javascript" src="${cp}/js/jQuery-V1.9.1/jquery.min.js?${cacheTokenParams}"></script>
+        <script type="text/javascript" src="${cp}/js/jQuery-V1.7.1/jquery.min.js?${cacheTokenParams}"></script>
         <script type="text/javascript" src="${cp}/js/bootstrap-v2.3.0/bootstrap.min.js?${cacheTokenParams}"></script>
         <script type="text/javascript" src="${cp}/js/bootstrap-datepicker/bootstrap-datepicker.min.js?${cacheTokenParams}"></script>
         <script src="${cp}/woko/js/woko.base.js" type="text/javascript"></script>
