@@ -599,11 +599,95 @@ Woko heavily uses introspection (`java.lang.reflect`) in order to determine the 
 Woko ships with a `HibernateStore` that uses automatic classpath scanning, JPA annotations for the mapping, and `javax.validation`. 
 
 ## Resolution Facets ##
-`ResolutionFacet`s are to Woko what `ActionBean`s are to Stripes : they are the Controllers in the MVC. They basically respond to an URL, handle the http request, and return a Stripes `Resolution` that generates the response.
+`ResolutionFacet`s are to Woko what `ActionBean`s are to Stripes : they are the Controllers in the MVC. They basically respond to an URL, handle the http request, and return a Stripes `Resolution` that generates the response. 
+
+Nevertheless, there are several important differences between the two :
+
+* facets are identified by their key (name,profile,targetType) : they apply on a given object (or class), for a given role
+* resolution facets have a consistent URL scheme (like `/view/MyClass/123`)
+* resolution facets are loaded dynamically (ActionBeans are loaded at startup once and for all)
+
+### URL Scheme ###
+`WokoActionBean` dispatches incoming requests to Resolution Facets using the following URL binding :
+
+```
+@UrlBinding("/{facetName}/{className}/{key}")
+```
+
+When a matching request is handled, WokoActionBean first loads the target object using `className` and `key` (if provided). Then it retrieves the resolution facet with name `facetName` using the target object. If no `key` is provided, then Woko tries to find the facet by type. If no `className` is provided, then Woko tries to find the facet for the type `java.lang.Object`. 
+
+The `@FacetKey` in Resolution Facets determines its URL. Here are a few examples :
+
+```
+/*
+	/foo/MyClass/123
+	/foo/MyClass
+*/
+@FacetKey(name="foo", profileId="myrole", targetObjectType=MyClass.class)
+class MyResolutionFacet extends BaseResolutionFacet { 
+
+	@Override
+    Resolution getResolution(ActionBeanContext abc) {
+    	return new StreamingResolution("text/plain", "bar !")
+    }
+
+}
+
+
+/*
+	/bar/MyClass/123
+	/bar/OtherClass/456
+	/bar
+*/
+@FacetKey(name="bar", profileId="myrole") // no targetObjectType defaults to java.lang.Object
+class MyResolutionFacet extends BaseResolutionFacet { 
+
+	@Override
+    Resolution getResolution(ActionBeanContext abc) {
+    	return new StreamingResolution("text/plain", "bar !")
+    }
+
+}
+```
+
+Of course Resolution Facets can return any type of Stripes `Resolution` (foward, redirect, stream, etc.).
+
+### Accessing the Facet Context ###
+
+The Facet Context can be accessed in order to retrieve the target object, the facet key etc. Here is an example of a Resolution Facet that retrieves the target object, calls `toString()` on it, and streams that back to the caller :
+
+```
+@FacetKey(name="toString", profileId="myrole", targetObjectType=MyClass.class) 
+class ToStringResolutionFacet extends BaseResolutionFacet { 
+
+	@Override
+    Resolution getResolution(ActionBeanContext abc) {
+    	
+    	// retrieve the target object in facet context
+    	MyClass my = (MyClass)getFacetContext().getTargetObject()
+    	
+    	// the object can be null (if the facet was requested with 
+    	// classname only) so we check that...
+    	String result = my != null ? my.toString() : "the object is null"
+    	
+    	// and we stram back result
+    	return new StreamingResolution("text/plain", result)
+    }
+
+}
+
+```  
+
+### Data binding and Validation ###
+
+### Event handlers ###
+
+
 
 ## Fragment Facets ##
 ## Views and Tags ##
 ## Object Renderer ##
+## Localization ##
 ## Build ##
 ### Dependencies and War Overlays ###
 ### Environments ###
