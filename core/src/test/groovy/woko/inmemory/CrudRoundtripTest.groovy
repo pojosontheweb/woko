@@ -22,7 +22,7 @@ import woko.facets.builtin.developer.SaveImpl
 import woko.facets.builtin.developer.DeleteImpl
 import javax.servlet.http.HttpServletRequest
 
-class CrudRoundtripTests extends InMemRoundtripTestBase {
+class CrudRoundtripTest extends InMemRoundtripTestBase {
 
   void testGuestViewNoObject() {
     assertFacetNotFound(null, 'view', null, null)

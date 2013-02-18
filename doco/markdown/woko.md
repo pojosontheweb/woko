@@ -286,11 +286,104 @@ And use full text search, as defined in the POJO's annotations :
 
 ![Guest Home](img/woko12.PNG)
 
-In short : all CRUD operations on your Domain Classes (plus full text search) are available for free. Woko generates the User Interface dynamically without you writing any single line of code for it... unless you start customizing stuff !
+In short : all CRUD operations on your Domain Classes (plus full text search) are available for free. Woko generates the User Interface dynamically without you writing any single line of code for it.
+
+### RPC and JavaScript ###
+Woko includes out of the box support for RPC. All default features are available as JSON/HTTP services by default. Every feature covered by this tutorial so far can be realized using any code that speaks HTTP and JSON, using a simple protocol. 
+
+With the app still running, log in as wdevel and try this :
+
+[http://localhost:8080/myapp/save/MyEntity?object.id=123&object.myProp=foobar&createTransient=true&isRpc=true](http://localhost:8080/myapp/save/MyEntity?object.id=123&object.myProp=foobar&createTransient=true&isRpc=true)
+
+The `isRpc` request parameter tells Woko that the request is to be handled as JSON/HTTP. Woko does the same job as usual, except that it returns the result of the operation as JSON. In this example, it returns the freshly created object :
+
+```
+{
+    "id": 123,
+    "myProp": "foobar",
+    "class": "MyEntity",
+    "_wokoInfo": {
+        "title": "123",
+        "className": "MyEntity",
+        "key": "123"
+    }
+}
+```
+
+Again, all the features are available out of the box. For AJAX situations, it's even simpler using the `woko.rpc.Client` JavaScript API. It provides all default features, plus arbitrary facet invocation. 
+
+Log in again as developer, open firebug and go to :
+
+[http://localhost:8080/myapp/save/MyEntity?object.id=123&object.myProp=foobar&createTransient=true](http://localhost:8080/myapp/save/MyEntity?object.id=123&object.myProp=foobar&createTransient=true)
+
+You have saved the object. Now go to firebug console and play :
+
+```
+// load MyEntity with ID 123 and store to global for the example
+wokoClient.loadObject("MyEntity", 123, { 
+    onSuccess: function(o) { 
+        myEntity = o;
+        console.log(myEntity);
+    }
+});
+```
+
+You can even update the object :
+
+```
+myEntity.myProp = "this is funky";
+wokoClient.saveObject({
+    obj:myEntity, 
+    onSuccess:function(savedObject) {
+        console.log(savedObject.myProp); 
+    }
+});
+```
+
+And check that it's been saved :
+
+```
+wokoClient.loadObject("MyEntity", 123, { 
+    onSuccess: function(o) { 
+        console.log(o.myProp);
+    }
+});
+```
+   
+
+## Overriding the defaults ##
+This section explains how the default features can be customized. It shows some typical examples of changing Woko's behavior when you need it. It also gives a glance of how you can write Resolution Facets in your app to perform various tasks.
+### Overriding the Object Rendrerer ###
+TODO explain how you can override the title, properties etc. Show an example in edit mode.
+### Resolution Facets ###
+TODO explain how to completely override /view, and how to write a sample Resolution Facet that does something
+### Templating ###
+TODO explain how to change the layout for a given role (and object ?)
+# Iterative-friendly #
+TODO explain how Woko inherently supports Iterative-style development. 
+
+* quick validation : something to show almost instantly (code while you speak example), no time lost
+* Good for prototyping, but not only a mockup tool : the proto IS the app...
+* Drawing with the cycle
+* Follow the use cases (roles !) - remember UML ?
+* String semantics in the code - @FacetKey
+* Split stories as you split the code (facets for roles / objects)
+* Replaceable base building blocks : replacement of ObjectStore etc.
 
 # Developer Guide #
-Dev guide
+## Main Components ##
+### Object Store ###
+### User Manager ###
+### Initialization ###
+## Domain Objects ##
+## Resolution Facets ##
+## Fragment Facets ##
+## Build ##
+### Dependencies and War Overlays ###
+### Environments ###
+## Tooling ##
+# Add-ons #
+## User Management ##
+
 # Performance #
 Fine tuning
-# Security #
-Strict binding etc.
