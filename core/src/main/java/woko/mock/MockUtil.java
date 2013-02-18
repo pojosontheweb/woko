@@ -13,11 +13,9 @@ import woko.facets.ResolutionFacet;
 import woko.persistence.ObjectStore;
 import woko.users.UserManager;
 import woko.users.UsernameResolutionStrategy;
-import woko.util.WLogger;
 
 import javax.servlet.Filter;
 import javax.servlet.ServletException;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,7 +24,7 @@ import java.util.Map;
  * access a fully-working Woko outside of a web container, in J2SE.
  *
  * Basically allows to recreate the MockServletContext and close it whenever needed, and
- * provide helper functions to create <code>MockRoundtrip</code>s.
+ * provides static helper functions.
  */
 public class MockUtil {
 
