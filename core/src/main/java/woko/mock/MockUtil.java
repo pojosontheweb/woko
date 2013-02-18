@@ -5,7 +5,9 @@ import net.sourceforge.stripes.controller.StripesFilter;
 import net.sourceforge.stripes.mock.MockRoundtrip;
 import net.sourceforge.stripes.mock.MockServletContext;
 import woko.Woko;
+import woko.util.WLogger;
 
+import javax.servlet.Filter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,7 +37,7 @@ public class MockUtil {
      * @param woko the configured Woko instance to be used
      */
     protected MockServletContext createMockServletContext(Woko woko) {
-        MockServletContext mockServletContext = new MockServletContext(contextName);
+        MockServletContext mockServletContext = new CloseableMockServletContext(contextName);
         mockServletContext.addFilter(StripesFilter.class, "StripesFilter", getParamsMap());
         mockServletContext.setServlet(DispatcherServlet.class, "DispatcherServlet", null);
         mockServletContext.setAttribute(Woko.CTX_KEY, woko);
@@ -58,7 +60,9 @@ public class MockUtil {
         try {
             callback.execute(mockServletContext);
         } finally {
-            mockServletContext.close();
+            if (mockServletContext instanceof CloseableMockServletContext) {
+                ((CloseableMockServletContext)mockServletContext).close();
+            }
         }
         return this;
     }
@@ -71,7 +75,9 @@ public class MockUtil {
         try {
             return callback.execute(mockServletContext);
         } finally {
-            mockServletContext.close();
+            if (mockServletContext instanceof CloseableMockServletContext) {
+                ((CloseableMockServletContext)mockServletContext).close();
+            }
         }
     }
 
@@ -117,4 +123,25 @@ public class MockUtil {
         return mockRoundtrip(ctx, url.toString(), params);
     }
 
+}
+
+/**
+ * Temporary remedy to :
+ * http://www.stripesframework.org/jira/browse/STS-725
+ */
+class CloseableMockServletContext extends MockServletContext {
+
+    CloseableMockServletContext(String contextName) {
+        super(contextName);
+    }
+
+    public void close() {
+        for (Filter f : getFilters()) {
+            try {
+                f.destroy();
+            } catch (Exception e) {
+                log("Exception while destroying filter " + f, e);
+            }
+        }
+    }
 }
