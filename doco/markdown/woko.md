@@ -360,24 +360,250 @@ TODO explain how to completely override /view, and how to write a sample Resolut
 ### Templating ###
 TODO explain how to change the layout for a given role (and object ?)
 # Iterative-friendly #
-TODO explain how Woko inherently supports Iterative-style development. 
+Any tool that makes your life easier is iterative-friendly. But Woko goes beyond gluecode, minimal config and and helper libraries only. The core design fits perfectly with Iterative Development, thanks to the high level of semantics of its facet-driven development model.
 
-* quick validation : something to show almost instantly (code while you speak example), no time lost
-* Good for prototyping, but not only a mockup tool : the proto IS the app...
-* Drawing with the cycle
-* Follow the use cases (roles !) - remember UML ?
-* String semantics in the code - @FacetKey
-* Split stories as you split the code (facets for roles / objects)
-* Replaceable base building blocks : replacement of ObjectStore etc.
+## Follow the use cases ##
+Most of agile, iterative-driven development methodologies have a strong focus on Use Cases (or User Stories). They give a glance of "who does what" in the application. Of course, Use Cases and User Stories are non formal : we talk them out with end users (or customers) and try to get the best possible understanding, so that we can go for the implementation, and come back with something so show. Once we all agree the Use Case is realized (the app works as expected), we move to the next iteration (or Sprint, or whatever).  
 
+Woko fully supports this model thanks to the semantics carried by the Facets and Domain Objects. Facets written in your Woko application have an _intent_ (usually conveyed by the facet's name), they apply to _roles_ and _target objects_. Instead of having your code scattered around the codebase with no meaning, Woko proposes a consistent approach where the semantics in your code allow to easily relate it to a Use Case. 
+
+The typical Woko iteration goes like this :
+
+<center>
+<img src="iterative.png"/>
+</center>
+
+You basically start from the requirements (Use Cases or User Stories). Then, for each Use Case, you iterate on these 3 :
+
+1. Write the POJOs 
+2. Add some facets
+3. Validate everything 
+   * Yourself for "micro iterations"
+   * With the product owner when the result is testable
+  
+Of course, the number of (micro) iterations depends on the complexity and requirements, but the principle always applies.
+
+The many out-of-the-box, zero-LOC features that Woko provides also helps smaller iterations. Sensible defaults, convention over configuration, tooling etc. makes coding easier, thus shortening the cycles. The Object Renderer helps you quickly validate the main principles of a feature before you get your hands in the real dirt. 
+
+Most of the useful time used developing a good application is often spent in "details that matter". User interface, polishing… there are the differenciators today. The common, recurrent principles should not require effort in order to work directly for you. Woko helps focusing on those details that matter, by providing a solid foundation you can build upon iteratively for everything else.   
+
+> Semantics and expressivity in the code have many positive side effects. It is the basis of Woko's Object Renderer : using metadata in order to show Objects dynamically at runtime, without code generation of any sort. It also allows for better tooling, like the `woko` command-line script, the integrated Facet Studio, or the IntelliJ IDEA plugin : all rely on metadata in order to perform their tasks.  
+
+## Quick validation ##
+We all know that requirements are very hard to capture, and nothing speaks more to an end user than working software. Words are often subject to interpretation. Code rarely is. Showing working code is, to us, an essential part of requirements capture, as it allows to make sure we don't implement things based on a misunderstanding. 
+
+With its built-in CRUD, Object Renderer and other "out of the box" features, Woko makes Domain Driven development a reality. You can actually show many things and validate concepts with your end users before you start customizing anything. This makes you save an enormous amount of time. You can try out various solutions to solve your problems, without loosing time on building small prototypes that you trash when they don't pass the user's validation.
+
+## Prototyping and beyond ##
+Many developers still consider "prototyping" as a one-shot-and-sent-to-trash activity. In that scenario, the prototype is only supposed to help understand the requirements, and is used only as a "pre-validation" step, before serious coding begins. Then it's trashed because it simply cannot be turned to working, shippable software.
+
+We don't agree. Woko proves that prototyping is part of the development cycle and should not be considered as a parallel, one-shot activity. 
+
+Woko is great in that prototyping phase, because it doesn't require you to write much code in order to have something to play with. But that's just the beginning of your journey !
+
+Once the feature has been validated with the userand you know where you're going, then the prototype is a part of the application, and you build upon it in order to make it look and behave exactly as you want. You don't trash the Domain Objects, and you don't necessarily need to trash the Facets that you wrote. Of course you'll refine things, probably do some GUI etc. But you don't trash the base feature that you designed while prototyping : you build on it. 
+
+In the next iteration, you'll probably extend the features already coded by reusing what's in place and adding to it, but following the same process : quickly model and test with your customers, and then take time for the (often very important) details.
+
+The term "prototype", when developing a Woko application, only refers to a _phase_ of the project. It ain't no other technological or conceptual meaning.   
+
+## Customization ##
+Almost everything in Woko is designed to be pluggable. The main components like ObjectStore or UserManager can be completely or partly replaced. Need another ORM ? Wanna go NoSQL ? Upgrading to LDAP ? All this can be adapted. Those abstractions makes the base system very agile as the application doesn't require much changes even if you replace some underlying system by another. The contracts are very simple and easy to implement. 
+
+Also, the customizable Object Renderer and CRUD features makes it easy to build upon solid foundations, and stop wasting time reinventing wheels. Customization hooks range from very small parts to the whole mechanism, so you can "cut the Woko branch" whenever you feel it's more pain that benefit. 
 # Developer Guide #
 ## Main Components ##
+Woko depends on several mandatory components in order to work. It uses abstractions (interfaces) for transversal services that can be implented differently depending on your context. Concrete implementations of these components are shipped with Woko (e.g. `HibernateStore`), and you can of course write new ones.
+
+These components must be supplied at startup to the Woko instance, via the IoC.
+
 ### Object Store ###
+The ObjectStore manages Object persistence for your Domain Objects (POJOs). It provides the base CRUD operations on managed POJOs :
+
+* provide a list of the "managed" Classes
+* load/save/update/delete a managed POJO
+* list all instances of a given managed Class (paginated)
+* full-text search for managed POJOs (optional)
+
+The contract of Object Store is defined by the interface `woko.persistence.ObjectStore`.
+
+#### Transactions & OSIV ####
+
+Woko's persistence layer also includes abstraction for Transactions. If your store implements `woko.persistence.TransactionalStore`, then transactions will be automatically handled following the Open Session In View (OSIV) pattern (see `woko.actions.WokoTxInterceptor`).  
+
 ### User Manager ###
-### Initialization ###
+The UserManager handles users/roles for the application. It is a very simple view of the underlying user management system that only provides two methods :
+
+* get the roles for a username : allows Woko to lookup facets for the user's roles
+* authenticate a user
+
+Woko ships with in-memory, container and hibernate enabled `UserManager`s. The contract is defined by interface `woko.users.UserManager`.
+
+> Woko doesn't __manage__ your users : the UserManager is a read-only, and very small view of the underlying user management system. That's why it's very simple to implement and wrap any user management system. 
+
+### UserNameResolutionStrategy ###
+This class allows for pluggable authentication and user session management. It allows to change the way Woko retrieves the current username. 
+
+For example, when using container authentication, it gets the username by calling `request.getRemoteUser()`, as per the servlet spec. Other implementations can use the http session, cookies, mocks for tests, or whatever else. 
+### Facet Descriptor Manager ###
+Facets in your application are scanned from the classpath by the Facet Descriptor Manager. It has to be configured with the base package(s) to scan (e.g. `com.myco.myapp.facets`).
+
+You should not need to, but can also replace this component, in order to use a different form of facets (e.g. XML descriptor instead of Annotations). 
+
+### Inversion of Control ###
+Woko delegates management of the various sub components to an Inversion of Control "container". This allows to plug any component easier, to manage its dependencies and lifecycle if needed, and serves as a registry for any optional component, so that it can be accessed everywhere in the application. The woko instance itself is not in the container : it's an "application singleton" that is initialized at startup.
+
+The IoC container is defined by interface `woko.ioc.WokoIocContainer`, and is pluggable. Woko ships with a default implementation, and a Pico adapter.
+### Startup ###
+Woko (and its sub componenents) is created and initialized at application startup, using a servlet context listener. A base abstract init listener class is provided (`woko.WokoIocInitListener`), that can be extended in order to configure your own Woko.
+
+Here is an example using the `SimpleWokoIocContainer` (Groovy version) :
+
+
+```
+package com.myco.myapp
+
+class MyWokoInitListener extends WokoIocInitListener {
+
+    @Override
+    protected WokoIocContainer createIocContainer() {
+    	
+    	// create and init our store
+    	ObjectStore store = new MyStore()
+    
+    	// create and init our user manager
+    	UserManager userManager = 
+    		new MyUserManager().addUser("wdevel", "wdevel", ["developer"])
+    
+    	// create and init the U.N.R.S (container auth)
+    	UsernameResolutionStrategy unrs = new RemoteUserStrategy()
+    
+    	// create the annotated facet descriptor using 
+    	// superclass method : it inits the F.D.M. with 
+    	// the facet packages found in web.xml
+    	IFacetDescriptorManager fdm = createAnnotatedFdm()
+    
+    	// create and return the IoC container
+        return new SimpleWokoIocContainer(
+                store,
+                userManager,
+                unrs,
+                fdm);
+    }
+    
+    @Override
+    protected List<String> createFallbackRoles() {
+    	// return the default role(s) for our app
+        return ["myguest"]
+    }
+
+
+}
+
+```
+
+The init listener has to be configured in web.xml :
+
+```
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://java.sun.com/xml/ns/j2ee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee
+         http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
+         version="2.4">
+
+	…
+
+	<!-- Woko init listener : starts up Woko -->
+    <listener>
+        <display-name>WokoInitListener</display-name>
+        <listener-class>com.myco.myapp.MyWokoInitListener</listener-class>
+    </listener>
+
+    … 
+
+    <!-- facet packages -->
+    <context-param>
+        <param-name>Woko.Facet.Packages</param-name>
+        <param-value>com.myco.myapp.facets</param-value>
+    </context-param>
+    
+    …
+    
+    
+    
+</web-app>
+```
+
+#### Groovy Init ####
+Groovy Init is an alternative, more flexible way to startup Woko. It also uses a Servlet Context Listener in order to create Woko when the application starts, but this one delegates all the initialization to a Groovy script.
+
+This is particularly handly when used in combination with [environments](Environments), so that you can create various flavors of Woko with the full power of a programming language, and depending on the context (test, prod, etc.).
+
+To enable it, first you need to add the dependency to your ```pom.xml``` :
+
+```
+<dependency>
+  <groupId>com.pojosontheweb</groupId>
+  <artifactId>woko-groovy-init</artifactId>
+  <version>${woko.version}</version>
+</dependency>  
+```
+
+Then declare the init listener in ```web.xml``` (instead of a `WokoIocInitListener` subclass) :
+
+```
+<listener>
+  <display-name>WokoInitListener</display-name>
+  <listener-class>woko.groovyinit.GroovyInitListener</listener-class>
+</listener>
+```
+
+Last, you need a ```/woko-init.groovy``` available in your CLASSPATH, that creates, configures and returns a Woko instance. 
+
+Here is an example :
+
+```
+// store
+MyStore store = new MyStore()
+
+// user manager
+MyUserManager userManager = new MyUserManager(...).createDefaultUsers()
+
+// facets
+def facetPackages = ["com.myco.myapp.facets"] + Woko.DEFAULT_FACET_PACKAGES
+AnnotatedFacetDescriptorManager fdm = new AnnotatedFacetDescriptorManager(facetPackages)
+    .setDuplicatedKeyPolicy(DuplicatedKeyPolicyType.FirstScannedWins)
+    .initialize()
+
+// ioc
+SimpleWokoIocContainer ioc = new SimpleWokoIocContainer(store, userManager, new RemoteUserStrategy(), fdm)
+
+// create and return woko !
+return new Woko(ioc, ["myguest"])
+```
+
 ## Domain Objects ##
+Domain Objects in Woko are POJOs. We don't use no meta-framework of any kind, only the Java type system. 
+
+Woko manages your POJOs through the [Object Store](ObjectStore), which tandles the persistence of your objects seamlessly. The store is created at startup and connects to an underlying database in order to save the state and provide access to your Objects. This can be implemented in many different ways, using an ORM, custom DAOs, or whatever you can think of. 
+
+> The ObjectStore only implements the basic CRUD operations by default, but it's a good entry point to place more specialized accessors to your domain objects (e.g. queries) when you'll need them. Like other Woko components, it is accessible everywhere in your application. 
+
+Woko heavily uses introspection (`java.lang.reflect`) in order to determine the properties to display etc. In general, your Domain Objects should be regular POJOs that follow the JavaBean convention. Woko's ObjectRenderer will work directly with objects that 
+
+* have a default constructor (if you want to be able to create instances via the default generated interface)
+* expose their properties with accessors following the JavaBean convention
+* use generics for Collections and Maps (e.g. `List<MyClass>`) so that Woko knows the compound types
+
+Woko ships with a `HibernateStore` that uses automatic classpath scanning, JPA annotations for the mapping, and `javax.validation`. 
+
 ## Resolution Facets ##
+`ResolutionFacet`s are to Woko what `ActionBean`s are to Stripes : they are the Controllers in the MVC. They basically respond to an URL, handle the http request, and return a Stripes `Resolution` that generates the response.
+
 ## Fragment Facets ##
+## Views and Tags ##
+## Object Renderer ##
 ## Build ##
 ### Dependencies and War Overlays ###
 ### Environments ###
