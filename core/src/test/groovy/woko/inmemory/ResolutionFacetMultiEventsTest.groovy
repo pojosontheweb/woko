@@ -2,6 +2,7 @@ package woko.inmemory
 
 import net.sourceforge.stripes.mock.MockRoundtrip
 import net.sourceforge.stripes.mock.MockServletContext
+import static woko.mock.MockUtil.mockRoundtrip
 
 class ResolutionFacetMultiEventsTest extends InMemRoundtripTestBase {
 
@@ -22,7 +23,7 @@ class ResolutionFacetMultiEventsTest extends InMemRoundtripTestBase {
     void testExceptionIsThrownWhenMoreThanOneHandlerMatches() {
         doWithMockContext("wdevel") { MockServletContext ctx ->
             try {
-                mockRoundtrip("wdevel", "testMultiEvents", null, null, [
+                mockRoundtrip(ctx, "testMultiEvents", null, null, [
                         "otherEvent":"true",
                         "otherEvent2":"true"
                 ])

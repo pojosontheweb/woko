@@ -20,7 +20,7 @@ import net.sourceforge.stripes.mock.MockRoundtrip
 import net.sourceforge.stripes.mock.MockServletContext
 import woko.actions.WokoActionBean
 import woko.actions.TestActionBean
-import woko.facets.builtin.developer.SaveImpl
+import static woko.mock.MockUtil.mockRoundtrip;
 
 class NestedValidationRoundtripTest extends InMemRoundtripTestBase {
 

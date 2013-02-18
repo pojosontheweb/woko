@@ -80,7 +80,7 @@
         <module>webtests</module>
     </modules>
     <properties>
-        <stripes.version>1.5.8-SNAPSHOT</stripes.version>
+        <stripes.version>1.5.7</stripes.version>
         <groovy.version>2.0.4</groovy.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>

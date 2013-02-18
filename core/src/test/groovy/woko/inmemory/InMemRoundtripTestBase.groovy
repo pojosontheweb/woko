@@ -17,6 +17,8 @@
 package woko.inmemory
 
 import woko.ioc.SimpleWokoIocContainer
+import woko.mock.MockUsernameResolutionStrategy
+import woko.mock.MockUtil
 
 import javax.servlet.ServletException
 import net.sourceforge.stripes.controller.DispatcherServlet
@@ -31,13 +33,17 @@ import woko.users.UserManager
 
 abstract class InMemRoundtripTestBase extends GroovyTestCase {
 
-    Woko createWoko(String username) {
+    static Woko createWoko(String username) {
         InMemoryObjectStore store = new InMemoryObjectStore()
         store.addObject('1', new Book([_id: '1', name: 'Moby Dick', nbPages: 123]))
         store.addObject('2', new MyValidatedPojo(id: 1, str: "cannotbenull"))
         UserManager userManager = new InMemoryUserManager()
         userManager.addUser("wdevel", "wdevel", ["developer"])
-        SimpleWokoIocContainer ioc = new SimpleWokoIocContainer(store, userManager, new DummyURS(username: username), Woko.createFacetDescriptorManager(Woko.DEFAULT_FACET_PACKAGES))
+        SimpleWokoIocContainer ioc = new SimpleWokoIocContainer(
+                store,
+                userManager,
+                new MockUsernameResolutionStrategy(username),
+                Woko.createFacetDescriptorManager(Woko.DEFAULT_FACET_PACKAGES))
         return new Woko(ioc, [Woko.ROLE_GUEST])
     }
 
@@ -54,46 +60,46 @@ abstract class InMemRoundtripTestBase extends GroovyTestCase {
     }
 
     def doWithMockContext(String username, Closure c) {
-        MockServletContext ctx = createMockServletContext(username);
-        try {
-            return c.call(ctx)
-        } finally {
-            ctx.close()
-        }
+        new MockUtil().withServletContext(createWoko(username), { MockServletContext ctx->
+            c(ctx)
+        } as MockUtil.Callback)
     }
 
-    MockRoundtrip mockRoundtrip(MockServletContext ctx, String url, Map params) {
-        MockRoundtrip t = new MockRoundtrip(ctx, url.toString())
-        if (params) {
-            params.each { String k, String v ->
-                t.addParameter(k, v)
-            }
-        }
-        t.execute()
-        return t
-    }
-
-    MockRoundtrip mockRoundtrip(MockServletContext ctx, String facetName, String className, String key, Map params) {
-        StringBuilder url = new StringBuilder('/').append(facetName)
-        if (className) {
-            url << '/'
-            url << className
-        }
-        if (key) {
-            url << '/'
-            url << key
-        }
-        mockRoundtrip(ctx, url.toString(), params)
-    }
+//    MockRoundtrip mockRoundtrip(MockServletContext ctx, String url, Map params) {
+//        MockRoundtrip t = new MockRoundtrip(ctx, url.toString())
+//        if (params) {
+//            params.each { String k, String v ->
+//                t.addParameter(k, v)
+//            }
+//        }
+//        t.execute()
+//        return t
+//    }
+//
+//    MockRoundtrip mockRoundtrip(MockServletContext ctx, String facetName, String className, String key, Map params) {
+//        StringBuilder url = new StringBuilder('/').append(facetName)
+//        if (className) {
+//            url << '/'
+//            url << className
+//        }
+//        if (key) {
+//            url << '/'
+//            url << key
+//        }
+//        mockRoundtrip(ctx, url.toString(), params)
+//    }
 
     WokoActionBean trip(String username, String facetName, String className, String key) {
         trip(username, facetName, className, key, null)
     }
 
     WokoActionBean trip(String username, String facetName, String className, String key, Map params) {
+        def res
         doWithMockContext(username) { MockServletContext ctx ->
-            mockRoundtrip(ctx, facetName, className, key, params).getActionBean(WokoActionBean.class)
+            MockRoundtrip trip = MockUtil.mockRoundtrip(ctx, facetName, className, key, params)
+            res = trip.getActionBean(WokoActionBean.class)
         }
+        return res
     }
 
     void assertFacetNotFound(String username, String facetName, String className, String key) {
