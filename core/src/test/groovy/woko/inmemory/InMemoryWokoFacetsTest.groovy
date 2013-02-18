@@ -21,6 +21,7 @@ import woko.Woko
 import net.sourceforge.stripes.mock.MockHttpServletRequest
 import woko.facets.builtin.developer.ViewImpl
 import woko.facets.builtin.all.LogoutImpl
+import woko.mock.MockUsernameResolutionStrategy
 import woko.users.UserManager
 
 class InMemoryWokoFacetsTest extends TestCase {
@@ -35,7 +36,7 @@ class InMemoryWokoFacetsTest extends TestCase {
         userManager,
         [Woko.ROLE_GUEST],
         Woko.createFacetDescriptorManager(Woko.DEFAULT_FACET_PACKAGES),
-        new DummyURS(username:username));
+        new MockUsernameResolutionStrategy(username));
 
     return inMem
   }

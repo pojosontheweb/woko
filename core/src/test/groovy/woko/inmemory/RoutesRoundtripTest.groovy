@@ -2,6 +2,7 @@ package woko.inmemory
 
 import net.sourceforge.stripes.mock.MockRoundtrip
 import net.sourceforge.stripes.mock.MockServletContext
+import static woko.mock.MockUtil.mockRoundtrip
 
 class RoutesRoundtripTest extends InMemRoundtripTestBase {
 
