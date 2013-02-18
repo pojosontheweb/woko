@@ -33,7 +33,7 @@ import woko.users.UserManager
 
 abstract class InMemRoundtripTestBase extends GroovyTestCase {
 
-    Woko createWoko(String username) {
+    static Woko createWoko(String username) {
         InMemoryObjectStore store = new InMemoryObjectStore()
         store.addObject('1', new Book([_id: '1', name: 'Moby Dick', nbPages: 123]))
         store.addObject('2', new MyValidatedPojo(id: 1, str: "cannotbenull"))
