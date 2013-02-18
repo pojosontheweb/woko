@@ -87,7 +87,7 @@ When the application starts up, a `Woko` instance is created, initialized, and b
 
 There are various ways to configure and boot Woko. TODO link to startup section in dev guide.   
 
-### Mandatory Components ###
+## Mandatory Components ##
 
 Woko delegates most of the job to sub-components :
 
@@ -403,6 +403,8 @@ Almost everything in Woko is designed to be pluggable. The main components like 
 
 Also, the customizable Object Renderer and CRUD features makes it easy to build upon solid foundations, and stop wasting time reinventing wheels. Customization hooks range from very small parts to the whole mechanism, so you can "cut the Woko branch" whenever you feel it's more pain that benefit. 
 # Developer Guide #
+This section details the various components involved in the writing of a Woko application. It uses examples  in order to illustrate the concepts.
+
 ## Main Components ##
 Woko depends on several mandatory components in order to work. It uses abstractions (interfaces) for transversal services that can be implented differently depending on your context. Concrete implementations of these components are shipped with Woko (e.g. `HibernateStore`), and you can of course write new ones.
 
@@ -419,7 +421,6 @@ The ObjectStore manages Object persistence for your Domain Objects (POJOs). It p
 The contract of Object Store is defined by the interface `woko.persistence.ObjectStore`.
 
 #### Transactions & OSIV ####
-
 Woko's persistence layer also includes abstraction for Transactions. If your store implements `woko.persistence.TransactionalStore`, then transactions will be automatically handled following the Open Session In View (OSIV) pattern (see `woko.actions.WokoTxInterceptor`).  
 
 ### User Manager ###
@@ -432,21 +433,25 @@ Woko ships with in-memory, container and hibernate enabled `UserManager`s. The c
 
 > Woko doesn't __manage__ your users : the UserManager is a read-only, and very small view of the underlying user management system. That's why it's very simple to implement and wrap any user management system. 
 
+
 ### UserNameResolutionStrategy ###
 This class allows for pluggable authentication and user session management. It allows to change the way Woko retrieves the current username. 
 
 For example, when using container authentication, it gets the username by calling `request.getRemoteUser()`, as per the servlet spec. Other implementations can use the http session, cookies, mocks for tests, or whatever else. 
 ### Facet Descriptor Manager ###
+
 Facets in your application are scanned from the classpath by the Facet Descriptor Manager. It has to be configured with the base package(s) to scan (e.g. `com.myco.myapp.facets`).
 
 You should not need to, but can also replace this component, in order to use a different form of facets (e.g. XML descriptor instead of Annotations). 
 
-### Inversion of Control ###
+## Inversion of Control ##
+
 Woko delegates management of the various sub components to an Inversion of Control "container". This allows to plug any component easier, to manage its dependencies and lifecycle if needed, and serves as a registry for any optional component, so that it can be accessed everywhere in the application. The woko instance itself is not in the container : it's an "application singleton" that is initialized at startup.
 
 The IoC container is defined by interface `woko.ioc.WokoIocContainer`, and is pluggable. Woko ships with a default implementation, and a Pico adapter.
-### Startup ###
-Woko (and its sub componenents) is created and initialized at application startup, using a servlet context listener. A base abstract init listener class is provided (`woko.WokoIocInitListener`), that can be extended in order to configure your own Woko.
+
+## Startup ##
+Woko (and its sub-components) is created and initialized at application startup, using a servlet context listener. A base abstract class is provided (`woko.WokoIocInitListener`), that can be extended in order to configure Woko.
 
 Here is an example using the `SimpleWokoIocContainer` (Groovy version) :
 
@@ -517,7 +522,7 @@ The init listener has to be configured in web.xml :
     
     </web-app>
 
-#### Groovy Init ####
+### Groovy Init ###
 Groovy Init is an alternative, more flexible way to startup Woko. It also uses a Servlet Context Listener in order to create Woko when the application starts, but this one delegates all the initialization to a Groovy script.
 
 This is particularly handly when used in combination with [environments](Environments), so that you can create various flavors of Woko with the full power of a programming language, and depending on the context (test, prod, etc.).
@@ -574,16 +579,85 @@ Woko heavily uses introspection (`java.lang.reflect`) in order to determine the 
 
 Woko ships with a `HibernateStore` that uses automatic classpath scanning, JPA annotations for the mapping, and `javax.validation`. 
 
-## Resolution Facets ##
+## Facets ##
+
+Woko uses facets for everything. Developing a Woko application is about writing Domain Objects and associated facets for the various roles of the application. 
+
+[JFacets](http://jfacets.rvkb.com) is used with bare Annotated facets by default, so you just have to write a Java class with the `@FacetKey` annotation :
+
+    @FacetKey(name="foo",profileId="myrole",targetObjectType=MyClass.class)
+    class MyFacet … {
+        …
+    }
+
+Woko scans configured packages in your CLASSPATH for annotated facet classes at startup. At run-time, Woko looks up the facets using a facet name, a target object, and the currently logged in profile. 
+
+### Woko Facet Context ###
+
+Facets implementing `IFacet` may access the `WokoFacetContext` at runtime in order to retrieve various informations about the facet. It mainly provides access to the `Woko` instance, as well as the target object, used at runtime to retrieve the facet.
+
+Here is an example :
+
+    @FacetKey(name="test", profileId="myrole", targetObjectType=MyClass.class) 
+    class MyFacet extends BaseFacet {
+     
+        void doSomethingWithTargetObject() {
+            // retrieve the target object and cast it 
+            MyClass my = (MyClass)getFacetContext().getTargetObject()
+    
+            // use target object methods...
+            my.doSomething()
+    
+            // access the Woko instance and use ObjectStore 
+            Woko woko = getFacetContext().getWoko()
+            MyStore store = (MyStore)woko.getObjectStore()
+            MyEntity e = store.load(...)
+            ...
+    } 
+
+### Facet Lookup ###
+
+All facet lookup is delegated to the Woko instance, via the `getFacet(…)` methods. JFacets is never invoked directly. Here is an example of how to retrieve a Facet :
+
+    // somewhere in a web component...
+    ServletContext servletContext = …     
+    HttpServletRequest request = … 
+    
+    // grab the Woko instance
+    Woko woko = Woko.getWoko(servletContext)
+    
+    // the target object of the facet
+    MyClass targetObject = … 
+    
+    // retrieve the facet using woko
+    MyFacet f = woko.getFacet("my", request, targetObject)
+    
+    // invoke the facet
+    f.xyz()
+
+When `getFacet()` is called, Woko retrieves the current username using the `UsernameResolutionStrategy`,  and attempts to retrieve the facet using the `JFacets` instance. This one delegates to the `UserManager` in order to get the roles for the current user.
+  
+When the facet is retrieved, it is automatically bound as a request attribute with the names `facet` and the actual name of the facet (in the example above, `my`), so it can be retrieved later on in the request processing chain, e.g. in a JSP using a scriptlet :
+
+    <%
+        MyFacet my = (MyFacet)request.getAttribute("facet");
+        MyFacet my = (MyFacet)request.getAttribute("my");
+        my.getFoo();
+    %>
+    <p>
+        <%=my.getFoo()>%>
+    </p> 
+
+Or EL :
+
+    <p>
+    ${my.foo}
+    </p>
+
+### Resolution Facets ###
 `ResolutionFacet`s are to Woko what `ActionBean`s are to Stripes : they are the Controllers in the MVC. They basically respond to an URL, handle the http request, and return a Stripes `Resolution` that generates the response. 
 
-Nevertheless, there are several important differences between the two :
-
-* facets are identified by their key (name,profile,targetType) : they apply on a given object (or class), for a given role
-* resolution facets have a consistent URL scheme (like `/view/MyClass/123`)
-* resolution facets are loaded dynamically (ActionBeans are loaded at startup once and for all)
-
-### URL Scheme ###
+#### URL Scheme ####
 `WokoActionBean` dispatches incoming requests to Resolution Facets using the following URL binding :
 
     @UrlBinding("/{facetName}/{className}/{key}")
@@ -624,32 +698,57 @@ The `@FacetKey` in Resolution Facets determines its URL. Here are a few examples
 
 Of course Resolution Facets can return any type of Stripes `Resolution` (foward, redirect, stream, etc.).
 
-### Accessing the Facet Context ###
+#### Event handlers ####
 
-The Facet Context can be accessed at runtime in order to retrieve various informations about the facet. It allows to get the target object of the facet : the one that was used to lookup for the facet. 
+Like Stripes ActionBeans, Woko's ResolutionFacets can have several event handlers. Woko will invoke one of them based on the presence of a request parameter. `@DontValidate` can be used to skip validation for an event.
 
-Here is an example of a Resolution Facet that retrieves the target object, calls `toString()` on it, and streams that back to the caller :
+The following example shows a typical Resolution Facet with 2 events :
 
-    @FacetKey(name="toString", profileId="myrole", targetObjectType=MyClass.class) 
-    class ToStringResolutionFacet extends BaseResolutionFacet { 
+    @FacetKey(name="doIt",profileId="muser",targetObjectType=MyClass.class)
+    class DoIt extends BaseResolutionFacet {
     
-    	@Override
+        @Validate(required=true)
+        String foo
+    
+        // Default Handler
+         @Override
+         @DontValidate
         Resolution getResolution(ActionBeanContext abc) {
-        	
-        	// retrieve the target object in facet context
-        	MyClass my = (MyClass)getFacetContext().getTargetObject()
-        	
-        	// the object can be null (if the facet was requested with 
-        	// classname only) so we check that…
-        	String result = my != null ? my.toString() : "the object is null"
-        	
-        	// and we stram back result
-        	return new StreamingResolution("text/plain", result)
+        	return new ForwardResolution(SOME_JSP)
         }
     
-    } 
+        // alternate event
+        Resolution alternateEvent() {
+        
+            // retrieve target object
+        	MyClass c = (MyClass)getFacetContext().getTargetObject()
+        	
+        	// update target object state
+        	c.setValue(this.foo)
+        	
+        	// save to store
+        	getWoko().getObjectStore().save(c)
+        	
+        	// redirect to default handler
+        	return new RedirectResolution("/doIt/MyClass/${c.id}")
+        }
+    }
 
-### Data binding and Validation ###
+The event handlers are all public methods that return a `Resolution`, and possibly accept an `ActionBeanContext` as their only parameter (or no parameter at all) :
+
+   * the default handler (`execute()`, from `ResolutionFacet`) that displays a page
+      * `GET /doIt/MyClass/123`
+   * the alternate handler (`alternateEvent()`) that modifies state and redirects to the initial page 
+     * `POST /doIt/MyClass/123?facet.foo=bar&alternateEvent=anyValue`
+
+Of course you can have as many handlers you want. 
+
+> There are limitations concerning validation and event handling. For example, @Validate(on=xyz) is not yet supported. Refer to the javadocs (or source code) for up-to-date status.
+        
+
+### Fragment Facets ###
+
+## Data binding and Validation ##
 
 Data binding and Validation works on Target Objects and Resolution Facets like on regular Stripes ActionBeans. The main difference is that prefixes must be used for request parameters, because Stripes binds on `wokoActionBean.getFacet()` and `getObject()` :
 
@@ -693,7 +792,7 @@ And the response :
 
 For that request, `MyClass.foo` and `DoIt.bar` have been bound using the parameters `facet.foo` and `object.bar`.
 
-#### Type Converters for your POJOs ####
+### Type Converters for your POJOs ###
 
 Woko automatically registers Type Converters into Stripes for your managed POJOs. This means that you can bind objects from the ObjectStore using only their ID. 
 
@@ -723,15 +822,10 @@ And the response :
 
 Woko's Type Converters use supplied ID and introspected property types in order to load your POJOs from the store during the binding/validation phase.  
 
-#### Nested, Dynamic Validation ####
+### Nested, Dynamic Validation ###
 
 TODO explain dynamic validation metadata provider
 
-### Event handlers ###
-
-Like Stripes ActionBeans, Woko's ResolutionFacets can have several event handlers. Woko will invoke one of them based on the presence of a request parameter. 
-
-## Fragment Facets ##
 ## Views and Tags ##
 ## Object Renderer ##
 ## Localization ##
