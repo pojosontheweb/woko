@@ -654,7 +654,9 @@ Of course Resolution Facets can return any type of Stripes `Resolution` (foward,
 
 ### Accessing the Facet Context ###
 
-The Facet Context can be accessed in order to retrieve the target object, the facet key etc. Here is an example of a Resolution Facet that retrieves the target object, calls `toString()` on it, and streams that back to the caller :
+The Facet Context can be accessed at runtime in order to retrieve various informations about the facet. It allows to get the target object of the facet : the one that was used to lookup for the facet. 
+
+Here is an example of a Resolution Facet that retrieves the target object, calls `toString()` on it, and streams that back to the caller :
 
 ```
 @FacetKey(name="toString", profileId="myrole", targetObjectType=MyClass.class) 
@@ -680,8 +682,99 @@ class ToStringResolutionFacet extends BaseResolutionFacet {
 
 ### Data binding and Validation ###
 
+Data binding and Validation works on Target Objects and Resolution Facets like on regular Stripes ActionBeans. The main difference is that prefixes must be used for request parameters, because Stripes binds on `wokoActionBean.getFacet()` and `getObject()` :
+
+* `object.prop` binds on `targetObject.setProp(converted_value)`
+* `facet.prop` binds on `facet.setProp(converted_value)`
+
+Here is an example.
+
+The POJO :
+
+```
+class MyClass {
+
+	...
+	String foo = "init value"
+
+}
+```
+
+The Resolution Facet :
+
+```
+@FacetKey(name="doIt", profileId="myrole", targetObjectType=MyClass.class)
+class DoIt extends BaseResolutionFacet {
+
+	@Validate(required=true)
+	String bar
+
+	@Override
+    Resolution getResolution(ActionBeanContext abc) {
+    	MyClass c = (MyClass)getFacetContext().getTargetObject()
+		return new StreamingResolution("text/plain", "$c.foo $bar !")
+    }
+    
+}
+```
+
+The request :
+
+```
+GET /doIt/MyClass/123?object.foo=no&facet.bar=way
+```
+
+And the response :
+
+```
+no way !
+```
+
+For that request, `MyClass.foo` and `DoIt.bar` have been bound using the parameters `facet.foo` and `object.bar`.
+
+#### Type Converters for your POJOs ####
+
+Woko automatically registers Type Converters into Stripes for your managed POJOs. This means that you can bind objects from the ObjectStore using only their ID. 
+
+The following example binds a List of MyClass objects :
+
+```
+// no target type needed for this demo, applies
+// to all Objects or null
+@FacetKey(name="bindMyPojo", profileId="myrole")
+class BindMyPojo extends BaseResolutionFacet {
+
+	List<MyClass> myClass
+
+	@Override
+    Resolution getResolution(ActionBeanContext abc) {
+		return new StreamingResolution("text/plain", "count=${myClass.size()}")
+    }
+    
+}
+```
+
+The request :
+
+```
+GET /bindMyPojo?facet.myClass[0]=123&facet.myClass[1]=456
+```
+
+And the response :
+
+```
+count=2
+```
+
+Woko's Type Converters use supplied ID and introspected property types in order to load your POJOs from the store during the binding/validation phase.  
+
+#### Nested, Dynamic Validation ####
+
+TODO explain dynamic validation metadata provider
+
 ### Event handlers ###
 
+Like Stripes ActionBeans, Woko's ResolutionFacets can have several event handlers. Woko will invoke one of them based on the presence of a request parameter. 
 
 
 ## Fragment Facets ##
