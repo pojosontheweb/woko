@@ -128,6 +128,7 @@ public class MockUtil {
 /**
  * Temporary remedy to :
  * http://www.stripesframework.org/jira/browse/STS-725
+ * TODO remove
  */
 class CloseableMockServletContext extends MockServletContext {
 
