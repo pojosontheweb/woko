@@ -20,7 +20,8 @@ import net.sourceforge.stripes.mock.MockRoundtrip
 import net.sourceforge.stripes.mock.MockServletContext
 import woko.actions.WokoActionBean
 import woko.actions.TestActionBean
-import static woko.mock.MockUtil.mockRoundtrip;
+import static woko.mock.MockUtil.mockRoundtrip
+import static woko.mock.MockUtil.tripAndGetWokoActionBean;
 
 class NestedValidationRoundtripTest extends InMemRoundtripTestBase {
 
@@ -37,8 +38,7 @@ class NestedValidationRoundtripTest extends InMemRoundtripTestBase {
 
     void testFacetValidation() {
         doWithMockContext("wdevel") { MockServletContext ctx ->
-            MockRoundtrip trip = mockRoundtrip(ctx, '/testMeToo', null)
-            WokoActionBean ab = trip.getActionBean(WokoActionBean.class)
+            WokoActionBean ab = tripAndGetWokoActionBean(ctx, "/testMeToo")
             // assert prop has not been bound
             assert ab.facet.myProp == null
             // assert validation error has been added
@@ -56,8 +56,7 @@ class NestedValidationRoundtripTest extends InMemRoundtripTestBase {
 
     void testObjectValidation() {
         doWithMockContext("wdevel") { MockServletContext ctx ->
-            MockRoundtrip trip = mockRoundtrip(ctx, 'testObjectValidate', 'testentity.MyValidatedPojo', '2', null) // no params specified but a @NotNull is there !
-            WokoActionBean ab = trip.getActionBean(WokoActionBean.class)
+            WokoActionBean ab = tripAndGetWokoActionBean(ctx, 'testObjectValidate', 'testentity.MyValidatedPojo', '2', null) // no params specified but a @NotNull is there !
             // assert validation error has been added
             def errors = ab.context.validationErrors
             assertEquals('unexpected number of errors', 1, errors.size())

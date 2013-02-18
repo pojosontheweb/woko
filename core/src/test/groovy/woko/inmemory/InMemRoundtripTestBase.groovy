@@ -16,19 +16,13 @@
 
 package woko.inmemory
 
-import woko.ioc.SimpleWokoIocContainer
-import woko.mock.MockUsernameResolutionStrategy
-import woko.mock.MockUtil
-
-import javax.servlet.ServletException
-import net.sourceforge.stripes.controller.DispatcherServlet
-import net.sourceforge.stripes.controller.StripesFilter
-import net.sourceforge.stripes.mock.MockRoundtrip
+import net.sourceforge.stripes.mock.MockHttpSession
 import net.sourceforge.stripes.mock.MockServletContext
 import testentity.MyValidatedPojo
 import woko.Woko
-import woko.actions.WokoActionBean
-import woko.facets.FacetNotFoundException
+import woko.ioc.SimpleWokoIocContainer
+import woko.mock.MockUsernameResolutionStrategy
+import woko.mock.MockUtil
 import woko.users.UserManager
 
 abstract class InMemRoundtripTestBase extends GroovyTestCase {
@@ -47,74 +41,16 @@ abstract class InMemRoundtripTestBase extends GroovyTestCase {
         return new Woko(ioc, [Woko.ROLE_GUEST])
     }
 
-    MockServletContext createMockServletContext(String username) {
-        Map<String, String> params = new HashMap<String, String>();
-        params.put("ActionResolver.Packages", "woko.actions");
-        params.put("Extension.Packages", "woko.actions");
-        MockServletContext mockServletContext = new MockServletContext("basicroundtrip");
-        mockServletContext.addFilter(StripesFilter.class, "StripesFilter", params);
-        mockServletContext.setServlet(DispatcherServlet.class, "DispatcherServlet", null);
-        Woko woko = createWoko(username)
-        mockServletContext.setAttribute Woko.CTX_KEY, woko
-        return mockServletContext;
-    }
-
-    def doWithMockContext(String username, Closure c) {
-        new MockUtil().withServletContext(createWoko(username), { MockServletContext ctx->
+    static def doWithMockContext(String username, Closure c) {
+        new MockUtil().withServletContext(createWoko(username), { MockServletContext ctx ->
             c(ctx)
         } as MockUtil.Callback)
     }
 
-//    MockRoundtrip mockRoundtrip(MockServletContext ctx, String url, Map params) {
-//        MockRoundtrip t = new MockRoundtrip(ctx, url.toString())
-//        if (params) {
-//            params.each { String k, String v ->
-//                t.addParameter(k, v)
-//            }
-//        }
-//        t.execute()
-//        return t
-//    }
-//
-//    MockRoundtrip mockRoundtrip(MockServletContext ctx, String facetName, String className, String key, Map params) {
-//        StringBuilder url = new StringBuilder('/').append(facetName)
-//        if (className) {
-//            url << '/'
-//            url << className
-//        }
-//        if (key) {
-//            url << '/'
-//            url << key
-//        }
-//        mockRoundtrip(ctx, url.toString(), params)
-//    }
-
-    WokoActionBean trip(String username, String facetName, String className, String key) {
-        trip(username, facetName, className, key, null)
-    }
-
-    WokoActionBean trip(String username, String facetName, String className, String key, Map params) {
-        def res
-        doWithMockContext(username) { MockServletContext ctx ->
-            MockRoundtrip trip = MockUtil.mockRoundtrip(ctx, facetName, className, key, params)
-            res = trip.getActionBean(WokoActionBean.class)
+    static void assertFacetNotFound(String username, String facetName, String className, String key) {
+        doWithMockContext(username) { MockServletContext c ->
+            assert MockUtil.throwsFacetNotFound(c, facetName, className, key, [:], null)
         }
-        return res
     }
-
-    void assertFacetNotFound(String username, String facetName, String className, String key) {
-        boolean hasThrown = false
-        try {
-            trip(username, facetName, className, key)
-        } catch (Exception e) {
-            if (e instanceof ServletException) {
-                hasThrown = e.cause instanceof FacetNotFoundException
-            } else {
-                throw e
-            }
-        }
-        assert hasThrown
-    }
-
 
 }
