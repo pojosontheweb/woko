@@ -7,7 +7,7 @@ class RoutesRoundtripTest extends InMemRoundtripTestBase {
 
     /**
      * Simple route using an ActionBean
-     * @see woko.actions.MyRoute
+     * @see woko.actions.MyRouteActionBean
      */
     void testSimpleRoute() {
         doWithMockContext("wdevel") { MockServletContext ctx ->

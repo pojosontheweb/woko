@@ -8,7 +8,7 @@ import net.sourceforge.stripes.action.Resolution
 import net.sourceforge.stripes.action.UrlBinding
 
 @UrlBinding("/route/to/book/{bookId}")
-class MyRoute implements  ActionBean {
+class MyRouteActionBean implements  ActionBean {
 
     ActionBeanContext context
 

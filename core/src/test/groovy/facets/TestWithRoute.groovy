@@ -20,7 +20,6 @@ import net.sourceforge.jfacets.annotations.FacetKey
 import net.sourceforge.stripes.action.ActionBeanContext
 import net.sourceforge.stripes.action.Resolution
 import net.sourceforge.stripes.action.StreamingResolution
-import woko.facets.BaseForwardResolutionFacet
 import woko.facets.BaseResolutionFacet
 import woko.inmemory.Book
 
