@@ -50,10 +50,10 @@
                 <configuration>
                     <sourceDirectory>${project.basedir}/src/main/webapp/less/</sourceDirectory>
                     <outputDirectory>${project.basedir}/src/main/webapp/css/</outputDirectory>
-                    <compress>true</compress>
                     <lessJs>${project.basedir}/src/main/webapp/js/less-v1.3.3/less.min.js</lessJs>
+                    <compress>true</compress>
                     <includes>
-                        <include>woko.less</include>
+                        <include>woko-bootstrap.less</include>
                     </includes>
                 </configuration>
                 <executions>
