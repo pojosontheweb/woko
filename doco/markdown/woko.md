@@ -382,6 +382,90 @@ TODO explain how Woko inherently supports Iterative-style development.
 ### Dependencies and War Overlays ###
 ### Environments ###
 ## Tooling ##
+## Unit Testing ##
+Woko includes utility classes for out-of-container unit testing (see `woko.mock.MockUtil`). It is based on Stripes' [MockRoundtrip](http://www.stripesframework.org/display/stripes/Unit+Testing) and allows to emulate a running WokoActionBean and unit-test your facets.
+
+The beauty of Mockroundtrip is that you can invoke ActionBeans via URLs in your unit tests, with all Stripes features enabled (binding/validation, type conversion etc). 
+
+Here's an example (Groovy version) :
+
+```
+import woko.mock.MockUtil
+...
+
+class MyTest {
+
+	// create, init and return a new Woko : you can configure 
+	// your testing Woko as you want. Either the same as your webapp
+	// or using different components/configurations
+	Woko createWoko(String username) {
+		return new Woko(...) 
+	}
+	
+	@Test
+	void testIt() {
+		// need a Woko to run our tests... 
+		Woko woko = createWoko('myuser')
+		
+		// use Callback to wrap execution and use an automatically
+		// initialized/destroyed MockServletContext 
+        new MockUtil().withServletContext(createWoko(), { MockServletContext ctx ->
+        
+        	// trip and retrieve a facet via its URL        
+			def myFacet = MockUtil.tripAndGetFacet(ctx, "/doIt/MyClass/123")
+			// make sure the facet class is the expected one
+			assert myFacet.getClass() == MyFacet.class
+			// make sure myFacet.myProp is null
+			assert myFacet.myProp == null
+			
+			// now trip with parameters
+			myFacet = MockUtil.tripAndGetFacet(ctx, "/doIt/MyClass/123", ['facet.myProp':'foobar'])
+			// make sure the facet class is still the expected one
+			assert myFacet.getClass() == MyFacet.class
+			// make sure myFacet.myProp has been bound
+			assert myFacet.myProp == 'foobar'
+			
+        } as MockUtil.Callback)
+	}
+
+}
+
+```
+
+As you can see, `MockUtil` provides a simple way to create the MockServletContext (and close it automatically), as well as several static methods that eases test writing. The only thing you need to do is to create a `Woko` instance and feed it to MockUtil.
+
+Here's an example of how you can do this easily (Groovy again), with your own Object Store etc. :
+
+```
+Woko createWoko(String username) {
+
+	// create store using my own ObjectStore implementation
+	// and pre-populated with some testing objects
+	ObjectStore myStore = createObjectStoreWithTestObjects()
+	
+	// same for user manager : init with test users/roles  
+    UserManager userManager = createUserManagerWithTestUsers()
+    
+    // use mock UNRS so that we can emulate logged in users
+	UsernameResolutionStrategy unrs = new MockUsernameResolutionStrategy(username)
+	
+	// create FDM : we provide our facet packages just like in web.xml
+	List facetPackages = ['com.myco.myapp.facets'] + Woko.DEFAULT_FACET_PACKAGES
+	IFacetDescriptorManager fdm = Woko.createFacetDescriptorManager(facetPackages)
+	
+	// create IoC
+    SimpleWokoIocContainer ioc = new SimpleWokoIocContainer(
+            store,
+            userManager,
+            unrs)
+            
+    // create and return Woko with fallback guest roles
+    return new Woko(ioc, ['myguest'])
+}
+```
+
+> If your ObjectStore is a `TransactionalStore`, the mock testing will use `WokoTxInterceptor`, and demarcate the transactions for each call to `tripXyz()`, just like it'd be done in a regular servlet request handling. On the other hand, be careful to properly handle transactions for all code that uses your ObjectStore in your test besides calls to `tripXyz()` : the tx interceptor is fired only when MockRoundtrip executes, so other calls in your tests should handle the transactions themselves. 
+ 
 # Add-ons #
 ## User Management ##
 
