@@ -48,11 +48,11 @@
         </c:choose>
 
         <%--  Import stylesheet
-                - Woko less file (which include the bootstrap less files)
+                - woko.css : This css file is compiled from the less files
                 - CSS from layout facet
                 - CustomCSS
         ========================================================== --%>
-        <link rel="stylesheet/less" type="text/css" href="${cp}/less/woko.less?${cacheTokenParams}">
+        <link rel="stylesheet" type="text/css" href="${cp}/css/woko.css?${cacheTokenParams}">
         <c:forEach items="${layout.cssIncludes}" var="cssLink">
             <link rel="stylesheet" href="${cp}${cssLink}" type="text/css">
         </c:forEach>
@@ -69,7 +69,7 @@
                 - CustomJS
         ========================================================== --%>
         <script type="text/javascript" src="${cp}/js/jQuery-V1.9.1/jquery.min.js?${cacheTokenParams}"></script>
-        <script src="${cp}/js/less-v1.3.3/less.min.js?${cacheTokenParams}" type="text/javascript"></script>
+        <%--<script src="${cp}/js/less-v1.3.3/less.min.js?${cacheTokenParams}" type="text/javascript"></script>--%>
         <script type="text/javascript" src="${cp}/js/bootstrap-v2.3.0/bootstrap.min.js?${cacheTokenParams}"></script>
         <script type="text/javascript" src="${cp}/js/bootstrap-datepicker/bootstrap-datepicker.min.js?${cacheTokenParams}"></script>
         <script src="${cp}/woko/js/woko.base.js" type="text/javascript"></script>
