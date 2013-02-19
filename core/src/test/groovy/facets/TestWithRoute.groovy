@@ -14,18 +14,20 @@
  * limitations under the License.
  */
 
-package woko.inmemory
+package facets
 
-import woko.users.UsernameResolutionStrategy
-import javax.servlet.http.HttpServletRequest
+import net.sourceforge.jfacets.annotations.FacetKey
+import net.sourceforge.stripes.action.ActionBeanContext
+import net.sourceforge.stripes.action.Resolution
+import net.sourceforge.stripes.action.StreamingResolution
+import woko.facets.BaseResolutionFacet
+import woko.inmemory.Book
 
-class DummyURS implements UsernameResolutionStrategy {
+@FacetKey(name = "testWithRoute", profileId = "all", targetObjectType = Book.class)
+class TestWithRoute extends BaseResolutionFacet {
 
-  String username
-
-  def String getUsername(HttpServletRequest request) {
-    return username
-  }
-
+    Resolution getResolution(ActionBeanContext abc) {
+        return new StreamingResolution("text/plain", "FUNKY")
+    }
 
 }
