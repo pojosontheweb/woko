@@ -174,13 +174,13 @@ class CrudTest extends WebTestBase {
             clickButton name: 'search'
 
             verifyText '400 object(s) found'
-            verifyXPath xpath: "/html/body/div/div[2]/div/div[4]/ul/li[11]/a" // check that link to page 10 exists
+            verifyXPath xpath: "/html/body/div/div[2]/div/div[5]/ul/li[11]/a" // check that link to page 10 exists
             verifyText 'Moby test100'
-            clickLink xpath: '/html/body/div/div[2]/div/div[4]/ul/li[3]/a' // click page 2
+            clickLink xpath: '/html/body/div/div[2]/div/div[5]/ul/li[3]/a' // click page 2
             verifyText 'Moby test'
-            clickLink xpath: '/html/body/div/div[2]/div/div[4]/ul/li[4]/a' // click page 3
+            clickLink xpath: '/html/body/div/div[2]/div/div[5]/ul/li[4]/a' // click page 3
             verifyText 'Moby test'
-            clickLink xpath: '/html/body/div/div[2]/div/div[4]/ul/li[12]/a' // click "next"
+            clickLink xpath: '/html/body/div/div[2]/div/div[5]/ul/li[12]/a' // click "next"
             verifyText 'Moby test'
 
             setSelectField xpath: '/html/body/div/div[2]/div/div[4]/form/select', value: '500'
