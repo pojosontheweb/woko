@@ -4,7 +4,7 @@
 
 
 # POJOs on the Web! #
-Woko is a Full-Stack, Domain Driven framework for building webapps efficiently in Java. It provides transversal plumbing and solutions to the recurrent webapp programming issues, as well as a unique approach for developing iteratively and in a consistent manner.
+Woko is a Full-Stack, [Domain Driven](http://en.wikipedia.org/wiki/Domain-driven_design) framework for building JEE webapps efficiently. It provides transversal plumbing and solutions to the recurrent webapp programming issues, as well as a unique approach for developing iteratively and in a consistent manner.
 
 Woko is about displaying Domain Objects to end users, and allow them to interact. That's what every application is about. We use GUI paradigms and widgets in order to represent some state to the end user, allow her(him) to change that state and trigger behavior based upon user interaction. 
 
@@ -847,7 +847,7 @@ And the response :
 
 Woko's Type Converters use supplied ID and introspected property types in order to load your POJOs from the store during the binding/validation phase.  
 
-### Nested, Dynamic Validation ###
+### Nested & Dynamic Validation ###
 
 TODO explain dynamic validation metadata provider
 
