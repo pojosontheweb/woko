@@ -28,15 +28,15 @@ class UsermanagementTest extends WokoWebTestBase {
         webtest("testUserManagement") {
             login()
             goToPage '/list/MyUser'
-            verifyXPath xpath:'/html/body/div/div[2]/div/div/table/tbody/tr/td[2]/span/span',
+            verifyXPath xpath:'/html/body/div/div[2]/div/table/tbody/tr/td[2]/span/span',
                     text:'.*wdevel.*', regex:true
-            verifyXPath xpath:'/html/body/div/div[2]/div/div/table/tbody/tr[2]/td[2]/span/span',
+            verifyXPath xpath:'/html/body/div/div[2]/div/table/tbody/tr[2]/td[2]/span/span',
                     text:'.*testuser.*', regex:true
 
             goToPage '/users'
-            verifyXPath xpath:'/html/body/div/div[2]/div/div/table/tbody/tr/td[2]/span/span',
+            verifyXPath xpath:'/html/body/div/div[2]/div/table/tbody/tr/td[2]/span/span',
                     text:'.*wdevel.*', regex:true
-            verifyXPath xpath:'/html/body/div/div[2]/div/div/table/tbody/tr[2]/td[2]/span/span',
+            verifyXPath xpath:'/html/body/div/div[2]/div/table/tbody/tr[2]/td[2]/span/span',
                     text:'.*testuser.*', regex:true
         }
     }
@@ -49,10 +49,10 @@ class UsermanagementTest extends WokoWebTestBase {
             goToPage "/register"
             verifyText text:"email"
             verifyText text:"username"
-            verifyXPath xpath:"/html/body/div/div[2]/div/div/div/div/form/fieldset/div/div/div/input"
-            verifyXPath xpath:"/html/body/div/div[2]/div/div/div/div/form/fieldset/div[2]/div/div/input"
-            verifyXPath xpath:"/html/body/div/div[2]/div/div/div/div/form/fieldset/div[3]/div/div/input"
-            verifyXPath xpath:"/html/body/div/div[2]/div/div/div/div/form/fieldset/div[4]/div/div/input"
+            verifyXPath xpath:"/html/body/div/div[2]/div/div[3]/div/form/fieldset/div/div/div/input"
+            verifyXPath xpath:"/html/body/div/div[2]/div/div[3]/div/form/fieldset/div[2]/div/div/input"
+            verifyXPath xpath:"/html/body/div/div[2]/div/div[3]/div/form/fieldset/div[3]/div/div/input"
+            verifyXPath xpath:"/html/body/div/div[2]/div/div[3]/div/form/fieldset/div[4]/div/div/input"
 
             setInputField name:'facet.username', value:'funkystuff'
             setInputField name:'facet.email', value:'funky@stuff.com'
@@ -71,10 +71,9 @@ class UsermanagementTest extends WokoWebTestBase {
             verifyText text:'funkystuff'
 
             // edit user
-            clickLink xpath:'/html/body/div/div[2]/div/div/table/tbody/tr[2]/td[6]/div/a[2]'
-            setSelectField xpath:'/html/body/div/div[2]/div/div/div/div[2]/div/form/fieldset/div/div/select', value:'Active'
-            setInputField xpath:'/html/body/div/div[2]/div/div/div/div[2]/div/form/fieldset/div[4]/div/input', value:'developer'
-            setSelectField name:'object.accountStatus', value:'Active'
+            clickLink xpath:'/html/body/div/div[2]/div/table/tbody/tr[2]/td[6]/div/a[2]'
+            setSelectField xpath:'/html/body/div/div[2]/div/div[3]/div[2]/form/fieldset/div/div/select', value:'Active'
+            setInputField xpath:'/html/body/div/div[2]/div/div[3]/div[2]/form/fieldset/div[5]/div/input', value:'developer'
             clickButton name: 'save'
 
             // logout and try to authenticate with new user
@@ -93,7 +92,7 @@ class UsermanagementTest extends WokoWebTestBase {
             login()
             goToPage "/password"
 
-            clickButton xpath: '/html/body/div/div[2]/div/div/div/div/form/fieldset/div[4]/input'
+            clickButton xpath: '/html/body/div/div[2]/div/div[3]/div/form/fieldset/div[4]/input'
             verifyText text: "Current Password is a required field"
             verifyText text: "New Password is a required field"
             verifyText text: "New Password Confirm is a required field"
@@ -101,7 +100,7 @@ class UsermanagementTest extends WokoWebTestBase {
             setInputField name:"facet.currentPassword", value: "wdevel"
             setInputField name:"facet.newPassword", value: "foobarbaz"
             setInputField name:"facet.newPasswordConfirm", value: "foobarbaz"
-            clickButton xpath: '/html/body/div/div[2]/div/div/div[2]/div/form/fieldset/div[4]/input'
+            clickButton xpath: '/html/body/div/div[2]/div/div[3]/div/form/fieldset/div[4]/input'
             verifyText text: "Password changed"
         }
     }
