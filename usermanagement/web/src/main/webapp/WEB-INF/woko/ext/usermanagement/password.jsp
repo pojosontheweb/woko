@@ -32,7 +32,7 @@
                             <div class="controls">
                                 <div class="input-prepend">
                                     <span class="add-on"><i class="icon-lock"> </i></span>
-                                    <s:password name="facet.currentPassword" class="span4"/>
+                                    <s:password name="facet.currentPassword"/>
                                 </div>
                                 <s:errors field="facet.currentPassword"/>
                             </div>
@@ -45,7 +45,7 @@
                             <div class="controls">
                                 <div class="input-prepend">
                                     <span class="add-on"><i class="icon-lock"> </i></span>
-                                    <s:password name="facet.newPassword" class="span4"/>
+                                    <s:password name="facet.newPassword"/>
                                 </div>
                                 <s:errors field="facet.newPassword"/>
                             </div>
@@ -58,7 +58,7 @@
                             <div class="controls">
                                 <div class="input-prepend">
                                     <span class="add-on"><i class="icon-lock"> </i></span>
-                                    <s:password name="facet.newPasswordConfirm" class="span4"/>
+                                    <s:password name="facet.newPasswordConfirm"/>
                                 </div>
                                 <s:errors field="facet.newPasswordConfirm"/>
                             </div>
