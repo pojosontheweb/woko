@@ -70,7 +70,7 @@ abstract class WebtestCaseFixed extends GroovyTestCase
 			antBuilder.property(name: "wt.config.haltonfailure", value: "true")
             antBuilder.property(name: "wt.headless", value: System.getProperty("wt.headless", "true"))
 
-            def skipReports = value: System.getProperty("wt.htmlReports.skip", "true")
+            def skipReports = System.getProperty("wt.htmlReports.skip", "true")
             println " *** SKIP REPORTS : $skipReports"
 
             antBuilder.property(name: "wt.htmlReports.skip", value: skipReports)
