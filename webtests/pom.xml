@@ -45,16 +45,16 @@
                     <configuration>
                         <skip>true</skip>
                         <argLine>-Xmx1024m</argLine>
-			<systemProperties>
-			    <property>
-				<name>wt.htmlReports.skip</name>
-				<value>true</value>
-			    </property>
-			    <property>
+                        <systemProperties>
+                            <property>
+                                <name>wt.htmlReports.skip</name>
+                                <value>true</value>
+                            </property>
+                            <property>
                                 <name>wt.headless</name>
                                 <value>true</value>
                             </property>
-			</systemProperties>
+			            </systemProperties>
                     </configuration>
                     <executions>
                         <execution>
