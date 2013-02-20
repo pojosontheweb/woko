@@ -285,7 +285,7 @@ public class HibernateStore implements ObjectStore, TransactionalStore, Closeabl
         if (clazz == null) {
             return new ListResultIterator<Object>(Collections.emptyList(), s, l, 0);
         } else {
-            Criteria crit = getSession().createCriteria(clazz).setFirstResult(s);
+            Criteria crit = createListCriteria(clazz).setFirstResult(s);
             if (l != -1) {
                 crit.setMaxResults(l);
             }
@@ -299,6 +299,10 @@ public class HibernateStore implements ObjectStore, TransactionalStore, Closeabl
 
             return new ListResultIterator<Object>(objects, s, l, count.intValue());
         }
+    }
+
+    protected Criteria createListCriteria(Class mappedClass) {
+        return getSession().createCriteria(mappedClass);
     }
 
     public List<Class<?>> getMappedClasses() {
