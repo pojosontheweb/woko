@@ -97,7 +97,8 @@ abstract class WebtestCaseFixed extends GroovyTestCase
 	 */
 	protected doAfterTestsWork()
 	{
-		ant.project.executeTarget 'wt.after.testInWork'
+        println "*** after tests ***"
+		//ant.project.executeTarget 'wt.after.testInWork'
 	}
 	
 	/**
