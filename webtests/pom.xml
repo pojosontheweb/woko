@@ -137,7 +137,7 @@
         <profile>
             <id>webtests</id>
             <modules>
-                <!--<module>webtests-container-auth</module>-->
+                <module>webtests-container-auth</module>
                 <!--<module>webtests-builtin-auth</module>-->
                 <!--<module>webtests-localization</module>-->
                 <!--<module>webtests-rpc</module>-->
