@@ -53,7 +53,7 @@
 			    <property>
                                 <name>wt.headless</name>
                                 <value>true</value>
-                            <property>
+                            </property>
 			</systemProperties>
                     </configuration>
                     <executions>
