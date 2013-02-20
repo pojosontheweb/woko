@@ -49,7 +49,7 @@
 			    <property>
 				<name>wt.htmlReports.skip</name>
 				<value>true</value>
-			    <property>
+			    </property>
 			    <property>
                                 <name>wt.headless</name>
                                 <value>true</value>
