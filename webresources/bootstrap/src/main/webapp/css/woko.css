@@ -4,4 +4,3 @@ html,body{height:100%;}
 #push,footer{height:80px;}
 .wokoLinks{position:relative;top:-70px;}
 .wokoProperties .propertyName{text-align:right;}.wokoProperties .propertyName label{font-weight:bold;}
-@media (min-width:1200px){}@media (min-width:768px) and (max-width:979px){#wrapper>.main-content{padding-top:0;} .navbar .container .pull-right{float:none;}}@media (max-width:767px){#wrapper>.main-content{padding-top:0;} .navbar .container .pull-right{float:none;}}

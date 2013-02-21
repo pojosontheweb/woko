@@ -54,8 +54,8 @@
                     <compress>true</compress>
                     <includes>
                         <include>bootstrap-v2.3.0/bootstrap.less</include>
-                        <include>bootstrap-v2.3.0/responsive.less</include>
-                        <include>woko-bootstrap.less</include>
+                        <include>responsive.less</include>
+                        <include>woko.less</include>
                     </includes>
                 </configuration>
                 <executions>

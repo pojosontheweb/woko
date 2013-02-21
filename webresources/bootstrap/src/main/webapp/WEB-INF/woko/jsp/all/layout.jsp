@@ -53,8 +53,8 @@
                 - CustomCSS
         ========================================================== --%>
         <link rel="stylesheet" type="text/css" href="${cp}/css/bootstrap-v2.3.0/bootstrap.css?${cacheTokenParams}">
-        <link rel="stylesheet" type="text/css" href="${cp}/css/bootstrap-v2.3.0/responsive.css?${cacheTokenParams}">
-        <link rel="stylesheet" type="text/css" href="${cp}/css/woko-bootstrap.css?${cacheTokenParams}">
+        <link rel="stylesheet" type="text/css" href="${cp}/css/responsive.css?${cacheTokenParams}">
+        <link rel="stylesheet" type="text/css" href="${cp}/css/woko.css?${cacheTokenParams}">
         <c:forEach items="${layout.cssIncludes}" var="cssLink">
             <link rel="stylesheet" href="${cp}${cssLink}" type="text/css">
         </c:forEach>
