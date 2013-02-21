@@ -60,6 +60,7 @@
                         <include>cerulean/bootstrap.less</include>
                         <include>cosmo/bootstrap.less</include>
                         <include>cyborg/bootstrap.less</include>
+                        <include>journal/bootstrap.less</include>
                     </includes>
                 </configuration>
                 <executions>
