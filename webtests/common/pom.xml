@@ -26,7 +26,14 @@
     <name>Woko - web tests common code</name>
     <packaging>jar</packaging>
     <dependencies>
-            <dependency>
+
+        <dependency>
+            <groupId>com.pojosontheweb</groupId>
+            <artifactId>woko-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>com.canoo.webtest</groupId>
             <artifactId>webtest</artifactId>
             <version>3.0</version>
@@ -37,6 +44,7 @@
                 </exclusion>
             </exclusions>
         </dependency>
+
         <!-- override the htmlunit version (jquery doesn't work otherwise) -->
         <dependency>
             <groupId>net.sourceforge.htmlunit</groupId>
