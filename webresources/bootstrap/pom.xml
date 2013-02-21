@@ -63,6 +63,7 @@
                         <include>journal/bootstrap.less</include>
                         <include>readable/bootstrap.less</include>
                         <include>simplex/bootstrap.less</include>
+                        <include>slate/bootstrap.less</include>
                     </includes>
                 </configuration>
                 <executions>
