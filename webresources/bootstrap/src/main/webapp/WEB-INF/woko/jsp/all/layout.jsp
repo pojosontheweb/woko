@@ -118,7 +118,7 @@
                         <div class="nav-collapse">
 
                             <%-- First display the navBar facet --%>
-                            <ul class="nav nav-pills">
+                            <ul class="nav">
                                 <w:includeFacet facetName="<%=WokoFacets.navBar%>" targetObject="${layout.facetContext.targetObject}"/>
                             </ul>
 
