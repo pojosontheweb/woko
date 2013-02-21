@@ -53,6 +53,8 @@
                     <lessJs>${project.basedir}/src/main/webapp/js/less-v1.3.3/less.min.js</lessJs>
                     <compress>true</compress>
                     <includes>
+                        <include>bootstrap-v2.3.0/bootstrap.less</include>
+                        <include>bootstrap-v2.3.0/responsive.less</include>
                         <include>woko-bootstrap.less</include>
                     </includes>
                 </configuration>
