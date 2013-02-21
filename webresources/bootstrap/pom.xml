@@ -65,6 +65,7 @@
                         <include>simplex/bootstrap.less</include>
                         <include>slate/bootstrap.less</include>
                         <include>spacelab/bootstrap.less</include>
+                        <include>spruce/bootstrap.less</include>
                     </includes>
                 </configuration>
                 <executions>
