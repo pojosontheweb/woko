@@ -61,6 +61,7 @@
                         <include>cosmo/bootstrap.less</include>
                         <include>cyborg/bootstrap.less</include>
                         <include>journal/bootstrap.less</include>
+                        <include>readable/bootstrap.less</include>
                     </includes>
                 </configuration>
                 <executions>
