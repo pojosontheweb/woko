@@ -48,11 +48,9 @@
         </c:choose>
 
         <%--  Import stylesheet
-                - woko-bootstrap.css : This css file is compiled from the less files
                 - CSS from layout facet
                 - CustomCSS
         ========================================================== --%>
-        <link rel="stylesheet" type="text/css" href="${cp}/css/woko-bootstrap.css?${cacheTokenParams}">
         <c:forEach items="${layout.cssIncludes}" var="cssLink">
             <link rel="stylesheet" href="${cp}${cssLink}" type="text/css">
         </c:forEach>
@@ -114,13 +112,13 @@
                         </a>
 
                         <%-- The app name --%>
-                        <a href="${cp}" class="brand">${layout.appTitle}</a>
+                        <a href="${cp}/home" class="brand">${layout.appTitle}</a>
 
                         <%-- The navBar --%>
                         <div class="nav-collapse">
 
                             <%-- First display the navBar facet --%>
-                            <ul class="nav nav-pills">
+                            <ul class="nav">
                                 <w:includeFacet facetName="<%=WokoFacets.navBar%>" targetObject="${layout.facetContext.targetObject}"/>
                             </ul>
 

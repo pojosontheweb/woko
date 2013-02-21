@@ -9,6 +9,9 @@ import woko.users.UserManager;
 import woko.users.UsernameResolutionStrategy;
 import net.sourceforge.jfacets.IFacetDescriptorManager;
 
+import java.util.Arrays;
+import java.util.List;
+
 @FacetKey(name= WokoFacets.layout, profileId="all")
 public class MyLayout extends LayoutAll<
         ObjectStore,
@@ -16,8 +19,17 @@ public class MyLayout extends LayoutAll<
         UsernameResolutionStrategy,
         IFacetDescriptorManager> {
 
+    private static final List<String> CSS_INCLUDES = Arrays.asList($css);
+
+    // return the title for your app, used in page titles, main navbar etc.
     @Override
     public String getAppTitle() {
         return "$name";
+    }
+
+    // change this in order to use different CSS stylesheets
+    @Override
+    public List<String> getCssIncludes() {
+        return CSS_INCLUDES;
     }
 }

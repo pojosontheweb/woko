@@ -20,7 +20,7 @@
             <w:includeFacet targetObject="<%=o%>" facetName="<%=WokoFacets.renderTitle%>"/>
         </div>
         <%-- Call the renderTitle facet in order to display the available links --%>
-        <div class="wokoLinks">
+        <div class="wokoLinks pull-right">
             <w:includeFacet targetObject="<%=o%>" facetName="<%=WokoFacets.renderLinksEdit%>"/>
         </div>
     </div>
