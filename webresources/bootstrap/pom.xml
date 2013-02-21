@@ -56,7 +56,8 @@
                         <include>bootstrap-v2.3.0/bootstrap.less</include>
                         <include>responsive.less</include>
                         <include>woko.less</include>
-                        <include>amelia/amelia.less</include>
+                        <include>amelia/bootstrap.less</include>
+                        <include>cerulean/bootstrap.less</include>
                     </includes>
                 </configuration>
                 <executions>
