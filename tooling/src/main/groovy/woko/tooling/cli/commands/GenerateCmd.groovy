@@ -260,6 +260,11 @@ class GenerateCmd extends Command{
         def bindingFacets = [:]
         bindingFacets['facetsPackage'] = packageName+".facets"
         bindingFacets['name'] = artifactId
+        if (useBootstrap) {
+            bindingFacets['css'] = "/css/woko-bootstrap.css"
+        } else {
+            bindingFacets['css'] = '"/woko/css/layout-all.css", "/woko/css/lithium/assets/style.css"'
+        }
 
         writer = new FileWriter(facetsPath+File.separator+"MyLayout" + (useGroovy ? ".groovy" : ".java"))
         generateTemplate(bindingFacets, 'layout', useGroovy, writer)
