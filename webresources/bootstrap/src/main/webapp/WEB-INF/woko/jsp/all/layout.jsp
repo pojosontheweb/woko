@@ -114,7 +114,7 @@
                         </a>
 
                         <%-- The app name --%>
-                        <a href="${cp}" class="brand">${layout.appTitle}</a>
+                        <a href="${cp}/home" class="brand">${layout.appTitle}</a>
 
                         <%-- The navBar --%>
                         <div class="nav-collapse">
