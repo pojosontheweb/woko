@@ -48,7 +48,6 @@
         </c:choose>
 
         <%--  Import stylesheet
-                - woko-bootstrap.css : This css file is compiled from the less files
                 - CSS from layout facet
                 - CustomCSS
         ========================================================== --%>
