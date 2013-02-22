@@ -12,14 +12,14 @@ import net.sourceforge.jfacets.IFacetDescriptorManager;
 import java.util.Arrays;
 import java.util.List;
 
+import woko.actions.SwithThemeActionBean;
+
 @FacetKey(name= WokoFacets.layout, profileId="all")
 public class MyLayout extends LayoutAll<
         ObjectStore,
         UserManager,
         UsernameResolutionStrategy,
         IFacetDescriptorManager> {
-
-    private static final List<String> CSS_INCLUDES = Arrays.asList($css);
 
     // return the title for your app, used in page titles, main navbar etc.
     @Override
@@ -30,6 +30,6 @@ public class MyLayout extends LayoutAll<
     // change this in order to use different CSS stylesheets
     @Override
     public List<String> getCssIncludes() {
-        return CSS_INCLUDES;
+        $css
     }
 }

@@ -261,9 +261,22 @@ class GenerateCmd extends Command{
         bindingFacets['facetsPackage'] = packageName+".facets"
         bindingFacets['name'] = artifactId
         if (useBootstrap) {
-            bindingFacets['css'] = '"/css/bootstrap-v2.3.0/bootstrap.css", "/css/responsive.css", "/css/woko.css"'
+            bindingFacets['css'] = '''
+        String baseBootstrap = "/css/bootstrap-v2.3.0/bootstrap.css";
+
+        if (getRequest() != null){
+            String theme = (String)getRequest().getSession().getAttribute(SwithThemeActionBean.THEME_COOKIE);
+            if (theme != null) {
+                baseBootstrap = "/css/" + theme + "/bootstrap.css";
+            }
+        }
+
+        return Arrays.asList(baseBootstrap, "/css/responsive.css","/css/woko.css");
+'''
         } else {
-            bindingFacets['css'] = '"/woko/css/layout-all.css", "/woko/css/lithium/assets/style.css"'
+            bindingFacets['css'] = '''
+        return Arrays.asList("/woko/css/layout-all.css", "/woko/css/lithium/assets/style.css");
+'''
         }
 
         writer = new FileWriter(facetsPath+File.separator+"MyLayout" + (useGroovy ? ".groovy" : ".java"))
