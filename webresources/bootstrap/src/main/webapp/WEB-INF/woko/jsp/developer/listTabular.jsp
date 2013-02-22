@@ -80,6 +80,8 @@
                     computePropUnion = true;
                 }
 
+                boolean hasAtLeastOneAction = false;
+
                 while (results.hasNext()) {
                     Object result = results.next();
                     resultsList.add(result);
@@ -103,6 +105,15 @@
                         }
                     }
 
+                    // check if at least one action is available (once only)
+                    if (!hasAtLeastOneAction) {
+                        RenderLinks rl = woko.getFacet(RenderLinks.FACET_NAME, request, result);
+                        List<Link> links = rl.getLinks();
+                        if (!hasAtLeastOneAction && links!=null && links.size()>0) {
+                            hasAtLeastOneAction = true;
+                        }
+                    }
+
                 }
             %>
             <table class="<%=listWrapperClass%>">
@@ -119,7 +130,9 @@
                     <%
                         }
                     %>
-                    <th><fmt:message bundle="${wokoBundle}" key="woko.devel.list.actions.column.label"/></th>
+                    <c:if test="<%=hasAtLeastOneAction%>">
+                        <th><fmt:message bundle="${wokoBundle}" key="woko.devel.list.actions.column.label"/></th>
+                    </c:if>
                 </tr>
                 </thead>
                 <tbody>
@@ -145,31 +158,33 @@
                             <%
                                 }
                             %>
-                            <td>
-                                <div class="btn-group">
-                                <%
-                                    Object view = woko.getFacet(View.FACET_NAME, request, result);
-                                    if (view!=null && view instanceof View) {
-                                        String href = request.getContextPath() + "/" + LinkUtil.getUrl(woko, result, "view");
-                                %>
-                                    <a href="<%=href%>" class="btn view">
-                                        <fmt:message bundle="${wokoBundle}" key="woko.links.view"/>
-                                    </a>
-                                <%
-                                    }
-                                    // Grab available links !
-                                    RenderLinks rl = woko.getFacet(RenderLinks.FACET_NAME, request, result);
-                                    for (Link l : rl.getLinks()) {
-                                        String href = request.getContextPath() + "/" + l.getHref();
-                                        String cssClass = l.getCssClass();
-                                        String text = l.getText();
-                                %>
-                                    <a href="<%=href%>" class="btn <%=cssClass%>"><c:out value="<%=text%>"/></a>
-                                <%
-                                    }
-                                %>
-                                </div>
-                            </td>
+                            <c:if test="<%=hasAtLeastOneAction%>">
+                                <td>
+                                    <div class="btn-group">
+                                    <%
+                                        Object view = woko.getFacet(View.FACET_NAME, request, result);
+                                        if (view!=null && view instanceof View) {
+                                            String href = request.getContextPath() + "/" + LinkUtil.getUrl(woko, result, "view");
+                                    %>
+                                        <a href="<%=href%>" class="btn view">
+                                            <fmt:message bundle="${wokoBundle}" key="woko.links.view"/>
+                                        </a>
+                                    <%
+                                        }
+                                        // Grab available links !
+                                        RenderLinks rl = woko.getFacet(RenderLinks.FACET_NAME, request, result);
+                                        for (Link l : rl.getLinks()) {
+                                            String href = request.getContextPath() + "/" + l.getHref();
+                                            String cssClass = l.getCssClass();
+                                            String text = l.getText();
+                                    %>
+                                        <a href="<%=href%>" class="btn <%=cssClass%>"><c:out value="<%=text%>"/></a>
+                                    <%
+                                        }
+                                    %>
+                                    </div>
+                                </td>
+                            </c:if>
 
                         </tr>
                 <%
