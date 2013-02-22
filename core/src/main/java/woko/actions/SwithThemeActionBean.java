@@ -15,7 +15,7 @@ public class SwithThemeActionBean extends BaseActionBean {
     public Resolution execute() {
         getContext().getRequest().getSession().setAttribute(THEME_COOKIE, name);
         getContext().getMessages().add(new SimpleMessage("Theme changed. Like it better ?"));
-        return new RedirectResolution("/home");
+        return new RedirectResolution("/themeRoller");
     }
 
 }

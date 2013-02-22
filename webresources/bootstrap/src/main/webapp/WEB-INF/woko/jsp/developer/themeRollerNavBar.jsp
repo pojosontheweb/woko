@@ -9,8 +9,8 @@
     <ul class="dropdown-menu">
         <c:forEach items="${themeRollerNavBar.availableThemes}" var="theme">
             <li>
-                <a href="${pageContext.request.contextPath}/theme/${theme}">
-                    ${theme}
+                <a href="${pageContext.request.contextPath}/theme/${theme.value}">
+                    ${theme.key}
                 </a>
             </li>
         </c:forEach>
