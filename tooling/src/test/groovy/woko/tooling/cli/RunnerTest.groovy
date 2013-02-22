@@ -104,7 +104,7 @@ The command accepts one argument that can be  :
 
     @Test
     void testListFacets() {
-        assertCommandResult(["list", "facets"], """45 facets found : \n  create, developer, java.lang.Object, woko.facets.builtin.developer.Create
+        assertCommandResult(["list", "facets"], """47 facets found : \n  create, developer, java.lang.Object, woko.facets.builtin.developer.Create
   delete, developer, java.lang.Object, woko.facets.builtin.developer.DeleteImpl
   edit, developer, java.lang.Object, woko.facets.builtin.developer.EditImpl
   find, developer, java.lang.Object, woko.facets.builtin.developer.Find
@@ -147,6 +147,8 @@ The command accepts one argument that can be  :
   save, developer, java.lang.Object, woko.facets.builtin.developer.SaveImpl
   search, developer, java.lang.Object, woko.facets.builtin.developer.SearchImpl
   studio, developer, java.lang.Object, woko.facets.builtin.developer.WokoStudio
+  themeRoller, developer, java.lang.Object, woko.facets.builtin.developer.ThemeRoller
+  themeRollerNavBar, developer, java.lang.Object, woko.facets.builtin.developer.ThemeRollerNavBar
   toString, developer, java.lang.Object, woko.facets.builtin.developer.ToString
   view, developer, java.lang.Object, woko.facets.builtin.developer.ViewImpl
 """)
@@ -345,6 +347,9 @@ The command accepts one argument that can be  :
 (studio,developer,java.lang.Object) [woko.facets.builtin.developer.WokoStudio] facet.facetDescriptors[].profileId
 => Found 4 accessible binding(s) in facet (studio,developer,java.lang.Object) [woko.facets.builtin.developer.WokoStudio]
 
+(themeRoller,developer,java.lang.Object) [woko.facets.builtin.developer.ThemeRoller] object.*
+=> Found 1 accessible binding(s) in facet (themeRoller,developer,java.lang.Object) [woko.facets.builtin.developer.ThemeRoller]
+
 (toString,developer,java.lang.Object) [woko.facets.builtin.developer.ToString] object.*
 => Found 1 accessible binding(s) in facet (toString,developer,java.lang.Object) [woko.facets.builtin.developer.ToString]
 
@@ -362,7 +367,7 @@ some.test.pkg.MyAction nestedObjects[]
 some.test.pkg.MyAction nestedObjects[].bar
 => Found 5 accessible binding(s) in action bean some.test.pkg.MyAction
 
-Found 30 accessible bindings in the app.
+Found 31 accessible bindings in the app.
 """)
     }
 
