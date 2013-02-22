@@ -140,12 +140,12 @@
                         </p>
 
                             <%-- Display the search input only for connected user --%>
-                            <%--<c:if test="${not empty username}">--%>
-                            <%--<s:form action="/search" class="navbar-form pull-right" style="margin-right: 8px; height: 40px;">--%>
-                            <%--<fmt:message bundle="${wokoBundle}" key="search" var="ph"/>--%>
-                            <%--<s:text name="facet.query" class="search-query" placeholder="${ph}"/>--%>
-                            <%--</s:form>--%>
-                            <%--</c:if>--%>
+                        <c:if test="${not empty username}">
+                            <s:form action="/search" class="navbar-form pull-right" style="margin-right: 8px; height: 40px;">
+                                <fmt:message bundle="${wokoBundle}" key="search" var="ph"/>
+                                <s:text name="facet.query" class="search-query input-medium" placeholder="${ph}"/>
+                            </s:form>
+                        </c:if>
 
                     </div>
                 </div>

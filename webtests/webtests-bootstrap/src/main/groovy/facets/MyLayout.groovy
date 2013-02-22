@@ -30,9 +30,4 @@ class MyLayout extends LayoutAll {
                 "/css/responsive.css"
         ]
     }
-
-    @Override
-    String getLayoutPath() {
-        return '/WEB-INF/jsp/layout.jsp'
-    }
 }
