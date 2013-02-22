@@ -80,6 +80,8 @@
                     computePropUnion = true;
                 }
 
+                // show the "actions" column only of there is at least one possible
+                // action
                 boolean hasAtLeastOneAction = false;
 
                 while (results.hasNext()) {
@@ -107,10 +109,17 @@
 
                     // check if at least one action is available (once only)
                     if (!hasAtLeastOneAction) {
-                        RenderLinks rl = woko.getFacet(RenderLinks.FACET_NAME, request, result);
-                        List<Link> links = rl.getLinks();
-                        if (!hasAtLeastOneAction && links!=null && links.size()>0) {
+                        // check if object is viewable...
+                        Object view = woko.getFacet(View.FACET_NAME, request, result);
+                        if (view!=null && view instanceof View) {
                             hasAtLeastOneAction = true;
+                        } else {
+                            // do we have links for that object ?
+                            RenderLinks rl = woko.getFacet(RenderLinks.FACET_NAME, request, result);
+                            if (rl!=null) {
+                                List<Link> links = rl.getLinks();
+                                hasAtLeastOneAction = links!=null && links.size()>0;
+                            }
                         }
                     }
 
