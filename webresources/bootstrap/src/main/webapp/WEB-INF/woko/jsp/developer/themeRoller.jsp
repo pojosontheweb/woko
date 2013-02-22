@@ -14,9 +14,26 @@
         ================================================== -->
         <header>
             <h1 class="page-header">
-                    ${themeRoller.themeName}
-                <small>Preview</small>
+                Preview for the skin : <span style="text-transform: uppercase;">${themeRoller.themeName}</span>
             </h1>
+            <p>
+                As woko is coming with the Bootstrap CSS framework, we have integrated the themes coming from <a href="http://bootswatch.com">Bootswatch</a>
+                directly out of the box.
+            </p>
+            <h3>How to use this theme permanently</h3>
+            <p>
+                Open the facet : <code>your.facets.package.MyLayout</code> and replace the the <code>getCssIncludes()</code> method with something like :
+            </p>
+            <pre>
+@Override
+List<String> getCssIncludes() {
+    return [
+        "/css/${themeRoller.themeName}/woko.css",
+        "/css/woko.css",
+        "/css/responsive.css"
+    ]
+}
+            </pre>
         </header>
 
         <!-- Typography
