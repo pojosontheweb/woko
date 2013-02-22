@@ -105,25 +105,26 @@
                 <div class="navbar-inner">
                     <div class="container">
                         <%-- Display a button bar on tablet and phone --%>
-                        <a data-target=".nav-collapse" data-toggle="collapse" class="btn btn-navbar">
+                        <button class="btn btn-navbar collapsed" data-target=".nav-collapse" data-toggle="collapse" type="button">
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
-                        </a>
+                        </button>
 
                         <%-- The app name --%>
                         <a href="${cp}/home" class="brand">${layout.appTitle}</a>
 
                         <%-- The navBar --%>
-                        <div class="nav-collapse">
+                        <div class="nav-collapse collapse">
 
                             <%-- First display the navBar facet --%>
                             <ul class="nav">
                                 <w:includeFacet facetName="<%=WokoFacets.navBar%>" targetObject="${layout.facetContext.targetObject}"/>
                             </ul>
 
+
                             <%-- Display user/connexion info --%>
-                            <p class="navbar-text pull-right">
+                            <p class="navbar-text pull-right" style="height: 30px;">
                                 <c:if test="${skipLoginLink==null}">
                                     <c:choose>
                                         <c:when test="${username != null}">
@@ -137,16 +138,16 @@
                                     </c:choose>
                                 </c:if>
                             </p>
+
+                                    <%-- Display the search input only for connected user --%>
+                                <c:if test="${not empty username}">
+                                    <s:form action="/search" class="navbar-form pull-right" style="margin-right: 8px; height: 40px;">
+                                        <fmt:message bundle="${wokoBundle}" key="search" var="ph"/>
+                                        <s:text name="facet.query" class="search-query" placeholder="${ph}"/>
+                                    </s:form>
+                                </c:if>
+
                         </div>
-
-                        <%-- Display the search input only for connected user --%>
-                        <c:if test="${not empty username}">
-                            <s:form action="/search" class="navbar-search pull-right hidden-phone hidden-tablet" style="margin-right: 15px;">
-                                <fmt:message bundle="${wokoBundle}" key="search" var="ph"/>
-                                <s:text name="facet.query" class="search-query" placeholder="${ph}"/>
-                            </s:form>
-                        </c:if>
-
                     </div>
                 </div>
             </div>
