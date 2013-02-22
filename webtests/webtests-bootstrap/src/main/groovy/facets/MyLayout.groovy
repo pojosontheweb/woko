@@ -26,9 +26,13 @@ class MyLayout extends LayoutAll {
 
         return [
                 baseBootstrap,
-                "/css/responsive.css",
-                "/css/woko.css"
+                "/css/woko.css",
+                "/css/responsive.css"
         ]
     }
 
+    @Override
+    String getLayoutPath() {
+        return '/WEB-INF/jsp/layout.jsp'
+    }
 }
