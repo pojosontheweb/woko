@@ -28,7 +28,7 @@
 @Override
 List<String> getCssIncludes() {
     return [
-        "/css/${themeRoller.themeName}/woko.css",
+        "/css/${themeRoller.themeName}/bootstrap.css",
         "/css/woko.css",
         "/css/responsive.css"
     ]
