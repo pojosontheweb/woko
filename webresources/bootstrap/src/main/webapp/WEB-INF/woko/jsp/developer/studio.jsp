@@ -6,6 +6,7 @@
 <%@ page import="woko.facets.builtin.WokoFacets" %>
 <%@ page import="woko.facets.builtin.bootstrap.all.Theme" %>
 <%@ page import="woko.facets.builtin.bootstrap.all.AlternativeLayout" %>
+<%@ page import="woko.facets.builtin.bootstrap.all.SwitchLayout" %>
 
 <c:set var="cp" value="${pageContext.request.contextPath}"/>
 <w:facet facetName="<%=WokoFacets.layout%>"/>
@@ -185,6 +186,57 @@
                     </div>
                 </div>
 
+                <%-- Layout Roller tab --%>
+                <div class="tab-pane" id="layouts">
+                    <ul class="thumbnails">
+                        <li class="span3">
+                            <div class="thumbnail">
+                                <img src="http://twitter.github.com/bootstrap/assets/img/examples/bootstrap-example-marketing.png" alt="Bootstrap">
+                                <h3>Default</h3>
+                                <p>
+                                    Provides a common fixed-width (and optionally responsive) layout.
+                                </p>
+                                <s:link href="/alternativeLayout?facet.sourcePage=/studio#layouts" class="btn btn-primary">
+                                    Apply
+                                </s:link>
+                            </div>
+                        </li>
+                        <c:forEach items="<%=AlternativeLayout.values()%>" var="aLayout">
+                            <li class="span3">
+                                <div class="thumbnail">
+                                    <img src="${aLayout.imgUrl}" alt="${aLayout}">
+                                    <h3>${aLayout}</h3>
+                                    <p>
+                                        <c:out value="${aLayout.description}" escapeXml="false"/>
+                                    </p>
+                                    <s:link href="/alternativeLayout?facet.alternativeLayout=${aLayout}&facet.sourcePage=/studio#layouts" class="btn btn-primary">
+                                        Apply
+                                    </s:link>
+                                </div>
+                            </li>
+                        </c:forEach>
+                    </ul>
+
+                    <h3>How to use this layout permanently</h3>
+                    <p>
+                        Open the facet : <code>your.facets.package.MyLayout</code> and replace the the <code>getLayoutPath()</code> method with something like :
+                    </p>
+                    <%
+                        String layoutName;
+                        AlternativeLayout aLayout = (AlternativeLayout)request.getSession().getAttribute(SwitchLayout.WOKO_ALTERNATIVE_LAYOUT);
+                        if (aLayout == null)
+                            layoutName = "layout.jsp";
+                        else
+                            layoutName = aLayout.name().toLowerCase() + "-layout.jsp";
+                    %>
+    <pre>
+    @Override
+    String getLayoutPath() {
+        /WEB-INF/woko/jsp/all/<%=layoutName%>"
+    }
+    </pre>
+                </div>
+
                 <%-- Theme Roller tab --%>
                 <div class="tab-pane" id="themes">
                     <ul class="thumbnails">
@@ -211,33 +263,6 @@
                     </ul>
 
                     <jsp:include page="previewTheme.jsp"/>
-                </div>
-
-                <%-- Layout Roller tab --%>
-                <div class="tab-pane" id="layouts">
-                    <ul class="thumbnails">
-                        <li class="span3">
-                            <div class="thumbnail">
-                                <img src="http://www.raisefundonline.com/images/noImage.jpg" alt="Bootstrap">
-                                <h3>Default</h3>
-                                <s:link href="/alternativeLayout?facet.sourcePage=/studio#layouts" class="btn btn-primary">
-                                    Apply
-                                </s:link>
-                            </div>
-                        </li>
-                        <c:forEach items="<%=AlternativeLayout.values()%>" var="aLayout">
-                            <li class="span3">
-                                <div class="thumbnail">
-                                    <img src="http://www.raisefundonline.com/images/noImage.jpg" alt="${aLayout}">
-                                    <h3>${aLayout}</h3>
-                                    <s:link href="/alternativeLayout?facet.alternativeLayout=${aLayout}&facet.sourcePage=/studio#layouts" class="btn btn-primary">
-                                        Apply
-                                    </s:link>
-                                </div>
-                            </li>
-                        </c:forEach>
-                    </ul>
-
                 </div>
             </div>
         </div>
