@@ -1012,13 +1012,15 @@ Here's an example of how you can do this easily (Groovy again), with your own Ob
 
 # Object Renderer #
 
-The Object Renderer allows Woko to display POJOs as read-only or read-write pages. It uses introspection and Fragment Facets in order to generate HTML dynamically : Woko doesn't generate any code, it's all done on-the-fly using types and medatata found on your objects. 
-
-Facet override is used in order to change parts (or all) of the default rendering for the Domain Objects and Roles of your application.
+The Object Renderer allows Woko to display POJOs as read-only or read-write pages, so that users can view or change their state. It uses introspection and Fragment Facets in order to display everything dynamically : Woko doesn't generate any code, it's all done on-the-fly using types and medatata found on your objects. 
 
 Here is a schematic break-down of the Object Renderer's facets :
 
-![Obejct Renderer](object-renderer.png)
+![Object Renderer](object-renderer.png)
+
+A `layout` facet controls the global page template, and then a composite use of various fragments (`renderObject`, `renderProperties`) are involved in order to display your POJOs dynamically.
+
+Facet override is used in order to change parts (or all) of the default rendering for the Domain Objects and Roles of your application.
 
 ## Layout ##
 
@@ -1046,10 +1048,12 @@ The `layout` facet is used in all "top-level" Woko JSPs. A default one is provid
     	    	
 	}
 	
+Of course, you can override `layout` for the various role(s) and/or target types in your application. 
+	
 ### Nav Bar ###
 
 The default layout includes a `navBar` facet that renders navigation links for the currently logged-in user. Nav bars for `all` and `developer` roles are included by default. 
-	
+
 ## Fragments ##
 
 Fragments in the Object Renderer are nested. The structure is composite : a top-level fragment includes other fragments, possibly including other sub-fragments, and so on.
