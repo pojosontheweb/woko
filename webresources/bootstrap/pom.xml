@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright 2001-LATEST-SNAPSHOT2 Remi Vankeisbelck
+  ~ Copyright 2001-2013 Remi Vankeisbelck
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -31,6 +31,12 @@
             <artifactId>woko-web-core</artifactId>
             <version>${project.version}</version>
             <type>war</type>
+        </dependency>
+        <dependency>
+            <groupId>com.pojosontheweb</groupId>
+            <artifactId>woko-bootstrap-core</artifactId>
+            <version>${project.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.pojosontheweb</groupId>

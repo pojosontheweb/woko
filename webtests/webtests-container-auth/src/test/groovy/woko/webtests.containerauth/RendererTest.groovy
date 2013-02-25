@@ -123,4 +123,36 @@ class RendererTest extends WebTestBase {
         }
     }
 
+    void testBooleanProperties() {
+        webtest('testBooleanProperties') {
+            login()
+            try {
+
+                goToPage '/save/MyEntityWithBools?createTransient=true&object.name=Test bools'
+
+                verifySelectField name: 'object.boolObjectProp', value: ''
+                setSelectField name: 'object.boolObjectProp', value: 'true'
+
+                verifyCheckbox name:'object.boolRawProp', checked: 'false'
+                setCheckbox name:'object.boolRawProp', checked: 'true'
+
+                clickButton name:'save'
+
+                verifySelectField name: 'object.boolObjectProp', value: 'true'
+                setSelectField name: 'object.boolObjectProp', value: ''
+
+                verifyCheckbox name:'object.boolRawProp', checked: 'true'
+                setCheckbox name:'object.boolRawProp', checked: 'false'
+
+                clickButton name:'save'
+
+                verifySelectField name: 'object.boolObjectProp', value: ''
+                verifyCheckbox name:'object.boolRawProp', checked: 'false'
+
+            } finally {
+                goToPage '/delete/MyEntityWithBools/1?facet.confirm=true'
+            }
+        }
+    }
+
 }
