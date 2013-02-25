@@ -94,7 +94,9 @@
                 <li class="active"><a href="#configuration" data-toggle="tab">Configuration</a></li>
                 <li><a href="#facets" data-toggle="tab">Facets</a></li>
                 <li><a href="#groovyShell" data-toggle="tab">Groovy Shell</a></li>
-                <li><a href="#themeRoller" data-toggle="tab">Theme roller</a></li>
+                <li><a href="#themeRoller" data-toggle="tab">
+                    <fmt:message bundle="${wokoBundle}" key="woko.devel.studio.theme.available"/>
+                </a></li>
             </ul>
 
             <div class="tab-content">
@@ -157,27 +159,28 @@
 
                 <%-- Theme Roller tab --%>
                 <div class="tab-pane" id="themeRoller">
-                    <h1 class="page-header"><fmt:message bundle="${wokoBundle}" key="woko.devel.studio.themeRoller.title"/></h1>
-
-                        <ul class="thumbnails">
+                    <ul class="thumbnails">
+                        <li class="span3">
+                            <div class="thumbnail">
+                                <img src="http://twitter.github.com/bootstrap/assets/img/examples/bootstrap-example-hero.jpg" width="256px" alt="Bootstrap">
+                                <h3>Bootstrap</h3>
+                                <s:link href="/theme?facet.sourcePage=/studio" class="btn btn-primary">
+                                    <fmt:message bundle="${wokoBundle}" key="woko.devel.studio.theme.apply"/>
+                                </s:link>
+                            </div>
+                        </li>
+                        <c:forEach items="<%=Theme.values()%>" var="theme">
                             <li class="span3">
                                 <div class="thumbnail">
-                                    <img src="http://twitter.github.com/bootstrap/assets/img/examples/bootstrap-example-hero.jpg" width="256px" alt="Bootstrap">
-                                    <h3>Bootstrap</h3>
-                                    <s:link href="/theme?facet.sourcePage=/studio" class="btn btn-primary">Preview</s:link>
+                                    <img src="http://bootswatch.com/${fn:toLowerCase(theme)}/thumbnail.png" alt="${theme}">
+                                    <h3>${theme}</h3>
+                                    <s:link href="/theme?facet.theme=${theme}&facet.sourcePage=/studio" class="btn btn-primary">
+                                        <fmt:message bundle="${wokoBundle}" key="woko.devel.studio.theme.apply"/>
+                                    </s:link>
                                 </div>
                             </li>
-                            <c:forEach items="<%=Theme.values()%>" var="theme">
-                                <li class="span3">
-                                    <div class="thumbnail">
-                                        <img src="http://bootswatch.com/${fn:toLowerCase(theme)}/thumbnail.png" alt="${theme}">
-                                        <h3>${theme}</h3>
-                                        <s:link href="/theme?facet.theme=${theme}&facet.sourcePage=/studio" class="btn btn-primary">Preview</s:link>
-                                    </div>
-                                </li>
-                            </c:forEach>
-                        </ul>
-
+                        </c:forEach>
+                    </ul>
 
                     <jsp:include page="previewTheme.jsp"/>
             </div>
