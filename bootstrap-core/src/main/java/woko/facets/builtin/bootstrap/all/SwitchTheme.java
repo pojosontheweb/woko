@@ -2,10 +2,7 @@ package woko.facets.builtin.bootstrap.all;
 
 import net.sourceforge.jfacets.IFacetDescriptorManager;
 import net.sourceforge.jfacets.annotations.FacetKey;
-import net.sourceforge.stripes.action.ActionBeanContext;
-import net.sourceforge.stripes.action.LocalizableMessage;
-import net.sourceforge.stripes.action.RedirectResolution;
-import net.sourceforge.stripes.action.Resolution;
+import net.sourceforge.stripes.action.*;
 import woko.Woko;
 import woko.facets.BaseResolutionFacet;
 import woko.persistence.ObjectStore;
@@ -17,6 +14,9 @@ import javax.servlet.http.HttpSession;
 /**
  * Theme switching facet for the bootstrap skin.
  */
+@StrictBinding(
+        allow = {"facet.theme", "facet.sourcePage"}
+)
 @FacetKey(name="theme", profileId = Woko.ROLE_ALL)
 public class SwitchTheme<
         OsType extends ObjectStore,
