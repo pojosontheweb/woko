@@ -121,13 +121,17 @@ class GenerateCmd extends Command{
 
     private void addSpecificsDependencies(){
         if (useBootstrap){
-            // Add a dependency on bootstrap in pom
             Dependency bootStrapDep = new Dependency()
+            bootStrapDep.groupId = "com.pojosontheweb"
+            bootStrapDep.artifactId = "woko-bootstrap-core"
+            bootStrapDep.version = '${woko.version}'
+            pomHelper.addDependency(bootStrapDep, false)
+            bootStrapDep = new Dependency()
             bootStrapDep.groupId = "com.pojosontheweb"
             bootStrapDep.artifactId = "woko-web-bootstrap"
             bootStrapDep.version = '${woko.version}'
             bootStrapDep.type = "war"
-            pomHelper.addDependency(bootStrapDep, false)
+            pomHelper.addDependency(bootStrapDep, true)
         }else{
             // Add a dependency on Lithium in pom
             Dependency lithiumDep = new Dependency()
@@ -260,27 +264,30 @@ class GenerateCmd extends Command{
         def bindingFacets = [:]
         bindingFacets['facetsPackage'] = packageName+".facets"
         bindingFacets['name'] = artifactId
-        if (useBootstrap) {
-            bindingFacets['css'] = '''
-        String baseBootstrap = "/css/bootstrap-v2.3.0/bootstrap.css";
-
-        if (getRequest() != null){
-            String theme = (String)getRequest().getSession().getAttribute(SwithThemeActionBean.THEME_COOKIE);
-            if (theme != null) {
-                baseBootstrap = "/css/" + theme + "/bootstrap.css";
-            }
-        }
-
-        return Arrays.asList(baseBootstrap, "/css/responsive.css","/css/woko.css");
-'''
-        } else {
-            bindingFacets['css'] = '''
-        return Arrays.asList("/woko/css/layout-all.css", "/woko/css/lithium/assets/style.css");
-'''
-        }
-
         writer = new FileWriter(facetsPath+File.separator+"MyLayout" + (useGroovy ? ".groovy" : ".java"))
-        generateTemplate(bindingFacets, 'layout', useGroovy, writer)
+
+        String templateName = useBootstrap ? 'layout-bootstrap' : 'layout'
+//        if (useBootstrap) {
+
+//            bindingFacets['css'] = '''
+//        String baseBootstrap = "/css/bootstrap-v2.3.0/bootstrap.css";
+//
+//        if (getRequest() != null){
+//            String theme = (String)getRequest().getSession().getAttribute(SwithThemeActionBean.THEME_COOKIE);
+//            if (theme != null) {
+//                baseBootstrap = "/css/" + theme + "/bootstrap.css";
+//            }
+//        }
+//
+//        return Arrays.asList(baseBootstrap, "/css/responsive.css","/css/woko.css");
+//'''
+//        } else {
+//            bindingFacets['css'] = '''
+//        return Arrays.asList("/woko/css/layout-all.css", "/woko/css/lithium/assets/style.css");
+//'''
+//        }
+
+        generateTemplate(bindingFacets, templateName, useGroovy, writer)
         iLog("- Layout facet created : " + packageName+".facets.MyLayout")
     }
 
