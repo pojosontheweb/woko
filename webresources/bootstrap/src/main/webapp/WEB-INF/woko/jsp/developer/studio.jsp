@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="/WEB-INF/woko/jsp/taglibs.jsp"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 <%@ page import="woko.Woko" %>
 <%@ page import="woko.facets.builtin.WokoFacets" %>
@@ -156,19 +157,28 @@
 
                 <%-- Theme Roller tab --%>
                 <div class="tab-pane" id="themeRoller">
-                    <h2 class="page-header"><fmt:message bundle="${wokoBundle}" key="woko.devel.studio.themeRoller.title"/></h2>
-                    <ul>
-                        <li>
-                            <s:link href="/theme?facet.sourcePage=/studio">Bootstrap</s:link>
-                        </li>
-                        <c:forEach items="<%=Theme.values()%>" var="theme">
-                            <li>
-                                <s:link href="/theme?facet.theme=${theme}&facet.sourcePage=/studio">${theme}</s:link>
-                            </li>
-                        </c:forEach>
-                    </ul>
+                    <h1 class="page-header"><fmt:message bundle="${wokoBundle}" key="woko.devel.studio.themeRoller.title"/></h1>
 
-                    <h2 class="page-header"><fmt:message bundle="${wokoBundle}" key="woko.devel.studio.themeRoller.preview"/></h2>
+                        <ul class="thumbnails">
+                            <li class="span3">
+                                <div class="thumbnail">
+                                    <img src="http://twitter.github.com/bootstrap/assets/img/examples/bootstrap-example-hero.jpg" alt="Bootstrap">
+                                    <h3>Bootstrap</h3>
+                                    <s:link href="/theme?facet.sourcePage=/studio" class="btn btn-primary">Preview</s:link>
+                                </div>
+                            </li>
+                            <c:forEach items="<%=Theme.values()%>" var="theme">
+                                <li class="span3">
+                                    <div class="thumbnail">
+                                        <img src="http://bootswatch.com/${fn:toLowerCase(theme)}/thumbnail.png" alt="${theme}">
+                                        <h3>${theme}</h3>
+                                        <s:link href="/theme?facet.theme=${theme}&facet.sourcePage=/studio" class="btn btn-primary">Preview</s:link>
+                                    </div>
+                                </li>
+                            </c:forEach>
+                        </ul>
+
+
                     <jsp:include page="previewTheme.jsp"/>
             </div>
         </div>
