@@ -17,6 +17,7 @@
 package woko.facets.builtin.all;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -63,5 +64,21 @@ public class Link {
 
     public Map<String,String> getAttributes() {
         return attributes;
+    }
+
+    public String getAttributesString() {
+        StringBuilder sb = new StringBuilder();
+        for (Iterator<String> it = attributes.keySet().iterator(); it.hasNext(); ) {
+            String n = it.next();
+            String v = attributes.get(n);
+            sb.append(n)
+                    .append("=\"")
+                    .append(v)
+                    .append("\"");
+            if (it.hasNext()) {
+                sb.append(" ");
+            }
+        }
+        return sb.toString();
     }
 }

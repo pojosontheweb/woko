@@ -18,12 +18,19 @@ package woko.facets.builtin.developer;
 
 import net.sourceforge.jfacets.IFacetDescriptorManager;
 import net.sourceforge.jfacets.annotations.FacetKey;
+import woko.Woko;
 import woko.facets.BaseFragmentFacet;
 import woko.facets.builtin.NavBar;
 import woko.facets.builtin.WokoFacets;
+import woko.facets.builtin.all.Link;
+import woko.facets.builtin.all.NavBarAll;
 import woko.persistence.ObjectStore;
 import woko.users.UserManager;
 import woko.users.UsernameResolutionStrategy;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * <code>navBar</code> facet for <code>developer</code> role.
@@ -34,13 +41,28 @@ public class NavBarDev<
         UmType extends UserManager,
         UnsType extends UsernameResolutionStrategy,
         FdmType extends IFacetDescriptorManager
-        > extends BaseFragmentFacet<OsType,UmType,UnsType,FdmType> implements NavBar {
+        > extends NavBarAll<OsType,UmType,UnsType,FdmType>{
 
-    public static final String FRAGMENT_PATH = "/WEB-INF/woko/jsp/developer/navBar.jsp";
-
-    public String getPath() {
-        return FRAGMENT_PATH;
+    public static <
+            OsType extends ObjectStore,
+            UmType extends UserManager,
+            UnsType extends UsernameResolutionStrategy,
+            FdmType extends IFacetDescriptorManager
+            > List<Link> createDevLinks(Woko<OsType,UmType,UnsType,FdmType> woko, HttpServletRequest request) {
+        ArrayList<Link> res = new ArrayList<Link>();
+        res.add(new Link("/find", woko.getLocalizedMessage(request.getLocale(), "woko.devel.navbar.find")));
+        res.add(new Link("/create", woko.getLocalizedMessage(request.getLocale(), "woko.devel.navbar.create")));
+        res.add(new Link("/studio", woko.getLocalizedMessage(request.getLocale(), "woko.devel.navbar.studio")));
+        return res;
     }
 
+    private static List<Link> DEV_LINKS = null;
 
+    @Override
+    public List<Link> getLinks() {
+        if (DEV_LINKS==null) {
+            DEV_LINKS = createDevLinks(getWoko(), getRequest());
+        }
+        return DEV_LINKS;
+    }
 }

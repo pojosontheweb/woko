@@ -33,13 +33,10 @@ class NavBarTest extends WebTestBase {
             // For wdevel
             login()
             goToPage '/home'
-            not {
-                verifyXPath xpath: "/html/body/div/div/div/div/div/ul/li/a[@href='/woko-webtests/home']"
-            }
-            verifyXPath xpath: "/html/body/div/div/div/div/div/ul/li/a[@href='/woko-webtests/find']"
-            verifyXPath xpath: "/html/body/div/div/div/div/div/ul/li[2]/a[@href='/woko-webtests/create']"
-            verifyXPath xpath: "/html/body/div/div/div/div/div/ul/li[3]/a[@href='/woko-webtests/studio']"
-            verifyXPath xpath: "/html/body/div/div/div/div/div/ul/li[4]/a[@href='http://www.google.com']"
+            verifyXPath xpath: "/html/body/div/div/div/div/div/ul/ul/li/a[@href='/woko-webtests/find']"
+            verifyXPath xpath: "/html/body/div/div/div/div/div/ul/ul/li[2]/a[@href='/woko-webtests/create']"
+            verifyXPath xpath: "/html/body/div/div/div/div/div/ul/ul/li[3]/a[@href='/woko-webtests/studio']"
+            verifyXPath xpath: "/html/body/div/div/div/div/div/ul/ul/li[4]/a[@href='http://www.google.com']"
         }
     }
 
