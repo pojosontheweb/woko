@@ -16,6 +16,7 @@
 
 package test.facet.pkg
 
+import woko.facets.builtin.all.Link
 import woko.facets.builtin.developer.NavBarDev
 import net.sourceforge.jfacets.annotations.FacetKey
 import woko.facets.builtin.WokoFacets
@@ -24,9 +25,9 @@ import woko.facets.builtin.WokoFacets
 class DevNavBarOverride extends NavBarDev {
 
     @Override
-    String getPath() {
-        return '/WEB-INF/jsp/myNavBarDev.jsp'
+    List<Link> getLinks() {
+        def links = new ArrayList(super.getLinks())
+        links << new Link("http://www.google.com", "google")
+        return links
     }
-
-
 }
