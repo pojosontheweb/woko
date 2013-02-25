@@ -33,6 +33,10 @@
                     <title>${layout.appTitle}</title>
                 </c:otherwise>
             </c:choose>
+
+            <link rel="stylesheet" type="text/css" href="${cp}/woko/css/layout-all.css">
+            <link rel="stylesheet" type="text/css" href="${cp}/woko/css/lithium/assets/style.css">
+
             <c:forEach items="${layout.cssIncludes}" var="cssLink">
                 <link rel="stylesheet" href="${pageContext.request.contextPath}${cssLink}" type="text/css">
             </c:forEach>

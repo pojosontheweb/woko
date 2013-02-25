@@ -18,7 +18,7 @@ public class Theme<
 
     @Override
     public Resolution getResolution(ActionBeanContext abc) {
-
+        return null;
     }
 }
 
