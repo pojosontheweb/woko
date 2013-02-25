@@ -15,11 +15,9 @@
   --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="/WEB-INF/woko/jsp/taglibs.jsp"%>
-<ul>
-    <c:forEach var="link" items="${navBar.links}">
-        <li><a href="${cp}${link.href}"
-               class="${link.cssClass}"
-                ${link.attributesString}><c:out value="${link.text}"/></a></li>
-    </c:forEach>
-    <li><a href="http://www.google.com">google</a></li>
-</ul>
+<c:forEach var="link" items="${navBar.links}">
+    <li><a href="${cp}${link.href}"
+           class="${link.cssClass}"
+            ${link.attributesString}><c:out value="${link.text}"/></a></li>
+</c:forEach>
+<li><a href="http://www.google.com">google</a></li>

@@ -25,18 +25,12 @@ class NavBarTest extends WebTestBase {
             // verify that logo is clickable
             verifyXPath xpath:"/html/body/div/div/div/div/a[@href='/woko-webtests/home']"
 
-            // we have removed the home link
-            not {
-                verifyXPath xpath: "/html/body/div/div/div/div/div/ul/li/a[@href='/woko-webtests/home']"
-            }
-
-            // For wdevel
             login()
             goToPage '/home'
-            verifyXPath xpath: "/html/body/div/div/div/div/div/ul/ul/li/a[@href='/woko-webtests/find']"
-            verifyXPath xpath: "/html/body/div/div/div/div/div/ul/ul/li[2]/a[@href='/woko-webtests/create']"
-            verifyXPath xpath: "/html/body/div/div/div/div/div/ul/ul/li[3]/a[@href='/woko-webtests/studio']"
-            verifyXPath xpath: "/html/body/div/div/div/div/div/ul/ul/li[4]/a[@href='http://www.google.com']"
+            verifyXPath xpath: "/html/body/div/div/div/div/div/ul/li/a[@href='/woko-webtests/find']"
+            verifyXPath xpath: "/html/body/div/div/div/div/div/ul/li[2]/a[@href='/woko-webtests/create']"
+            verifyXPath xpath: "/html/body/div/div/div/div/div/ul/li[3]/a[@href='/woko-webtests/studio']"
+            verifyXPath xpath: "/html/body/div/div/div/div/div/ul/li[4]/a[@href='http://www.google.com']"
         }
     }
 
