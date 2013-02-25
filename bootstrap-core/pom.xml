@@ -22,12 +22,14 @@
         <artifactId>woko-parent</artifactId>
         <version>LATEST-SNAPSHOT</version>
     </parent>
-    <artifactId>woko-usermanagement</artifactId>
-    <name>Woko - user management extension</name>
-    <packaging>pom</packaging>
-    <modules>
-        <module>core</module>
-        <module>web</module>
-        <module>hibernate</module>
-    </modules>
+    <artifactId>woko-bootstrap-core</artifactId>
+    <packaging>jar</packaging>
+    <name>Woko - bootsrap core</name>
+    <dependencies>
+        <dependency>
+            <groupId>com.pojosontheweb</groupId>
+            <artifactId>woko-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
 </project>
