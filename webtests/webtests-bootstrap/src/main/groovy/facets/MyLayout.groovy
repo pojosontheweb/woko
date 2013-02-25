@@ -1,7 +1,6 @@
 package facets
 
 import net.sourceforge.jfacets.annotations.FacetKey
-import woko.actions.SwithThemeActionBean
 import woko.facets.builtin.WokoFacets
 import woko.facets.builtin.bootstrap.all.LayoutBootstrap
 

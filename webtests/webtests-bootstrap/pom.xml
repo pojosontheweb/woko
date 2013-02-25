@@ -39,11 +39,6 @@
         </dependency>
         <dependency>
             <groupId>com.pojosontheweb</groupId>
-            <artifactId>woko-bootstrap-core</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.pojosontheweb</groupId>
             <artifactId>woko-container-auth</artifactId>
             <version>${project.version}</version>
             <type>war</type>

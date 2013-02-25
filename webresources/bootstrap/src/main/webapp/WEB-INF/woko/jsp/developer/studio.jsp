@@ -3,6 +3,7 @@
 
 <%@ page import="woko.Woko" %>
 <%@ page import="woko.facets.builtin.WokoFacets" %>
+<%@ page import="woko.facets.builtin.bootstrap.all.Theme" %>
 
 <c:set var="cp" value="${pageContext.request.contextPath}"/>
 <w:facet facetName="<%=WokoFacets.layout%>"/>
@@ -155,8 +156,17 @@
 
                 <%-- Theme Roller tab --%>
                 <div class="tab-pane" id="themeRoller">
-                    <h2><fmt:message bundle="${wokoBundle}" key="woko.devel.studio.themeRoller.title"/></h2>
-                    <w:includeFacet facetName="theme"/>
+                    <h2 class="page-header"><fmt:message bundle="${wokoBundle}" key="woko.devel.studio.themeRoller.title"/></h2>
+                    <ul>
+                        <c:forEach items="<%=Theme.values()%>" var="theme">
+                            <li>
+                                <s:link href="/theme?facet.theme=${theme}">${theme}</s:link>
+                            </li>
+                        </c:forEach>
+                    </ul>
+
+                    <h2 class="page-header"><fmt:message bundle="${wokoBundle}" key="woko.devel.studio.themeRoller.preview"/></h2>
+                    <jsp:include page="previewTheme.jsp"/>
             </div>
         </div>
 
