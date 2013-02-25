@@ -55,4 +55,24 @@ public class LayoutBootstrap<
         return res;
     }
 
+    @Override
+    public String getLayoutPath() {
+        // handle layout
+        HttpServletRequest request = getRequest();
+        SwitchLayout<OsType,UmType,UnsType,FdmType> switchLayout = null;
+        if (request!=null) {
+            switchLayout = getWoko().getFacet(SwitchLayout.FACET_NAME, request, getFacetContext().getTargetObject());
+        }
+        if (switchLayout==null) {
+            return super.getLayoutPath();
+        } else {
+            AlternativeLayout userLayout = switchLayout.getUserAlternativeLayout();
+            if (userLayout==null) {
+                return super.getLayoutPath();
+            } else {
+                // user layout available, use this one !
+                return "/WEB-INF/woko/jsp/all/" + userLayout + "-layout.jsp";
+            }
+        }
+    }
 }

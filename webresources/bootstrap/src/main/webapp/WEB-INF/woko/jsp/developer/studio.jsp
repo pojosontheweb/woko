@@ -5,6 +5,7 @@
 <%@ page import="woko.Woko" %>
 <%@ page import="woko.facets.builtin.WokoFacets" %>
 <%@ page import="woko.facets.builtin.bootstrap.all.Theme" %>
+<%@ page import="woko.facets.builtin.bootstrap.all.AlternativeLayout" %>
 
 <c:set var="cp" value="${pageContext.request.contextPath}"/>
 <w:facet facetName="<%=WokoFacets.layout%>"/>
@@ -123,6 +124,7 @@
                 <li><a href="#themes" data-toggle="tab">
                     <fmt:message bundle="${wokoBundle}" key="woko.devel.studio.theme.available"/>
                 </a></li>
+                <li><a href="#layouts" data-toggle="tab">Alternative Layouts</a></li>
             </ul>
 
             <div class="tab-content">
@@ -209,6 +211,34 @@
                     </ul>
 
                     <jsp:include page="previewTheme.jsp"/>
+                </div>
+
+                <%-- Layout Roller tab --%>
+                <div class="tab-pane" id="layouts">
+                    <ul class="thumbnails">
+                        <li class="span3">
+                            <div class="thumbnail">
+                                <img src="http://www.raisefundonline.com/images/noImage.jpg" alt="Bootstrap">
+                                <h3>Default</h3>
+                                <s:link href="/alternativeLayout?facet.sourcePage=/studio#layouts" class="btn btn-primary">
+                                    Apply
+                                </s:link>
+                            </div>
+                        </li>
+                        <c:forEach items="<%=AlternativeLayout.values()%>" var="aLayout">
+                            <li class="span3">
+                                <div class="thumbnail">
+                                    <img src="http://www.raisefundonline.com/images/noImage.jpg" alt="${aLayout}">
+                                    <h3>${aLayout}</h3>
+                                    <s:link href="/alternativeLayout?facet.alternativeLayout=${aLayout}&facet.sourcePage=/studio#layouts" class="btn btn-primary">
+                                        Apply
+                                    </s:link>
+                                </div>
+                            </li>
+                        </c:forEach>
+                    </ul>
+
+                </div>
             </div>
         </div>
 
