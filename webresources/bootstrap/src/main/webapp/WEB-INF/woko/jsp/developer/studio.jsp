@@ -38,6 +38,32 @@
                 return txt.replace(new RegExp(replace, 'g'),with_this);
             }
 
+            $(function() {
+                var hash = $(location).attr("hash");
+                if (!hash) {
+                    hash = ("#configuration");
+                }
+
+                $(".nav li").each(function() {
+                    var li = $(this);
+                    li.removeClass("active");
+                    var a = $("a", li);
+                    var href = a.attr("href");
+                    if (hash==href) {
+                        li.addClass("active");
+                    }
+                });
+                $(".tab-pane").each(function() {
+                    var tab = $(this);
+                    tab.removeClass("active")
+                    var tabId = "#"+tab.attr("id")
+                    if (tabId == hash){
+                        tab.addClass("active")
+                    }
+                })
+            });
+
+
             $(document).ready(function(){
 
                 $("#tblFacets").dataTable({
@@ -94,7 +120,7 @@
                 <li class="active"><a href="#configuration" data-toggle="tab">Configuration</a></li>
                 <li><a href="#facets" data-toggle="tab">Facets</a></li>
                 <li><a href="#groovyShell" data-toggle="tab">Groovy Shell</a></li>
-                <li><a href="#themeRoller" data-toggle="tab">
+                <li><a href="#themes" data-toggle="tab">
                     <fmt:message bundle="${wokoBundle}" key="woko.devel.studio.theme.available"/>
                 </a></li>
             </ul>
@@ -158,13 +184,13 @@
                 </div>
 
                 <%-- Theme Roller tab --%>
-                <div class="tab-pane" id="themeRoller">
+                <div class="tab-pane" id="themes">
                     <ul class="thumbnails">
                         <li class="span3">
                             <div class="thumbnail">
                                 <img src="http://twitter.github.com/bootstrap/assets/img/examples/bootstrap-example-hero.jpg" width="256px" alt="Bootstrap">
                                 <h3>Bootstrap</h3>
-                                <s:link href="/theme?facet.sourcePage=/studio" class="btn btn-primary">
+                                <s:link href="/theme?facet.sourcePage=/studio#themes" class="btn btn-primary">
                                     <fmt:message bundle="${wokoBundle}" key="woko.devel.studio.theme.apply"/>
                                 </s:link>
                             </div>
@@ -174,7 +200,7 @@
                                 <div class="thumbnail">
                                     <img src="http://bootswatch.com/${fn:toLowerCase(theme)}/thumbnail.png" alt="${theme}">
                                     <h3>${theme}</h3>
-                                    <s:link href="/theme?facet.theme=${theme}&facet.sourcePage=/studio" class="btn btn-primary">
+                                    <s:link href="/theme?facet.theme=${theme}&facet.sourcePage=/studio#themes" class="btn btn-primary">
                                         <fmt:message bundle="${wokoBundle}" key="woko.devel.studio.theme.apply"/>
                                     </s:link>
                                 </div>
