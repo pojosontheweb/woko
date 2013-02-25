@@ -158,6 +158,9 @@
                 <div class="tab-pane" id="themeRoller">
                     <h2 class="page-header"><fmt:message bundle="${wokoBundle}" key="woko.devel.studio.themeRoller.title"/></h2>
                     <ul>
+                        <li>
+                            <s:link href="/theme?facet.sourcePage=/studio">Bootstrap</s:link>
+                        </li>
                         <c:forEach items="<%=Theme.values()%>" var="theme">
                             <li>
                                 <s:link href="/theme?facet.theme=${theme}&facet.sourcePage=/studio">${theme}</s:link>
