@@ -1,0 +1,22 @@
+//
+// Responsive: Landscape phone to desktop/tablet
+// --------------------------------------------------
+
+
+@media (max-width: 767px) {
+  // As the navBar loose its fixed-top css property for tablet,
+  // it's no need to padding-top.
+  #wrapper > .main-content {
+    padding-top: 0;
+  }
+
+  // Don't pull right the navBar
+  .navbar .container .pull-right{
+    float: none;
+  }
+
+  // Align the navbar-text with others items on collapsed navBar
+  .navbar-text {
+    margin-left: 15px;
+  }
+}

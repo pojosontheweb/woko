@@ -9,8 +9,19 @@ import woko.facets.builtin.all.LayoutAll
 @FacetKey(name= WokoFacets.layout, profileId="all")
 class MyLayout extends LayoutAll {
 
+    private static final def CSS_INCLUDES = [$css]
+
+    // return the title for your app, used in page titles, main navbar etc.
     @Override
     String getAppTitle() {
         return "$name"
     }
+
+    // change this in order to use different CSS stylesheets
+    @Override
+    public List<String> getCssIncludes() {
+        return CSS_INCLUDES
+    }
+
+
 }

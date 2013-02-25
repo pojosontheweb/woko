@@ -31,7 +31,7 @@
         String pValFragmentPath = renderPropertyValue.getFragmentPath(request);
 %>
 <div class="row-fluid">
-    <div class="span3">
+    <div class="span3 propertyName">
         <jsp:include page="<%=pNameFragmentPath%>"/>
     </div>
     <div class="span9">

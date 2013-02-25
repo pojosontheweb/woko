@@ -52,7 +52,7 @@
                     <s:hidden name="className"/>
                     <input type="hidden"name="facet.page" value="1"/>
                     <fmt:message bundle="${wokoBundle}" key="woko.devel.list.showing"/>
-                    <s:select name="facet.resultsPerPage" onchange="this.form.submit()">
+                    <s:select name="facet.resultsPerPage" onchange="this.form.submit()" class="input-small">
                         <s:option value="10">10</s:option>
                         <s:option value="25">25</s:option>
                         <s:option value="50">50</s:option>
@@ -80,6 +80,10 @@
                     computePropUnion = true;
                 }
 
+                // show the "actions" column only of there is at least one possible
+                // action
+                boolean hasAtLeastOneAction = false;
+
                 while (results.hasNext()) {
                     Object result = results.next();
                     resultsList.add(result);
@@ -103,6 +107,22 @@
                         }
                     }
 
+                    // check if at least one action is available (once only)
+                    if (!hasAtLeastOneAction) {
+                        // check if object is viewable...
+                        Object view = woko.getFacet(View.FACET_NAME, request, result);
+                        if (view!=null && view instanceof View) {
+                            hasAtLeastOneAction = true;
+                        } else {
+                            // do we have links for that object ?
+                            RenderLinks rl = woko.getFacet(RenderLinks.FACET_NAME, request, result);
+                            if (rl!=null) {
+                                List<Link> links = rl.getLinks();
+                                hasAtLeastOneAction = links!=null && links.size()>0;
+                            }
+                        }
+                    }
+
                 }
             %>
             <table class="<%=listWrapperClass%>">
@@ -119,7 +139,9 @@
                     <%
                         }
                     %>
-                    <th><fmt:message bundle="${wokoBundle}" key="woko.devel.list.actions.column.label"/></th>
+                    <c:if test="<%=hasAtLeastOneAction%>">
+                        <th><fmt:message bundle="${wokoBundle}" key="woko.devel.list.actions.column.label"/></th>
+                    </c:if>
                 </tr>
                 </thead>
                 <tbody>
@@ -145,31 +167,33 @@
                             <%
                                 }
                             %>
-                            <td>
-                                <div class="btn-group">
-                                <%
-                                    Object view = woko.getFacet(View.FACET_NAME, request, result);
-                                    if (view!=null && view instanceof View) {
-                                        String href = request.getContextPath() + "/" + LinkUtil.getUrl(woko, result, "view");
-                                %>
-                                    <a href="<%=href%>" class="btn view">
-                                        <fmt:message bundle="${wokoBundle}" key="woko.links.view"/>
-                                    </a>
-                                <%
-                                    }
-                                    // Grab available links !
-                                    RenderLinks rl = woko.getFacet(RenderLinks.FACET_NAME, request, result);
-                                    for (Link l : rl.getLinks()) {
-                                        String href = request.getContextPath() + "/" + l.getHref();
-                                        String cssClass = l.getCssClass();
-                                        String text = l.getText();
-                                %>
-                                    <a href="<%=href%>" class="btn <%=cssClass%>"><c:out value="<%=text%>"/></a>
-                                <%
-                                    }
-                                %>
-                                </div>
-                            </td>
+                            <c:if test="<%=hasAtLeastOneAction%>">
+                                <td>
+                                    <div class="btn-group">
+                                    <%
+                                        Object view = woko.getFacet(View.FACET_NAME, request, result);
+                                        if (view!=null && view instanceof View) {
+                                            String href = request.getContextPath() + "/" + LinkUtil.getUrl(woko, result, "view");
+                                    %>
+                                        <a href="<%=href%>" class="btn view">
+                                            <fmt:message bundle="${wokoBundle}" key="woko.links.view"/>
+                                        </a>
+                                    <%
+                                        }
+                                        // Grab available links !
+                                        RenderLinks rl = woko.getFacet(RenderLinks.FACET_NAME, request, result);
+                                        for (Link l : rl.getLinks()) {
+                                            String href = request.getContextPath() + "/" + l.getHref();
+                                            String cssClass = l.getCssClass();
+                                            String text = l.getText();
+                                    %>
+                                        <a href="<%=href%>" class="btn <%=cssClass%>"><c:out value="<%=text%>"/></a>
+                                    <%
+                                        }
+                                    %>
+                                    </div>
+                                </td>
+                            </c:if>
 
                         </tr>
                 <%
@@ -190,33 +214,33 @@
                 String rightMoveHref = rightMoveCss.equals("disabled") ? "" : request.getContextPath() + "/list/" + className +
                         "?facet.page=" + (p + 1) + "&facet.resultsPerPage=" + resultsPerPage;
         %>
-            <div class="row-fluid">
-                <div class="pagination">
-                    <ul>
-                        <li class="<%=leftMoveCss%>">
-                            <a href="<%=leftMoveHref%>">«</a>
-                        </li>
-                    <%
-                        for (int i=pagerStart;i<=pagerStart+nbPagesClickable-1;i++) {
-                            String css = "";
-                            if (i==p) {
-                                css = "active";
-                            }
 
-                    %>
-                        <li class="<%=css%>">
-                            <a href="${pageContext.request.contextPath}/list/<%=className%>?facet.page=<%=i%>&facet.resultsPerPage=<%=resultsPerPage%>"><%=i%></a>
-                        </li>
-                    <%
+            <div class="pagination">
+                <ul>
+                    <li class="<%=leftMoveCss%>">
+                        <a href="<%=leftMoveHref%>">«</a>
+                    </li>
+                <%
+                    for (int i=pagerStart;i<=pagerStart+nbPagesClickable-1;i++) {
+                        String css = "";
+                        if (i==p) {
+                            css = "active";
                         }
-                    %>
 
-                        <li class="<%=rightMoveCss%>">
-                            <a href="<%=rightMoveHref%>">»</a>
-                        </li>
-                    </ul>
-                </div>
+                %>
+                    <li class="<%=css%>">
+                        <a href="${pageContext.request.contextPath}/list/<%=className%>?facet.page=<%=i%>&facet.resultsPerPage=<%=resultsPerPage%>"><%=i%></a>
+                    </li>
+                <%
+                    }
+                %>
+
+                    <li class="<%=rightMoveCss%>">
+                        <a href="<%=rightMoveHref%>">»</a>
+                    </li>
+                </ul>
             </div>
+
         <%
             }
         %>

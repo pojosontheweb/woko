@@ -29,10 +29,11 @@
     Object owningObject = renderPropertyValue.getOwningObject();
     String propertyClassName = os.getClassMapping(Util.getPropertyType(owningObject.getClass(), propertyName));
     String fullFieldName = renderPropertyValue.getFieldPrefix() + "." + propertyName;
-    String className = "input-xlarge wokoPropertyValueEdit " + propertyClassName + "-" + propertyName;
+    String className = "wokoPropertyValueEdit " + propertyClassName + "-" + propertyName;
     if (renderPropertyValue.isTextArea()) {
+        className += " input-xlarge";
 %>
-        <s:textarea name="<%=fullFieldName%>" class="<%=className%>"/>
+        <s:textarea name="<%=fullFieldName%>" class="<%=className%>" />
 <% } else { %>
         <s:text name="<%=fullFieldName%>" class="<%=className%>"/>
 <% } %>

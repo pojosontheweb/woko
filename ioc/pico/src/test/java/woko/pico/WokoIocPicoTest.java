@@ -5,7 +5,6 @@ import net.sourceforge.jfacets.annotations.AnnotatedFacetDescriptorManager;
 import org.junit.Test;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
-import sun.awt.im.InputMethodManager;
 import woko.Woko;
 import woko.inmemory.InMemoryUserManager;
 import woko.ioc.WokoIocContainer;

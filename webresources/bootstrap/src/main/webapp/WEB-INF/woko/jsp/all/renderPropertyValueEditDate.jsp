@@ -23,13 +23,9 @@
 %>
 <span class="wokoPropertyValueEdit">
     <span class="<%=propertyName%> <%=propertyClassName%>">
-        <s:text name="<%=fullFieldName%>" id="<%=fieldId%>"/>
+        <div class="input-prepend">
+            <span class="add-on"><i class="icon-calendar"></i></span>
+            <s:text name="<%=fullFieldName%>" rel="datepicker" id="<%=fieldId%>" class="input-medium"/>
+        </div>
     </span>
 </span>
-<script type="text/javascript">
-    $(document).ready(function() {
-        $("#<%=fieldId%>").datepicker($.datepicker.regional['<%=localeStr%>']);
-    })
-</script>
-
-

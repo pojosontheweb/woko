@@ -1,9 +1,8 @@
 <%@ page import="net.sourceforge.stripes.util.CryptoUtil" %>
-<%@ page import="woko.ext.usermanagement.facets.registration.RegisterGuest" %>
-<%@ page import="woko.ext.usermanagement.facets.registration.RegisterFragmentGuest" %>
 <%@ page import="net.tanesha.recaptcha.ReCaptcha" %>
-<%@ page import="woko.facets.builtin.WokoFacets" %>
 <%@ page import="net.tanesha.recaptcha.ReCaptchaFactory" %>
+<%@ page import="woko.ext.usermanagement.facets.registration.RegisterFragmentGuest" %>
+<%@ page import="woko.facets.builtin.WokoFacets" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="/WEB-INF/woko/jsp/taglibs.jsp"%>
 
@@ -24,7 +23,7 @@
             <div class="controls">
                 <div class="input-prepend">
                     <span class="add-on"><i class="icon-user"> </i></span>
-                    <s:text name="facet.username" class="input-xlarge"/>
+                    <s:text name="facet.username"/>
                 </div>
                 <s:errors field="facet.username"/>
             </div>
@@ -37,7 +36,7 @@
             <div class="controls">
                 <div class="input-prepend">
                     <span class="add-on">@</span>
-                    <s:text name="facet.email" class="input-xlarge"/>
+                    <s:text name="facet.email"/>
                 </div>
                 <s:errors field="facet.email"/>
             </div>
@@ -52,7 +51,7 @@
                                             <span class="add-on">
                                                 <i class="icon-lock"> </i>
                                             </span>
-                    <s:password name="facet.password1" class="input-xlarge"/>
+                    <s:password name="facet.password1"/>
                 </div>
                 <s:errors field="facet.password1"/>
             </div>
@@ -67,7 +66,7 @@
                                             <span class="add-on">
                                                 <i class="icon-lock"> </i>
                                             </span>
-                    <s:password name="facet.password2" class="input-xlarge"/>
+                    <s:password name="facet.password2"/>
                 </div>
                 <s:errors field="facet.password2"/>
             </div>

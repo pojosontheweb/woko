@@ -663,6 +663,7 @@ Or EL :
     </p>
 
 ### Resolution Facets ###
+
 `ResolutionFacet`s are to Woko what `ActionBean`s are to Stripes : they are the Controllers in the MVC. They basically respond to an URL, handle the http request, and return a Stripes `Resolution` that generates the response. 
 
 #### URL Scheme ####
@@ -719,8 +720,8 @@ The following example shows a typical Resolution Facet with 2 events :
         String foo
     
         // Default Handler
-         @Override
-         @DontValidate
+        @Override
+        @DontValidate
         Resolution getResolution(ActionBeanContext abc) {
         	return new ForwardResolution(SOME_JSP)
         }
@@ -756,9 +757,11 @@ Of course you can have as many handlers you want.
 
 ### Fragment Facets ###
 
-Fragment facets are the heart of Woko's [ObjectRenderer](Object Renderer). They are defined by the interface `woko.facets.FragmentFacet`. 
+Fragment facets are the heart of Woko's [ObjectRenderer](Object Renderer). 
 
 Their role is to render a fragment (hence the name) of the page, and are included inside JSPs like this : 
+
+Here is an example :
 
     <%
         Woko woko = Woko.getWoko(application);
@@ -766,12 +769,47 @@ Their role is to render a fragment (hence the name) of the page, and are include
         FragmentFacet ff = woko.getFacet("myFragment", request, my);
     %>
     <div>
+    	<%--
+    		render this block using a "myFragment" facet : the facet 
+    		returns the path to the JSP to be included.
+    	--%>
         <jsp:include page="<%=ff.getFragmentPath(request)%>"/>
     </div>
 
 As other facets, the lookup is done using the currently logged-in user and the target object, which makes the fragment flexible and easy to change for the various Domain Objects and Roles of the application.
     
 > The above scriptlet could be replaced by the use of the `<w:includeFacet/>` tag. See the [Tag Library](Tag Library) for more infos.
+
+### Tag Library ###
+
+Woko includes a few tags that eases JSP writing :
+
+* cacheToken : allows for easier browser caching of static resources
+* facet : lookup a facet and bind it to the request
+* includeFacet : lookup a fragment facet and include it
+* link : create a link to a managed POJO
+* title : return the title for a managed POJO
+* url : export the URL to a resolution facet as a page variable
+* username : return the name of the currently logged in user
+
+The tags are implemented as JSP tag files, and are overlayed in your application by maven when you build. You only have to import the taglib in your JSP to start using them :
+
+    <%@ taglib prefix="w" tagdir="/WEB-INF/tags/woko" %>
+
+Or even import Woko's `taglibs.jsp`, it will import all the usual taglibs (`c`, `stripes`, `fmt` etc.) :
+
+	<%@include file="/WEB-INF/woko/jsp/taglibs.jsp"%>
+	
+Here is an example of using `<w:title/>` and `<w:url/>` in order to create a link to a managed POJO :
+
+    <%-- somewhere in a JSP… --%>
+    <c:set var="my" value="${…}"/>
+    <w:url var="myUrl" object="${my}"/>
+    <a href="${myUrl}">
+    	<w:title object="${my}"
+    </a>
+
+> When you build your app, the tags are copied in `target/myapp/WEB-INF/tags/woko/`. You can look there for a full list of available tags.     
 
 ## Data binding and Validation ##
 
@@ -847,12 +885,43 @@ And the response :
 
 Woko's Type Converters use supplied ID and introspected property types in order to load your POJOs from the store during the binding/validation phase.  
 
-### Nested & Dynamic Validation ###
+### Nested Validation ###
 
 TODO explain dynamic validation metadata provider
 
-## JSP Views ##
-### Tag Library ###
+For example, you can use `@Validate` on your Resolution Facets :
+
+    @FacetKey(name="foo", profileId="myrole", targetObjectType=MyClass.class)
+    class FooResolutionFacet extends BaseResolutionFacet {
+   
+        @Validate
+        String bar
+       
+        …
+       
+    }
+    
+You can also use `@ValidateNestedProperties` in order to tell Stripes to look for `@Validate` recursively :
+
+    @FacetKey(name="foo", profileId="myrole", targetObjectType=MyClass.class)
+    class FooResolutionFacet extends BaseResolutionFacet {
+   
+        @ValidateNestedProperties 
+        MyClass my
+       
+        …
+       
+    }
+    
+    class MyClass {
+    
+    	@Validate
+    	String bar
+    	
+    }
+    
+> You can also use nested validation with your ActionBeans if you write any. It offers a more flexible, run-time aware validation scheme, where you can delegate validation to ActionBean properties instead of specifying everything in the Action itself. 
+
 ## Localization ##
 ## Build ##
 ### Dependencies and War Overlays ###
@@ -942,6 +1011,53 @@ Here's an example of how you can do this easily (Groovy again), with your own Ob
 > If your ObjectStore is a `TransactionalStore`, the mock testing will use `WokoTxInterceptor`, and demarcate the transactions for each call to `tripXyz()`, just like it'd be done in a regular servlet request handling. On the other hand, be careful to properly handle transactions for all code that uses your ObjectStore in your test besides calls to `tripXyz()` : the tx interceptor is fired only when MockRoundtrip executes, so other calls in your tests should handle the transactions themselves. 
 
 # Object Renderer #
+
+The Object Renderer allows Woko to display POJOs as read-only or read-write pages. It uses introspection and Fragment Facets in order to generate HTML dynamically : Woko doesn't generate any code, it's all done on-the-fly using types and medatata found on your objects. 
+
+Facet override is used in order to change parts (or all) of the default rendering for the Domain Objects and Roles of your application.
+
+Here is a schematic break-down of the Object Renderer's facets :
+
+![Obejct Renderer](object-renderer.png)
+
+## Layout ##
+
+The global page template is done using Stripes Layouts, and controlled by the `layout` facet (`woko.facets.builtin.Layout`). This one returns the layout JSP to be used, as well as the CSSs and JavaScripts to be included in the page.
+
+The `layout` facet is used in all "top-level" Woko JSPs. A default one is provided for role "all", so you can override it for your roles and objects in order to change the template of the page :
+
+	@FacetKey(name="layout", profileId="myrole")
+	class MyLayout extends LayoutAll {
+	
+		@Override
+    	String getAppTitle() {
+        	"MyApp"
+    	}
+
+		@Override
+    	List<String> getCssIncludes() {
+        	["/css/my.css"]
+    	}	
+    	
+		@Override
+		String getLayoutPath() {
+        	"/WEB-INF/jsp/myrole/layout.jsp"
+    	}
+    	    	
+	}
+	
+### Nav Bar ###
+
+The default layout includes a `navBar` facet that renders navigation links for the currently logged-in user. Nav bars for `all` and `developer` roles are included by default. 
+	
+## Fragments ##
+
+Fragments in the Object Renderer are nested. The structure is composite : a top-level fragment includes other fragments, possibly including other sub-fragments, and so on.
+
+### renderObject ###
+
+
+
 # Add-ons #
 ## User Management ##
 ## Asynchronous Jobs ##

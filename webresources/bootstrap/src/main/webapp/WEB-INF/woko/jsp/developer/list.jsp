@@ -48,7 +48,7 @@
                     <s:hidden name="className"/>
                     <input type="hidden"name="facet.page" value="1"/>
                     <fmt:message bundle="${wokoBundle}" key="woko.devel.list.showing"/>
-                    <s:select name="facet.resultsPerPage" onchange="this.form.submit()">
+                    <s:select name="facet.resultsPerPage" onchange="this.form.submit()" class="input-small">
                         <s:option value="10">10</s:option>
                         <s:option value="25">25</s:option>
                         <s:option value="50">50</s:option>
@@ -92,33 +92,33 @@
                 String rightMoveHref = rightMoveCss.equals("disabled") ? "" : request.getContextPath() + "/list/" + className +
                         "?facet.page=" + (p + 1) + "&facet.resultsPerPage=" + resultsPerPage;
         %>
-            <div class="row-fluid">
-                <div class="pagination">
-                    <ul>
-                        <li class="<%=leftMoveCss%>">
-                            <a href="<%=leftMoveHref%>">«</a>
-                        </li>
-                    <%
-                        for (int i=pagerStart;i<=pagerStart+nbPagesClickable-1;i++) {
-                            String css = "";
-                            if (i==p) {
-                                css = "active";
-                            }
 
-                    %>
-                        <li class="<%=css%>">
-                            <a href="${pageContext.request.contextPath}/list/<%=className%>?facet.page=<%=i%>&facet.resultsPerPage=<%=resultsPerPage%>"><%=i%></a>
-                        </li>
-                    <%
+            <div class="pagination">
+                <ul>
+                    <li class="<%=leftMoveCss%>">
+                        <a href="<%=leftMoveHref%>">«</a>
+                    </li>
+                <%
+                    for (int i=pagerStart;i<=pagerStart+nbPagesClickable-1;i++) {
+                        String css = "";
+                        if (i==p) {
+                            css = "active";
                         }
-                    %>
 
-                        <li class="<%=rightMoveCss%>">
-                            <a href="<%=rightMoveHref%>">»</a>
-                        </li>
-                    </ul>
-                </div>
+                %>
+                    <li class="<%=css%>">
+                        <a href="${pageContext.request.contextPath}/list/<%=className%>?facet.page=<%=i%>&facet.resultsPerPage=<%=resultsPerPage%>"><%=i%></a>
+                    </li>
+                <%
+                    }
+                %>
+
+                    <li class="<%=rightMoveCss%>">
+                        <a href="<%=rightMoveHref%>">»</a>
+                    </li>
+                </ul>
             </div>
+
         <%
             }
         %>

@@ -24,21 +24,20 @@
 <w:cacheToken paramName="cacheToken" tokenValue="cacheTokenValue"/>
 <c:set var="cacheTokenParams" value="${cacheToken}=${cacheTokenValue}"/>
 <s:layout-definition>
-    <!DOCTYPE html>
-    <html>
+<!DOCTYPE html>
+<html>
     <head>
-
-        <link rel="shortcut icon"
-             href="${cp}/favicon.ico?${cacheTokenParams}" />
-
+        <%-- Add the woko favicon --%>
+        <link rel="shortcut icon" href="${cp}/favicon.ico?${cacheTokenParams}" />
+        <%-- Needed by bootstrap to be responsive --%>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta charset="utf-8">
-
         <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
         <!--[if lt IE 9]>
-          <script src="http://html5shim.googlecode.com/svn/trunk/html5.js?${cacheTokenParams}"></script>
+        <script src="http://html5shim.googlecode.com/svn/trunk/html5.js?${cacheTokenParams}"></script>
         <![endif]-->
 
+        <%-- Display the pageTitle set in jsp's if any --%>
         <c:choose>
             <c:when test="${not empty pageTitle}">
                 <title>${layout.appTitle} - ${pageTitle}</title>
@@ -48,49 +47,46 @@
             </c:otherwise>
         </c:choose>
 
-        <script type="text/javascript" src="${cp}/bootstrap/js/jquery.min.js?${cacheTokenParams}"></script>
-        <script type="text/javascript" src="${cp}/plugins/jquery-ui/js/jquery-ui-1.8.17.custom.min.js?${cacheTokenParams}"></script>
-        <%
-            Locale l = request.getLocale();
-        %>
-        <script type="text/javascript">
-            $(document).ready(function() {
-                $.datepicker.setDefaults($.datepicker.regional['<%=l%>']);
-            });
-        </script>
-        <%
-            if (l.toString().equals("fr")) {
-        %>
-            <script type="text/javascript" src="${cp}/plugins/jquery-ui/js/ui.datepicker-fr.js?${cacheTokenParams}"></script>
-        <%
-            }
-        %>
-        <script type="text/javascript" src="${cp}/bootstrap/js/bootstrap.min.js?${cacheTokenParams}"></script>
-
+        <%--  Import stylesheet
+                - CSS from layout facet
+                - CustomCSS
+        ========================================================== --%>
         <c:forEach items="${layout.cssIncludes}" var="cssLink">
             <link rel="stylesheet" href="${cp}${cssLink}" type="text/css">
         </c:forEach>
+        <s:layout-component name="customCss"/>
+
+
+        <%--  Import javascript
+                - JQuery
+                - Bootstrap
+                - Bootstrap datepicker
+                - Woko
+                - JS from layout facet
+                - CustomJS
+        ========================================================== --%>
+        <script type="text/javascript" src="${cp}/js/jQuery-V1.7.1/jquery.min.js?${cacheTokenParams}"></script>
+        <script type="text/javascript" src="${cp}/js/bootstrap-v2.3.0/bootstrap.min.js?${cacheTokenParams}"></script>
+        <script type="text/javascript" src="${cp}/js/bootstrap-datepicker/bootstrap-datepicker.min.js?${cacheTokenParams}"></script>
+        <script src="${cp}/woko/js/woko.base.js" type="text/javascript"></script>
+        <script src="${cp}/woko/js/woko.jquery.js" type="text/javascript"></script>
+        <script src="${cp}/woko/js/woko.rpc.js" type="text/javascript"></script>
         <c:forEach items="${layout.jsIncludes}" var="jsLink">
             <script type="text/javascript" src="${cp}${jsLink}"></script>
         </c:forEach>
-        <s:layout-component name="customCss"/>
         <s:layout-component name="customJs"/>
 
-        <link rel="stylesheet" type="text/css" href="${cp}/bootstrap/css/bootstrap.min.css?${cacheTokenParams}">
-        <link rel="stylesheet" type="text/css" href="${cp}/plugins/jquery-ui/css/ui-lightness/jquery-ui-1.8.17.custom.css?${cacheTokenParams}">
+        <%-- Set the locale to the datepicker --%>
+        <% Locale l = request.getLocale(); %>
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $('input[rel="datepicker"]').datepicker({language: "<%=l%>"});
+            });
+        </script>
 
-        <style type="text/css">
-            .main-content {
-                padding-top: 60px;
-                padding-bottom: 40px;
-            }
-
-            .sidebar-nav {
-                padding: 9px 0;
-            }
-        </style>
-        <link rel="stylesheet" type="text/css" href="${cp}/bootstrap/css/bootstrap-responsive.min.css?${cacheTokenParams}">
-        <link rel="stylesheet" type="text/css" href="${cp}/bootstrap/css/bootstrap-woko.css?${cacheTokenParams}">
+        <% if (l.toString().equals("fr")) { %>
+            <script type="text/javascript" src="${cp}/js/bootstrap-datepicker/bootstrap-datepicker.fr.min.js?${cacheTokenParams}"></script>
+        <% } %>
 
         <script type="text/javascript" src="${cp}/woko/js/woko.base.js?${cacheTokenParams}"></script>
         <script type="text/javascript" src="${cp}/woko/js/woko.jquery.js?${cacheTokenParams}"></script>
@@ -102,71 +98,90 @@
     </head>
 
     <body>
-    <div class="wrapper">
-        <div class="navbar navbar-fixed-top">
-            <div class="navbar-inner">
-                <div class="container-fluid">
-                    <a data-target=".nav-collapse" data-toggle="collapse" class="btn btn-navbar">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </a>
-                    <a href="${cp}" class="brand">${layout.appTitle}</a>
+        <div id="wrapper">
 
-                    <div class="nav-collapse">
+            <%-- Header : the static navBar --%>
+            <div class="navbar navbar-fixed-top">
+                <div class="navbar-inner">
+                    <div class="container">
+                        <%-- Display a button bar on tablet and phone --%>
+                        <button class="btn btn-navbar collapsed" data-target=".nav-collapse" data-toggle="collapse" type="button">
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
 
-                        <ul class="nav nav-pills">
-                            <w:includeFacet facetName="<%=WokoFacets.navBar%>" targetObject="${layout.facetContext.targetObject}"/>
-                        </ul>
+                        <%-- The app name --%>
+                        <a href="${cp}/home" class="brand">${layout.appTitle}</a>
 
-                        <p class="navbar-text pull-right">
-                            <c:if test="${skipLoginLink==null}">
-                                <c:choose>
-                                    <c:when test="${username != null}">
-                                        <fmt:message bundle="${wokoBundle}" key="woko.layout.loggedAs"/> <strong>${username}</strong> -
-                                        <a href="${cp}/logout"><fmt:message bundle="${wokoBundle}" key="woko.layout.logout"/> </a>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <fmt:message bundle="${wokoBundle}" key="woko.layout.notLogged"/>
-                                        <a href="${cp}/login"><fmt:message bundle="${wokoBundle}" key="woko.layout.login"/> </a>
-                                    </c:otherwise>
-                                </c:choose>
-                            </c:if>
-                        </p>
+                        <%-- The navBar --%>
+                        <div class="nav-collapse collapse">
+
+                            <%-- First display the navBar facet --%>
+                            <ul class="nav">
+                                <w:includeFacet facetName="<%=WokoFacets.navBar%>" targetObject="${layout.facetContext.targetObject}"/>
+                            </ul>
+
+
+                            <%-- Display user/connexion info --%>
+                            <p class="navbar-text pull-right" style="height: 30px;">
+                                <c:if test="${skipLoginLink==null}">
+                                    <c:choose>
+                                        <c:when test="${username != null}">
+                                            <fmt:message bundle="${wokoBundle}" key="woko.layout.loggedAs"/> <strong>${username}</strong> -
+                                            <a href="${cp}/logout"><fmt:message bundle="${wokoBundle}" key="woko.layout.logout"/> </a>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <fmt:message bundle="${wokoBundle}" key="woko.layout.notLogged"/>
+                                            <a href="${cp}/login"><fmt:message bundle="${wokoBundle}" key="woko.layout.login"/> </a>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </c:if>
+                            </p>
+
+                                    <%-- Display the search input only for connected user --%>
+                                <c:if test="${not empty username}">
+                                    <s:form action="/search" class="navbar-form pull-right" style="margin-right: 8px; height: 40px;">
+                                        <fmt:message bundle="${wokoBundle}" key="search" var="ph"/>
+                                        <s:text name="facet.query" class="search-query" placeholder="${ph}"/>
+                                    </s:form>
+                                </c:if>
+
+                        </div>
                     </div>
-
-                    <c:if test="${not empty username}">
-                        <s:form action="/search" class="navbar-search pull-right" style="margin-right: 15px;">
-                            <fmt:message bundle="${wokoBundle}" key="search" var="ph"/>
-                            <s:text name="facet.query" class="search-query" placeholder="${ph}"/>
-                        </s:form>
-                    </c:if>
-
                 </div>
             </div>
-        </div>
 
-        <div class="main-content">
-            <div class="container-fluid">
-                <div class="row-fluid">
-                    <s:messages/>
-                    <s:errors/>
+
+            <%-- Main content --%>
+            <div class="main-content">
+                <div class="container">
+                    <div class="row-fluid">
+                        <s:messages/>
+                    </div>
+                    <div class="row-fluid">
+                        <s:errors/>
+                    </div>
                     <s:layout-component name="body"/>
                 </div>
-                <div class="push"></div>
             </div>
-        </div>
+
+            <%-- Needed by the Sticky footer--%>
+            <div id="push"></div>
+
     </div>
 
     <footer>
-        <div class="container-fluid">
+        <div class="container">
             <div class="pull-right">
-                Powered by <a href="http://www.pojosontheweb.com"><img src="${cp}/woko/woko-logo-small.png?${cacheTokenParams}"
-                                                                            alt="logo" height="24px"/></a>
+                Powered by
+                <a href="http://www.pojosontheweb.com">
+                    <img src="${cp}/woko/woko-logo-small.png?${cacheTokenParams}" alt="logo" height="24px"/>
+                </a>
             </div>
         </div>
     </footer>
 
-    </body>
-    </html>
+</body>
+</html>
 </s:layout-definition>

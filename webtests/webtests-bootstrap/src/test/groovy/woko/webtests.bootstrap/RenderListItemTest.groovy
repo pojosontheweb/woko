@@ -18,7 +18,7 @@ package woko.webtests.bootstrap
 
 class RenderListItemTest extends WebTestBase {
 
-    void testCrud() {
+    void testListItem() {
         webtest('renderListItem facet test') {
             login()
 
@@ -28,7 +28,7 @@ class RenderListItemTest extends WebTestBase {
 
             goToPage '/list/MyBook'
             verifyText 'Moby'
-            verifyXPath xpath: "/html/body/div/div[2]/div/div/ul/li[@class='TestCssClass']"
+            verifyXPath xpath: "/html/body/div/div[2]/div/ul/li[@class='TestCssClass']"
 
             // delete
             goToPage '/delete/MyBook/1'
