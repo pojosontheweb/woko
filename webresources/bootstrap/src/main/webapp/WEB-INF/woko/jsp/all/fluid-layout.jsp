@@ -56,7 +56,11 @@
         </c:forEach>
         <s:layout-component name="customCss"/>
 
-
+        <style>
+            .row-fluid > .span3 {
+                padding-top: 8px;
+            }
+        </style>
             <%--  Import javascript
                     - JQuery
                     - Bootstrap
@@ -98,89 +102,86 @@
     </head>
 
     <body>
-    <div id="wrapper">
 
-            <%-- Header : the static navBar --%>
-        <div class="navbar navbar-fixed-top">
-            <div class="navbar-inner">
-                <div class="container-fluid">
-                        <%-- Display a button bar on tablet and phone --%>
-                    <button class="btn btn-navbar collapsed" data-target=".nav-collapse" data-toggle="collapse" type="button">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="span3">
+                <h1><a href="${cp}/home" class="brand">${layout.appTitle}</a></h1>
+                <div class="well sidebar-nav">
+                    <%-- The app name --%>
 
-                        <%-- The app name --%>
-                    <a href="${cp}/home" class="brand">${layout.appTitle}</a>
 
-                        <%-- The navBar --%>
-                    <div class="nav-collapse collapse">
-
-                            <%-- First display the navBar facet --%>
-                        <ul class="nav">
+                    <ul class="nav nav-list">
+                        <li class="nav-header">
+                            <fmt:message bundle="${wokoBundle}" key="woko.layout.actions"/>
+                        </li>
+                        <li>
                             <w:includeFacet facetName="<%=WokoFacets.navBar%>" targetObject="${layout.facetContext.targetObject}"/>
-                        </ul>
+                        </li>
 
-
-                            <%-- Display user/connexion info --%>
-                        <p class="navbar-text pull-right">
-                            <c:if test="${skipLoginLink==null}">
-                                <c:choose>
-                                    <c:when test="${username != null}">
-                                        <strong>${username}</strong> -
+                        <%-- Display user/connexion info --%>
+                        <c:if test="${skipLoginLink==null}">
+                            <c:choose>
+                                <c:when test="${username != null}">
+                                    <li class="nav-header">
+                                        <fmt:message bundle="${wokoBundle}" key="woko.layout.loggedAs"/>
+                                        <strong>${username}</strong>
+                                    </li>
+                                    <li>
                                         <a href="${cp}/logout"><fmt:message bundle="${wokoBundle}" key="woko.layout.logout"/> </a>
-                                    </c:when>
-                                    <c:otherwise>
+                                    </li>
+                                </c:when>
+                                <c:otherwise>
+                                    <li class="nav-header">
                                         <fmt:message bundle="${wokoBundle}" key="woko.layout.notLogged"/>
+                                    </li>
+                                    <li>
                                         <a href="${cp}/login"><fmt:message bundle="${wokoBundle}" key="woko.layout.login"/> </a>
-                                    </c:otherwise>
-                                </c:choose>
-                            </c:if>
-                        </p>
-
-                            <%-- Display the search input only for connected user --%>
-                        <c:if test="${not empty username}">
-                            <s:form action="/search" class="navbar-form pull-right" style="margin-right: 8px; height: 40px;">
-                                <fmt:message bundle="${wokoBundle}" key="search" var="ph"/>
-                                <s:text name="facet.query" class="search-query input-medium" placeholder="${ph}"/>
-                            </s:form>
+                                    </li>
+                                </c:otherwise>
+                            </c:choose>
                         </c:if>
 
-                    </div>
-                </div>
-            </div>
-        </div>
+                        <%-- Display the search input only for connected user --%>
+                        <c:if test="${not empty username}">
+                            <li class="nav-header">
+                                <fmt:message bundle="${wokoBundle}" key="search"/>
+                            </li>
+                            <li>
+                                <s:form action="/search" class="" style="margin-right: 8px; height: 40px;">
+                                    <fmt:message bundle="${wokoBundle}" key="search" var="ph"/>
+                                    <s:text name="facet.query" class="search-query input-medium" placeholder="${ph}"/>
+                                </s:form>
+                            </li>
+                        </c:if>
 
+                    </ul>
+                    <hr/>
+                    <footer>
+                        Powered by
+                        <a href="http://www.pojosontheweb.com">
+                            <img src="${cp}/woko/woko-logo-small.png?${cacheTokenParams}" alt="logo" height="24px"/>
+                        </a>
+                    </footer>
+                </div>
+
+
+            </div>
 
             <%-- Main content --%>
-        <div class="main-content">
-            <div class="container-fluid">
-                <div class="row-fluid">
-                    <s:messages/>
+            <div class="span9">
+                <div class="main-content">
+                    <div class="row-fluid">
+                        <s:messages/>
+                    </div>
+                    <div class="row-fluid">
+                        <s:errors/>
+                    </div>
+                    <s:layout-component name="body"/>
                 </div>
-                <div class="row-fluid">
-                    <s:errors/>
-                </div>
-                <s:layout-component name="body"/>
             </div>
         </div>
-
-            <%-- Needed by the Sticky footer--%>
-        <div id="push"></div>
-
     </div>
-
-    <footer>
-        <div class="container-fluid">
-            <div class="pull-right">
-                Powered by
-                <a href="http://www.pojosontheweb.com">
-                    <img src="${cp}/woko/woko-logo-small.png?${cacheTokenParams}" alt="logo" height="24px"/>
-                </a>
-            </div>
-        </div>
-    </footer>
 
     </body>
     </html>
