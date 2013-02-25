@@ -34,6 +34,12 @@
         </dependency>
         <dependency>
             <groupId>com.pojosontheweb</groupId>
+            <artifactId>woko-bootstrap-core</artifactId>
+            <version>${project.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.pojosontheweb</groupId>
             <artifactId>woko-core</artifactId>
             <version>${project.version}</version>
             <scope>provided</scope>
