@@ -18,16 +18,10 @@ package woko.facets.builtin.developer;
 
 import net.sourceforge.jfacets.IFacetDescriptorManager;
 import net.sourceforge.jfacets.annotations.FacetKey;
-import woko.actions.SwithThemeActionBean;
 import woko.facets.BaseForwardResolutionFacet;
-import woko.facets.builtin.WokoFacets;
 import woko.persistence.ObjectStore;
 import woko.users.UserManager;
 import woko.users.UsernameResolutionStrategy;
-
-import java.lang.reflect.Modifier;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Forwards to the new object creation page.

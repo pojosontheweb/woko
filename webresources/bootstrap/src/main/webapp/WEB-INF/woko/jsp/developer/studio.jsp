@@ -92,6 +92,7 @@
                 <li class="active"><a href="#configuration" data-toggle="tab">Configuration</a></li>
                 <li><a href="#facets" data-toggle="tab">Facets</a></li>
                 <li><a href="#groovyShell" data-toggle="tab">Groovy Shell</a></li>
+                <li><a href="#themeRoller" data-toggle="tab">Theme roller</a></li>
             </ul>
 
             <div class="tab-content">
@@ -107,7 +108,7 @@
                     </ul>
                 </div>
 
-
+                <%-- Facets tab --%>
                 <div class="tab-pane" id="facets">
                     <h2>All your facets</h2>
                     <table id="tblFacets" class="table table-striped table-bordered table-condensed">
@@ -132,7 +133,7 @@
                     </table>
                 </div>
 
-
+                <%-- Groovy shell tab --%>
                 <div class="tab-pane" id="groovyShell">
                     <h2><fmt:message bundle="${wokoBundle}" key="woko.devel.studio.groovy.code"/></h2>
                     <fmt:message bundle="${wokoBundle}" key="woko.devel.studio.groovy.title"/>
@@ -151,6 +152,11 @@
                         <div id="log" class="well"></div>
                     </div>
                 </div>
+
+                <%-- Theme Roller tab --%>
+                <div class="tab-pane" id="themeRoller">
+                    <h2><fmt:message bundle="${wokoBundle}" key="woko.devel.studio.themeRoller.title"/></h2>
+                    <w:includeFacet facetName="theme"/>
             </div>
         </div>
 
