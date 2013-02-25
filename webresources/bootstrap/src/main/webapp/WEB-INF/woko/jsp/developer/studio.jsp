@@ -160,7 +160,7 @@
                     <ul>
                         <c:forEach items="<%=Theme.values()%>" var="theme">
                             <li>
-                                <s:link href="/theme?facet.theme=${theme}">${theme}</s:link>
+                                <s:link href="/theme?facet.theme=${theme}&facet.sourcePage=/studio">${theme}</s:link>
                             </li>
                         </c:forEach>
                     </ul>

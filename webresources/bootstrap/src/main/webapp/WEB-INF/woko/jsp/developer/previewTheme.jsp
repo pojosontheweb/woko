@@ -1,13 +1,22 @@
+<%@ page import="woko.facets.builtin.bootstrap.all.SwitchTheme" %>
+<%@ page import="woko.facets.builtin.bootstrap.all.Theme" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="/WEB-INF/woko/jsp/taglibs.jsp"%>
 
-
+<%
+    String themeName;
+    Theme theme = (Theme)request.getSession().getAttribute(SwitchTheme.WOKO_THEME);
+    if (theme == null)
+        themeName = "bootstrap-V2.3.0".toLowerCase();
+    else
+        themeName = theme.name().toLowerCase();
+%>
 
 <!-- Masthead
 ================================================== -->
 <header>
     <h1 class="page-header">
-        Preview for the skin : <span style="text-transform: uppercase;">VOTRE THEME</span>
+        Preview for the skin : <span style="text-transform: uppercase;"><%=themeName%></span>
     </h1>
     <p>
         As woko is coming with the Bootstrap CSS framework, we have integrated the themes coming from <a href="http://bootswatch.com">Bootswatch</a>
@@ -21,7 +30,7 @@
     @Override
     List<String> getCssIncludes() {
         return [
-            "/css/VOTRETHEME/bootstrap.css",
+            "/css/<%=themeName%>/bootstrap.css",
             "/css/woko.css",
             "/css/responsive.css"
         ]
