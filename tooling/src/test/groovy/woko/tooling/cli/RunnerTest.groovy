@@ -104,7 +104,7 @@ The command accepts one argument that can be  :
 
     @Test
     void testListFacets() {
-        assertCommandResult(["list", "facets"], """45 facets found : \n  create, developer, java.lang.Object, woko.facets.builtin.developer.Create
+        assertCommandResult(["list", "facets"], """46 facets found : \n  create, developer, java.lang.Object, woko.facets.builtin.developer.Create
   delete, developer, java.lang.Object, woko.facets.builtin.developer.DeleteImpl
   edit, developer, java.lang.Object, woko.facets.builtin.developer.EditImpl
   find, developer, java.lang.Object, woko.facets.builtin.developer.Find
@@ -130,6 +130,7 @@ The command accepts one argument that can be  :
   renderPropertyValue, all, java.lang.Object, woko.facets.builtin.all.RenderPropertyValueImpl
   renderPropertyValue, all, java.util.Date, woko.facets.builtin.all.RenderPropertyValueDate
   renderPropertyValue, all, java.util.Collection, woko.facets.builtin.all.RenderPropertyValueCollection
+  renderPropertyValueEdit, all, java.lang.Boolean, woko.facets.builtin.all.RenderPropertyValueEditBoolean
   renderPropertyValueEdit, all, java.lang.Number, woko.facets.builtin.all.RenderPropertyValueEditStripesText
   renderPropertyValueEdit, all, java.lang.Object, woko.facets.builtin.all.RenderPropertyValueEditXToOneRelation
   renderPropertyValueEdit, all, java.lang.String, woko.facets.builtin.all.RenderPropertyValueEditStripesText
