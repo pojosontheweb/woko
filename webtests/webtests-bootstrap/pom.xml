@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright 2001-LATEST-SNAPSHOT2 Remi Vankeisbelck
+  ~ Copyright 2001-2013 Remi Vankeisbelck
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -26,6 +26,11 @@
     <name>Woko - web tests with the bootstrap skin</name>
     <packaging>war</packaging>
     <dependencies>
+        <dependency>
+            <groupId>com.pojosontheweb</groupId>
+            <artifactId>woko-bootstrap-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
         <dependency>
             <groupId>com.pojosontheweb</groupId>
             <artifactId>woko-web-bootstrap</artifactId>

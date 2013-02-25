@@ -1,8 +1,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="/WEB-INF/woko/jsp/taglibs.jsp"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 <%@ page import="woko.Woko" %>
 <%@ page import="woko.facets.builtin.WokoFacets" %>
+<%@ page import="woko.facets.builtin.bootstrap.all.Theme" %>
 
 <c:set var="cp" value="${pageContext.request.contextPath}"/>
 <w:facet facetName="<%=WokoFacets.layout%>"/>
@@ -35,6 +37,32 @@
             function replaceAll(txt, replace, with_this) {
                 return txt.replace(new RegExp(replace, 'g'),with_this);
             }
+
+            $(function() {
+                var hash = $(location).attr("hash");
+                if (!hash) {
+                    hash = ("#configuration");
+                }
+
+                $(".nav li").each(function() {
+                    var li = $(this);
+                    li.removeClass("active");
+                    var a = $("a", li);
+                    var href = a.attr("href");
+                    if (hash==href) {
+                        li.addClass("active");
+                    }
+                });
+                $(".tab-pane").each(function() {
+                    var tab = $(this);
+                    tab.removeClass("active")
+                    var tabId = "#"+tab.attr("id")
+                    if (tabId == hash){
+                        tab.addClass("active")
+                    }
+                })
+            });
+
 
             $(document).ready(function(){
 
@@ -92,6 +120,9 @@
                 <li class="active"><a href="#configuration" data-toggle="tab">Configuration</a></li>
                 <li><a href="#facets" data-toggle="tab">Facets</a></li>
                 <li><a href="#groovyShell" data-toggle="tab">Groovy Shell</a></li>
+                <li><a href="#themes" data-toggle="tab">
+                    <fmt:message bundle="${wokoBundle}" key="woko.devel.studio.theme.available"/>
+                </a></li>
             </ul>
 
             <div class="tab-content">
@@ -107,7 +138,7 @@
                     </ul>
                 </div>
 
-
+                <%-- Facets tab --%>
                 <div class="tab-pane" id="facets">
                     <h2>All your facets</h2>
                     <table id="tblFacets" class="table table-striped table-bordered table-condensed">
@@ -132,7 +163,7 @@
                     </table>
                 </div>
 
-
+                <%-- Groovy shell tab --%>
                 <div class="tab-pane" id="groovyShell">
                     <h2><fmt:message bundle="${wokoBundle}" key="woko.devel.studio.groovy.code"/></h2>
                     <fmt:message bundle="${wokoBundle}" key="woko.devel.studio.groovy.title"/>
@@ -151,6 +182,33 @@
                         <div id="log" class="well"></div>
                     </div>
                 </div>
+
+                <%-- Theme Roller tab --%>
+                <div class="tab-pane" id="themes">
+                    <ul class="thumbnails">
+                        <li class="span3">
+                            <div class="thumbnail">
+                                <img src="http://twitter.github.com/bootstrap/assets/img/examples/bootstrap-example-hero.jpg" width="256px" alt="Bootstrap">
+                                <h3>Bootstrap</h3>
+                                <s:link href="/theme?facet.sourcePage=/studio#themes" class="btn btn-primary">
+                                    <fmt:message bundle="${wokoBundle}" key="woko.devel.studio.theme.apply"/>
+                                </s:link>
+                            </div>
+                        </li>
+                        <c:forEach items="<%=Theme.values()%>" var="theme">
+                            <li class="span3">
+                                <div class="thumbnail">
+                                    <img src="http://bootswatch.com/${fn:toLowerCase(theme)}/thumbnail.png" alt="${theme}">
+                                    <h3>${theme}</h3>
+                                    <s:link href="/theme?facet.theme=${theme}&facet.sourcePage=/studio#themes" class="btn btn-primary">
+                                        <fmt:message bundle="${wokoBundle}" key="woko.devel.studio.theme.apply"/>
+                                    </s:link>
+                                </div>
+                            </li>
+                        </c:forEach>
+                    </ul>
+
+                    <jsp:include page="previewTheme.jsp"/>
             </div>
         </div>
 

@@ -28,6 +28,11 @@
     <dependencies>
         <dependency>
           <groupId>com.pojosontheweb</groupId>
+          <artifactId>woko-bootstrap-core</artifactId>
+          <version>${project.version}</version>
+        </dependency>
+        <dependency>
+          <groupId>com.pojosontheweb</groupId>
           <artifactId>woko-asyncjobs-core</artifactId>
           <version>${project.version}</version>
         </dependency>
