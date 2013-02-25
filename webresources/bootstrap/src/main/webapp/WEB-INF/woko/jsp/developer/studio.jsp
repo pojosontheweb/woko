@@ -162,7 +162,7 @@
                         <ul class="thumbnails">
                             <li class="span3">
                                 <div class="thumbnail">
-                                    <img src="http://twitter.github.com/bootstrap/assets/img/examples/bootstrap-example-hero.jpg" alt="Bootstrap">
+                                    <img src="http://twitter.github.com/bootstrap/assets/img/examples/bootstrap-example-hero.jpg" width="256px" alt="Bootstrap">
                                     <h3>Bootstrap</h3>
                                     <s:link href="/theme?facet.sourcePage=/studio" class="btn btn-primary">Preview</s:link>
                                 </div>
