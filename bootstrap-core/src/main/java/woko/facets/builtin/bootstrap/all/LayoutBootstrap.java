@@ -71,7 +71,7 @@ public class LayoutBootstrap<
                 return super.getLayoutPath();
             } else {
                 // user layout available, use this one !
-                return "/WEB-INF/woko/jsp/all/" + userLayout + "-layout.jsp";
+                return "/WEB-INF/woko/jsp/all/layouts/" + userLayout + "-layout.jsp";
             }
         }
     }

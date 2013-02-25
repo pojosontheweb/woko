@@ -227,7 +227,7 @@
                         if (aLayout == null)
                             layoutName = "layout.jsp";
                         else
-                            layoutName = aLayout.name().toLowerCase() + "-layout.jsp";
+                            layoutName = "/layouts/" + aLayout.name().toLowerCase() + "-layout.jsp";
                     %>
     <pre>
     @Override
