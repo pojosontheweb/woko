@@ -188,7 +188,7 @@
                         <executions>
                             <execution>
                                 <id>generate-javadoc</id>
-                                <phase>install</phase>
+                                <phase>package</phase>
                                 <goals>
                                     <goal>jar</goal>
                                     <goal>aggregate-jar</goal>
