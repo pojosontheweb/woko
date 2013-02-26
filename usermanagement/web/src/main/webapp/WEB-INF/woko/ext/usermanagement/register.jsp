@@ -1,10 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="/WEB-INF/woko/jsp/taglibs.jsp"%>
-<%@ page import="net.sourceforge.stripes.util.CryptoUtil" %>
-<%@ page import="woko.ext.usermanagement.facets.registration.RegisterGuest" %>
 <%@ page import="woko.ext.usermanagement.facets.registration.RegisterFragmentGuest" %>
 <%@ page import="woko.facets.builtin.Layout" %>
-<%@ page import="woko.facets.builtin.WokoFacets" %>
 <w:facet facetName="<%=Layout.FACET_NAME%>"/>
 
 <fmt:message bundle="${wokoBundle}" var="pageTitle" key="woko.ext.usermanagement.register.page.title"/>

@@ -16,24 +16,22 @@
 
 package woko.webtests.bootstrap
 
-class NavBarTest extends WebTestBase{
+class NavBarTest extends WebTestBase {
 
-  void testNavBarLinks(){
-    webtest('test navbar links') {
-      // For guest users
-      goToPage '/home'
-      // verifyTitle 'Woko - home'
-      verifyXPath xpath:"/html/body/div/div/div/div/div/ul/li/a[@href='/woko-webtests/home']"
+    void testNavBarLinks() {
+        webtest('test navbar links') {
+            goToPage '/home'
 
-      // For wdevel
-      login()
-      goToPage '/home'
-      // verifyTitle 'Woko - home'
-      verifyXPath xpath:"/html/body/div/div/div/div/div/ul/li/a[@href='/woko-webtests/home']"
-      verifyXPath xpath:"/html/body/div/div/div/div/div/ul/li[2]/a[@href='/woko-webtests/find']"
-      verifyXPath xpath:"/html/body/div/div/div/div/div/ul/li[3]/a[@href='/woko-webtests/create']"
-      verifyXPath xpath:"/html/body/div/div/div/div/div/ul/li[4]/a[@href='/woko-webtests/studio']"
+            // verify that logo is clickable
+            verifyXPath xpath:"/html/body/div/div/div/div/a[@href='/woko-webtests/home']"
+
+            login()
+            goToPage '/home'
+            verifyXPath xpath: "/html/body/div/div/div/div/div/ul/li/a[@href='/woko-webtests/find']"
+            verifyXPath xpath: "/html/body/div/div/div/div/div/ul/li[2]/a[@href='/woko-webtests/create']"
+            verifyXPath xpath: "/html/body/div/div/div/div/div/ul/li[3]/a[@href='/woko-webtests/studio']"
+            verifyXPath xpath: "/html/body/div/div/div/div/div/ul/li[4]/a[@href='http://www.google.com']"
+        }
     }
-  }
 
 }

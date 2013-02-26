@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright 2001-2012 Remi Vankeisbelck
+  ~ Copyright 2001-2013 Remi Vankeisbelck
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -16,5 +16,12 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="/WEB-INF/woko/jsp/taglibs.jsp"%>
 <ul>
-    <li><a href="${pageContext.request.contextPath}/home"><fmt:message bundle="${wokoBundle}" key="woko.guest.navbar.home"/> </a></li>
+    <li>
+        <a href="${cp}/home"><fmt:message bundle="${wokoBundle}" key="woko.guest.navbar.home"/></a>
+    </li>
+    <c:forEach var="link" items="${navBar.links}">
+        <li><a href="${cp}${link.href}"
+               class="${link.cssClass}"
+                ${link.attributesString}><c:out value="${link.text}"/></a></li>
+    </c:forEach>
 </ul>

@@ -16,8 +16,10 @@ public class MyLayout extends LayoutAll<
         UsernameResolutionStrategy,
         IFacetDescriptorManager> {
 
+    // return the title for your app, used in page titles, main navbar etc.
     @Override
     public String getAppTitle() {
         return "$name";
     }
+
 }

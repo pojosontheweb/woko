@@ -17,6 +17,9 @@
 package woko.facets.builtin;
 
 import woko.facets.FragmentFacet;
+import woko.facets.builtin.all.Link;
+
+import java.util.List;
 
 /**
  * <code>navBar</code> facet, used to display the navigation block.
@@ -29,5 +32,7 @@ import woko.facets.FragmentFacet;
 public interface NavBar extends FragmentFacet {
 
     static final String FACET_NAME = "navBar";
+
+    List<Link> getLinks();
 
 }

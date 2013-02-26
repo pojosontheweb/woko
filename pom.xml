@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  ~ Copyright 2001-2.2-beta22 Remi Vankeisbelck
+  ~ Copyright 2001-2013 Remi Vankeisbelck
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@
     </parent>
     <groupId>com.pojosontheweb</groupId>
     <artifactId>woko-parent</artifactId>
-    <version>2.2-beta2</version>
+    <version>2.2-beta3</version>
     <packaging>pom</packaging>
     <name>Woko - parent</name>
     <url>https://github.com/vankeisb/woko2/wiki</url>
@@ -77,10 +77,11 @@
         <module>groovy-init</module>
         <module>wmaven</module>
         <module>asyncjobs</module>
+        <module>bootstrap-core</module>
         <module>webtests</module>
     </modules>
     <properties>
-        <stripes.version>1.5.5</stripes.version>
+        <stripes.version>1.5.7</stripes.version>
         <groovy.version>2.0.4</groovy.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -183,13 +184,14 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-javadoc-plugin</artifactId>
-                        <version>2.7</version>
+                        <version>2.9</version>
                         <executions>
                             <execution>
                                 <id>generate-javadoc</id>
-                                <phase>package</phase>
+                                <phase>install</phase>
                                 <goals>
                                     <goal>jar</goal>
+                                    <goal>aggregate-jar</goal>
                                 </goals>
                                 <configuration>
                                     <author>true</author>

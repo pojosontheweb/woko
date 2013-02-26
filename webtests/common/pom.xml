@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright 2001-2.2-beta22 Remi Vankeisbelck
+  ~ Copyright 2001-2013 Remi Vankeisbelck
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -20,13 +20,20 @@
     <parent>
         <groupId>com.pojosontheweb</groupId>
         <artifactId>woko-webtests</artifactId>
-        <version>2.2-beta2</version>
+        <version>2.2-beta3</version>
     </parent>
     <artifactId>woko-webtests-common</artifactId>
     <name>Woko - web tests common code</name>
     <packaging>jar</packaging>
     <dependencies>
-            <dependency>
+
+        <dependency>
+            <groupId>com.pojosontheweb</groupId>
+            <artifactId>woko-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>com.canoo.webtest</groupId>
             <artifactId>webtest</artifactId>
             <version>3.0</version>
@@ -37,6 +44,7 @@
                 </exclusion>
             </exclusions>
         </dependency>
+
         <!-- override the htmlunit version (jquery doesn't work otherwise) -->
         <dependency>
             <groupId>net.sourceforge.htmlunit</groupId>

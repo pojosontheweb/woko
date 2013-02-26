@@ -24,9 +24,10 @@ abstract class WebTestBase extends WokoWebTestBase {
     goToPage url
 
     // Check search input is present
-    ant.verifyXPath xpath:"/html/body/div/div/div/div/form[@action='/woko-webtests/search']"
-    ant.verifyXPath xpath:"/html/body/div/div/div/div/form/input[1][@type='text']"
-    ant.verifyXPath xpath:"/html/body/div/div/div/div/form/input[1][@name='facet.query']"
+    ant.verifyXPath xpath:"/html/body/div/div/div/div/div/form[@action='/woko-webtests/search']"
+
+    ant.verifyXPath xpath:"/html/body/div/div/div/div/div/form/input[@type='text']"
+    ant.verifyXPath xpath:"/html/body/div/div/div/div/div/form/input[@name='facet.query']"
   }
 
 }

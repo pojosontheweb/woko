@@ -1,0 +1,22 @@
+//
+// Responsive: Tablet to desktop
+// --------------------------------------------------
+
+
+@media (min-width: 768px) and (max-width: 979px) {
+  // As the navBar loose its fixed-top css property for tablet,
+  // it's no need to padding-top.
+  #wrapper > .main-content {
+    padding-top: 0;
+  }
+
+  // Don't pull right the navBar
+  .navbar .container .pull-right{
+    float: none;
+  }
+
+  // Align the navbar-text with others items on collapsed navBar
+  .navbar-text {
+    margin-left: 15px;
+  }
+}

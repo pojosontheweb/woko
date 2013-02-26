@@ -57,7 +57,7 @@ public abstract class JobBase implements Job {
                 }
             }
         } catch(Exception e) {
-            logger.error("Caught exception executing " + this);
+            logger.error("Caught exception executing " + this, e);
             for (JobListener l : listeners) {
                 try {
                     l.onException(this, e); // Exception onException... looks pretty ugly but we need to guard against bad code anyway...
