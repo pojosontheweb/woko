@@ -125,7 +125,9 @@
                 <li><a href="#themes" data-toggle="tab">
                     <fmt:message bundle="${wokoBundle}" key="woko.devel.studio.theme.available"/>
                 </a></li>
-                <li><a href="#layouts" data-toggle="tab">Alternative Layouts</a></li>
+                <li><a href="#layouts" data-toggle="tab">
+                    <fmt:message bundle="${wokoBundle}" key="woko.devel.studio.layout.available"/>
+                </a></li>
             </ul>
 
             <div class="tab-content">
@@ -197,7 +199,7 @@
                                     Provides a common fixed-width (and optionally responsive) layout.
                                 </p>
                                 <s:link href="/alternativeLayout?facet.sourcePage=/studio#layouts" class="btn btn-primary">
-                                    Apply
+                                    <fmt:message bundle="${wokoBundle}" key="woko.devel.studio.layout.apply"/>
                                 </s:link>
                             </div>
                         </li>
@@ -210,7 +212,7 @@
                                         <c:out value="${aLayout.description}" escapeXml="false"/>
                                     </p>
                                     <s:link href="/alternativeLayout?facet.alternativeLayout=${aLayout}&facet.sourcePage=/studio#layouts" class="btn btn-primary">
-                                        Apply
+                                        <fmt:message bundle="${wokoBundle}" key="woko.devel.studio.layout.apply"/>
                                     </s:link>
                                 </div>
                             </li>
@@ -227,7 +229,7 @@
                         if (aLayout == null)
                             layoutName = "layout.jsp";
                         else
-                            layoutName = "/layouts/" + aLayout.name().toLowerCase() + "-layout.jsp";
+                            layoutName = "layouts/" + aLayout.name().toLowerCase() + "-layout.jsp";
                     %>
     <pre>
     @Override
