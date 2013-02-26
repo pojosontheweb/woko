@@ -1054,11 +1054,73 @@ Of course, you can override `layout` for the various role(s) and/or target types
 
 The default layout includes a `navBar` facet that renders navigation links for the currently logged-in user. Nav bars for `all` and `developer` roles are included by default. 
 
+You can override the `navBar` facet fragment completely, or simply override `getLinks()`, which returns a list of `Link` objects to be used by the default fragment :
+
+    @FacetKey(name="navBar", profileId="myrole") 
+    class NavBarMyRole extends NavBarAll {
+    
+        @Override
+        List<Link> getLinks() {
+            [ 
+                new Link("/myUrl", "my"),
+                new Link("/myOtherUrl", "other"),
+                new Link("/myLastUrl", "link")
+            ]
+        }
+    
+    }
+
 ## Fragments ##
 
-Fragments in the Object Renderer are nested. The structure is composite : a top-level fragment includes other fragments, possibly including other sub-fragments, and so on.
+Fragments in the Object Renderer are nested. The structure is composite : a top-level fragment includes other fragments, possibly including other sub-fragments, and so on. This allows you to customize the rendering with different levels of granularity : either the whole object, or only a part of it.
 
 ### renderObject ###
+
+This fragment facet is the entry point of the Object Renderer. It renders a block for the facet's target object, and delegates the contents to other facets. Overriding this facet changes the rendering for the whole object. You will only keep the main layout. 
+
+    @FacetKey(name="renderObject", profileId="myrole", targetObjectType=MyClass.class)
+    class RenderObjectMyClass extends RenderObjectImpl {
+    
+        @Override
+        String getPath() {
+            "/WEB-INF/jsp/myrole/renderObject-myclass.jsp"
+        }
+    
+    }
+    
+And the JSP (using Woko's `title` tag for the example) :
+
+    <%@include file="/WEB-INF/woko/jsp/taglibs.jsp"%>
+    <c:set var="my" value="${renderObject.facetContext.targetObject}"/>
+    <div class="wokoObject">
+        <h1><w:title object="${my}"/></h1>
+        <p>
+            This is my ! Foo = ${my.foo}
+        </p>
+    </div>
+
+### renderTitle ###
+
+Used to render a title for the target object. It is used by `renderObject`, and whenever a title is needed, like in links or HTML page titles.
+
+By default it will look for a title-like property on your POJO (like `name` or `title`), and default to the object's key (ID) if no such property exists. 
+
+You can override it in order to create more meaningful titles for your POJOs :
+
+    @FacetKey(name="renderTitle", profileId="all", targetObjectType=MyClass.class)
+    class RenderTitleMyClass extends RenderTitleTimpl {
+    
+        @Override
+        String getTitle() {
+            MyClass my = (MyClass)facetContext.targetObject
+            return my.foo // use foo as title for objects of type MyClass            
+        } 
+
+    }
+    
+### renderLinks ###
+
+
 
 
 
