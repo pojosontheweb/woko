@@ -3,7 +3,7 @@
 echo __       __     _  __
 echo \ \  _  / /___ ^| ^|/ / ___
 echo  \ \/ \/ // o \^|   K /   \
-echo   \__W__/ \___/^|_^|\_\\_o_/  2.2-beta3
+echo   \__W__/ \___/^|_^|\_\\_o_/  LATEST-SNAPSHOT
 echo              POJOs on the Web !
 echo.
 
@@ -74,7 +74,7 @@ if exist pom.xml (
     )
 
     echo ^| Generating your project, please wait, it can take a while to download everything...
-    call mvn archetype:generate -DarchetypeArtifactId=woko-archetype -DarchetypeGroupId=com.pojosontheweb -DarchetypeVersion=2.2-beta3 -DgroupId="%GROUPID%" -DartifactId="%ARTIFACTID%" -Dversion="%VERSION%" -DinteractiveMode="false" -q
+    call mvn archetype:generate -DarchetypeArtifactId=woko-archetype -DarchetypeGroupId=com.pojosontheweb -DarchetypeVersion=LATEST-SNAPSHOT -DgroupId="%GROUPID%" -DartifactId="%ARTIFACTID%" -Dversion="%VERSION%" -DinteractiveMode="false" -q
 
     cd "%ARTIFACTID%"
     call mvn exec:java -Dexec.mainClass="woko.tooling.cli.Runner" -Dexec.classpathScope=runtime -Dexec.args=%EXECARGS% -q
