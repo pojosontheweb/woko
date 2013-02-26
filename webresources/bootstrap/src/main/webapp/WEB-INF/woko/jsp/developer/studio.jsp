@@ -191,8 +191,8 @@
                     <ul class="thumbnails">
                         <li class="span3">
                             <div class="thumbnail">
-                                <img src="http://twitter.github.com/bootstrap/assets/img/examples/bootstrap-example-marketing.png" alt="Bootstrap">
-                                <h3>Default</h3>
+                                <img src="http://farm9.staticflickr.com/8524/8510298158_47a8a0556d_n.jpg" alt="default">
+                                <h3>default</h3>
                                 <p>
                                     Provides a common fixed-width (and optionally responsive) layout.
                                 </p>

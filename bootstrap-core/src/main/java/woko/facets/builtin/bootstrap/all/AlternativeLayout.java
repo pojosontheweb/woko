@@ -3,8 +3,12 @@ package woko.facets.builtin.bootstrap.all;
 public enum AlternativeLayout {
 
     fluid(
-            "http://twitter.github.com/bootstrap/assets/img/examples/bootstrap-example-fluid.png",
+            "http://farm9.staticflickr.com/8509/8510298090_630b11f7e6_n.jpg",
             "Create a fluid, two-column page. Great for applications and docs."
+    ),
+    absolut(
+            "http://farm9.staticflickr.com/8366/8509189293_be3fc81185_n.jpg",
+            "Logo, title, slogan and searchBar are separated from the navBar."
     );
 
     private String imgUrl;
