@@ -1018,9 +1018,20 @@ Here is a schematic break-down of the Object Renderer's facets :
 
 ![Object Renderer](object-renderer.png)
 
-A `layout` facet controls the global page template, and then a composite use of various fragments (`renderObject`, `renderProperties`) are involved in order to display your POJOs dynamically.
+A `layout` facet controls the global page template, and then a composite use of various fragments (`renderObject`, `renderProperties`) are involved in order to display your POJOs dynamically. Composition (container fragments including nested sub-fragments) is used in order to provide several different levels of granularity :
 
-Facet override is used in order to change parts (or all) of the default rendering for the Domain Objects and Roles of your application.
+* page template
+   * navigation
+   * object 
+      * title
+      * links
+      * properties
+         * name & value
+         * ...
+         
+Woko provides generic implementations of these fragment facets, that can render any POJO using reflection in order to grab the properties of the object. The default rendering will thereby display all the properties of a POJO, using built-in fragment facets. 
+
+In order to change the rendering for a given POJO or property, you just need to override the appropriate facet. The composite, nested structure allows you to change all, or part of the rendering for your Domain Objects and roles. 
 
 ## Layout ##
 
@@ -1048,7 +1059,7 @@ The `layout` facet is used in all "top-level" Woko JSPs. A default one is provid
     	    	
 	}
 	
-Of course, you can override `layout` for the various role(s) and/or target types in your application. 
+The JSP layout is regular Stripes. The default one is overlayed in your app (see `/target/javadocproxy/WEB-INF/woko/jsp/all/layout.jsp`), and of course you can use your own in order to apply a different page template to the whole app. 
 	
 ### Nav Bar ###
 
@@ -1113,15 +1124,133 @@ You can override it in order to create more meaningful titles for your POJOs :
         @Override
         String getTitle() {
             MyClass my = (MyClass)facetContext.targetObject
-            return my.foo // use foo as title for objects of type MyClass            
+            return "I am ${my.foo}" // use foo as title for objects of type MyClass            
         } 
 
     }
-    
+
+`renderTitle` is a FragmentFacet, so you can override `getPath()` too if you want to change the JSP used in order to render the title.         
+
 ### renderLinks ###
 
+Renders a list of links for the currently displayed object. Allows the user to trigger actions or navigate when browsing your POJOs. 
 
+By default, it includes links for CRUD features by checking if the user can edit, delete the object etc. This is done by trying to lookup the `save`, `delete`, etc. ResolutionFacets for the POJO and the current user. Links to these facets are included if the facets are available. 
 
+This facet can be overriden in order to add links for your POJOs and users. Here's an example that renders different links on a `Product` object, depending on the user's role.
+
+For `customer` : 
+
+    @FacetKey(name="renderLinks", profileId="customer", targetObjectType=Product.class)
+    class RenderLinksProductCustomer extends RenderLinksImpl {
+    
+        @Override
+        List<Link> getLinks() {
+            Product p = facetContext.targetObject
+            return [
+                new Link("/addToCart/Product/$p.id", "Add to cart"),
+                new Link("/emailToFriend/Product/$p.id", "Email to a friend")
+            ]
+        }
+    }
+
+And for `admin` :
+
+    @FacetKey(name="renderLinks", profileId="admin", targetObjectType=Product.class)
+    class RenderLinksProductAdmin extends RenderLinksImpl {
+    
+        @Override
+        List<Link> getLinks() {
+            Product p = facetContext.targetObject
+            [
+                new Link("/manageStock/Product/$p.id", "Manage stock"),
+                new Link("/disable/Product/$p.id", "Disable from catalogue")
+            ]
+        }
+    
+    }
+
+Depending on the user's role, different links will be rendered when browsing a `Product` object.
+
+### renderProperties ###
+
+Renders the properties section for a POJO. Provides the list of the properties to be displayed, and the fragment used. The generic default version will simply output all readable properties, by delegating to sub-facets for each property.
+
+It's common to override this facet in order to restrict the number of properties shown for a POJO and a role. Here's an example that restricts to some properties for the class `Product` and the role `customer` :
+
+    @FacetKey(name="renderProperties", profileId="customer", targetObjectType=Product.class)
+    class RenderPropertiesProductCustomer extends RenderPropertiesImpl {
+    
+        @Override
+        List<String> getPropertyNames() {
+            ["name", "image", "description", "price"]
+        }
+    }  
+    
+Another one for `admin` users, that only removes some unwanted props from the generic list :
+
+    @FacetKey(name="renderProperties", profileId="admin", targetObjectType=Product.class)
+    class RenderPropertiesProductAdmin extends RenderPropertiesImpl {
+    
+        @Override
+        List<String> getPropertyNames() {
+            def all = new ArrayList<String>(super.getPropertyNames())
+            all.remove("id") // no need to show the ID
+            all.remove("class") // get rid of getClass() - geeky and useless here
+            return all 
+        }
+    }  
+
+> Note that removing the props from the list returned by the generic `RenderPropertiesImpl` allows new properties of the POJO to appear automagically, but it can have side effects : you may not want your users, or some of them, to see this new property. Returning a "hard-coded" list requires to update the facet whenever a property is added or removed, but it allows to ensure what is displayed.
+
+Of course `renderProperties` being a Fragment Facet, you can even change the backing JSP in order to change the markup wrapping the properties. Woko includes two modes by default : tabular-like, with property names, or "flat", just spitting out values in blocks one after the other. See `RenderPropertiesImpl#setUseFlatLayout` for more infos.   
+ 
+### renderPropertyName ###
+
+Renders the name of a POJO's property. Uses `MyClass.myProp` style names by default and looks up for an externalized message in the app's resource bundles. 
+
+This facet is not usually overriden as you can change the labels from the property files. It's there in case you really wanna change the rendering for a property name.
+
+### renderPropertyValue ###
+
+Renders the value of a POJO's property. Defined by the interface `woko.facets.builtin.RenderPropertyValue`, it comes with several implementations in order to handle the primitive types and associations between POJOs.
+
+There are two ways to override `renderPropertyValue` facets :
+
+* by _type_ : the type of the property (boolean, String, MyClass, etc.) is used to lookup the facet, which is assigned to the type of the property
+* by _name_ : the name of the property is used to lookup the facet, which is assigned to the _target object_'s type (not the property)
+
+This allows to override globally (using the type), for all properties of a given type, or specifically, only for a given property of a given target type. Here under are two examples.
+
+By type (will be used anytime a POJO has a property of type `Address`):
+
+    @FacetKey(name="renderPropertyValue", profileId="customer", targetType=Address.class) 
+    class RenderPropValueBigDecimalCustomer extends RenderPropertyValueImpl {
+    
+        @Override
+        String getPath() {
+            "/WEB-INF/jsp/customer/renderPropValue-address.jsp"
+        }
+    
+    }
+    
+By name (will be used for `address` property of `User` objects) :
+
+    @FacetKey(name="renderPropertyValue_address", profileId="customer", targetType=User.class) 
+    class RenderPropValueBigDecimalCustomer extends RenderPropertyValueImpl {
+    
+        @Override
+        String getPath() {
+            "/WEB-INF/jsp/customer/renderPropValue-address.jsp"
+        }
+    
+    }
+    
+Again, it's important to notice that the facet's `name` and `targetObjectType` are different when you override either by type or by name. When overriding by type, the built-in facet name `renderPropertyValue` is used and the facet is assigned to the type of the property. When overriding by type, the name of the facet must be suffixed with the property name, like `renderPropertyValue_address`, and the target type is the owning object's type, not the property's type.
+
+As a result, when writing the JSP view that backs a `renderPropertyValue` fragment facet, you should not access the facet's target object. Instead, use `RenderPropertyValue#getPropertyValue` and `RenderPropertyValue#getOwningObject` that return the property value and owning object consistently for the two modes :
+
+ 
 
 
 # Add-ons #
