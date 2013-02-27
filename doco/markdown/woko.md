@@ -1,8 +1,11 @@
-<center>
-<img src="woko3d.png"/>
-</center>
+Title:  Woko In a Nutshell  
+Author: Rémi Vankeisbelck 
+  Alexis Boissonnat
+Date:   27th feb. 2013  
+CSS : bootstrap.css
+CSS : responsive.css
 
-# POJOs on the Web! #
+# Introduction #
 Woko is a Full-Stack, [Domain Driven](http://en.wikipedia.org/wiki/Domain-driven_design) framework for building JEE webapps efficiently. It provides transversal plumbing and solutions to the recurrent webapp programming issues, as well as a unique approach for developing iteratively and in a consistent manner.
 
 Woko is about displaying Domain Objects to end users, and allow them to interact. That's what every application is about. We use GUI paradigms and widgets in order to represent some state to the end user, allow her(him) to change that state and trigger behavior based upon user interaction. 
