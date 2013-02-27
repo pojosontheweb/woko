@@ -1,3 +1,4 @@
 #!/bin/sh
 
-multimarkdown woko.md | xsltproc -nonet -novalid ~/Library/Application\ Support/MultiMarkdown/XSLT/xhtml-toc-h1.xslt - > index.html && open index.html
+multimarkdown woko.md | xsltproc -nonet -novalid xhtml-woko.xslt - > index.html && open index.html
+
