@@ -427,6 +427,7 @@ TODO explain how you can override the title, properties etc. Show an example in 
 ### Resolution Facets ###
 
 TODO explain how to completely override /view, and how to write a sample Resolution Facet that does something
+
 ### Templating ###
 
 TODO explain how to change the layout for a given role (and object ?)
@@ -483,9 +484,10 @@ Woko delegates management of the various sub components to an Inversion of Contr
 The IoC container is defined by interface `woko.ioc.WokoIocContainer`, and is pluggable. Woko ships with a default implementation, and a [Pico Container](http://picocontainer.codehaus.org) adapter.
 
 ## Startup ##
+
 Woko (and its sub-components) is created and initialized at application startup, using a servlet context listener. A base abstract class is provided (`woko.WokoIocInitListener`), that can be extended in order to configure Woko.
 
-Here is an example using the `SimpleWokoIocContainer` (Groovy version) :
+Here is an example using the `SimpleWokoIocContainer` :
 
 
     package com.myco.myapp
@@ -598,13 +600,14 @@ Here is an example :
     return new Woko(ioc, ["myguest"])
 
 ## Domain Objects ##
+
 Domain Objects in Woko are POJOs. We don't use no meta-framework of any kind, only the Java type system. 
 
-Woko manages your POJOs through the [Object Store](ObjectStore), which tandles the persistence of your objects seamlessly. The store is created at startup and connects to an underlying database in order to save the state and provide access to your Objects. This can be implemented in many different ways, using an ORM, custom DAOs, or whatever you can think of. 
+Woko manages your POJOs through the [Object Store](Object Store), which handles the persistence of your objects seamlessly. The store is created at startup and connects to an underlying database in order to save the state and provide access to your Objects. This can be implemented in many different ways, using an ORM, custom DAOs, or whatever you can think of. 
 
 > The ObjectStore only implements the basic CRUD operations by default, but it's a good entry point to place more specialized accessors to your domain objects (e.g. queries) when you'll need them. Like other Woko components, it is accessible everywhere in your application. 
 
-Woko heavily uses introspection (`java.lang.reflect`) in order to determine the properties to display etc. In general, your Domain Objects should be regular POJOs that follow the JavaBean convention. Woko's ObjectRenderer will work directly with objects that 
+Woko heavily uses introspection (`java.lang.reflect`) in order to determine the properties to display etc. In general, your Domain Objects should be regular POJOs that follow the JavaBean convention. Woko's ObjectRenderer will work directly with objects that :
 
 * have a default constructor (if you want to be able to create instances via the default generated interface)
 * expose their properties with accessors following the JavaBean convention
@@ -627,7 +630,7 @@ Woko scans configured packages in your CLASSPATH for annotated facet classes at 
 
 ### Woko Facet Context ###
 
-Facets implementing `IFacet` may access the `WokoFacetContext` at runtime in order to retrieve various informations about the facet. It mainly provides access to the `Woko` instance, as well as the target object, used at runtime to retrieve the facet.
+Facets implementing `IFacet` (all Woko facets do) may access the `WokoFacetContext` at runtime in order to retrieve various informations about the facet. It mainly provides access to the `Woko` instance, as well as the target object, used at runtime to retrieve the facet.
 
 Here is an example :
 
@@ -675,7 +678,6 @@ When the facet is retrieved, it is automatically bound as a request attribute wi
     <%
         MyFacet my = (MyFacet)request.getAttribute("facet");
         MyFacet my = (MyFacet)request.getAttribute("my");
-        my.getFoo();
     %>
     <p>
         <%=my.getFoo()>%>
@@ -692,6 +694,7 @@ Or EL :
 `ResolutionFacet`s are to Woko what `ActionBean`s are to Stripes : they are the Controllers in the MVC. They basically respond to an URL, handle the http request, and return a Stripes `Resolution` that generates the response. 
 
 #### URL Scheme ####
+
 `WokoActionBean` dispatches incoming requests to Resolution Facets using the following URL binding :
 
     @UrlBinding("/{facetName}/{className}/{key}")
@@ -734,7 +737,7 @@ Of course Resolution Facets can return any type of Stripes `Resolution` (foward,
 
 #### Event handlers ####
 
-Like Stripes ActionBeans, Woko's ResolutionFacets can have several event handlers. Woko will invoke one of them based on the presence of a request parameter. `@DontValidate` can be used to skip validation for an event.
+Like Stripes ActionBeans, Woko's ResolutionFacets may have several event handlers. Woko will invoke one of them based on the presence of a request parameter. `@DontValidate` can be used to skip validation for an event.
 
 The following example shows a typical Resolution Facet with 2 events :
 
@@ -744,7 +747,7 @@ The following example shows a typical Resolution Facet with 2 events :
         @Validate(required=true)
         String foo
     
-        // Default Handler
+        // Default Handler (from interface)
         @Override
         @DontValidate
         Resolution getResolution(ActionBeanContext abc) {
@@ -777,16 +780,11 @@ The event handlers are all public methods that return a `Resolution`, and possib
 
 Of course you can have as many handlers you want. 
 
-> There are limitations concerning validation and event handling. For example, @Validate(on=xyz) is not yet supported. Refer to the javadocs (or source code) for up-to-date status.
-        
+> There are limitations concerning validation and event handling. For example, @Validate(on=xyz) is not yet supported. Refer to the javadocs (or source code) for up-to-date status.        
 
 ### Fragment Facets ###
 
-Fragment facets are the heart of Woko's [ObjectRenderer](Object Renderer). 
-
-Their role is to render a fragment (hence the name) of the page, and are included inside JSPs like this : 
-
-Here is an example :
+Fragment facets are the heart of Woko's [ObjectRenderer](Object Renderer). Their role is to render a fragment (hence the name) of the page, and are included inside JSPs like this : 
 
     <%
         Woko woko = Woko.getWoko(application);
@@ -805,6 +803,17 @@ As other facets, the lookup is done using the currently logged-in user and the t
     
 > The above scriptlet could be replaced by the use of the `<w:includeFacet/>` tag. See the [Tag Library](Tag Library) for more infos.
 
+Fragment Facets must implement the interface `woko.facets.FragmentFacet`. Here is an example :
+
+    @FacetKey(name="myFragment", profileId="myrole", targetObjectType=MyClass.class)
+    class MyFragmentFacet implements FragmentFacet {
+    
+        @Override
+        String getFragmentPath(HttpServletRequest request) {
+            "/WEB-INF/jsp/my-fragment.jsp"
+        }    
+    }
+
 ### Tag Library ###
 
 Woko includes a few tags that eases JSP writing :
@@ -821,7 +830,7 @@ The tags are implemented as JSP tag files, and are overlayed in your application
 
     <%@ taglib prefix="w" tagdir="/WEB-INF/tags/woko" %>
 
-Or even import Woko's `taglibs.jsp`, it will import all the usual taglibs (`c`, `stripes`, `fmt` etc.) :
+Or even import Woko's `taglibs.jsp`, it will import all the usual taglibs (Standard, Stripes, Woko etc.) :
 
 	<%@include file="/WEB-INF/woko/jsp/taglibs.jsp"%>
 	
@@ -1047,6 +1056,8 @@ And the JSP (using Woko's `title` tag for the example) :
         </p>
     </div>
 
+> An alternate `renderObjectEdit` is used when editing the object.
+
 #### renderTitle ####
 
 Used to render a title for the target object. It is used by `renderObject`, and whenever a title is needed, like in links or HTML page titles.
@@ -1109,6 +1120,8 @@ And for `admin` :
 
 Depending on the user's role, different links will be rendered when browsing a `Product` object.
 
+> An alternate `renderLinksEdit` is used when editing the object.
+
 #### renderProperties ####
 
 Renders the properties section for a POJO. Provides the list of the properties to be displayed, and the fragment used. The generic default version will simply output all readable properties, by delegating to sub-facets for each property.
@@ -1142,6 +1155,8 @@ Another one for `admin` users, that only removes some unwanted props from the ge
 
 Of course `renderProperties` being a Fragment Facet, you can even change the backing JSP in order to change the markup wrapping the properties. Woko includes two modes by default : tabular-like, with property names, or "flat", just spitting out values in blocks one after the other. See `RenderPropertiesImpl#setUseFlatLayout` for more infos.   
  
+> An alternate `renderPropertiesEdit` is used when editing the object, thet wraps the properties in a HTML FORM.
+
 #### renderPropertyName ####
 
 Renders the name of a POJO's property. Uses `MyClass.myProp` style names by default and looks up for an externalized message in the app's resource bundles. 
@@ -1200,12 +1215,78 @@ Here is a fictious JSP that backs our `renderPropertyValue` facet for the `addre
         <abbr title="Phone">P:</abbr> ${user.phone}
     </address>
 
-
+> An alternate `renderPropertyValueEdit` is used when editing the object.
 
 ## Localization ##
+
+TODO explain how to use application.properties, Woko.getResource() and <fmt:message/>.
+
 ## Build ##
+
+Maven is used to build Woko and Woko-based apps. Your project's `pom.xml` should contain all required Woko dependencies and plugins.
+
+### Dependencies ###
+
+Dependencies of your project may vary depending on your Woko "flavor". Some modules can be replaced by others (like authentication), and some are optional (like User Management and Registration). 
+
+The best way to start is to create a project using the "Reference Implementation". It's the default config that we use when starting a new project. This can be done by using the `woko` script :
+
+    $> woko init
+    …
+
+This will create a pre-configured project that you can use as a basis for plugging in optional modules or changing some components.
+
 ### Dependencies and War Overlays ###
+
+Woko uses [war overlay](http://maven.apache.org/plugins/maven-war-plugin/overlays.html) in order to copy the built-in JSPs into your app. They are copied under `/target/myapp`. 
+
+The `war` dependencies in your pom should be specified in the correct order. 
+
+Again, run `woko init` in order to see how it's done by default.  
+
 ### Environments ###
+
+Environments allow to have different resources depending on the context (e.g. production, test, dev, etc.). They are plain folders under the project root :
+
+    myapp/
+        environments/
+            dev/
+                log4j.properties
+                hibernate.cfg.xml
+            prod/
+                log4j.properties
+                hibernate.cfg.xml                    
+
+You can switch from various environments easily using the `woko-maven-plugin`. It is included in your `pom.xml` when you create your project with `woko init`, and attached to the `process-resources` phase so that it kicks in automatically when you build the app. 
+
+       $> mvn clean install -Dwoko.env=prod
+       
+The plugin will recursively copy (and thereby possibly overwrite existing resources) the files found in the environment folder `<project_root>/environments/myenv` to the `target/classes` folder of your project. 
+
+The plugin will also generate a `woko.environment` file containing the name of the environment used at build-time. You can get the environment inside your running app by calling `Woko#getEnvironment()`.
+
+Your pom should look like this :
+
+    <plugin>
+        <groupId>com.pojosontheweb</groupId>
+        <artifactId>woko-maven-plugin</artifactId>
+        <version>${woko.version}</version>
+        <configuration>
+            <!-- optional : specify default environment to be used if not passed on the cmd line -->
+            <defaultEnv>dev</defaultEnv>
+        </configuration>
+        <executions>
+            <execution>
+                <id>woko.environment</id>
+                <phase>process-resources</phase>
+                <goals>
+                    <goal>env</goal>
+                </goals>
+            </execution>
+        </executions>
+    </plugin>
+
+
 ## Tooling ##
 ### The woko Script ###
 #### woko push ####
