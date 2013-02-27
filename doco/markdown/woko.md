@@ -1248,9 +1248,20 @@ By name (will be used for `address` property of `User` objects) :
     
 Again, it's important to notice that the facet's `name` and `targetObjectType` are different when you override either by type or by name. When overriding by type, the built-in facet name `renderPropertyValue` is used and the facet is assigned to the type of the property. When overriding by type, the name of the facet must be suffixed with the property name, like `renderPropertyValue_address`, and the target type is the owning object's type, not the property's type.
 
-As a result, when writing the JSP view that backs a `renderPropertyValue` fragment facet, you should not access the facet's target object. Instead, use `RenderPropertyValue#getPropertyValue` and `RenderPropertyValue#getOwningObject` that return the property value and owning object consistently for the two modes :
+As a result, when writing the JSP view that backs a `renderPropertyValue` fragment facet, you should not access the facet's target object. Instead, use `RenderPropertyValue#getPropertyValue` and `RenderPropertyValue#getOwningObject` that return the property value and owning object consistently for the two modes.
 
- 
+Here is a fictious JSP that backs our `renderPropertyValue` facet for the `address` property of a `User` object :
+
+    <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+    <%@include file="/WEB-INF/woko/jsp/taglibs.jsp"%>
+    <c:set var="user" value="${renderPropertyValue.owningObject}"/>
+    <c:set var="address" value="${renderPropertyValue.propertyValue}"/>
+    <address>
+        <strong>${user.firstName} ${user.lastName}</strong><br>
+        ${address.street}<br>
+        ${address.city}, ${address.postCode}<br>
+        <abbr title="Phone">P:</abbr> ${user.phone}
+    </address>
 
 
 # Add-ons #
