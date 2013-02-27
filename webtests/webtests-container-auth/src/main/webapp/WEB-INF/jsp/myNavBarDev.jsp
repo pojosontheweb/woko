@@ -1,6 +1,5 @@
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%--
-  ~ Copyright 2001-2012 Remi Vankeisbelck
+  ~ Copyright 2001-2013 Remi Vankeisbelck
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -14,11 +13,13 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   --%>
-
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@include file="/WEB-INF/woko/jsp/taglibs.jsp"%>
 <ul>
-    <li><a href="${pageContext.request.contextPath}/home"><fmt:message bundle="${wokoBundle}" key="woko.devel.navbar.home"/> </a></li>
-    <li><a href="${pageContext.request.contextPath}/find"><fmt:message bundle="${wokoBundle}" key="woko.devel.navbar.find"/> </a></li>
-    <li><a href="${pageContext.request.contextPath}/create"><fmt:message bundle="${wokoBundle}" key="woko.devel.navbar.create"/> </a></li>
-    <li><a href="${pageContext.request.contextPath}/studio"><fmt:message bundle="${wokoBundle}" key="woko.devel.navbar.studio"/> </a></li>
+    <c:forEach var="link" items="${navBar.links}">
+        <li><a href="${cp}${link.href}"
+               class="${link.cssClass}"
+                ${link.attributesString}><c:out value="${link.text}"/></a></li>
+    </c:forEach>
     <li><a href="http://www.google.com">google</a></li>
 </ul>

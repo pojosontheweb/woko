@@ -25,6 +25,9 @@ import woko.persistence.ObjectStore;
 import woko.users.UserManager;
 import woko.users.UsernameResolutionStrategy;
 
+import java.util.Collections;
+import java.util.List;
+
 /**
  * <code>navBar</code> fragment facet for unauthenticated, guest users.
  */
@@ -42,5 +45,8 @@ public class NavBarAll<
         return FRAGMENT_PATH;
     }
 
-
+    @Override
+    public List<Link> getLinks() {
+        return Collections.emptyList();
+    }
 }
