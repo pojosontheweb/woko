@@ -38,6 +38,7 @@ public class WokoFacets {
     public static final String layout = Layout.FACET_NAME;
     public static final String list = ListObjects.FACET_NAME;
     public static final String renderListItem = RenderListItem.FACET_NAME;
+    public static final String renderListTitle = RenderListTitle.FACET_NAME;
     public static final String login = Login.FACET_NAME;
     public static final String logout = Logout.FACET_NAME;
     public static final String navBar = NavBar.FACET_NAME;
