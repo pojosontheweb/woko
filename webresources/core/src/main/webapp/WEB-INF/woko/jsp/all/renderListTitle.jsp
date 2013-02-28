@@ -1,4 +1,4 @@
-<!--
+<%--
   ~ Copyright 2001-2012 Remi Vankeisbelck
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,20 +12,7 @@
   ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
-  -->
-
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <parent>
-        <groupId>com.pojosontheweb</groupId>
-        <artifactId>woko-parent</artifactId>
-        <version>LATEST-SNAPSHOT</version>
-    </parent>
-    <artifactId>woko-asyncjobs</artifactId>
-    <packaging>pom</packaging>
-    <name>Woko - asynchronous jobs</name>
-    <modules>
-        <module>core</module>
-    </modules>
-</project>
+  --%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@include file="/WEB-INF/woko/jsp/taglibs.jsp"%>
+<h1 class="wokoObjectTitle">${renderListTitle.title}</h1>

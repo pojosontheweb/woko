@@ -112,6 +112,9 @@ class RendererTest extends WebTestBase {
                 goToPage '/save/MyEntity?createTransient=true&object.id=887766&object.prop1=abc&object.prop2=123'
                 goToPage '/list/MyEntity'
 
+                // Verify title
+                verifyXPath xpath: '/html/body/div/div[2]/div/h1', text: 'TestPageHeaderTitleOverride'
+
                 // assert some of the DOM
                 verifyXPath xpath:'/html/body/div/div[2]/div/table/thead/tr/th', text:'.*Class.*', regex: true
                 verifyXPath xpath:'/html/body/div/div[2]/div/table/tbody/tr/td', text:'.*test.MyEntity.*', regex: true
@@ -128,6 +131,9 @@ class RendererTest extends WebTestBase {
 
                 logout()
                 goToPage '/list/MyEntity'
+
+                // Verify title
+                verifyXPath xpath: '/html/body/div/div[2]/div/h1', text: 'TestPageHeaderTitleOverride'
 
                 // there should be no more "class" field
                 verifyText text: '.*887766.*', regex: true

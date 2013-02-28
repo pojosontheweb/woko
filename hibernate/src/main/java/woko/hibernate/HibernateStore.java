@@ -253,17 +253,20 @@ public class HibernateStore implements ObjectStore, TransactionalStore, Closeabl
         if (className == null) {
             return null;
         }
-        // try forName first
+
+        // lookup simple name in our list of mapped classes
+        for (Class<?> clazz : mappedClasses) {
+            String simpleName = clazz.getSimpleName();
+            if (simpleName.equals(className)) {
+                return clazz;
+            }
+        }
+
+        // try forName as a last resort
         try {
             return Class.forName(className);
         } catch (ClassNotFoundException e) {
-            // lookup simple name
-            for (Class<?> clazz : mappedClasses) {
-                String simpleName = clazz.getSimpleName();
-                if (simpleName.equals(className)) {
-                    return clazz;
-                }
-            }
+            log.warn("Unable to load mapped class for " + className);
             return null;
         }
     }
