@@ -112,6 +112,9 @@ class RendererTest extends WebTestBase {
                 goToPage '/save/MyEntity?createTransient=true&object.id=887766&object.prop1=abc&object.prop2=123'
                 goToPage '/list/MyEntity'
 
+                // Verify title
+
+
                 // assert some of the DOM
                 verifyXPath xpath:'/html/body/div/div[2]/div/table/thead/tr/th', text:'.*Class.*', regex: true
                 verifyXPath xpath:'/html/body/div/div[2]/div/table/tbody/tr/td', text:'.*test.MyEntity.*', regex: true
