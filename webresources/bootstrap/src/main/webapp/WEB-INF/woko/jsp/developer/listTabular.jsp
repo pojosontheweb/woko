@@ -30,21 +30,10 @@
             if (listWrapperClass==null) {
                 listWrapperClass = "table " + className;
             }
-            String overridenH1 = list.getPageHeaderTitle();
+
         %>
-        <h1 class="page-header">
-            <c:choose>
-                <c:when test="<%=overridenH1==null%>">
-                    <fmt:message bundle="${wokoBundle}" key="woko.devel.list.title">
-                        <fmt:param value="<%=totalSize%>"/>
-                        <fmt:param value="<%=className%>"/>
-                    </fmt:message>
-                </c:when>
-                <c:otherwise>
-                    <%=overridenH1%>
-                </c:otherwise>
-            </c:choose>
-        </h1>
+
+        <w:includeFacet facetName="<%=WokoFacets.renderListTitle%>" targetObjectClass="<%=woko.getObjectStore().getMappedClass(className)%>"/>
 
         <c:if test="<%=nbPages>1%>">
             <div class="row-fluid">
@@ -109,20 +98,12 @@
 
                     // check if at least one action is available (once only)
                     if (!hasAtLeastOneAction) {
-                        // check if object is viewable...
-                        Object view = woko.getFacet(View.FACET_NAME, request, result);
-                        if (view!=null && view instanceof View) {
-                            hasAtLeastOneAction = true;
-                        } else {
-                            // do we have links for that object ?
-                            RenderLinks rl = woko.getFacet(RenderLinks.FACET_NAME, request, result);
-                            if (rl!=null) {
-                                List<Link> links = rl.getLinks();
-                                hasAtLeastOneAction = links!=null && links.size()>0;
-                            }
+                        RenderTabularListItemLinks rl = woko.getFacet(WokoFacets.renderTabularListItemLinks, request, result);
+                        if (rl!=null) {
+                            List<Link> links = rl.getLinks();
+                            hasAtLeastOneAction = links!=null && links.size()>0;
                         }
                     }
-
                 }
 
                 if (results.getTotalSize()>0) {
@@ -172,29 +153,7 @@
                             %>
                             <c:if test="<%=hasAtLeastOneAction%>">
                                 <td>
-                                    <div class="btn-group">
-                                    <%
-                                        Object view = woko.getFacet(View.FACET_NAME, request, result);
-                                        if (view!=null && view instanceof View) {
-                                            String href = request.getContextPath() + "/" + LinkUtil.getUrl(woko, result, "view");
-                                    %>
-                                        <a href="<%=href%>" class="btn view">
-                                            <fmt:message bundle="${wokoBundle}" key="woko.links.view"/>
-                                        </a>
-                                    <%
-                                        }
-                                        // Grab available links !
-                                        RenderLinks rl = woko.getFacet(RenderLinks.FACET_NAME, request, result);
-                                        for (Link l : rl.getLinks()) {
-                                            String href = request.getContextPath() + "/" + l.getHref();
-                                            String cssClass = l.getCssClass();
-                                            String text = l.getText();
-                                    %>
-                                        <a href="<%=href%>" class="btn <%=cssClass%>"><c:out value="<%=text%>"/></a>
-                                    <%
-                                        }
-                                    %>
-                                    </div>
+                                    <w:includeFacet facetName="<%=WokoFacets.renderTabularListItemLinks%>" targetObject="<%=result%>"/>
                                 </td>
                             </c:if>
 

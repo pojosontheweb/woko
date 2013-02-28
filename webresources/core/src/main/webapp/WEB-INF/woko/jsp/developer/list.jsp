@@ -36,21 +36,10 @@
             if (totalSize % resultsPerPage != 0) {
               nbPages++;
             }
-            String overridenH1 = list.getPageHeaderTitle();
         %>
-        <h1>
-            <c:choose>
-                <c:when test="<%=overridenH1==null%>">
-                    <fmt:message bundle="${wokoBundle}" key="woko.devel.list.title">
-                        <fmt:param value="<%=totalSize%>"/>
-                        <fmt:param value="<%=className%>"/>
-                    </fmt:message>
-                </c:when>
-                <c:otherwise>
-                    <%=overridenH1%>
-                </c:otherwise>
-            </c:choose>
-        </h1>
+
+        <w:includeFacet facetName="<%=WokoFacets.renderListTitle%>" targetObjectClass="<%=woko.getObjectStore().getMappedClass(className)%>"/>
+
         <div id="wokoPaginationSettings">
             <s:form action="/list">
                 <s:hidden name="className"/>

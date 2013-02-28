@@ -16,27 +16,22 @@
 
 package woko.facets.builtin;
 
-import woko.facets.FragmentFacet;
 import net.sourceforge.jfacets.IFacet;
-import woko.facets.builtin.all.Link;
-
-import java.util.List;
+import woko.facets.FragmentFacet;
 
 /**
- * <code>renderLinks</code> fragment facets are used to display links for objects
- * in view or edit mode.
+ * <code>renderListTitle</code> fragment facets are used to display a title in the list of objects.
  *
- * The default, generic behavior allows for CRUD operations, based on the presence of
- * CRUD facets on the target object (<code>view</code>, <code>edit</code> etc).
+ * Can be ovverriden to customize the titles for objects and roles of your app.
  */
-public interface RenderLinks extends IFacet, FragmentFacet {
+public interface RenderListTitle extends IFacet, FragmentFacet {
 
-    static final String FACET_NAME = "renderLinks";
+    static final String FACET_NAME = "renderListTitle";
 
     /**
-     * Return a list of links to be displayed for the rendered object
-     * @return a list of links
+     * Return a human-readable title used in the list of the target object
+     * @return the list title for the target object
      */
-    List<Link> getLinks();
+    String getTitle();
 
 }
