@@ -3,7 +3,7 @@ package woko.facets.builtin;
 import java.util.List;
 
 /**
- * Base interface for tabular result facets : provide acces to the property names
+ * Base interface for tabular result facets : provide access to the property names
  * to be displayed as columns of the resulting table.
  */
 public interface TabularResultFacet {

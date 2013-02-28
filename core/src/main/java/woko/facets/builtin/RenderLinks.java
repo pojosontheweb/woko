@@ -26,7 +26,7 @@ import java.util.List;
  * <code>renderLinks</code> fragment facets are used to display links for objects
  * in view or edit mode.
  *
- * The default, generic hehavior allows for CRUD operations, based on the presence of
+ * The default, generic behavior allows for CRUD operations, based on the presence of
  * CRUD facets on the target object (<code>view</code>, <code>edit</code> etc).
  */
 public interface RenderLinks extends IFacet, FragmentFacet {
