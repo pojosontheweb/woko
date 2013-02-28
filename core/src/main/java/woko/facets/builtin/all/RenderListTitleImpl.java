@@ -71,7 +71,7 @@ public class RenderListTitleImpl<
 
         Locale locale = getRequest().getLocale();
         return listFacet.getResults().getTotalSize() + " "
-                + Util.getMessage(locale, "woko.devel.list.title") + " " +
+                + Util.getMessage(locale, "woko.devel.list.title.simple") + " " +
                 listFacet.getClassName();
     }
 
