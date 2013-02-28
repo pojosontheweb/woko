@@ -36,7 +36,7 @@ More than only plumbing and glue code, Woko offers a real framework and high-lev
 
 Woko uses Facets in order to perform profile-based operations. They sit in between the user and the objects. Woko includes many "built-in" facets for performing the generic operations (CRUD etc.), that you can override by yours in order to change the behavior. The framework does the plumbing tasks, and delegates to facets for actual business logic. 
 
-The facets are assigned to the Domain Objects and Roles of the application. They carry lots of semantics compared to regular web app components (like a servlet) : they tell you what they do for a given type of target Object and a role. 
+The facets are assigned to the Domain Objects and Roles of the application. They carry lots of semantics compared to regular web app components (like a servlet) : they tell you what they do for a given target Object and a role. 
  
 Different categories exist in Woko's built-in facets, and handle different tasks. Some act as Controllers, responding to http requests, others are used to generate HTML fragments. Together they provide a simple yet powerful basis to start from, and customize for your own use cases.
 
@@ -133,7 +133,9 @@ Woko uses a main `ActionBean` for serving all the requests (excepted for static 
 
 ### WokoActionBean ###
 
-It's the main Controller for the Woko app. Kind-of a "super dispatcher" that handles all requests and delegates to the appropriate facet. Unlike a typical Stripes app, a typical Woko application doesn't use several `ActionBean`s. They are replaced by `ResolutionFacet`s : facets that handle the http request, and return a Stripes `Resolution`.   
+It's the main Controller for the Woko app. Kind-of a "super dispatcher" that handles all requests and delegates to the appropriate facet. 
+
+Unlike a typical Stripes app, a typical Woko application doesn't use several `ActionBean`s. They are replaced by `ResolutionFacet`s : facets that handle the http request, and return a Stripes `Resolution`.   
 
 `WokoActionBean` also defines Woko's URL scheme. It responds to all requests that match its URL binding : 
 
@@ -144,23 +146,27 @@ The following URLs are typical Woko URLs that WokoActionBean will handle by dele
 * `/view/Product/123`
 * `/list/Product`
 * `/home`
-* `/doSomeFunkyStuff/MyClass/123?facet.myProp=123&object.myOtherProp=cool`
+* `/doSomeFunkyStuff/MyClass/123?facet.foo=123&object.bar=cool`
 
 The URL scheme is an important part of Woko. The URLs reflect what they mean, they show the intent and target object. The different parts of the URL (`facetName`, `className` and `key`) are used by WokoActionBean in order to resolve the target object and Resolution Facet to be applied.
 
 All parameters are prefixed with either `facet.` or `object.` : they will be bound respectively to the Resolution Facet and target Object, provided they satisfy the validation constraints if any. Like their cousins Action Beans, Resolution Facets has at least one event handler method, that returns a `Resolution`.
 
-> NOTE : You can use ActionBeans in your app, there ain't no problems with that. It's only that ActionBeans don't work like ResolutionFacets : they don't apply to target types and roles. You'll use ActionBeans typically only for actions that apply to all users and have no particular target object. You can also use ActionBeans to write alternale "routes" to some ResolutionFacet, using the action's @UrlBinding and forwarding to another URL.  
+> NOTE : You can use ActionBeans in your app, there ain't no problems with that. It's only that ActionBeans don't work like ResolutionFacets : they don't apply to target types and roles. You'll use ActionBeans typically only for actions that apply to all users and have no particular target object. You can also use ActionBeans to write alternale "routes" to some ResolutionFacet, using the action's @UrlBinding and forwarding to another URL. Additional action beans take precedence over WokoActionBean in case the @UrlBinding conflicts.  
 
 ### Stripes extensions ###
 
-Woko adds several extensions to Stripes in order to make Resolution Facets work like Action Beans, with respect to Binding & Validation, Security, etc. They are implemented as Stripes `Interceptor`s and other components. Woko also registers custom `TypeConverter`s for transparent binding of Domain Objects.
+Woko adds several extensions to Stripes in order to make Resolution Facets work like Action Beans, with respect to Binding & Validation, Security, etc. Thes extensions are implemented as Stripes `Interceptor`s and other Stripes components (`ActionBeanPropertyBinder` etc). Woko also registers custom `TypeConverter`s for transparent binding of Domain Objects. 
+
+You should not need to change these base components. Nevertheless, as everything else, you can sonfigure Stripes to use other extensions in place of Woko's defaults.
 
 ## The Woko instance ##
 
 There's only one Woko ! At least in your webapp… 
 
-When the [application starts up](Startup), a `Woko` instance is created, initialized, and bound to the `ServletContext`. Then, from anywhere in the app, the `Woko` instance can be retrieved and used as an top-level entry point for executing various tasks.
+When the [application starts up](Startup), a `Woko` instance is created, initialized, and bound to the `ServletContext`. Then, from anywhere in the app, the `Woko` instance can be retrieved and used as an top-level entry point for executing various tasks, by calling the static method `Woko#getWoko(ServletContext ctx)`.
+
+Facets can also access the `Woko` instance via `getFacetContext().getWoko()`. 
 
 ## Mandatory Components ##
 
@@ -197,7 +203,7 @@ It's a typical Stripes flow, spiced up with target object and resolution facet l
 
 This tutorial aims at covering the main aspects of Woko through practical examples.
 
-> We'll be using the default "Reference Implementation" (hibernate etc.), but the same concepts applies to other implementations of `ObjectStore`, `UserManager` etc. 
+We'll be using the default "Reference Implementation" (hibernate etc.), but the same concepts applies to other implementations of `ObjectStore`, `UserManager` etc. 
 
 ## Environment setup
 
@@ -207,8 +213,11 @@ Make sure the `woko` command is available in your PATH before you start.
 
 ## Project init
 
-First off, open a command prompt, switch to a folder of your choice and create a new Woko project :
+A Woko app needs several dependencies to be configured in the pom etc. The `woko` script can initialize the whole thing for you.
 
+Open a command prompt, switch to a folder of your choice and create a new Woko project :
+
+    $ cd ~/projects
     $ woko init
 
 The command will ask you for some basic info about your project. You can pick default values for everything excepted the `groupId` and `artifactId`  :
@@ -237,7 +246,34 @@ The command will ask you for some basic info about your project. You can pick de
     |  Run 'woko start' in order to launch your app in a local Jetty container  
 
 
-This creates a `myapp` project in the current directory. The project contains a configured pom.xml, a sample Domain Class, and an init listener for your app.
+This creates a `myapp` project in the current directory :
+
+    myapp/
+        pom.xml
+        src/
+            main/
+                groovy/
+                    com/
+                        myco/
+                            myapp/
+                                facets/
+                                    MyLayout.groovy
+                                model/
+                                    MyEntity.groovy 
+                                woko/
+                                    MyappInitListener.goovy
+                resources/
+                    application.properties
+                webapp/
+                    WEB-INF/
+                        web.xml                                
+
+* pom.xml : maven pom with everything pre-configured 
+* MyLayout.groovy : maven pom with everything pre-configured
+* MyEntity.groovy : example of an entity class using JPA
+* MyappInitListener.goovy : init listener for the app, starts-up your Woko
+* application.properties : resource bundle for the app
+* web.xml : WebApp XML descriptor, configured with Stripes, Woko, etc.      
 
 ## Domain Classes
 
