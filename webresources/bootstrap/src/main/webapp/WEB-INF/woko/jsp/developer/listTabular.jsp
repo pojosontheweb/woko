@@ -124,6 +124,9 @@
                     }
 
                 }
+
+                if (results.getTotalSize()>0) {
+                    // display table only if we have at least one result
             %>
             <table class="<%=listWrapperClass%>">
                 <thead>
@@ -203,6 +206,8 @@
             </table>
 
         <%
+            }
+
             int nbPagesClickable = nbPages < 10 ? nbPages : 10;
             if (nbPages>1) {
                 int pagerStart = p > nbPagesClickable ? p - (nbPagesClickable-1) : 1;
