@@ -42,8 +42,6 @@
             </c:otherwise>
         </c:choose>
 
-        <w:includeFacet facetName="<%=WokoFacets.renderListTitle%>" targetObjectClass="<%=woko.getObjectStore().getMappedClass(className)%>"/>
-
         <c:if test="<%=nbPages>1%>">
             <div class="row-fluid">
                 <s:form action="/list" class="form-inline">

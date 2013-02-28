@@ -113,7 +113,7 @@ class RendererTest extends WebTestBase {
                 goToPage '/list/MyEntity'
 
                 // Verify title
-
+                verifyXPath xpath: '/html/body/div/div[2]/div/h1', text: 'TestPageHeaderTitleOverride'
 
                 // assert some of the DOM
                 verifyXPath xpath:'/html/body/div/div[2]/div/table/thead/tr/th', text:'.*Class.*', regex: true
@@ -131,6 +131,9 @@ class RendererTest extends WebTestBase {
 
                 logout()
                 goToPage '/list/MyEntity'
+
+                // Verify title
+                verifyXPath xpath: '/html/body/div/div[2]/div/h1', text: 'TestPageHeaderTitleOverride'
 
                 // there should be no more "class" field
                 verifyText text: '.*887766.*', regex: true

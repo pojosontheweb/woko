@@ -48,8 +48,6 @@
             </c:otherwise>
         </c:choose>
 
-        <w:includeFacet facetName="<%=WokoFacets.renderListTitle%>" targetObjectClass="<%=woko.getObjectStore().getMappedClass(className)%>"/>
-
         <div id="wokoPaginationSettings">
             <s:form action="/list">
                 <s:hidden name="className"/>
