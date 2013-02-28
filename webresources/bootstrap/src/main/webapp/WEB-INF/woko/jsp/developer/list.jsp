@@ -26,21 +26,18 @@
             if (listWrapperClass==null) {
                 listWrapperClass = "list " + className;
             }
+
             String overridenH1 = list.getPageHeaderTitle();
         %>
-        <h1 class="page-header">
-            <c:choose>
-                <c:when test="<%=overridenH1==null%>">
-                    <fmt:message bundle="${wokoBundle}" key="woko.devel.list.title">
-                        <fmt:param value="<%=totalSize%>"/>
-                        <fmt:param value="<%=className%>"/>
-                    </fmt:message>
-                </c:when>
-                <c:otherwise>
-                    <%=overridenH1%>
-                </c:otherwise>
-            </c:choose>
-        </h1>
+
+        <c:choose>
+            <c:when test="<%=overridenH1==null%>">
+                <w:includeFacet facetName="<%=WokoFacets.renderListTitle%>" targetObjectClass="<%=woko.getObjectStore().getMappedClass(className)%>"/>
+            </c:when>
+            <c:otherwise>
+                <h1 class="page-header"><%=overridenH1%></h1>
+            </c:otherwise>
+        </c:choose>
 
         <c:if test="<%=nbPages>1%>">
             <div class="row-fluid">

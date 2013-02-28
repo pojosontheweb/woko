@@ -14,10 +14,5 @@ import net.sourceforge.jfacets.annotations.AnnotatedFacetDescriptorManager
 
 @FacetKey(name="list", profileId="developer", targetObjectType=MyEntity.class)
 class ListMyEntityDevTableDisplay extends ListTabularImpl<HibernateCompassStore,InMemoryUserManager,RemoteUserStrategy,AnnotatedFacetDescriptorManager> {
-    @Override
-    String getPageHeaderTitle() {
-        "TestPageHeaderTitleOverride"
-    }
-
 
 }
