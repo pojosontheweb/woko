@@ -87,14 +87,7 @@ public class WokoAutoExceptionHandler implements AutoExceptionHandler {
      * @return a <code>Resolution</code> for the exception
      */
     public Resolution handleFacetNotFoundException(FacetNotFoundException exc, HttpServletRequest request, HttpServletResponse response) {
-        String ticket = genTicket(request);
-        logger.warn("FacetNotFoundException caught by the WokoAutoExceptionHandler - ticket : " + ticket, exc);
-        response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-        response.setHeader(REQ_ATTR_TICKET, ticket);
-        if (RpcInterceptor.isRpcRequest(request)) {
-            return createResolutionForRpc("requested resource not found", ticket);
-        }
-        return new ForwardResolution("/WEB-INF/woko/jsp/exception-404.jsp");
+        return handle(exc, request, response, "/WEB-INF/woko/jsp/exception-404.jsp", HttpServletResponse.SC_NOT_FOUND, "requested resource not found");
     }
 
     /**
@@ -105,14 +98,18 @@ public class WokoAutoExceptionHandler implements AutoExceptionHandler {
      * @return a <code>Resolution</code> for the exception
      */
     public Resolution handleGenericException(Exception e, HttpServletRequest request, HttpServletResponse response) {
+        return handle(e, request, response, "/WEB-INF/woko/jsp/exception-500.jsp", HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
+    }
+
+    protected Resolution handle(Exception e, HttpServletRequest request, HttpServletResponse response, String pathToJsp, int errorCode, String rpcMessage) {
         String ticket = genTicket(request);
         logger.error("Exception caught by the WokoAutoExceptionHandler - ticket : " + ticket, e);
         response.setHeader(REQ_ATTR_TICKET, ticket);
-        response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        response.setStatus(errorCode);
         if (RpcInterceptor.isRpcRequest(request)) {
-            return createResolutionForRpc(e.getMessage(), ticket);
+            return createResolutionForRpc(rpcMessage, ticket);
         }
-        return new ForwardResolution("/WEB-INF/woko/jsp/exception-500.jsp");
+        return new ForwardResolution(pathToJsp);
     }
 
 

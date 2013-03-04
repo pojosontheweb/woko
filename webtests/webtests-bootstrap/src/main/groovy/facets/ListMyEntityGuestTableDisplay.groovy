@@ -11,4 +11,8 @@ class ListMyEntityGuestTableDisplay extends ListTabularImpl {
         return ["id", "prop1", "prop2"]
     }
 
+    @Override
+    String getPageHeaderTitle() {
+        return "TestPageHeaderTitleOverride"
+    }
 }

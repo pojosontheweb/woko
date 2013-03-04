@@ -44,8 +44,10 @@ public interface ResultFacet<T> {
 
     /**
      * Return the title for the page
+     * @deprecated Woko use now {@link woko.facets.builtin.RenderListTitle} to render the lists title
      * @return the title for the page
      */
+    @Deprecated
     String getPageHeaderTitle();
 
 }
