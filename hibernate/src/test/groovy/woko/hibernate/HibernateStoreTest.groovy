@@ -17,10 +17,17 @@
 package woko.hibernate
 
 import junit.framework.TestCase
-import org.hibernate.Session
-import org.hibernate.Transaction
+import net.sourceforge.stripes.mock.MockServletContext
+import woko.Woko
+import woko.inmemory.InMemoryUserManager
+import woko.ioc.SimpleWokoIocContainer
+import woko.mock.MockUsernameResolutionStrategy
+import woko.mock.MockUtil
 import woko.persistence.ObjectStore
 import entities.MyEntity
+import woko.users.UserManager
+
+import static woko.mock.MockUtil.*
 
 class HibernateStoreTest extends TestCase {
 
@@ -68,6 +75,56 @@ class HibernateStoreTest extends TestCase {
         doInTx { s ->
             def e = s.load("MyEntity", "123")
             assert e == null
+        }
+    }
+
+    static Woko createWoko(String username) {
+        HibernateStore store = new HibernateStore(["entities"])
+        UserManager userManager = new InMemoryUserManager()
+        userManager.addUser("wdevel", "wdevel", ["developer"])
+        SimpleWokoIocContainer ioc = new SimpleWokoIocContainer(
+                store,
+                userManager,
+                new MockUsernameResolutionStrategy(username),
+                Woko.createFacetDescriptorManager(Woko.DEFAULT_FACET_PACKAGES))
+        return new Woko(ioc, [Woko.ROLE_GUEST])
+    }
+
+    static def doWithMockContext(String username, Closure c) {
+        new MockUtil().withServletContext(createWoko(username), { MockServletContext ctx ->
+            c(ctx)
+        } as MockUtil.Callback)
+    }
+
+    void testExceptionRollsBackTransaction() {
+        try {
+            doWithMockContext("wdevel") { MockServletContext c ->
+                doInTx { s ->
+                    MyEntity e = new MyEntity(id: 1, name: "foo")
+                    s.save(e)
+                }
+
+                boolean thrown = false
+                try {
+                    tripAndGetFacet(c, "/saveAndThrow")
+                    // should throw
+                    fail("Should have thrown")
+                } catch(Exception e) {
+                    // normal behavior
+                    thrown = true
+                }
+                assert thrown
+
+                doInTx { s->
+                    MyEntity e = s.load("MyEntity", "1")
+                    assert e.name == 'foo'
+                }
+            }
+        } finally {
+            doInTx { s ->
+                MyEntity e = s.load("MyEntity", "1")
+                s.delete(e)
+            }
         }
     }
 

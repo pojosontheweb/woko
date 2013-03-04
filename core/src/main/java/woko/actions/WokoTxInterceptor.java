@@ -49,15 +49,23 @@ public class WokoTxInterceptor implements net.sourceforge.stripes.controller.Int
                     }
                 } else {
                     if (tx.isActive()) {
-                        try {
-                            if (log.isDebugEnabled()) {
-                                log.debug("Commiting transaction " + tx);
+                        // check if an error occured
+                        Exception wokoException = (Exception)context.getActionBeanContext().getRequest().getAttribute("wokoException");
+                        if (wokoException==null) {
+                            try {
+                                if (log.isDebugEnabled()) {
+                                    log.debug("Commiting transaction " + tx);
+                                }
+                                tx.commit();
+                            } catch (Exception e) {
+                                log.error("Commit error", e);
+                                tx.rollback();
+                                throw e;
                             }
-                            tx.commit();
-                        } catch (Exception e) {
-                            log.error("Commit error", e);
+                        } else {
+                            // error during request execution, roll-back the current transaction
+                            log.warn("Exception found in request, roll-backing " + tx);
                             tx.rollback();
-                            throw e;
                         }
                     }
                 }
