@@ -1,4 +1,3 @@
-<%@ page import="net.sourceforge.stripes.util.CryptoUtil" %>
 <%@ page import="net.tanesha.recaptcha.ReCaptcha" %>
 <%@ page import="net.tanesha.recaptcha.ReCaptchaFactory" %>
 <%@ page import="woko.ext.usermanagement.facets.registration.RegisterFragmentGuest" %>
@@ -8,11 +7,9 @@
 
 <%
     RegisterFragmentGuest renderRegisterProperties = (RegisterFragmentGuest)request.getAttribute(RegisterFragmentGuest.FACET_NAME);
-    String encryptedSourcePage = CryptoUtil.encrypt(RegisterFragmentGuest.FRAGMENT_PATH);
 %>
 
 <s:form action="/register" class="form-horizontal">
-    <s:hidden name="_sourcePage" value="<%=encryptedSourcePage%>"/>
 
     <fieldset>
 
