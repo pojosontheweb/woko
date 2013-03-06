@@ -90,7 +90,7 @@ public abstract class BaseResultFacet<
      */
     @Override
     public Map<String, Object> getArgs() {
-        return Collections.emptyMap();
+        return null;
     }
 
     public Resolution getResolution(ActionBeanContext abc) {

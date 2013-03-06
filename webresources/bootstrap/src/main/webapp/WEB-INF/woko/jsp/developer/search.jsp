@@ -116,7 +116,7 @@
 
                 // Catch arguments from ResultFacet
                 String args = "";
-                if (! search.getArgs().isEmpty()){
+                if (search.getArgs() != null) {
                     for(Object key : search.getArgs().keySet()){
                         args += "&" + key + "=" + search.getArgs().get(key);
                     }

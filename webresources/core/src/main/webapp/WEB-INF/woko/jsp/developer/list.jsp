@@ -68,7 +68,7 @@
             if (nbPages>1) {
                 // Catch arguments from ResultFacet
                 String args = "";
-                if (! list.getArgs().isEmpty()){
+                if (list.getArgs() != null)  {
                     for(Object key : list.getArgs().keySet()){
                         args += "&" + key + "=" + list.getArgs().get(key);
                     }
