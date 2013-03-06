@@ -18,6 +18,8 @@ package woko.facets.builtin;
 
 import woko.persistence.ResultIterator;
 
+import java.util.Map;
+
 /**
  * Base interface for facets that handle a paginated list of results (like
  * <code>list</code> and <code>search</code>).
@@ -50,4 +52,10 @@ public interface ResultFacet<T> {
     @Deprecated
     String getPageHeaderTitle();
 
+    /**
+     * Return a map of arguments used to pass arguments in paginated ResultFacet.
+     *
+     * @return the map of arguments
+     */
+    Map<String, Object> getArgs();
 }

@@ -177,13 +177,22 @@
             int nbPagesClickable = nbPages < 10 ? nbPages : 10;
             if (nbPages>1) {
                 int pagerStart = p > nbPagesClickable ? p - (nbPagesClickable-1) : 1;
+
+                // Catch arguments from ResultFacet
+                String args = "";
+                if (! list.getArgs().isEmpty()){
+                    for(Object key : list.getArgs().keySet()){
+                        args += "&" + key + "=" + list.getArgs().get(key);
+                    }
+                }
+
                 String leftMoveCss = p <= 1 ? "disabled" : "";
                 String leftMoveHref = leftMoveCss.equals("disabled") ? "" : request.getContextPath() + "/list/" + className +
-                        "?facet.page=" + (p - 1) + "&facet.resultsPerPage=" + resultsPerPage;
+                        "?facet.page=" + (p - 1) + "&facet.resultsPerPage=" + resultsPerPage + args;
 
                 String rightMoveCss = p == nbPages ? "disabled" : "";
                 String rightMoveHref = rightMoveCss.equals("disabled") ? "" : request.getContextPath() + "/list/" + className +
-                        "?facet.page=" + (p + 1) + "&facet.resultsPerPage=" + resultsPerPage;
+                        "?facet.page=" + (p + 1) + "&facet.resultsPerPage=" + resultsPerPage + args;
         %>
 
             <div class="pagination">
@@ -194,13 +203,16 @@
                 <%
                     for (int i=pagerStart;i<=pagerStart+nbPagesClickable-1;i++) {
                         String css = "";
+                        String currentPageHref = request.getContextPath() + "/list/" + className +
+                                "?facet.page=" + i  + "&facet.resultsPerPage=" + resultsPerPage + args;
+
                         if (i==p) {
                             css = "active";
                         }
 
                 %>
                     <li class="<%=css%>">
-                        <a href="${pageContext.request.contextPath}/list/<%=className%>?facet.page=<%=i%>&facet.resultsPerPage=<%=resultsPerPage%>"><%=i%></a>
+                        <a href="<%=currentPageHref%>"><%=i%></a>
                     </li>
                 <%
                     }

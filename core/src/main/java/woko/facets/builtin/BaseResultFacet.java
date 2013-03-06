@@ -32,6 +32,10 @@ import woko.users.UserManager;
 import woko.users.UsernameResolutionStrategy;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Base abstract class for implementing {@link ResultFacet}.
@@ -76,6 +80,17 @@ public abstract class BaseResultFacet<
     @Override
     public String getPageHeaderTitle() {
         return null;
+    }
+
+    /**
+     * As this feature has no impact on the Woko default behaviour we return an empty Map.
+     * Override this method in order to pass some of your arguments over pagination process.
+     *
+     * @return an empty Map
+     */
+    @Override
+    public Map<String, Object> getArgs() {
+        return Collections.emptyMap();
     }
 
     public Resolution getResolution(ActionBeanContext abc) {
