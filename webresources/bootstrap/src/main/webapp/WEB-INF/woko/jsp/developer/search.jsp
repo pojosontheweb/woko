@@ -139,7 +139,7 @@
                     for (int i=pagerStart;i<=pagerStart+nbPagesClickable-1;i++) {
                         String css = "";
                         String currentPageHref = request.getContextPath() + "/search?facet.query=" + query +
-                                "&facet.page=" + (p - 1) + "&facet.resultsPerPage=" + resultsPerPage + args;
+                                "&facet.page=" + i + "&facet.resultsPerPage=" + resultsPerPage + args;
 
                         if (i==p) {
                             css = "active";

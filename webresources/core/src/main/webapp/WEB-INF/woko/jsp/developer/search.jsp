@@ -84,7 +84,7 @@
 
                 <%      } else {
                             String currentPageHref = request.getContextPath() + "/search?facet.query=" + query +
-                                    "&facet.page=" + (p - 1) + "&facet.resultsPerPage=" + resultsPerPage + args;
+                                    "&facet.page=" + i + "&facet.resultsPerPage=" + resultsPerPage + args;
                 %>
                     <span><a href="<%=currentPageHref%>"><%=i%></a></span>
                 <%
