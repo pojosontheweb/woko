@@ -50,6 +50,13 @@
         </div>
         <%
             if (nbPages>1) {
+                // Catch arguments from ResultFacet
+                String args = "";
+                if (search.getArgs() != null) {
+                    for(Object key : search.getArgs().keySet()){
+                        args += "&" + key + "=" + search.getArgs().get(key);
+                    }
+                }
         %>
             <div id="wokoPaginationSettings">
                 <s:form action="/search">
@@ -75,8 +82,11 @@
                 %>
                     <span class="wokoCurrentPage"><%=i%></span>
 
-                <%      } else { %>
-                    <span><a href="${pageContext.request.contextPath}/search?facet.query=<%=query%>&facet.page=<%=i%>&facet.resultsPerPage=<%=resultsPerPage%>"><%=i%></a></span>
+                <%      } else {
+                            String currentPageHref = request.getContextPath() + "/search?facet.query=" + query +
+                                    "&facet.page=" + (p - 1) + "&facet.resultsPerPage=" + resultsPerPage + args;
+                %>
+                    <span><a href="<%=currentPageHref%>"><%=i%></a></span>
                 <%
                         }
                         if (i<nbPages) {

@@ -66,6 +66,13 @@
         </div>
         <%
             if (nbPages>1) {
+                // Catch arguments from ResultFacet
+                String args = "";
+                if (list.getArgs() != null)  {
+                    for(Object key : list.getArgs().keySet()){
+                        args += "&" + key + "=" + list.getArgs().get(key);
+                    }
+                }
         %>
             <div class="wokoPagination">
                 <%
@@ -74,8 +81,11 @@
                 %>
                     <span class="wokoCurrentPage"><%=i%></span>
 
-                <%      } else { %>
-                    <span><a href="${pageContext.request.contextPath}/list/<%=className%>?facet.page=<%=i%>&facet.resultsPerPage=<%=resultsPerPage%>"><%=i%></a></span>
+                <%      } else {
+                            String nextHref = request.getContextPath() + "/list/" + className +
+                                    "?facet.page=" + i  + "&facet.resultsPerPage=" + resultsPerPage + args;
+                %>
+                    <span><a href="<%=nextHref%>"><%=i%></a></span>
                 <%
                         }
                         if (i<nbPages) {

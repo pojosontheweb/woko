@@ -17,6 +17,7 @@
 package test.facet.pkg
 
 import net.sourceforge.jfacets.annotations.FacetKey
+import test.MyEntity
 import woko.facets.BaseResolutionFacet
 import net.sourceforge.stripes.action.Resolution
 import net.sourceforge.stripes.action.ActionBeanContext
@@ -30,6 +31,9 @@ class CreateDummyObjects extends BaseResolutionFacet {
         def store = facetContext.woko.objectStore
         for (int i=100 ; i<500 ; i++) {
             store.save(new MyBook([name:"Moby test$i", _id:i]))
+        }
+        for (int i=100 ; i<200 ; i++) {
+            store.save(new MyEntity([id:Long.valueOf(i), prop1:'blah blah', prop2:120]))
         }
         return new StreamingResolution("text/plain", "all good")
     }
