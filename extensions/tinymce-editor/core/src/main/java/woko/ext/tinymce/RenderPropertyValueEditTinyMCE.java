@@ -1,4 +1,4 @@
-package woko.ext.raptor;
+package woko.ext.tinymce;
 
 import net.sourceforge.jfacets.IFacetDescriptorManager;
 import woko.facets.builtin.all.BaseRenderPropertyValueEdit;
@@ -13,7 +13,7 @@ public class RenderPropertyValueEditTinyMCE<
         FdmType extends IFacetDescriptorManager
         > extends BaseRenderPropertyValueEdit<OsType,UmType,UnsType,FdmType> {
 
-    public static final String FRAGMENT_PATH = "/WEB-INF/woko/jsp/raptor/renderPropertyValueEditTinyMCE.jsp";
+    public static final String FRAGMENT_PATH = "/WEB-INF/woko/jsp/tinymce/renderPropertyValueEditTinyMCE.jsp";
 
     public String getPath() {
         return FRAGMENT_PATH;
