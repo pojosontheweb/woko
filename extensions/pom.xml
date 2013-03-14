@@ -22,12 +22,11 @@
         <artifactId>woko-parent</artifactId>
         <version>LATEST-SNAPSHOT</version>
     </parent>
-    <artifactId>woko-usermanagement</artifactId>
-    <name>Woko - user management extension</name>
+    <artifactId>woko-extensions</artifactId>
+    <name>Woko - extensions</name>
     <packaging>pom</packaging>
     <modules>
-        <module>core</module>
-        <module>web</module>
-        <module>hibernate</module>
+        <module>usermanagement</module>
+        <module>tinymce-editor</module>
     </modules>
 </project>
