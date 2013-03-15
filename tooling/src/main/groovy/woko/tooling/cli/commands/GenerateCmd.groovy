@@ -131,7 +131,7 @@ class GenerateCmd extends Command{
             bootStrapDep.artifactId = "woko-web-bootstrap"
             bootStrapDep.version = '${woko.version}'
             bootStrapDep.type = "war"
-            pomHelper.addDependency(bootStrapDep, true)
+            pomHelper.addDependency(bootStrapDep, false)
         }else{
             // Add a dependency on Lithium in pom
             Dependency lithiumDep = new Dependency()
