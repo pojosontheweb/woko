@@ -4,7 +4,9 @@ import java.io.InputStream;
 
 public interface BlobStore {
 
-    BlobObject save(InputStream inputStream, String fileName, long length, BlobObject blob);
+    String KEY = "BlobStore";
+
+    BlobObject save(InputStream inputStream, String fileName, String contentType, long length, BlobObject blob);
 
     BlobObject getBlob(Long id);
 

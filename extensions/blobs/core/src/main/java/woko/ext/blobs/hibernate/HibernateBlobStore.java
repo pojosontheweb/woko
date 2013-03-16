@@ -11,14 +11,12 @@ public class HibernateBlobStore implements BlobStore {
 
     private final HibernateStore hbStore;
 
-    protected static final MimetypesFileTypeMap MIME_TYPES = new MimetypesFileTypeMap();
-
     public HibernateBlobStore(HibernateStore hbStore) {
         this.hbStore = hbStore;
     }
 
     @Override
-    public BlobObject save(InputStream inputStream, String fileName, long length, BlobObject blob) {
+    public BlobObject save(InputStream inputStream, String fileName, String contentType, long length, BlobObject blob) {
         HibernateBlob o;
         if (blob==null) {
             // must create the instance...
@@ -29,7 +27,7 @@ public class HibernateBlobStore implements BlobStore {
         }
         o.setBlobData(hbStore.getSession().getLobHelper().createBlob(inputStream, length));
         o.setFileName(fileName);
-        o.setContentType(computeContentType(fileName));
+        o.setContentType(contentType);
         hbStore.save(o);
         return o;
     }
@@ -39,16 +37,4 @@ public class HibernateBlobStore implements BlobStore {
         return (HibernateBlob)hbStore.getSession().get(HibernateBlob.class, id);
     }
 
-    protected String computeContentType(String fileName) {
-        String mimeType = MIME_TYPES.getContentType(fileName);
-        if (mimeType==null) {
-            // create mime type using file extension only
-            int indexOfDot = fileName.indexOf('.');
-            if (indexOfDot!=-1) {
-                fileName = fileName.substring(indexOfDot);
-            }
-            mimeType = "binary/" + fileName;
-        }
-        return mimeType;
-    }
 }
