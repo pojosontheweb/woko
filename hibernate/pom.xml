@@ -45,8 +45,8 @@
         </dependency>
         <dependency>
             <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-annotations</artifactId>
-            <version>3.5.6-Final</version>
+            <artifactId>hibernate-core</artifactId>
+            <version>3.6.10.Final</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.slf4j</groupId>
