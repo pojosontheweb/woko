@@ -1,11 +1,12 @@
-package woko.ext.blobs
+package woko.ext.blobs.hibernate
 
 import junit.framework.TestCase
-import woko.ext.blobs.hibernate.HibernateBlobStore
+import woko.ext.blobs.BlobObject
+import woko.ext.blobs.BlobStore
 import woko.hibernate.HibernateStore
 import woko.persistence.TransactionCallback
 
-class BlobStoreTest extends TestCase {
+class HibernateBlobStoreTest extends TestCase {
 
     private HibernateStore store
 
@@ -37,6 +38,7 @@ class BlobStoreTest extends TestCase {
             BlobObject newBlob = bs.save(is, "test.txt", contentLen, null)
             assert newBlob
             assert newBlob.contentLength == contentLen
+            assert newBlob.contentType == "text/plain"
             assert newBlob.fileName == "test.txt"
             InputStream is2 = newBlob.inputStream
             ByteArrayOutputStream os = new ByteArrayOutputStream()

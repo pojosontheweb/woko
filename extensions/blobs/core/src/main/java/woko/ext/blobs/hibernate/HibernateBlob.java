@@ -20,6 +20,8 @@ public class HibernateBlob implements BlobObject {
     @NotNull
     private String fileName;
 
+    private String contentType;
+
     private Blob blobData;
 
     @Override
@@ -38,6 +40,14 @@ public class HibernateBlob implements BlobObject {
 
     public void setFileName(String fileName) {
         this.fileName = fileName;
+    }
+
+    public String getContentType() {
+        return contentType;
+    }
+
+    public void setContentType(String contentType) {
+        this.contentType = contentType;
     }
 
     public Blob getBlobData() {

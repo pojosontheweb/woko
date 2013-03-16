@@ -10,6 +10,8 @@ public interface BlobObject {
 
     long getContentLength();
 
+    String getContentType();
+
     InputStream getInputStream();
 
 }
