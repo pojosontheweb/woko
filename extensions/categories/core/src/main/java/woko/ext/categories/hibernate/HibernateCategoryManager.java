@@ -1,6 +1,7 @@
 package woko.ext.categories.hibernate;
 
 import org.hibernate.Session;
+import org.hibernate.criterion.Restrictions;
 import woko.ext.categories.Categorizable;
 import woko.ext.categories.Category;
 import woko.ext.categories.CategoryManager;
@@ -56,5 +57,14 @@ public class HibernateCategoryManager implements CategoryManager {
     @Override
     public ResultIterator<? extends Categorizable> listObjectsInCategory(Category category, Integer start, Integer limit) {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public List<Category> getRootCategories() {
+        // select all categories that don't have no parent
+        return store.getSession().createCriteria(HibernateCategory.class)
+                .add(Restrictions.isNull("parent"))
+                .list();
     }
 }

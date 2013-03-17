@@ -1,4 +1,6 @@
-<%--
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
   ~ Copyright 2001-2013 Remi Vankeisbelck
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,14 +14,14 @@
   ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
-  --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@include file="/WEB-INF/woko/jsp/taglibs.jsp"%>
-<c:forEach var="link" items="${navBar.links}">
-    <li><a href="${cp}${link.href}"
-           class="${link.cssClass}"
-            ${link.attributesString}><c:out value="${link.text}"/></a></li>
-</c:forEach>
-<li><a href="http://www.google.com">google</a></li>
-<li><a href="${cp}/upload/HibernateBlob">upload</a></li>
-<li><a href="${cp}/manageCategories">categs</a></li>
+  -->
+
+<web-app xmlns="http://java.sun.com/xml/ns/j2ee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee
+         http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
+         version="2.4">
+
+    <display-name>categories dummy web.xml</display-name>
+
+</web-app>

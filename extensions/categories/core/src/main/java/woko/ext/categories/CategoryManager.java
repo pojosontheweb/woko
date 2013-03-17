@@ -2,6 +2,8 @@ package woko.ext.categories;
 
 import woko.persistence.ResultIterator;
 
+import java.util.List;
+
 public interface CategoryManager {
 
     static final String KEY = "CategoryManager";
@@ -9,5 +11,7 @@ public interface CategoryManager {
     void setParentCategory(Category child, Category newParent);
 
     ResultIterator<? extends Categorizable> listObjectsInCategory(Category category, Integer start, Integer limit);
+
+    List<Category> getRootCategories();
 
 }

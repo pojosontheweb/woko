@@ -48,6 +48,10 @@ class HibernateCategoryManagerTest extends TestCase {
             assert reading.subCategories.size()==2
             assert reading.subCategories[0] == books
             assert reading.subCategories[1] == articles
+
+            List<Category> rootCategs = categoryManager.rootCategories
+            assert rootCategs.size()==1
+            assert rootCategs[0] == reading
         }
 
     }

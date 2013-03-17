@@ -3,6 +3,8 @@ package test
 import woko.WokoIocInitListener
 import woko.ext.blobs.BlobStore
 import woko.ext.blobs.hibernate.HibernateBlobStore
+import woko.ext.categories.CategoryManager
+import woko.ext.categories.hibernate.HibernateCategoryManager
 import woko.hbcompass.HibernateCompassStore
 import woko.inmemory.InMemoryUserManager
 import woko.users.RemoteUserStrategy
@@ -20,10 +22,12 @@ class BootstrapWebtestsInitListener extends
 
         return new SimpleWokoIocContainer<HibernateCompassStore,InMemoryUserManager,RemoteUserStrategy,AnnotatedFacetDescriptorManager>(
                 store,
-                new InMemoryUserManager().addUser("wdevel", "wdevel", ["developer"]),
+                new InMemoryUserManager().addUser("wdevel", "wdevel", ["developer", "categorymanager"]),
                 new RemoteUserStrategy(),
                 createAnnotatedFdm()
-        ).addComponent(BlobStore.KEY, new HibernateBlobStore(store));
+        )
+                .addComponent(BlobStore.KEY, new HibernateBlobStore(store))
+                .addComponent(CategoryManager.KEY, new HibernateCategoryManager(store))
     }
 
 
