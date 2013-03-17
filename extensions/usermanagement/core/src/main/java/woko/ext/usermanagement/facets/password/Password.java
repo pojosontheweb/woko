@@ -13,6 +13,7 @@ import woko.ext.usermanagement.mail.MailTemplatePassword;
 import woko.ext.usermanagement.util.PasswordUtil;
 import woko.facets.BaseResolutionFacet;
 import woko.facets.builtin.Layout;
+import woko.ioc.WokoInject;
 import woko.mail.MailService;
 import woko.persistence.ObjectStore;
 import woko.users.UsernameResolutionStrategy;
@@ -47,6 +48,13 @@ public class Password<
     private String newPassword;
     @Validate(required = true)
     private String newPasswordConfirm;
+
+    private MailService mailService;
+
+    @WokoInject(MailService.KEY)
+    public void injectMailService(MailService mailService) {
+        this.mailService = mailService;
+    }
 
     public String getCurrentPassword() {
         return currentPassword;
@@ -111,7 +119,6 @@ public class Password<
         um.save(u);
 
         // send an email if the mail service is available
-        MailService mailService = getWoko().getIoc().getComponent(MailService.KEY);
         if (mailService!=null) {
             mailService.sendMail(
                     getWoko(),

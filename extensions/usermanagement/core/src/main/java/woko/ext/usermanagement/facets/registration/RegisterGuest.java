@@ -18,6 +18,7 @@ import woko.ext.usermanagement.util.PasswordUtil;
 import woko.facets.BaseResolutionFacet;
 import woko.facets.builtin.Layout;
 import woko.facets.builtin.WokoFacets;
+import woko.ioc.WokoInject;
 import woko.mail.MailService;
 import woko.mail.MailTemplate;
 import woko.persistence.ObjectStore;
@@ -70,6 +71,14 @@ public class RegisterGuest<T extends User,
     private String password2;
 
     private T user;
+
+    private MailService mailService;
+
+    @WokoInject(MailService.KEY)
+    public void injectMailService(MailService mailService) {
+        this.mailService = mailService;
+    }
+
 
     public T getUser() {
         return user;
@@ -219,7 +228,6 @@ public class RegisterGuest<T extends User,
             // send email to freshly registered user if mail service is available and user account is
             // registered
             if (user.getAccountStatus().equals(AccountStatus.Registered)) {
-                MailService mailService = woko.getIoc().getComponent(MailService.KEY);
                 if (mailService != null) {
                     MailTemplate template = mailService.getMailTemplate(getTemplateName());
                     Map<String, Object> binding = BindingHelper.newBinding(user, getAppName(), mailService);
