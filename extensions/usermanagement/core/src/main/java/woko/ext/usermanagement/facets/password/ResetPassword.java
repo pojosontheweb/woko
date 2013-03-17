@@ -12,6 +12,7 @@ import woko.ext.usermanagement.mail.BindingHelper;
 import woko.ext.usermanagement.mail.MailTemplateResetPassword;
 import woko.facets.BaseResolutionFacet;
 import woko.facets.builtin.Layout;
+import woko.ioc.WokoInject;
 import woko.mail.MailService;
 import woko.persistence.ObjectStore;
 import woko.users.UsernameResolutionStrategy;
@@ -47,6 +48,14 @@ public class ResetPassword<
 
     private String token;
 
+    private MailService mailService;
+
+    @WokoInject(MailService.KEY)
+    public void injectMailService(MailService mailService) {
+        this.mailService = mailService;
+    }
+
+
     public String getEmail() {
         return email;
     }
@@ -79,7 +88,6 @@ public class ResetPassword<
         DatabaseUserManager<?,User> um = getWoko().getUserManager();
         User u = um.getUserByEmail(email);
         if (u!=null) {
-            MailService mailService = getWoko().getIoc().getComponent(MailService.KEY);
             if (mailService!=null) {
                 String token = UUID.randomUUID().toString();
                 getRequest().getSession().setAttribute("wokoResetPasswordToken", token);

@@ -35,7 +35,7 @@ class FindPageTest extends WebTestBase{
 
             verifyText 'Find objects by class'
             verifyText 'Select the name of the class and submit :'
-            verifyXPath xpath:"/html/body/div/div[2]/div/ul/li[2]/a[@href='/woko-webtests/list/MyBook']"
+            verifyXPath xpath:"/html/body/div/div[2]/div/ul/li[3]/a[@href='/woko-webtests/list/MyBook']"
 
             // Check search input is present
             checkSearchForm('/find')

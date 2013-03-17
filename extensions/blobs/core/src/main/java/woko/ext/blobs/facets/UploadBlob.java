@@ -9,6 +9,7 @@ import woko.ext.blobs.BlobObject;
 import woko.ext.blobs.BlobStore;
 import woko.facets.BaseResolutionFacet;
 import woko.facets.builtin.View;
+import woko.ioc.WokoInject;
 import woko.persistence.ObjectStore;
 import woko.users.UserManager;
 import woko.users.UsernameResolutionStrategy;
@@ -33,6 +34,8 @@ public class UploadBlob<
 
     public static final String JSP_PATH = "/WEB-INF/woko/ext/blobs/upload.jsp";
 
+    private BlobStore blobStore;
+
     @Validate(required = true)
     private FileBean data;
 
@@ -44,14 +47,18 @@ public class UploadBlob<
         this.data = data;
     }
 
+    @WokoInject(BlobStore.KEY)
+    public void injectBlobStore(BlobStore blobStore) {
+        this.blobStore = blobStore;
+    }
+
     @DontValidate
     @Override
     public Resolution getResolution(ActionBeanContext abc) {
         return new ForwardResolution(JSP_PATH);
     }
 
-    protected BlobStore getBlobStoreFromIoc() {
-        BlobStore blobStore = getWoko().getIoc().getComponent(BlobStore.KEY);
+    protected BlobStore getBlobStoreThrowIfNull() {
         if (blobStore==null) {
             throw new IllegalStateException("Could not find BlobStore in IOC with key " + BlobStore.KEY);
         }
@@ -63,7 +70,7 @@ public class UploadBlob<
         // an existing object. It can be null in case we upload a blob for the first time.
         BlobObject blobToUpdate = (BlobObject)getFacetContext().getTargetObject();
         try {
-            BlobObject blobObject = getBlobStoreFromIoc().save(data.getInputStream(), data.getFileName(), data.getContentType(), data.getSize(), blobToUpdate);
+            BlobObject blobObject = getBlobStoreThrowIfNull().save(data.getInputStream(), data.getFileName(), data.getContentType(), data.getSize(), blobToUpdate);
             return afterSave(abc, blobObject);
         } catch(IOException e) {
             throw new RuntimeException(e);
@@ -86,6 +93,6 @@ public class UploadBlob<
      */
     @Override
     public boolean matchesTargetObject(Object targetObject) {
-        return getBlobStoreFromIoc()!=null;
+        return getBlobStoreThrowIfNull()!=null;
     }
 }
