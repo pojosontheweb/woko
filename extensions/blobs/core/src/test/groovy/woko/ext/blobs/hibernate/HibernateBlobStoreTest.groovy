@@ -35,7 +35,7 @@ class HibernateBlobStoreTest extends TestCase {
             int contentLen = content.length()
 
             InputStream is = new ByteArrayInputStream(content.bytes)
-            BlobObject newBlob = bs.save(is, "test.txt", contentLen, null)
+            BlobObject newBlob = bs.save(is, "test.txt", "text/plain", contentLen, null)
             assert newBlob
             assert newBlob.contentLength == contentLen
             assert newBlob.contentType == "text/plain"
