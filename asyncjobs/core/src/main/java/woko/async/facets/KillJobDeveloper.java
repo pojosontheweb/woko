@@ -10,6 +10,7 @@ import woko.async.JobDetails;
 import woko.async.JobManager;
 import woko.facets.BaseResolutionFacet;
 import woko.facets.builtin.View;
+import woko.ioc.WokoInject;
 import woko.persistence.ObjectStore;
 import woko.users.UserManager;
 import woko.users.UsernameResolutionStrategy;
@@ -28,15 +29,21 @@ public class KillJobDeveloper<
         FdmType extends IFacetDescriptorManager
         > extends BaseResolutionFacet<OsType,UmType,UnsType,FdmType> implements IInstanceFacet {
 
+    private JobManager jobManager;
+
+    @WokoInject(JobManager.KEY)
+    public void injectJobManager(JobManager jobManager) {
+        this.jobManager = jobManager;
+    }
+
     /**
      * Default handler : retrieves running {@link Job} if any, and invokes <code>kill()</code> on it.
      */
     @Override
     public Resolution getResolution(ActionBeanContext abc) {
         JobDetails jd = (JobDetails)getFacetContext().getTargetObject();
-        JobManager jm = getJobManager();
         String uuid = jd.getJobUuid();
-        Job job = jm.getRunningJob(uuid);
+        Job job = jobManager.getRunningJob(uuid);
         String viewUrl = "/" + LinkUtil.getUrl(getWoko(), jd, View.FACET_NAME);
         if (job==null) {
             abc.getValidationErrors().addGlobalError(new LocalizableError("woko.ext.async.job.not.running", uuid));
@@ -48,9 +55,6 @@ public class KillJobDeveloper<
         }
     }
 
-    private JobManager getJobManager() {
-        return getWoko().getIoc().getComponent(JobManager.KEY);
-    }
 
     /**
      * Don't match if JobDetails is null or there is no JobManager found in IOC
@@ -63,7 +67,6 @@ public class KillJobDeveloper<
         if (jd==null) {
             return false;
         }
-        JobManager jm = getJobManager();
-        return jm!=null;
+        return jobManager!=null;
     }
 }

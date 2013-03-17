@@ -10,6 +10,7 @@ import woko.ext.usermanagement.mail.BindingHelper;
 import woko.ext.usermanagement.mail.MailTemplateAccountActivated;
 import woko.facets.BaseResolutionFacet;
 import woko.facets.builtin.Layout;
+import woko.ioc.WokoInject;
 import woko.mail.MailService;
 import woko.mail.MailTemplate;
 import woko.persistence.ObjectStore;
@@ -38,6 +39,13 @@ public class ActivateGuest<
 
     @Validate(required=true)
     private String token;
+
+    private MailService mailService;
+
+    @WokoInject(MailService.KEY)
+    public void injectMailService(MailService mailService) {
+        this.mailService = mailService;
+    }
 
     public String getToken() {
         return token;
@@ -73,7 +81,6 @@ public class ActivateGuest<
             logger.info("Activated account for user " + user.getUsername());
 
             // send activation email
-            MailService mailService = getWoko().getIoc().getComponent(MailService.KEY);
            if (mailService != null) {
                MailTemplate template = mailService.getMailTemplate(getTemplateName());
                Map<String, Object> binding = BindingHelper.newBinding(user, getAppName(), mailService);
