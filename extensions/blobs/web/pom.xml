@@ -19,15 +19,24 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.pojosontheweb</groupId>
-        <artifactId>woko-parent</artifactId>
+        <artifactId>woko-blobs</artifactId>
         <version>LATEST-SNAPSHOT</version>
     </parent>
-    <artifactId>woko-extensions</artifactId>
-    <name>Woko - extensions</name>
-    <packaging>pom</packaging>
-    <modules>
-        <module>usermanagement</module>
-        <module>tinymce-editor</module>
-        <module>blobs</module>
-    </modules>
+    <artifactId>woko-blobs-web</artifactId>
+    <name>Woko - Blobs web resources</name>
+    <packaging>war</packaging>
+    <dependencies>
+        <dependency>
+            <groupId>com.pojosontheweb</groupId>
+            <artifactId>woko-blobs-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.pojosontheweb</groupId>
+            <artifactId>woko-web-core</artifactId>
+            <version>${project.version}</version>
+            <type>war</type>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
 </project>
