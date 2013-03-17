@@ -1,6 +1,8 @@
 package test
 
 import woko.WokoIocInitListener
+import woko.ext.blobs.BlobStore
+import woko.ext.blobs.hibernate.HibernateBlobStore
 import woko.hbcompass.HibernateCompassStore
 import woko.inmemory.InMemoryUserManager
 import woko.users.RemoteUserStrategy
@@ -14,11 +16,14 @@ class BootstrapWebtestsInitListener extends
 
     @Override
     protected WokoIocContainer<HibernateCompassStore,InMemoryUserManager,RemoteUserStrategy,AnnotatedFacetDescriptorManager> createIocContainer() {
+        HibernateStore store = new HibernateCompassStore(getPackageNamesFromConfig(HibernateStore.CTX_PARAM_PACKAGE_NAMES, true));
+
         return new SimpleWokoIocContainer<HibernateCompassStore,InMemoryUserManager,RemoteUserStrategy,AnnotatedFacetDescriptorManager>(
-                new HibernateCompassStore(getPackageNamesFromConfig(HibernateStore.CTX_PARAM_PACKAGE_NAMES, true)),
+                store,
                 new InMemoryUserManager().addUser("wdevel", "wdevel", ["developer"]),
                 new RemoteUserStrategy(),
-                createAnnotatedFdm());
+                createAnnotatedFdm()
+        ).addComponent(BlobStore.KEY, new HibernateBlobStore(store));
     }
 
 

@@ -26,6 +26,8 @@ public class DownloadBlob<
 
     private Boolean attachment;
 
+    public static final String FACET_NAME = "download";
+
     public Boolean getAttachment() {
         return attachment;
     }
@@ -42,10 +44,9 @@ public class DownloadBlob<
     public Resolution getResolution(ActionBeanContext abc) {
         BlobObject b = getBlob();
         StreamingResolution res = new StreamingResolution(b.getContentType(), b.getInputStream())
-                .setLength(b.getContentLength())
-                .setFilename(b.getFileName());
+                .setLength(b.getContentLength());
         if (attachment!=null) {
-            res.setAttachment(attachment);
+            res.setFilename(b.getFileName()).setAttachment(attachment);
         }
         return res;
     }

@@ -1,6 +1,7 @@
 package woko.ext.blobs.facets;
 
 import net.sourceforge.jfacets.IFacetDescriptorManager;
+import net.sourceforge.jfacets.IInstanceFacet;
 import net.sourceforge.jfacets.annotations.FacetKey;
 import net.sourceforge.stripes.action.*;
 import net.sourceforge.stripes.validation.Validate;
@@ -28,7 +29,9 @@ public class UploadBlob<
         UmType extends UserManager,
         UnsType extends UsernameResolutionStrategy,
         FdmType extends IFacetDescriptorManager
-        > extends BaseResolutionFacet<OsType,UmType,UnsType,FdmType> {
+        > extends BaseResolutionFacet<OsType,UmType,UnsType,FdmType> implements IInstanceFacet {
+
+    public static final String JSP_PATH = "/WEB-INF/woko/ext/blobs/upload.jsp";
 
     @Validate(required = true)
     private FileBean data;
@@ -41,17 +44,26 @@ public class UploadBlob<
         this.data = data;
     }
 
+    @DontValidate
     @Override
     public Resolution getResolution(ActionBeanContext abc) {
+        return new ForwardResolution(JSP_PATH);
+    }
+
+    protected BlobStore getBlobStoreFromIoc() {
         BlobStore blobStore = getWoko().getIoc().getComponent(BlobStore.KEY);
         if (blobStore==null) {
             throw new IllegalStateException("Could not find BlobStore in IOC with key " + BlobStore.KEY);
         }
+        return blobStore;
+    }
+
+    public Resolution upload(ActionBeanContext abc) {
         // retrieve the target object : if passed, this means that we update
         // an existing object. It can be null in case we upload a blob for the first time.
         BlobObject blobToUpdate = (BlobObject)getFacetContext().getTargetObject();
         try {
-            BlobObject blobObject = blobStore.save(data.getInputStream(), data.getFileName(), data.getContentType(), data.getSize(), blobToUpdate);
+            BlobObject blobObject = getBlobStoreFromIoc().save(data.getInputStream(), data.getFileName(), data.getContentType(), data.getSize(), blobToUpdate);
             return afterSave(abc, blobObject);
         } catch(IOException e) {
             throw new RuntimeException(e);
@@ -66,6 +78,14 @@ public class UploadBlob<
      */
     protected Resolution afterSave(ActionBeanContext abc, BlobObject blobObject) {
         abc.getMessages().add(new LocalizableMessage("woko.ext.blobs.upload.ok"));
-        return new RedirectResolution(LinkUtil.getUrl(getWoko(), blobObject, View.FACET_NAME));
+        return new RedirectResolution("/" + LinkUtil.getUrl(getWoko(), blobObject, View.FACET_NAME));
+    }
+
+    /**
+     * Matches only if BlobStore can be found in IoC
+     */
+    @Override
+    public boolean matchesTargetObject(Object targetObject) {
+        return getBlobStoreFromIoc()!=null;
     }
 }

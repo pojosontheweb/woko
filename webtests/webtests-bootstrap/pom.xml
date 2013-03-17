@@ -39,6 +39,17 @@
         </dependency>
         <dependency>
             <groupId>com.pojosontheweb</groupId>
+            <artifactId>woko-blobs-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.pojosontheweb</groupId>
+            <artifactId>woko-blobs-web</artifactId>
+            <version>${project.version}</version>
+            <type>war</type>
+        </dependency>
+        <dependency>
+            <groupId>com.pojosontheweb</groupId>
             <artifactId>woko-container-auth</artifactId>
             <version>${project.version}</version>
             <type>war</type>

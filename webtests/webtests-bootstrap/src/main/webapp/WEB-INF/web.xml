@@ -93,13 +93,19 @@
 
     <context-param>
         <param-name>Woko.Hibernate.Packages</param-name>
-        <param-value>test</param-value>
+        <param-value>
+            test
+            woko.ext.blobs.hibernate
+        </param-value>
     </context-param>
 
   <!-- tests for facet packages init param -->
     <context-param>
         <param-name>Woko.Facet.Packages</param-name>
-        <param-value>test.facet.pkg</param-value>
+        <param-value>
+            test.facet.pkg
+            woko.ext.blobs.facets
+        </param-value>
     </context-param>
 
 <!-- security roles for our tests -->
