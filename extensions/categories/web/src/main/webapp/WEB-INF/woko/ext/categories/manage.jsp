@@ -1,7 +1,6 @@
 <%@ page import="woko.facets.builtin.WokoFacets" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="/WEB-INF/woko/jsp/taglibs.jsp"%>
-
 <w:facet facetName="<%=WokoFacets.layout%>"/>
 <fmt:message bundle="${wokoBundle}" var="pageTitle" key="woko.ext.categories.manage.page.title"/>
 <s:layout-render name="${layout.layoutPath}" layout="${layout}" pageTitle="${pageTitle}">
@@ -18,9 +17,7 @@
             <c:when test="${not empty rootCategories}">
                 <ul>
                     <c:forEach items="${rootCategories}" var="categ">
-                        <li>
-                            <w:link object="${categ}" facetName="view"/>
-                        </li>
+                        <w:includeFacet facetName="fragment" targetObject="${categ}"/>
                     </c:forEach>
                 </ul>
             </c:when>
