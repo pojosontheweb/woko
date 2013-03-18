@@ -28,21 +28,39 @@ class HibernateCategoryManagerTest extends TestCase {
 
 
     void testHibernateCategoryManager() {
+        HibernateCategory reading
         doInTx {
-            HibernateCategory reading = new HibernateCategory(name: "Reading")
+            reading = new HibernateCategory(name: "Reading")
             store.save(reading)
 
-            HibernateCategory books = new HibernateCategory(name: "Books")
-            store.save(books)
-            categoryManager.setParentCategory(books, reading);
+        }
 
+        HibernateCategory books
+        doInTx {
+            reading = store.session.get(HibernateCategory.class, reading.id)
+            books = new HibernateCategory(name: "Books", parentCategory: reading)
+            store.save(books)
+        }
+
+        doInTx {
+            reading = store.session.get(HibernateCategory.class, reading.id)
+            books = store.session.get(HibernateCategory.class, books.id)
             assert books.parentCategory == reading
             assert reading.subCategories.size()==1
             assert reading.subCategories[0] == books
+        }
 
-            HibernateCategory articles = new HibernateCategory(name: "Articles")
+        HibernateCategory articles
+        doInTx {
+            reading = store.session.get(HibernateCategory.class, reading.id)
+            articles = new HibernateCategory(name: "Articles", parentCategory: reading)
             store.save(articles)
-            categoryManager.setParentCategory(articles, reading);
+        }
+
+        doInTx {
+            reading = store.session.get(HibernateCategory.class, reading.id)
+            books = store.session.get(HibernateCategory.class, books.id)
+            articles = store.session.get(HibernateCategory.class, articles.id)
 
             assert articles.parentCategory == reading
             assert reading.subCategories.size()==2

@@ -8,10 +8,6 @@ public interface CategoryManager {
 
     static final String KEY = "CategoryManager";
 
-    void setParentCategory(Category child, Category newParent);
-
-    ResultIterator<? extends Categorizable> listObjectsInCategory(Category category, Integer start, Integer limit);
-
     List<Category> getRootCategories();
 
 }

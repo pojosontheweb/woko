@@ -21,45 +21,6 @@ public class HibernateCategoryManager implements CategoryManager {
     }
 
     @Override
-    public void setParentCategory(Category child, Category newParent) {
-        Util.assertArg("child", child);
-
-        HibernateCategory hbChild = (HibernateCategory)child;
-        HibernateCategory hbParent = (HibernateCategory)newParent;
-
-        // cleanup old parent if any...
-        HibernateCategory oldParent = hbChild.getParentCategory();
-        if (oldParent!=null) {
-            @SuppressWarnings("unchecked")
-            List<HibernateCategory> oldSubCategs = (List<HibernateCategory>)oldParent.getSubCategories();
-            if (oldSubCategs!=null) {
-                if (oldSubCategs.remove(child)) {
-                    store.save(oldParent);
-                }
-            }
-        }
-
-        // now assign new parent
-        hbChild.setParentCategory(hbParent);
-        store.save(hbChild);
-        if (hbParent!=null) {
-            @SuppressWarnings("unchecked")
-            List<HibernateCategory> subCategs = (List<HibernateCategory>)hbParent.getSubCategories();
-            if (subCategs==null) {
-                subCategs = new ArrayList<HibernateCategory>();
-                hbParent.setSubCategories(subCategs);
-            }
-            subCategs.add(hbChild);
-            store.save(hbParent);
-        }
-    }
-
-    @Override
-    public ResultIterator<? extends Categorizable> listObjectsInCategory(Category category, Integer start, Integer limit) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
     @SuppressWarnings("unchecked")
     public List<Category> getRootCategories() {
         // select all categories that don't have no parent
