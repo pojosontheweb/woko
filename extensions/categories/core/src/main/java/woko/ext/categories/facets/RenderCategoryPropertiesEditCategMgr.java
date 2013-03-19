@@ -28,8 +28,4 @@ public class RenderCategoryPropertiesEditCategMgr<
         return all;
     }
 
-    @Override
-    public List<String> getReadOnlyPropertyNames() {
-        return Arrays.asList("subCategories");
-    }
 }

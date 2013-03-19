@@ -28,13 +28,11 @@ class BootstrapWebtestsInitListener extends
             HibernateCategory root = new HibernateCategory(name: "root")
             store.save(root)
 
-            HibernateCategory sub1 = new HibernateCategory(name: "sub1")
+            HibernateCategory sub1 = new HibernateCategory(name: "sub1", parentCategory: root)
             store.save(sub1)
-            cm.setParentCategory(sub1, root)
 
-            HibernateCategory sub2 = new HibernateCategory(name: "sub2")
+            HibernateCategory sub2 = new HibernateCategory(name: "sub2", parentCategory: root)
             store.save(sub2)
-            cm.setParentCategory(sub2, root)
 
         } as TransactionCallback)
 

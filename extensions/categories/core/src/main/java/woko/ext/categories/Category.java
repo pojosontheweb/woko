@@ -12,4 +12,6 @@ public interface Category {
 
     List<? extends Category> getSubCategories();
 
+    Integer getIndex();
+
 }

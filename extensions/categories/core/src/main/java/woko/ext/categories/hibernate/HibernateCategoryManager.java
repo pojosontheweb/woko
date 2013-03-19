@@ -25,7 +25,7 @@ public class HibernateCategoryManager implements CategoryManager {
     public List<Category> getRootCategories() {
         // select all categories that don't have no parent
         return store.getSession().createCriteria(HibernateCategory.class)
-                .add(Restrictions.isNull("parent"))
+                .add(Restrictions.isNull("parentCategory"))
                 .list();
     }
 }

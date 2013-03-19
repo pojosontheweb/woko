@@ -17,10 +17,12 @@ public class HibernateCategory implements Category {
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private HibernateCategory parent;
+    private HibernateCategory parentCategory;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "parent")
-    private List<HibernateCategory> subCategs;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "parentCategory")
+    private List<HibernateCategory> subCategories;
+
+    private Integer index;
 
     @Override
     public Long getId() {
@@ -41,21 +43,29 @@ public class HibernateCategory implements Category {
     }
 
     public void setParentCategory(HibernateCategory parent) {
-        this.parent = parent;
+        this.parentCategory = parent;
     }
 
     @Override
     public HibernateCategory getParentCategory() {
-        return parent;
+        return parentCategory;
     }
 
     public void setSubCategories(List<HibernateCategory> subCategs) {
-        this.subCategs = subCategs;
+        this.subCategories = subCategs;
     }
 
     @Override
     public List<? extends Category> getSubCategories() {
-        return subCategs;
+        return subCategories;
     }
 
+    @Override
+    public Integer getIndex() {
+        return index;
+    }
+
+    public void setIndex(Integer index) {
+        this.index = index;
+    }
 }
