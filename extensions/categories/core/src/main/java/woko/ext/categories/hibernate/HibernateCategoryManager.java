@@ -51,13 +51,54 @@ public class HibernateCategoryManager implements CategoryManager {
     }
 
 
-    public void moveCategory(Category category, boolean up) {
+    public boolean moveCategory(Category category, boolean up) {
+        Util.assertArg("category", category);
+        if (up && !isMoveUpAllowed(category)) {
+            return false;
+        }
+        if (!up && !isMoveDownAllowed(category)) {
+            return false;
+        }
+        List<Category> siblings = siblings(category);
+        if (siblings==null) {
+            return false;
+        }
 
+        // check if indexes are assigned. If not, re-assign
+        int index = 0;
+        for (Category sibling : siblings) {
+            HibernateCategory hbc = (HibernateCategory)sibling;
+            Integer curIndex = hbc.getSortIndex();
+            if (curIndex==null) {
+                hbc.setSortIndex(index);
+                store.save(hbc);
+            }
+            index++;
+        }
+
+        // indexes found, swap
+        int indexOfCateg = siblings.indexOf(category);
+        HibernateCategory cur = (HibernateCategory)category;
+        int curIndex = cur.getSortIndex();
+        if (up) {
+            HibernateCategory previous = (HibernateCategory)siblings.get(indexOfCateg-1);
+            cur.setSortIndex(previous.getSortIndex());
+            previous.setSortIndex(curIndex);
+            store.save(previous);
+        } else {
+            HibernateCategory next = (HibernateCategory)siblings.get(indexOfCateg+1);
+            cur.setSortIndex(next.getSortIndex());
+            next.setSortIndex(curIndex);
+            store.save(next);
+        }
+        store.save(cur);
+
+        return true;
     }
 
-    private List<? extends Category> siblings(Category category) {
+    private List<Category> siblings(Category category) {
         Category parent = category.getParentCategory();
-        List<? extends Category> siblings;
+        List<Category> siblings;
         if (parent==null) {
             siblings = getRootCategories();
         } else {

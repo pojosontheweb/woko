@@ -19,10 +19,15 @@ public class HibernateCategory implements Category {
     @ManyToOne(fetch = FetchType.LAZY)
     private HibernateCategory parentCategory;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "parentCategory")
-    private List<HibernateCategory> subCategories;
+    @OneToMany(
+            fetch = FetchType.LAZY,
+            mappedBy = "parentCategory",
+            targetEntity = HibernateCategory.class
+    )
+    @OrderBy("sortIndex ASC")
+    private List<Category> subCategories;
 
-    private Integer index;
+    private Integer sortIndex;
 
     @Override
     public Long getId() {
@@ -51,21 +56,20 @@ public class HibernateCategory implements Category {
         return parentCategory;
     }
 
-    public void setSubCategories(List<HibernateCategory> subCategs) {
+    public void setSubCategories(List<Category> subCategs) {
         this.subCategories = subCategs;
     }
 
     @Override
-    public List<? extends Category> getSubCategories() {
+    public List<Category> getSubCategories() {
         return subCategories;
     }
 
-    @Override
-    public Integer getIndex() {
-        return index;
+    public Integer getSortIndex() {
+        return sortIndex;
     }
 
-    public void setIndex(Integer index) {
-        this.index = index;
+    public void setSortIndex(Integer sortIndex) {
+        this.sortIndex = sortIndex;
     }
 }

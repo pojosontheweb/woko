@@ -86,7 +86,7 @@ class HibernateCategoryManagerTest extends TestCase {
             assert categoryManager.isMoveUpAllowed(articles)
             assert !categoryManager.isMoveDownAllowed(articles)
 
-            categoryManager.moveCategory(books, false)
+            assert categoryManager.moveCategory(books, false)
         }
 
         doInTx {
@@ -102,7 +102,7 @@ class HibernateCategoryManagerTest extends TestCase {
             assert categoryManager.isMoveUpAllowed(books)
             assert !categoryManager.isMoveDownAllowed(books)
 
-            categoryManager.moveCategory(reading, true)
+            assert categoryManager.moveCategory(books, true)
         }
 
         doInTx {

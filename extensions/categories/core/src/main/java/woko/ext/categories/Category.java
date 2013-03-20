@@ -10,8 +10,6 @@ public interface Category {
 
     Category getParentCategory();
 
-    List<? extends Category> getSubCategories();
-
-    Integer getIndex();
+    List<Category> getSubCategories();
 
 }
