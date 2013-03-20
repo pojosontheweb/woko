@@ -1,7 +1,5 @@
 package woko.ext.categories;
 
-import woko.persistence.ResultIterator;
-
 import java.util.List;
 
 public interface CategoryManager {
@@ -10,4 +8,9 @@ public interface CategoryManager {
 
     List<Category> getRootCategories();
 
+    List<Category> getChoicesForParent(Category category, List<Category> defaultChoices);
+
+    boolean isMoveUpAllowed(Category category);
+
+    boolean isMoveDownAllowed(Category category);
 }

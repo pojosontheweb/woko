@@ -72,5 +72,51 @@ class HibernateCategoryManagerTest extends TestCase {
             assert rootCategs[0] == reading
         }
 
+        // sorting tests
+        doInTx {
+            reading = store.session.get(HibernateCategory.class, reading.id)
+            books = store.session.get(HibernateCategory.class, books.id)
+            articles = store.session.get(HibernateCategory.class, articles.id)
+
+            assert reading.subCategories[0] == books
+            assert reading.subCategories[1] == articles
+
+            assert categoryManager.isMoveDownAllowed(books)
+            assert !categoryManager.isMoveUpAllowed(books)
+            assert categoryManager.isMoveUpAllowed(articles)
+            assert !categoryManager.isMoveDownAllowed(articles)
+
+            categoryManager.moveCategory(books, false)
+        }
+
+        doInTx {
+            reading = store.session.get(HibernateCategory.class, reading.id)
+            books = store.session.get(HibernateCategory.class, books.id)
+            articles = store.session.get(HibernateCategory.class, articles.id)
+
+            assert reading.subCategories[0] == articles
+            assert reading.subCategories[1] == books
+
+            assert categoryManager.isMoveDownAllowed(articles)
+            assert !categoryManager.isMoveUpAllowed(articles)
+            assert categoryManager.isMoveUpAllowed(books)
+            assert !categoryManager.isMoveDownAllowed(books)
+
+            categoryManager.moveCategory(reading, true)
+        }
+
+        doInTx {
+            reading = store.session.get(HibernateCategory.class, reading.id)
+            books = store.session.get(HibernateCategory.class, books.id)
+            articles = store.session.get(HibernateCategory.class, articles.id)
+
+            assert reading.subCategories[0] == books
+            assert reading.subCategories[1] == articles
+
+            assert categoryManager.isMoveDownAllowed(books)
+            assert !categoryManager.isMoveUpAllowed(books)
+            assert categoryManager.isMoveUpAllowed(articles)
+            assert !categoryManager.isMoveDownAllowed(articles)
+        }
     }
 }

@@ -11,6 +11,9 @@
 <%@ page import="woko.ext.categories.facets.RenderPropertyValueEditSubCategoriesCategMgr" %>
 <%@ page import="woko.ext.categories.Category" %>
 <%@ page import="java.util.List" %>
+<%@ page import="woko.facets.builtin.Edit" %>
+<%@ page import="woko.util.LinkUtil" %>
+<%@ page import="woko.ext.categories.facets.MoveCategory" %>
 
 <%
     RenderPropertyValueEditSubCategoriesCategMgr<?,?,?,?> renderPropertyValue = (RenderPropertyValueEditSubCategoriesCategMgr<?,?,?,?>)request.getAttribute(WokoFacets.renderPropertyValueEdit);
@@ -28,18 +31,45 @@
         <%
             if (categories!=null) {
         %>
-        <table class="table table-condensed">
+        <table class="table table-bordered">
+            <tbody>
         <%
                 for (Category c : categories) {
                     RenderPropertyValue nested = Util.getRenderPropValueFacet(woko, request, owningObject, propertyName, c);
         %>
-            <div class="wokoCollectionItem">
+        <tr>
+            <td>
                 <jsp:include page="<%=nested.getFragmentPath(request)%>"/>
+            </td>
+            <td>
                 <div class="btn-group">
-                    <a class="btn">up</a>
-                    <a class="btn">down</a>
+                    <%
+                        Edit edit = (Edit)woko.getFacet(Edit.FACET_NAME, request, c);
+                        if (edit!=null) {
+                            String editUrl = LinkUtil.getUrl(woko, c,  Edit.FACET_NAME);
+                    %>
+                            <a class="btn" href="${cp}/<%=editUrl%>"><fmt:message bundle="${wokoBundle}" key="woko.links.edit"/></a>
+                    <%
+                        }
+                        MoveCategory move = (MoveCategory)woko.getFacet(MoveCategory.FACET_NAME, request,  c);
+                        if (move!=null) {
+                            String moveUrl = LinkUtil.getUrl(woko, c, MoveCategory.FACET_NAME);
+                            if (move.isMoveUpAllowed()) {
+                    %>
+                                <a class="btn" href="${cp}/<%=moveUrl%>?facet.up=true"><fmt:message bundle="${wokoBundle}" key="woko.ext.categories.move.up"/></a>
+                    <%
+
+                            }
+                            if (move.isMoveDownAllowed()) {
+                    %>
+                                <a class="btn" href="${cp}/<%=moveUrl%>?facet.up=false"><fmt:message bundle="${wokoBundle}" key="woko.ext.categories.move.down"/></a>
+                    <%
+                            }
+                        }
+                    %>
                 </div>
-            </div>
+            </td>
+        </tr>
         <%
                 }
         %>
