@@ -25,6 +25,7 @@ public class RenderCategoryPropertiesCategMgr<
         List<String> all = super.getPropertyNames();
         all.remove("id");
         all.remove("class");
+        all.remove("sortIndex");
         all.remove("name");
         return all;
     }

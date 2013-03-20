@@ -51,6 +51,7 @@ public class HibernateCategoryManager implements CategoryManager {
     }
 
 
+    @Override
     public boolean moveCategory(Category category, boolean up) {
         Util.assertArg("category", category);
         if (up && !isMoveUpAllowed(category)) {
@@ -64,15 +65,12 @@ public class HibernateCategoryManager implements CategoryManager {
             return false;
         }
 
-        // check if indexes are assigned. If not, re-assign
+        // re-assign all indexes
         int index = 0;
         for (Category sibling : siblings) {
             HibernateCategory hbc = (HibernateCategory)sibling;
-            Integer curIndex = hbc.getSortIndex();
-            if (curIndex==null) {
-                hbc.setSortIndex(index);
-                store.save(hbc);
-            }
+            hbc.setSortIndex(index);
+            store.save(hbc);
             index++;
         }
 

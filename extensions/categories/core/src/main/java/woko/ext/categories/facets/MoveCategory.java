@@ -2,9 +2,7 @@ package woko.ext.categories.facets;
 
 import net.sourceforge.jfacets.IFacetDescriptorManager;
 import net.sourceforge.jfacets.annotations.FacetKey;
-import net.sourceforge.stripes.action.ActionBeanContext;
-import net.sourceforge.stripes.action.Resolution;
-import net.sourceforge.stripes.action.StrictBinding;
+import net.sourceforge.stripes.action.*;
 import net.sourceforge.stripes.validation.Validate;
 import woko.ext.categories.Category;
 import woko.ext.categories.CategoryManager;
@@ -15,7 +13,7 @@ import woko.users.UserManager;
 import woko.users.UsernameResolutionStrategy;
 
 @StrictBinding(
-        allow = {"facet.up"}
+        allow = {"facet.up", "facet.targetUrl"}
 )
 @FacetKey(name = "move", profileId = "categorymanager", targetObjectType = Category.class)
 public class MoveCategory<
@@ -30,12 +28,22 @@ public class MoveCategory<
     @Validate(required = true)
     private Boolean up;
 
+    private String targetUrl;
+
     public Boolean getUp() {
         return up;
     }
 
     public void setUp(Boolean up) {
         this.up = up;
+    }
+
+    public String getTargetUrl() {
+        return targetUrl;
+    }
+
+    public void setTargetUrl(String targetUrl) {
+        this.targetUrl = targetUrl;
     }
 
     private CategoryManager categoryManager;
@@ -51,7 +59,31 @@ public class MoveCategory<
 
     @Override
     public Resolution getResolution(ActionBeanContext abc) {
-        return null;
+        if (categoryManager.moveCategory(getCategory(), up)) {
+            return afterMove(abc);
+        } else {
+            return didntMove(abc);
+        }
+    }
+
+    protected String getTargetUrlNullSafe() {
+        String target = getTargetUrl();
+        if (target==null) {
+            target = "/manageCategories";
+        }
+        if (!target.startsWith("/")) {
+            target = "/" + target;
+        }
+        return target;
+    }
+
+    protected Resolution didntMove(ActionBeanContext abc) {
+        return new ForwardResolution(getTargetUrlNullSafe());
+    }
+
+    protected Resolution afterMove(ActionBeanContext abc) {
+        abc.getMessages().add(new LocalizableMessage("woko.ext.categories.moved"));
+        return new RedirectResolution(getTargetUrlNullSafe());
     }
 
     public boolean isMoveUpAllowed() {

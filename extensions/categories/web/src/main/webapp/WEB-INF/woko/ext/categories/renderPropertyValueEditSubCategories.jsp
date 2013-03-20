@@ -23,8 +23,8 @@
     List<Category> categories = (List<Category>)renderPropertyValue.getPropertyValue();
 
     String propertyName = renderPropertyValue.getPropertyName();
-    Object owningObject = renderPropertyValue.getOwningObject();
-    String propertyClassName = os.getClassMapping(Util.getPropertyType(owningObject.getClass(), propertyName));
+    Category owningCateg = (Category)renderPropertyValue.getOwningObject();
+    String propertyClassName = os.getClassMapping(Util.getPropertyType(owningCateg.getClass(), propertyName));
 %>
 <span class="wokoPropertyValue">
     <span class="<%=propertyName%> <%=propertyClassName%>">
@@ -35,7 +35,7 @@
             <tbody>
         <%
                 for (Category c : categories) {
-                    RenderPropertyValue nested = Util.getRenderPropValueFacet(woko, request, owningObject, propertyName, c);
+                    RenderPropertyValue nested = Util.getRenderPropValueFacet(woko, request, owningCateg, propertyName, c);
         %>
         <tr>
             <td>
@@ -46,23 +46,34 @@
                     <%
                         Edit edit = (Edit)woko.getFacet(Edit.FACET_NAME, request, c);
                         if (edit!=null) {
-                            String editUrl = LinkUtil.getUrl(woko, c,  Edit.FACET_NAME);
+                            String editUrl = "/" + LinkUtil.getUrl(woko, c,  Edit.FACET_NAME);
                     %>
-                            <a class="btn" href="${cp}/<%=editUrl%>"><fmt:message bundle="${wokoBundle}" key="woko.links.edit"/></a>
+                        <s:link class="btn" href="<%=editUrl%>">
+                            <fmt:message bundle="${wokoBundle}" key="woko.links.edit"/>
+                        </s:link>
                     <%
                         }
                         MoveCategory move = (MoveCategory)woko.getFacet(MoveCategory.FACET_NAME, request,  c);
                         if (move!=null) {
-                            String moveUrl = LinkUtil.getUrl(woko, c, MoveCategory.FACET_NAME);
+                            String moveUrl = "/" + LinkUtil.getUrl(woko, c, MoveCategory.FACET_NAME);
+                            String targetUrl = LinkUtil.getUrl(woko, owningCateg, Edit.FACET_NAME);
                             if (move.isMoveUpAllowed()) {
                     %>
-                                <a class="btn" href="${cp}/<%=moveUrl%>?facet.up=true"><fmt:message bundle="${wokoBundle}" key="woko.ext.categories.move.up"/></a>
+                        <s:link class="btn" href="<%=moveUrl%>">
+                            <s:param name="facet.up" value="true"/>
+                            <s:param name="facet.targetUrl" value="<%=targetUrl%>"/>
+                            <fmt:message bundle="${wokoBundle}" key="woko.ext.categories.move.up"/>
+                        </s:link>
                     <%
 
                             }
                             if (move.isMoveDownAllowed()) {
                     %>
-                                <a class="btn" href="${cp}/<%=moveUrl%>?facet.up=false"><fmt:message bundle="${wokoBundle}" key="woko.ext.categories.move.down"/></a>
+                        <s:link class="btn" href="<%=moveUrl%>">
+                            <s:param name="facet.up" value="false"/>
+                            <s:param name="facet.targetUrl" value="<%=targetUrl%>"/>
+                            <fmt:message bundle="${wokoBundle}" key="woko.ext.categories.move.down"/>
+                        </s:link>
                     <%
                             }
                         }

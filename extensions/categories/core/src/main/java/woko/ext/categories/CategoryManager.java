@@ -13,4 +13,7 @@ public interface CategoryManager {
     boolean isMoveUpAllowed(Category category);
 
     boolean isMoveDownAllowed(Category category);
+
+    public boolean moveCategory(Category category, boolean up);
+
 }
