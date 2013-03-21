@@ -17,15 +17,18 @@
 package woko.util;
 
 import net.sourceforge.stripes.controller.StripesFilter;
+import net.sourceforge.stripes.exception.StripesRuntimeException;
 import net.sourceforge.stripes.localization.LocalizationUtility;
 import net.sourceforge.stripes.util.ReflectUtil;
 import woko.Woko;
 import woko.facets.builtin.RenderPropertyValue;
 import woko.facets.builtin.RenderTitle;
 import woko.facets.builtin.WokoFacets;
+import woko.persistence.WokoAlternateKey;
 
 import javax.servlet.http.HttpServletRequest;
 import java.beans.PropertyDescriptor;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
@@ -215,5 +218,94 @@ public class Util {
         }
         return rt.getTitle();
     }
+
+    public static class PropertyNameAndAnnotation<T extends Annotation> {
+
+        private final String propertyName;
+        private final T annotation;
+
+        public PropertyNameAndAnnotation(String propertyName, T annotation) {
+            this.propertyName = propertyName;
+            this.annotation = annotation;
+        }
+
+        public String getPropertyName() {
+            return propertyName;
+        }
+
+        public T getAnnotation() {
+            return annotation;
+        }
+
+        @Override
+        public String toString() {
+            return "PropertyNameAndAnnotation{" +
+                    "propertyName='" + propertyName + '\'' +
+                    ", annotation=" + annotation +
+                    '}';
+        }
+    }
+
+    public static <T extends Annotation> PropertyNameAndAnnotation<T> findAnnotationOnFieldOrAccessor(Class<?> beanType, Class<T> annotationClass)
+    {
+        Set<String> seen = new HashSet<String>();
+        try {
+            for (Class<?> clazz = beanType; clazz != null; clazz = clazz.getSuperclass()) {
+                List<PropertyDescriptor> pds = new ArrayList<PropertyDescriptor>(
+                        Arrays.asList(ReflectUtil.getPropertyDescriptors(clazz)));
+
+                // Also look at public fields
+                Field[] publicFields = clazz.getFields();
+                for (Field field : publicFields) {
+                    pds.add(new PropertyDescriptor(field.getName(), null, null));
+                }
+
+                for (PropertyDescriptor pd : pds) {
+                    String propertyName = pd.getName();
+                    Method accessor = pd.getReadMethod();
+                    Method mutator = pd.getWriteMethod();
+                    Field field = null;
+                    try {
+                        field = clazz.getDeclaredField(propertyName);
+                    }
+                    catch (NoSuchFieldException e) {
+                    }
+
+
+                    // stop processing fields we've already seen
+                    if (seen.contains(propertyName))
+                        continue;
+
+                    T annot = null;
+                    if (accessor!=null) {
+                        annot = accessor.getAnnotation(annotationClass);
+                        if (annot!=null) {
+                            return new PropertyNameAndAnnotation<T>(propertyName, annot);
+                        }
+                    }
+
+                    if (field!=null) {
+                        annot = field.getAnnotation(annotationClass);
+                        if (annot!=null) {
+                            return new PropertyNameAndAnnotation<T>(propertyName, annot);
+                        }
+                    }
+
+                    if (mutator!=null) {
+                        annot = mutator.getAnnotation(annotationClass);
+                        if (annot!=null) {
+                            return new PropertyNameAndAnnotation<T>(propertyName, annot);
+                        }
+                    }
+                }
+            }
+
+            return null;
+        } catch (Exception e) {
+            logger.error("Failure checking annotations " + beanType.getName(), e);
+            throw new RuntimeException(e);
+        }
+    }
+
 
 }

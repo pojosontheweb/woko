@@ -16,6 +16,7 @@
 
 package woko.hibernate;
 
+import net.sourceforge.stripes.util.ReflectUtil;
 import net.sourceforge.stripes.util.ResolverUtil;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -24,13 +25,18 @@ import org.hibernate.Transaction;
 import org.hibernate.annotations.Entity;
 import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.criterion.Restrictions;
 import org.hibernate.metadata.ClassMetadata;
 import woko.Closeable;
 import woko.persistence.*;
+import woko.util.Util;
 import woko.util.WLogger;
 
 import javax.persistence.MappedSuperclass;
+import java.beans.PropertyDescriptor;
 import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.*;
 
@@ -143,6 +149,22 @@ public class HibernateStore implements ObjectStore, TransactionalStore, Closeabl
         return sessionFactory.getCurrentSession();
     }
 
+    protected Object loadObjectWithAlternateKey(Class<?> mappedClass, Util.PropertyNameAndAnnotation<WokoAlternateKey> propAndAltKey, String keyValue) {
+        Util.assertArg("mappedClass", mappedClass);
+        Util.assertArg("propAndAltKey", propAndAltKey);
+        Util.assertArg("keyValue", keyValue);
+        WokoAlternateKey alternateKey = propAndAltKey.getAnnotation();
+        return getSession()
+                .createCriteria(mappedClass)
+                .add(Restrictions.eq(alternateKey.altKeyProperty(), keyValue))
+                .setCacheable(true)
+                .uniqueResult();
+    }
+
+    private Util.PropertyNameAndAnnotation<WokoAlternateKey> checkForAlternateKey(Class<?> mappedClass) {
+        return Util.findAnnotationOnFieldOrAccessor(mappedClass, WokoAlternateKey.class);
+    }
+
     /**
      * Load persistent object from the database using the current Hibernate Session.
      * @param className the (mapped) class name of the object to load
@@ -167,16 +189,42 @@ public class HibernateStore implements ObjectStore, TransactionalStore, Closeabl
             log.warn("Unable to get key type for mappedClass " + mappedClass);
             return null;
         }
+
+        Session s = getSession();
+        Transaction tx = s.getTransaction();
+        if (log.isDebugEnabled()) {
+            log.debug("Using transaction " + tx);
+        }
+
+        // introspect mapped class and check for @WokoAlternateKey
+        Util.PropertyNameAndAnnotation<WokoAlternateKey> alternateKey = checkForAlternateKey(mappedClass);
+        if (alternateKey!=null) {
+            if (log.isDebugEnabled()) {
+                log.debug("@WokoAlternateKey found for mapped class " + mappedClass.getName() + ", querying object.");
+            }
+            // alternate key found, use this to grab the object
+            Object o = loadObjectWithAlternateKey(mappedClass, alternateKey, key);
+            if (o!=null) {
+                if (log.isDebugEnabled()) {
+                    log.debug("Found object for " + mappedClass.getName() + " with alternate key property " + alternateKey);
+                }
+                return o;
+            } else {
+                if (log.isDebugEnabled()) {
+                    log.debug("Object not found for " + mappedClass.getName() + " using alternate key property " + alternateKey + ", will try with ID");
+                }
+            }
+        }
+
         Serializable id = primaryKeyConverter.convert(key, keyType);
         if (id == null) {
             log.warn("Converted key " + key + " to null, unable to load any object");
             return null;
         }
-        Session s = getSession();
-        Transaction tx = s.getTransaction();
-        log.debug("Using transaction " + tx);
         return s.get(mappedClass, id);
     }
+
+
 
     /**
      * Save or update passed object (<code>Session.saveOrUpdate()</code>)
@@ -187,8 +235,41 @@ public class HibernateStore implements ObjectStore, TransactionalStore, Closeabl
         if (obj == null) {
             return null;
         }
+
+        // alternate key management : we need to set the alternate key on save if
+        // @WokoAlternateKey is used
+        Class<?> clazz = obj.getClass();
+        Util.PropertyNameAndAnnotation<WokoAlternateKey> alternateKey = checkForAlternateKey(clazz);
+        if (alternateKey!=null) {
+            Object alternateKeyValue = computeAlternateKeyValue(obj, alternateKey);
+            if (alternateKeyValue==null) {
+                throw new IllegalStateException("Could not compute alternate key value for class " + clazz + ", alternateKey=" + alternateKey);
+            }
+            WokoAlternateKey annot = alternateKey.getAnnotation();
+            PropertyDescriptor pd = ReflectUtil.getPropertyDescriptor(clazz, annot.altKeyProperty());
+            Method setter = pd.getWriteMethod();
+            if (setter==null) {
+                throw new IllegalStateException("No setter found for alternate key property, could not set alternate key property for class " + clazz + ", alternateKey=" + alternateKey);
+            }
+            try {
+                setter.invoke(obj, alternateKeyValue);
+            } catch (Exception e) {
+                log.error("Exception caught while setting alternate key property, could not set alternate key property for class " + clazz + ", alternateKey=" + alternateKey);
+                throw new RuntimeException(e);
+            }
+        }
+
         getSession().saveOrUpdate(obj);
         return obj;
+    }
+
+    protected Object computeAlternateKeyValue(Object obj, Util.PropertyNameAndAnnotation<WokoAlternateKey> propAndAnnot) {
+        Util.assertArg("obj", obj);
+        Util.assertArg("propAndAnnot", propAndAnnot);
+        String propName = propAndAnnot.getPropertyName();
+
+        // TODO unicity encoding etc : for just return the prop value
+        return Util.getPropertyValue(obj, propName);
     }
 
     /**

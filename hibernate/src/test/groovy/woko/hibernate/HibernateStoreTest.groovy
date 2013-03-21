@@ -16,6 +16,7 @@
 
 package woko.hibernate
 
+import entities.MyEntityWithAlternateKey
 import junit.framework.TestCase
 import net.sourceforge.stripes.mock.MockServletContext
 import woko.Woko
@@ -123,6 +124,31 @@ class HibernateStoreTest extends TestCase {
         } finally {
             doInTx { s ->
                 MyEntity e = s.load("MyEntity", "1")
+                s.delete(e)
+            }
+        }
+    }
+
+    void testAlternateKey() {
+        try {
+            doWithMockContext("wdevel") { MockServletContext c ->
+                doInTx { s ->
+                    MyEntityWithAlternateKey e = new MyEntityWithAlternateKey(id: 1, name: "foo")
+                    s.save(e)
+                }
+
+                doInTx { s->
+                    MyEntityWithAlternateKey e = s.load("MyEntityWithAlternateKey", "1")
+                    assert e.name == 'foo'
+
+                    e = s.load("MyEntityWithAlternateKey", "foo")
+                    assert e
+                    assert e.name == 'foo'
+                }
+            }
+        } finally {
+            doInTx { s ->
+                MyEntityWithAlternateKey e = s.load("MyEntityWithAlternateKey", "1")
                 s.delete(e)
             }
         }
