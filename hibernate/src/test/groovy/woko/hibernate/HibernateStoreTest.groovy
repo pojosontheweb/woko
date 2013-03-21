@@ -191,6 +191,10 @@ class HibernateStoreTest extends TestCase {
                     assert e4
                     assert e4.name == 'foo'
                     assert e4.id == 2
+
+                    Woko woko = Woko.getWoko(c)
+                    assert LinkUtil.getUrl(woko, e1, "view") == "view/MyEntityWithAlternateKey/foo"
+                    assert LinkUtil.getUrl(woko, e2, "view") == "view/MyEntityWithAlternateKey/foo-2"
                 }
             }
         } finally {
