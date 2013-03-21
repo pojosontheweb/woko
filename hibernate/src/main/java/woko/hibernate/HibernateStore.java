@@ -255,19 +255,21 @@ public class HibernateStore implements ObjectStore, TransactionalStore, Closeabl
         if (alternateKey!=null) {
             Object alternateKeyValue = computeAlternateKeyValue(obj, alternateKey);
             if (alternateKeyValue==null) {
-                throw new IllegalStateException("Could not compute alternate key value for class " + clazz + ", alternateKey=" + alternateKey);
-            }
-            WokoAlternateKey annot = alternateKey.getAnnotation();
-            PropertyDescriptor pd = ReflectUtil.getPropertyDescriptor(clazz, annot.altKeyProperty());
-            Method setter = pd.getWriteMethod();
-            if (setter==null) {
-                throw new IllegalStateException("No setter found for alternate key property, could not set alternate key property for class " + clazz + ", alternateKey=" + alternateKey);
-            }
-            try {
-                setter.invoke(obj, alternateKeyValue);
-            } catch (Exception e) {
-                log.error("Exception caught while setting alternate key property, could not set alternate key property for class " + clazz + ", alternateKey=" + alternateKey);
-                throw new RuntimeException(e);
+                log.warn("Alternate key specified for class " + clazz + " : " + alternateKey + ", but value of the " +
+                    "alternateKeyProperty is null. @WokoAlternateKey won't be used for this class.");
+            } else {
+                WokoAlternateKey annot = alternateKey.getAnnotation();
+                PropertyDescriptor pd = ReflectUtil.getPropertyDescriptor(clazz, annot.altKeyProperty());
+                Method setter = pd.getWriteMethod();
+                if (setter==null) {
+                    throw new IllegalStateException("No setter found for alternate key property, could not set alternate key property for class " + clazz + ", alternateKey=" + alternateKey);
+                }
+                try {
+                    setter.invoke(obj, alternateKeyValue);
+                } catch (Exception e) {
+                    log.error("Exception caught while setting alternate key property, could not set alternate key property for class " + clazz + ", alternateKey=" + alternateKey);
+                    throw new RuntimeException(e);
+                }
             }
         }
 
@@ -351,7 +353,22 @@ public class HibernateStore implements ObjectStore, TransactionalStore, Closeabl
         if (obj == null) {
             return null;
         }
-        Serializable k = primaryKeyConverter.getPrimaryKeyValue(sessionFactory, obj, deproxify(obj.getClass()));
+        Class<?> mappedClass = deproxify(obj.getClass());
+
+        // check for alternate key first...
+        Util.PropertyNameAndAnnotation<WokoAlternateKey> altKey = checkForAlternateKey(mappedClass);
+        if (altKey!=null) {
+            // grab the value of the alt key property
+            String altKeyProp = altKey.getAnnotation().altKeyProperty();
+            Object altKeyVal = Util.getPropertyValue(obj, altKeyProp);
+            if (altKeyVal!=null) {
+                // TODO what happens for non String props ???
+                return altKeyVal.toString();
+            }
+        }
+
+        // no alternate key was found, use the primary key
+        Serializable k = primaryKeyConverter.getPrimaryKeyValue(sessionFactory, obj, mappedClass);
         if (k == null) {
             return null;
         }

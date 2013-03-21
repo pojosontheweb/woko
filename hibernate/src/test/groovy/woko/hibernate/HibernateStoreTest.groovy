@@ -27,6 +27,7 @@ import woko.mock.MockUtil
 import woko.persistence.ObjectStore
 import entities.MyEntity
 import woko.users.UserManager
+import woko.util.LinkUtil
 
 import static woko.mock.MockUtil.*
 
@@ -133,8 +134,10 @@ class HibernateStoreTest extends TestCase {
         try {
             doWithMockContext("wdevel") { MockServletContext c ->
                 doInTx { s ->
-                    MyEntityWithAlternateKey e = new MyEntityWithAlternateKey(id: 1, name: "foo")
-                    s.save(e)
+                    MyEntityWithAlternateKey e1 = new MyEntityWithAlternateKey(id: 1, name: "foo")
+                    s.save(e1)
+                    MyEntityWithAlternateKey e2 = new MyEntityWithAlternateKey(id: 2)
+                    s.save(e2)
                 }
 
                 doInTx { s->
@@ -144,12 +147,21 @@ class HibernateStoreTest extends TestCase {
                     e = s.load("MyEntityWithAlternateKey", "foo")
                     assert e
                     assert e.name == 'foo'
+
+                    Woko woko = Woko.getWoko(c)
+                    def link = LinkUtil.getUrl(woko, e, "view")
+                    assert link == "view/MyEntityWithAlternateKey/foo"
+
+                    MyEntityWithAlternateKey e2 = s.load("MyEntityWithAlternateKey", "2")
+                    assert LinkUtil.getUrl(woko, e2, "view") == "view/MyEntityWithAlternateKey/2"
                 }
             }
         } finally {
             doInTx { s ->
-                MyEntityWithAlternateKey e = s.load("MyEntityWithAlternateKey", "1")
-                s.delete(e)
+                MyEntityWithAlternateKey e1 = s.load("MyEntityWithAlternateKey", "1")
+                s.delete(e1)
+                MyEntityWithAlternateKey e2 = s.load("MyEntityWithAlternateKey", "2")
+                s.delete(e2)
             }
         }
     }
