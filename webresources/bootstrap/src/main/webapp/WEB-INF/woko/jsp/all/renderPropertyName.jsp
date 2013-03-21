@@ -30,7 +30,7 @@
         prefix = rpe.getFieldPrefix();
     }
     String label = prefix + "." + propertyName;
-    String labelMsgKey = os.getClassMapping(owningObject.getClass()) + "." + propertyName;
+    String labelMsgKey = os.getClassMapping(os.getObjectClass(owningObject)) + "." + propertyName;
     ResourceBundle b = StripesFilter.getConfiguration().
                 getLocalizationBundleFactory().getFormFieldBundle(request.getLocale());
     String msg = propertyName;

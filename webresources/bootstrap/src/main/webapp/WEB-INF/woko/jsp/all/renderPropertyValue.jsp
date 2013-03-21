@@ -18,7 +18,7 @@
     String propertyName = renderPropertyValue.getPropertyName();
     Object owningObject = renderPropertyValue.getOwningObject();
     Class<?> propertyClass = propertyValue!=null ?
-            propertyValue.getClass() :
+            os.getObjectClass(propertyValue) :
             Util.getPropertyType(owningObject.getClass(), propertyName);
 
     String propertyMappedClassName = os.getClassMapping(propertyClass);

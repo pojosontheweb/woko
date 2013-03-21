@@ -20,6 +20,7 @@
     WokoFacetContext<?,?,?,?> fctx = (WokoFacetContext)renderPropertyValue.getFacetContext();
     Woko<?,?,?,?> woko = fctx.getWoko();
     ObjectStore os = woko.getObjectStore();
+    @SuppressWarnings("unchecked")
     List<Category> categories = (List<Category>)renderPropertyValue.getPropertyValue();
 
     String propertyName = renderPropertyValue.getPropertyName();

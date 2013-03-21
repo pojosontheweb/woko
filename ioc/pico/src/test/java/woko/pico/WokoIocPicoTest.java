@@ -109,6 +109,11 @@ public class WokoIocPicoTest extends TestCase {
         public void close() {
             //To change body of implemented methods use File | Settings | File Templates.
         }
+
+        @Override
+        public Class<?> getObjectClass(Object o) {
+            return o.getClass();
+        }
     }
 
 }

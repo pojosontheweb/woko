@@ -14,8 +14,9 @@
     ObjectStore os = fctx.getWoko().getObjectStore();
     String propertyName = renderPropertyValue.getPropertyName();
     Object owningObject = renderPropertyValue.getOwningObject();
-    String owningClass = os.getClassMapping(owningObject.getClass());
-    String propertyClassName = os.getClassMapping(Util.getPropertyType(owningObject.getClass(), propertyName));
+    Class<?> oClass = os.getObjectClass(owningObject);
+    String owningClass = os.getClassMapping(oClass);
+    String propertyClassName = os.getClassMapping(Util.getPropertyType(oClass, propertyName));
     String fullFieldName = renderPropertyValue.getFieldPrefix() + "." + propertyName;
     String fieldId = "dp-" + owningClass + "-" + propertyName;
     Locale locale = request.getLocale();

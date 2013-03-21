@@ -55,9 +55,9 @@ public class RenderLinksEditImpl<
         Woko<OsType,UmType,UnsType,FdmType> woko = getFacetContext().getWoko();
         Object o = facetContext.getTargetObject();
         if (o!=null) {
-            Class<?> oc = o.getClass();
-            HttpServletRequest request = getRequest();
             OsType store = woko.getObjectStore();
+            Class<?> oc = store.getObjectClass(o);
+            HttpServletRequest request = getRequest();
             Locale locale = request.getLocale();
 
             // display view link if object can be displayed

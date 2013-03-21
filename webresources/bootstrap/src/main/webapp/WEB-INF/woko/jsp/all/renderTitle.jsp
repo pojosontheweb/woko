@@ -4,12 +4,13 @@
 <%@ page import="woko.Woko" %>
 <%@ page import="woko.facets.builtin.RenderTitle" %>
 <%@ page import="woko.facets.builtin.WokoFacets" %>
+<%@ page import="woko.persistence.ObjectStore" %>
 
 <%
     Woko<?,?,?,?> woko = Woko.getWoko(application);
     RenderTitle renderTitle = (RenderTitle)request.getAttribute(WokoFacets.renderTitle);
     Object target = renderTitle.getFacetContext().getTargetObject();
-    Class<?> targetClass = target.getClass();
-    String className = woko.getObjectStore().getClassMapping(targetClass);
+    ObjectStore s = woko.getObjectStore();
+    String className = s.getClassMapping(s.getObjectClass(target));
 %>
 <h1 class="page-header">${renderTitle.title} <small>(<%=className%>)</small></h1>

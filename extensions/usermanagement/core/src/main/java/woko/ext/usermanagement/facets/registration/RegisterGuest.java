@@ -219,7 +219,7 @@ public class RegisterGuest<T extends User,
             @SuppressWarnings("unchecked")
             RegistrationDetails<T> regDetails = registrationAwareUserManager.createRegistration(user);
             OsType store = getWoko().getObjectStore();
-            String regDetailsClassMapping = store.getClassMapping(regDetails.getClass());
+            String regDetailsClassMapping = store.getClassMapping(store.getObjectClass(regDetails));
             String regDetailsKey = store.getKey(regDetails);
 
             // set a session attribute to prevent other users to see this registration !

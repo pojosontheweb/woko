@@ -8,6 +8,8 @@
 <%@ page import="woko.facets.builtin.WokoFacets" %>
 <%@ page import="woko.util.Util" %>
 <%@ page import="woko.facets.builtin.View" %>
+<%@ page import="woko.persistence.ObjectStore" %>
+<%@ page import="woko.util.LinkUtil" %>
 
 <w:facet facetName="<%=WokoFacets.layout%>"/>
 
@@ -64,24 +66,17 @@
 
         <ul>
             <%
+              ObjectStore objectStore = woko.getObjectStore();
               while (results.hasNext()) {
                   Object result = results.next();
                   // compute title
                   String title = Util.getTitle(request, result);
                   // compute link if view facet is available
                   String href = null;
-                  String resultKey = woko.getObjectStore().getKey(result);
-                  String className = woko.getObjectStore().getClassMapping(result.getClass());
+                  String resultKey = objectStore.getKey(result);
+                  String className = objectStore.getClassMapping(objectStore.getObjectClass(result));
                   if (woko.getFacet(View.FACET_NAME, request, result)!=null) {
-                      href = new StringBuilder().
-                              append(request.getContextPath()).
-                              append("/").
-                              append(View.FACET_NAME).
-                              append("/").
-                              append(className).
-                              append("/").
-                              append(resultKey).
-                              toString();
+                      href = request.getContextPath() + "/" + LinkUtil.getUrl(woko, result, View.FACET_NAME);
                   }
             %>
                   <li>

@@ -23,6 +23,7 @@
 <%@ page import="woko.util.Util" %>
 <%@ page import="woko.facets.builtin.RenderPropertyValue" %>
 <%@ page import="woko.facets.builtin.WokoFacets" %>
+<%@ page import="woko.persistence.ObjectStore" %>
 <%
     RenderProperties renderProperties = (RenderProperties)request.getAttribute(WokoFacets.renderProperties);
     List<String> propertyNames = renderProperties.getPropertyNames();
@@ -30,7 +31,8 @@
     WokoFacetContext<?,?,?,?> fctx = (WokoFacetContext)renderProperties.getFacetContext();
     Woko<?,?,?,?> woko = fctx.getWoko();
     Object owningObject = fctx.getTargetObject();
-    String owningObjectClassName = woko.getObjectStore().getClassMapping(owningObject.getClass());
+    ObjectStore s = woko.getObjectStore();
+    String owningObjectClassName = s.getClassMapping(s.getObjectClass(owningObject));
 %>
 <div class="wokoProperties">
     <%

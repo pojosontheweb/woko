@@ -94,7 +94,7 @@ public class ActivateGuest<
                logger.warn("No email could be sent : no MailService found in IoC.");
            }
 
-            return new RedirectResolution("/activate/" + store.getClassMapping(regDetails.getClass())
+            return new RedirectResolution("/activate/" + store.getClassMapping(store.getObjectClass(regDetails))
                 + "/" + regDetails.getKey() + "?display");
         } else {
             // TODO better error handling

@@ -30,7 +30,7 @@
     Collection propertyValue = (Collection)fctx.getTargetObject();
     String propertyName = renderPropertyValue.getPropertyName();
     Object owningObject = renderPropertyValue.getOwningObject();
-    String propertyClassName = os.getClassMapping(Util.getPropertyType(owningObject.getClass(), propertyName));
+    String propertyClassName = os.getClassMapping(Util.getPropertyType(os.getObjectClass(owningObject), propertyName));
 %>
 <span class="wokoPropertyValue">
     <span class="<%=propertyName%> <%=propertyClassName%>">

@@ -32,7 +32,7 @@
     ObjectStore os = woko.getObjectStore();
     String propertyName = renderPropertyName.getPropertyName();
     Object owningObject = fctx.getTargetObject();
-    String propertyClassName = os.getClassMapping(Util.getPropertyType(owningObject.getClass(), propertyName));
+    String propertyClassName = os.getClassMapping(Util.getPropertyType(os.getObjectClass(owningObject), propertyName));
 
     // check in request if we have a renderPropertiesEdit facet that we could
     // use for prefix
@@ -42,7 +42,7 @@
         prefix = rpe.getFieldPrefix();
     }
     String label = prefix + "." + propertyName;
-    String labelMsgKey = os.getClassMapping(owningObject.getClass()) + "." + propertyName;
+    String labelMsgKey = os.getClassMapping(os.getObjectClass(owningObject)) + "." + propertyName;
     ResourceBundle b = StripesFilter.getConfiguration().
             getLocalizationBundleFactory().getFormFieldBundle(request.getLocale());
     String msg = propertyName;

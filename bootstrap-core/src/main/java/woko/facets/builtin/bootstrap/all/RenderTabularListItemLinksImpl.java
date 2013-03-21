@@ -14,6 +14,7 @@ import woko.facets.builtin.all.Link;
 import woko.persistence.ObjectStore;
 import woko.users.UserManager;
 import woko.users.UsernameResolutionStrategy;
+import woko.util.LinkUtil;
 import woko.util.Util;
 
 import javax.servlet.http.HttpServletRequest;
@@ -48,9 +49,9 @@ public class RenderTabularListItemLinksImpl<
         Woko<OsType,UmType,UnsType,FdmType> woko = getFacetContext().getWoko();
         Object o = facetContext.getTargetObject();
         if (o!=null) {
-            Class<?> oc = o.getClass();
-            HttpServletRequest request = getRequest();
             OsType store = woko.getObjectStore();
+            Class<?> oc = store.getObjectClass(o);
+            HttpServletRequest request = getRequest();
             Locale locale = request.getLocale();
 
             // display view link if object can be displayed
@@ -59,7 +60,8 @@ public class RenderTabularListItemLinksImpl<
                 String className = store.getClassMapping(oc);
                 String key = store.getKey(o);
                 if (key != null) {
-                    links.add(new Link(WokoFacets.view + "/" + className + "/" + key, Util.getMessage(locale, "woko.links.view")).setCssClass("link-view"));
+                    String url = LinkUtil.getUrl(woko, o, View.FACET_NAME);
+                    links.add(new Link(url, Util.getMessage(locale, "woko.links.view")).setCssClass("link-view"));
                 }
             }
             // grab available links on the target object

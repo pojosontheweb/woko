@@ -54,9 +54,9 @@ public class RenderLinksImpl<
         WokoFacetContext<OsType,UmType,UnsType,FdmType> facetContext = getFacetContext();
         Woko<OsType,UmType,UnsType,FdmType> woko = getFacetContext().getWoko();
         Object o = facetContext.getTargetObject();
-        Class<?> oc = o.getClass();
-        HttpServletRequest request = getFacetContext().getRequest();
         OsType store = woko.getObjectStore();
+        Class<?> oc = store.getObjectClass(o);
+        HttpServletRequest request = getFacetContext().getRequest();
         Locale locale = request.getLocale();
 
         // display edit link if object can be edited (use instanceof because could be a login required facet)

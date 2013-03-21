@@ -5,6 +5,7 @@
 <%@ page import="woko.Woko" %>
 <%@ page import="woko.facets.builtin.*" %>
 <%@ page import="java.util.Map" %>
+<%@ page import="woko.persistence.ObjectStore" %>
 
 <w:facet facetName="<%=Layout.FACET_NAME%>"/>
 
@@ -60,6 +61,7 @@
         </c:if>
             <ul class="<%=listWrapperClass%>">
                 <%
+                  ObjectStore objectStore = woko.getObjectStore();
                   while (results.hasNext()) {
                       Object result = results.next();
                       RenderListItem renderListItem = woko.getFacet(
@@ -67,7 +69,7 @@
                       String fragmentPath = renderListItem.getFragmentPath(request);
                       String listItemClass = renderListItem.getItemWrapperCssClass();
                       if (listItemClass==null) {
-                          listItemClass = "item " + woko.getObjectStore().getClassMapping(result.getClass());
+                          listItemClass = "item " + objectStore.getClassMapping(objectStore.getObjectClass(result));
                       }
                 %>
                         <li class="<%=listItemClass%>">

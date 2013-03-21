@@ -24,6 +24,7 @@ import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.metadata.ClassMetadata;
+import org.hibernate.proxy.HibernateProxy;
 import woko.Closeable;
 import woko.persistence.*;
 import woko.util.Util;
@@ -613,4 +614,16 @@ public class HibernateStore implements ObjectStore, TransactionalStore, Closeabl
         }
     }
 
+    @Override
+    public Class<?> getObjectClass(Object o) {
+        return deproxyInstance(o).getClass();
+    }
+
+    @SuppressWarnings("unchecked")
+    protected <T> T deproxyInstance(T maybeProxy) {
+        if (maybeProxy instanceof HibernateProxy) {
+            return (T) ((HibernateProxy) maybeProxy).getHibernateLazyInitializer().getImplementation();
+        }
+        return maybeProxy;
+    }
 }

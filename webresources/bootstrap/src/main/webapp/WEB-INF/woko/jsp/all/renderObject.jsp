@@ -4,12 +4,14 @@
 <%@ page import="woko.facets.builtin.RenderObject" %>
 <%@ page import="woko.Woko" %>
 <%@ page import="woko.facets.builtin.WokoFacets" %>
+<%@ page import="woko.persistence.ObjectStore" %>
 
 <%
     RenderObject renderObject = (RenderObject)request.getAttribute(WokoFacets.renderObject);
     Object o = renderObject.getFacetContext().getTargetObject();
     Class<?> c = o.getClass();
-    String className = Woko.getWoko(application).getObjectStore().getClassMapping(c);
+    ObjectStore store = Woko.getWoko(application).getObjectStore();
+    String className = store.getClassMapping(store.getObjectClass(c));
 %>
 <div class="wokoObject <%=className%>">
 
