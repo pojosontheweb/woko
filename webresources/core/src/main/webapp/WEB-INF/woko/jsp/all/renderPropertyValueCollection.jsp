@@ -35,14 +35,16 @@
 <span class="wokoPropertyValue">
     <span class="<%=propertyName%> <%=propertyClassName%>">
         <%
-            for (Object elem : propertyValue) {
-                // reuse viewPropertyValue on element
-                RenderPropertyValue nested = Util.getRenderPropValueFacet(woko, request, owningObject, propertyName, elem);                
+            if (propertyValue!=null) {
+                for (Object elem : propertyValue) {
+                    // reuse viewPropertyValue on element
+                    RenderPropertyValue nested = Util.getRenderPropValueFacet(woko, request, owningObject, propertyName, elem);
         %>
-            <div class="wokoCollectionItem">
-                <jsp:include page="<%=nested.getFragmentPath(request)%>"/>
-            </div>
+                <div class="wokoCollectionItem">
+                    <jsp:include page="<%=nested.getFragmentPath(request)%>"/>
+                </div>
         <%
+                }
             }
         %>
     </span>

@@ -19,16 +19,24 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.pojosontheweb</groupId>
-        <artifactId>woko-parent</artifactId>
+        <artifactId>woko-categories</artifactId>
         <version>LATEST-SNAPSHOT</version>
     </parent>
-    <artifactId>woko-extensions</artifactId>
-    <name>Woko - extensions</name>
-    <packaging>pom</packaging>
-    <modules>
-        <module>usermanagement</module>
-        <module>tinymce-editor</module>
-        <module>blobs</module>
-        <module>categories</module>
-    </modules>
+    <artifactId>woko-categories-web</artifactId>
+    <name>Woko - Categories web resources</name>
+    <packaging>war</packaging>
+    <dependencies>
+        <dependency>
+            <groupId>com.pojosontheweb</groupId>
+            <artifactId>woko-categories-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.pojosontheweb</groupId>
+            <artifactId>woko-web-core</artifactId>
+            <version>${project.version}</version>
+            <type>war</type>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
 </project>

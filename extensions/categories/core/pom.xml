@@ -19,16 +19,29 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.pojosontheweb</groupId>
-        <artifactId>woko-parent</artifactId>
+        <artifactId>woko-categories</artifactId>
         <version>LATEST-SNAPSHOT</version>
     </parent>
-    <artifactId>woko-extensions</artifactId>
-    <name>Woko - extensions</name>
-    <packaging>pom</packaging>
-    <modules>
-        <module>usermanagement</module>
-        <module>tinymce-editor</module>
-        <module>blobs</module>
-        <module>categories</module>
-    </modules>
+    <artifactId>woko-categories-core</artifactId>
+    <name>Woko - Categories core</name>
+    <packaging>jar</packaging>
+    <dependencies>
+        <dependency>
+            <groupId>com.pojosontheweb</groupId>
+            <artifactId>woko-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.pojosontheweb</groupId>
+            <artifactId>woko-hibernate</artifactId>
+            <version>${project.version}</version>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.codehaus.groovy</groupId>
+            <artifactId>groovy-all</artifactId>
+            <version>${groovy.version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 </project>

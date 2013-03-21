@@ -22,7 +22,7 @@
 <hibernate-configuration>
     <session-factory>
         <property name="connection.driver_class">org.hsqldb.jdbcDriver</property>
-        <property name="connection.url">jdbc:hsqldb:mem:wokodb;sql.syntax_mys=true</property>
+        <property name="connection.url">jdbc:hsqldb:mem:wokodb</property>
         <property name="connection.username">sa</property>
         <property name="connection.password"></property>
         <property name="connection.pool_size">10</property>
