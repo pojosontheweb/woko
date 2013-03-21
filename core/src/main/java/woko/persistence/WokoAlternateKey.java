@@ -14,4 +14,6 @@ public @interface WokoAlternateKey {
 
     String altKeyProperty();
 
+    Class<? extends AlternateKeyConverter> converter() default DefaultAlternateKeyConverter.class;
+
 }

@@ -18,10 +18,7 @@ package woko.hibernate;
 
 import net.sourceforge.stripes.util.ReflectUtil;
 import net.sourceforge.stripes.util.ResolverUtil;
-import org.hibernate.Criteria;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
+import org.hibernate.*;
 import org.hibernate.annotations.Entity;
 import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.cfg.Configuration;
@@ -32,10 +29,8 @@ import woko.persistence.*;
 import woko.util.Util;
 import woko.util.WLogger;
 
-import javax.persistence.MappedSuperclass;
 import java.beans.PropertyDescriptor;
 import java.io.Serializable;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.*;
@@ -54,6 +49,7 @@ public class HibernateStore implements ObjectStore, TransactionalStore, Closeabl
 
     private final HibernatePrimaryKeyConverter primaryKeyConverter;
     private final SessionFactory sessionFactory;
+    private static final AlternateKeyConverter DEFAULT_ALTERNATE_KEY_CONVERTER = new DefaultAlternateKeyConverter();
     private List<Class<?>> mappedClasses;
 
     /**
@@ -154,11 +150,18 @@ public class HibernateStore implements ObjectStore, TransactionalStore, Closeabl
         Util.assertArg("propAndAltKey", propAndAltKey);
         Util.assertArg("keyValue", keyValue);
         WokoAlternateKey alternateKey = propAndAltKey.getAnnotation();
-        return getSession()
-                .createCriteria(mappedClass)
-                .add(Restrictions.eq(alternateKey.altKeyProperty(), keyValue))
-                .setCacheable(true)
-                .uniqueResult();
+        try {
+            return getSession()
+                    .createCriteria(mappedClass)
+                    .add(Restrictions.eq(alternateKey.altKeyProperty(), keyValue))
+                    .setCacheable(true)
+                    .uniqueResult();
+        } catch (NonUniqueResultException e) {
+            // ouch ! several entities with the same altKey...
+            String msg = "More than 1 entity found for class " + mappedClass + " with alternate key " + propAndAltKey;
+            log.error(msg, e);
+            throw new RuntimeException(msg, e);
+        }
     }
 
     private Util.PropertyNameAndAnnotation<WokoAlternateKey> checkForAlternateKey(Class<?> mappedClass) {
@@ -196,6 +199,20 @@ public class HibernateStore implements ObjectStore, TransactionalStore, Closeabl
             log.debug("Using transaction " + tx);
         }
 
+        // try actual object ID first...
+
+        Serializable id = primaryKeyConverter.convert(key, keyType);
+        if (id == null) {
+            if (log.isDebugEnabled()) {
+                log.debug("Converted key " + key + " to null, will try alternate key...");
+            }
+        } else {
+            Object o = s.get(mappedClass, id);
+            if (o!=null) {
+                return o;
+            }
+        }
+
         // introspect mapped class and check for @WokoAlternateKey
         Util.PropertyNameAndAnnotation<WokoAlternateKey> alternateKey = checkForAlternateKey(mappedClass);
         if (alternateKey!=null) {
@@ -216,15 +233,10 @@ public class HibernateStore implements ObjectStore, TransactionalStore, Closeabl
             }
         }
 
-        Serializable id = primaryKeyConverter.convert(key, keyType);
-        if (id == null) {
-            log.warn("Converted key " + key + " to null, unable to load any object");
-            return null;
-        }
-        return s.get(mappedClass, id);
+        // no object to load !
+        log.warn("Unable to load any object for mapped class " + mappedClass + " and key " + key + ". Will return null.");
+        return null;
     }
-
-
 
     /**
      * Save or update passed object (<code>Session.saveOrUpdate()</code>)
@@ -267,9 +279,54 @@ public class HibernateStore implements ObjectStore, TransactionalStore, Closeabl
         Util.assertArg("obj", obj);
         Util.assertArg("propAndAnnot", propAndAnnot);
         String propName = propAndAnnot.getPropertyName();
+        WokoAlternateKey annot = propAndAnnot.getAnnotation();
 
-        // TODO unicity encoding etc : for just return the prop value
-        return Util.getPropertyValue(obj, propName);
+        Object propValue = Util.getPropertyValue(obj, propName);
+        if (propValue==null) {
+            // property value is null ! should not happen as the
+            // alternateKey-annoted props should always be not null
+            // in this case, we just return null, so that alt key is not
+            // used
+            return null;
+        }
+
+        Class<? extends AlternateKeyConverter> converterClass = annot.converter();
+        AlternateKeyConverter converter;
+        if (converterClass==null) {
+            converter = DEFAULT_ALTERNATE_KEY_CONVERTER;
+        } else {
+            try {
+                converter = converterClass.newInstance();
+            } catch (Exception e) {
+                String msg = "Could not instanciate converter from class " + converterClass;
+                log.error(msg, e);
+                throw new RuntimeException(e);
+            }
+        }
+
+        // check unicity of the generated key
+        // and compute unique one if needed
+        String altKey = converter.convert(obj, propAndAnnot, propName, propValue);
+        int counter = 1;
+        Class<?> mappedClass = obj.getClass();
+        do {
+            String uniqueKey = altKey;
+            if (counter>1) {
+                uniqueKey = uniqueKey + "-" + counter;
+            }
+            List<?> matching = getSession().createCriteria(mappedClass)
+                    .setCacheable(true)
+                    .add(Restrictions.eq(propName, uniqueKey))
+                    .list();
+            if (matching.size()==0) {
+                return uniqueKey;
+            }
+            counter++;
+        } while (counter < 1000);
+
+        throw new IllegalStateException("Giving up computation of alternate key for class " + mappedClass + " and alternateKey " + propAndAnnot +
+            ". All attempts to generate a key have failed.");
+
     }
 
     /**

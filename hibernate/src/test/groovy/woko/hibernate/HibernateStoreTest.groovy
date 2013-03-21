@@ -154,4 +154,39 @@ class HibernateStoreTest extends TestCase {
         }
     }
 
+    void testAlternateKeyWithDuplicates() {
+        try {
+            doWithMockContext("wdevel") { MockServletContext c ->
+                doInTx { s ->
+                    MyEntityWithAlternateKey e1 = new MyEntityWithAlternateKey(id: 1, name: "foo")
+                    MyEntityWithAlternateKey e2 = new MyEntityWithAlternateKey(id: 2, name: "foo")
+                    s.save(e1)
+                    s.save(e2)
+                }
+
+                doInTx { s->
+                    MyEntityWithAlternateKey e1 = s.load("MyEntityWithAlternateKey", "1")
+                    MyEntityWithAlternateKey e2 = s.load("MyEntityWithAlternateKey", "2")
+                    assert e1.name == 'foo'
+                    assert e2.name == 'foo'
+
+                    MyEntityWithAlternateKey e3 = s.load("MyEntityWithAlternateKey", "foo")
+                    assert e3
+                    assert e3.name == 'foo'
+                    assert e3.id == 1
+
+                    MyEntityWithAlternateKey e4 = s.load("MyEntityWithAlternateKey", "foo-2")
+                    assert e4
+                    assert e4.name == 'foo'
+                    assert e4.id == 2
+                }
+            }
+        } finally {
+            doInTx { s ->
+                MyEntityWithAlternateKey e = s.load("MyEntityWithAlternateKey", "1")
+                s.delete(e)
+            }
+        }
+    }
+
 }
