@@ -16,6 +16,7 @@
 
 package woko.hibernate
 
+import entities.MyEntityWithAlternateKey
 import junit.framework.TestCase
 import net.sourceforge.stripes.mock.MockServletContext
 import woko.Woko
@@ -26,6 +27,7 @@ import woko.mock.MockUtil
 import woko.persistence.ObjectStore
 import entities.MyEntity
 import woko.users.UserManager
+import woko.util.LinkUtil
 
 import static woko.mock.MockUtil.*
 
@@ -123,6 +125,81 @@ class HibernateStoreTest extends TestCase {
         } finally {
             doInTx { s ->
                 MyEntity e = s.load("MyEntity", "1")
+                s.delete(e)
+            }
+        }
+    }
+
+    void testAlternateKey() {
+        try {
+            doWithMockContext("wdevel") { MockServletContext c ->
+                doInTx { s ->
+                    MyEntityWithAlternateKey e1 = new MyEntityWithAlternateKey(id: 1, name: "foo")
+                    s.save(e1)
+                    MyEntityWithAlternateKey e2 = new MyEntityWithAlternateKey(id: 2)
+                    s.save(e2)
+                }
+
+                doInTx { s->
+                    MyEntityWithAlternateKey e = s.load("MyEntityWithAlternateKey", "1")
+                    assert e.name == 'foo'
+
+                    e = s.load("MyEntityWithAlternateKey", "foo")
+                    assert e
+                    assert e.name == 'foo'
+
+                    Woko woko = Woko.getWoko(c)
+                    def link = LinkUtil.getUrl(woko, e, "view")
+                    assert link == "view/MyEntityWithAlternateKey/foo"
+
+                    MyEntityWithAlternateKey e2 = s.load("MyEntityWithAlternateKey", "2")
+                    assert LinkUtil.getUrl(woko, e2, "view") == "view/MyEntityWithAlternateKey/2"
+                }
+            }
+        } finally {
+            doInTx { s ->
+                MyEntityWithAlternateKey e1 = s.load("MyEntityWithAlternateKey", "1")
+                s.delete(e1)
+                MyEntityWithAlternateKey e2 = s.load("MyEntityWithAlternateKey", "2")
+                s.delete(e2)
+            }
+        }
+    }
+
+    void testAlternateKeyWithDuplicates() {
+        try {
+            doWithMockContext("wdevel") { MockServletContext c ->
+                doInTx { s ->
+                    MyEntityWithAlternateKey e1 = new MyEntityWithAlternateKey(id: 1, name: "foo")
+                    MyEntityWithAlternateKey e2 = new MyEntityWithAlternateKey(id: 2, name: "foo")
+                    s.save(e1)
+                    s.save(e2)
+                }
+
+                doInTx { s->
+                    MyEntityWithAlternateKey e1 = s.load("MyEntityWithAlternateKey", "1")
+                    MyEntityWithAlternateKey e2 = s.load("MyEntityWithAlternateKey", "2")
+                    assert e1.name == 'foo'
+                    assert e2.name == 'foo'
+
+                    MyEntityWithAlternateKey e3 = s.load("MyEntityWithAlternateKey", "foo")
+                    assert e3
+                    assert e3.name == 'foo'
+                    assert e3.id == 1
+
+                    MyEntityWithAlternateKey e4 = s.load("MyEntityWithAlternateKey", "foo-2")
+                    assert e4
+                    assert e4.name == 'foo'
+                    assert e4.id == 2
+
+                    Woko woko = Woko.getWoko(c)
+                    assert LinkUtil.getUrl(woko, e1, "view") == "view/MyEntityWithAlternateKey/foo"
+                    assert LinkUtil.getUrl(woko, e2, "view") == "view/MyEntityWithAlternateKey/foo-2"
+                }
+            }
+        } finally {
+            doInTx { s ->
+                MyEntityWithAlternateKey e = s.load("MyEntityWithAlternateKey", "1")
                 s.delete(e)
             }
         }

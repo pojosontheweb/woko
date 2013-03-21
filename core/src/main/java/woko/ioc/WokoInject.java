@@ -8,7 +8,7 @@ import java.lang.annotation.*;
  * Must be used on public methods that accept only a parameter (the component required).
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.METHOD, ElementType.FIELD})
+@Target({ElementType.METHOD})
 @Documented
 public @interface WokoInject {
 
