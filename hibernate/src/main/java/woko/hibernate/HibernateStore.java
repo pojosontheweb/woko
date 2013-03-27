@@ -25,6 +25,7 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.metadata.ClassMetadata;
 import org.hibernate.proxy.HibernateProxy;
+import org.hibernate.proxy.LazyInitializer;
 import woko.Closeable;
 import woko.persistence.*;
 import woko.util.Util;
@@ -622,7 +623,11 @@ public class HibernateStore implements ObjectStore, TransactionalStore, Closeabl
     @SuppressWarnings("unchecked")
     protected <T> T deproxyInstance(T maybeProxy) {
         if (maybeProxy instanceof HibernateProxy) {
-            return (T) ((HibernateProxy) maybeProxy).getHibernateLazyInitializer().getImplementation();
+            HibernateProxy proxy = (HibernateProxy)maybeProxy;
+            LazyInitializer i = proxy.getHibernateLazyInitializer();
+            if (i.isUninitialized())
+                i.initialize(); // we init the proxy while we're at it : we probably wanna use it if we came here...
+            return (T) i.getImplementation();
         }
         return maybeProxy;
     }
