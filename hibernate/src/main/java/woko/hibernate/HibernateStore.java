@@ -354,7 +354,7 @@ public class HibernateStore implements ObjectStore, TransactionalStore, Closeabl
         if (obj == null) {
             return null;
         }
-        Class<?> mappedClass = deproxify(obj.getClass());
+        Class<?> mappedClass = getObjectClass(obj);
 
         // check for alternate key first...
         Util.PropertyNameAndAnnotation<WokoAlternateKey> altKey = checkForAlternateKey(mappedClass);
