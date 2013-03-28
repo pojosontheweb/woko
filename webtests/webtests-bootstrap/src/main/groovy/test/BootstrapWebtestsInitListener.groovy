@@ -22,7 +22,7 @@ class BootstrapWebtestsInitListener extends
     protected WokoIocContainer<HibernateCompassStore,InMemoryUserManager,RemoteUserStrategy,AnnotatedFacetDescriptorManager> createIocContainer() {
         HibernateStore store = new HibernateCompassStore(getPackageNamesFromConfig(HibernateStore.CTX_PARAM_PACKAGE_NAMES, true));
 
-        HibernateCategoryManager cm = new HibernateCategoryManager(store);
+        HibernateCategoryManager cm = new HibernateCategoryManager(store, HibernateCategory.class);
         store.doInTransaction({
 
             HibernateCategory root = new HibernateCategory(name: "root")
