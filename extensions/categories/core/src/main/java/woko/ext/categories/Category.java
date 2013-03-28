@@ -12,4 +12,7 @@ public interface Category {
 
     List<Category> getSubCategories();
 
+    void setSortIndex(Integer index);
+
+    Integer getSortIndex();
 }

@@ -12,16 +12,18 @@ import java.util.List;
 public class HibernateCategoryManager implements CategoryManager {
 
     private final HibernateStore store;
+    private final Class<?> categoryClass;
 
-    public HibernateCategoryManager(HibernateStore store) {
+    public HibernateCategoryManager(HibernateStore store, Class<?> categoryClass) {
         this.store = store;
+        this.categoryClass = categoryClass;
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public List<Category> getRootCategories() {
         // select all categories that don't have no parent
-        return store.getSession().createCriteria(HibernateCategory.class)
+        return store.getSession().createCriteria(categoryClass)
                 .add(Restrictions.isNull("parentCategory"))
                 .list();
     }
@@ -68,28 +70,26 @@ public class HibernateCategoryManager implements CategoryManager {
         // re-assign all indexes
         int index = 0;
         for (Category sibling : siblings) {
-            HibernateCategory hbc = (HibernateCategory)sibling;
-            hbc.setSortIndex(index);
-            store.save(hbc);
+            sibling.setSortIndex(index);
+            store.save(sibling);
             index++;
         }
 
         // indexes found, swap
         int indexOfCateg = siblings.indexOf(category);
-        HibernateCategory cur = (HibernateCategory)category;
-        int curIndex = cur.getSortIndex();
+        int curIndex = category.getSortIndex();
         if (up) {
-            HibernateCategory previous = (HibernateCategory)siblings.get(indexOfCateg-1);
-            cur.setSortIndex(previous.getSortIndex());
+            Category previous = siblings.get(indexOfCateg-1);
+            category.setSortIndex(previous.getSortIndex());
             previous.setSortIndex(curIndex);
             store.save(previous);
         } else {
-            HibernateCategory next = (HibernateCategory)siblings.get(indexOfCateg+1);
-            cur.setSortIndex(next.getSortIndex());
+            Category next = siblings.get(indexOfCateg+1);
+            category.setSortIndex(next.getSortIndex());
             next.setSortIndex(curIndex);
             store.save(next);
         }
-        store.save(cur);
+        store.save(category);
 
         return true;
     }

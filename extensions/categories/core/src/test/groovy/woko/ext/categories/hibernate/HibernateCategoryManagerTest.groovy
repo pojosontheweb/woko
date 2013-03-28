@@ -12,7 +12,7 @@ class HibernateCategoryManagerTest extends TestCase {
     @Override
     protected void setUp() {
         store = new HibernateStore(['woko.ext.categories.hibernate'])
-        categoryManager = new HibernateCategoryManager(store)
+        categoryManager = new HibernateCategoryManager(store, HibernateCategory.class)
     }
 
     @Override
