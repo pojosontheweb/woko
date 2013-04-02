@@ -625,8 +625,6 @@ public class HibernateStore implements ObjectStore, TransactionalStore, Closeabl
         if (maybeProxy instanceof HibernateProxy) {
             HibernateProxy proxy = (HibernateProxy)maybeProxy;
             LazyInitializer i = proxy.getHibernateLazyInitializer();
-            if (i.isUninitialized())
-                i.initialize(); // we init the proxy while we're at it : we probably wanna use it if we came here...
             return (T) i.getImplementation();
         }
         return maybeProxy;
