@@ -18,7 +18,7 @@
     Woko<?,?,?,?> woko = fctx.getWoko();
     Object owningObject = fctx.getTargetObject();
     ObjectStore os = woko.getObjectStore();
-    String mappedClassName = os.getClassMapping(owningObject.getClass());
+    String mappedClassName = os.getClassMapping(os.getObjectClass(owningObject));
     String formUrl = "/save/" + mappedClassName;
     String key = os.getKey(owningObject);
     if (key!=null) {

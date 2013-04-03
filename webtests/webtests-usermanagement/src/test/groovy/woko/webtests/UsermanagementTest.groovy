@@ -41,6 +41,21 @@ class UsermanagementTest extends WokoWebTestBase {
         }
     }
 
+    // see  https://github.com/pojosontheweb/woko/issues/183
+    void testRegisterValidation() {
+        webtest("testRegisterValidation") {
+            goToPage "/register"
+            clickButton name:'doRegister'
+            verifyText text: 'Username is a required field'
+
+            setInputField name:'facet.username', value:'funkystuff'
+            clickButton name:'doRegister'
+            not {
+                verifyText text: 'Username is a required field'
+            }
+        }
+    }
+
     void testRegister() {
         webtest("testRegister") {
 

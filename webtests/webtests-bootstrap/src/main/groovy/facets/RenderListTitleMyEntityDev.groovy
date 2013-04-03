@@ -18,4 +18,9 @@ class RenderListTitleMyEntityDev extends RenderListTitleImpl<HibernateCompassSto
     String getTitle() {
         return "TestPageHeaderTitleOverride"
     }
+
+    @Override
+    String getPath() {
+        return '/WEB-INF/jsp/renderListTitleMyEntityDev.jsp'
+    }
 }

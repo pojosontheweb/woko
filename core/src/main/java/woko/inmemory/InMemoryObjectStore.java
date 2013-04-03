@@ -37,10 +37,15 @@ public class InMemoryObjectStore implements ObjectStore {
     public void close() {
     }
 
+    @Override
+    public Class<?> getObjectClass(Object o) {
+        return o.getClass();
+    }
+
     public void addObject(String key, Object obj) {
         Util.assertArg("obj", obj);
         Util.assertArg("key", key);
-        String className = getClassMapping(obj.getClass());
+        String className = getClassMapping(getObjectClass(obj));
         Map<String, Object> objectsForClass = objects.get(className);
         if (objectsForClass == null) {
             objectsForClass = new HashMap<String, Object>();
@@ -114,7 +119,7 @@ public class InMemoryObjectStore implements ObjectStore {
         Util.assertArg("obj", obj);
         String key = getKey(obj);
         if (key != null) {
-            String className = getClassMapping(obj.getClass());
+            String className = getClassMapping(getObjectClass(obj));
             if (className != null) {
                 Map<String, Object> objectsForClass = objects.get(className);
                 if (objectsForClass != null) {

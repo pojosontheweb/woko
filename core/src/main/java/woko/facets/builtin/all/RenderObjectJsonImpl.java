@@ -97,7 +97,7 @@ public class RenderObjectJsonImpl<
             try {
                 JSONObject metadata = new JSONObject();
                 OsType os = woko.getObjectStore();
-                String className = os.getClassMapping(obj.getClass());
+                String className = os.getClassMapping(os.getObjectClass(obj));
                 metadata.put("className", className);
                 String key = os.getKey(obj);
                 if (key != null) {

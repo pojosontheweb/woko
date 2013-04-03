@@ -16,6 +16,7 @@
 
 package test
 
+import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.Id
 import org.compass.annotations.SearchableProperty
@@ -33,6 +34,7 @@ class MyBook {
 
     @Id
     @SearchableId
+    @Column(name = "myBookId")
     String _id
 
     @SearchableProperty

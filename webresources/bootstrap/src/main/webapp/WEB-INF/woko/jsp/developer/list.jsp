@@ -4,6 +4,8 @@
 <%@ page import="woko.persistence.ResultIterator" %>
 <%@ page import="woko.Woko" %>
 <%@ page import="woko.facets.builtin.*" %>
+<%@ page import="java.util.Map" %>
+<%@ page import="woko.persistence.ObjectStore" %>
 
 <w:facet facetName="<%=Layout.FACET_NAME%>"/>
 
@@ -59,6 +61,7 @@
         </c:if>
             <ul class="<%=listWrapperClass%>">
                 <%
+                  ObjectStore objectStore = woko.getObjectStore();
                   while (results.hasNext()) {
                       Object result = results.next();
                       RenderListItem renderListItem = woko.getFacet(
@@ -66,7 +69,7 @@
                       String fragmentPath = renderListItem.getFragmentPath(request);
                       String listItemClass = renderListItem.getItemWrapperCssClass();
                       if (listItemClass==null) {
-                          listItemClass = "item " + woko.getObjectStore().getClassMapping(result.getClass());
+                          listItemClass = "item " + objectStore.getClassMapping(objectStore.getObjectClass(result));
                       }
                 %>
                         <li class="<%=listItemClass%>">
@@ -81,13 +84,22 @@
             int nbPagesClickable = nbPages < 10 ? nbPages : 10;
             if (nbPages>1) {
                 int pagerStart = p > nbPagesClickable ? p - (nbPagesClickable-1) : 1;
+
+                // Catch arguments from ResultFacet
+                String args = "";
+                if (list.getArgs() != null)  {
+                    for(Object key : list.getArgs().keySet()){
+                        args += "&" + key + "=" + list.getArgs().get(key);
+                    }
+                }
+
                 String leftMoveCss = p <= 1 ? "disabled" : "";
                 String leftMoveHref = leftMoveCss.equals("disabled") ? "" : request.getContextPath() + "/list/" + className +
-                  "?facet.page=" + (p - 1) + "&facet.resultsPerPage=" + resultsPerPage;
+                  "?facet.page=" + (p - 1) + "&facet.resultsPerPage=" + resultsPerPage + args;
 
                 String rightMoveCss = p == nbPages ? "disabled" : "";
                 String rightMoveHref = rightMoveCss.equals("disabled") ? "" : request.getContextPath() + "/list/" + className +
-                        "?facet.page=" + (p + 1) + "&facet.resultsPerPage=" + resultsPerPage;
+                        "?facet.page=" + (p + 1) + "&facet.resultsPerPage=" + resultsPerPage + args;
         %>
 
             <div class="pagination">
@@ -98,13 +110,17 @@
                 <%
                     for (int i=pagerStart;i<=pagerStart+nbPagesClickable-1;i++) {
                         String css = "";
+                        String currentPageHref = request.getContextPath() + "/list/" + className +
+                                "?facet.page=" + i  + "&facet.resultsPerPage=" + resultsPerPage + args;
+
                         if (i==p) {
                             css = "active";
+
                         }
 
                 %>
                     <li class="<%=css%>">
-                        <a href="${pageContext.request.contextPath}/list/<%=className%>?facet.page=<%=i%>&facet.resultsPerPage=<%=resultsPerPage%>"><%=i%></a>
+                        <a href="<%=currentPageHref%>"><%=i%></a>
                     </li>
                 <%
                     }

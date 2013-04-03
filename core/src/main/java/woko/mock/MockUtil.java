@@ -46,9 +46,9 @@ public class MockUtil {
      */
     protected MockServletContext createMockServletContext(Woko woko) {
         MockServletContext mockServletContext = new CloseableMockServletContext(contextName);
+        mockServletContext.setAttribute(Woko.CTX_KEY, woko);
         mockServletContext.addFilter(StripesFilter.class, "StripesFilter", getParamsMap());
         mockServletContext.setServlet(DispatcherServlet.class, "DispatcherServlet", null);
-        mockServletContext.setAttribute(Woko.CTX_KEY, woko);
         return mockServletContext;
     }
 

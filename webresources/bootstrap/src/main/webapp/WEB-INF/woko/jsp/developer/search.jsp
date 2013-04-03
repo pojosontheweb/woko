@@ -8,6 +8,8 @@
 <%@ page import="woko.facets.builtin.WokoFacets" %>
 <%@ page import="woko.util.Util" %>
 <%@ page import="woko.facets.builtin.View" %>
+<%@ page import="woko.persistence.ObjectStore" %>
+<%@ page import="woko.util.LinkUtil" %>
 
 <w:facet facetName="<%=WokoFacets.layout%>"/>
 
@@ -64,24 +66,17 @@
 
         <ul>
             <%
+              ObjectStore objectStore = woko.getObjectStore();
               while (results.hasNext()) {
                   Object result = results.next();
                   // compute title
                   String title = Util.getTitle(request, result);
                   // compute link if view facet is available
                   String href = null;
-                  String resultKey = woko.getObjectStore().getKey(result);
-                  String className = woko.getObjectStore().getClassMapping(result.getClass());
+                  String resultKey = objectStore.getKey(result);
+                  String className = objectStore.getClassMapping(objectStore.getObjectClass(result));
                   if (woko.getFacet(View.FACET_NAME, request, result)!=null) {
-                      href = new StringBuilder().
-                              append(request.getContextPath()).
-                              append("/").
-                              append(View.FACET_NAME).
-                              append("/").
-                              append(className).
-                              append("/").
-                              append(resultKey).
-                              toString();
+                      href = request.getContextPath() + "/" + LinkUtil.getUrl(woko, result, View.FACET_NAME);
                   }
             %>
                   <li>
@@ -113,13 +108,22 @@
             int nbPagesClickable = nbPages < 10 ? nbPages : 10;
             if (nbPages>1) {
                 int pagerStart = p > nbPagesClickable ? p - (nbPagesClickable-1) : 1;
+
+                // Catch arguments from ResultFacet
+                String args = "";
+                if (search.getArgs() != null) {
+                    for(Object key : search.getArgs().keySet()){
+                        args += "&" + key + "=" + search.getArgs().get(key);
+                    }
+                }
+
                 String leftMoveCss = p <= 1 ? "disabled" : "";
                 String leftMoveHref = leftMoveCss.equals("disabled") ? "" : request.getContextPath() + "/search?facet.query=" + query +
-                        "&facet.page=" + (p - 1) + "&facet.resultsPerPage=" + resultsPerPage;
+                        "&facet.page=" + (p - 1) + "&facet.resultsPerPage=" + resultsPerPage + args;
 
                 String rightMoveCss = p == nbPages ? "disabled" : "";
                 String rightMoveHref = rightMoveCss.equals("disabled") ? "" : request.getContextPath() + "/search?facet.query=" + query +
-                        "&facet.page=" + (p + 1) + "&facet.resultsPerPage=" + resultsPerPage;
+                        "&facet.page=" + (p + 1) + "&facet.resultsPerPage=" + resultsPerPage + args;
         %>
             <div class="pagination">
                 <ul>
@@ -129,13 +133,16 @@
                 <%
                     for (int i=pagerStart;i<=pagerStart+nbPagesClickable-1;i++) {
                         String css = "";
+                        String currentPageHref = request.getContextPath() + "/search?facet.query=" + query +
+                                "&facet.page=" + i + "&facet.resultsPerPage=" + resultsPerPage + args;
+
                         if (i==p) {
                             css = "active";
                         }
 
                 %>
                     <li class="<%=css%>">
-                        <a href="${pageContext.request.contextPath}/search?facet.query=<%=query%>&facet.page=<%=i%>&facet.resultsPerPage=<%=resultsPerPage%>"><%=i%></a>
+                        <a href="<%=currentPageHref%>"><%=i%></a>
                     </li>
                 <%
                     }

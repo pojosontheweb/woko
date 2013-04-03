@@ -22,7 +22,7 @@
 <w:username var="username"/>
 <c:set var="cp" value="${pageContext.request.contextPath}" scope="request"/>
 <w:cacheToken paramName="cacheToken" tokenValue="cacheTokenValue"/>
-<c:set var="cacheTokenParams" value="${cacheToken}=${cacheTokenValue}"/>
+<c:set var="cacheTokenParams" value="${cacheToken}=${cacheTokenValue}" scope="request"/>
 <s:layout-definition>
     <!DOCTYPE html>
     <html>
@@ -68,13 +68,9 @@
         <script type="text/javascript" src="${cp}/js/jQuery-V1.7.1/jquery.min.js?${cacheTokenParams}"></script>
         <script type="text/javascript" src="${cp}/js/bootstrap-v2.3.0/bootstrap.min.js?${cacheTokenParams}"></script>
         <script type="text/javascript" src="${cp}/js/bootstrap-datepicker/bootstrap-datepicker.min.js?${cacheTokenParams}"></script>
-        <script src="${cp}/woko/js/woko.base.js" type="text/javascript"></script>
-        <script src="${cp}/woko/js/woko.jquery.js" type="text/javascript"></script>
-        <script src="${cp}/woko/js/woko.rpc.js" type="text/javascript"></script>
-        <c:forEach items="${layout.jsIncludes}" var="jsLink">
-            <script type="text/javascript" src="${cp}${jsLink}"></script>
-        </c:forEach>
-        <s:layout-component name="customJs"/>
+        <script type="text/javascript" src="${cp}/woko/js/woko.base.js?${cacheTokenParams}"></script>
+        <script type="text/javascript" src="${cp}/woko/js/woko.jquery.js?${cacheTokenParams}"></script>
+        <script type="text/javascript" src="${cp}/woko/js/woko.rpc.js?${cacheTokenParams}"></script>
 
             <%-- Set the locale to the datepicker --%>
         <% Locale l = request.getLocale(); %>
@@ -88,12 +84,14 @@
         <script type="text/javascript" src="${cp}/js/bootstrap-datepicker/bootstrap-datepicker.fr.min.js?${cacheTokenParams}"></script>
         <% } %>
 
-        <script type="text/javascript" src="${cp}/woko/js/woko.base.js?${cacheTokenParams}"></script>
-        <script type="text/javascript" src="${cp}/woko/js/woko.jquery.js?${cacheTokenParams}"></script>
-        <script type="text/javascript" src="${cp}/woko/js/woko.rpc.js?${cacheTokenParams}"></script>
         <script type="text/javascript">
             window.wokoClient = new woko.rpc.Client("${cp}");
         </script>
+
+                <c:forEach items="${layout.jsIncludes}" var="jsLink">
+            <script type="text/javascript" src="${cp}${jsLink}?${cacheTokenParams}"></script>
+        </c:forEach>
+        <s:layout-component name="customJs"/>
 
     </head>
 

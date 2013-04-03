@@ -113,7 +113,7 @@ class RendererTest extends WebTestBase {
                 goToPage '/list/MyEntity'
 
                 // Verify title
-                verifyXPath xpath: '/html/body/div/div[2]/div/h1', text: 'TestPageHeaderTitleOverride'
+                verifyXPath xpath: '/html/body/div/div[2]/div/h1', text: 'TestPageHeaderTitleOverride - Should be displayed only on load'
 
                 // assert some of the DOM
                 verifyXPath xpath:'/html/body/div/div[2]/div/table/thead/tr/th', text:'.*Class.*', regex: true

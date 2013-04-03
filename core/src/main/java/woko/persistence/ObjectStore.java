@@ -61,6 +61,17 @@ public interface ObjectStore {
     String getClassMapping(Class<?> clazz);
 
     /**
+     * Return the class for passed instance.
+     * This method can return o.getClass(), but in some
+     * cases like when the object is proxified, you might do additional work like deproxify etc.
+     * Woko uses this method instead of o.getClass() in order to make sure
+     * it works with the actual class instead of a proxy, and avoid any proxy-related issues.
+     * @param o the object to get class mapping for
+     * @return the mapping for passed class if any
+     */
+    Class<?> getObjectClass(Object o);
+
+    /**
      * Return the Java Class for passed mapped class name
      * @param className the mapped class name
      * @return the Java class for passed mapped class name

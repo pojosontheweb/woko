@@ -115,7 +115,7 @@ public class RenderTitleImpl<
 
         // nothing matched, compute a meaningful title
         OsType objectStore = facetContext.getWoko().getObjectStore();
-        String className = objectStore.getClassMapping(o.getClass());
+        String className = objectStore.getClassMapping(objectStore.getObjectClass(o));
         String key = objectStore.getKey(o);
         if (className != null && key != null) {
             return key + "@" + className;

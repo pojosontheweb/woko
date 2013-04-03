@@ -29,7 +29,7 @@
     ObjectStore os = woko.getObjectStore();
     String propertyName = renderPropertyValue.getPropertyName();
     Object owningObject = renderPropertyValue.getOwningObject();
-    String propertyClassName = os.getClassMapping(Util.getPropertyType(owningObject.getClass(), propertyName));
+    String propertyClassName = os.getClassMapping(Util.getPropertyType(os.getObjectClass(owningObject), propertyName));
     String fullFieldName = renderPropertyValue.getFieldPrefix() + "." + propertyName;
     Collection<?> propVal = (Collection<?>)renderPropertyValue.getPropertyValue();
 %>

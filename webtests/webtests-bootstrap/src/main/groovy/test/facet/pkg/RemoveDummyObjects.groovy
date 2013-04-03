@@ -32,6 +32,10 @@ class RemoveDummyObjects extends BaseResolutionFacet {
             def b = store.load('MyBook', "$i")
             store.delete(b)
         }
+        for (int i=100 ; i<200 ; i++) {
+            def e = store.load('MyEntity', "$i")
+            store.delete(e)
+        }
         return new StreamingResolution("text/plain", "all good")
     }
 

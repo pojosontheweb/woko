@@ -6,6 +6,7 @@
 <%@ page import="woko.Woko" %>
 <%@ page import="woko.facets.WokoFacetContext" %>
 <%@ page import="woko.facets.builtin.RenderListItem" %>
+<%@ page import="woko.persistence.ObjectStore" %>
 
 
 <%
@@ -18,7 +19,8 @@
     // compute link if view facet is available
     String href = null;
     String resultKey = woko.getObjectStore().getKey(result);
-    String resultClassName = woko.getObjectStore().getClassMapping(result.getClass());
+    ObjectStore s = woko.getObjectStore();
+    String resultClassName = s.getClassMapping(s.getObjectClass(result));
     if (woko.getFacet(WokoFacets.view, request, result)!=null) {
         href = new StringBuilder().
                 append(request.getContextPath()).

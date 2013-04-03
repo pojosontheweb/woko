@@ -23,6 +23,7 @@ import net.sourceforge.stripes.util.bean.PropertyExpressionEvaluation;
 import net.sourceforge.stripes.validation.ValidationError;
 import net.sourceforge.stripes.validation.ValidationErrors;
 import woko.Woko;
+import woko.persistence.ObjectStore;
 
 import java.util.List;
 
@@ -76,8 +77,9 @@ public class WokoActionBeanPropertyBinder extends DefaultActionBeanPropertyBinde
         ValidationErrors errorsSaved =  super.bind(bean, context, validate);
         ValidationErrors errorsUpdated = new ValidationErrors();
         if (bean instanceof WokoActionBean){
-            Woko woko = Woko.getWoko(context.getServletContext());
+            Woko<?,?,?,?> woko = Woko.getWoko(context.getServletContext());
             WokoActionBean wBean = (WokoActionBean)bean;
+            ObjectStore store = woko.getObjectStore();
             String facetName = wBean.getFacetName();
             for(String key : errorsSaved.keySet()){
                 List<ValidationError> errs = errorsSaved.get(key);
@@ -87,7 +89,7 @@ public class WokoActionBeanPropertyBinder extends DefaultActionBeanPropertyBinde
                 }else if (key.startsWith("object")){
                     Object o = wBean.getObject();
                     String className = o!=null ?
-                            woko.getObjectStore().getClassMapping(o.getClass()) :
+                            store.getClassMapping(store.getObjectClass(o)) :
                             wBean.getClassName();
                     String newKey = key.replaceFirst("object", className);
                     errorsUpdated.put(newKey, errs);

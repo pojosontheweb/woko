@@ -27,6 +27,7 @@ import woko.facets.FacetNotFoundException;
 import woko.facets.WokoFacetContextFactory;
 import woko.facets.WokoProfileRepository;
 import woko.ioc.SimpleWokoIocContainer;
+import woko.ioc.WokoInjectHelper;
 import woko.ioc.WokoIocContainer;
 import woko.persistence.ObjectStore;
 import woko.users.UserManager;
@@ -102,7 +103,7 @@ public class Woko<
     /**
      * Woko version
      */
-    public static final String VERSION = "2.2-beta4";
+    public static final String VERSION = "2.2-beta5";
 
     /**
      * Return the Woko instance for passed servletContext
@@ -356,6 +357,10 @@ public class Woko<
                 request.setAttribute(name, facet);
                 request.setAttribute(REQ_ATTR_FACET, facet);
                 logger.debug("Facet found and bound to request with name '" + name + "', returning " + facet);
+
+                // inject components for methods marked with @WokoInject
+                WokoInjectHelper.injectComponents(this, facet);
+
                 return facet;
             }
         }
