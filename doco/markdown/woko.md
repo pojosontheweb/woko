@@ -111,7 +111,7 @@ The term "prototype", when developing a Woko application, only refers to a _phas
 
 ## Customization ##
 
-Almost everything in Woko is designed to be pluggable. The main components like [Object Store] or [User Manager](User Manager) can be completely or partly replaced. Need another ORM ? Wanna go NoSQL ? Upgrading to LDAP ? All this can be adapted. Those abstractions makes the base system very agile as the application doesn't require much changes even if you replace some underlying system by another. The contracts are very simple and easy to implement. 
+Almost everything in Woko is designed to be pluggable. The main components like [Object Store](Object Store) or [User Manager](User Manager) can be completely or partly replaced. Need another ORM ? Wanna go NoSQL ? Upgrading to LDAP ? All this can be adapted. Those abstractions makes the base system very agile as the application doesn't require much changes even if you replace some underlying system by another. The contracts are very simple and easy to implement. 
 
 Also, the [Object Renderer](Object Renderer) and CRUD features are very flexible and can be customized easily. Hooks range from very small parts to the whole mechanism, so you can "cut the Woko branch" whenever you feel it's more pain than benefit. 
 
