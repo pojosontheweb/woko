@@ -22,6 +22,7 @@ import woko.Woko;
 import woko.persistence.ObjectStore;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -47,11 +48,14 @@ public class WokoTypeConverterFactory extends DefaultTypeConverterFactory {
         // check if the class is a Woko mapped class
         TypeConverter tc;
         ObjectStore store = Woko.getWoko(getConfiguration().getServletContext()).getObjectStore();
-        if (store.getMappedClasses().contains(aClass)) {
-            // class is mapped, return a TC that uses the store to load the object
-            tc = new WokoTypeConverter(store);
-            tc.setLocale(locale);
-            return tc;
+        List<Class<?>> mappedClasses = store.getMappedClasses();
+        for (Class<?> mappedClass : mappedClasses) {
+            if (mappedClass.isAssignableFrom(aClass)) {
+                // class is mapped, return a TC that uses the store to load the object
+                tc = new WokoTypeConverter(store);
+                tc.setLocale(locale);
+                return tc;
+            }
         }
 
         // special handling for RPC-formatted dates
