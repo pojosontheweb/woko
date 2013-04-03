@@ -27,7 +27,7 @@ public class WokoFormatterFactory extends DefaultFormatterFactory {
             for (Class<?> mappedClass : mappedClasses) {
                 if (mappedClass.isAssignableFrom(clazz)) {
                     // class is mapped, return a TC that uses the store to load the object
-                    return new WokoFormatter<Object>(woko);
+                    return new WokoFormatter(woko);
                 }
             }
         }
