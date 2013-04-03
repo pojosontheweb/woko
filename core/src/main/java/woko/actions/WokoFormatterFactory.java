@@ -11,7 +11,7 @@ import java.util.Locale;
 
 public class WokoFormatterFactory extends DefaultFormatterFactory {
 
-    private Woko<?,?,?,?> woko;
+    private Woko<?,?,?,?> woko = null;
 
     @Override
     public void init(Configuration configuration) throws Exception {
@@ -21,12 +21,14 @@ public class WokoFormatterFactory extends DefaultFormatterFactory {
 
     @Override
     public Formatter<?> getFormatter(Class<?> clazz, Locale locale, String formatType, String formatPattern) {
-        ObjectStore store = woko.getObjectStore();
-        List<Class<?>> mappedClasses = store.getMappedClasses();
-        for (Class<?> mappedClass : mappedClasses) {
-            if (mappedClass.isAssignableFrom(clazz)) {
-                // class is mapped, return a TC that uses the store to load the object
-                return new WokoFormatter<Object>(woko);
+        if (woko!=null) {
+            ObjectStore store = woko.getObjectStore();
+            List<Class<?>> mappedClasses = store.getMappedClasses();
+            for (Class<?> mappedClass : mappedClasses) {
+                if (mappedClass.isAssignableFrom(clazz)) {
+                    // class is mapped, return a TC that uses the store to load the object
+                    return new WokoFormatter<Object>(woko);
+                }
             }
         }
         // class ain't mapped in store, use default formatter
