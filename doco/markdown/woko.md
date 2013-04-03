@@ -65,7 +65,7 @@ But Woko goes beyond glue-code, minimal config and and helper libraries only. Th
 
 ## Follow the use cases ##
 
-Most of agile, iterative-driven development methodologies have a strong focus on Use Cases (or User Stories). They give a glance of "who does what" in the application. Of course, Use Cases and User Stories are non formal : we talk them out with end users (or customers) and try to get the best possible understanding, so that we can go for the implementation, and come back with something so show. Once we all agree the Use Case is realized (the app works as expected), we move forward to the next iteration (or Sprint, or whatever).  
+Most of agile, iterative-driven development methodologies have a strong focus on Use Cases (or User Stories). They give a glance of "who does what" in the application. Of course, Use Cases and User Stories are non formal : we talk them out with end users (or customers) and try to get the best possible understanding, so that we can go for the implementation, and come back with something to show. Once we all agree the Use Case is realized (the app works as expected), we move forward to the next iteration (or Sprint, or whatever).  
 
 Woko fully supports this model thanks to the semantics carried by the Facets and Domain Objects. Facets written in your Woko application have an _intent_ (usually conveyed by the facet's name), they apply to _roles_ and _target objects_. Instead of having your code scattered around the codebase with no meaning, Woko proposes a consistent approach where the semantics in your code allow to easily relate it to a Use Case. 
 
@@ -111,7 +111,7 @@ The term "prototype", when developing a Woko application, only refers to a _phas
 
 ## Customization ##
 
-Almost everything in Woko is designed to be pluggable. The main components like [Object Store](Object Store) or [User Manager](User Manager) can be completely or partly replaced. Need another ORM ? Wanna go NoSQL ? Upgrading to LDAP ? All this can be adapted. Those abstractions makes the base system very agile as the application doesn't require much changes even if you replace some underlying system by another. The contracts are very simple and easy to implement. 
+Almost everything in Woko is designed to be pluggable. The main components like [Object Store] or [User Manager](User Manager) can be completely or partly replaced. Need another ORM ? Wanna go NoSQL ? Upgrading to LDAP ? All this can be adapted. Those abstractions makes the base system very agile as the application doesn't require much changes even if you replace some underlying system by another. The contracts are very simple and easy to implement. 
 
 Also, the [Object Renderer](Object Renderer) and CRUD features are very flexible and can be customized easily. Hooks range from very small parts to the whole mechanism, so you can "cut the Woko branch" whenever you feel it's more pain than benefit. 
 
@@ -207,7 +207,7 @@ We'll be using the default "Reference Implementation" (hibernate etc.), but the 
 
 ## Environment setup
 
-You'll need to install the `woko` shell script to go through this tutorial. Follow instructions explained [here](The woko Script). 
+You'll need to install the `woko` shell script to go through this tutorial. Follow instructions explained [here](https://github.com/pojosontheweb/woko/wiki/Download). 
 
 Make sure the `woko` command is available in your PATH before you start.
 
@@ -399,7 +399,7 @@ In short : all CRUD operations on your Domain Classes (plus full text search) ar
 
 ### RPC and JavaScript ###
 
-Woko includes out of the box support for RPC. All default features are available as JSON/HTTP services by default. Every feature covered by this tutorial so far can be realized using any code that speaks HTTP and JSON, using a simple protocol. 
+Woko includes out of the box support for RPC. All default features are available as JSON/HTTP services. Every feature covered by this tutorial so far can be realized using any code that speaks HTTP and JSON, using a simple protocol. 
 
 With the app still running, log in as wdevel and try this :
 
