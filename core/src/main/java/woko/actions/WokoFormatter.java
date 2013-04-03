@@ -5,7 +5,7 @@ import woko.Woko;
 
 import java.util.Locale;
 
-public class WokoFormatter<T> implements Formatter<T> {
+public class WokoFormatter implements Formatter<Object> {
 
     private final Woko<?,?,?,?> woko;
 
@@ -30,7 +30,7 @@ public class WokoFormatter<T> implements Formatter<T> {
     }
 
     @Override
-    public String format(T input) {
+    public String format(Object input) {
         if (input==null) {
             return null;
         }
