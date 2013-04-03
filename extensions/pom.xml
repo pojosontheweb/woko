@@ -29,6 +29,5 @@
         <module>usermanagement</module>
         <module>tinymce-editor</module>
         <module>blobs</module>
-        <module>categories</module>
     </modules>
 </project>
