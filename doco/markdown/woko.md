@@ -1268,12 +1268,14 @@ You can add displayed label for each attribute by setting `ClassName.attributeNa
 
 Handling localization is just creating and filling application[_locale].properties files for each locale you want to support.
 
-Accessing label programmaticaly is easy:
+You can access your label programmaticaly using the woko instance:
+
     Woko woko = ... ; // grab Woko
     String msg = woko.getLocalizedMessage(locale, "my.message.key"); 
     String msg = woko.getLocalizedMessage(locale, "my.message.key.with.args", "funky", "cool"); 
 
-When overriding a facet or a fragment facet, you can access current user locale using getRequest():
+When overriding a facet or a fragment facet, you cane use getRequest() to use the user Locale:
+
     Woko woko = ... ; // grab Woko
     String msg = woko.getLocalizedMessage(getRequest(), "my.message.key");
 
