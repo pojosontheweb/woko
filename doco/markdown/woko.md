@@ -1254,8 +1254,31 @@ Here is a fictious JSP that backs our `renderPropertyValue` facet for the `addre
 > An alternate `renderPropertyValueEdit` is used when editing the object.
 
 ## Localization ##
+In Woko, all the strings required by the application must be written in application.properties file. This file is generated when you run `woko init`. 
 
-TODO explain how to use application.properties, Woko.getResource() and <fmt:message/>.
+If you open this file, you can see:
+
+    ### Resources for woko's example domain class ###
+    MyEntity.class=Class
+    MyEntity.id=Id
+    MyEntity.myProp=My prop
+    MyEntity.myOtherProp=My other prop
+
+You can add displayed label for each attribute by setting `ClassName.attributeName=desiredLabel`. It's quite simple !
+
+Handling localization is just creating and filling application[_locale].properties files for each locale you want to support.
+
+Accessing label programmaticaly is easy:
+    Woko woko = ... ; // grab Woko
+    String msg = woko.getLocalizedMessage(locale, "my.message.key"); 
+    String msg = woko.getLocalizedMessage(locale, "my.message.key.with.args", "funky", "cool"); 
+
+When overriding a facet or a fragment facet, you can access current user locale using getRequest():
+    Woko woko = ... ; // grab Woko
+    String msg = woko.getLocalizedMessage(getRequest(), "my.message.key");
+
+
+TODO explain how to use <fmt:message/>.
 
 ## Build ##
 
