@@ -55,11 +55,13 @@ public class WokoFacets {
     public static final String renderPropertyValueEdit = RenderPropertyValueEdit.FACET_NAME;
     public static final String renderPropertyValueJson = RenderPropertyValueJson.FACET_NAME;
     public static final String renderTitle = RenderTitle.FACET_NAME;
+    public static final String renderTitleEdit = RenderTitle.FACET_NAME + "Edit";
     public static final String save = Save.FACET_NAME;
     public static final String search = Search.FACET_NAME;
     public static final String studio = "studio";
     public static final String validate = Validate.FACET_NAME;
     public static final String view = View.FACET_NAME;
+
 
     public static class IntfAndClass {
 
@@ -100,6 +102,7 @@ public class WokoFacets {
         put(renderPropertyValueEdit, new IntfAndClass(RenderPropertyValue.class, RenderPropertyValueEditStripesText.class));
         put(renderPropertyValueJson, new IntfAndClass(RenderPropertyValueJson.class, RenderPropertyValueJsonObject.class));
         put(renderTitle, new IntfAndClass(RenderTitle.class, RenderTitleImpl.class));
+        put(renderTitleEdit,new IntfAndClass(RenderTitle.class,RenderTitleEditImpl.class));
         put(save, new IntfAndClass(Save.class, SaveImpl.class));
         put(search, new IntfAndClass(Search.class, SearchImpl.class));
         put(validate, new IntfAndClass(Validate.class, null));

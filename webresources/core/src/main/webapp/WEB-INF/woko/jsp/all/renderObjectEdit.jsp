@@ -19,6 +19,6 @@
 <c:set var="o" value="${renderObjectEdit.facetContext.targetObject}"/>
 <div class="wokoObject">
     <w:includeFacet targetObject="${o}" facetName="<%=WokoFacets.renderLinksEdit%>"/>
-    <w:includeFacet targetObject="${o}" facetName="<%=WokoFacets.renderTitle%>"/>
+    <w:includeFacet targetObject="${o}" facetName="<%=WokoFacets.renderTitleEdit%>"/>
     <w:includeFacet targetObject="${o}" facetName="<%=WokoFacets.renderPropertiesEdit%>"/>
 </div>

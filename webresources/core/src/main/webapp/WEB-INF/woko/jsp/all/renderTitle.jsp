@@ -14,5 +14,13 @@
   ~ limitations under the License.
   --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="woko.facets.builtin.RenderTitle" %>
+<%@ page import="woko.facets.builtin.WokoFacets" %>
 <%@include file="/WEB-INF/woko/jsp/taglibs.jsp"%>
-<h1 class="wokoObjectTitle">${renderTitle.title}</h1>
+<%
+    RenderTitle renderTitle = (RenderTitle)request.getAttribute(WokoFacets.renderTitleEdit);
+    if (renderTitle==null) {
+        renderTitle = (RenderTitle)request.getAttribute(RenderTitle.FACET_NAME);
+    }
+%>
+<h1 class="wokoObjectTitle"><%=renderTitle.getTitle()%></h1>
