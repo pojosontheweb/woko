@@ -6,6 +6,8 @@ import woko.persistence.ObjectStore;
 import woko.users.UserManager;
 import woko.users.UsernameResolutionStrategy;
 
+import java.util.UUID;
+
 public class RenderPropertyValueEditTinyMCE<
         OsType extends ObjectStore,
         UmType extends UserManager,
@@ -17,6 +19,10 @@ public class RenderPropertyValueEditTinyMCE<
 
     public String getPath() {
         return FRAGMENT_PATH;
+    }
+
+    public String getTextAreaId() {
+        return UUID.randomUUID().toString();
     }
 
 }

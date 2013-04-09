@@ -30,7 +30,7 @@
     Object owningObject = renderPropertyValue.getOwningObject();
     String propertyClassName = os.getClassMapping(Util.getPropertyType(owningObject.getClass(), propertyName));
     String fullFieldName = renderPropertyValue.getFieldPrefix() + "." + propertyName;
-    String textAreaId = UUID.randomUUID().toString();
+    String textAreaId = renderPropertyValue.getTextAreaId();
 %>
 <span class="wokoPropertyValueEdit">
     <span class="<%=propertyName%> <%=propertyClassName%>">
