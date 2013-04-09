@@ -89,7 +89,7 @@
 %>
     <c:if test="<%=!partial%>">
         <div class="form-actions">
-            <w:includeFacet facetName="renderPropertiesEditButtons"/>
+            <w:includeFacet facetName="renderPropertiesEditButtons" targetObject="<%=owningObject%>"/>
         </div>
     </c:if>
 </fieldset>

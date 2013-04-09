@@ -32,6 +32,9 @@ class RendererTest extends WebTestBase {
             goToPage '/edit/MyBook/1111'
             verifyText 'page(s)'
 
+            // check that buttons have been overriden (renderPropertiesEditButtons)
+            verifyText 'Funky button'
+
             goToPage '/delete/MyBook/1111?facet.confirm=true'
         }
     }
