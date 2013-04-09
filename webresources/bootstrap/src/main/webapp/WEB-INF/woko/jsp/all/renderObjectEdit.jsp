@@ -18,7 +18,7 @@
     <div class="row-fluid">
         <%-- Call the renderTitle facet in order to display the title --%>
         <div class="wokoTitle">
-            <w:includeFacet targetObject="<%=o%>" facetName="<%=WokoFacets.renderTitle%>"/>
+            <w:includeFacet targetObject="<%=o%>" facetName="<%=WokoFacets.renderTitleEdit%>"/>
         </div>
         <%-- Call the renderTitle facet in order to display the available links --%>
         <div class="wokoLinks pull-right">
