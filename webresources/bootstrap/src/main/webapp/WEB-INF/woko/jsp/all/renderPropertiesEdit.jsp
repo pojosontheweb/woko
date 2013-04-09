@@ -89,7 +89,7 @@
 %>
     <c:if test="<%=!partial%>">
         <div class="form-actions">
-            <s:submit name="save" class="btn btn-primary btn-large"/>
+            <w:includeFacet facetName="renderPropertiesEditButtons"/>
         </div>
     </c:if>
 </fieldset>
