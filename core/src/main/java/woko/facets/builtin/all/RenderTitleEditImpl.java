@@ -22,6 +22,7 @@ import net.sourceforge.stripes.util.ReflectUtil;
 import woko.facets.BaseFragmentFacet;
 import woko.facets.WokoFacetContext;
 import woko.facets.builtin.RenderTitle;
+import woko.facets.builtin.RenderTitleEdit;
 import woko.facets.builtin.WokoFacets;
 import woko.persistence.ObjectStore;
 import woko.users.UserManager;
@@ -36,18 +37,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Generic <code>renderTitle</code> facet, assigned to <code>Object</code>.
- *
- * Looks for properties that could be used to render the title :
- * <ul>
- *     <li>title</li>
- *     <li>name</li>
- *     <li>id</li>
- *     <li>_id</li>
- * </ul>
- *
- * Defaults to <code>toString()</code> on the target object if no candidate property
- * could be found.
+ * Generic <code>renderTitleEdit</code> facet, assigned to <code>Object</code>.
+ * Used to render the titles for edited objects.
  */
 @FacetKey(name = WokoFacets.renderTitleEdit, profileId = "all")
 public class RenderTitleEditImpl<
@@ -55,5 +46,5 @@ public class RenderTitleEditImpl<
         UmType extends UserManager,
         UnsType extends UsernameResolutionStrategy,
         FdmType extends IFacetDescriptorManager
-        > extends RenderTitleImpl<OsType,UmType,UnsType,FdmType> {
+        > extends RenderTitleImpl<OsType,UmType,UnsType,FdmType> implements RenderTitleEdit {
 }
