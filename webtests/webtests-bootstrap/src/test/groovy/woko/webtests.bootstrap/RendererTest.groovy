@@ -43,13 +43,13 @@ class RendererTest extends WebTestBase {
         webtest("testReadOnlyPropCannotBeEdited") {
             login()
             try {
-                goToPage '/save/MyEntity?createTransient=true&object.id=1234'
+                goToPage '/save/MyEntityWithReadOnlyProp?createTransient=true&object.id=1234'
                 verifyText "readonlyvalue"
                 not {
                     verifyXPath xpath:"//input[@name=object.readOnlyProp]"
                 }
             } finally {
-                goToPage '/delete/MyEntity/1234?facet.confirm=true'
+                goToPage '/delete/MyEntityWithReadOnlyProp/1234?facet.confirm=true'
             }
 
         }

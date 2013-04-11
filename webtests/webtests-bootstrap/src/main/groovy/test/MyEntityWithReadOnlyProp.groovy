@@ -17,11 +17,10 @@
 package test
 
 import javax.persistence.Entity
-import javax.persistence.GeneratedValue
 import javax.persistence.Id
 
 @Entity
-class MyEntity {
+class MyEntityWithReadOnlyProp {
 
   @Id
   Long id
@@ -30,4 +29,7 @@ class MyEntity {
 
   Integer prop2
 
+    String getReadOnlyProp() {
+        "readonlyvalue"
+    }
 }
