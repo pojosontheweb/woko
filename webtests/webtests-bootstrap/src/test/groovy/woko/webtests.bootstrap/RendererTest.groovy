@@ -39,6 +39,22 @@ class RendererTest extends WebTestBase {
         }
     }
 
+    void testReadOnlyPropCannotBeEdited() {
+        webtest("testReadOnlyPropCannotBeEdited") {
+            login()
+            try {
+                goToPage '/save/MyEntity?createTransient=true&object.id=1234'
+                verifyText "readonlyvalue"
+                not {
+                    verifyXPath xpath:"//input[@name=object.readOnlyProp]"
+                }
+            } finally {
+                goToPage '/delete/MyEntity/1234?facet.confirm=true'
+            }
+
+        }
+    }
+
     void testFlatLayout() {
         webtest("test flat layout") {
             login()

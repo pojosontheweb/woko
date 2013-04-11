@@ -29,4 +29,8 @@ class MyEntity {
   String prop1
 
   Integer prop2
+
+    String getReadOnlyProp() {
+        "readonlyvalue"
+    }
 }

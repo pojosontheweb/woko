@@ -18,16 +18,15 @@ package woko.facets.builtin.all;
 
 import net.sourceforge.jfacets.IFacetDescriptorManager;
 import net.sourceforge.jfacets.annotations.FacetKey;
+import net.sourceforge.stripes.util.ReflectUtil;
 import woko.facets.builtin.RenderPropertiesEdit;
 import woko.facets.builtin.WokoFacets;
 import woko.persistence.ObjectStore;
 import woko.users.UserManager;
 import woko.users.UsernameResolutionStrategy;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.beans.PropertyDescriptor;
+import java.util.*;
 
 /**
  * Generic <code>renderPropertiesEdit</code> fragment facet : renders the properties of the
@@ -60,7 +59,20 @@ public class RenderPropertiesEditImpl<
 
     @Override
     public List<String> getReadOnlyPropertyNames() {
-        return Collections.emptyList();
+        // all props that have no public setter should be removed !
+        List<String> allProps = getPropertyNames();
+        Object target = getFacetContext().getTargetObject();
+        Class<?> targetClass = getWoko().getObjectStore().getObjectClass(target);
+        List<String> readOnlyProps = new ArrayList<String>();
+        if (allProps!=null) {
+            for (String propName : allProps) {
+                PropertyDescriptor pd = ReflectUtil.getPropertyDescriptor(targetClass, propName);
+                if (pd.getWriteMethod()==null) {
+                    readOnlyProps.add(propName);
+                }
+            }
+        }
+        return readOnlyProps;
     }
 
     @Override
