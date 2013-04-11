@@ -20,7 +20,7 @@ class BootstrapWebtestsInitListener extends
 
         return new SimpleWokoIocContainer<HibernateCompassStore,InMemoryUserManager,RemoteUserStrategy,AnnotatedFacetDescriptorManager>(
                 store,
-                new InMemoryUserManager().addUser("wdevel", "wdevel", ["developer", "categorymanager"]),
+                new InMemoryUserManager().addUser("wdevel", "wdevel", ["blobmanager", "developer"]),
                 new RemoteUserStrategy(),
                 createAnnotatedFdm()
         ).addComponent(BlobStore.KEY, new HibernateBlobStore(store))
