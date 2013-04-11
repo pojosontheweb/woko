@@ -51,7 +51,7 @@ class HibernateBlobStoreTest extends TestCase {
         assert id
         doInTx {
 
-            BlobObject b = bs.getBlob(id)
+            BlobObject b = bs.getBlob(HibernateBlob.class, id)
             assert b
             InputStream is = b.inputStream
             ByteArrayOutputStream os = new ByteArrayOutputStream()

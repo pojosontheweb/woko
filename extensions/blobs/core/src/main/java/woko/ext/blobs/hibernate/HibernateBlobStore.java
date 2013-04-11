@@ -33,8 +33,8 @@ public class HibernateBlobStore implements BlobStore {
     }
 
     @Override
-    public BlobObject getBlob(Long id) {
-        return (HibernateBlob)hbStore.getSession().get(HibernateBlob.class, id);
+    public BlobObject getBlob(Class<? extends BlobObject> blobClass, Long id) {
+        return (BlobObject)hbStore.getSession().get(blobClass, id);
     }
 
 }
