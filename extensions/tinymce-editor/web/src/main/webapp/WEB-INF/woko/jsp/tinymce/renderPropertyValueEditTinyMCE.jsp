@@ -21,6 +21,9 @@
 <%@ page import="woko.util.Util" %>
 <%@ page import="woko.ext.tinymce.RenderPropertyValueEditTinyMCE" %>
 <%@ page import="java.util.UUID" %>
+<%@ page import="woko.facets.builtin.Layout" %>
+<%@ page import="java.util.List" %>
+<%@ page import="java.util.Iterator" %>
 <%
     RenderPropertyValueEditTinyMCE<?,?,?,?> renderPropertyValue =
             (RenderPropertyValueEditTinyMCE<?,?,?,?>)request.getAttribute(WokoFacets.renderPropertyValueEdit);
@@ -62,7 +65,9 @@
 
                 // Skin options
                 skin : "o2k7",
-                skin_variant : "silver"
+                skin_variant : "silver",
+
+                content_css: "<%=renderPropertyValue.getContentCss()%>"
         });
 
     });
