@@ -42,8 +42,6 @@
 <script type="text/javascript">
     $(function() {
 
-        debugger;
-
         tinyMCE.init({
                 // General options
                 selector: "#<%=textAreaId%>",
