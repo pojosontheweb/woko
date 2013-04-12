@@ -20,10 +20,6 @@
 <%@ page import="woko.persistence.ObjectStore" %>
 <%@ page import="woko.util.Util" %>
 <%@ page import="woko.ext.tinymce.RenderPropertyValueEditTinyMCE" %>
-<%@ page import="java.util.UUID" %>
-<%@ page import="woko.facets.builtin.Layout" %>
-<%@ page import="java.util.List" %>
-<%@ page import="java.util.Iterator" %>
 <%
     RenderPropertyValueEditTinyMCE<?,?,?,?> renderPropertyValue =
             (RenderPropertyValueEditTinyMCE<?,?,?,?>)request.getAttribute(WokoFacets.renderPropertyValueEdit);

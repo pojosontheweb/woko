@@ -17,16 +17,12 @@ public class RenderPropertyValueEditTinyMCE<
         UmType extends UserManager,
         UnsType extends UsernameResolutionStrategy,
         FdmType extends IFacetDescriptorManager
-        > extends BaseRenderPropertyValueEdit<OsType,UmType,UnsType,FdmType> {
+        > extends RenderPropertyValueEditTinyMCEBase<OsType,UmType,UnsType,FdmType> {
 
     public static final String FRAGMENT_PATH = "/WEB-INF/woko/jsp/tinymce/renderPropertyValueEditTinyMCE.jsp";
 
     public String getPath() {
         return FRAGMENT_PATH;
-    }
-
-    public String getTextAreaId() {
-        return UUID.randomUUID().toString();
     }
 
     public String getContentCss() {

@@ -19,15 +19,24 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.pojosontheweb</groupId>
-        <artifactId>woko-extensions</artifactId>
+        <artifactId>woko-tinymce-editor</artifactId>
         <version>LATEST-SNAPSHOT</version>
     </parent>
-    <artifactId>woko-tinymce-editor</artifactId>
-    <name>Woko - TinyMCE extension</name>
-    <packaging>pom</packaging>
-    <modules>
-        <module>core</module>
-        <module>web</module>
-        <module>web4</module>
-    </modules>
+    <artifactId>woko-tinymce-web4</artifactId>
+    <name>Woko - TinyMCE 4 web</name>
+    <packaging>war</packaging>
+    <dependencies>
+        <dependency>
+            <groupId>com.pojosontheweb</groupId>
+            <artifactId>woko-tinymce-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.pojosontheweb</groupId>
+            <artifactId>woko-web-core</artifactId>
+            <version>${project.version}</version>
+            <type>war</type>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
 </project>
