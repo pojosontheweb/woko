@@ -30,6 +30,7 @@
     String propertyClassName = os.getClassMapping(Util.getPropertyType(owningObject.getClass(), propertyName));
     String fullFieldName = renderPropertyValue.getFieldPrefix() + "." + propertyName;
     String textAreaId = renderPropertyValue.getTextAreaId();
+    String contentCss = renderPropertyValue.getContentCss();
 %>
 <span class="wokoPropertyValueEdit">
     <span class="<%=propertyName%> <%=propertyClassName%>">
@@ -43,13 +44,14 @@
     $(function() {
 
         tinyMCE.init({
-                // General options
-                selector: "#<%=textAreaId%>",
-                plugins : [
-                    "advlist autolink lists link image charmap print preview anchor",
-                    "searchreplace visualblocks code fullscreen",
-                    "insertdatetime media table contextmenu paste"
-                ]
+            // General options
+            selector: "#<%=textAreaId%>",
+            plugins : [
+                "advlist autolink lists link image charmap print preview anchor",
+                "searchreplace visualblocks code fullscreen",
+                "insertdatetime media table contextmenu paste"
+            ],
+            content_css: "<%=contentCss%>"
         });
 
     });
