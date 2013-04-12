@@ -267,7 +267,7 @@ public class HibernateStore implements ObjectStore, TransactionalStore, Closeabl
                     throw new IllegalStateException("No setter found for alternate key property, could not set alternate key property for class " + clazz + ", alternateKey=" + alternateKey);
                 }
                 try {
-                    setter.invoke(obj, alternateKeyValue);
+                    setter.invoke(obj, sanitizeAlternateKey(alternateKeyValue));
                 } catch (Exception e) {
                     log.error("Exception caught while setting alternate key property, could not set alternate key property for class " + clazz + ", alternateKey=" + alternateKey);
                     throw new RuntimeException(e);
@@ -277,6 +277,15 @@ public class HibernateStore implements ObjectStore, TransactionalStore, Closeabl
 
         getSession().saveOrUpdate(obj);
         return obj;
+    }
+
+    protected Object sanitizeAlternateKey(Object altKey) {
+        if (altKey==null) {
+            return null;
+        }
+        String key = (String)altKey;
+        key = key.replaceAll("\\s", "-");
+        return key;
     }
 
     protected Object computeAlternateKeyValue(Object obj, Util.PropertyNameAndAnnotation<WokoAlternateKey> propAndAnnot) {
