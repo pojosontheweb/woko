@@ -68,6 +68,7 @@
         <module>builtin-auth</module>
         <module>hibernate</module>
         <module>compass-hibernate</module>
+        <module>hibernate-search</module>
         <module>push</module>
         <module>ri</module>
         <module>archetype</module>

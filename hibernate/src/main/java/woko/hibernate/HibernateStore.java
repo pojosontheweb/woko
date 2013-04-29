@@ -478,7 +478,7 @@ public class HibernateStore implements ObjectStore, TransactionalStore, Closeabl
         return Collections.unmodifiableList(mappedClasses);
     }
 
-    public ResultIterator search(Object query, Integer start, Integer limit) {
+    public ResultIterator<?> search(Object query, Integer start, Integer limit) {
         throw new UnsupportedOperationException("Search not implemented in HibernateStore. Override this method to handle full text search.");
     }
 
