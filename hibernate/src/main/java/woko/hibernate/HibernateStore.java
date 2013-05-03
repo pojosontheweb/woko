@@ -268,7 +268,7 @@ public class HibernateStore implements ObjectStore, TransactionalStore, Closeabl
                     throw new IllegalStateException("No setter found for alternate key property, could not set alternate key property for class " + clazz + ", alternateKey=" + alternateKey);
                 }
                 try {
-                    setter.invoke(obj, sanitizeAlternateKey(alternateKeyValue));
+                    setter.invoke(obj, alternateKeyValue);
                 } catch (Exception e) {
                     log.error("Exception caught while setting alternate key property, could not set alternate key property for class " + clazz + ", alternateKey=" + alternateKey);
                     throw new RuntimeException(e);
@@ -280,7 +280,7 @@ public class HibernateStore implements ObjectStore, TransactionalStore, Closeabl
         return obj;
     }
 
-    protected Object sanitizeAlternateKey(Object altKey) {
+    protected String sanitizeAlternateKey(String altKey) {
         if (altKey==null) {
             return null;
         }
@@ -322,7 +322,7 @@ public class HibernateStore implements ObjectStore, TransactionalStore, Closeabl
 
         // check unicity of the generated key
         // and compute unique one if needed
-        String altKey = converter.convert(obj, propAndAnnot, propName, propValue);
+        String altKey = sanitizeAlternateKey(converter.convert(obj, propAndAnnot, propName, propValue));
         int counter = 1;
         Class<?> mappedClass = obj.getClass();
         do {
