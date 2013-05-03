@@ -47,13 +47,13 @@ public class HibernatePrimaryKeyConverter {
             try {
                 result = NumberFormat.getInstance().parse(value);
             } catch (ParseException e) {
-                logger.info("Unable to parse Number from str " + value + ", returning null");
+                logger.debug("Unable to parse Number from str " + value + ", returning null");
             }
         } else if (Date.class.isAssignableFrom(targetConversionType)) {
             try {
                 result = DateFormat.getInstance().parse(value);
             } catch (ParseException e) {
-                logger.info("Unable to parse Date from str " + value + ", returning null");
+                logger.debug("Unable to parse Date from str " + value + ", returning null");
             }
         } else if (String.class.equals(targetConversionType)) {
             result = value;
