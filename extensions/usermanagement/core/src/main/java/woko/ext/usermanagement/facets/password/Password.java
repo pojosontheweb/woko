@@ -21,6 +21,7 @@ import woko.util.WLogger;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Locale;
+import java.util.Map;
 
 @StrictBinding(
         defaultPolicy = StrictBinding.Policy.DENY,
@@ -125,7 +126,7 @@ public class Password<
                     u.getEmail(),
                     getEmailLocale(getRequest()),
                     mailService.getMailTemplate(getTemplateName()),
-                    BindingHelper.newBinding(u, getAppName(), mailService)
+                    getEmailBinding(u)
             );
         } else {
             logger.warn("No email could be sent : no MailService found in IoC.");
@@ -133,6 +134,10 @@ public class Password<
 
         // redirect to password change confirmation page
         return new RedirectResolution("/passwordConfirm");
+    }
+
+    protected Map<String, Object> getEmailBinding(User u) {
+        return BindingHelper.newBinding(u, getAppName(), mailService);
     }
 
     protected String getAppName() {
@@ -147,7 +152,6 @@ public class Password<
     protected String getTemplateName() {
         return MailTemplatePassword.TEMPLATE_NAME;
     }
-
 
     @Override
     public boolean matchesTargetObject(Object targetObject) {

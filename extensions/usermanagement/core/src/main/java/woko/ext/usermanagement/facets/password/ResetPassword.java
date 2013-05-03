@@ -91,7 +91,7 @@ public class ResetPassword<
             if (mailService!=null) {
                 String token = UUID.randomUUID().toString();
                 getRequest().getSession().setAttribute("wokoResetPasswordToken", token);
-                Map<String,Object> binding = BindingHelper.newBinding(u, getAppName(), mailService);
+                Map<String,Object> binding = getEmailBinding(u);
                 binding.put(
                         MailTemplateResetPassword.RESET_PASSWORD_URL,
                         mailService.getAppUrl() + "/resetPassword?doReset=true&facet.email=" + email + "&facet.token=" + token
@@ -110,6 +110,10 @@ public class ResetPassword<
         return new RedirectResolution("/resetPassword")
                 .addParameter("confirmEmail", "true")
                 .addParameter("facet.email", email);
+    }
+
+    protected Map<String, Object> getEmailBinding(User u) {
+        return BindingHelper.newBinding(u, getAppName(), mailService);
     }
 
     public Resolution confirmEmail() {
