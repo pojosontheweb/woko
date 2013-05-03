@@ -113,7 +113,7 @@ public class ResetPassword<
     }
 
     protected Map<String, Object> getEmailBinding(User u) {
-        return BindingHelper.newBinding(u, getAppName(), mailService);
+        return BindingHelper.newBinding(getWoko(), u, getAppName(), mailService);
     }
 
     public Resolution confirmEmail() {

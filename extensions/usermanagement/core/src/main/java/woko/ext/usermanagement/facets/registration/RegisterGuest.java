@@ -256,7 +256,7 @@ public class RegisterGuest<T extends User,
     }
 
     protected Map<String,Object> createMailBinding() {
-        return BindingHelper.newBinding(user, getAppName(), mailService);
+        return BindingHelper.newBinding(getWoko(), user, getAppName(), mailService);
     }
 
     protected String getAppName() {

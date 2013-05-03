@@ -137,7 +137,7 @@ public class Password<
     }
 
     protected Map<String, Object> getEmailBinding(User u) {
-        return BindingHelper.newBinding(u, getAppName(), mailService);
+        return BindingHelper.newBinding(getWoko(), u, getAppName(), mailService);
     }
 
     protected String getAppName() {

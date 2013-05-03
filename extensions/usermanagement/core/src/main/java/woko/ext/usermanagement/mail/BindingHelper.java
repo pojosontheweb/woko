@@ -1,5 +1,6 @@
 package woko.ext.usermanagement.mail;
 
+import woko.Woko;
 import woko.ext.usermanagement.core.User;
 import woko.mail.MailService;
 import woko.mail.MailTemplate;
@@ -12,6 +13,8 @@ public final class BindingHelper {
     public static final String APP_NAME = "appName";
     public static final String USERNAME = "username";
     public static final String APP_URL = "appUrl";
+    public static final String WOKO = "woko";
+    public static final String USER = "user";
 
     @SuppressWarnings("unckeched")
     public static <T> T getBindingValueSafe(Map<String, Object> binding, String key) {
@@ -34,8 +37,10 @@ public final class BindingHelper {
         return getBindingValueSafe(binding, APP_URL);
     }
 
-    public static <T extends User> Map<String,Object> newBinding(T user, String appName, MailService mailService) {
+    public static <T extends User> Map<String,Object> newBinding(Woko<?,?,?,?> woko, T user, String appName, MailService mailService) {
         Map<String,Object> res = new HashMap<String, Object>();
+        res.put(WOKO, woko);
+        res.put(USER, user);
         res.put(USERNAME, user.getUsername());
         res.put(APP_NAME, appName);
         res.put(APP_URL, mailService.getAppUrl());
