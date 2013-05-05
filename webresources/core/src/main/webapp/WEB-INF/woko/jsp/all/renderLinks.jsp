@@ -35,12 +35,10 @@
     %>
         <li>
             <a<%=linkAttrs%>>
-                <c:out value="<%=text%>"/>
+                <%=text%>
             </a>
         </li>
     <%
         }
     %>
-    <c:forEach var="link" items="${renderLinks.links}">
-    </c:forEach>
 </ul>

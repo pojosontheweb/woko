@@ -33,7 +33,7 @@ RenderLinks renderLinks = (RenderLinks)request.getAttribute(RenderLinks.FACET_NA
         String firstLinkAttrs = LinkUtil.computeAllLinkAttributes(first, request);
 %>
 <div class="btn-group">
-    <a<%=firstLinkAttrs%>><c:out value="<%=first.getText()%>"/></a>
+    <a<%=firstLinkAttrs%>><%=first.getText()%></a>
         <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#">
             <span class="caret"></span>
         </a>
