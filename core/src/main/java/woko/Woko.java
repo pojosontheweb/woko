@@ -103,7 +103,7 @@ public class Woko<
     /**
      * Woko version
      */
-    public static final String VERSION = "2.2-beta6";
+    public static final String VERSION = "LATEST-SNAPSHOT";
 
     /**
      * Return the Woko instance for passed servletContext

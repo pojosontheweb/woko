@@ -20,7 +20,7 @@
     <parent>
         <groupId>com.pojosontheweb</groupId>
         <artifactId>woko-asyncjobs</artifactId>
-        <version>2.2-beta6</version>
+        <version>LATEST-SNAPSHOT</version>
     </parent>
     <artifactId>woko-asyncjobs-core</artifactId>
     <packaging>jar</packaging>

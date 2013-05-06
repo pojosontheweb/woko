@@ -20,7 +20,7 @@
     <parent>
         <groupId>com.pojosontheweb</groupId>
         <artifactId>woko-webtests</artifactId>
-        <version>2.2-beta6</version>
+        <version>LATEST-SNAPSHOT</version>
     </parent>
     <artifactId>woko-webtests-rpc</artifactId>
     <name>Woko - web tests RPC</name>
