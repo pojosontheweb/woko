@@ -30,7 +30,7 @@ class JobManagerTest extends WokoWebTestBase {
             goToPage "/startJobs"
             verifyText text:"object(s) found for class HbJobDetails"
             verifyXPath xpath:'/html/body/div/div[2]/div/table/tbody/tr/td[4]/span/span', text: ''
-            Thread.sleep(5000)
+            Thread.sleep(10000)
             goToPage "/list/HbJobDetails"
             verifyXPath xpath:'/html/body/div/div[2]/div/table/tbody/tr/td[4]/span/span', text: '.*,.*', regex:true
         }
