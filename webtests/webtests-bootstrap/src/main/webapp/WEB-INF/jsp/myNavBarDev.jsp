@@ -21,5 +21,5 @@
             ${link.attributesString}><c:out value="${link.text}"/></a></li>
 </c:forEach>
 <li><a href="http://www.google.com">google</a></li>
-<li><a href="${cp}/upload/HibernateBlob">upload</a></li>
+<li><a href="${cp}/upload/HibernateBlobImpl">upload</a></li>
 <li><a href="${cp}/manageCategories">categs</a></li>

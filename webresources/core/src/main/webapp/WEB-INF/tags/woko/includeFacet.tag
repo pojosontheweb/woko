@@ -19,11 +19,17 @@
 <%@ attribute name="targetObject" required="false" type="java.lang.Object" %>
 <%@ attribute name="targetObjectClass" required="false" type="java.lang.Class" %>
 <%@ attribute name="facetName" required="false" type="java.lang.String" %>
+<%@ attribute name="throwIfNotFound" required="false" type="java.lang.Boolean" %>
 <w:facet targetObject="${targetObject}"
          targetObjectClass="${targetObjectClass}"
-         facetName="${facetName}"/>
+         facetName="${facetName}"
+        throwIfNotFound="${throwIfNotFound}"/>
 <%
     FragmentFacet ff = (FragmentFacet)request.getAttribute(facetName);
-    String path = ff.getFragmentPath(request);
+    if (ff!=null) {
+        String path = ff.getFragmentPath(request);
 %>
 <jsp:include page="<%=path%>"/>
+<%
+    }
+%>

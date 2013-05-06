@@ -14,11 +14,19 @@
   ~ limitations under the License.
   --%>
 <%@ page import="woko.facets.builtin.WokoFacets" %>
+<%@ page import="woko.facets.builtin.RenderPropertiesBefore" %>
+<%@ page import="woko.facets.builtin.RenderPropertiesAfter" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="/WEB-INF/woko/jsp/taglibs.jsp"%>
 <c:set var="o" value="${renderObject.facetContext.targetObject}"/>
 <div class="wokoObject">
     <w:includeFacet targetObject="${o}" facetName="<%=WokoFacets.renderLinks%>"/>
     <w:includeFacet targetObject="${o}" facetName="<%=WokoFacets.renderTitle%>"/>
+    <w:includeFacet targetObject="${o}"
+                    facetName="<%=RenderPropertiesBefore.FACET_NAME%>"
+                    throwIfNotFound="false"/>
     <w:includeFacet targetObject="${o}" facetName="<%=WokoFacets.renderProperties%>"/>
+    <w:includeFacet targetObject="${o}"
+                    facetName="<%=RenderPropertiesAfter.FACET_NAME%>"
+                    throwIfNotFound="false"/>
 </div>

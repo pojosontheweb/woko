@@ -230,7 +230,7 @@ public class RegisterGuest<T extends User,
             if (user.getAccountStatus().equals(AccountStatus.Registered)) {
                 if (mailService != null) {
                     MailTemplate template = mailService.getMailTemplate(getTemplateName());
-                    Map<String, Object> binding = BindingHelper.newBinding(user, getAppName(), mailService);
+                    Map<String, Object> binding = createMailBinding();
                     binding.put(
                             MailTemplateRegister.REGISTER_URL,
                             mailService.getAppUrl() + "/activate/" +
@@ -253,6 +253,10 @@ public class RegisterGuest<T extends User,
             return new RedirectResolution("/view/" + regDetailsClassMapping +
                     "/" + regDetailsKey);
         }
+    }
+
+    protected Map<String,Object> createMailBinding() {
+        return BindingHelper.newBinding(getWoko(), user, getAppName(), mailService);
     }
 
     protected String getAppName() {

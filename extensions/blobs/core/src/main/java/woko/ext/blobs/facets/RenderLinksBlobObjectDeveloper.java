@@ -14,7 +14,7 @@ import woko.util.LinkUtil;
 import java.util.ArrayList;
 import java.util.List;
 
-@FacetKey(name = RenderLinks.FACET_NAME, profileId = "developer", targetObjectType = BlobObject.class)
+@FacetKey(name = RenderLinks.FACET_NAME, profileId = "blobmanager", targetObjectType = BlobObject.class)
 public class RenderLinksBlobObjectDeveloper<
         OsType extends ObjectStore,
         UmType extends UserManager,

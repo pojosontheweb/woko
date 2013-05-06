@@ -54,18 +54,19 @@ public class RenderPropertyValueEditXToOneRelation<
      */
     public String getPath() {
         // check if the property is an enum
-        Class<?> propType = getPropertyType();
-        if (propType.isEnum()) {
-            return ENUM_FRAGMENT_PATH;
-        }
-
-        // not an enum : we check if the target object is persistent or not.
-        // if persistent, then forward to another JSP
-        OsType os = getFacetContext().getWoko().getObjectStore();
-        List<Class<?>> mappedClasses = os.getMappedClasses();
         Class<?> propertyType = getPropertyType();
-        if (mappedClasses.contains(propertyType)) {
-            return FRAGMENT_PATH;
+        if (propertyType!=null) {
+            if (propertyType.isEnum()) {
+                return ENUM_FRAGMENT_PATH;
+            }
+
+            // not an enum : we check if the target object is persistent or not.
+            // if persistent, then forward to another JSP
+            OsType os = getFacetContext().getWoko().getObjectStore();
+            List<Class<?>> mappedClasses = os.getMappedClasses();
+            if (mappedClasses.contains(propertyType)) {
+                return FRAGMENT_PATH;
+            }
         }
         getRequest().setAttribute(RenderPropertyValue.FACET_NAME, this); // NEEDED because the JSP expects the facet to be found.
         return super.getPath();

@@ -20,7 +20,6 @@
 <%@ page import="woko.persistence.ObjectStore" %>
 <%@ page import="woko.util.Util" %>
 <%@ page import="woko.ext.tinymce.RenderPropertyValueEditTinyMCE" %>
-<%@ page import="java.util.UUID" %>
 <%
     RenderPropertyValueEditTinyMCE<?,?,?,?> renderPropertyValue =
             (RenderPropertyValueEditTinyMCE<?,?,?,?>)request.getAttribute(WokoFacets.renderPropertyValueEdit);
@@ -30,7 +29,7 @@
     Object owningObject = renderPropertyValue.getOwningObject();
     String propertyClassName = os.getClassMapping(Util.getPropertyType(owningObject.getClass(), propertyName));
     String fullFieldName = renderPropertyValue.getFieldPrefix() + "." + propertyName;
-    String textAreaId = UUID.randomUUID().toString();
+    String textAreaId = renderPropertyValue.getTextAreaId();
 %>
 <span class="wokoPropertyValueEdit">
     <span class="<%=propertyName%> <%=propertyClassName%>">
@@ -62,7 +61,9 @@
 
                 // Skin options
                 skin : "o2k7",
-                skin_variant : "silver"
+                skin_variant : "silver",
+
+                content_css: "<%=renderPropertyValue.getContentCss()%>"
         });
 
     });

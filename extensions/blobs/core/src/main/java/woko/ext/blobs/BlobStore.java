@@ -8,6 +8,6 @@ public interface BlobStore {
 
     BlobObject save(InputStream inputStream, String fileName, String contentType, long length, BlobObject blob);
 
-    BlobObject getBlob(Long id);
+    BlobObject getBlob(Class<? extends BlobObject> blobClass, Long id);
 
 }

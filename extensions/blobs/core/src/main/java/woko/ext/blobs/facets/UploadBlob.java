@@ -1,7 +1,6 @@
 package woko.ext.blobs.facets;
 
 import net.sourceforge.jfacets.IFacetDescriptorManager;
-import net.sourceforge.jfacets.IInstanceFacet;
 import net.sourceforge.jfacets.annotations.FacetKey;
 import net.sourceforge.stripes.action.*;
 import net.sourceforge.stripes.validation.Validate;
@@ -24,13 +23,13 @@ import java.io.IOException;
 @StrictBinding(
         allow = {"facet.data"}
 )
-@FacetKey(name = "upload", profileId = "developer", targetObjectType = BlobObject.class)
+@FacetKey(name = "upload", profileId = "blobmanager", targetObjectType = BlobObject.class)
 public class UploadBlob<
         OsType extends ObjectStore,
         UmType extends UserManager,
         UnsType extends UsernameResolutionStrategy,
         FdmType extends IFacetDescriptorManager
-        > extends BaseResolutionFacet<OsType,UmType,UnsType,FdmType> implements IInstanceFacet {
+        > extends BaseResolutionFacet<OsType,UmType,UnsType,FdmType> {
 
     public static final String JSP_PATH = "/WEB-INF/woko/ext/blobs/upload.jsp";
 
@@ -69,6 +68,17 @@ public class UploadBlob<
         // retrieve the target object : if passed, this means that we update
         // an existing object. It can be null in case we upload a blob for the first time.
         BlobObject blobToUpdate = (BlobObject)getFacetContext().getTargetObject();
+        if (blobToUpdate==null) {
+            // create the blob using requested class
+            ObjectStore store = getWoko().getObjectStore();
+            String className = getRequest().getParameter("className");
+            Class<?> clazz = store.getMappedClass(className);
+            try {
+                blobToUpdate = (BlobObject)clazz.newInstance();
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
         try {
             BlobObject blobObject = getBlobStoreThrowIfNull().save(data.getInputStream(), data.getFileName(), data.getContentType(), data.getSize(), blobToUpdate);
             return afterSave(abc, blobObject);
@@ -88,11 +98,4 @@ public class UploadBlob<
         return new RedirectResolution("/" + LinkUtil.getUrl(getWoko(), blobObject, View.FACET_NAME));
     }
 
-    /**
-     * Matches only if BlobStore can be found in IoC
-     */
-    @Override
-    public boolean matchesTargetObject(Object targetObject) {
-        return getBlobStoreThrowIfNull()!=null;
-    }
 }

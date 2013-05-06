@@ -99,7 +99,11 @@
                 }
             %>
                 <c:if test="<%=!partial%>">
-                    <tr><td class="wokoButtonRow" colspan="2"><s:submit name="save"/></td></tr>
+                    <tr>
+                        <td class="wokoButtonRow" colspan="2">
+                            <w:includeFacet facetName="renderPropertiesEditButtons" targetObject="<%=owningObject%>"/>
+                        </td>
+                    </tr>
                 </c:if>
             </tbody>
         </table>

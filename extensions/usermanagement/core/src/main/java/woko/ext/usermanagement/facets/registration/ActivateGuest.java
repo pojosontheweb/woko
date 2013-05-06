@@ -83,7 +83,7 @@ public class ActivateGuest<
             // send activation email
            if (mailService != null) {
                MailTemplate template = mailService.getMailTemplate(getTemplateName());
-               Map<String, Object> binding = BindingHelper.newBinding(user, getAppName(), mailService);
+               Map<String, Object> binding = getEmailBinding(user);
                mailService.sendMail(
                        getWoko(),
                        user.getEmail(),
@@ -100,6 +100,10 @@ public class ActivateGuest<
             // TODO better error handling
             throw new RuntimeException("tokens don't match : passed=" + token + ", store=" + regDetails.getSecretToken());
         }
+    }
+
+    protected Map<String, Object> getEmailBinding(User u) {
+        return BindingHelper.newBinding(getWoko(), u, getAppName(), mailService);
     }
 
     @DontValidate

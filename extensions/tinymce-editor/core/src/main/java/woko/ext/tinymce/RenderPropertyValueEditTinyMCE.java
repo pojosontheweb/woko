@@ -1,7 +1,6 @@
 package woko.ext.tinymce;
 
 import net.sourceforge.jfacets.IFacetDescriptorManager;
-import woko.facets.builtin.all.BaseRenderPropertyValueEdit;
 import woko.persistence.ObjectStore;
 import woko.users.UserManager;
 import woko.users.UsernameResolutionStrategy;
@@ -11,7 +10,7 @@ public class RenderPropertyValueEditTinyMCE<
         UmType extends UserManager,
         UnsType extends UsernameResolutionStrategy,
         FdmType extends IFacetDescriptorManager
-        > extends BaseRenderPropertyValueEdit<OsType,UmType,UnsType,FdmType> {
+        > extends BaseRenderPropertyValueEditTinyMCE<OsType,UmType,UnsType,FdmType> {
 
     public static final String FRAGMENT_PATH = "/WEB-INF/woko/jsp/tinymce/renderPropertyValueEditTinyMCE.jsp";
 

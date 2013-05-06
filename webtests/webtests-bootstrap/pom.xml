@@ -20,7 +20,7 @@
     <parent>
         <groupId>com.pojosontheweb</groupId>
         <artifactId>woko-webtests</artifactId>
-        <version>2.2-beta5</version>
+        <version>2.2-beta6</version>
     </parent>
     <artifactId>woko-webtests-bootstrap</artifactId>
     <name>Woko - web tests with the bootstrap skin</name>
@@ -50,17 +50,6 @@
         </dependency>
         <dependency>
             <groupId>com.pojosontheweb</groupId>
-            <artifactId>woko-categories-core</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.pojosontheweb</groupId>
-            <artifactId>woko-categories-web</artifactId>
-            <version>${project.version}</version>
-            <type>war</type>
-        </dependency>
-        <dependency>
-            <groupId>com.pojosontheweb</groupId>
             <artifactId>woko-container-auth</artifactId>
             <version>${project.version}</version>
             <type>war</type>
@@ -83,7 +72,7 @@
         </dependency>
         <dependency>
             <groupId>com.pojosontheweb</groupId>
-            <artifactId>woko-tinymce-web</artifactId>
+            <artifactId>woko-tinymce-web4</artifactId>
             <version>${project.version}</version>
             <type>war</type>
         </dependency>

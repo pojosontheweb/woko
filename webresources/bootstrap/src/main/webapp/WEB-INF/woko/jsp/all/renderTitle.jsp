@@ -8,9 +8,12 @@
 
 <%
     Woko<?,?,?,?> woko = Woko.getWoko(application);
-    RenderTitle renderTitle = (RenderTitle)request.getAttribute(WokoFacets.renderTitle);
+    RenderTitle renderTitle = (RenderTitle)request.getAttribute(WokoFacets.renderTitleEdit);
+    if (renderTitle==null) {
+        renderTitle = (RenderTitle)request.getAttribute(WokoFacets.renderTitle);
+    }
     Object target = renderTitle.getFacetContext().getTargetObject();
     ObjectStore s = woko.getObjectStore();
     String className = s.getClassMapping(s.getObjectClass(target));
 %>
-<h1 class="page-header">${renderTitle.title} <small>(<%=className%>)</small></h1>
+<h1 class="page-header"><%=renderTitle.getTitle()%><small>(<%=className%>)</small></h1>

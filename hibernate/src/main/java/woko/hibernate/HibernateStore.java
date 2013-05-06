@@ -35,6 +35,7 @@ import java.beans.PropertyDescriptor;
 import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.net.URL;
+import java.text.Normalizer;
 import java.util.*;
 
 /**
@@ -279,6 +280,17 @@ public class HibernateStore implements ObjectStore, TransactionalStore, Closeabl
         return obj;
     }
 
+    protected String sanitizeAlternateKey(String altKey) {
+        if (altKey==null) {
+            return null;
+        }
+        String key = (String)altKey;
+        key = Normalizer.normalize(key, Normalizer.Form.NFD);
+        key = key.replaceAll("[^\\p{ASCII}]", "");
+        key = key.replaceAll("\\s", "-");
+        return key;
+    }
+
     protected Object computeAlternateKeyValue(Object obj, Util.PropertyNameAndAnnotation<WokoAlternateKey> propAndAnnot) {
         Util.assertArg("obj", obj);
         Util.assertArg("propAndAnnot", propAndAnnot);
@@ -310,7 +322,7 @@ public class HibernateStore implements ObjectStore, TransactionalStore, Closeabl
 
         // check unicity of the generated key
         // and compute unique one if needed
-        String altKey = converter.convert(obj, propAndAnnot, propName, propValue);
+        String altKey = sanitizeAlternateKey(converter.convert(obj, propAndAnnot, propName, propValue));
         int counter = 1;
         Class<?> mappedClass = obj.getClass();
         do {
@@ -322,7 +334,8 @@ public class HibernateStore implements ObjectStore, TransactionalStore, Closeabl
                     .setCacheable(true)
                     .add(Restrictions.eq(propName, uniqueKey))
                     .list();
-            if (matching.size()==0) {
+            int nbMatching = matching.size();
+            if (nbMatching==0 || (nbMatching==1 && matching.get(0).equals(obj))) {
                 return uniqueKey;
             }
             counter++;

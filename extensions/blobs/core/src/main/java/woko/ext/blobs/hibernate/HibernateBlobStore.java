@@ -4,7 +4,6 @@ import woko.ext.blobs.BlobObject;
 import woko.ext.blobs.BlobStore;
 import woko.hibernate.HibernateStore;
 
-import javax.activation.MimetypesFileTypeMap;
 import java.io.InputStream;
 
 public class HibernateBlobStore implements BlobStore {
@@ -17,14 +16,7 @@ public class HibernateBlobStore implements BlobStore {
 
     @Override
     public BlobObject save(InputStream inputStream, String fileName, String contentType, long length, BlobObject blob) {
-        HibernateBlob o;
-        if (blob==null) {
-            // must create the instance...
-            o = new HibernateBlob();
-        } else {
-            // update the blob object
-            o = (HibernateBlob)blob;
-        }
+        HibernateBlob o = (HibernateBlob)blob;
         o.setBlobData(hbStore.getSession().getLobHelper().createBlob(inputStream, length));
         o.setFileName(fileName);
         o.setContentType(contentType);
@@ -33,8 +25,8 @@ public class HibernateBlobStore implements BlobStore {
     }
 
     @Override
-    public BlobObject getBlob(Long id) {
-        return (HibernateBlob)hbStore.getSession().get(HibernateBlob.class, id);
+    public BlobObject getBlob(Class<? extends BlobObject> blobClass, Long id) {
+        return (BlobObject)hbStore.getSession().get(blobClass, id);
     }
 
 }

@@ -16,7 +16,7 @@ import woko.users.UsernameResolutionStrategy;
 @StrictBinding(
         allow = {"facet.attachment"}
 )
-@FacetKey(name="download", profileId="developer", targetObjectType = BlobObject.class)
+@FacetKey(name="download", profileId="blobmanager", targetObjectType = BlobObject.class)
 public class DownloadBlob<
         OsType extends ObjectStore,
         UmType extends UserManager,
