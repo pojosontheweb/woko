@@ -53,10 +53,6 @@ public class WokoFacets {
     public static final String renderPropertyName = RenderPropertyName.FACET_NAME;
     public static final String renderPropertyValue = RenderPropertyValue.FACET_NAME;
     public static final String renderPropertyValueEdit = RenderPropertyValueEdit.FACET_NAME;
-    public static final String renderPropertyValueEdit_phone = renderPropertyValueEdit + "_phone";
-    public static final String renderPropertyValueEdit_mobilePhone = renderPropertyValueEdit + "_mobilePhone";
-    public static final String renderPropertyValueEdit_mail = renderPropertyValueEdit + "_mail";
-    public static final String renderPropertyValueEdit_email = renderPropertyValueEdit + "_email";
     public static final String renderPropertyValueJson = RenderPropertyValueJson.FACET_NAME;
     public static final String renderTitle = RenderTitle.FACET_NAME;
     public static final String renderTitleEdit = RenderTitle.FACET_NAME + "Edit";
@@ -111,10 +107,6 @@ public class WokoFacets {
         put(search, new IntfAndClass(Search.class, SearchImpl.class));
         put(validate, new IntfAndClass(Validate.class, null));
         put(view, new IntfAndClass(View.class, ViewImpl.class));
-        put(renderPropertyValueEdit_phone, new IntfAndClass(RenderPropertyValueEdit.class,RenderPropertyValueEditPhone.class));
-        put(renderPropertyValueEdit_mobilePhone, new IntfAndClass(RenderPropertyValueEdit.class,RenderPropertyValueEditPhone.class));
-        put(renderPropertyValueEdit_mail,new IntfAndClass(RenderPropertyValueEdit.class,RenderPropertyValueEditMail.class));
-        put(renderPropertyValueEdit_email,new IntfAndClass(RenderPropertyValueEdit.class,RenderPropertyValueEditMail.class));
     }});
 
     public static Class<?> getInterface(String facetName) {

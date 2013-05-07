@@ -16,50 +16,33 @@
 
 package woko.facets.builtin.all;
 
-import net.sourceforge.jfacets.IFacetDescriptorManager;
 import net.sourceforge.jfacets.annotations.FacetKey;
 import net.sourceforge.jfacets.annotations.FacetKeyList;
-import woko.facets.builtin.RenderPropertyValueEdit;
 import woko.facets.builtin.WokoFacets;
-import woko.persistence.ObjectStore;
-import woko.users.UserManager;
-import woko.users.UsernameResolutionStrategy;
 
-import java.util.Date;
+import java.util.HashMap;
 
 /**
  * <code>renderPropertyValueEdit</code> for properties of type <code>Date</code> : input field
  * with date formatting and calendar widget.
  */
-@FacetKeyList(
-        keys = {
-                @FacetKey(name = WokoFacets.renderPropertyValueEdit_phone, profileId = "all"),
-                @FacetKey(name = WokoFacets.renderPropertyValueEdit_mobilePhone, profileId = "all")
-        }
-)
+public class RenderPropertyValueEditPhone extends RenderPropertyValueEditInput {
 
-public class RenderPropertyValueEditPhone<
-        OsType extends ObjectStore,
-        UmType extends UserManager,
-        UnsType extends UsernameResolutionStrategy,
-        FdmType extends IFacetDescriptorManager
-        > extends BaseRenderPropertyValueEdit<OsType,UmType,UnsType,FdmType> implements RenderPropertyValueEdit {
+    private final String regex = "^((\\+\\d{1,3}(-| )?\\(?\\d\\)?(-| )?\\d{1,5})|(\\(?\\d{2,6}\\)?))(-| )?(\\d{3,4})(-| )?(\\d{4})(( x| ext)\\d{1,5}){0,1}$";
+    private final String title = "example: 0404040404";
 
-    public static final String FRAGMENT_PATH = "/WEB-INF/woko/jsp/all/renderPropertyValueEditPhone.jsp";
-    public static String PHONE_REGEX = "^((\\+\\d{1,3}(-| )?\\(?\\d\\)?(-| )?\\d{1,5})|(\\(?\\d{2,6}\\)?))(-| )?(\\d{3,4})(-| )?(\\d{4})(( x| ext)\\d{1,5}){0,1}$";
-    public static String TITLE_EXAMPLE = "example: 0404040404";
+    private final String type="tel";
 
-    public String getPath() {
-        return FRAGMENT_PATH;
+    @Override
+    public String getType() {
+       return this.type;
     }
 
-    public String getPhoneRegex(){
-       return PHONE_REGEX;
+    @Override
+    public HashMap<String, String> getAttributes() {
+        HashMap<String,String> tMap = new HashMap<String, String>();
+        tMap.put("pattern", regex);
+        tMap.put("title", title);
+        return tMap;
     }
-
-    public String getTitleExample(){
-        return TITLE_EXAMPLE;
-    }
-
-
 }

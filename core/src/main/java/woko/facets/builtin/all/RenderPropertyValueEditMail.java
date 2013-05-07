@@ -25,35 +25,26 @@ import woko.persistence.ObjectStore;
 import woko.users.UserManager;
 import woko.users.UsernameResolutionStrategy;
 
+import java.util.HashMap;
+
 /**
  * <code>renderPropertyValueEdit</code> for properties of type <code>Date</code> : input field
  * with date formatting and calendar widget.
  */
-@FacetKeyList(
-        keys = {
-                @FacetKey(name = WokoFacets.renderPropertyValueEdit_mail, profileId = "all"),
-                @FacetKey(name = WokoFacets.renderPropertyValueEdit_email, profileId = "all")
-        }
-)
+public class RenderPropertyValueEditMail extends RenderPropertyValueEditInput{
 
-public class RenderPropertyValueEditMail<
-        OsType extends ObjectStore,
-        UmType extends UserManager,
-        UnsType extends UsernameResolutionStrategy,
-        FdmType extends IFacetDescriptorManager
-        > extends BaseRenderPropertyValueEdit<OsType,UmType,UnsType,FdmType> implements RenderPropertyValueEdit {
+    private final String type="email";
+    private final String title = "example: foo@pojosontheweb.com";
 
-    public static final String FRAGMENT_PATH = "/WEB-INF/woko/jsp/all/renderPropertyValueEditMail.jsp";
-
-    public static String TITLE_EXAMPLE = "example: foo@pojosontheweb.com";
-
-    public String getPath() {
-        return FRAGMENT_PATH;
+    @Override
+    public String getType() {
+       return this.type;
     }
 
-    public String getTitleExample(){
-        return TITLE_EXAMPLE;
+    @Override
+    public HashMap<String, String> getAttributes() {
+       HashMap<String,String> tMap = new HashMap<String, String>();
+        tMap.put("title", title);
+        return tMap;
     }
-
-
 }

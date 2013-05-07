@@ -1,4 +1,10 @@
 package facets
+
+import net.sourceforge.jfacets.annotations.FacetKey
+import net.sourceforge.jfacets.annotations.FacetKeyList
+import woko.facets.builtin.RenderPropertyValueEdit
+import woko.facets.builtin.all.RenderPropertyValueEditPhone
+
 /**
  * Created with IntelliJ IDEA.
  * User: cagarini
@@ -6,14 +12,7 @@ package facets
  * Time: 2:51 PM
  * To change this template use File | Settings | File Templates.
  */
-class RenderPropertyValueMyEntityPhone extends RenderPropertyValueMyEntityPhone{
-    @Override
-    String getType() {
-        return null  //To change body of implemented methods use File | Settings | File Templates.
-    }
+@FacetKey(name="renderPropertyValueEdit_phone",profileId = "all")
+class RenderPropertyValueMyEntityPhone extends RenderPropertyValueEditPhone{
 
-    @Override
-    HashMap<String, String> getAttributes() {
-        return null  //To change body of implemented methods use File | Settings | File Templates.
-    }
 }

@@ -1,8 +1,7 @@
 package facets
 
 import net.sourceforge.jfacets.annotations.FacetKey
-import net.sourceforge.jfacets.annotations.FacetKeyList
-import woko.facets.builtin.RenderPropertyValueEdit
+import woko.facets.builtin.all.RenderPropertyValueEditMail
 import woko.facets.builtin.all.RenderPropertyValueEditPhone
 
 /**
@@ -12,7 +11,7 @@ import woko.facets.builtin.all.RenderPropertyValueEditPhone
  * Time: 2:51 PM
  * To change this template use File | Settings | File Templates.
  */
-@FacetKey(name="renderPropertyValueEdit_phone",profileId = "all")
-class RenderPropertyValueMyEntityMail extends RenderPropertyValueEditPhone{
+@FacetKey(name="renderPropertyValueEdit_mail",profileId = "all")
+class RenderPropertyValueMyEntityMail extends RenderPropertyValueEditMail{
 
 }
