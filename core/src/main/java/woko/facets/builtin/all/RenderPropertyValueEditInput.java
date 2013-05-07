@@ -25,39 +25,27 @@ import woko.persistence.ObjectStore;
 import woko.users.UserManager;
 import woko.users.UsernameResolutionStrategy;
 
+import java.util.HashMap;
+
 /**
  * <code>renderPropertyValueEdit</code> for properties of type <code>Date</code> : input field
  * with date formatting and calendar widget.
  */
-@FacetKeyList(
-        keys = {
-                @FacetKey(name = WokoFacets.renderPropertyValueEdit_phone, profileId = "all"),
-                @FacetKey(name = WokoFacets.renderPropertyValueEdit_mobilePhone, profileId = "all")
-        }
-)
 
-public class RenderPropertyValueEditInput<
+public abstract class RenderPropertyValueEditInput<
         OsType extends ObjectStore,
         UmType extends UserManager,
         UnsType extends UsernameResolutionStrategy,
         FdmType extends IFacetDescriptorManager
         > extends BaseRenderPropertyValueEdit<OsType,UmType,UnsType,FdmType> implements RenderPropertyValueEdit {
 
-    public static final String FRAGMENT_PATH = "/WEB-INF/woko/jsp/all/renderPropertyValueEditPhone.jsp";
-    public static String PHONE_REGEX = "^((\\+\\d{1,3}(-| )?\\(?\\d\\)?(-| )?\\d{1,5})|(\\(?\\d{2,6}\\)?))(-| )?(\\d{3,4})(-| )?(\\d{4})(( x| ext)\\d{1,5}){0,1}$";
-    public static String TITLE_EXAMPLE = "example: 0404040404";
+    public static final String FRAGMENT_PATH = "/WEB-INF/woko/jsp/all/renderPropertyValueEditInput.jsp";
+
+    public abstract String getType();
+    public abstract HashMap<String,String> getAttributes();
 
     public String getPath() {
         return FRAGMENT_PATH;
     }
-
-    public String getPhoneRegex(){
-       return PHONE_REGEX;
-    }
-
-    public String getTitleExample(){
-        return TITLE_EXAMPLE;
-    }
-
 
 }

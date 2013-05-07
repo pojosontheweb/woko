@@ -5,13 +5,14 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%
-    RenderPropertyValueEditInput renderFacets = (RenderPropertyValueEditInput)request.getAttribute(WokoFacets.renderPropertyValueEdit_email);
+    RenderPropertyValueEditInput renderFacets = (RenderPropertyValueEditInput)request.getAttribute(WokoFacets.renderPropertyValueEdit);
 
     String value = (String)renderFacets.getPropertyValue()!=null?(String)renderFacets.getPropertyValue():"";
 
     String fullFieldName = renderFacets.getFieldPrefix() + "." + renderFacets.getPropertyName();
 
     String type = renderFacets.getType();
+
 
     StringBuilder tBuilderAttributes = new StringBuilder();
     HashMap<String,String> map = renderFacets.getAttributes();
@@ -24,4 +25,4 @@
 
 
 %>
-<input type="type" name="<%=fullFieldName%>" value="<%=value%>" <%=tBuilderAttributes.toString()%> />
+<input type="<%=type%>" name="<%=fullFieldName%>" value="<%=value%>" <%=tBuilderAttributes.toString()%> />

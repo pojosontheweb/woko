@@ -16,18 +16,28 @@
 
 package test
 
+import org.compass.annotations.Searchable
+import org.compass.annotations.SearchableId
+import org.compass.annotations.SearchableProperty
+
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
 import javax.persistence.Id
 
+@Searchable
 @Entity
 class MyEntityWithPhoneAndEmail {
 
-  @Id
-  Long id
+    @Id
+    @SearchableId
+    @GeneratedValue
+    Long id
 
-  String prop1
+    String phone
 
-  Integer prop2
+    String mail
+
+    @SearchableProperty
+    String name
 
 }
