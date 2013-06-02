@@ -27,15 +27,17 @@ import net.sourceforge.stripes.validation.Validate
 @UrlBinding("/testValidate.action")
 class TestActionBean implements ActionBean {
 
-  ActionBeanContext context
+    ActionBeanContext context
 
-  @Validate(required=true)
-  String myProp
+    @Validate(required = true)
+    String myProp
 
-  @DefaultHandler
-  Resolution doIt() {
-    return new ForwardResolution("/")
-  }
+    Integer myIntProp
+
+    @DefaultHandler
+    Resolution doIt() {
+        return new ForwardResolution("/")
+    }
 
 
 }

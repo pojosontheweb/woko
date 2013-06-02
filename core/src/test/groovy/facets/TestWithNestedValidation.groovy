@@ -23,12 +23,14 @@ import net.sourceforge.stripes.validation.Validate
 @FacetKey(name = "testMeToo", profileId = "all")
 class TestWithNestedValidation extends BaseForwardResolutionFacet {
 
-  @Validate(required = true)
-  String myProp
+    @Validate(required = true)
+    String myProp
 
-  @Override
-  String getPath() {
-    return "${myProp}"
-  }
+    Integer myIntProp
+
+    @Override
+    String getPath() {
+        return "${myProp}"
+    }
 
 }
