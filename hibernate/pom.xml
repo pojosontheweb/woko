@@ -20,7 +20,7 @@
     <parent>
         <groupId>com.pojosontheweb</groupId>
         <artifactId>woko-parent</artifactId>
-        <version>2.2</version>
+        <version>LATEST-SNAPSHOT</version>
     </parent>
     <artifactId>woko-hibernate</artifactId>
     <packaging>jar</packaging>
@@ -73,7 +73,7 @@
         <dependency>
             <groupId>org.hsqldb</groupId>
             <artifactId>hsqldb</artifactId>
-            <version>2.2.8</version>
+            <version>LATEST-SNAPSHOT.8</version>
             <scope>runtime</scope>
         </dependency>
         <dependency>

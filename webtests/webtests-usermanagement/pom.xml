@@ -20,7 +20,7 @@
     <parent>
         <groupId>com.pojosontheweb</groupId>
         <artifactId>woko-webtests</artifactId>
-        <version>2.2</version>
+        <version>LATEST-SNAPSHOT</version>
     </parent>
     <artifactId>woko-webtests-usermanagement</artifactId>
     <name>Woko - web tests user management</name>
@@ -122,7 +122,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
-                <version>2.2</version>
+                <version>LATEST-SNAPSHOT</version>
                 <configuration>
                     <warSourceExcludes>WEB-INF/lib/servlet-api*.jar</warSourceExcludes>
                 </configuration>
