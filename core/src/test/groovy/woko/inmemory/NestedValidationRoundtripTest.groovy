@@ -33,6 +33,13 @@ class NestedValidationRoundtripTest extends InMemRoundtripTestBase {
             def errors = ab.context.validationErrors
             assert errors.size() == 1
             assert errors.keySet().iterator().next() == "myProp"
+
+            // try to bind invalid integer
+            trip = mockRoundtrip(ctx, "/testValidate.action", ["myProp":"foo", "myIntProp":"abc"])
+            ab = trip.getActionBean(TestActionBean.class)
+            errors = ab.context.validationErrors
+            assert errors.size() == 1
+            assert errors.keySet().iterator().next() == "myIntProp"
         }
     }
 
@@ -52,6 +59,23 @@ class NestedValidationRoundtripTest extends InMemRoundtripTestBase {
                     'Required property is a required field',
                     errors.get(errors.keySet().iterator().next()).get(0).getMessage(Locale.ENGLISH))
         }
+
+        // test invalid integer
+        doWithMockContext("wdevel") { MockServletContext ctx ->
+            WokoActionBean ab = tripAndGetWokoActionBean(ctx, "/testMeToo", ["facet.myProp":"foo", "facet.myIntProp":"abcd"])
+            assert ab.facet.myProp == "foo"
+            // assert validation error has been added
+            def errors = ab.context.validationErrors
+            assertEquals('unexpected number of errors', 1, errors.size())
+            assertEquals('Unexpected key for error', 'facet.myIntProp', errors.keySet().iterator().next())
+            assertEquals('Unexpected message key for error',
+                    'testMeToo.myIntProp',
+                    errors.get(errors.keySet().iterator().next()).get(0).getFieldName())
+            assertEquals('Unexpected error message',
+                    'The value (abcd) entered in field Test Me Too My Int Prop must be a valid number',
+                    errors.get(errors.keySet().iterator().next()).get(0).getMessage(Locale.ENGLISH))
+        }
+
     }
 
     void testObjectValidation() {
