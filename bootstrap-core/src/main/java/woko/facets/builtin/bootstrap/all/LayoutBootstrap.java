@@ -8,6 +8,7 @@ import woko.users.UsernameResolutionStrategy;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -20,9 +21,22 @@ public class LayoutBootstrap<
         UnsType extends UsernameResolutionStrategy,
         FdmType extends IFacetDescriptorManager> extends LayoutAll<OsType,UmType,UnsType,FdmType> {
 
+    private static final String JS_JQUERY = "/js/jQuery-V1.7.1/jquery.min.js";
+    private static final String JS_BOOTSTRAP = "/js/bootstrap-v2.3.0/bootstrap.min.js";
+    private static final String JS_BOOTSTRAP_DATEPICKER = "/js/bootstrap-datepicker/bootstrap-datepicker.min.js";
+    private static final String JS_WOKO_BASE = "/woko/js/woko.base.js";
+    private static final String JS_WOKO_JQUERY = "/woko/js/woko.jquery.js";
+    private static final String JS_WOKO_RPC = "/woko/js/woko.rpc.js";
+
     private static final String CSS_BASE_BOOTSTRAP = "/css/bootstrap-v2.3.0/bootstrap.css";
     private static final String CSS_RESPONSIVE = "/css/responsive.css";
     private static final String CSS_WOKO = "/css/woko.css";
+
+
+    @Override
+    public List<String> getJsIncludes() {
+        return Arrays.asList(JS_JQUERY, JS_BOOTSTRAP, JS_BOOTSTRAP_DATEPICKER, JS_WOKO_BASE, JS_WOKO_JQUERY, JS_WOKO_RPC);
+    }
 
     /**
      * Return the CSS list for bootstrap or themed bootstrap if any.
