@@ -5,6 +5,7 @@ import net.sourceforge.jfacets.IInstanceFacet;
 import net.sourceforge.jfacets.annotations.FacetKey;
 import net.sourceforge.stripes.action.*;
 import net.sourceforge.stripes.validation.EmailTypeConverter;
+import net.sourceforge.stripes.validation.LocalizableError;
 import net.sourceforge.stripes.validation.Validate;
 import woko.ext.usermanagement.core.DatabaseUserManager;
 import woko.ext.usermanagement.core.User;
@@ -106,10 +107,15 @@ public class ResetPassword<
             } else {
                 throw new IllegalStateException("User tries to reset its password but there ain't no MailService ! email = " + email);
             }
+            return new RedirectResolution("/resetPassword")
+                    .addParameter("confirmEmail", "true")
+                    .addParameter("facet.email", email);
+        }else {
+            // Email not found, return on /resetPassword with a global error
+            abc.getValidationErrors().addGlobalError(new LocalizableError("woko.ext.usermanagement.password.error.email.not.found"));
+            return new ForwardResolution("/resetPassword");
         }
-        return new RedirectResolution("/resetPassword")
-                .addParameter("confirmEmail", "true")
-                .addParameter("facet.email", email);
+
     }
 
     protected Map<String, Object> getEmailBinding(User u) {
