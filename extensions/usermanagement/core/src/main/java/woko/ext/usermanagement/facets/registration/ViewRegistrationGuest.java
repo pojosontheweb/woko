@@ -32,7 +32,6 @@ public class ViewRegistrationGuest extends ViewImpl implements IInstanceFacet {
         if (getWoko().getUsername(getRequest())!=null) {
             return false;
         }
-
         RegistrationDetails<?> regDetails = (RegistrationDetails<?>)targetObject;
         String sessionToken = (String)getRequest().getSession().getAttribute(RegisterGuest.SESS_ATTR_WOKO_REGISTERED);
         return sessionToken!=null && sessionToken.equals(regDetails.getSecretToken());
