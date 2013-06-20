@@ -68,6 +68,15 @@ public class ActivateGuest<
         return request.getLocale();
     }
 
+    public String getUsername() {
+        RegistrationDetails<User> regDetails = (RegistrationDetails<User>)getFacetContext().getTargetObject();
+        User u = regDetails.getUser();
+        if (u!=null) {
+            return u.getUsername();
+        }
+        return regDetails.getActivatedUsername();
+    }
+
     @Override
     public Resolution getResolution(ActionBeanContext abc) {
         @SuppressWarnings("unchecked")

@@ -25,7 +25,7 @@ public class HbRegistrationDetails<U extends HbUser> implements RegistrationDeta
 
     private Long activatedUserId;
 
-    private String activatedUserName;
+    private String activatedUsername;
 
     private String activatedEmail;
 
@@ -34,7 +34,7 @@ public class HbRegistrationDetails<U extends HbUser> implements RegistrationDeta
         if (user!=null) {
             activatedOn = new Date();
             activatedUserId = user.getId();
-            activatedUserName = user.getUsername();
+            activatedUsername = user.getUsername();
             activatedEmail = user.getEmail();
             user = null;
             return true;
@@ -69,40 +69,27 @@ public class HbRegistrationDetails<U extends HbUser> implements RegistrationDeta
         this.user = user;
     }
 
+    @Override
     public Date getCreatedOn() {
         return createdOn;
     }
 
+    @Override
     public Date getActivatedOn() {
         return activatedOn;
     }
 
-    /**
-     * Set when the registration is activated, no setter.
-     * Allows to keep track of the User info at registration
-     * time without holding a reference to it.
-     * @see {@link woko.ext.usermanagement.hibernate.HbRegistrationDetails#activate()}
-     */
+    @Override
     public Long getActivatedUserId() {
         return activatedUserId;
     }
 
-    /**
-     * Set when the registration is activated, no setter.
-     * Allows to keep track of the User info at registration
-     * time without holding a reference to it.
-     * @see {@link woko.ext.usermanagement.hibernate.HbRegistrationDetails#activate()}
-     */
-    public String getActivatedUserName() {
-        return activatedUserName;
+    @Override
+    public String getActivatedUsername() {
+        return activatedUsername;
     }
 
-    /**
-     * Set when the registration is activated, no setter.
-     * Allows to keep track of the User info at registration
-     * time without holding a reference to it.
-     * @see {@link woko.ext.usermanagement.hibernate.HbRegistrationDetails#activate()}
-     */
+    @Override
     public String getActivatedEmail() {
         return activatedEmail;
     }
@@ -116,7 +103,7 @@ public class HbRegistrationDetails<U extends HbUser> implements RegistrationDeta
                 ", createdOn=" + createdOn +
                 ", activatedOn=" + activatedOn +
                 ", activatedUserId=" + activatedUserId +
-                ", activatedUserName='" + activatedUserName + '\'' +
+                ", activatedUsername='" + activatedUsername + '\'' +
                 ", activatedEmail='" + activatedEmail + '\'' +
                 '}';
     }
