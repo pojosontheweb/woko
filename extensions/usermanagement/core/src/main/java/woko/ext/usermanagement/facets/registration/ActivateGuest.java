@@ -77,6 +77,11 @@ public class ActivateGuest<
             User user = regDetails.getUser();
             user.setAccountStatus(AccountStatus.Active);
             getWoko().getUserManager().save(user);
+            if (regDetails.activate()) {
+                store.save(regDetails);
+            } else {
+                logger.error("Could not activate regDetails " + regDetails);
+            }
 
             logger.info("Activated account for user " + user.getUsername());
 
