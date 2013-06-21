@@ -105,7 +105,7 @@ public class ResetPassword<
                         binding
                 );
             } else {
-                throw new IllegalStateException("User tries to reset its password but there ain't no MailService ! email = " + email);
+                throw new IllegalStateException("User " + u + " tries to reset its password for email " + email + " but there ain't no MailService ! email = " + email);
             }
             return new RedirectResolution("/resetPassword")
                     .addParameter("confirmEmail", "true")
@@ -133,10 +133,10 @@ public class ResetPassword<
         }
         String sessionToken = (String)session.getAttribute("wokoResetPasswordToken");
         if (sessionToken==null) {
-            throw new IllegalStateException("session token not found ! cannot reset password");
+            throw new IllegalStateException("session token not found ! cannot reset password for " + email + ", token=" + token);
         }
         if (!sessionToken.equals(token)) {
-            throw new IllegalArgumentException("invalid request token (not equals to session token)");
+            throw new IllegalArgumentException("invalid request token " + token + " (not equals to session token " + sessionToken + ")");
         }
 
         DatabaseUserManager<?,User> um = getWoko().getUserManager();
