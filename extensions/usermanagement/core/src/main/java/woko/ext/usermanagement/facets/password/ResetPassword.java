@@ -56,7 +56,6 @@ public class ResetPassword<
         this.mailService = mailService;
     }
 
-
     public String getEmail() {
         return email;
     }
@@ -71,6 +70,10 @@ public class ResetPassword<
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public boolean showEmailValidity() {
+        return true;
     }
 
     @Override
@@ -111,11 +114,16 @@ public class ResetPassword<
                     .addParameter("confirmEmail", "true")
                     .addParameter("facet.email", email);
         }else {
-            // Email not found, return on /resetPassword with a global error
-            abc.getValidationErrors().addGlobalError(new LocalizableError("woko.ext.usermanagement.password.error.email.not.found"));
-            return new ForwardResolution("/resetPassword");
+            if (showEmailValidity()){
+                // Email not found and invalid email check process wanted, return on /resetPassword with a global error only
+                abc.getValidationErrors().addGlobalError(new LocalizableError("woko.ext.usermanagement.password.error.email.not.found"));
+                return new ForwardResolution("/resetPassword");
+            }else{
+                return new RedirectResolution("/resetPassword")
+                        .addParameter("confirmEmail", "true")
+                        .addParameter("facet.email", email);
+            }
         }
-
     }
 
     protected Map<String, Object> getEmailBinding(User u) {
