@@ -79,6 +79,7 @@
         <module>bootstrap-core</module>
         <module>extensions</module>
         <module>webtests</module>
+        <module>purecss-core</module>
     </modules>
     <properties>
         <stripes.version>1.5.7</stripes.version>
