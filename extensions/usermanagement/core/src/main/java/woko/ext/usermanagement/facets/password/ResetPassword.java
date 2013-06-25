@@ -5,6 +5,7 @@ import net.sourceforge.jfacets.IInstanceFacet;
 import net.sourceforge.jfacets.annotations.FacetKey;
 import net.sourceforge.stripes.action.*;
 import net.sourceforge.stripes.validation.EmailTypeConverter;
+import net.sourceforge.stripes.validation.LocalizableError;
 import net.sourceforge.stripes.validation.Validate;
 import woko.ext.usermanagement.core.DatabaseUserManager;
 import woko.ext.usermanagement.core.User;
@@ -55,7 +56,6 @@ public class ResetPassword<
         this.mailService = mailService;
     }
 
-
     public String getEmail() {
         return email;
     }
@@ -70,6 +70,10 @@ public class ResetPassword<
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public boolean showEmailValidity() {
+        return true;
     }
 
     @Override
@@ -104,12 +108,22 @@ public class ResetPassword<
                         binding
                 );
             } else {
-                throw new IllegalStateException("User tries to reset its password but there ain't no MailService ! email = " + email);
+                throw new IllegalStateException("User " + u + " tries to reset its password for email " + email + " but there ain't no MailService ! email = " + email);
+            }
+            return new RedirectResolution("/resetPassword")
+                    .addParameter("confirmEmail", "true")
+                    .addParameter("facet.email", email);
+        }else {
+            if (showEmailValidity()){
+                // Email not found and invalid email check process wanted, return on /resetPassword with a global error only
+                abc.getValidationErrors().addGlobalError(new LocalizableError("woko.ext.usermanagement.password.error.email.not.found"));
+                return new ForwardResolution("/resetPassword");
+            }else{
+                return new RedirectResolution("/resetPassword")
+                        .addParameter("confirmEmail", "true")
+                        .addParameter("facet.email", email);
             }
         }
-        return new RedirectResolution("/resetPassword")
-                .addParameter("confirmEmail", "true")
-                .addParameter("facet.email", email);
     }
 
     protected Map<String, Object> getEmailBinding(User u) {
@@ -127,10 +141,10 @@ public class ResetPassword<
         }
         String sessionToken = (String)session.getAttribute("wokoResetPasswordToken");
         if (sessionToken==null) {
-            throw new IllegalStateException("session token not found ! cannot reset password");
+            throw new IllegalStateException("session token not found ! cannot reset password for " + email + ", token=" + token);
         }
         if (!sessionToken.equals(token)) {
-            throw new IllegalArgumentException("invalid request token (not equals to session token)");
+            throw new IllegalArgumentException("invalid request token " + token + " (not equals to session token " + sessionToken + ")");
         }
 
         DatabaseUserManager<?,User> um = getWoko().getUserManager();
