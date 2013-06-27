@@ -11,4 +11,16 @@ public interface RegistrationAwareUserManager<U extends User> extends UserManage
     AccountStatus getRegisteredAccountStatus();
 
     List<String> getRegisteredRoles();
+
+    U getUserByEmail(String email);
+
+    ResetPasswordDetails createPasswordResetDetails(U u);
+
+    String encodePassword(String password);
+
+    void save(U user);
+
+    ResetPasswordDetails getPasswordResetDetails(String key);
+
+    void passwordHasBeenReset(String email);
 }

@@ -6,13 +6,15 @@
 <s:layout-render name="${layout.layoutPath}" layout="${layout}" pageTitle="${pageTitle}">
     <s:layout-component name="body">
 
-        <h1 class="page-header">
-            <fmt:message bundle="${wokoBundle}" key="woko.ext.usermanagement.reset.password.confirm.h1.text"/>
-        </h1>
+        <div class="page-header">
+            <h1>
+                <fmt:message bundle="${wokoBundle}" key="woko.ext.usermanagement.reset.password.confirm.h1.text"/>
+            </h1>
+        </div>
 
-        <fmt:message bundle="${wokoBundle}" key="woko.ext.usermanagement.reset.password.confirm.para.text"/>
-
-        <p><b>${resetPasswordConfirm.newPassword}</b></p>
+        <fmt:message bundle="${wokoBundle}" key="woko.ext.usermanagement.reset.password.confirm.para.text">
+            <fmt:param value="${resetPasswordConfirm.newPassword}"/>
+        </fmt:message>
 
     </s:layout-component>
 </s:layout-render>

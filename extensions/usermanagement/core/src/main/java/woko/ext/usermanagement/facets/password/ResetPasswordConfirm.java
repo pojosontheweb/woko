@@ -1,17 +1,28 @@
 package woko.ext.usermanagement.facets.password;
 
+import net.sourceforge.jfacets.IFacetDescriptorManager;
 import net.sourceforge.jfacets.IInstanceFacet;
 import net.sourceforge.jfacets.annotations.FacetKey;
 import net.sourceforge.stripes.action.StrictBinding;
+import woko.ext.usermanagement.core.RegistrationAwareUserManager;
+import woko.ext.usermanagement.core.User;
 import woko.facets.BaseForwardResolutionFacet;
+import woko.persistence.ObjectStore;
+import woko.users.UsernameResolutionStrategy;
 
 import javax.servlet.http.HttpSession;
 
 @StrictBinding(
-        defaultPolicy = StrictBinding.Policy.DENY
+        defaultPolicy = StrictBinding.Policy.DENY,
+        allow = {"facet.newPassword"}
 )
 @FacetKey(name="resetPasswordConfirm", profileId="all")
-public class ResetPasswordConfirm extends BaseForwardResolutionFacet implements IInstanceFacet {
+public class ResetPasswordConfirm<
+        OsType extends ObjectStore,
+        UmType extends RegistrationAwareUserManager<User>,
+        UnsType extends UsernameResolutionStrategy,
+        FdmType extends IFacetDescriptorManager
+        > extends BaseForwardResolutionFacet<OsType,UmType,UnsType,FdmType> implements IInstanceFacet {
 
     public static final String FACET_NAME = "resetPasswordConfirm";
 
@@ -21,12 +32,12 @@ public class ResetPasswordConfirm extends BaseForwardResolutionFacet implements 
         return newPassword;
     }
 
+    public void setNewPassword(String newPassword) {
+        this.newPassword = newPassword;
+    }
+
     @Override
     public String getPath() {
-        HttpSession session = getRequest().getSession();
-        session.removeAttribute("wokoResetPasswordToken");
-        newPassword = (String)session.getAttribute("wokoNewPassword");
-        session.removeAttribute(newPassword);
         return "/WEB-INF/woko/ext/usermanagement/resetPasswordConfirm.jsp";
     }
 
