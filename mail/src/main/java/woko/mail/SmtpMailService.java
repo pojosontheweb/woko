@@ -6,6 +6,7 @@ import woko.util.WLogger;
 import javax.mail.*;
 import javax.mail.event.TransportEvent;
 import javax.mail.event.TransportListener;
+import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.io.InputStream;
@@ -41,6 +42,36 @@ public class SmtpMailService extends MailServiceBase {
         return this;
     }
 
+    /**
+     * Create and return the message. Can be overriden to create the message differently
+     * or add to the one returned by this implementation.
+     * @param woko
+     * @param from
+     * @param to
+     * @param locale
+     * @param template
+     * @param binding
+     * @param session
+     * @return the message
+     * @throws MessagingException
+     */
+    protected MimeMessage createMimeMessage(Woko woko,
+                                            String from,
+                                            String to,
+                                            Locale locale,
+                                            MailTemplate template,
+                                            Map<String, Object> binding,
+                                            Session session) throws MessagingException {
+        MimeMessage message = new MimeMessage(session);
+        message.setFrom(new InternetAddress(from));
+        message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
+        message.setSubject(template.processSubject(woko, locale, binding), encoding);
+        message.setContent(template.processBody(woko, locale, binding),
+                "text/html; charset=" + encoding);
+        message.setSentDate(new Date());
+        return message;
+    }
+
     @Override
     public void sendMail(Woko woko, final String to, final Locale locale, final MailTemplate template, final Map<String, Object> binding) {
 
@@ -55,13 +86,7 @@ public class SmtpMailService extends MailServiceBase {
             Session session = smtpAuth ?
                 Session.getDefaultInstance(props, createAuthenticator(props)) :
                 Session.getDefaultInstance(props);
-            MimeMessage message = new MimeMessage(session);
-            message.setFrom(new InternetAddress(from));
-            message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
-            message.setSubject(template.processSubject(woko, locale, binding), encoding);
-            message.setContent(template.processBody(woko, locale, binding),
-                    "text/html; charset=" + encoding);
-            message.setSentDate(new Date());
+            MimeMessage message = createMimeMessage(woko, from, to, locale, template, binding, session);
 
             Transport t = session.getTransport();
             // add our logging listener
