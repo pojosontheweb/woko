@@ -87,7 +87,7 @@ public class WokoAutoExceptionHandler implements AutoExceptionHandler {
      * @return a <code>Resolution</code> for the exception
      */
     public Resolution handleFacetNotFoundException(FacetNotFoundException exc, HttpServletRequest request, HttpServletResponse response) {
-        return handle(exc, request, response, "/WEB-INF/woko/jsp/exception-404.jsp", HttpServletResponse.SC_NOT_FOUND, "requested resource not found");
+        return handle(exc, request, response, "/WEB-INF/woko/jsp/exception-404.jsp", HttpServletResponse.SC_NOT_FOUND, "requested resource not found", false);
     }
 
     /**
@@ -98,12 +98,23 @@ public class WokoAutoExceptionHandler implements AutoExceptionHandler {
      * @return a <code>Resolution</code> for the exception
      */
     public Resolution handleGenericException(Exception e, HttpServletRequest request, HttpServletResponse response) {
-        return handle(e, request, response, "/WEB-INF/woko/jsp/exception-500.jsp", HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
+        return handle(e, request, response, "/WEB-INF/woko/jsp/exception-500.jsp", HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage(), true);
     }
 
-    protected Resolution handle(Exception e, HttpServletRequest request, HttpServletResponse response, String pathToJsp, int errorCode, String rpcMessage) {
+    protected Resolution handle(Exception e,
+                                HttpServletRequest request,
+                                HttpServletResponse response,
+                                String pathToJsp,
+                                int errorCode,
+                                String rpcMessage,
+                                boolean showFullStack) {
         String ticket = genTicket(request);
-        logger.error("Exception caught by the WokoAutoExceptionHandler - ticket : " + ticket, e);
+        if (showFullStack) {
+            logger.error("Exception caught by the WokoAutoExceptionHandler - ticket : " + ticket, e);
+        } else {
+            logger.error("Exception caught by the WokoAutoExceptionHandler - ticket : " + ticket +
+                        ", message=" + e.getMessage());
+        }
         response.setHeader(REQ_ATTR_TICKET, ticket);
         response.setStatus(errorCode);
         if (RpcInterceptor.isRpcRequest(request)) {
