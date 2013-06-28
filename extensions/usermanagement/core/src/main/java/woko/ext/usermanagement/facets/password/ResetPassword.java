@@ -175,12 +175,6 @@ public class ResetPassword<
         if (u!=null) {
             // Return to a FORM which will allow user to choose a new password
             return new ForwardResolution("/WEB-INF/woko/ext/usermanagement/setNewPassword.jsp");
-//            String newPassword = generatePassword();
-//            session.setAttribute("wokoNewPassword", newPassword);
-//            u.setPassword(um.encodePassword(newPassword));
-//            um.save(u);
-//            logger.warn("password reset for email " + email);
-//            return new RedirectResolution("/resetPasswordConfirm");
         } else {
             throw new IllegalArgumentException("No user found for email " + email);
         }
@@ -218,10 +212,6 @@ public class ResetPassword<
 
     }
 
-    protected String generatePassword() {
-        return UUID.randomUUID().toString();
-    }
-
     protected String getAppName() {
         Layout layout = getWoko().getFacet(Layout.FACET_NAME, getRequest(), null, Object.class, true);
         return layout.getAppTitle();
@@ -230,10 +220,6 @@ public class ResetPassword<
     public String getJspPath() {
         return "/WEB-INF/woko/ext/usermanagement/resetPassword.jsp";
     }
-    protected String getTemplateName() {
-        return MailTemplateResetPassword.TEMPLATE_NAME;
-    }
-
 
     protected Locale getEmailLocale(HttpServletRequest request) {
         return request.getLocale();
