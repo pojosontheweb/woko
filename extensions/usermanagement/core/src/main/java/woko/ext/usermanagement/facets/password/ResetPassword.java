@@ -7,7 +7,8 @@ import net.sourceforge.stripes.action.*;
 import net.sourceforge.stripes.validation.EmailTypeConverter;
 import net.sourceforge.stripes.validation.LocalizableError;
 import net.sourceforge.stripes.validation.Validate;
-import woko.ext.usermanagement.core.DatabaseUserManager;
+import woko.ext.usermanagement.core.ResetPasswordDetails;
+import woko.ext.usermanagement.core.RegistrationAwareUserManager;
 import woko.ext.usermanagement.core.User;
 import woko.ext.usermanagement.mail.BindingHelper;
 import woko.ext.usermanagement.mail.MailTemplateResetPassword;
@@ -23,7 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.Locale;
 import java.util.Map;
-import java.util.UUID;
+import java.util.Random;
 
 @StrictBinding(
         defaultPolicy = StrictBinding.Policy.DENY,
@@ -37,7 +38,7 @@ import java.util.UUID;
 @FacetKey(name="resetPassword", profileId = "all")
 public class ResetPassword<
         OsType extends ObjectStore,
-        UmType extends DatabaseUserManager<?,User>,
+        UmType extends RegistrationAwareUserManager<User>,
         UnsType extends UsernameResolutionStrategy,
         FdmType extends IFacetDescriptorManager
         > extends BaseResolutionFacet<OsType,UmType,UnsType,FdmType> implements IInstanceFacet {
@@ -111,16 +112,17 @@ public class ResetPassword<
 
     public Resolution emailToken(ActionBeanContext abc) {
         // load user by email
-        DatabaseUserManager<?,User> um = getWoko().getUserManager();
+        RegistrationAwareUserManager<User> um = getWoko().getUserManager();
         User u = um.getUserByEmail(email);
         if (u!=null) {
             if (mailService!=null) {
-                String token = UUID.randomUUID().toString();
-                getRequest().getSession().setAttribute("wokoResetPasswordToken", token);
+                // #208
+                ResetPasswordDetails resetDetails = um.createPasswordResetDetails(u);
                 Map<String,Object> binding = getEmailBinding(u);
                 binding.put(
                         MailTemplateResetPassword.RESET_PASSWORD_URL,
-                        mailService.getAppUrl() + "/resetPassword?doReset=true&facet.email=" + email + "&facet.token=" + token
+                        mailService.getAppUrl() + "/resetPassword?doReset=true&facet.email=" + email +
+                                "&facet.token=" + resetDetails.getKey()
                 );
                 mailService.sendMail(
                         getWoko(),
@@ -130,7 +132,8 @@ public class ResetPassword<
                         binding
                 );
             } else {
-                throw new IllegalStateException("User " + u + " tries to reset its password for email " + email + " but there ain't no MailService ! email = " + email);
+                throw new IllegalStateException("User " + u + " tries to reset its password for email " + email +
+                        " but there ain't no MailService ! email = " + email);
             }
             return new RedirectResolution("/resetPassword")
                     .addParameter("confirmEmail", "true")
@@ -157,21 +160,31 @@ public class ResetPassword<
     }
 
     public Resolution doReset(ActionBeanContext abc) {
-        HttpSession session = getRequest().getSession();
         if (token==null) {
             throw new IllegalArgumentException("token must be passed");
         }
-        String sessionToken = (String)session.getAttribute("wokoResetPasswordToken");
-        if (sessionToken==null) {
-            throw new IllegalStateException("session token not found ! cannot reset password for " + email + ", token=" + token);
+        if (email==null) {
+            throw new IllegalArgumentException("email must be passed");
         }
-        if (!sessionToken.equals(token)) {
-            throw new IllegalArgumentException("invalid request token " + token + " (not equals to session token " + sessionToken + ")");
+        RegistrationAwareUserManager<User> um = getWoko().getUserManager();
+        ResetPasswordDetails passwordResetDetails = um.getPasswordResetDetails(token);
+        if (passwordResetDetails==null) {
+            throw new IllegalArgumentException("Could not find email details for " + email +
+                ", token=" + token);
+        }
+        if (!passwordResetDetails.getEmail().equals(email)) {
+            throw new IllegalStateException("Email don't match password reset details ! " +
+                email + "!=" +passwordResetDetails.getEmail() + ", token=" + token);
+        }
+        // compute time difference in days
+        long diff = System.currentTimeMillis() - passwordResetDetails.getCreationDate().getTime();
+        long days = diff / (24 * 3600 * 1000); // TODO might not work with TimeZones...
+        if (days>30) {
+            throw new IllegalStateException("More than 30 days passed, unable to reset password " +
+                " for " + email + ", token=" + token);
         }
 
-        DatabaseUserManager<?,User> um = getWoko().getUserManager();
         User u = um.getUserByEmail(email);
-
         if (u!=null) {
             // Return to a FORM which will allow user to choose a new password
             return new ForwardResolution("/WEB-INF/woko/ext/usermanagement/setNewPassword.jsp");
@@ -198,7 +211,7 @@ public class ResetPassword<
             return new ForwardResolution("/WEB-INF/woko/ext/usermanagement/setNewPassword.jsp");
         }else {
             // Everything is ok, set password on login user
-            DatabaseUserManager<?,User> um = getWoko().getUserManager();
+            RegistrationAwareUserManager<User> um = getWoko().getUserManager();
             User u = um.getUserByEmail(email);
             if (u!=null) {
                 u.setPassword(um.encodePassword(password1));
@@ -209,7 +222,6 @@ public class ResetPassword<
 
             return new RedirectResolution("/login?username="+u.getUsername()+"&password="+password1+"&login");
         }
-
     }
 
     protected String getAppName() {
@@ -224,5 +236,4 @@ public class ResetPassword<
     protected Locale getEmailLocale(HttpServletRequest request) {
         return request.getLocale();
     }
-
 }

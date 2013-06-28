@@ -4,3 +4,4 @@ html,body{height:100%;}
 #wrapper>.main-content{padding-top:60px;}
 .wokoLinks{position:relative;top:-70px;}
 .wokoProperties .propertyName{text-align:right;}.wokoProperties .propertyName label{font-weight:bold;}
+.wokoNewPassword{background-color:#EFEFEF;padding:4px;font-weight:bold;}
