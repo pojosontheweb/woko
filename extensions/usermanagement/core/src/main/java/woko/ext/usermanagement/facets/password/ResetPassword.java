@@ -29,7 +29,9 @@ import java.util.UUID;
         defaultPolicy = StrictBinding.Policy.DENY,
         allow = {
                 "facet.email",
-                "facet.token"
+                "facet.token",
+                "facet.password1",
+                "facet.password2"
         }
 )
 @FacetKey(name="resetPassword", profileId = "all")
@@ -48,6 +50,10 @@ public class ResetPassword<
     private String email;
 
     private String token;
+
+    private String password1;
+
+    private String password2;
 
     private MailService mailService;
 
@@ -70,6 +76,22 @@ public class ResetPassword<
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public String getPassword1() {
+        return password1;
+    }
+
+    public void setPassword1(String password1) {
+        this.password1 = password1;
+    }
+
+    public String getPassword2() {
+        return password2;
+    }
+
+    public void setPassword2(String password2) {
+        this.password2 = password2;
     }
 
     public boolean showEmailValidity() {
@@ -151,15 +173,49 @@ public class ResetPassword<
         User u = um.getUserByEmail(email);
 
         if (u!=null) {
-            String newPassword = generatePassword();
-            session.setAttribute("wokoNewPassword", newPassword);
-            u.setPassword(um.encodePassword(newPassword));
-            um.save(u);
-            logger.warn("password reset for email " + email);
-            return new RedirectResolution("/resetPasswordConfirm");
+            // Return to a FORM which will allow user to choose a new password
+            return new ForwardResolution("/WEB-INF/woko/ext/usermanagement/setNewPassword.jsp");
+//            String newPassword = generatePassword();
+//            session.setAttribute("wokoNewPassword", newPassword);
+//            u.setPassword(um.encodePassword(newPassword));
+//            um.save(u);
+//            logger.warn("password reset for email " + email);
+//            return new RedirectResolution("/resetPasswordConfirm");
         } else {
             throw new IllegalArgumentException("No user found for email " + email);
         }
+    }
+
+    public Resolution doSetPassword(ActionBeanContext abc) {
+        boolean hasError = false;
+        if (password1 == null){
+            abc.getValidationErrors().add("facet.password1", new LocalizableError("resetPassword.password1.null"));
+            hasError = true;
+        }
+        if (password2 == null){
+            abc.getValidationErrors().add("facet.password2", new LocalizableError("resetPassword.password2.null"));
+            hasError = true;
+        }
+        if ( (!hasError) && (!password1.equals(password2)) ){
+            abc.getValidationErrors().addGlobalError(new LocalizableError("resetPassword.passwords.dont.match"));
+            hasError = true;
+        }
+        if (hasError){
+            return new ForwardResolution("/WEB-INF/woko/ext/usermanagement/setNewPassword.jsp");
+        }else {
+            // Everything is ok, set password on login user
+            DatabaseUserManager<?,User> um = getWoko().getUserManager();
+            User u = um.getUserByEmail(email);
+            if (u!=null) {
+                u.setPassword(um.encodePassword(password1));
+                um.save(u);
+            } else {
+                throw new IllegalArgumentException("No user found for email " + email);
+            }
+
+            return new RedirectResolution("/login?username="+u.getUsername()+"&password="+password1+"&login");
+        }
+
     }
 
     protected String generatePassword() {
