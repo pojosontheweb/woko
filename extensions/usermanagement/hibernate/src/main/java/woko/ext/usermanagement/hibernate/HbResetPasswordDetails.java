@@ -2,6 +2,7 @@ package woko.ext.usermanagement.hibernate;
 
 import woko.ext.usermanagement.core.ResetPasswordDetails;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
@@ -11,6 +12,7 @@ import java.util.Date;
 public class HbResetPasswordDetails implements ResetPasswordDetails {
 
     @Id
+    @Column(name = "registration_key")
     private String key;
 
     @NotNull
