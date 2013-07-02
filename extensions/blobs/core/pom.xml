@@ -20,7 +20,7 @@
     <parent>
         <groupId>com.pojosontheweb</groupId>
         <artifactId>woko-blobs</artifactId>
-        <version>2.3</version>
+        <version>2.3.1</version>
     </parent>
     <artifactId>woko-blobs-core</artifactId>
     <name>Woko - Blobs core</name>
