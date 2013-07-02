@@ -27,10 +27,7 @@ import woko.persistence.ListResultIterator;
 import woko.persistence.ResultIterator;
 import woko.persistence.TransactionCallbackWithResult;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class HibernateUserManager<U extends HbUser>
         extends DatabaseUserManager<HibernateUserManager<U>,U>
@@ -191,4 +188,29 @@ public class HibernateUserManager<U extends HbUser>
         return this;
     }
 
+    @Override
+    public ResetPasswordDetails createPasswordResetDetails(U u) {
+        HbResetPasswordDetails d = new HbResetPasswordDetails();
+        String key = UUID.randomUUID().toString();
+        d.setKey(key);
+        d.setEmail(u.getEmail());
+        d.setCreationDate(new Date());
+        hibernateStore.save(d);
+        return d;
+    }
+
+    @Override
+    public ResetPasswordDetails getPasswordResetDetails(String key) {
+        HibernateStore s = getHibernateStore();
+        return (HbResetPasswordDetails)s.load(s.getClassMapping(HbResetPasswordDetails.class), key);
+    }
+
+    @Override
+    public void passwordHasBeenReset(String key) {
+        HibernateStore s = getHibernateStore();
+        HbResetPasswordDetails details =
+                (HbResetPasswordDetails)s.load(s.getClassMapping(HbResetPasswordDetails.class), key);
+        details.setResetDate(new Date());
+        s.save(details);
+    }
 }
