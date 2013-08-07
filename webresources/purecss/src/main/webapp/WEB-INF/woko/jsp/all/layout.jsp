@@ -67,7 +67,7 @@
         <script type="text/javascript" src="${cp}/js/jQuery-V1.9.1/jquery.min.js?${cacheTokenParams}"></script>
         <script type="text/javascript" src="${cp}/js/jQuery-ui-1.10.3/jquery-ui.js?${cacheTokenParams}"></script>
         <script type="text/javascript" src="${cp}/js/jQuery-ui-1.10.3/jquery.ui.datepicker-fr.js?${cacheTokenParams}"></script>
-
+        <script type="text/javascript" src="${cp}/js/bootstrap-alert.js?${cacheTokenParams}"></script>
         <script type="text/javascript" src="${cp}/woko/js/woko.base.js?${cacheTokenParams}"></script>
         <script type="text/javascript" src="${cp}/woko/js/woko.jquery.js?${cacheTokenParams}"></script>
         <script type="text/javascript" src="${cp}/woko/js/woko.rpc.js?${cacheTokenParams}"></script>

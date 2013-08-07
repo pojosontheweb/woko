@@ -17,3 +17,4 @@
     String className = s.getClassMapping(s.getObjectClass(target));
 %>
 <h1 class="pure-menu-heading"><%=renderTitle.getTitle()%><small>(<%=className%>)</small></h1>
+<hr/>

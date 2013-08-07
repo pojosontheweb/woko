@@ -1,7 +1,7 @@
 #wrapper {
     min-height: 100%;
     height: auto !important;
-    width:auto;
+    width: auto;
     margin: 0 auto -4em;
     padding: 0;
 }
@@ -34,8 +34,8 @@ body {
     font-family: sans-serif;
 }
 
-html,body{
-    width:100%;
+html, body {
+    width: 100%;
     height: 100%;
     margin: 0;
     padding: 0;
@@ -57,17 +57,16 @@ body .primary-button {
     letter-spacing: normal;
 }
 
-.content p
-{
+.content p {
     line-height: 1.6em;
     font-size: 1.125em;
     letter-spacing: normal;
 }
 
-.splash p
-{
+.splash p {
     color: #999;
 }
+
 .content .content-ribbon {
     margin: 3em;
     border-bottom: 1px solid #eee;
@@ -79,6 +78,7 @@ body .primary-button {
     padding: 2em;
     color: #999;
 }
+
 .ribbon h2 {
     display: inline;
     font-weight: normal;
@@ -93,8 +93,7 @@ body .primary-button {
     height: 100%;
 }
 
-.wokoproperties label
-{
+.wokoproperties label {
     text-align: right;
     margin: .5em 0 .2em;
     color: #999;
@@ -102,81 +101,171 @@ body .primary-button {
 }
 
 h2, h3 {
-    font-family: "proxima-nova",sans-serif;
+    font-family: "proxima-nova", sans-serif;
 }
 
-h1
-{
-    font-family: "omnes-pro",sans-serif;
+h1 {
+    font-family: "omnes-pro", sans-serif;
 }
 
-.menu-header
-{
+.menu-header {
     color: #1f8dd6;
-    font-family: "omnes-pro",sans-serif;
+    font-family: "omnes-pro", sans-serif;
     font-weight: 600;
 }
 
-.content
-{
+.content {
     padding: 5%;
 }
 
-.woko.pure-menu .woko.pure-menu-heading
-{
+.woko.pure-menu .woko.pure-menu-heading {
     color: white;
 }
 
-
-.woko.pure-menu.pure-menu-open
-{
+.woko.pure-menu.pure-menu-open {
     background: #3498DB;
     color: white;
 }
 
-input,select,textarea
-{
+input, select, textarea {
     background: transparent;
 }
+
 .woko.pure-menu li a {
-    color:white;
+    color: white;
 }
 
 .woko.pure-menu li a:hover, .woko.pure-menu li a:focus {
     background: #5dade2;
 }
 
-.woko.pure-menu input
-{
-    background:white;
+.woko.pure-menu input {
+    background: white;
     border: 1px solid white;
 }
-.woko.pure-menu.pure-menu-open.pure-menu-horizontal
-{
-    float:left;
+
+.woko.pure-menu.pure-menu-open.pure-menu-horizontal {
+    float: left;
     width: 100%;
 }
 
-.woko.menu.search.connect
-{
-    float:right;
+.woko.menu.search.connect {
+    float: right;
     width: 50%;
     padding: 5px 20px;
 }
 
-.woko.menu.search.connect div
-{
+.woko.menu.search.connect div {
     display: inline;
-    float:left;
-    width:50%;
+    float: left;
+    width: 50%;
 }
 
-.woko.menu.search.connect div p, .woko.menu.search.connect div strong, .woko.menu.search.connect div a
-{
+.woko.menu.search.connect div p, .woko.menu.search.connect div strong, .woko.menu.search.connect div a {
     display: inline;
 }
 
-.woko.menu.search.connect div a
-{
-    color:#2C3E50;
+.woko.menu.search.connect div a {
+    color: #2C3E50;
+}
+
+hr {
+    color: #5dade2;
+}
+
+.alert {
+    padding: 8px 35px 8px 14px;
+    margin-bottom: 20px;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+    background-color: #fcf8e3;
+    border: 1px solid #fbeed5;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    letter-spacing: normal;
+}
+
+.alert, .alert h4 {
+    color: #c09853;
+}
+
+.alert h4 {
+    margin: 0;
+}
+
+.alert .close {
+    position: relative;
+    top: -2px;
+    right: -21px;
+    line-height: 20px;
+}
+
+.alert-success {
+    background-color: #dff0d8;
+    border-color: #d6e9c6;
+    color: #468847;
+}
+
+.alert-success h4 {
+    color: #468847;
+}
+
+.alert-danger, .alert-error {
+    background-color: #f2dede;
+    border-color: #eed3d7;
+    color: #b94a48;
+}
+
+.alert-danger h4, .alert-error h4 {
+    color: #b94a48;
+}
+
+.alert-info {
+    background-color: #d9edf7;
+    border-color: #bce8f1;
+    color: #3a87ad;
+}
+
+.alert-info h4 {
+    color: #3a87ad;
+}
+
+.alert-block {
+    padding-top: 14px;
+    padding-bottom: 14px;
+}
+
+.alert-block>p, .alert-block>ul {
+    margin-bottom: 0;
+}
+
+.alert-block p+p {
+    margin-top: 5px;
+}
+
+.close {
+    float: right;
+    font-size: 20px;
+    font-weight: bold;
+    line-height: 20px;
+    color: #000000;
+    text-shadow: 0 1px 0 #ffffff;
+    opacity: 0.2;
+    filter: alpha(opacity=20);
+}
+
+.close:hover, .close:focus {
+    color: #000000;
+    text-decoration: none;
+    cursor: pointer;
+    opacity: 0.4;
+    filter: alpha(opacity=40);
+}
+
+button.close {
+    padding: 0;
+    cursor: pointer;
+    background: transparent;
+    border: 0;
+    -webkit-appearance: none;
 }

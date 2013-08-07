@@ -26,7 +26,7 @@
                         <s:password name="password" id="password" class="pure-input-1-3"/>
                     </div>
                 </div>
-                <div >
+                <div>
                     <s:submit class="pure-button pure-button-primary pure-button-large" name="login"/>
                 </div>
             </fieldset>
