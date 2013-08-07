@@ -99,18 +99,18 @@
     <body>
 
     <div id="wrapper">
-        <div class="header">
-            <div class="pure-menu pure-menu-open pure-menu-horizontal" style="float:left; width: 100%;">
+        <div id="header">
+            <div class="woko pure-menu pure-menu-open pure-menu-horizontal">
 
                     <%-- The app name --%>
-                <a href="${cp}/home" class="pure-menu-heading menu-header">${layout.appTitle}</a>
+                <a href="${cp}/home" class="woko pure-menu-heading menu-header">${layout.appTitle}</a>
                     <%-- First display the navBar facet --%>
                 <ul>
                     <w:includeFacet facetName="<%=WokoFacets.navBar%>" targetObject="${layout.facetContext.targetObject}"/>
                 </ul>
 
-                <div style="float:right; width: 50%;padding: 5px 20px">
-                    <div style="display: inline;float:left; width:50%;">
+                <div class="woko menu search connect">
+                    <div>
                             <%-- Display the search input only for connected user --%>
                         <c:if test="${not empty username}">
                             <s:form action="/search" class="pure-form">
@@ -120,20 +120,20 @@
                         </c:if>
                     </div>
 
-                    <div style="display: inline;float:left; width: 50%;">
+                    <div>
                             <%-- Display user/connexion info --%>
-                        <p style="display: inline;">
+                        <p>
                             <c:if test="${skipLoginLink==null}">
                                 <c:choose>
                                     <c:when test="${username != null}">
-                                        <strong style="display:inline;">${username}</strong> -
-                                        <a style="display:inline;" href="${cp}/logout"><fmt:message
+                                        <strong>${username}</strong> -
+                                        <a href="${cp}/logout"><fmt:message
                                                 bundle="${wokoBundle}"
                                                 key="woko.layout.logout"/> </a>
                                     </c:when>
                                     <c:otherwise>
                                         <fmt:message bundle="${wokoBundle}" key="woko.layout.notLogged"/>
-                                        <a style="display:inline;" href="${cp}/login"><fmt:message
+                                        <a href="${cp}/login"><fmt:message
                                                 bundle="${wokoBundle}"
                                                 key="woko.layout.login"/>
                                         </a>

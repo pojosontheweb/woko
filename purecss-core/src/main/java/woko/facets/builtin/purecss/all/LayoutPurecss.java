@@ -21,7 +21,6 @@ public class LayoutPurecss<
         FdmType extends IFacetDescriptorManager> extends LayoutAll<OsType,UmType,UnsType,FdmType> {
 
     private static final String CSS_BASE_PURE = "/css/pure-0.2.0.css";
-    private static final String CSS_STYLE = "/css/style.css";
     private static final String CSS_WOKO = "/css/woko.css";
     private static final String JS_YUI = "/js/yui-3.10.3.js";
     private static final String OMNES_PRO_PROXIMA_NOVA_CSS = "/css/omnes-pro_proxima-nova.css";
@@ -35,7 +34,6 @@ public class LayoutPurecss<
         res.add(OMNES_PRO_PROXIMA_NOVA_CSS);
         res.add(CSS_BASE_PURE);
         res.add(CSS_WOKO);
-        res.add(CSS_STYLE);
         return res;
     }
 
