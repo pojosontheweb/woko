@@ -7,6 +7,7 @@ groupIdHelp="-m the maven group Id (i.e. com.myexample.myapp)"
 packageHelp="-p the default package name, defaults to maven group Id"
 versionHelp="-v the version (i.e. 1.0-SNAPSHOT)"
 boostrapHelp="-b use Boostrap css & js"
+purecssHelp="-c use Purecss css"
 lithiumHelp="-l use lithium skin"
 groovyHelp="-g use Groovy"
 javaHelp="-j use pure java"
@@ -19,6 +20,7 @@ groupId=""
 version=""
 groovy=""
 boostrap=""
+purecss=""
 package=""
 
 execargs="generate"
@@ -124,6 +126,7 @@ else
             g) groovy="yes";;
             j) groovy="no";;
             b) boostrap="yes";;
+            c) purecss="yes";;
             l) boostrap="no";;
             [?]) printErrorHelpAndExit "$badOptionHelp";;
         esac  

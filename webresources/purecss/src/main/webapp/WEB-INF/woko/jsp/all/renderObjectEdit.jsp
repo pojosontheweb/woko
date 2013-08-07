@@ -15,9 +15,9 @@
 <div class="wokoObject <%=className%>">
 
     <%-- Display title and wokoLinks in the same row --%>
-    <div class="pure-u-1">
+    <div class="pure-g-r">
         <%-- Call the renderTitle facet in order to display the title --%>
-        <div class="pure-u-1-2">
+        <div class="wokoTitle pure-u-1-2">
             <w:includeFacet targetObject="<%=o%>" facetName="<%=WokoFacets.renderTitleEdit%>"/>
         </div>
         <%-- Call the renderTitle facet in order to display the available links --%>

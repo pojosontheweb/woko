@@ -22,11 +22,4 @@
     Locale locale = request.getLocale();
     String localeStr = locale!=null ? locale.toString() : "";
 %>
-<span class="wokoPropertyValueEdit">
-    <span class="<%=propertyName%> <%=propertyClassName%>">
-        <div class="input-prepend">
-            <span class="add-on"><i class="icon-calendar"></i></span>
-            <s:text name="<%=fullFieldName%>" rel="datepicker" id="<%=fieldId%>" class="input-medium"/>
-        </div>
-    </span>
-</span>
+<s:text name="<%=fullFieldName%>" rel="datepicker" id="<%=fieldId%>" class="input-medium <%=propertyName%> <%=propertyClassName%>"/>

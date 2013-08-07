@@ -32,65 +32,63 @@
         readOnlyProps = Collections.emptyList();
     }
 %>
-<s:form action="<%=formUrl%>" class="form-horizontal" partial="<%=partial%>">
-<%
-    // generate the input fields
-    if (hiddenFields!=null) {
-        for (String fieldName : hiddenFields.keySet()) {
-            Object fieldVal = hiddenFields.get(fieldName);
-            if (fieldVal!=null) {
-%>
-                <s:hidden name="<%=fieldName%>"/>
-<%
-            } else {
-%>
-                <s:hidden name="<%=fieldName%>" value="<%=fieldVal%>"/>
-<%
+<s:form action="<%=formUrl%>" class="pure-form pure-form-aligned" partial="<%=partial%>">
+    <%
+        // generate the input fields
+        if (hiddenFields!=null) {
+            for (String fieldName : hiddenFields.keySet()) {
+                Object fieldVal = hiddenFields.get(fieldName);
+                if (fieldVal!=null) {
+    %>
+    <s:hidden name="<%=fieldName%>"/>
+    <%
+    } else {
+    %>
+    <s:hidden name="<%=fieldName%>" value="<%=fieldVal%>"/>
+    <%
+                }
             }
         }
-    }
-%>
-<fieldset>
-<%
-    for (String pName : propertyNames) {
-        Object pVal = propertyValues.get(pName);
+    %>
+    <fieldset>
+        <%
+            for (String pName : propertyNames) {
+                Object pVal = propertyValues.get(pName);
 
-        RenderPropertyName renderPropertyName =
-            woko.getFacet(WokoFacets.renderPropertyName, request, owningObject, owningObject.getClass(), true);
-        renderPropertyName.setPropertyName(pName);
-        String pNameFragmentPath = renderPropertyName.getFragmentPath(request);
+                RenderPropertyName renderPropertyName =
+                        woko.getFacet(WokoFacets.renderPropertyName, request, owningObject, owningObject.getClass(), true);
+                renderPropertyName.setPropertyName(pName);
+                String pNameFragmentPath = renderPropertyName.getFragmentPath(request);
 
-        RenderPropertyValue editPropertyValue;
-        if (readOnlyProps.contains(pName)) {
-            // read-only view... use renderPropertyValue !
-            editPropertyValue = Util.getRenderPropValueFacet(woko,  request, owningObject, pName, pVal);
-        } else {
-            // editable : use Edit facet
-            editPropertyValue = Util.getRenderPropValueEditFacet(woko, request, owningObject, pName, pVal);
-        }
-        String pValFragmentPath = editPropertyValue.getFragmentPath(request);
-        String prefix = "object";
-        if (editPropertyValue instanceof RenderPropertyValueEdit) {
-            prefix = ((RenderPropertyValueEdit)editPropertyValue).getFieldPrefix();
-        }
+                RenderPropertyValue editPropertyValue;
+                if (readOnlyProps.contains(pName)) {
+                    // read-only view... use renderPropertyValue !
+                    editPropertyValue = Util.getRenderPropValueFacet(woko,  request, owningObject, pName, pVal);
+                } else {
+                    // editable : use Edit facet
+                    editPropertyValue = Util.getRenderPropValueEditFacet(woko, request, owningObject, pName, pVal);
+                }
+                String pValFragmentPath = editPropertyValue.getFragmentPath(request);
+                String prefix = "object";
+                if (editPropertyValue instanceof RenderPropertyValueEdit) {
+                    prefix = ((RenderPropertyValueEdit)editPropertyValue).getFieldPrefix();
+                }
 
-        String fullFieldName = prefix + "." + pName;
-%>
+                String fullFieldName = prefix + "." + pName;
+        %>
         <c:set var="fullFieldNameStripes" value="<%=fullFieldName%>"/>
         <div class="pure-control-group ${empty(actionBean.context.validationErrors[fullFieldNameStripes]) ? '' : 'error'} ">
             <jsp:include page="<%=pNameFragmentPath%>"/>
-            <div class="pure-controls">
-                <jsp:include page="<%=pValFragmentPath%>"/>
-                <s:errors field="<%=fullFieldName%>"/>
+            <jsp:include page="<%=pValFragmentPath%>"/>
+            <s:errors field="<%=fullFieldName%>"/>
+        </div>
+        <%
+            }
+        %>
+        <c:if test="<%=!partial%>">
+            <div class="form-actions">
+                <w:includeFacet facetName="renderPropertiesEditButtons" targetObject="<%=owningObject%>"/>
             </div>
-        </div>
-<%
-    }
-%>
-    <c:if test="<%=!partial%>">
-        <div>
-            <w:includeFacet facetName="renderPropertiesEditButtons" targetObject="<%=owningObject%>"/>
-        </div>
-    </c:if>
-</fieldset>
+        </c:if>
+    </fieldset>
 </s:form>

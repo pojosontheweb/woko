@@ -31,6 +31,7 @@ class GenerateCmd extends Command{
 
     String packageName
     Boolean useBootstrap
+    Boolean usePurecss
     Boolean useGroovy
     String webApp
     String modelPath
@@ -43,7 +44,7 @@ class GenerateCmd extends Command{
                 runner,
                 "generate",
                 "Generates a new Woko project",
-                "[-use-boostrap {yes|no}] [-use-groovy {yes|no}] [-default-package-name <package name>]",
+                "[-use-bootstrap {yes|no}] [-use-purecss {yes|no}] [-use-groovy {yes|no}] [-default-package-name <package name>]",
                 """Initialize a new Woko project""")
 
     }
@@ -57,7 +58,8 @@ class GenerateCmd extends Command{
 
         cliBuilder.with {
             h longOpt: 'help', 'Show usage information'
-            b longOpt: 'use-boostrap', args: 1, argName: 'yes|no', 'boostrap usage'
+            b longOpt: 'use-bootstrap', args: 1, argName: 'yes|no', 'boostrap usage'
+            c longOpt: 'use-purecss', args: 1, argName: 'yes|noe', 'purecss usage'
             g longOpt: 'use-groovy', args: 1, argName: 'yes|no', 'groovy usage'
             p longOpt: 'default-package-name', args: 1, argName: 'com.example.myapp', 'default package name'
             r longOpt: 'registration', args: 1, argName: 'yes|no', 'use registration'
@@ -84,6 +86,11 @@ class GenerateCmd extends Command{
             useBootstrap = (options.b == "yes")
         } else {
             useBootstrap = AppUtils.yesNoAsk("Would you like to use Bootstrap for UI")
+            if(!useBootstrap)
+            {
+                usePurecss = AppUtils.yesNoAsk("Would you like to use purecss for UI")
+            }
+
         }
 
         if(options.g)
@@ -132,7 +139,22 @@ class GenerateCmd extends Command{
             bootStrapDep.version = '${woko.version}'
             bootStrapDep.type = "war"
             pomHelper.addDependency(bootStrapDep, false)
-        }else{
+        }
+        else if(usePurecss)
+        {
+            Dependency pureCssDep = new Dependency()
+            pureCssDep.groupId = "com.pojosontheweb"
+            pureCssDep.artifactId = "woko-purecss-core"
+            pureCssDep.version = '${woko.version}'
+            pomHelper.addDependency(pureCssDep, false)
+            pureCssDep = new Dependency()
+            pureCssDep.groupId = "com.pojosontheweb"
+            pureCssDep.artifactId = "woko-web-purecss"
+            pureCssDep.version = '${woko.version}'
+            pureCssDep.type = "war"
+            pomHelper.addDependency(pureCssDep, false)
+        }
+        else{
             // Add a dependency on Lithium in pom
             Dependency lithiumDep = new Dependency()
             lithiumDep.groupId = "com.pojosontheweb"
@@ -266,7 +288,15 @@ class GenerateCmd extends Command{
         bindingFacets['name'] = artifactId
         writer = new FileWriter(facetsPath+File.separator+"MyLayout" + (useGroovy ? ".groovy" : ".java"))
 
-        String templateName = useBootstrap ? 'layout-bootstrap' : 'layout'
+        String templateName = null
+
+        if(useBootstrap)
+            templateName='layout-bootstrap'
+        else if(usePurecss)
+            templateName = 'layout-purecss'
+        else
+            templateName='layout'
+
 //        if (useBootstrap) {
 
 //            bindingFacets['css'] = '''

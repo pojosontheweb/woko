@@ -17,7 +17,7 @@
             <w:objectClassName var="className" object="${o}"/>
             <w:objectKey var="key" object="${o}"/>
         </p>
-        <s:form action="${pageContext.request.contextPath}/delete/${className}/${key}" class="form-inline">
+        <s:form action="${pageContext.request.contextPath}/delete/${className}/${key}" class="pure-form">
             <s:submit name="facet.confirm" class="pure-button pure-button-primary" value="true"/>
             <s:submit name="facet.cancel" class="pure-button" value="true"/>
         </s:form>

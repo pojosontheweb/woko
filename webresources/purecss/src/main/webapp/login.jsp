@@ -9,16 +9,16 @@
         <h1 class="page-header"><fmt:message bundle="${wokoBundle}" key="woko.login.title"/></h1>
         <form method="POST" action="j_security_check" class="form-horizontal">
             <fieldset>
-                <div class="pure-control-group">
+                <div>
                     <label class="control-label" for="username"><fmt:message bundle="${wokoBundle}" key="user.username"/></label>
                     <div class="pure-controls">
-                        <input type="text" name="j_username" id="username"/>
+                        <input type="text" name="j_username" id="username" class="pure-input-1-1"/>
                     </div>
                 </div>
                 <div class="pure-control-group">
                     <label class="control-label" for="password"><fmt:message bundle="${wokoBundle}" key="user.password"/></label>
                     <div class="pure-controls">
-                        <input type="password" name="j_password" id="password"/>
+                        <input type="password" name="j_password" id="password" class="pure-input-1-1"/>
                     </div>
                 </div>
                 <div class="form-actions">

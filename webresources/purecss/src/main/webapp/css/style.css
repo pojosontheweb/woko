@@ -1,0 +1,123 @@
+body {
+    margin: 0;
+    padding: 0;
+    line-height: 1.7em;
+    font-family: sans-serif;
+}
+
+html,body{
+    width:100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.l-box {
+    padding: 1em;
+}
+
+body .primary-button {
+    background: #02a6eb;
+    color: #fff;
+}
+
+.content .content-subhead {
+
+    font-weight: 300;
+    color: #555;
+    letter-spacing: normal;
+}
+
+.content p
+{
+    line-height: 1.6em;
+    font-size: 1.125em;
+    letter-spacing: normal;
+}
+
+.splash p
+{
+    color: #999;
+}
+.content .content-ribbon {
+    margin: 3em;
+    border-bottom: 1px solid #eee;
+}
+
+.ribbon {
+    background: #eee;
+    text-align: center;
+    padding: 2em;
+    color: #999;
+}
+.ribbon h2 {
+    display: inline;
+    font-weight: normal;
+}
+
+.footer {
+    background: #ECF0F1;
+    color: #999;
+    text-align: center;
+    font-size: 80%;
+    margin: 0 0;
+    height: 100%;
+}
+
+.wokoproperties label
+{
+    text-align: right;
+    margin: .5em 0 .2em;
+    color: #999;
+    font-size: 90%
+}
+
+h2, h3 {
+    font-family: "proxima-nova",sans-serif;
+}
+
+h1
+{
+    font-family: "omnes-pro",sans-serif;
+}
+
+.menu-header
+{
+    color: #1f8dd6;
+    font-family: "omnes-pro",sans-serif;
+    font-weight: 600;
+}
+
+.content
+{
+    padding: 5%;
+}
+
+.pure-menu .pure-menu-heading
+{
+    color: white;
+}
+
+
+.pure-menu.pure-menu-open, .pure-menu.pure-menu-horizontal li .pure-menu-children {
+    background: #3498DB;
+    color: white;
+}
+
+input,select,textarea
+{
+    background: transparent;
+}
+.pure-menu li a {
+    color:white;
+}
+
+.pure-menu li a:hover, .pure-menu li a:focus {
+    background: #5dade2;
+}
+
+.menu input, .pure-menu input, .pure-menu.pure-menu-horizontal input
+{
+    background:white;
+    border: 1px solid white;
+}

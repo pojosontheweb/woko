@@ -207,8 +207,6 @@
                             </li>
                         </c:forEach>
                     </ul>
-
-                    <jsp:include page="previewTheme.jsp"/>
             </div>
         </div>
 

@@ -22,60 +22,42 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="/WEB-INF/woko/jsp/taglibs.jsp"%>
 <%
-RenderLinks renderLinks = (RenderLinks)request.getAttribute(RenderLinks.FACET_NAME);
+    RenderLinks renderLinks = (RenderLinks)request.getAttribute(RenderLinks.FACET_NAME);
     if (renderLinks==null) {
         renderLinks = (RenderLinks)request.getAttribute(WokoFacets.renderLinksEdit);
     }
     List<Link> links = renderLinks.getLinks();
     if (links.size()>1) {
         Link first = links.get(0);
-        first.setCssClass(first.getCssClass());
+        first.setCssClass("pure-button pure-button-primary " + first.getCssClass());
         String firstLinkAttrs = LinkUtil.computeAllLinkAttributes(first, request);
 %>
-<div id="horizontal-menu">
-
-        <ul id="std-menu-items">
-            <a<%=firstLinkAttrs%>><%=first.getText()%></a>
-            <ul>
-    <%
+<div class="btn-group">
+    <a<%=firstLinkAttrs%>><%=first.getText()%></a>
+    <a class="pure-button pure-button-primary" data-toggle="dropdown" href="#">
+        <span class="caret"></span>
+    </a>
+    <ul class="dropdown-menu">
+        <%
             for (int i=1; i<links.size(); i++) {
                 Link l = links.get(i);
-                l.setCssClass(l.getCssClass());
+                l.setCssClass("link-" + l.getCssClass());
                 String linkAttrs = LinkUtil.computeAllLinkAttributes(l, request);
-    %>
-            <li>
-                <a<%=linkAttrs%>><%=l.getText()%></a>
-            </li>
-            </ul>
-    <%      } %>
-        </ul>
+        %>
+        <li>
+            <a<%=linkAttrs%>><%=l.getText()%></a>
+        </li>
+        <%      } %>
+    </ul>
 </div>
 <%
-    } else if (links.size()==1) {
-        // one link only
-        Link l = links.get(0);
-        l.setCssClass("pure-button pure-button-primary " + l.getCssClass());
-        String linkAttrs = LinkUtil.computeAllLinkAttributes(l, request);
+} else if (links.size()==1) {
+    // one link only
+    Link l = links.get(0);
+    l.setCssClass("pure-button pure-button-primary " + l.getCssClass());
+    String linkAttrs = LinkUtil.computeAllLinkAttributes(l, request);
 %>
-        <a<%=linkAttrs%>><%=l.getText()%></a>
+<a<%=linkAttrs%>><%=l.getText()%></a>
 <%
     }
 %>
-<script>
-    YUI({
-        classNamePrefix: 'pure'
-    }).use('gallery-sm-menu', function (Y) {
-
-                var horizontalMenu = new Y.Menu({
-                    container         : '#horizontal-menu',
-                    sourceNode        : '#menu-items',
-                    orientation       : 'horizontal',
-                    hideOnOutsideClick: false,
-                    hideOnClick       : false
-                });
-
-                horizontalMenu.render();
-                horizontalMenu.show();
-
-            });
-</script>

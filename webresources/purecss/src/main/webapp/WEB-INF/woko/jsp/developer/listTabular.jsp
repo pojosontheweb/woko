@@ -44,7 +44,7 @@
 
         <c:if test="<%=nbPages>1%>">
             <div class="pure-u-1">
-                <s:form action="/list" class="form-inline">
+                <s:form action="/list" class="pure-form">
                     <s:hidden name="className"/>
                     <input type="hidden"name="facet.page" value="1"/>
                     <fmt:message bundle="${wokoBundle}" key="woko.devel.list.showing"/>

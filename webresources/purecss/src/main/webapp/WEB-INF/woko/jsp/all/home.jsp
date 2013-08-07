@@ -10,9 +10,9 @@
 <s:layout-render name="${layout.layoutPath}" layout="${layout}" pageTitle="${pageTitle}">
     <s:layout-component name="body">
 
-        <div class="pure-u-1">
-            <h1 class="pure-u-1-2"><fmt:message bundle="${wokoBundle}" key="woko.guest.home.title"/></h1>
-            <p class="pure-u-1-2">
+        <div class="pure-g-r splash">
+            <h1 class="content-subhead"><fmt:message bundle="${wokoBundle}" key="woko.guest.home.title"/></h1>
+            <p>
                 <fmt:message bundle="${wokoBundle}" key="woko.guest.home.content"/>
             </p>
         </div>

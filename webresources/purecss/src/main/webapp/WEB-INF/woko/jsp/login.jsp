@@ -11,19 +11,19 @@
     <s:layout-component name="body">
 
         <h1 class="page-header"><fmt:message bundle="${wokoBundle}" key="woko.login.title"/></h1>
-        <s:form beanclass="<%=WokoLogin.class%>" class="horizontal">
+        <s:form beanclass="<%=WokoLogin.class%>" class="pure-form pure-form-stacked">
             <s:hidden name="targetUrl"/>
             <fieldset>
                 <div class="pure-control-group">
                     <s:label for="user.username" class="control-label"/>
                     <div class="pure-controls">
-                        <s:text name="username" id="username"/>
+                        <s:text name="username" id="username" class="pure-input-1-3"/>
                     </div>
                 </div>
                 <div class="pure-control-group">
                     <s:label for="user.password" class="control-label"/>
                     <div class="pure-controls">
-                        <s:password name="password" id="password"/>
+                        <s:password name="password" id="password" class="pure-input-1-3"/>
                     </div>
                 </div>
                 <div >

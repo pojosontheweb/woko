@@ -31,12 +31,12 @@
         String pValFragmentPath = renderPropertyValue.getFragmentPath(request);
 %>
 <div class="pure-u-1">
-    <div class="pure-u-1-3 propertyName">
-        <jsp:include page="<%=pNameFragmentPath%>"/>
-    </div>
-    <div class="pure-u-1-9">
-        <jsp:include page="<%=pValFragmentPath%>"/>
-    </div>
+<div class="pure-u-1-4">
+<jsp:include page="<%=pNameFragmentPath%>"/>
+</div>
+<div class="pure-u-1-4">
+<jsp:include page="<%=pValFragmentPath%>"/>
+</div>
 </div>
 <%
     }

@@ -12,7 +12,7 @@
         <p>
             <fmt:message bundle="${wokoBundle}" key="woko.devel.create.description"/>
         </p>
-        <s:form action="/save" class="form-inline">
+        <s:form action="/save" class="pure-form">
             <s:hidden name="createTransient" value="true"/>
             <s:select name="className">
                 <s:options-collection collection="${create.mappedClasses}"/>

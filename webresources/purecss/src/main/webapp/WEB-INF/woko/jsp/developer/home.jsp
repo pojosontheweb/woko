@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@include file="/WEB-INF/woko/jsp/taglibs.jsp"%>
+<%@include file="/WEB-INF/woko/jsp/taglibs.jsp" %>
 
 <%@ page import="woko.facets.builtin.WokoFacets" %>
 
@@ -10,9 +10,12 @@
 <fmt:message bundle="${wokoBundle}" var="pageTitle" key="woko.devel.home.pageTitle"/>
 <s:layout-render name="${layout.layoutPath}" layout="${layout}" pageTitle="${pageTitle}">
     <s:layout-component name="body">
-        <h1 class="pure-menu-heading"><fmt:message bundle="${wokoBundle}" key="woko.devel.home.title"/> </h1>
-        <p>
-            <fmt:message bundle="${wokoBundle}" key="woko.devel.home.content"/>
-        </p>
+        <div class="pure-u-1 splash">
+            <h1 class="content-subhead"><fmt:message bundle="${wokoBundle}" key="woko.devel.home.title"/></h1>
+
+            <p>
+                <fmt:message bundle="${wokoBundle}" key="woko.devel.home.content"/>
+            </p>
+        </div>
     </s:layout-component>
 </s:layout-render>

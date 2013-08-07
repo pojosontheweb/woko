@@ -36,7 +36,7 @@
         </h1>
 
         <div class="pure-u-1">
-            <s:form action="/search" class="form-inline" method="GET">
+            <s:form action="/search" class="pure-form" method="GET">
                 <fmt:message bundle="${wokoBundle}" key="woko.devel.find.enterQuery"/>
                 <s:text name="facet.query" class="input-xlarge"/>
                 <s:submit name="search" class="btn btn-primary"/>
@@ -46,7 +46,7 @@
 
         <c:if test="<%=nbPages>1%>">
             <div class="pure-u-1">
-                <s:form action="/search" class="form-inline">
+                <s:form action="/search" class="pure-form">
                     <s:hidden name="facet.query"/>
                     <s:hidden name="className"/>
                     <input type="hidden"name="facet.page" value="1"/>

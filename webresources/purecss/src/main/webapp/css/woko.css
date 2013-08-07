@@ -1,6 +1,28 @@
-html,body{height:100%;}
-#wrapper{min-height:100%;height:auto !important;height:100%;margin:0 auto -81px;}
-#push,footer{height:80px;}
-#wrapper>.main-content{padding-top:60px;}
-.wokoLinks{position:relative;top:-70px;}
-.wokoProperties .propertyName{text-align:right;}.wokoProperties .propertyName label{font-weight:bold;}
+#wrapper {
+    min-height: 100%;
+    height: auto !important;
+    width:auto;
+    margin: 0 auto -4em;
+    padding: 0;
+}
+
+#push, footer {
+    height: 4em;
+}
+
+#wrapper>.main-content {
+    padding-top: 60px;
+}
+
+.wokoLinks {
+    position: relative;
+    top: -70px;
+}
+
+.wokoProperties .propertyName {
+    text-align: right;
+}
+
+.propertyName label {
+    font-weight: bold;
+}
