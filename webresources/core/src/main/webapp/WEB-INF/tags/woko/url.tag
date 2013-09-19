@@ -24,14 +24,12 @@
 <%@ variable name-from-attribute="var" alias="daLink" scope="AT_END" %>
 <%
     Woko<?,?,?,?> woko = Woko.getWoko(application);
-    String url;
+    String url = facetName;
     if (object!=null) {
         url = LinkUtil.getUrl(woko, object, facetName);
     } else if (targetObjectClass!=null) {
         ObjectStore s = woko.getObjectStore();
         url = facetName + "/" + s.getClassMapping(s.getObjectClass(targetObjectClass));
-    } else {
-        throw new IllegalStateException("neither object nor targetObjectClass provided !");
     }
     String path = request.getContextPath();
 %>
