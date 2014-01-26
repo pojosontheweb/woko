@@ -20,13 +20,7 @@ public abstract class JobWithProgressBase extends JobBase {
                 break;
             } else {
                 doExecuteNextStep();
-                for (JobListener l : listeners) {
-                    try {
-                        l.onProgress(this);
-                    } catch(Exception e) {
-                        logger.error("Caught exception invoking listener " + l, e);
-                    }
-                }
+                notifyListenersProgress(listeners);
             }
         }
     }
