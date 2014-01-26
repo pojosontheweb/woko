@@ -16,4 +16,4 @@
     ObjectStore s = woko.getObjectStore();
     String className = s.getClassMapping(s.getObjectClass(target));
 %>
-<h1 class="page-header"><%=renderTitle.getTitle()%><small>(<%=className%>)</small></h1>
+<h1 class="page-header"><%=renderTitle.getTitle()%> <small>(<%=className%>)</small></h1>
