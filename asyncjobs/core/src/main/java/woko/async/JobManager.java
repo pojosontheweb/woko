@@ -5,10 +5,7 @@ import woko.util.WLogger;
 
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.*;
 
 /**
  * Top-level component for managing async {@link Job}s.
@@ -65,6 +62,11 @@ public class JobManager implements Closeable {
     public void close() {
         logger.debug("Closing pool : " + pool);
         pool.shutdown();
+        try {
+            pool.awaitTermination(10, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            logger.error("caught interrupted exception while awaiting for pool termination", e);
+        }
     }
 
     /**
