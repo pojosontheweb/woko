@@ -29,6 +29,7 @@
         <module>core</module>
         <module>lithium</module>
         <module>bootstrap</module>
+        <module>bootstrap3</module>
     </modules>
     <dependencies>
         <!-- dep on stripes to be able to use the tags and all in ide. provided scope anyway. -->
