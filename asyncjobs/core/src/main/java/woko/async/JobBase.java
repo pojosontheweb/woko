@@ -36,6 +36,7 @@ public abstract class JobBase implements Job {
     protected final void notifyListenersStart(List<JobListener> listeners) {
         for (JobListener l : listeners) {
             try {
+                l.onStart(this);
             } catch(Exception e) {
                 logger.error("Caught exception invoking listener " + l, e);
             }
