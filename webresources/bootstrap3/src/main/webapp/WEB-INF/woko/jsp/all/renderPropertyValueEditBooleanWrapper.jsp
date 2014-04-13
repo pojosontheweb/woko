@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright 2001-2013 Remi Vankeisbelck
+  ~ Copyright 2001-2012 Remi Vankeisbelck
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -15,6 +15,16 @@
   --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="/WEB-INF/woko/jsp/taglibs.jsp"%>
-<div class="col-lg-offset-2 col-md-offset-3 col-sm-offset-3">
-    <s:submit name="save" class="btn btn-primary"/>
-</div>
+<%@ page import="woko.facets.builtin.WokoFacets" %>
+<%@ page import="woko.facets.builtin.RenderPropertyValueEdit" %>
+<%
+    RenderPropertyValueEdit renderPropertyValue = (RenderPropertyValueEdit)request.getAttribute(WokoFacets.renderPropertyValueEdit);
+    String propertyName = renderPropertyValue.getPropertyName();
+    String fullFieldName = renderPropertyValue.getFieldPrefix() + "." + propertyName;
+%>
+<s:select name="<%=fullFieldName%>" class="form-control">
+    <s:option value="">&nbsp;</s:option>
+    <s:option value="true">true</s:option>
+    <s:option value="false">false</s:option>
+</s:select>
+

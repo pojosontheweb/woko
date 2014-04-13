@@ -15,27 +15,20 @@
   --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="/WEB-INF/woko/jsp/taglibs.jsp"%>
-<%@ page import="woko.util.Util" %>
-<%@ page import="woko.facets.WokoFacetContext" %>
-<%@ page import="woko.persistence.ObjectStore" %>
 <%@ page import="woko.facets.builtin.WokoFacets" %>
 <%@ page import="woko.facets.builtin.all.RenderPropertyValueEditStripesText" %>
 <%
     RenderPropertyValueEditStripesText<?,?,?,?> renderPropertyValue =
             (RenderPropertyValueEditStripesText<?,?,?,?>)request.getAttribute(WokoFacets.renderPropertyValueEdit);
-    WokoFacetContext<?,?,?,?> fctx = renderPropertyValue.getFacetContext();
-    ObjectStore os = fctx.getWoko().getObjectStore();
     String propertyName = renderPropertyValue.getPropertyName();
-    Object owningObject = renderPropertyValue.getOwningObject();
-    String propertyClassName = os.getClassMapping(Util.getPropertyType(os.getObjectClass(owningObject), propertyName));
     String fullFieldName = renderPropertyValue.getFieldPrefix() + "." + propertyName;
-    String className = "wokoPropertyValueEdit " + propertyClassName + "-" + propertyName;
     if (renderPropertyValue.isTextArea()) {
-        className += " input-xlarge";
 %>
-        <s:textarea name="<%=fullFieldName%>" class="<%=className%>" />
-<% } else { %>
-        <s:text name="<%=fullFieldName%>" class="<%=className%>"/>
+        <s:textarea name="<%=fullFieldName%>" class="form-control" />
+<%
+    } else {
+%>
+        <s:text name="<%=fullFieldName%>" class="form-control"/>
 <% } %>
 
 

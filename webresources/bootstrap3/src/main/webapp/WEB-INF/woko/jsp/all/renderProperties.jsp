@@ -19,19 +19,22 @@
     Woko<?,?,?,?> woko = fctx.getWoko();
     Object owningObject = fctx.getTargetObject();
 %>
-<%
-    for (String pName : propertyNames) {
-        Object pVal = propertyValues.get(pName);
-
-        RenderPropertyName renderPropertyName = woko.getFacet(WokoFacets.renderPropertyName, request, owningObject, owningObject.getClass(), true);
-        renderPropertyName.setPropertyName(pName);
-        String pNameFragmentPath = renderPropertyName.getFragmentPath(request);
-
-        RenderPropertyValue renderPropertyValue = Util.getRenderPropValueFacet(woko, request, owningObject, pName, pVal);
-        String pValFragmentPath = renderPropertyValue.getFragmentPath(request);
-%>
 <div class="container w-properties">
-    <div class="row">
+    <%
+        for (String pName : propertyNames) {
+            Object pVal = propertyValues.get(pName);
+
+            RenderPropertyName renderPropertyName = woko.getFacet(WokoFacets.renderPropertyName, request, owningObject, owningObject.getClass(), true);
+            renderPropertyName.setPropertyName(pName);
+            String pNameFragmentPath = renderPropertyName.getFragmentPath(request);
+
+            RenderPropertyValue renderPropertyValue = Util.getRenderPropValueFacet(woko, request, owningObject, pName, pVal);
+            String pValFragmentPath = renderPropertyValue.getFragmentPath(request);
+
+            Class<?> pType = Util.getPropertyType(owningObject.getClass(), pName);
+            String pTypeStr = woko.getObjectStore().getClassMapping(pType);
+    %>
+    <div class="row w-property <%=pName%> <%=pTypeStr%>">
         <div class="w-property-name col-lg-2 col-sm-3">
             <jsp:include page="<%=pNameFragmentPath%>"/>
         </div>
@@ -39,7 +42,7 @@
             <jsp:include page="<%=pValFragmentPath%>"/>
         </div>
     </div>
+    <%
+        }
+    %>
 </div>
-<%
-    }
-%>

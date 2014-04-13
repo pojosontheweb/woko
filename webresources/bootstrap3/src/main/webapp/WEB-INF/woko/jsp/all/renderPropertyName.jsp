@@ -20,7 +20,7 @@
     String propertyName = renderPropertyName.getPropertyName();
     Object owningObject = fctx.getTargetObject();
     String propertyClassName = os.getClassMapping(Util.getPropertyType(owningObject.getClass(), propertyName));
-    String labelClass = "control-label wokoPropertyName " + propertyClassName + "-" + propertyName;
+    String labelClass = "control-label " + propertyClassName + "-" + propertyName;
 
     // check in request if we have a renderPropertiesEdit facet that we could
     // use for prefix

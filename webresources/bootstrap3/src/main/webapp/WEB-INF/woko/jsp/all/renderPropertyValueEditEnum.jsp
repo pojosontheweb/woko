@@ -24,7 +24,7 @@
     String fullFieldName = renderPropertyValue.getFieldPrefix() + "." + propertyName;
     String emptyOptSelected = propVal==null ? "true" : "false";
 %>
-<s:select name="<%=fullFieldName%>">
+<s:select name="<%=fullFieldName%>" class="form-control">
     <s:option value="" selected="<%=emptyOptSelected%>"/>
     <s:options-enumeration enum="<%=renderPropertyValue.getPropertyType().getName()%>"/>
 </s:select>

@@ -17,24 +17,16 @@
     Collection propertyValue = (Collection)fctx.getTargetObject();
     String propertyName = renderPropertyValue.getPropertyName();
     Object owningObject = renderPropertyValue.getOwningObject();
-    String propertyClassName = os.getClassMapping(Util.getPropertyType(owningObject.getClass(), propertyName));
+    if (propertyValue!=null) {
+        for (Object elem : propertyValue) {
+            // reuse viewPropertyValue on element
+            RenderPropertyValue nested = Util.getRenderPropValueFacet(woko, request, owningObject, propertyName, elem);
 %>
-<span class="wokoPropertyValue">
-    <span class="<%=propertyName%> <%=propertyClassName%>">
-        <%
-            if (propertyValue!=null) {
-                for (Object elem : propertyValue) {
-                    // reuse viewPropertyValue on element
-                    RenderPropertyValue nested = Util.getRenderPropValueFacet(woko, request, owningObject, propertyName, elem);
-        %>
-                <div class="wokoCollectionItem">
-                    <jsp:include page="<%=nested.getFragmentPath(request)%>"/>
-                </div>
-        <%
-                }
-            }
-        %>
-    </span>
-</span>
-
+        <div class="w-collection-item">
+            <jsp:include page="<%=nested.getFragmentPath(request)%>"/>
+        </div>
+<%
+        }
+    }
+%>
 

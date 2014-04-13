@@ -33,20 +33,20 @@
                 toString();
     }
 %>
-    <%=resultKey%> -
-    <%
-        if (href!=null) {
-    %>
-    <a href="<%=href%>">
-        <%
-            }
-        %>
-        <c:out value="<%=title%>"/>
-        <%
-            if (href!=null) {
-        %>
-    </a>
+<%=resultKey%> -
+<%
+    if (href!=null) {
+%>
+<a href="<%=href%>">
     <%
         }
     %>
-    (<%=resultClassName%>)
+    <c:out value="<%=title%>"/>
+    <%
+        if (href!=null) {
+    %>
+</a>
+<%
+    }
+%>
+(<%=resultClassName%>)

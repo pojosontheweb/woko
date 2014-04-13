@@ -34,7 +34,7 @@
 %>
 <s:form action="<%=formUrl%>" class="form-horizontal" partial="<%=partial%>">
 <%
-    // generate the input fields
+    // generate the hidden input fields if needed
     if (hiddenFields!=null) {
         for (String fieldName : hiddenFields.keySet()) {
             Object fieldVal = hiddenFields.get(fieldName);
@@ -50,7 +50,7 @@
         }
     }
 %>
-<fieldset>
+<div class="container w-properties">
 <%
     for (String pName : propertyNames) {
         Object pVal = propertyValues.get(pName);
@@ -75,11 +75,16 @@
         }
 
         String fullFieldName = prefix + "." + pName;
+
+        Class<?> pType = Util.getPropertyType(owningObject.getClass(), pName);
+        String pTypeStr = woko.getObjectStore().getClassMapping(pType);
 %>
         <c:set var="fullFieldNameStripes" value="<%=fullFieldName%>"/>
-        <div class="control-group ${empty(actionBean.context.validationErrors[fullFieldNameStripes]) ? '' : 'error'} ">
-            <jsp:include page="<%=pNameFragmentPath%>"/>
-            <div class="controls">
+        <div class="w-property <%=pName%> <%=pTypeStr%> form-group ${empty(actionBean.context.validationErrors[fullFieldNameStripes]) ? '' : 'has-error'} ">
+            <div class="w-property-name col-lg-2 col-sm-3">
+                <jsp:include page="<%=pNameFragmentPath%>"/>
+            </div>
+            <div class="w-property-value col-lg-10 col-sm-9">
                 <jsp:include page="<%=pValFragmentPath%>"/>
                 <s:errors field="<%=fullFieldName%>"/>
             </div>
@@ -88,9 +93,7 @@
     }
 %>
     <c:if test="<%=!partial%>">
-        <div class="form-actions">
-            <w:includeFacet facetName="renderPropertiesEditButtons" targetObject="<%=owningObject%>"/>
-        </div>
+        <w:includeFacet facetName="renderPropertiesEditButtons" targetObject="<%=owningObject%>"/>
     </c:if>
-</fieldset>
+</div>
 </s:form>

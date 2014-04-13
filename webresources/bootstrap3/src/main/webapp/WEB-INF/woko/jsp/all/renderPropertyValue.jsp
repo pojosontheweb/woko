@@ -38,22 +38,16 @@
                 }
             }
         }
-    } else {
-        propertyClassName = propertyClass.getName();
     }
     Object propertyValueStr = linkTitle!=null ? linkTitle : propertyValue;
 %>
-<span class="wokoPropertyValue">
-    <span class="<%=propertyName%> <%=propertyClassName%>">
-        <c:choose>
-            <c:when test="<%=href!=null%>">
-                <a href="<%=href%>"><c:out value="<%=linkTitle%>"/></a>
-            </c:when>
-            <c:otherwise>
-                <c:out value="<%=propertyValueStr%>"/>
-            </c:otherwise>
-        </c:choose>
-    </span>
-</span>
-
-
+<c:choose>
+    <c:when test="<%=href!=null%>">
+        <a href="<%=href%>"><c:out value="<%=linkTitle%>"/></a>
+    </c:when>
+    <c:otherwise>
+        <p class="form-control-static">
+            <c:out value="<%=propertyValueStr%>"/>
+        </p>
+    </c:otherwise>
+</c:choose>
