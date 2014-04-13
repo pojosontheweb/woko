@@ -62,45 +62,48 @@
                 </div>
             </div>
 
-            <ul>
-                <%
-                  ObjectStore objectStore = woko.getObjectStore();
-                  while (results.hasNext()) {
-                      Object result = results.next();
-                      // compute title
-                      String title = Util.getTitle(request, result);
-                      // compute link if view facet is available
-                      String href = null;
-                      String resultKey = objectStore.getKey(result);
-                      String className = objectStore.getClassMapping(objectStore.getObjectClass(result));
-                      if (woko.getFacet(View.FACET_NAME, request, result)!=null) {
-                          href = request.getContextPath() + "/" + LinkUtil.getUrl(woko, result, View.FACET_NAME);
-                      }
-                %>
-                      <li>
-                          <%=resultKey%> -
-                <%
-                      if (href!=null) {
-                %>
-                        <a href="<%=href%>">
-                <%
-                      }
-                %>
-                        <c:out value="<%=title%>"/>
-                <%
-                      if (href!=null) {
-                %>
-                        </a>
-                <%
-                      }
-                %>
-                          (<%=className%>)
-                      </li>
-                <%
-                  }
-                %>
-            </ul>
+            <hr/>
 
+            <%
+              ObjectStore objectStore = woko.getObjectStore();
+              while (results.hasNext()) {
+                  Object result = results.next();
+                  // compute title
+                  String title = Util.getTitle(request, result);
+                  // compute link if view facet is available
+                  String href = null;
+                  String resultKey = objectStore.getKey(result);
+                  String className = objectStore.getClassMapping(objectStore.getObjectClass(result));
+                  if (woko.getFacet(View.FACET_NAME, request, result)!=null) {
+                      href = request.getContextPath() + "/" + LinkUtil.getUrl(woko, result, View.FACET_NAME);
+                  }
+            %>
+                  <div class="row">
+                      <div class="col-lg-12">
+                      <%=resultKey%> -
+            <%
+                  if (href!=null) {
+            %>
+                    <a href="<%=href%>">
+            <%
+                  }
+            %>
+                    <c:out value="<%=title%>"/>
+            <%
+                  if (href!=null) {
+            %>
+                    </a>
+            <%
+                  }
+            %>
+                      (<%=className%>)
+                  </div>
+                      </div>
+            <%
+              }
+            %>
+
+            <hr/>
 
             <%
                 int nbPagesClickable = nbPages < 10 ? nbPages : 10;
@@ -123,8 +126,7 @@
                     String rightMoveHref = rightMoveCss.equals("disabled") ? "" : request.getContextPath() + "/search?facet.query=" + query +
                             "&facet.page=" + (p + 1) + "&facet.resultsPerPage=" + resultsPerPage + args;
             %>
-                <div class="pagination">
-                    <ul>
+                    <ul class="pagination">
                         <li class="<%=leftMoveCss%>">
                             <a href="<%=leftMoveHref%>">«</a>
                         </li>
@@ -150,7 +152,6 @@
                             <a href="<%=rightMoveHref%>">»</a>
                         </li>
                     </ul>
-                </div>
             <%
                 }
             %>

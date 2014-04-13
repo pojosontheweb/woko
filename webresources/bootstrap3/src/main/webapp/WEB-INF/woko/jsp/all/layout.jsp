@@ -138,7 +138,7 @@
         <s:layout-component name="body"/>
 
         <%-- footer --%>
-        <div id="footer">
+        <div class="navbar navbar-fixed-bottom" id="footer">
             <div class="container">
                 Powered by
                 <a href="http://www.pojosontheweb.com">
