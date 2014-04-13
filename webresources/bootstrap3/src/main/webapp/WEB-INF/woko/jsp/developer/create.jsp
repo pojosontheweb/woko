@@ -13,9 +13,9 @@
             <p>
                 <fmt:message bundle="${wokoBundle}" key="woko.devel.create.description"/>
             </p>
-            <s:form action="/save" class="form-inline">
+            <s:form action="/save" class="form-inline" method="GET">
                 <s:hidden name="createTransient" value="true"/>
-                <s:select name="className">
+                <s:select name="className" class="form-control">
                     <s:options-collection collection="${create.mappedClasses}"/>
                 </s:select>
                 <s:submit name="create" class="btn btn-primary"/>
