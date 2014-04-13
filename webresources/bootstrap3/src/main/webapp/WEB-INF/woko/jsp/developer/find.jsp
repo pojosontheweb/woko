@@ -8,17 +8,31 @@
 <s:layout-render name="${layout.layoutPath}" layout="${layout}" pageTitle="${pageTitle}">
     <s:layout-component name="body">
         <div class="container">
-            <h1 class="page-header"><fmt:message bundle="${wokoBundle}" key="woko.devel.find.pageTitle"/></h1>
-            <h2><fmt:message bundle="${wokoBundle}" key="woko.devel.find.fullText"/> </h2>
-            <s:form action="/search" class="form-inline" method="GET">
-                <fmt:message bundle="${wokoBundle}" key="woko.devel.find.enterQuery"/>
-                <s:text name="facet.query" class="input-xlarge"/>
-                <s:submit name="search" class="btn btn-primary"/>
+
+            <h1 class="page-header">
+                <fmt:message bundle="${wokoBundle}" key="woko.devel.find.pageTitle"/>
+            </h1>
+
+            <s:form action="/search" class="form-inline" method="GET" role="search">
+                <div class="row">
+                    <div class="col-xs-8">
+                        <div class="input-group">
+                            <fmt:message bundle="${wokoBundle}" key="woko.devel.find.enterQuery" var="placeholder"/>
+                            <s:text name="facet.query" class="form-control" placeholder="${placeholder}"/>
+                            <span class="input-group-btn">
+                                <button class="btn btn-primary" type="submit" value="search">
+                                    <i class="glyphicon glyphicon-search"> </i>
+                                </button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
             </s:form>
-            <h2><fmt:message bundle="${wokoBundle}" key="woko.devel.find.byClass"/> </h2>
-            <p>
-                <fmt:message bundle="${wokoBundle}" key="woko.devel.find.selectName"/>
-            </p>
+
+        <h2>
+                <fmt:message bundle="${wokoBundle}" key="woko.devel.find.byClass"/>
+            </h2>
+
             <ul>
                 <c:forEach items="${find.mappedClasses}" var="className">
                     <li><a href="${pageContext.request.contextPath}/list/${className}">${className}</a></li>
