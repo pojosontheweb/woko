@@ -111,104 +111,81 @@
                 height: 300px;
             }
         </style>
-        
-        <h1 class="page-header"><fmt:message bundle="${wokoBundle}" key="woko.devel.studio.title"/></h1>
 
+        <div class="container">
 
-        <div class="tabbable">
-            <ul class="nav nav-tabs">
-                <li class="active"><a href="#configuration" data-toggle="tab">Configuration</a></li>
-                <li><a href="#facets" data-toggle="tab">Facets</a></li>
-                <li><a href="#groovyShell" data-toggle="tab">Groovy Shell</a></li>
-                <li><a href="#themes" data-toggle="tab">
-                    <fmt:message bundle="${wokoBundle}" key="woko.devel.studio.theme.available"/>
-                </a></li>
-            </ul>
+            <h1 class="page-header"><fmt:message bundle="${wokoBundle}" key="woko.devel.studio.title"/></h1>
 
-            <div class="tab-content">
+            <div class="tabbable">
+                <ul class="nav nav-tabs">
+                    <li class="active"><a href="#configuration" data-toggle="tab">Configuration</a></li>
+                    <li><a href="#facets" data-toggle="tab">Facets</a></li>
+                    <li><a href="#groovyShell" data-toggle="tab">Groovy Shell</a></li>
+                </ul>
 
-                <%-- Configuration tab --%>
-                <div class="tab-pane active" id="configuration">
-                    <h2><fmt:message bundle="${wokoBundle}" key="woko.devel.studio.config.title"/> </h2>
-                    <ul>
-                        <li><fmt:message bundle="${wokoBundle}" key="woko.devel.studio.config.objectStore"/> <strong><%=woko.getObjectStore().getClass().getName()%></strong></li>
-                        <li><fmt:message bundle="${wokoBundle}" key="woko.devel.studio.config.userManager"/> <strong><%=woko.getUserManager().getClass().getName()%></strong></li>
-                        <li><fmt:message bundle="${wokoBundle}" key="woko.devel.studio.config.fallbackRoles"/> <strong><%=woko.getFallbackRoles()%></strong></li>
-                        <li><fmt:message bundle="${wokoBundle}" key="woko.devel.studio.config.userStrategy"/> <strong><%=woko.getUsernameResolutionStrategy()%></strong></li>
-                    </ul>
-                </div>
+                <div class="tab-content">
 
-                <%-- Facets tab --%>
-                <div class="tab-pane" id="facets">
-                    <h2>All your facets</h2>
-                    <table id="tblFacets" class="table table-striped table-bordered table-condensed">
-                        <thead>
-                        <tr>
-                            <th>name</th>
-                            <th>role</th>
-                            <th>targetType</th>
-                            <th>facetClass</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                            <c:forEach items="${studio.facetDescriptors}" var="fd">
-                                <tr>
-                                    <td>${fd.name}</td>
-                                    <td>${fd.profileId}</td>
-                                    <td>${fd.targetObjectType.name}</td>
-                                    <td>${fd.facetClass.name}</td>
-                                </tr>
-                            </c:forEach>
-                        </tbody>
-                    </table>
-                </div>
-
-                <%-- Groovy shell tab --%>
-                <div class="tab-pane" id="groovyShell">
-                    <h2><fmt:message bundle="${wokoBundle}" key="woko.devel.studio.groovy.code"/></h2>
-                    <fmt:message bundle="${wokoBundle}" key="woko.devel.studio.groovy.title"/>
-                    <ul>
-                        <li><strong><fmt:message bundle="${wokoBundle}" key="woko.devel.studio.groovy.request"/> </strong> <fmt:message bundle="${wokoBundle}" key="woko.devel.studio.groovy.requestType"/></li>
-                        <li><strong><fmt:message bundle="${wokoBundle}" key="woko.devel.studio.groovy.woko"/></strong> <fmt:message bundle="${wokoBundle}" key="woko.devel.studio.groovy.wokoType"/></li>
-                        <li><strong><fmt:message bundle="${wokoBundle}" key="woko.devel.studio.groovy.logs"/></strong> <fmt:message bundle="${wokoBundle}" key="woko.devel.studio.groovy.logsType"/></li>
-                    </ul>
-                    
-                    <div id="groovyCodeWrapper">
-                        <div id="groovyCode" class="span9"></div>
+                    <%-- Configuration tab --%>
+                    <div class="tab-pane active" id="configuration">
+                        <h2><fmt:message bundle="${wokoBundle}" key="woko.devel.studio.config.title"/> </h2>
+                        <ul>
+                            <li><fmt:message bundle="${wokoBundle}" key="woko.devel.studio.config.objectStore"/> <strong><%=woko.getObjectStore().getClass().getName()%></strong></li>
+                            <li><fmt:message bundle="${wokoBundle}" key="woko.devel.studio.config.userManager"/> <strong><%=woko.getUserManager().getClass().getName()%></strong></li>
+                            <li><fmt:message bundle="${wokoBundle}" key="woko.devel.studio.config.fallbackRoles"/> <strong><%=woko.getFallbackRoles()%></strong></li>
+                            <li><fmt:message bundle="${wokoBundle}" key="woko.devel.studio.config.userStrategy"/> <strong><%=woko.getUsernameResolutionStrategy()%></strong></li>
+                        </ul>
                     </div>
-                    <button id="btnExec" class="btn btn-primary">Execute</button>
-                    <div>
-                        <h2><fmt:message bundle="${wokoBundle}" key="woko.devel.studio.log.exec"/></h2>
-                        <div id="log" class="well"></div>
-                    </div>
-                </div>
 
-                <%-- Theme Roller tab --%>
-                <div class="tab-pane" id="themes">
-                    <ul class="thumbnails">
-                        <li class="span3">
-                            <div class="thumbnail">
-                                <img src="http://twitter.github.com/bootstrap/assets/img/examples/bootstrap-example-hero.jpg" width="256px" alt="Bootstrap">
-                                <h3>Bootstrap</h3>
-                                <s:link href="/theme?facet.sourcePage=/studio#themes" class="btn btn-primary">
-                                    <fmt:message bundle="${wokoBundle}" key="woko.devel.studio.theme.apply"/>
-                                </s:link>
-                            </div>
-                        </li>
-                        <c:forEach items="<%=Theme.values()%>" var="theme">
-                            <li class="span3">
-                                <div class="thumbnail">
-                                    <img src="http://bootswatch.com/${fn:toLowerCase(theme)}/thumbnail.png" alt="${theme}">
-                                    <h3>${theme}</h3>
-                                    <s:link href="/theme?facet.theme=${theme}&facet.sourcePage=/studio#themes" class="btn btn-primary">
-                                        <fmt:message bundle="${wokoBundle}" key="woko.devel.studio.theme.apply"/>
-                                    </s:link>
+                    <%-- Facets tab --%>
+                    <div class="tab-pane" id="facets">
+                        <h2>All your facets</h2>
+                        <table id="tblFacets" class="table table-striped table-bordered table-condensed">
+                            <thead>
+                            <tr>
+                                <th>name</th>
+                                <th>role</th>
+                                <th>targetType</th>
+                                <th>facetClass</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                <c:forEach items="${studio.facetDescriptors}" var="fd">
+                                    <tr>
+                                        <td>${fd.name}</td>
+                                        <td>${fd.profileId}</td>
+                                        <td>${fd.targetObjectType.name}</td>
+                                        <td>${fd.facetClass.name}</td>
+                                    </tr>
+                                </c:forEach>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <%-- Groovy shell tab --%>
+                    <div class="tab-pane" id="groovyShell">
+                        <h2><fmt:message bundle="${wokoBundle}" key="woko.devel.studio.groovy.code"/></h2>
+                        <fmt:message bundle="${wokoBundle}" key="woko.devel.studio.groovy.title"/>
+                        <ul>
+                            <li><strong><fmt:message bundle="${wokoBundle}" key="woko.devel.studio.groovy.request"/> </strong> <fmt:message bundle="${wokoBundle}" key="woko.devel.studio.groovy.requestType"/></li>
+                            <li><strong><fmt:message bundle="${wokoBundle}" key="woko.devel.studio.groovy.woko"/></strong> <fmt:message bundle="${wokoBundle}" key="woko.devel.studio.groovy.wokoType"/></li>
+                            <li><strong><fmt:message bundle="${wokoBundle}" key="woko.devel.studio.groovy.logs"/></strong> <fmt:message bundle="${wokoBundle}" key="woko.devel.studio.groovy.logsType"/></li>
+                        </ul>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div id="groovyCodeWrapper">
+                                    <div id="groovyCode"></div>
                                 </div>
-                            </li>
-                        </c:forEach>
-                    </ul>
+                            </div>
+                        </div>
 
-                    <jsp:include page="previewTheme.jsp"/>
+                        <button id="btnExec" class="btn btn-primary">Execute</button>
+                        <div>
+                            <h2><fmt:message bundle="${wokoBundle}" key="woko.devel.studio.log.exec"/></h2>
+                            <div id="log" class="well"></div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
