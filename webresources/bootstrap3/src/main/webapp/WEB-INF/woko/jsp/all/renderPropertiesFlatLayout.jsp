@@ -31,17 +31,18 @@
         RenderPropertyName renderPropertyName =
             woko.getFacet(WokoFacets.renderPropertyName, request, owningObject, owningObject.getClass(), true);
         renderPropertyName.setPropertyName(pName);
-        String pNameFragmentPath = renderPropertyName.getFragmentPath(request);
 
         RenderPropertyValue renderPropertyValue = Util.getRenderPropValueFacet(woko, request, owningObject, pName, pVal);
         String pValFragmentPath = renderPropertyValue.getFragmentPath(request);
+
+        Class<?> pType = Util.getPropertyType(owningObject.getClass(), pName);
+        String pTypeStr = woko.getObjectStore().getClassMapping(pType);
 %>
-<div class="row-fluid">
-    <div class="span3 wokoPropertyName">
-        <jsp:include page="<%=pNameFragmentPath%>"/>
-    </div>
-    <div class="span9 wokoPropertyValue">
-        <jsp:include page="<%=pValFragmentPath%>"/>
+<div class="container w-properties">
+    <div class="row w-property <%=pName%> <%=pTypeStr%>">
+        <div class="w-property-value col-md-12">
+            <jsp:include page="<%=pValFragmentPath%>"/>
+        </div>
     </div>
 </div>
 <%

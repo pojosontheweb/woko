@@ -25,7 +25,7 @@ import woko.users.RemoteUserStrategy
 import woko.inmemory.InMemoryUserManager
 import woko.hbcompass.HibernateCompassStore
 
-//@FacetKey(name=WokoFacets.renderProperties, profileId="all", targetObjectType=MyEntity.class)
+@FacetKey(name=WokoFacets.renderProperties, profileId="all", targetObjectType=MyEntity.class)
 class RenderPropertiesMyEntityFlat extends RenderPropertiesImpl<HibernateCompassStore,InMemoryUserManager,RemoteUserStrategy,AnnotatedFacetDescriptorManager> {
 
   RenderPropertiesMyEntityFlat() {
