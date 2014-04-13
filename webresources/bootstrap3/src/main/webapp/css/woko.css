@@ -7,3 +7,7 @@ body {
     /* hard-coded color : we might wanna do this another way ? */
     background-color: #f5f5f5;
 }
+
+.search-results .search-form {
+    margin-bottom: 24px;
+}
