@@ -8,6 +8,6 @@ body {
     background-color: #f5f5f5;
 }
 
-.search-results .search-form {
+.search-results .search-form, .list-results .list-form {
     margin-bottom: 24px;
 }

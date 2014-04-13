@@ -26,13 +26,13 @@
             }
             String listWrapperClass = list.getListWrapperCssClass();
             if (listWrapperClass==null) {
-                listWrapperClass = "list " + className;
+                listWrapperClass = "list-wrapper";
             }
 
             String overridenH1 = list.getPageHeaderTitle();
         %>
 
-        <div class="container">
+        <div class="container list-results <%=className%>">
 
             <c:choose>
                 <c:when test="<%=overridenH1==null%>">
@@ -44,24 +44,25 @@
             </c:choose>
 
             <c:if test="<%=nbPages>1%>">
-                <div class="row-fluid">
-                    <s:form action="/list" class="form-inline">
-                        <s:hidden name="className"/>
-                        <input type="hidden"name="facet.page" value="1"/>
-                        <fmt:message bundle="${wokoBundle}" key="woko.devel.list.showing"/>
-                        <s:select name="facet.resultsPerPage" onchange="this.form.submit()" class="input-small">
-                            <s:option value="10">10</s:option>
-                            <s:option value="25">25</s:option>
-                            <s:option value="50">50</s:option>
-                            <s:option value="100">100</s:option>
-                            <s:option value="500">500</s:option>
-                            <s:option value="1000">1000</s:option>
-                        </s:select>
-                        <fmt:message bundle="${wokoBundle}" key="woko.devel.list.objectPerPage"/>
-                    </s:form>
+                <div class="row list-form hidden-xs">
+                    <div class="col-lg-4 col-sm-4">
+                        <s:form action="/list" class="form-inline" method="GET">
+                            <s:hidden name="className"/>
+                            <input type="hidden"name="facet.page" value="1"/>
+                            <s:select name="facet.resultsPerPage" onchange="this.form.submit()" class="form-control">
+                                <s:option value="10">10</s:option>
+                                <s:option value="25">25</s:option>
+                                <s:option value="50">50</s:option>
+                                <s:option value="100">100</s:option>
+                                <s:option value="500">500</s:option>
+                                <s:option value="1000">1000</s:option>
+                            </s:select>
+                            <fmt:message bundle="${wokoBundle}" key="woko.devel.list.objectPerPage"/>
+                        </s:form>
+                    </div>
                 </div>
             </c:if>
-                <ul class="<%=listWrapperClass%>">
+                <div class="<%=listWrapperClass%>">
                     <%
                       ObjectStore objectStore = woko.getObjectStore();
                       while (results.hasNext()) {
@@ -71,16 +72,18 @@
                           String fragmentPath = renderListItem.getFragmentPath(request);
                           String listItemClass = renderListItem.getItemWrapperCssClass();
                           if (listItemClass==null) {
-                              listItemClass = "item " + objectStore.getClassMapping(objectStore.getObjectClass(result));
+                              listItemClass = "list-item";
                           }
                     %>
-                            <li class="<%=listItemClass%>">
-                                <jsp:include page="<%=fragmentPath%>"/>
-                            </li>
+                            <div class="row <%=listItemClass%>">
+                                <div class="col-lg-12">
+                                    <jsp:include page="<%=fragmentPath%>"/>
+                                </div>
+                            </div>
                     <%
                       }
                     %>
-                </ul>
+                </div>
 
             <%
                 int nbPagesClickable = nbPages < 10 ? nbPages : 10;
@@ -104,35 +107,33 @@
                             "?facet.page=" + (p + 1) + "&facet.resultsPerPage=" + resultsPerPage + args;
             %>
 
-                <div class="pagination">
-                    <ul>
-                        <li class="<%=leftMoveCss%>">
-                            <a href="<%=leftMoveHref%>">«</a>
-                        </li>
-                    <%
-                        for (int i=pagerStart;i<=pagerStart+nbPagesClickable-1;i++) {
-                            String css = "";
-                            String currentPageHref = request.getContextPath() + "/list/" + className +
-                                    "?facet.page=" + i  + "&facet.resultsPerPage=" + resultsPerPage + args;
+                <ul class="pagination">
+                    <li class="<%=leftMoveCss%>">
+                        <a href="<%=leftMoveHref%>">«</a>
+                    </li>
+                <%
+                    for (int i=pagerStart;i<=pagerStart+nbPagesClickable-1;i++) {
+                        String css = "";
+                        String currentPageHref = request.getContextPath() + "/list/" + className +
+                                "?facet.page=" + i  + "&facet.resultsPerPage=" + resultsPerPage + args;
 
-                            if (i==p) {
-                                css = "active";
+                        if (i==p) {
+                            css = "active";
 
-                            }
-
-                    %>
-                        <li class="<%=css%>">
-                            <a href="<%=currentPageHref%>"><%=i%></a>
-                        </li>
-                    <%
                         }
-                    %>
 
-                        <li class="<%=rightMoveCss%>">
-                            <a href="<%=rightMoveHref%>">»</a>
-                        </li>
-                    </ul>
-                </div>
+                %>
+                    <li class="<%=css%>">
+                        <a href="<%=currentPageHref%>"><%=i%></a>
+                    </li>
+                <%
+                    }
+                %>
+
+                    <li class="<%=rightMoveCss%>">
+                        <a href="<%=rightMoveHref%>">»</a>
+                    </li>
+                </ul>
 
             <%
                 }
