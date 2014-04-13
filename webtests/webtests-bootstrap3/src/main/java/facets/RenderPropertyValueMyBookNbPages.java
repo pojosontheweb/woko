@@ -21,7 +21,7 @@ import woko.facets.BaseFragmentFacet;
 import woko.facets.builtin.RenderPropertyValue;
 import woko.facets.builtin.all.RenderPropertyValueImpl;
 
-@FacetKey(name="renderPropertyValue_nbPages", profileId="all", targetObjectType=test.MyBook.class)
+//@FacetKey(name="renderPropertyValue_nbPages", profileId="all", targetObjectType=test.MyBook.class)
 public class RenderPropertyValueMyBookNbPages extends RenderPropertyValueImpl implements RenderPropertyValue {
 
   public String getPath() {
