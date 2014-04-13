@@ -22,7 +22,7 @@ import woko.facets.BaseFacet
 import javax.servlet.http.HttpServletRequest
 import org.json.JSONObject
 
-@FacetKey(name='renderPropertyValueJson', profileId='all', targetObjectType=test.OtherPojo.class)
+//@FacetKey(name='renderPropertyValueJson', profileId='all', targetObjectType=test.OtherPojo.class)
 class RenderPropertyValueJsonOtherPojo extends BaseFacet implements RenderPropertyValueJson {
 
   def Object propertyToJson(HttpServletRequest request, Object propertyValue) {

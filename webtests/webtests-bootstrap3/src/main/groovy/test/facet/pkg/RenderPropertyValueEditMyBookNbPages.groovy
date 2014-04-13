@@ -21,7 +21,7 @@ import net.sourceforge.jfacets.annotations.FacetKey
 import woko.facets.builtin.RenderPropertyValueEdit
 import woko.facets.builtin.all.BaseRenderPropertyValueEdit
 
-@FacetKey(name='renderPropertyValueEdit_nbPages', profileId='all', targetObjectType=test.MyBook.class)
+//@FacetKey(name='renderPropertyValueEdit_nbPages', profileId='all', targetObjectType=test.MyBook.class)
 class RenderPropertyValueEditMyBookNbPages extends BaseRenderPropertyValueEdit implements RenderPropertyValueEdit {
 
   String getPath() {

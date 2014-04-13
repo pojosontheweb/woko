@@ -11,7 +11,7 @@ import woko.hbcompass.HibernateCompassStore
 import woko.inmemory.InMemoryUserManager
 import woko.users.RemoteUserStrategy
 
-@FacetKey(name=WokoFacets.renderListTitle, profileId="developer", targetObjectType=MyEntity.class)
+//@FacetKey(name=WokoFacets.renderListTitle, profileId="developer", targetObjectType=MyEntity.class)
 class RenderListTitleMyEntityDev extends RenderListTitleImpl<HibernateCompassStore, InMemoryUserManager, RemoteUserStrategy, AnnotatedFacetDescriptorManager> {
 
     @Override

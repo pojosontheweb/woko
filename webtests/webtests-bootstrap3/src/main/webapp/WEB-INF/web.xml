@@ -110,7 +110,6 @@
         <param-value>
             test
             woko.ext.blobs.hibernate
-            woko.ext.categories.hibernate
         </param-value>
     </context-param>
 
@@ -120,7 +119,6 @@
         <param-value>
             test.facet.pkg
             woko.ext.blobs.facets
-            woko.ext.categories.facets
         </param-value>
     </context-param>
 

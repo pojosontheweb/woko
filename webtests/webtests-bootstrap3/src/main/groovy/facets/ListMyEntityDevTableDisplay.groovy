@@ -12,7 +12,7 @@ import woko.inmemory.InMemoryUserManager
 import woko.hbcompass.HibernateCompassStore
 import net.sourceforge.jfacets.annotations.AnnotatedFacetDescriptorManager
 
-@FacetKey(name="list", profileId="developer", targetObjectType=MyEntity.class)
+//@FacetKey(name="list", profileId="developer", targetObjectType=MyEntity.class)
 class ListMyEntityDevTableDisplay extends ListTabularImpl<HibernateCompassStore,InMemoryUserManager,RemoteUserStrategy,AnnotatedFacetDescriptorManager> {
 
     String dummyText = "Should be displayed only on load"
