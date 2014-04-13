@@ -10,11 +10,15 @@
 <s:layout-render name="${layout.layoutPath}" layout="${layout}" pageTitle="${pageTitle}">
     <s:layout-component name="body">
 
-        <div class="hero-unit">
-            <h1><fmt:message bundle="${wokoBundle}" key="woko.guest.home.title"/></h1>
-            <p>
-                <fmt:message bundle="${wokoBundle}" key="woko.guest.home.content"/>
-            </p>
+        <div class="container">
+
+            <div class="hero-unit">
+                <h1><fmt:message bundle="${wokoBundle}" key="woko.guest.home.title"/></h1>
+                <p>
+                    <fmt:message bundle="${wokoBundle}" key="woko.guest.home.content"/>
+                </p>
+            </div>
+
         </div>
 
     </s:layout-component>

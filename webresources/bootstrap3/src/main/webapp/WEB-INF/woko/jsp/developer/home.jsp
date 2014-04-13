@@ -10,9 +10,11 @@
 <fmt:message bundle="${wokoBundle}" var="pageTitle" key="woko.devel.home.pageTitle"/>
 <s:layout-render name="${layout.layoutPath}" layout="${layout}" pageTitle="${pageTitle}">
     <s:layout-component name="body">
-        <h1 class="page-header"><fmt:message bundle="${wokoBundle}" key="woko.devel.home.title"/> </h1>
-        <p>
-            <fmt:message bundle="${wokoBundle}" key="woko.devel.home.content"/>
-        </p>
+        <div class="container">
+            <h1 class="page-header"><fmt:message bundle="${wokoBundle}" key="woko.devel.home.title"/> </h1>
+            <p>
+                <fmt:message bundle="${wokoBundle}" key="woko.devel.home.content"/>
+            </p>
+        </div>
     </s:layout-component>
 </s:layout-render>

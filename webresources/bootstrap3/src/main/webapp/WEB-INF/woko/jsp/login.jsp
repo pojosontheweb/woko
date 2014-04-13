@@ -10,25 +10,27 @@
 <s:layout-render name="${layout.layoutPath}" layout="${layout}" pageTitle="${pageTitle}" skipLoginLink="true">
     <s:layout-component name="body">
 
-        <h1 class="page-header">
-            <fmt:message bundle="${wokoBundle}" key="woko.login.title"/>
-        </h1>
+        <div class="container">
+            <h1 class="page-header">
+                <fmt:message bundle="${wokoBundle}" key="woko.login.title"/>
+            </h1>
 
-        <s:form beanclass="<%=WokoLogin.class%>" class="form-horizontal" role="form">
-            <s:hidden name="targetUrl"/>
+            <s:form beanclass="<%=WokoLogin.class%>" class="form-horizontal" role="form">
+                <s:hidden name="targetUrl"/>
 
-            <div class="form-group">
-                <s:label for="user.username" class="control-label"/>
-                <s:text name="username" id="username"/>
-            </div>
+                <div class="form-group">
+                    <s:label for="user.username" class="control-label"/>
+                    <s:text name="username" id="username"/>
+                </div>
 
-            <div class="form-group">
-                <s:label for="user.password" class="control-label"/>
-                <s:password name="password" id="password"/>
-            </div>
+                <div class="form-group">
+                    <s:label for="user.password" class="control-label"/>
+                    <s:password name="password" id="password"/>
+                </div>
 
-            <s:submit class="btn btn-primary btn-large" name="login"/>
-        </s:form>
+                <s:submit class="btn btn-primary btn-large" name="login"/>
+            </s:form>
+        </div>
 
     </s:layout-component>
 </s:layout-render>
