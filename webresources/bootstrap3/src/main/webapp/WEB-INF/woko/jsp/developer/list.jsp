@@ -64,7 +64,6 @@
             </c:if>
                 <div class="<%=listWrapperClass%>">
                     <%
-                      ObjectStore objectStore = woko.getObjectStore();
                       while (results.hasNext()) {
                           Object result = results.next();
                           RenderListItem renderListItem = woko.getFacet(

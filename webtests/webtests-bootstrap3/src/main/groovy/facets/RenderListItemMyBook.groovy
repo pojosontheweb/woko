@@ -21,7 +21,7 @@ import test.MyBook
 import woko.facets.builtin.WokoFacets
 import woko.facets.builtin.all.RenderListItemImpl
 
-//@FacetKey(name=WokoFacets.renderListItem, profileId="all", targetObjectType=MyBook.class)
+@FacetKey(name=WokoFacets.renderListItem, profileId="all", targetObjectType=MyBook.class)
 class RenderListItemMyBook extends RenderListItemImpl {
 
     @Override

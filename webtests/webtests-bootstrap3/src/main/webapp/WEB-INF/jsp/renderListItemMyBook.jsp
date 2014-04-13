@@ -2,10 +2,8 @@
 <%@include file="/WEB-INF/woko/jsp/taglibs.jsp"%>
 
 <%@ page import="woko.facets.builtin.WokoFacets" %>
-<%@ page import="woko.Woko" %>
 <%@ page import="woko.facets.WokoFacetContext" %>
 <%@ page import="woko.facets.builtin.RenderListItem" %>
-<%@ page import="test.MyEntity" %>
 <%@ page import="test.MyBook" %>
 
 

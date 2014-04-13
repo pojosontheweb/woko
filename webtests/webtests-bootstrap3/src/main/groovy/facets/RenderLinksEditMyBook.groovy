@@ -5,7 +5,7 @@ import test.MyBook
 import woko.facets.builtin.all.Link
 import woko.facets.builtin.all.RenderLinksEditImpl
 
-//@FacetKey(name="renderLinksEdit",profileId="developer",targetObjectType=MyBook.class)
+@FacetKey(name="renderLinksEdit",profileId="developer",targetObjectType=MyBook.class)
 class RenderLinksEditMyBook extends RenderLinksEditImpl {
 
     @Override

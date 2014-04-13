@@ -5,7 +5,7 @@ import test.MyBook
 import woko.facets.builtin.all.Link
 import woko.facets.builtin.all.RenderLinksImpl
 
-//@FacetKey(name="renderLinks",profileId="developer",targetObjectType=MyBook.class)
+@FacetKey(name="renderLinks",profileId="developer",targetObjectType=MyBook.class)
 class RenderLinksMyBook extends RenderLinksImpl {
     @Override
     List<Link> getLinks() {
