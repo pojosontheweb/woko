@@ -11,7 +11,7 @@ import woko.facets.builtin.all.RenderPropertyValueEditPhone
  * Time: 2:51 PM
  * To change this template use File | Settings | File Templates.
  */
-//@FacetKey(name="renderPropertyValueEdit_mail",profileId = "all")
+@FacetKey(name="renderPropertyValueEdit_mail",profileId = "all")
 class RenderPropertyValueMyEntityMail extends RenderPropertyValueEditMail{
 
 }

@@ -23,7 +23,7 @@ import woko.facets.BaseFragmentFacet
 import javax.servlet.http.HttpServletRequest
 import woko.facets.builtin.all.RenderPropertyValueImpl
 
-//@FacetKey(name='renderPropertyValue', profileId='all', targetObjectType=test.OtherPojo.class)
+@FacetKey(name='renderPropertyValue', profileId='all', targetObjectType=test.OtherPojo.class)
 class RenderPropertyValueOtherPojo extends RenderPropertyValueImpl implements RenderPropertyValue {
 
   String getPath() {

@@ -4,7 +4,7 @@ import net.sourceforge.jfacets.annotations.FacetKey
 import test.MyBook
 import woko.facets.builtin.all.RenderPropertiesEditButtonsImpl
 
-//@FacetKey(name = "renderPropertiesEditButtons", profileId = "developer", targetObjectType = MyBook.class)
+@FacetKey(name = "renderPropertiesEditButtons", profileId = "developer", targetObjectType = MyBook.class)
 class RenderPropertiesEditButtonsMyBook extends RenderPropertiesEditButtonsImpl {
 
     @Override

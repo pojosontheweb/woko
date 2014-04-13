@@ -16,15 +16,6 @@
 
 package woko.facets.builtin.all;
 
-import net.sourceforge.jfacets.IFacetDescriptorManager;
-import net.sourceforge.jfacets.annotations.FacetKey;
-import net.sourceforge.jfacets.annotations.FacetKeyList;
-import woko.facets.builtin.RenderPropertyValueEdit;
-import woko.facets.builtin.WokoFacets;
-import woko.persistence.ObjectStore;
-import woko.users.UserManager;
-import woko.users.UsernameResolutionStrategy;
-
 import java.util.HashMap;
 
 /**
@@ -45,6 +36,7 @@ public class RenderPropertyValueEditMail extends RenderPropertyValueEditInput{
     public HashMap<String, String> getAttributes() {
        HashMap<String,String> tMap = new HashMap<String, String>();
         tMap.put("title", title);
+        tMap.put("class", "")
         return tMap;
     }
 }
