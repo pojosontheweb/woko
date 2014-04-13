@@ -106,31 +106,25 @@
                     <ul class="nav navbar-nav">
                         <w:includeFacet facetName="<%=WokoFacets.navBar%>" targetObject="${layout.facetContext.targetObject}"/>
                     </ul>
-                        <%-- Display user/connexion info --%>
-                    <p class="navbar-text pull-right">
-                        <c:if test="${skipLoginLink==null}">
-                            <c:choose>
-                                <c:when test="${username != null}">
-                                    <strong>${username}</strong> -
-                                    <a href="${cp}/logout"><fmt:message bundle="${wokoBundle}" key="woko.layout.logout"/> </a>
-                                </c:when>
-                                <c:otherwise>
-                                    <fmt:message bundle="${wokoBundle}" key="woko.layout.notLogged"/>
-                                    <a href="${cp}/login"><fmt:message bundle="${wokoBundle}" key="woko.layout.login"/> </a>
-                                </c:otherwise>
-                            </c:choose>
-                        </c:if>
-                    </p>
 
-                        <%-- Display the search input only for connected user --%>
-                    <c:if test="${not empty username}">
-                        <s:form action="/search"
-                                class="navbar-form pull-right"
-                                style="margin-right: 8px; height: 40px;"
-                                method="GET">
-                            <fmt:message bundle="${wokoBundle}" key="search" var="ph"/>
-                            <s:text name="facet.query" class="search-query input-medium" placeholder="${ph}"/>
-                        </s:form>
+                    <%-- Display user/connexion info --%>
+                    <c:if test="${skipLoginLink==null}">
+                        <ul class="nav navbar-nav navbar-right">
+                            <li>
+                                <p class="navbar-text">
+                                    <c:choose>
+                                        <c:when test="${username != null}">
+                                            <strong>${username}</strong> -
+                                            <a href="${cp}/logout"><fmt:message bundle="${wokoBundle}" key="woko.layout.logout"/> </a>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <fmt:message bundle="${wokoBundle}" key="woko.layout.notLogged"/>
+                                            <a href="${cp}/login"><fmt:message bundle="${wokoBundle}" key="woko.layout.login"/> </a>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </p>
+                            </li>
+                        </ul>
                     </c:if>
                 </div>
             </div>
