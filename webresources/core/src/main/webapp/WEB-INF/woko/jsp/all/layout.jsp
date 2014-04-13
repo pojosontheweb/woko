@@ -78,7 +78,7 @@
             <hr/>
 
             <div class="wokoContent">
-                <s:messages/>
+                <w:messages/>
                 <s:errors/>
                 <s:layout-component name="body"/>
             </div>
