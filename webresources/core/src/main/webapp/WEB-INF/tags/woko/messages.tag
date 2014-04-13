@@ -30,7 +30,7 @@
             <jsp:include page="<%=fragmentPath%>"/>
 <%
         } else {
-            // default to stripes messages handling
+            // default to stripes messages handling if no facet found
 %>
             <s:messages key="<%=key%>"/>
 <%

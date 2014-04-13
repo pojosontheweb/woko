@@ -27,4 +27,9 @@ public class RenderMessagesImpl<
     public List<Message> getMessages() {
         return (List<Message>)getFacetContext().getTargetObject();
     }
+
+    @Override
+    public boolean isEscapeXml() {
+        return true;
+    }
 }
