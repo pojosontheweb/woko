@@ -13,21 +13,11 @@
                 <fmt:message bundle="${wokoBundle}" key="woko.devel.find.pageTitle"/>
             </h1>
 
-            <s:form action="/search" class="form-inline" method="GET" role="search">
-                <div class="row">
-                    <div class="col-xs-8">
-                        <div class="input-group">
-                            <fmt:message bundle="${wokoBundle}" key="woko.devel.find.enterQuery" var="placeholder"/>
-                            <s:text name="facet.query" class="form-control" placeholder="${placeholder}"/>
-                            <span class="input-group-btn">
-                                <button class="btn btn-primary" type="submit" value="search">
-                                    <i class="glyphicon glyphicon-search"> </i>
-                                </button>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </s:form>
+        <div class="row">
+            <div class="col-lg-8">
+                <w:b3-search-form/>
+            </div>
+        </div>
 
         <h2>
                 <fmt:message bundle="${wokoBundle}" key="woko.devel.find.byClass"/>
