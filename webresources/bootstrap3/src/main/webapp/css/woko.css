@@ -8,6 +8,10 @@ body {
     background-color: #f5f5f5;
 }
 
-.search-results .search-form, .list-results .list-form {
+.w-search-results .w-search-form, .w-list-results .w-list-form {
     margin-bottom: 24px;
+}
+
+.w-properties .w-property-name {
+    text-align: right;
 }

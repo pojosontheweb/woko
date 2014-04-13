@@ -30,12 +30,14 @@
         RenderPropertyValue renderPropertyValue = Util.getRenderPropValueFacet(woko, request, owningObject, pName, pVal);
         String pValFragmentPath = renderPropertyValue.getFragmentPath(request);
 %>
-<div class="row-fluid">
-    <div class="span3 propertyName">
-        <jsp:include page="<%=pNameFragmentPath%>"/>
-    </div>
-    <div class="span9">
-        <jsp:include page="<%=pValFragmentPath%>"/>
+<div class="container w-properties">
+    <div class="row">
+        <div class="w-property-name col-lg-3 col-sm-3">
+            <jsp:include page="<%=pNameFragmentPath%>"/>
+        </div>
+        <div class="w-property-value col-lg-9 col-sm-9">
+            <jsp:include page="<%=pValFragmentPath%>"/>
+        </div>
     </div>
 </div>
 <%

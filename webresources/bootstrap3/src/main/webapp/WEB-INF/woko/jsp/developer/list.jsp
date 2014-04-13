@@ -32,7 +32,7 @@
             String overridenH1 = list.getPageHeaderTitle();
         %>
 
-        <div class="container list-results <%=className%>">
+        <div class="container w-list-results <%=className%>">
 
             <c:choose>
                 <c:when test="<%=overridenH1==null%>">
@@ -44,7 +44,7 @@
             </c:choose>
 
             <c:if test="<%=nbPages>1%>">
-                <div class="row list-form hidden-xs">
+                <div class="row w-list-form hidden-xs">
                     <div class="col-lg-4 col-sm-4">
                         <s:form action="/list" class="form-inline" method="GET">
                             <s:hidden name="className"/>

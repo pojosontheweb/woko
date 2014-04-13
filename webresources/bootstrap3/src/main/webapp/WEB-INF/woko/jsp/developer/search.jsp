@@ -30,7 +30,7 @@
             }
         %>
 
-        <div class="container search-results">
+        <div class="container w-search-results">
 
             <h1 class="page-header">
                 <fmt:message bundle="${wokoBundle}" key="woko.devel.search.title">
@@ -38,7 +38,7 @@
                 </fmt:message>
             </h1>
 
-            <div class="row search-form">
+            <div class="row w-search-form">
                 <div class="col-lg-8 col-sm-8">
                     <w:b3-search-form/>
                 </div>

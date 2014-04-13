@@ -14,18 +14,20 @@
     ObjectStore store = woko.getObjectStore();
     String className = store.getClassMapping(store.getObjectClass(c));
 %>
-<div class="wokoObject <%=className%>">
+<div class="w-object <%=className%>">
 
     <%-- Display title and wokoLinks in the same row --%>
-    <div class="row-fluid">
-        <%-- Call the renderTitle facet in order to display the title --%>
-        <div class="wokoTitle">
-            <w:includeFacet targetObject="<%=o%>" facetName="<%=WokoFacets.renderTitle%>"/>
-        </div>
+    <div class="container">
+        <div class="row">
+            <%-- Call the renderTitle facet in order to display the title --%>
+            <div class="w-title col-lg-10 col-sm-10">
+                <w:includeFacet targetObject="<%=o%>" facetName="<%=WokoFacets.renderTitle%>"/>
+            </div>
 
-        <%-- Call the renderTitle facet in order to display the available links --%>
-        <div class="wokoLinks pull-right">
-            <w:includeFacet targetObject="<%=o%>" facetName="<%=WokoFacets.renderLinks%>"/>
+            <%-- Call the renderTitle facet in order to display the available links --%>
+            <div class="w-links col-lg-2 col-sm-2">
+                <w:includeFacet targetObject="<%=o%>" facetName="<%=WokoFacets.renderLinks%>"/>
+            </div>
         </div>
     </div>
 
@@ -35,9 +37,7 @@
                     throwIfNotFound="false"/>
 
     <%-- Call the renderTitle facet in order to display the properties --%>
-    <div class="wokoProperties">
-        <w:includeFacet targetObject="<%=o%>" facetName="<%=WokoFacets.renderProperties%>"/>
-    </div>
+    <w:includeFacet targetObject="<%=o%>" facetName="<%=WokoFacets.renderProperties%>"/>
 
     <%-- after properties if any --%>
     <w:includeFacet targetObject="<%=o%>"
