@@ -4,7 +4,6 @@
 
 <%@ page import="woko.Woko" %>
 <%@ page import="woko.facets.builtin.WokoFacets" %>
-<%@ page import="woko.facets.builtin.bootstrap.all.Theme" %>
 
 <c:set var="cp" value="${pageContext.request.contextPath}"/>
 <w:facet facetName="<%=WokoFacets.layout%>"/>
@@ -53,10 +52,10 @@
                 });
                 $(".tab-pane").each(function() {
                     var tab = $(this);
-                    tab.removeClass("active")
-                    var tabId = "#"+tab.attr("id")
+                    tab.removeClass("active");
+                    var tabId = "#"+tab.attr("id");
                     if (tabId == hash){
-                        tab.addClass("active")
+                        tab.addClass("active");
                     }
                 })
             });
@@ -64,8 +63,12 @@
 
             $(document).ready(function(){
 
-                $("#tblFacets").dataTable({
+                var tbl = $("#tblFacets").dataTable({
                     "bPaginate": false
+                });
+                $("#tblFacets_filter").remove();
+                $('#filterFacetsInput').keyup(function(){
+                    tbl.fnFilter( $(this).val() );
                 });
 
                 var klient = new woko.rpc.Client('${cp}');
@@ -98,6 +101,17 @@
                 border: 1px solid #d3d3d3;
                 height: 200px;
             }
+
+            #tblFacets_wrapper {
+                overflow-x: auto;
+            }
+
+            #filterFacetsForm {
+                margin-top: 12px;
+                margin-bottom: 12px;
+            }
+
+
         </style>
 
         <div class="container">
@@ -126,27 +140,44 @@
 
                     <%-- Facets tab --%>
                     <div class="tab-pane" id="facets">
-                        <h2>All your facets</h2>
-                        <table id="tblFacets" class="table table-striped table-bordered table-condensed">
-                            <thead>
-                            <tr>
-                                <th>name</th>
-                                <th>role</th>
-                                <th>targetType</th>
-                                <th>facetClass</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                                <c:forEach items="${studio.facetDescriptors}" var="fd">
+
+                        <div class="row">
+                            <div class="col-md-4 offset-md-8">
+                                <div class="form-inline" id="filterFacetsForm">
+                                    <div class="input-group">
+                                        <input type="text" id="filterFacetsInput" class="form-control"/>
+                                        <span class="input-group-addon">
+                                            <i class="glyphicon glyphicon-filter"> </i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <table id="tblFacets" class="table table-striped table-bordered table-condensed">
+                                    <thead>
                                     <tr>
-                                        <td>${fd.name}</td>
-                                        <td>${fd.profileId}</td>
-                                        <td>${fd.targetObjectType.name}</td>
-                                        <td>${fd.facetClass.name}</td>
+                                        <th>name</th>
+                                        <th>role</th>
+                                        <th>targetType</th>
+                                        <th>facetClass</th>
                                     </tr>
-                                </c:forEach>
-                            </tbody>
-                        </table>
+                                    </thead>
+                                    <tbody>
+                                    <c:forEach items="${studio.facetDescriptors}" var="fd">
+                                        <tr>
+                                            <td>${fd.name}</td>
+                                            <td>${fd.profileId}</td>
+                                            <td>${fd.targetObjectType.name}</td>
+                                            <td>${fd.facetClass.name}</td>
+                                        </tr>
+                                    </c:forEach>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
 
                     <%-- Groovy shell tab --%>
