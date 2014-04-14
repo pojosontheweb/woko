@@ -187,9 +187,9 @@
 
                     <%-- Groovy shell tab --%>
                     <div class="tab-pane" id="groovyShell">
-                        <h2>
+                        <h3>
                             <fmt:message bundle="${wokoBundle}" key="woko.devel.studio.groovy.title"/>
-                        </h2>
+                        </h3>
                         <ul>
                             <li><strong><fmt:message bundle="${wokoBundle}" key="woko.devel.studio.groovy.request"/> </strong> <fmt:message bundle="${wokoBundle}" key="woko.devel.studio.groovy.requestType"/></li>
                             <li><strong><fmt:message bundle="${wokoBundle}" key="woko.devel.studio.groovy.woko"/></strong> <fmt:message bundle="${wokoBundle}" key="woko.devel.studio.groovy.wokoType"/></li>

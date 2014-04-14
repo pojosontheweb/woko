@@ -9,10 +9,10 @@ import woko.users.UserManager;
 import woko.users.UsernameResolutionStrategy;
 import net.sourceforge.jfacets.IFacetDescriptorManager;
 
-import woko.facets.builtin.bootstrap.all.LayoutBootstrap;
+import woko.facets.builtin.bootstrap3.all.LayoutBootstrap3;
 
 @FacetKey(name= WokoFacets.layout, profileId="all")
-public class MyLayout extends LayoutBootstrap<
+public class MyLayout extends LayoutBootstrap3<
         ObjectStore,
         UserManager,
         UsernameResolutionStrategy,
