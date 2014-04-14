@@ -28,7 +28,7 @@ class ArgsInListTest extends WebTestBase {
             goToPage '/list/MyEntity'
             verifyText 'Should be displayed only on load'
 
-            clickLink xpath: '/html/body/div/div[2]/div/div[4]/ul/li[3]/a' // click page 2
+            clickLink xpath: '/html/body/div[2]/ul/li[3]/a' // click page 2
             verifyText 'Should be displayed on each page except on load !'
 
             // delete
