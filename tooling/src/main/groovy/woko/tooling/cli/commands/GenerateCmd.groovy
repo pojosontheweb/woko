@@ -181,7 +181,7 @@ class GenerateCmd extends Command{
                     artifactId: "woko-usermanagement-web",
                     version: '${woko.version}', // NOT a Gstring !!
                     type: "war"
-            ))
+            ), true)
         }
     }
 

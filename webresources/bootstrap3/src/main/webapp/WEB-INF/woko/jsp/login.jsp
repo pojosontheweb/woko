@@ -19,21 +19,21 @@
                 <s:hidden name="targetUrl"/>
 
                 <div class="form-group">
-                    <s:label for="user.username" class="col-xs-2 control-label"/>
-                    <div class="col-xs-4">
+                    <s:label for="user.username" class="col-xs-3 control-label"/>
+                    <div class="col-xs-9 col-sm-6 col-md-4">
                         <s:text name="username" id="username" class="form-control"/>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <s:label for="user.password" class="col-xs-2 control-label"/>
-                    <div class="col-xs-4">
+                    <s:label for="user.password" class="col-xs-3 control-label"/>
+                    <div class="col-xs-9 col-sm-6 col-md-4">
                         <s:password name="password" id="password" class="form-control"/>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <div class="col-xs-4 col-xs-offset-2">
+                    <div class="col-xs-9 col-xs-offset-3 col-sm-6 col-md-4">
                         <s:submit class="btn btn-primary" name="login"/>
                     </div>
                 </div>
