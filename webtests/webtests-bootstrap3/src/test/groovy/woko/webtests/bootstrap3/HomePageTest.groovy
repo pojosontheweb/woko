@@ -14,15 +14,21 @@
  * limitations under the License.
  */
 
-package woko.webtests.bootstrap
+package woko.webtests.bootstrap3
 
-class JavaFacetTest extends WebTestBase {
+class HomePageTest extends WebTestBase{
 
-  void testJavaFacet() {
-    webtest('Java facet') {
-      goToPage '/javaFacet'
-      verifyText 'ok'
+  void testHomePage(){
+    webtest('test HomePage') {
+
+      // For guest users
+      goToPage '/home'
+      verifyText 'This is guest home !'
+
+      // For wdevel
+      login()
+      verifyText 'This is developer home !'
     }
   }
-
 }
+

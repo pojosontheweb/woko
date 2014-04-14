@@ -14,23 +14,25 @@
  * limitations under the License.
  */
 
-package woko.webtests.bootstrap
+package woko.webtests.bootstrap3
 
-class FacetValidationTest extends WebTestBase{
+class ArgsInListTest extends WebTestBase {
 
-  void testFacetValidation(){
-    webtest('test facet validation'){
-      goToPage '/facet-validation-test.jsp'
-      verifyText 'facet validation test'
+    void testListItem() {
+        webtest('Arguments in list') {
+            login()
 
-      // submit and check that we have nvalidation errors
-      clickButton(name:'doIt')
-      verifyText 'My facet prop is a required field'
+            // create
+            goToPage '/createDummyObjects'
 
-      // now fill in the required field, and submit
-      setInputField(name:'facet.prop', value:'foobar')
-      clickButton(name:'doIt')
-      verifyText 'you have entered foobar'
+            goToPage '/list/MyEntity'
+            verifyText 'Should be displayed only on load'
+
+            clickLink xpath: '/html/body/div/div[2]/div/div[4]/ul/li[3]/a' // click page 2
+            verifyText 'Should be displayed on each page except on load !'
+
+            // delete
+            goToPage '/removeDummyObjects'
+        }
     }
-  }
 }

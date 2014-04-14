@@ -14,25 +14,31 @@
  * limitations under the License.
  */
 
-package woko.webtests.bootstrap
+package woko.webtests.bootstrap3
 
-class ArgsInListTest extends WebTestBase {
+class RenderListItemTest extends WebTestBase {
 
     void testListItem() {
-        webtest('Arguments in list') {
+        webtest('renderListItem facet test') {
             login()
 
             // create
-            goToPage '/createDummyObjects'
+            goToPage '/save/MyBook?createTransient=true&object._id=1&object.name=Moby&nbPages=50'
+            verifyText 'Object saved'
 
-            goToPage '/list/MyEntity'
-            verifyText 'Should be displayed only on load'
-
-            clickLink xpath: '/html/body/div/div[2]/div/div[4]/ul/li[3]/a' // click page 2
-            verifyText 'Should be displayed on each page except on load !'
+            goToPage '/list/MyBook'
+            verifyText 'Moby'
+            verifyXPath xpath: "/html/body/div[2]/div/div[1][@class='row TestCssClass']"
 
             // delete
-            goToPage '/removeDummyObjects'
+            goToPage '/delete/MyBook/1'
+            verifyText 'Please confirm deletion'
+            clickButton name: 'facet.confirm'
+            verifyText 'Object deleted'
+
+            not {
+                goToPage '/view/MyBook/1'
+            }
         }
     }
 }

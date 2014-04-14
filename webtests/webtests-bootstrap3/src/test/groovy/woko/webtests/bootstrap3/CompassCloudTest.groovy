@@ -14,20 +14,21 @@
  * limitations under the License.
  */
 
-package woko.webtests.bootstrap
+package woko.webtests.bootstrap3
 
-import woko.webtests.WokoWebTestBase
+class CompassCloudTest extends WebTestBase {
 
-abstract class WebTestBase extends WokoWebTestBase {
+    void testCloud() {
+        webtest('test Cloud') {
+            login()
+            // create test objects
+            goToPage "/createDummyObjects"
 
-  void checkSearchForm(String url){
-    goToPage url
-
-    // Check search input is present
-    ant.verifyXPath xpath:"/html/body/div/div/div/div/div/form[@action='/woko-webtests/search']"
-
-    ant.verifyXPath xpath:"/html/body/div/div/div/div/div/form/input[@type='text']"
-    ant.verifyXPath xpath:"/html/body/div/div/div/div/div/form/input[@name='facet.query']"
-  }
+            // assert our cloud page
+            goToPage "/termCloud"
+            verifyText "Compass Term Cloud"
+            verifyText "moby"
+        }
+    }
 
 }

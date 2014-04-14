@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package woko.webtests.bootstrap
+package woko.webtests.bootstrap3
 
 class BuiltInFacetOverrideTest extends WebTestBase {
 

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package woko.webtests.bootstrap
+package woko.webtests.bootstrap3
 
 class CrudTest extends WebTestBase {
 
@@ -25,24 +25,22 @@ class CrudTest extends WebTestBase {
             // create
             goToPage '/save/MyBook?createTransient=true&object._id=1&object.name=Moby'
             verifyText 'Object saved'
-            verifyXPath xpath: "/html/body/div/div[2]/div/div[3]/div[2]/form/fieldset/div[6]/div/input[@value='Moby']"
-            // TODO verifyTitle 'Woko - Moby'
+            verifyXPath xpath: "//form//input[@value='Moby']"
 
             // view
             goToPage '/view/MyBook/1'
-            verifyXPath xpath: "/html/body/div/div[2]/div/div[3]/div[2]/div/div[2]/span/span"
-            text: 'Moby'
+            verifyXPath xpath: "/html/body/div[2]/div[2]/div[6]/div[2]/p"
+                        text: 'Moby'
 
             // update
             goToPage '/save/MyBook/1?object.name=Mobyz'
             verifyText 'Object saved'
-            verifyXPath xpath: "/html/body/div/div[2]/div/div[3]/div[2]/form/fieldset/div[6]/div/input[@value='Mobyz']"
-            // TODO verifyTitle 'Woko - Mobyz'
+            verifyXPath xpath: "/html/body/div[3]/form/div[1]/div[6]/div[2]/div/div/input[@value='Mobyz']"
 
             // view
             goToPage '/view/MyBook/1'
-            verifyXPath xpath: "/html/body/div/div[2]/div/div[3]/div[2]/div/div[2]/span/span"
-            text: 'Mobyz'
+            verifyXPath xpath: "/html/body/div[2]/div[2]/div[6]/div[2]/p"
+                        text: 'Mobyz'
 
             // delete
             goToPage '/delete/MyBook/1'
@@ -136,20 +134,20 @@ class CrudTest extends WebTestBase {
                 clickLink label: 'MyBook'
 
                 verifyText '400 object(s) found for class MyBook'
-                verifyXPath xpath: "/html/body/div/div[2]/div/div[4]/ul/li[11]/a" // check that link to page 10 exists
+                verifyXPath xpath: "/html/body/div[2]/ul/li[11]/a" // check that link to page 10 exists
                 verifyText 'Moby test100'
-                clickLink xpath: '/html/body/div/div[2]/div/div[4]/ul/li[3]/a' // click page 2
+                clickLink xpath: '/html/body/div[2]/ul/li[3]/a' // click page 2
                 verifyText 'Moby test110'
-                clickLink xpath: '/html/body/div/div[2]/div/div[4]/ul/li[4]/a' // click page 3
+                clickLink xpath: '/html/body/div[2]/ul/li[4]/a' // click page 3
                 verifyText 'Moby test120'
-                clickLink xpath: '/html/body/div/div[2]/div/div[4]/ul/li[12]/a' // click "next"
+                clickLink xpath: '/html/body/div[2]/ul/li[12]/a' // click "next"
                 verifyText 'Moby test130'
 
 
                 setSelectField name: 'facet.resultsPerPage', value: '500'
                 verifyText 'Moby test499'
                 not {
-                    verifyXPath xpath: "//div[@class='pagination']"
+                    verifyXPath xpath: "//ul[@class='pagination']"
                 }
 
                 // list
@@ -170,23 +168,23 @@ class CrudTest extends WebTestBase {
             verifyText 'all good'
 
             goToPage "/search"
-            setInputField xpath: '/html/body/div/div[2]/div/div[3]/form/input', value: 'moby'
-            clickButton name: 'search'
+            setInputField xpath: '/html/body/div[2]/div[1]/div[1]/form/div[1]/input', value: 'moby'
+            clickButton xpath: '/html/body/div[2]/div[1]/div[1]/form/div[1]/span/button'
 
             verifyText '400 object(s) found'
-            verifyXPath xpath: "/html/body/div/div[2]/div/div[5]/ul/li[11]/a" // check that link to page 10 exists
+            verifyXPath xpath: "/html/body/div[2]/ul/li[11]/a" // check that link to page 10 exists
             verifyText 'Moby test100'
-            clickLink xpath: '/html/body/div/div[2]/div/div[5]/ul/li[3]/a' // click page 2
+            clickLink xpath: '/html/body/div[2]/ul/li[3]/a' // click page 2
             verifyText 'Moby test'
-            clickLink xpath: '/html/body/div/div[2]/div/div[5]/ul/li[4]/a' // click page 3
+            clickLink xpath: '/html/body/div[2]/ul/li[4]/a' // click page 3
             verifyText 'Moby test'
-            clickLink xpath: '/html/body/div/div[2]/div/div[5]/ul/li[12]/a' // click "next"
+            clickLink xpath: '/html/body/div[2]/ul/li[12]/a' // click "next"
             verifyText 'Moby test'
 
-            setSelectField xpath: '/html/body/div/div[2]/div/div[4]/form/select', value: '500'
+            setSelectField name: 'facet.resultsPerPage', value: '500'
             verifyText 'Moby test'
             not {
-                verifyXPath xpath: "//div[@class='pagination']"
+                verifyXPath xpath: "//ul[@class='pagination']"
             }
 
             // list
@@ -221,10 +219,8 @@ class CrudTest extends WebTestBase {
             verifyText 'Object saved'
 
             clickLink label: 'Close editing'
-            verifyXPath xpath: '/html/body/div/div[2]/div/div[3]/div[2]/div/div[2]/span/span/div/span/span/a',
-                    text: 'test'
-            verifyXPath xpath: '/html/body/div/div[2]/div/div[3]/div[2]/div[3]/div[2]/span/span/a',
-                    text: 'test'
+            verifyXPath xpath: '/html/body/div[2]/div[2]/div[3]/div[2]/a',
+                        text: 'test'
         }
     }
 

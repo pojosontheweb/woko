@@ -1,4 +1,4 @@
-package woko.webtests.bootstrap
+package woko.webtests.bootstrap3
 
 class Defect203Test extends WebTestBase {
 

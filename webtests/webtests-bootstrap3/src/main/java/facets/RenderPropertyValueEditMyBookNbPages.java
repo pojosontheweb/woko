@@ -17,15 +17,14 @@
 package facets;
 
 import net.sourceforge.jfacets.annotations.FacetKey;
-import woko.facets.BaseFragmentFacet;
 import woko.facets.builtin.RenderPropertyValue;
 import woko.facets.builtin.all.RenderPropertyValueImpl;
 
-@FacetKey(name="renderPropertyValue_nbPages", profileId="all", targetObjectType=test.MyBook.class)
-public class RenderPropertyValueMyBookNbPages extends RenderPropertyValueImpl implements RenderPropertyValue {
+@FacetKey(name="renderPropertyValueEdit_nbPages", profileId="all", targetObjectType=test.MyBook.class)
+public class RenderPropertyValueEditMyBookNbPages extends RenderPropertyValueImpl implements RenderPropertyValue {
 
   public String getPath() {
-    return "/WEB-INF/jsp/renderPropertyValueMyBookNbPages.jsp";
+    return "/WEB-INF/jsp/renderPropertyValueEditMyBookNbPages.jsp";
   }
 
 

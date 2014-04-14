@@ -14,19 +14,15 @@
  * limitations under the License.
  */
 
-package facets;
+package woko.webtests.bootstrap3
 
-import net.sourceforge.jfacets.annotations.FacetKey;
-import woko.facets.BaseFragmentFacet;
-import woko.facets.builtin.RenderPropertyValue;
-import woko.facets.builtin.all.RenderPropertyValueImpl;
+class JavaFacetTest extends WebTestBase {
 
-@FacetKey(name="renderPropertyValue_nbPages", profileId="all", targetObjectType=test.MyBook.class)
-public class RenderPropertyValueMyBookNbPages extends RenderPropertyValueImpl implements RenderPropertyValue {
-
-  public String getPath() {
-    return "/WEB-INF/jsp/renderPropertyValueMyBookNbPages.jsp";
+  void testJavaFacet() {
+    webtest('Java facet') {
+      goToPage '/javaFacet'
+      verifyText 'ok'
+    }
   }
-
 
 }

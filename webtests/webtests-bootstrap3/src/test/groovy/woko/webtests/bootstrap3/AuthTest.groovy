@@ -14,35 +14,51 @@
  * limitations under the License.
  */
 
-package woko.webtests.bootstrap
+package woko.webtests.bootstrap3
 
-class HomePageTest extends WebTestBase{
+class AuthTest extends WebTestBase {
 
-  void testHomePage(){
-    webtest('test HomePage') {
-
-      // For guest users
+  void testAuthenticationWithHome() {
+    webtest("testAuthenticationWithHome") {
       goToPage '/home'
-      // TODO verifyTitle 'Woko - home'
-
-      // Click 'Home" link in navbar
-      clickLink href:'/woko-webtests/home'
       // TODO verifyTitle 'Woko - home'
       verifyText 'This is guest home !'
+      verifyText 'You are not authenticated'
 
-      // For wdevel
+      // login...
       login()
-      goToPage '/home'
-      // TODO verifyTitle 'Woko - home'
 
-      // Click 'Home" link in navbar
-      clickLink href:'/woko-webtests/home'
+      goToPage '/home'
       // TODO verifyTitle 'Woko - home'
       verifyText 'This is developer home !'
 
-      // Check search input is present
-      checkSearchForm('/home')
+      // logout
+      logout()
+
+      goToPage '/home'
+      //verifyTitle 'Woko - home'
+      verifyText 'This is guest home !'
     }
   }
-}
 
+  void testAuthenticatedUrls() {
+    [
+            '/view',
+            '/edit',
+            '/delete',
+            '/save',
+            '/json',
+            '/find',
+            '/search',
+            '/studio'
+    ].each { u ->
+      webtest("test authentication on $u") {
+        goToPage u
+// TODO       verifyTitle 'Woko - Please log-in'
+        verifyText 'Please log-in'
+      }
+    }
+  }
+
+
+}

@@ -14,19 +14,23 @@
  * limitations under the License.
  */
 
-package facets;
+package woko.webtests.bootstrap3
 
-import net.sourceforge.jfacets.annotations.FacetKey;
-import woko.facets.BaseFragmentFacet;
-import woko.facets.builtin.RenderPropertyValue;
-import woko.facets.builtin.all.RenderPropertyValueImpl;
+class FacetValidationTest extends WebTestBase{
 
-@FacetKey(name="renderPropertyValue_nbPages", profileId="all", targetObjectType=test.MyBook.class)
-public class RenderPropertyValueMyBookNbPages extends RenderPropertyValueImpl implements RenderPropertyValue {
+  void testFacetValidation(){
+    webtest('test facet validation'){
+      goToPage '/facet-validation-test.jsp'
+      verifyText 'facet validation test'
 
-  public String getPath() {
-    return "/WEB-INF/jsp/renderPropertyValueMyBookNbPages.jsp";
+      // submit and check that we have nvalidation errors
+      clickButton(name:'doIt')
+      verifyText 'My facet prop is a required field'
+
+      // now fill in the required field, and submit
+      setInputField(name:'facet.prop', value:'foobar')
+      clickButton(name:'doIt')
+      verifyText 'you have entered foobar'
+    }
   }
-
-
 }

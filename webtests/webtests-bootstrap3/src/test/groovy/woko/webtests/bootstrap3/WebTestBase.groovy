@@ -14,21 +14,10 @@
  * limitations under the License.
  */
 
-package woko.webtests.bootstrap
+package woko.webtests.bootstrap3
 
-class CompassCloudTest extends WebTestBase {
+import woko.webtests.WokoWebTestBase
 
-    void testCloud() {
-        webtest('test Cloud') {
-            login()
-            // create test objects
-            goToPage "/createDummyObjects"
-
-            // assert our cloud page
-            goToPage "/termCloud"
-            verifyText "Compass Term Cloud"
-            verifyText "moby"
-        }
-    }
+abstract class WebTestBase extends WokoWebTestBase {
 
 }
