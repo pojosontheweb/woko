@@ -26,7 +26,7 @@ class FindPageTest extends WebTestBase{
 
             // TODO verifyTitle 'Woko - Find objects'
             verifyText 'Full text search'
-            verifyText 'Enter your query and submit :'
+            verifyText 'Enter your query and submit'
             verifyXPath xpath:"/html/body/div/div[2]/div/form[@action='/woko-webtests/search']"
             verifyXPath xpath:"/html/body/div/div[2]/div/form/input[1][@type='text']"
             verifyXPath xpath:"/html/body/div/div[2]/div/form/input[1][@name='facet.query']"
@@ -34,7 +34,7 @@ class FindPageTest extends WebTestBase{
             verifyXPath xpath:"/html/body/div/div[2]/div/form/input[2][@name='search']"
 
             verifyText 'Find objects by class'
-            verifyText 'Select the name of the class and submit :'
+            verifyText 'Select the class to list instances for'
             verifyXPath xpath:"/html/body/div/div[2]/div/ul/li[4]/a[@href='/woko-webtests/list/MyBook']"
 
             // Check search input is present

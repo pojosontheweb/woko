@@ -1,0 +1,40 @@
+body {
+    /* needed to avoid footer hiding stuff */
+    padding-bottom: 70px;
+}
+
+#footer {
+    /* hard-coded color : we might wanna do this another way ? */
+    background-color: #f5f5f5;
+}
+
+.w-search-results .w-search-form, .w-list-results .w-list-form {
+    margin-bottom: 24px;
+}
+
+.w-property .w-property-name {
+    text-align: right;
+}
+
+.page-header {
+    /* override margin from bootstrap */
+    margin-top: 0;
+}
+
+@media (max-width: 768px) {
+    .w-property .w-property-name {
+        text-align: left;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 992px) {
+
+}
+
+@media (min-width: 992px) and (max-width: 1200px) {
+
+}
+
+@media (min-width: 1200px) {
+
+}

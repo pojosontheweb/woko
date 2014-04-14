@@ -190,15 +190,5 @@ class RendererTest extends WebTestBase {
         }
     }
 
-    void testRenderInputPhoneEmail() {
-        webtest("testRenderInputPhoneEmail") {
-            login()
-            goToPage '/save/MyEntityWithPhoneAndEmail?createTransient=true&object.name=totototot'
-            verifyXPath xpath: "/html/body/div/div[2]/div/div[3]/div[2]/form/fieldset/div[5]/div/input[@type='tel']"
-            verifyXPath xpath: "/html/body/div/div[2]/div/div[3]/div[2]/form/fieldset/div[3]/div/input[@type='email']"
-        }
-    }
-
-
 
 }
