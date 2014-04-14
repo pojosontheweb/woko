@@ -16,6 +16,11 @@ body {
     text-align: right;
 }
 
+.page-header {
+    /* override margin from bootstrap */
+    margin-top: 0;
+}
+
 @media (max-width: 768px) {
     .w-property .w-property-name {
         text-align: left;

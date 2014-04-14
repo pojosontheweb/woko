@@ -67,8 +67,11 @@
                     "bPaginate": false
                 });
                 $("#tblFacets_filter").remove();
-                $('#filterFacetsInput').keyup(function(){
+                $("#filterFacetsInput").keyup(function(){
                     tbl.fnFilter( $(this).val() );
+                });
+                $("#filterFacetsBtn").click(function() {
+                    tbl.fnFilter( $("#filterFacetsInput").val() );
                 });
 
                 var klient = new woko.rpc.Client('${cp}');
@@ -142,12 +145,14 @@
                     <div class="tab-pane" id="facets">
 
                         <div class="row">
-                            <div class="col-md-4 offset-md-8">
+                            <div class="col-md-4 col-md-offset-8 col-sm-6 col-sm-offset-6">
                                 <div class="form-inline" id="filterFacetsForm">
                                     <div class="input-group">
                                         <input type="text" id="filterFacetsInput" class="form-control"/>
-                                        <span class="input-group-addon">
-                                            <i class="glyphicon glyphicon-filter"> </i>
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-primary" type="button" value="search" id="filterFacetsBtn">
+                                                <i class="glyphicon glyphicon-filter"> </i>
+                                            </button>
                                         </span>
                                     </div>
                                 </div>
