@@ -82,6 +82,8 @@
         <script type="text/javascript" src="${cp}/js/bootstrap3-datepicker/bootstrap-datepicker.fr.min.js?${cacheTokenParams}"></script>
         <% } %>
 
+        <link rel="stylesheet" href="${cp}/js/bootstrap3-datepicker/bootstrap-datepicker.css" type="text/css">
+
         <script type="text/javascript">
             window.wokoClient = new woko.rpc.Client("${cp}");
         </script>
