@@ -21,8 +21,6 @@
 
         <script type="text/javascript" src="${cp}/plugins/dataTables/jquery.dataTables.min.js"></script>
         <script type="text/javascript" src="${cp}/plugins/dataTables/DT_bootstrap.js"></script>
-
-        <script src="${cp}/woko/ace/ace-uncompressed-noconflict.js" type="text/javascript" charset="utf-8"></script>
     </s:layout-component>
 
     <s:layout-component name="customCss">
@@ -79,7 +77,7 @@
                     log.empty();
                     klient.invokeFacet('groovy', {
                         content: {
-                            "facet.code": editor.getSession().getValue()
+                            "facet.code": $("#groovyCode").val()
                         },
                         onSuccess: function(resp) {
                             log.append(replaceAll(resp.log, '\n', '<br/>'));
@@ -91,24 +89,14 @@
                         }
                     });
                 });
-
-                // initialize code editor
-                editor = ace.edit("groovyCode");
-                editor.setTheme("ace/theme/textmate");
-                editor.getSession().setMode("ace/mode/groovy");
-                
             });
 
         </script>
 
         <style type="text/css">
-            #groovyCodeWrapper {
-                height: 300px;
-                margin-bottom: 10px;
-            }
             #groovyCode {
                 border: 1px solid #d3d3d3;
-                height: 300px;
+                height: 200px;
             }
         </style>
 
@@ -163,8 +151,9 @@
 
                     <%-- Groovy shell tab --%>
                     <div class="tab-pane" id="groovyShell">
-                        <h2><fmt:message bundle="${wokoBundle}" key="woko.devel.studio.groovy.code"/></h2>
-                        <fmt:message bundle="${wokoBundle}" key="woko.devel.studio.groovy.title"/>
+                        <h2>
+                            <fmt:message bundle="${wokoBundle}" key="woko.devel.studio.groovy.title"/>
+                        </h2>
                         <ul>
                             <li><strong><fmt:message bundle="${wokoBundle}" key="woko.devel.studio.groovy.request"/> </strong> <fmt:message bundle="${wokoBundle}" key="woko.devel.studio.groovy.requestType"/></li>
                             <li><strong><fmt:message bundle="${wokoBundle}" key="woko.devel.studio.groovy.woko"/></strong> <fmt:message bundle="${wokoBundle}" key="woko.devel.studio.groovy.wokoType"/></li>
@@ -173,9 +162,8 @@
 
                         <div class="row">
                             <div class="col-md-12">
-                                <div id="groovyCodeWrapper">
-                                    <div id="groovyCode"></div>
-                                </div>
+                                <textarea id="groovyCode" class="form-control">// groovy goes here !
+log << "this runs on the server : $woko"</textarea>
                             </div>
                         </div>
 
