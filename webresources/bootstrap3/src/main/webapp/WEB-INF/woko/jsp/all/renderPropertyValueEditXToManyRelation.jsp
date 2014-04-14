@@ -31,19 +31,23 @@
     String fullFieldName = renderPropertyValue.getFieldPrefix() + "." + propertyName;
     Collection<?> propVal = (Collection<?>)renderPropertyValue.getPropertyValue();
 %>
-<select name="<%=fullFieldName%>" multiple="multiple" class="form-control">
-    <%
-        Collection<?> choices = renderPropertyValue.getChoices();
-        for (Object choice : choices) {
-            String key = os.getKey(choice);
-            String title = Util.getTitle(request, choice);
-            String selected = propVal!=null && propVal.contains(choice) ?
-                    "selected=\"selected\"" :
-                    "";
-    %>
-        <option value="<%=key%>" <%=selected%> ><c:out value="<%=title%>"/></option>
-    <%
-        }
-    %>
-</select>
+<div class="row">
+    <div class="col-sm-8 col-md-6">
+        <select name="<%=fullFieldName%>" multiple="multiple" class="form-control">
+            <%
+                Collection<?> choices = renderPropertyValue.getChoices();
+                for (Object choice : choices) {
+                    String key = os.getKey(choice);
+                    String title = Util.getTitle(request, choice);
+                    String selected = propVal!=null && propVal.contains(choice) ?
+                            "selected=\"selected\"" :
+                            "";
+            %>
+                <option value="<%=key%>" <%=selected%> ><c:out value="<%=title%>"/></option>
+            <%
+                }
+            %>
+        </select>
+    </div>
+</div>
 

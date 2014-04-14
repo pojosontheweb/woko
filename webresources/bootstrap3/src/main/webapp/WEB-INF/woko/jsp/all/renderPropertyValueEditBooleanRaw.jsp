@@ -22,6 +22,8 @@
     String propertyName = renderPropertyValue.getPropertyName();
     String fullFieldName = renderPropertyValue.getFieldPrefix() + "." + propertyName;
 %>
-<s:checkbox name="<%=fullFieldName%>" class="form-control"/>
+<div class="checkbox">
+    <s:checkbox name="<%=fullFieldName%>"/>
+</div>
 
 

@@ -22,9 +22,13 @@
     String propertyName = renderPropertyValue.getPropertyName();
     String fullFieldName = renderPropertyValue.getFieldPrefix() + "." + propertyName;
 %>
-<s:select name="<%=fullFieldName%>" class="form-control">
-    <s:option value="">&nbsp;</s:option>
-    <s:option value="true">true</s:option>
-    <s:option value="false">false</s:option>
-</s:select>
+<div class="row">
+    <div class="col-md-2 col-sm-3 col-xs-4">
+        <s:select name="<%=fullFieldName%>" class="form-control">
+            <s:option value="">&nbsp;</s:option>
+            <s:option value="true">true</s:option>
+            <s:option value="false">false</s:option>
+        </s:select>
+    </div>
+</div>
 
