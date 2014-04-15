@@ -19,8 +19,8 @@ package woko.webtests.bootstrap3
 import org.junit.Assert
 import org.junit.Ignore
 import org.junit.Test
-import org.pojosontheweb.selenium.Findr
-import org.pojosontheweb.selenium.formz.Select
+import com.pojosontheweb.selenium.Findr
+import com.pojosontheweb.selenium.formz.Select
 
 class RendererTest extends WebTestBase {
 

@@ -18,8 +18,8 @@ package woko.webtests.bootstrap3
 
 import junit.framework.Assert
 import org.openqa.selenium.By
-import org.pojosontheweb.selenium.Findr
-import org.pojosontheweb.selenium.ManagedDriverTestBase
+import com.pojosontheweb.selenium.Findr
+import com.pojosontheweb.selenium.ManagedDriverTestBase
 
 abstract class WebTestBase extends ManagedDriverTestBase {
 

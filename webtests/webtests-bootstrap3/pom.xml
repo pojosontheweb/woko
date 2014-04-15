@@ -79,7 +79,7 @@
 
         <!-- Use selenium utils for our tests -->
         <dependency>
-            <groupId>org.pojosontheweb</groupId>
+            <groupId>com.pojosontheweb</groupId>
             <artifactId>selenium-utils-core</artifactId>
             <version>LATEST-SNAPSHOT</version>
         </dependency>
