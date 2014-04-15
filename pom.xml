@@ -29,8 +29,8 @@
     <version>LATEST-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>Woko - parent</name>
-    <url>https://github.com/vankeisb/woko2/wiki</url>
-    <description>The Woko Framework</description>
+    <url>https://github.com/pojosontheweb/woko</url>
+    <description>Woko: POJOs on the Web!</description>
     <licenses>
         <license>
             <name>The Apache Software License, Version 2.0</name>
