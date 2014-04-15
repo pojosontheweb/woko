@@ -16,21 +16,22 @@
 
 package woko.webtests.bootstrap3
 
-class FacetValidationTest extends WebTestBase{
+import org.junit.Test
 
-  void testFacetValidation(){
-    webtest('test facet validation'){
-      goToPage '/facet-validation-test.jsp'
-      verifyText 'facet validation test'
+class FacetValidationTest extends WebTestBase {
 
-      // submit and check that we have nvalidation errors
-      clickButton(name:'doIt')
-      verifyText 'My facet prop is a required field'
+    @Test
+    void testFacetValidation() {
+        goToPage '/facet-validation-test.jsp'
+        verifyText 'facet validation test'
 
-      // now fill in the required field, and submit
-      setInputField(name:'facet.prop', value:'foobar')
-      clickButton(name:'doIt')
-      verifyText 'you have entered foobar'
+        // submit and check that we have nvalidation errors
+        byName('doIt').click()
+        verifyText 'My facet prop is a required field'
+
+        // now fill in the required field, and submit
+        byName('facet.prop').sendKeys('foobar')
+        byName('doIt').click()
+        verifyText 'you have entered foobar'
     }
-  }
 }

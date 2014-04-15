@@ -16,19 +16,20 @@
 
 package woko.webtests.bootstrap3
 
+import org.junit.Test
+
 class CompassCloudTest extends WebTestBase {
 
+    @Test
     void testCloud() {
-        webtest('test Cloud') {
-            login()
-            // create test objects
-            goToPage "/createDummyObjects"
+        login()
+        // create test objects
+        goToPage "/createDummyObjects"
 
-            // assert our cloud page
-            goToPage "/termCloud"
-            verifyText "Compass Term Cloud"
-            verifyText "moby"
-        }
+        // assert our cloud page
+        goToPage "/termCloud"
+        verifyText "Compass Term Cloud"
+        verifyText "moby"
     }
 
 }

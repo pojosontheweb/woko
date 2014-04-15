@@ -16,13 +16,14 @@
 
 package woko.webtests.bootstrap3
 
+import org.junit.Test
+
 class BuiltInFacetOverrideTest extends WebTestBase {
 
+    @Test
     void testOverrideDeveloperNavBar() {
-        webtest('testOverrideDeveloperNavBar') {
-            login()
-            verifyText 'google'
-        }
+        login()
+        verifyText 'google'
     }
 
 }

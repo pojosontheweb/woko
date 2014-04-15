@@ -16,23 +16,25 @@
 
 package woko.webtests.bootstrap3
 
+import org.junit.Test
+import org.openqa.selenium.By
+
 class ArgsInListTest extends WebTestBase {
 
+    @Test
     void testListItem() {
-        webtest('Arguments in list') {
-            login()
+        login()
 
-            // create
-            goToPage '/createDummyObjects'
+        // create
+        goToPage '/createDummyObjects'
 
-            goToPage '/list/MyEntity'
-            verifyText 'Should be displayed only on load'
+        goToPage '/list/MyEntity'
+        verifyText 'Should be displayed only on load'
 
-            clickLink xpath: '/html/body/div[2]/ul/li[3]/a' // click page 2
-            verifyText 'Should be displayed on each page except on load !'
+        findr().elem(By.xpath("/html/body/div[2]/ul/li[3]/a")).click() // click page 2
+        verifyText 'Should be displayed on each page except on load !'
 
-            // delete
-            goToPage '/removeDummyObjects'
-        }
+        // delete
+        goToPage '/removeDummyObjects'
     }
 }

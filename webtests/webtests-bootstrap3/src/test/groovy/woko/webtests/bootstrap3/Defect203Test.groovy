@@ -1,17 +1,19 @@
 package woko.webtests.bootstrap3
 
+import org.junit.Test
+import org.pojosontheweb.selenium.formz.Select
+
 class Defect203Test extends WebTestBase {
 
+    @Test
     void testDefect203(){
-        webtest('testDefect203'){
-            login()
-            clickLink label:"create"
-            setSelectField name:"className", value:"Defect203Entity"
-            clickButton name:"create"
-            setInputField name:"object.intProp", value:"abcdef"
-            clickButton name:"save"
-            verifyText text: "The value (abcdef) entered in field Defect203 Entity Int Prop must be a valid number"
-        }
+        login()
+        clickLink "create"
+        new Select(byName("className")).selectByVisibleText("Defect203Entity")
+        byName("create").click()
+        byName("object.intProp").sendKeys("abcdef")
+        byName("save").click()
+        verifyText "The value (abcdef) entered in field Defect203 Entity Int Prop must be a valid number"
     }
 
 }

@@ -16,176 +16,183 @@
 
 package woko.webtests.bootstrap3
 
+import org.junit.Assert
+import org.junit.Ignore
+import org.junit.Test
+import org.pojosontheweb.selenium.Findr
+import org.pojosontheweb.selenium.formz.Select
+
 class RendererTest extends WebTestBase {
 
+    @Test
     void testPropertyValueFacetOverrides() {
-        webtest('test prop value overrides') {
-            login()
-            // create test object
-            goToPage '/save/MyBook?createTransient=true&object._id=1111&object.name=Moby&object.nbPages=123'
+        login()
+        // create test object
+        goToPage '/save/MyBook?createTransient=true&object._id=1111&object.name=Moby&object.nbPages=123'
 
-            // view
-            goToPage '/view/MyBook/1111'
-            verifyText '123 page(s)' // view override
+        // view
+        goToPage '/view/MyBook/1111'
+        verifyText '123 page(s)' // view override
 
-            // edit
-            goToPage '/edit/MyBook/1111'
-            verifyText 'page(s)'
+        // edit
+        goToPage '/edit/MyBook/1111'
+        verifyText 'page(s)'
 
-            // check that buttons have been overriden (renderPropertiesEditButtons)
-            verifyText 'Funky button'
+        // check that buttons have been overriden (renderPropertiesEditButtons)
+        verifyText 'Funky button'
 
-            goToPage '/delete/MyBook/1111?facet.confirm=true'
-        }
+        goToPage '/delete/MyBook/1111?facet.confirm=true'
     }
 
+    @Test
     void testReadOnlyPropCannotBeEdited() {
-        webtest("testReadOnlyPropCannotBeEdited") {
-            login()
-            try {
-                goToPage '/save/MyEntityWithReadOnlyProp?createTransient=true&object.id=1234'
-                verifyText "readonlyvalue"
-                not {
-                    verifyXPath xpath:"//input[@name=object.readOnlyProp]"
-                }
-            } finally {
-                goToPage '/delete/MyEntityWithReadOnlyProp/1234?facet.confirm=true'
+        login()
+        try {
+            goToPage '/save/MyEntityWithReadOnlyProp?createTransient=true&object.id=1234'
+            verifyText "readonlyvalue"
+            not {
+                verifyXPath "//input[@name=object.readOnlyProp]"
             }
-
+        } finally {
+            goToPage '/delete/MyEntityWithReadOnlyProp/1234?facet.confirm=true'
         }
     }
 
+    @Test
     void testFlatLayout() {
-        webtest("test flat layout") {
-            login()
-            goToPage '/save/MyEntity?createTransient=true&object.id=5566&object.prop1=abc&object.prop2=123'
-
+        login()
+        goToPage '/save/MyEntity?createTransient=true&object.id=5566&object.prop1=abc&object.prop2=123'
+        try {
             goToPage '/view/MyEntity/5566'
-            verifyXPath xpath: '/html/body/div[2]/div[4]/div/div/p', text: '.*abc.*', regex: true
-
+            byXpath('/html/body/div[2]/div[4]/div/div/p')
+                    .where(Findr.textEquals('abc'))
+                    .eval()
+        } finally {
             goToPage '/delete/MyEntity/5566?facet.confirm=true'
         }
     }
 
+    @Test
     void testComboForPersistentXToOne() {
-        webtest("testComboForPersistentXToOne") {
-            login()
-            try {
-                goToPage '/save/EntityWithRelations?createTransient=true&object.name=ewr1'
-                storeXPath xpath:'/html/body/div[3]/form/div[1]/div[2]/div[2]/div/div/input/@value', property:'id1'
-                goToPage '/save/SubEntity?createTransient=true&object.name=sub1'
-                storeXPath xpath:'/html/body/div[3]/form/div[1]/div[4]/div[2]/div/div/input/@value', property:'id2'
+        login()
+        try {
+            goToPage '/save/EntityWithRelations?createTransient=true&object.name=ewr1&object.id=1'
+            goToPage '/save/SubEntity?createTransient=true&object.name=sub1&object.id=1'
 
-                goToPage '/edit/SubEntity/#{id2}'
-                verifySelectField name:'object.daEntity', value:''
+            goToPage '/edit/SubEntity/1'
+            def daEntitySelect = new Select(byName('object.daEntity'))
+            daEntitySelect.assertSelectedText('')
 
-                setSelectField name:'object.daEntity', text:"ewr1"
-                clickButton name:'save'
-                verifySelectField name:'object.daEntity', text:'ewr1'
+            daEntitySelect.selectByVisibleText("ewr1")
+            byName("save").click()
+            daEntitySelect.assertSelectedText('ewr1')
 
-            } finally {
-                goToPage '/delete/EntityWithRelations/#{id1}?facet.confirm=true'
-                goToPage '/delete/SubEntity/#{id2}?facet.confirm=true'
-            }
+        } finally {
+            goToPage '/delete/EntityWithRelations/1?facet.confirm=true'
+            goToPage '/delete/SubEntity/1?facet.confirm=true'
         }
     }
 
+    @Test
+    @Ignore
+    void testMultiSelectForPersistentXToMany() {
+        Assert.fail("TODO")
+    }
+
+        @Test
     void testEnumEdit() {
-        webtest("testEnumEdit") {
-            login()
-            try {
+        login()
+        try {
 
-                goToPage '/save/MyBook?createTransient=true&object._id=98765&object.name=Moby&object.nbPages=123'
+            goToPage '/save/MyBook?createTransient=true&object._id=98765&object.name=Moby&object.nbPages=123'
 
-                // view
-                goToPage '/view/MyBook/98765'
-                // assert enum is displayed if not null
-                verifyText 'initializedRating'
-                verifyText 'GOOD'
+            // view
+            goToPage '/view/MyBook/98765'
+            // assert enum is displayed if not null
+            verifyText 'initializedRating'
+            verifyText 'GOOD'
 
-                // edit
-                goToPage '/edit/MyBook/98765'
-                verifySelectField name:'object.rating', value:'' // check it's nullable
-                verifySelectField name:'object.initializedRating', value:'GOOD' // check it's initialized
+            // edit
+            goToPage '/edit/MyBook/98765'
 
-                setSelectField name:'object.rating', value:'POOR'
-                setSelectField name:'object.initializedRating', value:'AMAZING'
-                clickButton name:'save'
-                verifyText 'POOR'
-                verifyText 'AMAZING'
+            def selectRating = new Select(byName("object.rating"))
+            selectRating.assertSelectedText("") // check it's nullable
+            def selectInit = new Select(byName('object.initializedRating'))
+            selectInit.assertSelectedText('GOOD') // check it's initialized
 
+            selectRating.selectByVisibleText('POOR')
+            selectInit.selectByVisibleText('AMAZING')
+            byName("save").click()
+            verifyText 'POOR'
+            verifyText 'AMAZING'
 
-                // TODO set select check object is saved
-
-            } finally {
-                goToPage '/delete/MyBook/98765?facet.confirm=true'
-            }
+        } finally {
+            goToPage '/delete/MyBook/98765?facet.confirm=true'
         }
     }
 
+    @Test
     void testTableDisplayInList() {
-        webtest("tableDisplayInList") {
-            login()
-            try {
-                goToPage '/save/MyEntity?createTransient=true&object.id=887766&object.prop1=abc&object.prop2=123'
-                goToPage '/list/MyEntity'
+        login()
+        try {
+            goToPage '/save/MyEntity?createTransient=true&object.id=887766&object.prop1=abc&object.prop2=123'
+            goToPage '/list/MyEntity'
 
-                // Verify title
-                verifyText text: 'TestPageHeaderTitleOverride - Should be displayed only on load'
+            // Verify title
+            verifyText 'TestPageHeaderTitleOverride - Should be displayed only on load'
 
-                // assert some of the DOM
-                verifyXPath xpath:'/html/body/div[2]/table/thead/tr/th[1]', text:'.*Class.*', regex: true
-                verifyXPath xpath:'/html/body/div[2]/table/tbody/tr/td[1]/p', text:'.*test.MyEntity.*', regex: true
-                verifyXPath xpath:'/html/body/div[2]/table/tbody/tr/td[2]/p', text: '.*887766.*', regex: true
+            // assert some of the DOM
+            byXpath('/html/body/div[2]/table/thead/tr/th[1]').where(Findr.textEquals('Class')).eval()
+            byXpath('/html/body/div[2]/table/tbody/tr/td[1]/p').where(Findr.textEquals('test.MyEntity')).eval()
+            byXpath('/html/body/div[2]/table/tbody/tr/td[2]/p').where(Findr.textEquals('887766')).eval()
 
-                // check the links are present
-                verifyXPath xpath:'/html/body/div[2]/table/tbody/tr/td[5]/div/a[1]'
-                verifyXPath xpath:'/html/body/div[2]/table/tbody/tr/td[5]/div/a[2]'
-                verifyXPath xpath:'/html/body/div[2]/table/tbody/tr/td[5]/div/a[3]'
-                verifyXPath xpath:'/html/body/div[2]/table/tbody/tr/td[5]/div/a[4]'
+            // check the links are present
+            verifyXPath '/html/body/div[2]/table/tbody/tr/td[5]/div/a[1]'
+            verifyXPath '/html/body/div[2]/table/tbody/tr/td[5]/div/a[2]'
+            verifyXPath '/html/body/div[2]/table/tbody/tr/td[5]/div/a[3]'
+            verifyXPath '/html/body/div[2]/table/tbody/tr/td[5]/div/a[4]'
 
-                // verify the page header title is changed
-// TODO nothing clicked here, text cannot change                verifyText text: "TestPageHeaderTitleOverride"
+            // verify the page header title is changed
+// TODO nothing clicked here, text cannot change
+// verifyText text: "TestPageHeaderTitleOverride"
 
-                logout()
-                goToPage '/list/MyEntity'
+            logout()
+            goToPage '/list/MyEntity'
 
-                // Verify title
-                verifyText text: 'TestPageHeaderTitleOverride'
+            // Verify title
+            verifyText 'TestPageHeaderTitleOverride'
 
-                // there should be no more "class" field
-                verifyText text: '.*887766.*', regex: true
-                not {
-                    verifyText text:'.*test.MyEntity.*', regex: true
-                }
-
-                // only a "view" button
-                verifyXPath xpath:'/html/body/div[2]/table/tbody/tr/td[4]/div/a'
-                not {
-                    verifyXPath xpath:'/html/body/div[2]/table/tbody/tr/td[4]/div/a[2]'
-                }
-
-            } finally {
-                goToPage '/delete/MyEntity/887766?facet.confirm=true'
+            // there should be no more "class" field
+            verifyText '887766'
+            not {
+                verifyText 'test.MyEntity'
             }
+
+            // only a "view" button
+            verifyXPath '/html/body/div[2]/table/tbody/tr/td[4]/div/a'
+            not {
+                verifyXPath '/html/body/div[2]/table/tbody/tr/td[4]/div/a[2]'
+            }
+
+        } finally {
+            goToPage '/delete/MyEntity/887766?facet.confirm=true'
         }
     }
 
+    @Test
     void testRenderLinkAttributes() {
-        webtest("testRenderLinkAttributes") {
-            login()
-            try {
+        login()
+        try {
 
-                goToPage '/save/MyBook?createTransient=true&object._id=11221122&object.name=Moby&object.nbPages=123'
+            goToPage '/save/MyBook?createTransient=true&object._id=11221122&object.name=Moby&object.nbPages=123'
 
-                // close edit link with attribute
-                clickLink xpath:"/html/body/div[3]/div/div/div[2]/div/div/a[1][@testmeedit='11221122']"
+            // close edit link with attribute
+            byXpath("/html/body/div[3]/div/div/div[2]/div/div/a[1][@testmeedit='11221122']").click()
 
-                // edit with link attribute
-                clickLink xpath:"/html/body/div[2]/div[1]/div/div[2]/div/div/a[1][@testme='11221122']"
-            } finally {
-                goToPage '/delete/MyBook/11221122?facet.confirm=true'
-            }
+            // edit with link attribute
+            byXpath("/html/body/div[2]/div[1]/div/div[2]/div/div/a[1][@testme='11221122']").click()
+        } finally {
+            goToPage '/delete/MyBook/11221122?facet.confirm=true'
         }
     }
 

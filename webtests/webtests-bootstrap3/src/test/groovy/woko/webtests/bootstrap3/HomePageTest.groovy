@@ -16,19 +16,19 @@
 
 package woko.webtests.bootstrap3
 
-class HomePageTest extends WebTestBase{
+import org.junit.Test
 
-  void testHomePage(){
-    webtest('test HomePage') {
+class HomePageTest extends WebTestBase {
 
-      // For guest users
-      goToPage '/home'
-      verifyText 'This is guest home !'
+    @Test
+    void testHomePage() {
+        // For guest users
+        goToPage '/home'
+        verifyText 'This is guest home !'
 
-      // For wdevel
-      login()
-      verifyText 'This is developer home !'
+        // For wdevel
+        login()
+        verifyText 'This is developer home !'
     }
-  }
 }
 
