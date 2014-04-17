@@ -9,7 +9,7 @@ class Defect203Test extends WebTestBase {
     void testDefect203(){
         login()
         clickLink "create"
-        new Select(byName("className")).selectByVisibleText("Defect203Entity")
+        Select.selectByVisibleText(byName("className"), "Defect203Entity")
         byName("create").click()
         byName("object.intProp").sendKeys("abcdef")
         byName("save").click()

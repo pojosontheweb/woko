@@ -118,7 +118,7 @@ class CrudTest extends WebTestBase {
             byXpath('/html/body/div[2]/ul/li[12]/a').click() // click "next"
             verifyText 'Moby test130'
 
-            new Select(byName("facet.resultsPerPage")).selectByVisibleText("500")
+            Select.selectByVisibleText(byName("facet.resultsPerPage"), "500");
 
             verifyText 'Moby test499'
             not {
@@ -156,11 +156,11 @@ class CrudTest extends WebTestBase {
             byXpath('/html/body/div[2]/ul/li[12]/a').click() // click "next"
             verifyText 'Moby test'
 
-            new Select(byName("facet.resultsPerPage")).selectByVisibleText("500")
+            Select.selectByVisibleText(byName("facet.resultsPerPage"), "500")
 
             verifyText 'Moby test'
             not {
-                verifyXPath xpath: "//ul[@class='pagination']"
+                verifyXPath "//ul[@class='pagination']"
             }
 
             // list
@@ -185,11 +185,11 @@ class CrudTest extends WebTestBase {
 
             // click links and check associations
             goToPage '/edit/SubEntity/2'
-            new Select(byName("object.daEntity")).selectByVisibleText("test")
+            Select.selectByVisibleText(byName("object.daEntity"), "test")
             byName('save').click()
             verifyText 'Object saved'
 
-            new Select(byName("object.children")).selectByVisibleText("test")
+            Select.selectByVisibleText(byName("object.children"), "test")
             byName("save").click()
             verifyText 'Object saved'
 

@@ -80,12 +80,12 @@ class RendererTest extends WebTestBase {
             goToPage '/save/SubEntity?createTransient=true&object.name=sub1&object.id=1'
 
             goToPage '/edit/SubEntity/1'
-            def daEntitySelect = new Select(byName('object.daEntity'))
-            daEntitySelect.assertSelectedText('')
+            def daEntitySelect = byName('object.daEntity')
+            daEntitySelect.where(Select.selectedText('')).eval()
 
-            daEntitySelect.selectByVisibleText("ewr1")
+            Select.selectByVisibleText(daEntitySelect, "ewr1")
             byName("save").click()
-            daEntitySelect.assertSelectedText('ewr1')
+            daEntitySelect.where(Select.selectedText('ewr1'))
 
         } finally {
             goToPage '/delete/EntityWithRelations/1?facet.confirm=true'
@@ -115,13 +115,13 @@ class RendererTest extends WebTestBase {
             // edit
             goToPage '/edit/MyBook/98765'
 
-            def selectRating = new Select(byName("object.rating"))
-            selectRating.assertSelectedText("") // check it's nullable
-            def selectInit = new Select(byName('object.initializedRating'))
-            selectInit.assertSelectedText('GOOD') // check it's initialized
+            def selectRating = byName("object.rating")
+            selectRating.where(Select.selectedText("")).eval()
+            def selectInit = byName('object.initializedRating')
+            selectInit.where(Select.selectedText('GOOD')) // check it's initialized
 
-            selectRating.selectByVisibleText('POOR')
-            selectInit.selectByVisibleText('AMAZING')
+            Select.selectByVisibleText(selectRating, "POOR")
+            Select.selectByVisibleText(selectInit, "AMAZING")
             byName("save").click()
             verifyText 'POOR'
             verifyText 'AMAZING'
