@@ -117,6 +117,14 @@ class UsermanagementTest extends WokoWebTestBase {
             setInputField name:"facet.newPasswordConfirm", value: "foobarbaz"
             clickButton xpath: '/html/body/div/div[2]/div/div[3]/div/form/fieldset/div[4]/input'
             verifyText text: "Password changed"
+
+            goToPage "/password"
+
+            setInputField name:"facet.currentPassword", value: "foobarbaz"
+            setInputField name:"facet.newPassword", value: "wdevel"
+            setInputField name:"facet.newPasswordConfirm", value: "wdevel"
+            clickButton xpath: '/html/body/div/div[2]/div/div[3]/div/form/fieldset/div[4]/input'
+            verifyText text: "Password changed"
         }
     }
 
