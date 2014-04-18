@@ -16,21 +16,23 @@
 
 package woko.webtests.bootstrap3
 
+import org.junit.Test
+
 class CreatePageTest  extends WebTestBase{
 
+    @Test
     void testCreatePage(){
-        webtest('test Create page'){
-            login()
+        login()
 
-            clickLink label:'create'
+        goToPage("/create")
 
-            verifyText 'Create a new object'
+        verifyText 'Create a new object'
 
-            verifyXPath xpath: "//form[@action='/woko-webtests/save']/select[@name='className']"
-
-            verifyXPath xpath: "//form[@action='/woko-webtests/save']/select[@name='className']/option[@value='MyBook']"
-            verifyXPath xpath: "//form[@action='/woko-webtests/save']/input[@type='submit']"
-            verifyXPath xpath: "//form[@action='/woko-webtests/save']/input[@name='create']"
-        }
+        [
+            "//form[@action='/woko-webtests/save']/select[@name='className']",
+            "//form[@action='/woko-webtests/save']/select[@name='className']/option[@value='MyBook']",
+            "//form[@action='/woko-webtests/save']/input[@type='submit']",
+            "//form[@action='/woko-webtests/save']/input[@name='create']"
+        ].each { verifyXPath(it) }
     }
 }

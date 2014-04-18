@@ -16,29 +16,30 @@
 
 package woko.webtests.bootstrap3
 
+import org.junit.Test
+
 class RenderListItemTest extends WebTestBase {
 
+    @Test
     void testListItem() {
-        webtest('renderListItem facet test') {
-            login()
+        login()
 
-            // create
-            goToPage '/save/MyBook?createTransient=true&object._id=1&object.name=Moby&nbPages=50'
-            verifyText 'Object saved'
+        // create
+        goToPage '/save/MyBook?createTransient=true&object._id=1&object.name=Moby&nbPages=50'
+        verifyText 'Object saved'
 
-            goToPage '/list/MyBook'
-            verifyText 'Moby'
-            verifyXPath xpath: "/html/body/div[2]/div/div[1][@class='row TestCssClass']"
+        goToPage '/list/MyBook'
+        verifyText 'Moby'
+        verifyXPath "/html/body/div[2]/div/div[1][@class='row TestCssClass']"
 
-            // delete
-            goToPage '/delete/MyBook/1'
-            verifyText 'Please confirm deletion'
-            clickButton name: 'facet.confirm'
-            verifyText 'Object deleted'
+        // delete
+        goToPage '/delete/MyBook/1'
+        verifyText 'Please confirm deletion'
+        byName('facet.confirm').click()
+        verifyText 'Object deleted'
 
-            not {
-                goToPage '/view/MyBook/1'
-            }
+        not {
+            goToPage '/view/MyBook/1'
         }
     }
 }

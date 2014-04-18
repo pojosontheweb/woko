@@ -25,7 +25,7 @@ import javax.persistence.ManyToMany
 @Entity
 class SubEntity {
 
-    @Id @GeneratedValue
+    @Id
     Long id
 
     String name

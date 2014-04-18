@@ -16,8 +16,95 @@
 
 package woko.webtests.bootstrap3
 
-import woko.webtests.WokoWebTestBase
+import junit.framework.Assert
+import org.openqa.selenium.By
+import com.pojosontheweb.selenium.Findr
+import com.pojosontheweb.selenium.ManagedDriverTestBase
 
-abstract class WebTestBase extends WokoWebTestBase {
+abstract class WebTestBase extends ManagedDriverTestBase {
+
+    def port = System.getProperty("woko.webtests.port", "9999")
+    def homeUrl = "http://localhost:$port/woko-webtests"
+    def useContainerAuth = true
+
+    void goToPage(String url) {
+        webDriver.get(homeUrl + url)
+        def src = webDriver.pageSource
+        if (src.contains("Page not found") || src.contains("An error occured")) {
+            throw new RuntimeException("Url $url responded 404 or 500")
+        }
+    }
+
+    void login() {
+        login("wdevel", "wdevel")
+    }
+
+    Findr byName(String name) {
+        return findr().elem(By.name(name))
+    }
+
+    Findr byXpath(String xpath) {
+        return findr().elem(By.xpath(xpath))
+    }
+
+    private void findByNameAndSendKeys(String name, CharSequence... keys) {
+        findr()
+                .elem(By.name(name))
+                .sendKeys(keys)
+    }
+
+    void login(String username, String password) {
+        goToPage '/login'
+        if (useContainerAuth) {
+            findByNameAndSendKeys("j_username", username)
+            findByNameAndSendKeys("j_password", password)
+        } else {
+            findByNameAndSendKeys("username", username)
+            findByNameAndSendKeys("password", password)
+        }
+        findr().elem(By.name("login")).click()
+
+        findr()
+                .elem(By.cssSelector("div.alert"))
+                .elem(By.tagName("li"))
+                .where(Findr.textEquals("You have been logged in"))
+                .eval()
+    }
+
+    void logout() {
+        goToPage '/logout'
+    }
+
+    // compat methods to avoid rewriting tests
+    // ---------------------------------------
+
+    void verifyText(String text) {
+        String pageSource = getWebDriver().getPageSource()
+        if (!pageSource.contains(text)) {
+            throw new RuntimeException("text not found : pageSource =$pageSource, text=$text")
+        }
+    }
+
+    void verifyXPath(String xpath) {
+        findr().elem(By.xpath(xpath)).eval()
+    }
+
+    void not(Closure c) {
+        try {
+            c()
+            Assert.fail("should have failed")
+        } catch(Exception e) {
+            // normal !
+        }
+    }
+
+    void clickLink(String label) {
+        findr()
+                .elemList(By.tagName("a"))
+                .where(Findr.textEquals(label))
+                .at(0)
+                .click()
+    }
+
 
 }

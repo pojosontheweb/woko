@@ -76,12 +76,14 @@
             <version>${project.version}</version>
             <type>war</type>
         </dependency>
+
+        <!-- Use selenium utils for our tests -->
         <dependency>
             <groupId>com.pojosontheweb</groupId>
-            <artifactId>woko-webtests-common</artifactId>
-            <version>${project.version}</version>
-            <scope>test</scope>
+            <artifactId>selenium-utils-core</artifactId>
+            <version>LATEST-SNAPSHOT</version>
         </dependency>
+
     </dependencies>
     <build>
         <finalName>woko-webtests</finalName>

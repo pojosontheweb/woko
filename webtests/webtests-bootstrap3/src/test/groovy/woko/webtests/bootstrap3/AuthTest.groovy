@@ -16,33 +16,33 @@
 
 package woko.webtests.bootstrap3
 
+import org.junit.Test
+
 class AuthTest extends WebTestBase {
 
-  void testAuthenticationWithHome() {
-    webtest("testAuthenticationWithHome") {
-      goToPage '/home'
-      // TODO verifyTitle 'Woko - home'
-      verifyText 'This is guest home !'
-      verifyText 'You are not authenticated'
+    @Test
+    void testAuthenticationWithHome() {
+        goToPage '/home'
+        verifyText 'This is guest home !'
+        verifyText 'You are not authenticated'
 
-      // login...
-      login()
+        login()
 
-      goToPage '/home'
-      // TODO verifyTitle 'Woko - home'
-      verifyText 'This is developer home !'
+        goToPage '/home'
+        // TODO verifyTitle 'Woko - home'
+        verifyText 'This is developer home !'
 
-      // logout
-      logout()
+        // logout
+        logout()
 
-      goToPage '/home'
-      //verifyTitle 'Woko - home'
-      verifyText 'This is guest home !'
+        goToPage '/home'
+        //verifyTitle 'Woko - home'
+        verifyText 'This is guest home !'
     }
-  }
 
-  void testAuthenticatedUrls() {
-    [
+    @Test
+    void testAuthenticatedUrls() {
+        [
             '/view',
             '/edit',
             '/delete',
@@ -51,14 +51,12 @@ class AuthTest extends WebTestBase {
             '/find',
             '/search',
             '/studio'
-    ].each { u ->
-      webtest("test authentication on $u") {
-        goToPage u
-// TODO       verifyTitle 'Woko - Please log-in'
-        verifyText 'Please log-in'
-      }
+        ].each { u ->
+            goToPage u
+            verifyText 'Please log-in'
+        }
     }
-  }
-
-
 }
+
+
+
