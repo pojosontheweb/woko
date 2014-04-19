@@ -1,9 +1,6 @@
-Title:  Woko In a Nutshell  
+Title:  Woko: POJOs on the Web!
 Author: Rémi Vankeisbelck 
   Alexis Boissonnat
-Date:   27th feb. 2013  
-CSS : bootstrap.css
-CSS : responsive.css
 
 # Introduction #
 

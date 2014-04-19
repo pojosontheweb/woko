@@ -33,8 +33,7 @@ You can log in with wdevel/wdevel for a deeper overview of what Woko offers
 
 5. Get more documentation on our Wiki to start developing your application :
 
-* The entire "Woko tutorial":https://github.com/pojosontheweb/woko/wiki/Tutorial
-* The all "documentation index":https://github.com/pojosontheweb/woko/wiki
+* The entire "Woko tutorial":http://www.pojosontheweb.com/manual/#tutorial
 * The "Woko screencasts":https://github.com/pojosontheweb/woko/wiki/Screencasts
 
 h1. License
