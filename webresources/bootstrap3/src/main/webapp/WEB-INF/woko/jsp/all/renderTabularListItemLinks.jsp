@@ -26,7 +26,7 @@
 %>
 <div class="btn-group">
     <c:forEach items="<%=links%>" var="link">
-        <a href="${pageContext.request.contextPath}/${link.href}" role="button" class="btn ${link.cssClass}">
+        <a href="${pageContext.request.contextPath}/${link.href}" role="button" class="btn btn-default ${link.cssClass}">
             <c:out value="${link.text}"/>
         </a>
     </c:forEach>
