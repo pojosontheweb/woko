@@ -16,12 +16,12 @@
 
 package woko.webtests.bootstrap3
 
-import junit.framework.Assert
+import com.pojosontheweb.selenium.ManagedDriverJunit4TestBase
+import org.junit.Assert
 import org.openqa.selenium.By
 import com.pojosontheweb.selenium.Findr
-import com.pojosontheweb.selenium.ManagedDriverTestBase
 
-abstract class WebTestBase extends ManagedDriverTestBase {
+abstract class WebTestBase extends ManagedDriverJunit4TestBase {
 
     def port = System.getProperty("woko.webtests.port", "9999")
     def homeUrl = "http://localhost:$port/woko-webtests"
