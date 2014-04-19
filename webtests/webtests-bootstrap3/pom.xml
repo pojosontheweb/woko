@@ -82,6 +82,7 @@
             <groupId>com.pojosontheweb</groupId>
             <artifactId>selenium-utils-core</artifactId>
             <version>LATEST-SNAPSHOT</version>
+            <scope>test</scope>
         </dependency>
 
     </dependencies>
