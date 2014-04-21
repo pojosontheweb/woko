@@ -28,8 +28,7 @@ body {
 }
 
 #woko-powered-by-wrapper span {
-    vertical-align: middle;
-    height: 24px;
+    font-size: 0.8em;
 }
 
 
