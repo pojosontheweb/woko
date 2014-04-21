@@ -21,6 +21,10 @@ body {
     margin-top: 0;
 }
 
+#woko-powered-by {
+    font-family: 'Courier New', Courier, monospace;
+}
+
 @media (max-width: 768px) {
     .w-property .w-property-name {
         text-align: left;

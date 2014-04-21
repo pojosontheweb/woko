@@ -142,9 +142,11 @@
         <%-- footer --%>
         <div class="navbar navbar-fixed-bottom" id="footer">
             <div class="container">
-                Powered by
+                <span id="woko-powered-by">
+                    Powered by
+                </span>
                 <a href="http://www.pojosontheweb.com">
-                    <img src="${cp}/woko/woko-logo-small.png?${cacheTokenParams}" alt="logo" height="24px"/>
+                    <img src="${cp}/woko/woko-logo-small.png?${cacheTokenParams}" alt="logo"/>
                 </a>
             </div>
         </div>
