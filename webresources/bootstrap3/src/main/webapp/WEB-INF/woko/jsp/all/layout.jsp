@@ -142,12 +142,14 @@
         <%-- footer --%>
         <div class="navbar navbar-fixed-bottom" id="footer">
             <div class="container">
-                <span id="woko-powered-by">
-                    Powered by
-                </span>
-                <a href="http://www.pojosontheweb.com">
-                    <img src="${cp}/woko/woko-logo-small.png?${cacheTokenParams}" alt="logo"/>
-                </a>
+                <div class="pull-right" id="woko-powered-by-wrapper">
+                    <span>
+                        Powered by
+                    </span>
+                    <a href="http://www.pojosontheweb.com">
+                        <img src="${cp}/woko/woko-logo-small.png?${cacheTokenParams}" alt="logo"/>
+                    </a>
+                </div>
             </div>
         </div>
 

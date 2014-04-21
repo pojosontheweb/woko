@@ -21,9 +21,17 @@ body {
     margin-top: 0;
 }
 
-#woko-powered-by {
-    font-family: 'Courier New', Courier, monospace;
+#woko-powered-by-wrapper {
+    margin-top: 8px;
+    vertical-align: middle;
+    height: 24px;
 }
+
+#woko-powered-by-wrapper span {
+    vertical-align: middle;
+    height: 24px;
+}
+
 
 @media (max-width: 768px) {
     .w-property .w-property-name {
