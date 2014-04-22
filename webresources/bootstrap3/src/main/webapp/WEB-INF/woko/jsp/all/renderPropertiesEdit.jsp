@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="/WEB-INF/woko/jsp/taglibs.jsp"%>
-
+<%@ taglib prefix="w" tagdir="/WEB-INF/tags/woko" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Map" %>
 <%@ page import="woko.facets.WokoFacetContext" %>
@@ -78,9 +78,13 @@
 
         Class<?> pType = Util.getPropertyType(owningObject.getClass(), pName);
         String pTypeStr = woko.getObjectStore().getClassMapping(pType);
+        String additionalCss = "w-property " + pName + " " + pTypeStr;
 %>
-        <c:set var="fullFieldNameStripes" value="<%=fullFieldName%>"/>
-        <div class="w-property <%=pName%> <%=pTypeStr%> form-group ${empty(actionBean.context.validationErrors[fullFieldNameStripes]) ? '' : 'has-error'} ">
+        <w:b3-form-group-css fieldName="<%=fullFieldName%>"
+                         additionalCss="<%=additionalCss%>"
+                         var="formGroupCss"/>
+
+        <div class="${formGroupCss}">
             <div class="w-property-name col-lg-2 col-sm-3">
                 <jsp:include page="<%=pNameFragmentPath%>"/>
             </div>
@@ -89,6 +93,7 @@
                 <s:errors field="<%=fullFieldName%>"/>
             </div>
         </div>
+
 <%
     }
 %>
