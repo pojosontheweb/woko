@@ -1,0 +1,12 @@
+ul.toc {
+	list-style: none;
+	padding-left: 0;
+}
+
+.toc ul {
+	padding-left: 20;	
+}
+
+#scrollbox {
+	overflow: auto;
+}

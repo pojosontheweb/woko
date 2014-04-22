@@ -62,30 +62,22 @@
 		<xsl:copy>
 			<xsl:value-of select="$newline"/>
 			<div class="container">
-				<div class="row-fluid">
-				<div class="span12">
-					<center>
-						<img src="woko3d.png"/>
-					</center>
-					<h1 class="page-header pull-right">POJOs on the Web!</h1>
-				</div>
-				</div>
-				<div class="row-fluid">
-				<div class="span3">
-					<xsl:value-of select="$newline"/>
-					<div class="well">
-						<h3>TOC</h3>
-						<ul class="nav nav-list">
-							<xsl:apply-templates select="h1" mode="ToC"/>
-							<xsl:value-of select="$newline"/>
-						</ul>
+				<div class="row">
+					<div class="col-sm-3" id="toc-container">
+						<div class="hidden-print hidden-xs hidden-sm">
+							<ul class="toc">
+								<xsl:apply-templates select="h1" mode="ToC"/>
+								<xsl:value-of select="$newline"/>
+							</ul>					
+						</div>
+					</div>
+					<div class="col-sm-9" id="content">
+						<div id="scrollbox">							
+							<xsl:apply-templates select="@*|node()"/>
+						</div>
 					</div>
 				</div>
-				<div class="span9">
-					<xsl:apply-templates select="@*|node()"/>
-				</div>
-				</div>
-			</div>
+			</div>			
 		</xsl:copy>
 	</xsl:template>
 	
@@ -171,46 +163,5 @@
 			</a>
 		</li>
 	</xsl:template>
-	
-	<!-- h1 and h2's should point back to the ToC for easy navigation -->
-	<xsl:template match="h1">
-		<xsl:variable name="link">
-			<xsl:value-of select="@id"/>
-		</xsl:variable>
-		<xsl:copy>
-			<xsl:apply-templates select="@*|node()"/>
-			<a href="#ToC-{$link}">&#160;&#8617;</a>
-		</xsl:copy>
-	</xsl:template>
-
-	<xsl:template match="h2">
-		<xsl:variable name="link">
-			<xsl:value-of select="@id"/>
-		</xsl:variable>
-		<xsl:copy>
-			<xsl:apply-templates select="@*|node()"/>
-			<a href="#ToC-{$link}">&#160;&#8617;</a>
-		</xsl:copy>
-	</xsl:template>
-
-	<xsl:template match="h3">
-		<xsl:variable name="link">
-			<xsl:value-of select="@id"/>
-		</xsl:variable>
-		<xsl:copy>
-			<xsl:apply-templates select="@*|node()"/>
-			<a href="#ToC-{$link}">&#160;&#8617;</a>
-		</xsl:copy>
-	</xsl:template>
-
-	<xsl:template match="h4">
-		<xsl:variable name="link">
-			<xsl:value-of select="@id"/>
-		</xsl:variable>
-		<xsl:copy>
-			<xsl:apply-templates select="@*|node()"/>
-			<a href="#ToC-{$link}">&#160;&#8617;</a>
-		</xsl:copy>
-	</xsl:template>
-	
+		
 </xsl:stylesheet>
