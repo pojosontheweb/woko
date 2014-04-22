@@ -853,7 +853,67 @@ Fragment Facets must implement the interface `woko.facets.FragmentFacet`. Here i
 
 ### Fragment reuse as Resolution ###
 
-TODO explain `woko.facets.BaseFragmentToResolutionFacet`.
+Fragment Facets are used server-side. Unlike Resolution Facets, they cannot be reached via URLs. This can be a problem in case yo want to reuse a fragment in an AJAX scenario.
+
+Typical example, you have a Resolution Facet that forwards to a JSP :
+
+    @FacetKey(name="myResolutionFacet", profileId="all")
+    class MyResolutionFacet extends BaseForwardResolutionFacet {
+
+        @Override
+        String getPath() {
+            return "/WEB-INF/myView.jsp
+        }
+    }
+
+And the associated `WEB-INF/myView.jsp` :
+
+    ...
+    <p>This is a fragment included : </p>
+    <div id="fragmentContainer">
+        <w:includeFacet facetName="myFragmentFacet"/>
+    </div>
+    ...
+
+Hitting `/myResolutionFacet` will produce the page, including the `myFragmentFacet` fragment.
+
+Now what if you want to reload only that fragment ? You need to send an AJAX request to the server, let it
+produce only the fragment's HTML, and perform DOM replacement.
+
+This is easily done by creating another Resolution Facet, that will act like a bridge to the fragment.
+Woko includes a base class for this, so all you need to do is :
+
+    import net.sourceforge.jfacets.annotations.FacetKey
+    import woko.facets.BaseFragmentToResolutionFacet
+
+    @FacetKey(name="myFragmentFacet_toResolution", profileId = "all")
+    class HomeEventsFragmentResolutionRole_standard extends BaseFragmentToResolutionFacet { }
+
+The `woko.facets.BaseFragmentToResolutionFacet` base class uses naming convention in order to dispatch to the actual Fragment Facet :
+
+    <fragment_facet_name>_toResolution
+
+This convention allows to easily export a fragment without requiring to actully write code, only by assigning the facet.
+
+Now, back to our example. We'll add a button that, when clicked, reloads the Fragment Facet via AJAX (uses JQuery) :
+
+    // WEB-INF/myView.jsp
+    ...
+    <p>This is a fragment included : </p>
+    <div id="container">
+        <w:includeFacet facetName="myFragmentFacet"
+    </div>
+    <button type="button" id="reloadButton">Reload</button>
+    ...
+    <script type="text/javascript">
+        $(function() {
+            $("#reloadButton").click(function() {
+            	// reload the inner HTML in container 
+            	// when the button is clicked
+                $("#container").load("/myFragmentFacet_toResolution");
+            });
+        });
+    </script>   
 
 ### Tag Library ###
 
