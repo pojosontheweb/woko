@@ -461,6 +461,10 @@ TODO explain how you can override the title, properties etc. Show an example in 
 
 TODO explain how to completely override /view, and how to write a sample Resolution Facet that does something
 
+### Fragment To Resolution ###
+
+TODO explain how to reuse Fragment Facets as Resolution Facets for AJAX fragment update etc.
+
 ### Templating ###
 
 TODO explain how to change the layout for a given role (and object ?)
@@ -846,6 +850,10 @@ Fragment Facets must implement the interface `woko.facets.FragmentFacet`. Here i
             "/WEB-INF/jsp/my-fragment.jsp"
         }    
     }
+
+### Fragment reuse as Resolution ###
+
+TODO explain `woko.facets.BaseFragmentToResolutionFacet`.
 
 ### Tag Library ###
 
