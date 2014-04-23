@@ -38,6 +38,21 @@
 	display: block;
 }
 
+#woko3d {
+	padding-top: 20px;
+}
+
+#top-nav {
+	margin-top: 20px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+header.page-header {
+	font-size: 48px;
+	margin-top: 10px;
+}
+
 footer {
 	color: lightgrey;
 	margin-top: 30px;

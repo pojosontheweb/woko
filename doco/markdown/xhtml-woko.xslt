@@ -64,7 +64,7 @@
 					
 			<!-- main content -->
 			<div class="container">
-				
+																	  
 				<div class="row">
 					<div class="col-xs-12 col-sm-12 col-md-9 col-lg-9" role="main" id="affix">
 						<xsl:apply-templates select="@*|node()"/>
@@ -78,8 +78,6 @@
 						</div>
 					</div>
 				</div>
-			</div>	
-			<div class="container">
 				<footer class="row">
 					<div class="col-sm-12">
 						<div class="copyright pull-left">
@@ -97,14 +95,7 @@
 		
 		<script type="text/javascript">
 			$(function() {
-				$('body')
-					.scrollspy({ target: '#right-nav' })
-					.on('activate.bs.scrollspy', function (evt) {
-						var target = evt.target;
-						if (target) {
-							console.log(target);							
-						}
-					});
+				$('body').scrollspy({ target: '#right-nav' });
 			});
 		</script>
 	</xsl:template>	

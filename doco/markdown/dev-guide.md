@@ -1,7 +1,7 @@
 Title:  Woko Developer Guide
 Author: Rémi Vankeisbelck 
   Alexis Boissonnat
-CSS: bootstrap.css
+CSS: css/bootstrap.css
 CSS: doko.css
 HTML header:  <script type="text/javascript"
     src="jquery.min.js">
@@ -9,6 +9,33 @@ HTML header:  <script type="text/javascript"
 HTML header:  <script type="text/javascript"
     src="bootstrap.js">
     </script>
+
+<div id="top-nav hidden-print">
+	<ul class="nav nav-pills" id="top-nav">
+		<li>
+			<a href="#">
+				<span class="glyphicon glyphicon-home"> </span>
+				Home
+			</a>
+		</li>
+		<li class="active">
+			<a href="#">
+				<span class="glyphicon glyphicon-wrench"> </span>				
+				Dev. Guide
+			</a>
+		</li>
+		<li>
+			<a href="#">
+				<span class="glyphicon glyphicon-sort-by-alphabet"> </span>
+				Tutorial
+			</a>
+		</li>
+	</ul>
+</div>
+
+<header class="page-header">
+	Woko Developer Guide
+</header>
 
 # Architecture
 
