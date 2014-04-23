@@ -43,9 +43,8 @@
 }
 
 #top-nav {
+	font-size: 0.8em;
 	margin-top: 20px;
-	margin-left: auto;
-	margin-right: auto;
 }
 
 header.page-header {

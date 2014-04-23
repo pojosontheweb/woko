@@ -18,6 +18,24 @@ HTML header:  <script type="text/javascript"
 				Home
 			</a>
 		</li>
+		<li>
+			<a href="#">
+				<span class="glyphicon glyphicon-save"> </span>
+				Get Woko
+			</a>
+		</li>
+		<li>
+			<a href="#">
+				<span class="glyphicon glyphicon-sort-by-alphabet"> </span>
+				Tutorial
+			</a>
+		</li>
+		<li>
+			<a href="#">
+				<span class="glyphicon glyphicon-film"> </span>
+				Videos
+			</a>
+		</li>
 		<li class="active">
 			<a href="#">
 				<span class="glyphicon glyphicon-wrench"> </span>				
@@ -26,8 +44,20 @@ HTML header:  <script type="text/javascript"
 		</li>
 		<li>
 			<a href="#">
-				<span class="glyphicon glyphicon-sort-by-alphabet"> </span>
-				Tutorial
+				<span class="glyphicon glyphicon-comment"> </span>				
+				Discuss
+			</a>
+		</li>
+		<li>
+			<a href="#">
+				<span class="glyphicon glyphicon-exclamation-sign"> </span>				
+				Issues
+			</a>
+		</li>
+		<li>
+			<a href="#">
+				<span class="glyphicon glyphicon-cog"> </span>				
+				GitHub
 			</a>
 		</li>
 	</ul>
