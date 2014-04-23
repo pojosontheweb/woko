@@ -68,7 +68,7 @@
 					</div>
 					<div class="col-sm-3">
 						<div data-spy="affix" data-offset-top="60" data-offset-bottom="200" role="complementary">
-							<ul class="toc">
+							<ul class="toc nav">
 								<xsl:apply-templates select="h1" mode="ToC"/>
 								<xsl:value-of select="$newline"/>
 							</ul>					
