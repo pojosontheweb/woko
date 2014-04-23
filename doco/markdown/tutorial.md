@@ -4,7 +4,10 @@ Author: Rémi Vankeisbelck
 CSS: bootstrap.css
 CSS: doko.css
 HTML header:  <script type="text/javascript"
-    src="bootsrap.js">
+    src="jquery.min.js">
+    </script>
+HTML header:  <script type="text/javascript"
+    src="bootstrap.js">
     </script>
   
 # Woko Tutorial  

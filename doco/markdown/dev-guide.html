@@ -1,0 +1,1392 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1 plus MathML 2.0//EN" "http://www.w3.org/TR/MathML2/dtd/xhtml-math11-f.dtd"><html>
+<head>
+	<meta charset="utf-8"/>
+	<title>Woko Developer Guide</title>
+	<meta name="author" content="Rémi Vankeisbelck  Alexis Boissonnat"/>
+</head>
+<body>
+<div class="container"><div class="row"><div class="col-sm-9" role="main" id="affix">
+
+<h1 id="architecture">Architecture</h1>
+
+<p>Woko itself doesn’t do much. It’s nothing but a good mix of various technologies combined altogether. The core runtime has very few dependencies, basically <a href="http://www.stripesframework.org">Stripes</a> and <a href="http://jfacets.rvkb.com">JFacets</a> only. Then, pluggable components provide the necessary services, like persistence or user management.</p>
+
+<p>The overall architecture looks like this :</p>
+
+<center>
+<img src="architecture.png"/>
+</center>
+
+<h2 id="domainobjects">Domain Objects</h2>
+
+<p>Domain Objects in Woko are POJOs. We don’t use no meta-framework of any kind, only the Java type system. </p>
+
+<p>Woko manages your POJOs through the <code>ObjectStore</code>, which handles the persistence of your objects seamlessly. The store is created at startup and connects to an underlying database in order to save the state and provide access to your Objects. This can be implemented in many different ways, using an ORM, custom DAOs, or whatever you can think of. </p>
+
+<blockquote>
+<p>The ObjectStore only implements the basic CRUD operations by default, but it’s a good entry point to place more specialized accessors to your domain objects (e.g. queries) when you’ll need them. Like other Woko components, it is accessible everywhere in your application. </p>
+</blockquote>
+
+<p>Woko heavily uses introspection (<code>java.lang.reflect</code>) in order to determine the properties to display etc. In general, your Domain Objects should be regular POJOs that follow the JavaBean convention. Woko’s ObjectRenderer will work directly with objects that :</p>
+
+<ul>
+<li>have a default constructor (if you want to be able to create instances via the default generated interface)</li>
+<li>expose their properties with accessors following the JavaBean convention</li>
+<li>use generics for Collections and Maps (e.g. <code>List&lt;MyClass&gt;</code>) so that Woko knows the compound types</li>
+</ul>
+
+<p>Woko ships with a <code>HibernateStore</code> that uses automatic classpath scanning, JPA annotations for the mapping, and <code>javax.validation</code>. </p>
+
+<h2 id="mvclayer">MVC Layer</h2>
+
+<p>The MVC layer is built on top of the fantastic Stripes framework. It’s one of the few libs that Woko exposes directly, and that you will have to use when developing a Woko application.</p>
+
+<p>Woko uses a main <code>ActionBean</code> for serving all the requests (excepted for static resources of course), along with several Stripes extensions that make binding, validation etc. work directly your Domain Objects and users. </p>
+
+<h3 id="wokoactionbean">WokoActionBean</h3>
+
+<p>It’s the main Controller for the Woko app. Kind-of a “super dispatcher” that handles all requests and delegates to the appropriate facet. </p>
+
+<p>Unlike a typical Stripes app, a typical Woko application doesn’t use several <code>ActionBean</code>s. They are replaced by <code>ResolutionFacet</code>s : facets that handle the http request, and return a Stripes <code>Resolution</code>. </p>
+
+<p><code>WokoActionBean</code> also defines Woko’s URL scheme. It responds to all requests that match its URL binding : </p>
+
+<pre><code>{facetName}[/{className}[/{key}]]
+</code></pre>
+
+<p>The following URLs are typical Woko URLs that WokoActionBean will handle by delegating to the appropriate components :</p>
+
+<ul>
+<li><code>/view/Product/123</code></li>
+<li><code>/list/Product</code></li>
+<li><code>/home</code></li>
+<li><code>/doSomeFunkyStuff/MyClass/123?facet.foo=123&amp;object.bar=cool</code></li>
+</ul>
+
+<p>The URL scheme is an important part of Woko. The URLs reflect what they mean, they show the intent and target object. The different parts of the URL (<code>facetName</code>, <code>className</code> and <code>key</code>) are used by WokoActionBean in order to resolve the target object and Resolution Facet to be applied.</p>
+
+<p>All parameters are prefixed with either <code>facet.</code> or <code>object.</code> : they will be bound respectively to the Resolution Facet and target Object, provided they satisfy the validation constraints if any. Like their cousins Action Beans, Resolution Facets has at least one event handler method, that returns a <code>Resolution</code>.</p>
+
+<blockquote>
+<p>NOTE : You can use ActionBeans in your app, there ain’t no problems with that. It’s only that ActionBeans don’t work like ResolutionFacets : they don’t apply to target types and roles. You’ll use ActionBeans typically only for actions that apply to all users and have no particular target object. You can also use ActionBeans to write alternale “routes” to some ResolutionFacet, using the action’s @UrlBinding and forwarding to another URL. Additional action beans take precedence over WokoActionBean in case the @UrlBinding conflicts. </p>
+</blockquote>
+
+<h3 id="stripesextensions">Stripes extensions</h3>
+
+<p>Woko adds several extensions to Stripes in order to make Resolution Facets work like Action Beans, with respect to Binding &amp; Validation, Security, etc. Thes extensions are implemented as Stripes <code>Interceptor</code>s and other Stripes components (<code>ActionBeanPropertyBinder</code> etc). Woko also registers custom <code>TypeConverter</code>s for transparent binding of Domain Objects. </p>
+
+<p>You should not need to change these base components. Nevertheless, as everything else, you can sonfigure Stripes to use other extensions in place of Woko’s defaults.</p>
+
+<h2 id="thewokoinstance">The <code>Woko</code> instance</h2>
+
+<p>There’s only one Woko ! At least in your webapp… </p>
+
+<p>When the <a href="Startup">application starts up</a>, a <code>Woko</code> instance is created, initialized, and bound to the <code>ServletContext</code>. Then, from anywhere in the app, the <code>Woko</code> instance can be retrieved and used as an top-level entry point for executing various tasks, by calling the static method <code>Woko#getWoko(ServletContext ctx)</code>.</p>
+
+<p>Facets can also access the <code>Woko</code> instance via <code>getFacetContext().getWoko()</code>. </p>
+
+<h2 id="mandatorycomponents">Mandatory Components</h2>
+
+<p>Woko delegates most of the job to sub-components :</p>
+
+<ul>
+<li><code>ObjectStore</code> : Manages Object-Oriented persistence for your POJOs. Implements basic CRUD operations used by the default Woko features. Woko ships with a fully functional Hibernate implementation that uses JPA annotations for the mapping, and Hibernate Validator/javax.validation annotations.</li>
+<li><code>UserManager</code> : Handles users/roles and authentication. Simple contract that allows the framework to obtain the roles of the currently logged in user. Woko handles container (JEE) authentication and roles, as well as a built-in implementation for storing users in the database.</li>
+<li><code>Facets</code> : a configured JFacets instance with built-in and application facets. By default Woko uses Annotated Facets (<code>@FacetKey</code>) and classpath scanning in order to avoid configuration.</li>
+</ul>
+
+<p>Those components are made available to Woko following the Inversion Of Control (IoC) principle. A container holds all the components (mandatory and user-defined if needed) and can manage their dependencies. Woko retrieves the required components from the IoC container when needed. </p>
+
+<p>Of course, all those components are configurable, and completely pluggable. They are defined as interfaces and you can replace their implementation as you see fit.</p>
+
+<h2 id="typicalrequesthandlingflow">Typical Request Handling flow</h2>
+
+<p>Here is a dynamic view of a typical Woko request handling :</p>
+
+<center>
+<img src="requestflow.png"/>
+</center>
+
+<p>It’s a typical Stripes flow, spiced up with target object and resolution facet loading :</p>
+
+<ol>
+<li><strong>Before</strong> - Stripes has created a WokoActionBean instance for the request, and invokes the <em>before</em> interceptor.
+
+<ul>
+<li>Request parameters <code>className</code> and <code>key</code> are used for retrieving the target Object using the <code>ObjectStore</code>. When using Hibernate, this ends up calling <code>session.load()</code> for the class and primary key. Here, we load the <code>Product</code> object with ID <code>123</code>.</li>
+<li>Once the target <code>Product</code> object is loaded, it is used in order to retrieve the <code>ResolutionFacet</code> for requested name (<code>facetName</code> request parameter). If no facet is found, a 404 is raised.</li>
+</ul></li>
+<li><strong>Binding</strong> - Stripes binds the request parameters, with type converters and dynamic validation on the facet and target object :
+
+<ul>
+<li><code>object.price=10</code> sets the <code>price</code> property of the <code>Product</code> target object</li>
+<li><code>facet.coupon=XYZ</code> sets the <code>coupon</code> property of the <code>ResolutionFacet</code> object</li>
+</ul></li>
+<li><strong>Event execution</strong> - Stripes invokes the event handler on <code>WokoActionBean</code>. This one delegates to the <code>ResolutionFacet</code>’s event handler, returning the <code>Resolution</code> to be used.</li>
+<li><strong>Resolution execution</strong> - Stripes executes the returned <code>Resolution</code>, producing the HTTP response.</li>
+</ol>
+
+<h2 id="maincomponents">Main Components</h2>
+
+<p>Woko depends on several mandatory components in order to work. It uses abstractions (interfaces) for transversal services that can be implemented in different ways depending on your context. Concrete implementations of these components are shipped with Woko (e.g. <code>HibernateStore</code>), and you can of course write new ones.</p>
+
+<p>These components must be supplied at startup to the Woko instance, via the IoC.</p>
+
+<h3 id="objectstore">Object Store</h3>
+
+<p>The ObjectStore manages Object persistence for your Domain Objects (POJOs). It provides the base CRUD operations on managed POJOs :</p>
+
+<ul>
+<li>provide a list of the “managed” Classes</li>
+<li>load/save/update/delete a managed POJO</li>
+<li>list all instances of a given managed Class (paginated)</li>
+<li>full-text search for managed POJOs (optional)</li>
+</ul>
+
+<p>The contract of Object Store is defined by the interface <code>woko.persistence.ObjectStore</code>.</p>
+
+<blockquote>
+<p>Woko’s persistence layer also includes abstraction for Transactions. If your store implements <code>woko.persistence.TransactionalStore</code>, then transactions will be automatically handled following the Open Session In View (OSIV) pattern (see <code>woko.actions.WokoTxInterceptor</code>). </p>
+</blockquote>
+
+<h3 id="usermanager">User Manager</h3>
+
+<p>The UserManager handles users/roles for the application. It is a very simple view of the underlying user management system that only provides two methods :</p>
+
+<ul>
+<li>get the roles for a username : allows Woko to lookup facets for the user’s roles</li>
+<li>authenticate a user</li>
+</ul>
+
+<p>Woko ships with in-memory, container and hibernate enabled <code>UserManager</code>s. The contract is defined by interface <code>woko.users.UserManager</code>.</p>
+
+<h3 id="usernameresolutionstrategy">Username Resolution Strategy</h3>
+
+<p>This component allows for pluggable authentication and user session management. It allows to change the way Woko retrieves the current username. </p>
+
+<p>For example, when using container authentication, it gets the username by calling <code>request.getRemoteUser()</code>, as per the servlet spec. Other implementations can use the http session, cookies, mocks for tests, or whatever else. </p>
+
+<h3 id="facetdescriptormanager">Facet Descriptor Manager</h3>
+
+<p>Facets in your application are scanned from the classpath by the Facet Descriptor Manager. It has to be configured with the base package(s) to scan (e.g. <code>com.myco.myapp.facets</code>).</p>
+
+<p>You should not need to, but can also replace this component, in order to use a different form of facets (e.g. XML descriptor instead of Annotations). </p>
+
+<h2 id="inversionofcontrol">Inversion of Control</h2>
+
+<p>Woko delegates management of the various sub components to an Inversion of Control “container”. This allows to plug any component easier, and to manage their dependencies and lifecycle if needed. It also serves as a registry for any optional components, so that they can be accessed everywhere in the application. The woko instance itself is not in the container : instead it holds a reference to the container and retrieves the components from it.</p>
+
+<p>The IoC container is defined by interface <code>woko.ioc.WokoIocContainer</code>, and is pluggable. Woko ships with a default implementation, and a <a href="http://picocontainer.codehaus.org">Pico Container</a> adapter.</p>
+
+<h1 id="startup">Startup</h1>
+
+<p>Woko (and its sub-components) is created and initialized at application startup, using a servlet context listener. A base abstract class is provided (<code>woko.WokoIocInitListener</code>), that can be extended in order to configure Woko.</p>
+
+<p>Here is an example using the <code>SimpleWokoIocContainer</code> :</p>
+
+<pre><code>package com.myco.myapp
+
+class MyWokoInitListener extends WokoIocInitListener {
+
+    @Override
+    protected WokoIocContainer createIocContainer() {
+
+        // create and init our store
+        ObjectStore store = new MyStore()
+
+        // create and init our user manager
+        UserManager userManager = 
+            new MyUserManager().addUser("wdevel", "wdevel", ["developer"])
+
+        // create and init the U.N.R.S (container auth)
+        UsernameResolutionStrategy unrs = new RemoteUserStrategy()
+
+        // create the annotated facet descriptor using 
+        // superclass method : it inits the F.D.M. with 
+        // the facet packages found in web.xml
+        IFacetDescriptorManager fdm = createAnnotatedFdm()
+
+        // create and return the IoC container
+        return new SimpleWokoIocContainer(
+                store,
+                userManager,
+                unrs,
+                fdm);
+    }
+
+    @Override
+    protected List&lt;String&gt; createFallbackRoles() {
+        // return the default role(s) for our app
+        return ["myguest"]
+    }
+}
+</code></pre>
+
+<p>The init listener has to be configured in web.xml :</p>
+
+<pre><code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;web-app xmlns="http://java.sun.com/xml/ns/j2ee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee
+         http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
+         version="2.4"&gt;
+
+    …
+
+    &lt;!-- Woko init listener : starts up Woko --&gt;
+    &lt;listener&gt;
+        &lt;display-name&gt;WokoInitListener&lt;/display-name&gt;
+        &lt;listener-class&gt;com.myco.myapp.MyWokoInitListener&lt;/listener-class&gt;
+    &lt;/listener&gt;
+
+    … 
+
+    &lt;!-- facet packages --&gt;
+    &lt;context-param&gt;
+        &lt;param-name&gt;Woko.Facet.Packages&lt;/param-name&gt;
+        &lt;param-value&gt;com.myco.myapp.facets&lt;/param-value&gt;
+    &lt;/context-param&gt;
+
+… 
+
+&lt;/web-app&gt;
+</code></pre>
+
+<h2 id="groovyinit">Groovy Init</h2>
+
+<p>Groovy Init is an alternative, more flexible way to startup Woko. It also uses a Servlet Context Listener in order to create Woko when the application starts, but this one delegates all the initialization to a Groovy script.</p>
+
+<p>This is particularly handly when used in combination with <a href="Environments">environments</a>, so that you can create various flavors of Woko with the full power of a programming language, and depending on the context (test, prod, etc.).</p>
+
+<p>To enable it, first you need to add the dependency to your <code>pom.xml</code> :</p>
+
+<pre><code>&lt;dependency&gt;
+  &lt;groupId&gt;com.pojosontheweb&lt;/groupId&gt;
+  &lt;artifactId&gt;woko-groovy-init&lt;/artifactId&gt;
+  &lt;version&gt;${woko.version}&lt;/version&gt;
+&lt;/dependency&gt;  
+</code></pre>
+
+<p>Then declare the init listener in <code>web.xml</code> (instead of a <code>WokoIocInitListener</code> subclass) :</p>
+
+<pre><code>&lt;listener&gt;
+  &lt;display-name&gt;WokoInitListener&lt;/display-name&gt;
+  &lt;listener-class&gt;woko.groovyinit.GroovyInitListener&lt;/listener-class&gt;
+&lt;/listener&gt;
+</code></pre>
+
+<p>Last, you need a <code>/woko-init.groovy</code> available in your CLASSPATH, that creates, configures and returns a Woko instance. </p>
+
+<p>Here is an example :</p>
+
+<pre><code>// store
+MyStore store = new MyStore()
+
+// user manager
+MyUserManager userManager = new MyUserManager(...).createDefaultUsers()
+
+// facets
+def facetPackages = ["com.myco.myapp.facets"] + Woko.DEFAULT_FACET_PACKAGES
+AnnotatedFacetDescriptorManager fdm = new AnnotatedFacetDescriptorManager(facetPackages)
+    .setDuplicatedKeyPolicy(DuplicatedKeyPolicyType.FirstScannedWins)
+    .initialize()
+
+// ioc
+SimpleWokoIocContainer ioc = new SimpleWokoIocContainer(store, userManager, new RemoteUserStrategy(), fdm)
+
+// create and return woko !
+return new Woko(ioc, ["myguest"])
+</code></pre>
+
+<h1 id="facets">Facets</h1>
+
+<p>Woko uses facets for everything. Developing a Woko application is about writing Domain Objects and associated facets for the various roles of the application. </p>
+
+<p><a href="http://jfacets.rvkb.com">JFacets</a> is used with bare Annotated facets by default, so you just have to write a Java class with the <code>@FacetKey</code> annotation :</p>
+
+<pre><code>@FacetKey(name="foo",profileId="myrole",targetObjectType=MyClass.class)
+class MyFacet … {
+    …
+}
+</code></pre>
+
+<p>Woko scans configured packages in your CLASSPATH for annotated facet classes at startup. At run-time, Woko looks up the facets using a facet name, a target object, and the currently logged in profile. </p>
+
+<h2 id="wokofacetcontext">Woko Facet Context</h2>
+
+<p>Facets implementing <code>IFacet</code> (all Woko facets do) may access the <code>WokoFacetContext</code> at runtime in order to retrieve various informations about the facet. It mainly provides access to the <code>Woko</code> instance, as well as the target object, used at runtime to retrieve the facet.</p>
+
+<p>Here is an example :</p>
+
+<pre><code>@FacetKey(name="test", profileId="myrole", targetObjectType=MyClass.class) 
+class MyFacet extends BaseFacet {
+
+    void doSomethingWithTargetObject() {
+        // retrieve the target object and cast it 
+        MyClass my = (MyClass)getFacetContext().getTargetObject()
+
+        // use target object methods...
+        my.doSomething()
+
+        // access the Woko instance and use ObjectStore 
+        Woko woko = getFacetContext().getWoko()
+        MyStore store = (MyStore)woko.getObjectStore()
+        MyEntity e = store.load(...)
+        ...
+} 
+</code></pre>
+
+<h2 id="facetlookup">Facet Lookup</h2>
+
+<p>All facet lookup is delegated to the Woko instance, via the <code>getFacet(…)</code> methods. JFacets is never invoked directly. Here is an example of how to retrieve a Facet :</p>
+
+<pre><code>// somewhere in a web component...
+ServletContext servletContext = …     
+HttpServletRequest request = … 
+
+// grab the Woko instance
+Woko woko = Woko.getWoko(servletContext)
+
+// the target object of the facet
+MyClass targetObject = … 
+
+// retrieve the facet using woko
+MyFacet f = woko.getFacet("my", request, targetObject)
+
+// invoke the facet
+f.xyz()
+</code></pre>
+
+<p>When <code>getFacet()</code> is called, Woko retrieves the current username using the <code>UsernameResolutionStrategy</code>, and attempts to retrieve the facet using the <code>JFacets</code> instance. This one delegates to the <code>UserManager</code> in order to get the roles for the current user.</p>
+
+<p>When the facet is retrieved, it is automatically bound as a request attribute with the names <code>facet</code> and the actual name of the facet (in the example above, <code>my</code>), so it can be retrieved later on in the request processing chain, e.g. in a JSP using a scriptlet :</p>
+
+<pre><code>&lt;%
+    MyFacet my = (MyFacet)request.getAttribute("facet");
+    MyFacet my = (MyFacet)request.getAttribute("my");
+%&gt;
+&lt;p&gt;
+    &lt;%=my.getFoo()&gt;%&gt;
+&lt;/p&gt; 
+</code></pre>
+
+<p>Or EL :</p>
+
+<pre><code>&lt;p&gt;
+${my.foo}
+&lt;/p&gt;
+</code></pre>
+
+<h2 id="resolutionfacets">Resolution Facets</h2>
+
+<p><code>ResolutionFacet</code>s are to Woko what <code>ActionBean</code>s are to Stripes : they are the Controllers in the MVC. They basically respond to an URL, handle the http request, and return a Stripes <code>Resolution</code> that generates the response. </p>
+
+<h3 id="urlscheme">URL Scheme</h3>
+
+<p><code>WokoActionBean</code> dispatches incoming requests to Resolution Facets using the following URL binding :</p>
+
+<pre><code>@UrlBinding("/{facetName}/{className}/{key}")
+</code></pre>
+
+<p>When a matching request is handled, WokoActionBean first loads the target object using <code>className</code> and <code>key</code> (if provided). Then it retrieves the resolution facet with name <code>facetName</code> using the target object. If no <code>key</code> is provided, then Woko tries to find the facet by type. If no <code>className</code> is provided, then Woko tries to find the facet for the type <code>java.lang.Object</code>. </p>
+
+<p>The <code>@FacetKey</code> in Resolution Facets determines its URL. Here are a few examples :</p>
+
+<pre><code>/*
+    /foo/MyClass/123
+    /foo/MyClass
+*/
+@FacetKey(name="foo", profileId="myrole", targetObjectType=MyClass.class)
+class MyResolutionFacet extends BaseResolutionFacet { 
+
+    @Override
+    Resolution getResolution(ActionBeanContext abc) {
+        return new StreamingResolution("text/plain", "bar !")
+    }
+
+}
+
+
+/*
+    /bar/MyClass/123
+    /bar/OtherClass/456
+    /bar
+*/
+@FacetKey(name="bar", profileId="myrole") // no targetObjectType defaults to java.lang.Object
+class MyResolutionFacet extends BaseResolutionFacet { 
+
+    @Override
+    Resolution getResolution(ActionBeanContext abc) {
+        return new StreamingResolution("text/plain", "bar !")
+    }
+
+}
+</code></pre>
+
+<p>Of course Resolution Facets can return any type of Stripes <code>Resolution</code> (foward, redirect, stream, etc.).</p>
+
+<h3 id="eventhandlers">Event handlers</h3>
+
+<p>Like Stripes ActionBeans, Woko’s ResolutionFacets may have several event handlers. Woko will invoke one of them based on the presence of a request parameter. <code>@DontValidate</code> can be used to skip validation for an event.</p>
+
+<p>The following example shows a typical Resolution Facet with 2 events :</p>
+
+<pre><code>@FacetKey(name="doIt",profileId="muser",targetObjectType=MyClass.class)
+class DoIt extends BaseResolutionFacet {
+
+    @Validate(required=true)
+    String foo
+
+    // Default Handler (from interface)
+    @Override
+    @DontValidate
+    Resolution getResolution(ActionBeanContext abc) {
+        return new ForwardResolution(SOME_JSP)
+    }
+
+    // alternate event
+    Resolution alternateEvent() {
+
+        // retrieve target object
+        MyClass c = (MyClass)getFacetContext().getTargetObject()
+
+        // update target object state
+        c.setValue(this.foo)
+
+        // save to store
+        getWoko().getObjectStore().save(c)
+
+        // redirect to default handler
+        return new RedirectResolution("/doIt/MyClass/${c.id}")
+    }
+}
+</code></pre>
+
+<p>The event handlers are all public methods that return a <code>Resolution</code>, and possibly accept an <code>ActionBeanContext</code> as their only parameter (or no parameter at all) :</p>
+
+<ul>
+<li>the default handler (<code>execute()</code>, from <code>ResolutionFacet</code>) that displays a page
+
+<ul>
+<li><code>GET /doIt/MyClass/123</code></li>
+</ul></li>
+<li>the alternate handler (<code>alternateEvent()</code>) that modifies state and redirects to the initial page
+
+<ul>
+<li><code>POST /doIt/MyClass/123?facet.foo=bar&amp;alternateEvent=anyValue</code></li>
+</ul></li>
+</ul>
+
+<p>Of course you can have as many handlers you want. </p>
+
+<blockquote>
+<p>There are limitations concerning validation and event handling. For example, @Validate(on=xyz) is not yet supported. Refer to the javadocs (or source code) for up-to-date status. </p>
+</blockquote>
+
+<h2 id="databindingandvalidation">Data binding and Validation</h2>
+
+<p>Data binding and Validation works on Target Objects and Resolution Facets like on regular Stripes ActionBeans. The main difference is that prefixes must be used for request parameters, because Stripes binds on <code>wokoActionBean.getFacet()</code> and <code>getObject()</code> :</p>
+
+<ul>
+<li><code>object.prop</code> binds on <code>targetObject.setProp(converted_value)</code></li>
+<li><code>facet.prop</code> binds on <code>facet.setProp(converted_value)</code></li>
+</ul>
+
+<p>Here is an example.</p>
+
+<p>The POJO :</p>
+
+<pre><code>class MyClass {
+
+    …
+    String foo = "init value"
+
+}
+</code></pre>
+
+<p>The Resolution Facet :</p>
+
+<pre><code>@FacetKey(name="doIt", profileId="myrole", targetObjectType=MyClass.class)
+class DoIt extends BaseResolutionFacet {
+
+    @Validate(required=true)
+    String bar
+
+    @Override
+    Resolution getResolution(ActionBeanContext abc) {
+        MyClass c = (MyClass)getFacetContext().getTargetObject()
+        return new StreamingResolution("text/plain", "$c.foo $bar !")
+    }
+
+}
+</code></pre>
+
+<p>The request :</p>
+
+<pre><code>GET /doIt/MyClass/123?object.foo=no&amp;facet.bar=way
+</code></pre>
+
+<p>And the response :</p>
+
+<pre><code>no way !
+</code></pre>
+
+<p>For that request, <code>MyClass.foo</code> and <code>DoIt.bar</code> have been bound using the parameters <code>facet.foo</code> and <code>object.bar</code>.</p>
+
+<h3 id="typeconvertersforyourpojos">Type Converters for your POJOs</h3>
+
+<p>Woko automatically registers Type Converters into Stripes for your managed POJOs. This means that you can bind objects from the ObjectStore using only their ID. </p>
+
+<p>The following example binds a List of MyClass objects :</p>
+
+<pre><code>// no target type needed for this demo, applies
+// to all Objects or null
+@FacetKey(name="bindMyPojo", profileId="myrole")
+class BindMyPojo extends BaseResolutionFacet {
+
+    List&lt;MyClass&gt; myClass
+
+    @Override
+    Resolution getResolution(ActionBeanContext abc) {
+        return new StreamingResolution("text/plain", "count=${myClass.size()}")
+    }
+
+}
+</code></pre>
+
+<p>The request :</p>
+
+<pre><code>GET /bindMyPojo?facet.myClass[0]=123&amp;facet.myClass[1]=456
+</code></pre>
+
+<p>And the response :</p>
+
+<pre><code>count=2
+</code></pre>
+
+<p>Woko’s Type Converters use supplied ID and introspected property types in order to load your POJOs from the store during the binding/validation phase. </p>
+
+<h3 id="nestedvalidation">Nested Validation</h3>
+
+<p>TODO explain dynamic validation metadata provider</p>
+
+<p>For example, you can use <code>@Validate</code> on your Resolution Facets :</p>
+
+<pre><code>@FacetKey(name="foo", profileId="myrole", targetObjectType=MyClass.class)
+class FooResolutionFacet extends BaseResolutionFacet {
+
+    @Validate
+    String bar
+
+    …
+
+}
+</code></pre>
+
+<p>You can also use <code>@ValidateNestedProperties</code> in order to tell Stripes to look for <code>@Validate</code> recursively :</p>
+
+<pre><code>@FacetKey(name="foo", profileId="myrole", targetObjectType=MyClass.class)
+class FooResolutionFacet extends BaseResolutionFacet {
+
+    @ValidateNestedProperties 
+    MyClass my
+
+    …
+
+}
+
+class MyClass {
+
+    @Validate
+    String bar
+
+}
+</code></pre>
+
+<blockquote>
+<p>You can also use nested validation with your ActionBeans if you write any. It offers a more flexible, run-time aware validation scheme, where you can delegate validation to ActionBean properties instead of specifying everything in the Action itself. </p>
+</blockquote>
+
+<h2 id="fragmentfacets">Fragment Facets</h2>
+
+<p>Fragment facets are the heart of Woko’s <a href="#objectrenderer">ObjectRenderer</a>(Object Renderer). Their role is to render a fragment (hence the name) of the page, and are included inside JSPs like this : </p>
+
+<pre><code>&lt;%
+    Woko woko = Woko.getWoko(application);
+    MyClass my = … ;
+    FragmentFacet ff = woko.getFacet("myFragment", request, my);
+%&gt;
+&lt;div&gt;
+    &lt;%--
+        render this block using a "myFragment" facet : the facet 
+        returns the path to the JSP to be included.
+    --%&gt;
+    &lt;jsp:include page="&lt;%=ff.getFragmentPath(request)%&gt;"/&gt;
+&lt;/div&gt;
+</code></pre>
+
+<p>As other facets, the lookup is done using the currently logged-in user and the target object, which makes the fragment flexible and easy to change for the various Domain Objects and Roles of the application.</p>
+
+<blockquote>
+<p>The above scriptlet could be replaced by the use of the <code>&lt;w:includeFacet/&gt;</code> tag. See the <a href="#taglibrary">Tag Library</a>(Tag Library) for more infos.</p>
+</blockquote>
+
+<p>Fragment Facets must implement the interface <code>woko.facets.FragmentFacet</code>. Here is an example :</p>
+
+<pre><code>@FacetKey(name="myFragment", profileId="myrole", targetObjectType=MyClass.class)
+class MyFragmentFacet implements FragmentFacet {
+
+    @Override
+    String getFragmentPath(HttpServletRequest request) {
+        "/WEB-INF/jsp/my-fragment.jsp"
+    }    
+}
+</code></pre>
+
+<h3 id="fragmentreuseasresolution">Fragment reuse as Resolution</h3>
+
+<p>Fragment Facets are used server-side. Unlike Resolution Facets, they cannot be reached via URLs. This can be a problem in case yo want to reuse a fragment in an AJAX scenario.</p>
+
+<p>Typical example, you have a Resolution Facet that forwards to a JSP :</p>
+
+<pre><code>@FacetKey(name="myResolutionFacet", profileId="all")
+class MyResolutionFacet extends BaseForwardResolutionFacet {
+
+    @Override
+    String getPath() {
+        return "/WEB-INF/myView.jsp
+    }
+}
+</code></pre>
+
+<p>And the associated <code>WEB-INF/myView.jsp</code> :</p>
+
+<pre><code>...
+&lt;p&gt;This is a fragment included : &lt;/p&gt;
+&lt;div id="fragmentContainer"&gt;
+    &lt;w:includeFacet facetName="myFragmentFacet"/&gt;
+&lt;/div&gt;
+...
+</code></pre>
+
+<p>Hitting <code>/myResolutionFacet</code> will produce the page, including the <code>myFragmentFacet</code> fragment.</p>
+
+<p>Now what if you want to reload only that fragment ? You need to send an AJAX request to the server, let it
+produce only the fragment’s HTML, and perform DOM replacement.</p>
+
+<p>This is easily done by creating another Resolution Facet, that will act like a bridge to the fragment.
+Woko includes a base class for this, so all you need to do is :</p>
+
+<pre><code>import net.sourceforge.jfacets.annotations.FacetKey
+import woko.facets.BaseFragmentToResolutionFacet
+
+@FacetKey(name="myFragmentFacet_toResolution", profileId = "all")
+class HomeEventsFragmentResolutionRole_standard extends BaseFragmentToResolutionFacet { }
+</code></pre>
+
+<p>The <code>woko.facets.BaseFragmentToResolutionFacet</code> base class uses naming convention in order to dispatch to the actual Fragment Facet :</p>
+
+<pre><code>&lt;fragment_facet_name&gt;_toResolution
+</code></pre>
+
+<p>This convention allows to easily export a fragment without requiring to actully write code, only by assigning the facet.</p>
+
+<p>Now, back to our example. We’ll add a button that, when clicked, reloads the Fragment Facet via AJAX (uses JQuery) :</p>
+
+<pre><code>// WEB-INF/myView.jsp
+...
+&lt;p&gt;This is a fragment included : &lt;/p&gt;
+&lt;div id="container"&gt;
+    &lt;w:includeFacet facetName="myFragmentFacet"
+&lt;/div&gt;
+&lt;button type="button" id="reloadButton"&gt;Reload&lt;/button&gt;
+...
+&lt;script type="text/javascript"&gt;
+    $(function() {
+        $("#reloadButton").click(function() {
+            // reload the inner HTML in container 
+            // when the button is clicked
+            $("#container").load("/myFragmentFacet_toResolution");
+        });
+    });
+&lt;/script&gt;   
+</code></pre>
+
+<h2 id="taglibrary">Tag Library</h2>
+
+<p>Woko includes a few tags that eases JSP writing :</p>
+
+<ul>
+<li>cacheToken : allows for easier browser caching of static resources</li>
+<li>facet : lookup a facet and bind it to the request</li>
+<li>includeFacet : lookup a fragment facet and include it</li>
+<li>link : create a link to a managed POJO</li>
+<li>title : return the title for a managed POJO</li>
+<li>url : export the URL to a resolution facet as a page variable</li>
+<li>username : return the name of the currently logged in user</li>
+</ul>
+
+<p>The tags are implemented as JSP tag files, and are overlayed in your application by maven when you build. You only have to import the taglib in your JSP to start using them :</p>
+
+<pre><code>&lt;%@ taglib prefix="w" tagdir="/WEB-INF/tags/woko" %&gt;
+</code></pre>
+
+<p>Or even import Woko’s <code>taglibs.jsp</code>, it will import all the usual taglibs (Standard, Stripes, Woko etc.) :</p>
+
+<pre><code>&lt;%@include file="/WEB-INF/woko/jsp/taglibs.jsp"%&gt;
+</code></pre>
+
+<p>Here is an example of using <code>&lt;w:title/&gt;</code> and <code>&lt;w:url/&gt;</code> in order to create a link to a managed POJO :</p>
+
+<pre><code>&lt;%-- somewhere in a JSP… --%&gt;
+&lt;c:set var="my" value="${…}"/&gt;
+&lt;w:url var="myUrl" object="${my}"/&gt;
+&lt;a href="${myUrl}"&gt;
+    &lt;w:title object="${my}"
+&lt;/a&gt;
+</code></pre>
+
+<blockquote>
+<p>When you build your app, the tags are copied in <code>target/myapp/WEB-INF/tags/woko/</code>. You can look there for a full list of available tags. </p>
+</blockquote>
+
+<h1 id="objectrenderer">Object Renderer</h1>
+
+<p>The Object Renderer allows Woko to display POJOs as read-only or read-write pages, so that users can view or change their state. It uses introspection and Fragment Facets in order to display everything dynamically : Woko doesn’t generate any code, it’s all done on-the-fly using types and medatata found on your objects. </p>
+
+<p>Here is a schematic break-down of the Object Renderer’s facets :</p>
+
+<figure>
+<img src="object-renderer.png" alt="Object Renderer"/>
+<figcaption>Object Renderer</figcaption>
+</figure>
+
+<p>A <code>layout</code> facet controls the global page template, and then a composite use of various fragments (<code>renderObject</code>, <code>renderProperties</code>) are involved in order to display your POJOs dynamically. Composition (container fragments including nested sub-fragments) is used in order to provide several different levels of granularity :</p>
+
+<ul>
+<li>page template</li>
+<li>navigation</li>
+<li>object
+
+<ul>
+<li>title</li>
+<li>links</li>
+<li>properties
+
+<ul>
+<li>name &amp; value</li>
+<li>…</li>
+</ul></li>
+</ul></li>
+</ul>
+
+<p>Woko provides generic implementations of these fragment facets, that can render any POJO using reflection in order to grab the properties of the object. The default rendering will thereby display all the properties of a POJO, using built-in fragment facets. </p>
+
+<p>In order to change the rendering for a given POJO or property, you just need to override the appropriate facet. The composite, nested structure allows you to change all, or part of the rendering for your Domain Objects and roles. </p>
+
+<h2 id="layout">Layout</h2>
+
+<p>The global page template is done using Stripes Layouts, and controlled by the <code>layout</code> facet (<code>woko.facets.builtin.Layout</code>). This one returns the layout JSP to be used, as well as the CSSs and JavaScripts to be included in the page.</p>
+
+<p>The <code>layout</code> facet is used in all “top-level” Woko JSPs. A default one is provided for role “all”, so you can override it for your roles and objects in order to change the template of the page :</p>
+
+<pre><code>@FacetKey(name="layout", profileId="myrole")
+class MyLayout extends LayoutAll {
+
+    @Override
+    String getAppTitle() {
+        "MyApp"
+    }
+
+    @Override
+    List&lt;String&gt; getCssIncludes() {
+        ["/css/my.css"]
+    }   
+
+    @Override
+    String getLayoutPath() {
+        "/WEB-INF/jsp/myrole/layout.jsp"
+    }
+
+}
+</code></pre>
+
+<p>The JSP layout is regular Stripes. The default one is overlayed in your app (see <code>/target/javadocproxy/WEB-INF/woko/jsp/all/layout.jsp</code>), and of course you can use your own in order to apply a different page template to the whole app. </p>
+
+<h3 id="navbar">Nav Bar</h3>
+
+<p>The default layout includes a <code>navBar</code> facet that renders navigation links for the currently logged-in user. Nav bars for <code>all</code> and <code>developer</code> roles are included by default. </p>
+
+<p>You can override the <code>navBar</code> facet fragment completely, or simply override <code>getLinks()</code>, which returns a list of <code>Link</code> objects to be used by the default fragment :</p>
+
+<pre><code>@FacetKey(name="navBar", profileId="myrole") 
+class NavBarMyRole extends NavBarAll {
+
+    @Override
+    List&lt;Link&gt; getLinks() {
+        [ 
+            new Link("/myUrl", "my"),
+            new Link("/myOtherUrl", "other"),
+            new Link("/myLastUrl", "link")
+        ]
+    }
+
+}
+</code></pre>
+
+<h2 id="fragments">Fragments</h2>
+
+<p>Fragments in the Object Renderer are nested. The structure is composite : a top-level fragment includes other fragments, possibly including other sub-fragments, and so on. This allows you to customize the rendering with different levels of granularity : either the whole object, or only a part of it.</p>
+
+<h3 id="renderobject">renderObject</h3>
+
+<p>This fragment facet is the entry point of the Object Renderer. It renders a block for the facet’s target object, and delegates the contents to other facets. Overriding this facet changes the rendering for the whole object. You will only keep the main layout. </p>
+
+<pre><code>@FacetKey(name="renderObject", profileId="myrole", targetObjectType=MyClass.class)
+class RenderObjectMyClass extends RenderObjectImpl {
+
+    @Override
+    String getPath() {
+        "/WEB-INF/jsp/myrole/renderObject-myclass.jsp"
+    }
+
+}
+</code></pre>
+
+<p>And the JSP (using Woko’s <code>title</code> tag for the example) :</p>
+
+<pre><code>&lt;%@include file="/WEB-INF/woko/jsp/taglibs.jsp"%&gt;
+&lt;c:set var="my" value="${renderObject.facetContext.targetObject}"/&gt;
+&lt;div class="wokoObject"&gt;
+    &lt;h1&gt;&lt;w:title object="${my}"/&gt;&lt;/h1&gt;
+    &lt;p&gt;
+        This is my ! Foo = ${my.foo}
+    &lt;/p&gt;
+&lt;/div&gt;
+</code></pre>
+
+<blockquote>
+<p>An alternate <code>renderObjectEdit</code> is used when editing the object.</p>
+</blockquote>
+
+<h3 id="rendertitle">renderTitle</h3>
+
+<p>Used to render a title for the target object. It is used by <code>renderObject</code>, and whenever a title is needed, like in links or HTML page titles.</p>
+
+<p>By default it will look for a title-like property on your POJO (like <code>name</code> or <code>title</code>), and default to the object’s key (ID) if no such property exists. </p>
+
+<p>You can override it in order to create more meaningful titles for your POJOs :</p>
+
+<pre><code>@FacetKey(name="renderTitle", profileId="all", targetObjectType=MyClass.class)
+class RenderTitleMyClass extends RenderTitleTimpl {
+
+    @Override
+    String getTitle() {
+        MyClass my = (MyClass)facetContext.targetObject
+        return "I am ${my.foo}" // use foo as title for objects of type MyClass            
+    } 
+
+}
+</code></pre>
+
+<p><code>renderTitle</code> is a FragmentFacet, so you can override <code>getPath()</code> too if you want to change the JSP used in order to render the title. </p>
+
+<h3 id="renderlinks">renderLinks</h3>
+
+<p>Renders a list of links for the currently displayed object. Allows the user to trigger actions or navigate when browsing your POJOs. </p>
+
+<p>By default, it includes links for CRUD features by checking if the user can edit, delete the object etc. This is done by trying to lookup the <code>save</code>, <code>delete</code>, etc. ResolutionFacets for the POJO and the current user. Links to these facets are included if the facets are available. </p>
+
+<p>This facet can be overriden in order to add links for your POJOs and users. Here’s an example that renders different links on a <code>Product</code> object, depending on the user’s role.</p>
+
+<p>For <code>customer</code> : </p>
+
+<pre><code>@FacetKey(name="renderLinks", profileId="customer", targetObjectType=Product.class)
+class RenderLinksProductCustomer extends RenderLinksImpl {
+
+    @Override
+    List&lt;Link&gt; getLinks() {
+        Product p = facetContext.targetObject
+        return [
+            new Link("/addToCart/Product/$p.id", "Add to cart"),
+            new Link("/emailToFriend/Product/$p.id", "Email to a friend")
+        ]
+    }
+}
+</code></pre>
+
+<p>And for <code>admin</code> :</p>
+
+<pre><code>@FacetKey(name="renderLinks", profileId="admin", targetObjectType=Product.class)
+class RenderLinksProductAdmin extends RenderLinksImpl {
+
+    @Override
+    List&lt;Link&gt; getLinks() {
+        Product p = facetContext.targetObject
+        [
+            new Link("/manageStock/Product/$p.id", "Manage stock"),
+            new Link("/disable/Product/$p.id", "Disable from catalogue")
+        ]
+    }
+
+}
+</code></pre>
+
+<p>Depending on the user’s role, different links will be rendered when browsing a <code>Product</code> object.</p>
+
+<blockquote>
+<p>An alternate <code>renderLinksEdit</code> is used when editing the object.</p>
+</blockquote>
+
+<h3 id="renderproperties">renderProperties</h3>
+
+<p>Renders the properties section for a POJO. Provides the list of the properties to be displayed, and the fragment used. The generic default version will simply output all readable properties, by delegating to sub-facets for each property.</p>
+
+<p>It’s common to override this facet in order to restrict the number of properties shown for a POJO and a role. Here’s an example that restricts to some properties for the class <code>Product</code> and the role <code>customer</code> :</p>
+
+<pre><code>@FacetKey(name="renderProperties", profileId="customer", targetObjectType=Product.class)
+class RenderPropertiesProductCustomer extends RenderPropertiesImpl {
+
+    @Override
+    List&lt;String&gt; getPropertyNames() {
+        ["name", "image", "description", "price"]
+    }
+}  
+</code></pre>
+
+<p>Another one for <code>admin</code> users, that only removes some unwanted props from the generic list :</p>
+
+<pre><code>@FacetKey(name="renderProperties", profileId="admin", targetObjectType=Product.class)
+class RenderPropertiesProductAdmin extends RenderPropertiesImpl {
+
+    @Override
+    List&lt;String&gt; getPropertyNames() {
+        def all = new ArrayList&lt;String&gt;(super.getPropertyNames())
+        all.remove("id") // no need to show the ID
+        all.remove("class") // get rid of getClass() - geeky and useless here
+        return all 
+    }
+}  
+</code></pre>
+
+<blockquote>
+<p>Note that removing the props from the list returned by the generic <code>RenderPropertiesImpl</code> allows new properties of the POJO to appear automagically, but it can have side effects : you may not want your users, or some of them, to see this new property. Returning a “hard-coded” list requires to update the facet whenever a property is added or removed, but it allows to ensure what is displayed.</p>
+</blockquote>
+
+<p>Of course <code>renderProperties</code> being a Fragment Facet, you can even change the backing JSP in order to change the markup wrapping the properties. Woko includes two modes by default : tabular-like, with property names, or “flat”, just spitting out values in blocks one after the other. See <code>RenderPropertiesImpl#setUseFlatLayout</code> for more infos. </p>
+
+<blockquote>
+<p>An alternate <code>renderPropertiesEdit</code> is used when editing the object, thet wraps the properties in a HTML FORM.</p>
+</blockquote>
+
+<h3 id="renderpropertyname">renderPropertyName</h3>
+
+<p>Renders the name of a POJO’s property. Uses <code>MyClass.myProp</code> style names by default and looks up for an externalized message in the app’s resource bundles. </p>
+
+<p>This facet is not usually overriden as you can change the labels from the property files. It’s there in case you really wanna change the rendering for a property name.</p>
+
+<h3 id="renderpropertyvalue">renderPropertyValue</h3>
+
+<p>Renders the value of a POJO’s property. Defined by the interface <code>woko.facets.builtin.RenderPropertyValue</code>, it comes with several implementations in order to handle the primitive types and associations between POJOs.</p>
+
+<p>There are two ways to override <code>renderPropertyValue</code> facets :</p>
+
+<ul>
+<li>by <em>type</em> : the type of the property (boolean, String, MyClass, etc.) is used to lookup the facet, which is assigned to the type of the property</li>
+<li>by <em>name</em> : the name of the property is used to lookup the facet, which is assigned to the <em>target object</em>’s type (not the property)</li>
+</ul>
+
+<p>This allows to override globally (using the type), for all properties of a given type, or specifically, only for a given property of a given target type. Here under are two examples.</p>
+
+<p>By type (will be used anytime a POJO has a property of type <code>Address</code>):</p>
+
+<pre><code>@FacetKey(name="renderPropertyValue", profileId="customer", targetType=Address.class) 
+class RenderPropValueBigDecimalCustomer extends RenderPropertyValueImpl {
+
+    @Override
+    String getPath() {
+        "/WEB-INF/jsp/customer/renderPropValue-address.jsp"
+    }
+
+}
+</code></pre>
+
+<p>By name (will be used for <code>address</code> property of <code>User</code> objects) :</p>
+
+<pre><code>@FacetKey(name="renderPropertyValue_address", profileId="customer", targetType=User.class) 
+class RenderPropValueBigDecimalCustomer extends RenderPropertyValueImpl {
+
+    @Override
+    String getPath() {
+        "/WEB-INF/jsp/customer/renderPropValue-address.jsp"
+    }
+
+}
+</code></pre>
+
+<p>Again, it’s important to notice that the facet’s <code>name</code> and <code>targetObjectType</code> are different when you override either by type or by name. When overriding by type, the built-in facet name <code>renderPropertyValue</code> is used and the facet is assigned to the type of the property. When overriding by type, the name of the facet must be suffixed with the property name, like <code>renderPropertyValue_address</code>, and the target type is the owning object’s type, not the property’s type.</p>
+
+<p>As a result, when writing the JSP view that backs a <code>renderPropertyValue</code> fragment facet, you should not access the facet’s target object. Instead, use <code>RenderPropertyValue#getPropertyValue</code> and <code>RenderPropertyValue#getOwningObject</code> that return the property value and owning object consistently for the two modes.</p>
+
+<p>Here is a fictious JSP that backs our <code>renderPropertyValue</code> facet for the <code>address</code> property of a <code>User</code> object :</p>
+
+<pre><code>&lt;%@ page contentType="text/html;charset=UTF-8" language="java" %&gt;
+&lt;%@include file="/WEB-INF/woko/jsp/taglibs.jsp"%&gt;
+&lt;c:set var="user" value="${renderPropertyValue.owningObject}"/&gt;
+&lt;c:set var="address" value="${renderPropertyValue.propertyValue}"/&gt;
+&lt;address&gt;
+    &lt;strong&gt;${user.firstName} ${user.lastName}&lt;/strong&gt;&lt;br&gt;
+    ${address.street}&lt;br&gt;
+    ${address.city}, ${address.postCode}&lt;br&gt;
+    &lt;abbr title="Phone"&gt;P:&lt;/abbr&gt; ${user.phone}
+&lt;/address&gt;
+</code></pre>
+
+<blockquote>
+<p>An alternate <code>renderPropertyValueEdit</code> is used when editing the object.</p>
+</blockquote>
+
+<h1 id="localization">Localization</h1>
+
+<p>In Woko, all the strings required by the application must be written in application.properties file. This file is generated when you run <code>woko init</code>. </p>
+
+<p>If you open this file, you can see:</p>
+
+<pre><code>### Resources for woko's example domain class ###
+MyEntity.class=Class
+MyEntity.id=Id
+MyEntity.myProp=My prop
+MyEntity.myOtherProp=My other prop
+</code></pre>
+
+<p>You can add displayed label for each attribute by setting <code>ClassName.attributeName=desiredLabel</code>. It’s quite simple !</p>
+
+<p>Handling localization is just creating and filling application[_locale].properties files for each locale you want to support.</p>
+
+<p>You can access your label programmaticaly using the woko instance:</p>
+
+<pre><code>Woko woko = ... ; // grab Woko
+String msg = woko.getLocalizedMessage(locale, "my.message.key"); 
+String msg = woko.getLocalizedMessage(locale, "my.message.key.with.args", "funky", "cool"); 
+</code></pre>
+
+<p>When overriding a facet or a fragment facet, you cane use getRequest() to use the user Locale:</p>
+
+<pre><code>Woko woko = ... ; // grab Woko
+String msg = woko.getLocalizedMessage(getRequest(), "my.message.key");
+</code></pre>
+
+<p>TODO explain how to use &lt;fmt:message/&gt;.</p>
+
+<h1 id="build">Build</h1>
+
+<p>Maven is used to build Woko and Woko-based apps. Your project’s <code>pom.xml</code> should contain all required Woko dependencies and plugins.</p>
+
+<h2 id="dependencies">Dependencies</h2>
+
+<p>Dependencies of your project may vary depending on your Woko “flavor”. Some modules can be replaced by others (like authentication), and some are optional (like User Management and Registration). </p>
+
+<p>The best way to start is to create a project using the “Reference Implementation”. It’s the default config that we use when starting a new project. This can be done by using the <code>woko</code> script :</p>
+
+<pre><code>$&gt; woko init
+…
+</code></pre>
+
+<p>This will create a pre-configured project that you can use as a basis for plugging in optional modules or changing some components.</p>
+
+<h3 id="dependenciesandwaroverlays">Dependencies and War Overlays</h3>
+
+<p>Woko uses <a href="http://maven.apache.org/plugins/maven-war-plugin/overlays.html">war overlay</a> in order to copy the built-in JSPs into your app. They are copied under <code>/target/myapp</code>. </p>
+
+<p>The <code>war</code> dependencies in your pom should be specified in the correct order. </p>
+
+<p>Again, run <code>woko init</code> in order to see how it’s done by default. </p>
+
+<h2 id="environments">Environments</h2>
+
+<p>Environments allow to have different resources depending on the context (e.g. production, test, dev, etc.). They are plain folders under the project root :</p>
+
+<pre><code>myapp/
+    environments/
+        dev/
+            log4j.properties
+            hibernate.cfg.xml
+        prod/
+            log4j.properties
+            hibernate.cfg.xml                    
+</code></pre>
+
+<p>You can switch from various environments easily using the <code>woko-maven-plugin</code>. It is included in your <code>pom.xml</code> when you create your project with <code>woko init</code>, and attached to the <code>process-resources</code> phase so that it kicks in automatically when you build the app. </p>
+
+<pre><code>   $&gt; mvn clean install -Dwoko.env=prod
+</code></pre>
+
+<p>The plugin will recursively copy (and thereby possibly overwrite existing resources) the files found in the environment folder <code>&lt;project_root&gt;/environments/myenv</code> to the <code>target/classes</code> folder of your project. </p>
+
+<p>The plugin will also generate a <code>woko.environment</code> file containing the name of the environment used at build-time. You can get the environment inside your running app by calling <code>Woko#getEnvironment()</code>.</p>
+
+<p>Your pom should look like this :</p>
+
+<pre><code>&lt;plugin&gt;
+    &lt;groupId&gt;com.pojosontheweb&lt;/groupId&gt;
+    &lt;artifactId&gt;woko-maven-plugin&lt;/artifactId&gt;
+    &lt;version&gt;${woko.version}&lt;/version&gt;
+    &lt;configuration&gt;
+        &lt;!-- optional : specify default environment to be used if not passed on the cmd line --&gt;
+        &lt;defaultEnv&gt;dev&lt;/defaultEnv&gt;
+    &lt;/configuration&gt;
+    &lt;executions&gt;
+        &lt;execution&gt;
+            &lt;id&gt;woko.environment&lt;/id&gt;
+            &lt;phase&gt;process-resources&lt;/phase&gt;
+            &lt;goals&gt;
+                &lt;goal&gt;env&lt;/goal&gt;
+            &lt;/goals&gt;
+        &lt;/execution&gt;
+    &lt;/executions&gt;
+&lt;/plugin&gt;
+</code></pre>
+
+<h1 id="unittesting">Unit Testing</h1>
+
+<p>Woko includes utility classes for out-of-container unit testing (see <code>woko.mock.MockUtil</code>). It is based on Stripes’ <a href="http://www.stripesframework.org/display/stripes/Unit+Testing">MockRoundtrip</a> and allows to emulate a running WokoActionBean and unit-test your facets.</p>
+
+<p>The beauty of Mockroundtrip is that you can invoke ActionBeans via URLs in your unit tests, with all Stripes features enabled (binding/validation, type conversion etc). </p>
+
+<p>Here’s an example (Groovy version) :</p>
+
+<pre><code>import woko.mock.MockUtil
+
+class MyTest {
+
+    // create, init and return a new Woko : you can configure 
+    // your testing Woko as you want. Either the same as your webapp
+    // or using different components/configurations
+    Woko createWoko(String username) {
+        return new Woko(…) 
+    }
+
+    @Test
+    void testIt() {
+
+        // need a Woko to run our tests… 
+        Woko woko = createWoko('myuser')
+
+        // use Callback to wrap execution and use an automatically
+        // initialized/destroyed MockServletContext 
+        new MockUtil().withServletContext(createWoko(), { MockServletContext ctx -&gt;
+
+            // trip and retrieve a facet via its URL        
+            def myFacet = MockUtil.tripAndGetFacet(ctx, "/doIt/MyClass/123")
+            // make sure the facet class is the expected one
+            assert myFacet.getClass() == MyFacet.class
+            // make sure myFacet.myProp is null
+            assert myFacet.myProp == null
+
+            // now trip with parameters
+            myFacet = MockUtil.tripAndGetFacet(ctx, "/doIt/MyClass/123", ['facet.myProp':'foobar'])
+            // make sure the facet class is still the expected one
+            assert myFacet.getClass() == MyFacet.class
+            // make sure myFacet.myProp has been bound
+            assert myFacet.myProp == 'foobar'
+
+        } as MockUtil.Callback)
+    }
+
+}
+</code></pre>
+
+<p>As you can see, <code>MockUtil</code> provides a simple way to create the MockServletContext (and close it automatically), as well as several static methods that eases test writing. The only thing you need to do is to create a <code>Woko</code> instance and feed it to MockUtil.</p>
+
+<p>Here’s an example of how you can do this easily (Groovy again), with your own Object Store etc. :</p>
+
+<pre><code>Woko createWoko(String username) {
+
+    // create store using my own ObjectStore implementation
+    // and pre-populated with some testing objects
+    ObjectStore myStore = createObjectStoreWithTestObjects()
+
+    // same for user manager : init with test users/roles  
+    UserManager userManager = createUserManagerWithTestUsers()
+
+    // use mock UNRS so that we can emulate logged in users
+    UsernameResolutionStrategy unrs = new MockUsernameResolutionStrategy(username)
+
+    // create FDM : we provide our facet packages just like in web.xml
+    List facetPackages = ['com.myco.myapp.facets'] + Woko.DEFAULT_FACET_PACKAGES
+    IFacetDescriptorManager fdm = Woko.createFacetDescriptorManager(facetPackages)
+
+    // create IoC
+    SimpleWokoIocContainer ioc = new SimpleWokoIocContainer(
+            store,
+            userManager,
+            unrs)
+
+    // create and return Woko with fallback guest roles
+    return new Woko(ioc, ['myguest'])
+}
+</code></pre>
+
+<blockquote>
+<p>If your ObjectStore is a <code>TransactionalStore</code>, the mock testing will use <code>WokoTxInterceptor</code>, and demarcate the transactions for each call to <code>tripXyz()</code>, just like it’d be done in a regular servlet request handling. On the other hand, be careful to properly handle transactions for all code that uses your ObjectStore in your test besides calls to <code>tripXyz()</code> : the tx interceptor is fired only when MockRoundtrip executes, so other calls in your tests should handle the transactions themselves. </p>
+</blockquote>
+
+<h1 id="tooling">Tooling</h1>
+
+<h2 id="thewokoscript">The woko Script</h2>
+
+<h2 id="wokopush">woko push</h2>
+
+<h2 id="intellijideaplugin">IntelliJ IDEA plugin</h2>
+
+<h1 id="add-ons">Add-ons</h1>
+
+<h2 id="usermanagement">User Management</h2>
+
+<h2 id="asynchronousjobs">Asynchronous Jobs</h2>
+
+<h1 id="performance">Performance</h1>
+
+<h2 id="browsercachingstaticresources">Browser caching &amp; static resources</h2>
+
+<h2 id="hibernate2ndlevelcache">Hibernate 2nd level cache</h2>
+
+</div><div class="col-sm-3"><div data-spy="affix" data-offset-top="60" data-offset-bottom="200" role="complementary"><ul class="toc">
+<li xmlns:m="http://www.w3.org/1998/Math/MathML"><a id="ToC-architecture" href="#architecture">Architecture</a>
+<ul>
+<li><a id="ToC-domainobjects" href="#domainobjects">Domain Objects</a>
+<ul>
+</ul>
+</li>
+<li><a id="ToC-mvclayer" href="#mvclayer">MVC Layer</a>
+<ul>
+<li><a id="ToC-wokoactionbean" href="#wokoactionbean">WokoActionBean</a></li>
+<li><a id="ToC-stripesextensions" href="#stripesextensions">Stripes extensions</a></li>
+</ul>
+</li>
+<li><a id="ToC-thewokoinstance" href="#thewokoinstance">The <code>Woko</code> instance</a>
+<ul>
+</ul>
+</li>
+<li><a id="ToC-mandatorycomponents" href="#mandatorycomponents">Mandatory Components</a>
+<ul>
+</ul>
+</li>
+<li><a id="ToC-typicalrequesthandlingflow" href="#typicalrequesthandlingflow">Typical Request Handling flow</a>
+<ul>
+</ul>
+</li>
+<li><a id="ToC-maincomponents" href="#maincomponents">Main Components</a>
+<ul>
+<li><a id="ToC-objectstore" href="#objectstore">Object Store</a></li>
+<li><a id="ToC-usermanager" href="#usermanager">User Manager</a></li>
+<li><a id="ToC-usernameresolutionstrategy" href="#usernameresolutionstrategy">Username Resolution Strategy</a></li>
+<li><a id="ToC-facetdescriptormanager" href="#facetdescriptormanager">Facet Descriptor Manager</a></li>
+</ul>
+</li>
+<li><a id="ToC-inversionofcontrol" href="#inversionofcontrol">Inversion of Control</a>
+<ul>
+</ul>
+</li>
+</ul>
+</li>
+<li xmlns:m="http://www.w3.org/1998/Math/MathML"><a id="ToC-startup" href="#startup">Startup</a>
+<ul>
+<li><a id="ToC-groovyinit" href="#groovyinit">Groovy Init</a>
+<ul>
+</ul>
+</li>
+</ul>
+</li>
+<li xmlns:m="http://www.w3.org/1998/Math/MathML"><a id="ToC-facets" href="#facets">Facets</a>
+<ul>
+<li><a id="ToC-wokofacetcontext" href="#wokofacetcontext">Woko Facet Context</a>
+<ul>
+</ul>
+</li>
+<li><a id="ToC-facetlookup" href="#facetlookup">Facet Lookup</a>
+<ul>
+</ul>
+</li>
+<li><a id="ToC-resolutionfacets" href="#resolutionfacets">Resolution Facets</a>
+<ul>
+<li><a id="ToC-urlscheme" href="#urlscheme">URL Scheme</a></li>
+<li><a id="ToC-eventhandlers" href="#eventhandlers">Event handlers</a></li>
+</ul>
+</li>
+<li><a id="ToC-databindingandvalidation" href="#databindingandvalidation">Data binding and Validation</a>
+<ul>
+<li><a id="ToC-typeconvertersforyourpojos" href="#typeconvertersforyourpojos">Type Converters for your POJOs</a></li>
+<li><a id="ToC-nestedvalidation" href="#nestedvalidation">Nested Validation</a></li>
+</ul>
+</li>
+<li><a id="ToC-fragmentfacets" href="#fragmentfacets">Fragment Facets</a>
+<ul>
+<li><a id="ToC-fragmentreuseasresolution" href="#fragmentreuseasresolution">Fragment reuse as Resolution</a></li>
+</ul>
+</li>
+<li><a id="ToC-taglibrary" href="#taglibrary">Tag Library</a>
+<ul>
+</ul>
+</li>
+</ul>
+</li>
+<li xmlns:m="http://www.w3.org/1998/Math/MathML"><a id="ToC-objectrenderer" href="#objectrenderer">Object Renderer</a>
+<ul>
+<li><a id="ToC-layout" href="#layout">Layout</a>
+<ul>
+<li><a id="ToC-navbar" href="#navbar">Nav Bar</a></li>
+</ul>
+</li>
+<li><a id="ToC-fragments" href="#fragments">Fragments</a>
+<ul>
+<li><a id="ToC-renderobject" href="#renderobject">renderObject</a></li>
+<li><a id="ToC-rendertitle" href="#rendertitle">renderTitle</a></li>
+<li><a id="ToC-renderlinks" href="#renderlinks">renderLinks</a></li>
+<li><a id="ToC-renderproperties" href="#renderproperties">renderProperties</a></li>
+<li><a id="ToC-renderpropertyname" href="#renderpropertyname">renderPropertyName</a></li>
+<li><a id="ToC-renderpropertyvalue" href="#renderpropertyvalue">renderPropertyValue</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li xmlns:m="http://www.w3.org/1998/Math/MathML"><a id="ToC-localization" href="#localization">Localization</a>
+<ul>
+</ul>
+</li>
+<li xmlns:m="http://www.w3.org/1998/Math/MathML"><a id="ToC-build" href="#build">Build</a>
+<ul>
+<li><a id="ToC-dependencies" href="#dependencies">Dependencies</a>
+<ul>
+<li><a id="ToC-dependenciesandwaroverlays" href="#dependenciesandwaroverlays">Dependencies and War Overlays</a></li>
+</ul>
+</li>
+<li><a id="ToC-environments" href="#environments">Environments</a></li>
+</ul>
+</li>
+<li xmlns:m="http://www.w3.org/1998/Math/MathML"><a id="ToC-unittesting" href="#unittesting">Unit Testing</a>
+<ul>
+</ul>
+</li>
+<li xmlns:m="http://www.w3.org/1998/Math/MathML"><a id="ToC-tooling" href="#tooling">Tooling</a>
+<ul>
+<li><a id="ToC-thewokoscript" href="#thewokoscript">The woko Script</a></li>
+<li><a id="ToC-wokopush" href="#wokopush">woko push</a></li>
+<li><a id="ToC-intellijideaplugin" href="#intellijideaplugin">IntelliJ IDEA plugin</a></li>
+</ul>
+</li>
+<li xmlns:m="http://www.w3.org/1998/Math/MathML"><a id="ToC-add-ons" href="#add-ons">Add-ons</a>
+<ul>
+<li><a id="ToC-usermanagement" href="#usermanagement">User Management</a></li>
+<li><a id="ToC-asynchronousjobs" href="#asynchronousjobs">Asynchronous Jobs</a></li>
+</ul>
+</li>
+<li xmlns:m="http://www.w3.org/1998/Math/MathML"><a id="ToC-performance" href="#performance">Performance</a>
+<ul>
+<li><a id="ToC-browsercachingstaticresources" href="#browsercachingstaticresources">Browser caching &amp; static resources</a></li>
+<li><a id="ToC-hibernate2ndlevelcache" href="#hibernate2ndlevelcache">Hibernate 2nd level cache</a></li>
+</ul>
+</li>
+</ul></div></div></div></div></body>
+</html>

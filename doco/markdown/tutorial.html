@@ -1,0 +1,365 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1 plus MathML 2.0//EN" "http://www.w3.org/TR/MathML2/dtd/xhtml-math11-f.dtd"><html>
+<head>
+	<meta charset="utf-8"/>
+	<title>Woko Tutorial</title>
+	<meta name="author" content="Rémi Vankeisbelck  Alexis Boissonnat"/>
+	<link type="text/css" rel="stylesheet" href="bootstrap.css"/>
+	<link type="text/css" rel="stylesheet" href="doko.css"/>
+<script type="text/javascript" src="jquery.min.js">
+</script>
+<script type="text/javascript" src="bootstrap.js">
+</script>
+</head>
+<body>
+<div class="container"><div class="row"><div class="col-sm-9" role="main" id="affix">
+
+<h1 id="wokotutorial">Woko Tutorial</h1>
+
+<h2 id="about">About</h2>
+
+<p>This tutorial aims at covering the main aspects of Woko through practical examples.</p>
+
+<p>We’ll be using the default “Reference Implementation” (hibernate etc.), but the same concepts applies to other implementations of <code>ObjectStore</code>, <code>UserManager</code> etc. </p>
+
+<h1 id="environmentsetup">Environment setup</h1>
+
+<p>You’ll need to install the <code>woko</code> shell script to go through this tutorial. Follow instructions explained <a href="https://github.com/pojosontheweb/woko/wiki/Download">here</a>. </p>
+
+<p>Make sure the <code>woko</code> command is available in your PATH before you start.</p>
+
+<h1 id="projectinit">Project init</h1>
+
+<p>A Woko app needs several dependencies to be configured in the pom etc. The <code>woko</code> script can initialize the whole thing for you.</p>
+
+<p>Open a command prompt, switch to a folder of your choice and create a new Woko project :</p>
+
+<pre><code>$ cd ~/projects
+$ woko init
+</code></pre>
+
+<p>The command will ask you for some basic info about your project. You can pick default values for everything excepted the <code>groupId</code> and <code>artifactId</code> :</p>
+
+<pre><code>$ woko init
+__       __     _  __
+\ \  _  / /___ | |/ / ___
+ \ \/ \/ // o \|   K /   \
+  \__W__/ \___/|_|\_\\_o_/  2.0
+             POJOs on the Web !
+
+Initializing project
+&gt; Project name ? myapp
+&gt; Maven groupId ? com.myco.myapp
+&gt; Your project's version ? [1.0-SNAPSHOT] 
+| Generating your project, please wait, it can take a while to download everything...
+&gt; Would you like to use Bootstrap for UI ? [y] :
+&gt; Would you like to use Groovy ? [y] :
+&gt; Specify your default package name [com.myco.myapp] :
+&gt; Would you like enable the woko 'push' command ? [y] :
+|  - web.xml file created : src/main/webapp/WEB-INF/web.xml
+|  - Layout facet created : com.myco.myapp.facets.MyLayout
+|  - resource bundle created : myapp/src/main/resources/application.properties
+|  
+|  Your project has been generated in : myapp.
+|  Run 'woko start' in order to launch your app in a local Jetty container  
+</code></pre>
+
+<p>This creates a <code>myapp</code> project in the current directory :</p>
+
+<pre><code>myapp/
+    pom.xml
+    src/
+        main/
+            groovy/
+                com/
+                    myco/
+                        myapp/
+                            facets/
+                                MyLayout.groovy
+                            model/
+                                MyEntity.groovy 
+                            woko/
+                                MyappInitListener.goovy
+            resources/
+                application.properties
+            webapp/
+                WEB-INF/
+                    web.xml                                
+</code></pre>
+
+<ul>
+<li>pom.xml : maven pom with everything pre-configured</li>
+<li>MyLayout.groovy : maven pom with everything pre-configured</li>
+<li>MyEntity.groovy : example of an entity class using JPA</li>
+<li>MyappInitListener.goovy : init listener for the app, starts-up your Woko</li>
+<li>application.properties : resource bundle for the app</li>
+<li>web.xml : WebApp XML descriptor, configured with Stripes, Woko, etc.</li>
+</ul>
+
+<h1 id="domainclasses">Domain Classes</h1>
+
+<p>The very first step when starting a Woko app is to define the Domain Classes : the entities that represent your model. </p>
+
+<p>Here’s the example that has been generated in our project :</p>
+
+<pre><code>// src/main/groovy/myapp/com/myco/myapp/model/MyEntity.groovy
+
+package com.myco.myapp.model
+
+import org.compass.annotations.Searchable
+import org.compass.annotations.SearchableId
+import org.compass.annotations.SearchableProperty
+import javax.validation.constraints.NotNull
+
+import javax.persistence.Entity
+import javax.persistence.Id
+
+@Entity
+@Searchable
+class MyEntity {
+
+    @Id
+    @SearchableId
+    Long id
+
+    @NotNull
+    @SearchableProperty
+    String myProp
+
+    Date myOtherProp
+
+}
+</code></pre>
+
+<p>And that’s it. A <code>MyEntity</code> POJO with persistence, validation and full-text search enabled. Your class will be scanned at startup, and ready for use. </p>
+
+<blockquote>
+<p>The built-in <code>HibernateCompassStore</code> supports Hibernate, Hibernate Validator and Compass mapping annotations. Refer to their docs for more infos about them.</p>
+</blockquote>
+
+<h1 id="fulldefaults">Full Defaults</h1>
+
+<p>You don’t have to write anything more than a Domain Class to start playing with your application. Get back to your terminal, and start the app :</p>
+
+<pre><code>$ woko start
+</code></pre>
+
+<p>This will compile and build the project, start jetty, and deploy your application. You can now point your browser to :</p>
+
+<p><a href="http://localhost:8080/myapp">http://localhost:8080/myapp</a></p>
+
+<h2 id="guesthome">Guest Home</h2>
+
+<p>What you’ll see when visiting the app is the guest home page. That’s what unauthenticated users see of your application by default. </p>
+
+<figure>
+<img src="img/woko1.PNG" alt="Guest Home"/>
+<figcaption>Guest Home</figcaption>
+</figure>
+
+<p>We have chosen not to show Domain Objects to guest users by default, so there’s nothing more to see than this home page at the moment. Of course, you can easily change the contents of the default guest home page later, and provide access to your model as you want. </p>
+
+<h2 id="thedeveloperrole">The developer role</h2>
+
+<p>By default, your Woko application includes a specific user, of role <code>developer</code>. This user has all CRUD privileges on your Domain Objects, plus a few “power features” that we’ll explain later.</p>
+
+<p>You can use the default credentials in order to log-in :</p>
+
+<ul>
+<li>username : wdevel</li>
+<li>password : wdevel</li>
+</ul>
+
+<p>As you can see, developers also have their home page, but this time with a few items in the nav bar :</p>
+
+<figure>
+<img src="img/woko2.PNG" alt="Guest Home"/>
+<figcaption>Guest Home</figcaption>
+</figure>
+
+<p>For now, let’s try the CRUD features on our <code>MyEntity</code> Domain Class. </p>
+
+<h2 id="zero-loccrud">Zero-LOC CRUD</h2>
+
+<p>Let’s first create an instance of our Domain Class. Click the <em>create</em> link in the nav bar :</p>
+
+<figure>
+<img src="img/woko3.PNG" alt="Guest Home"/>
+<figcaption>Guest Home</figcaption>
+</figure>
+
+<p>As you can see, Woko has found your Domain Class, you can select <code>MyEntity</code> from the list, and submit :</p>
+
+<figure>
+<img src="img/woko4.PNG" alt="Guest Home"/>
+<figcaption>Guest Home</figcaption>
+</figure>
+
+<p>A FORM is generated for your POJO, with input fields for first-level properties :</p>
+
+<figure>
+<img src="img/woko5.PNG" alt="Guest Home"/>
+<figcaption>Guest Home</figcaption>
+</figure>
+
+<p>A few things to notice here :</p>
+
+<ul>
+<li>Woko has dynamically introspected your Domain Class, and rendered a FORM that allows to change its state.</li>
+<li>Constraint Validations are taken into account (the <code>@NotNull</code> on <code>myProp</code>)</li>
+<li>Input fields are generated based on the type of the object’s properties (there’s even a date picker component for <code>myOtherProp</code></li>
+</ul>
+
+<figure>
+<img src="img/woko6.PNG" alt="Guest Home"/>
+<figcaption>Guest Home</figcaption>
+</figure>
+
+<p>Now fill in some values and save :</p>
+
+<figure>
+<img src="img/woko7.PNG" alt="Guest Home"/>
+<figcaption>Guest Home</figcaption>
+</figure>
+
+<p>The object has been saved. We can now close the edit mode :</p>
+
+<figure>
+<img src="img/woko7-1.PNG" alt="Guest Home"/>
+<figcaption>Guest Home</figcaption>
+</figure>
+
+<p>And now get a “read-only” view of our <code>MyEntity</code> instance :</p>
+
+<figure>
+<img src="img/woko8.PNG" alt="Guest Home"/>
+<figcaption>Guest Home</figcaption>
+</figure>
+
+<p>As you can see, Woko has now generated plain HTML for the object’s properties. Again, it’s using the types and metadatas found on the object (e.g. the formatted date). </p>
+
+<p>Developer users can also list objects by class :</p>
+
+<figure>
+<img src="img/woko9.PNG" alt="Guest Home"/>
+<figcaption>Guest Home</figcaption>
+</figure>
+
+<figure>
+<img src="img/woko10.PNG" alt="Guest Home"/>
+<figcaption>Guest Home</figcaption>
+</figure>
+
+<figure>
+<img src="img/woko11.PNG" alt="Guest Home"/>
+<figcaption>Guest Home</figcaption>
+</figure>
+
+<p>And use full text search, as defined in the POJO’s annotations :</p>
+
+<figure>
+<img src="img/woko12.PNG" alt="Guest Home"/>
+<figcaption>Guest Home</figcaption>
+</figure>
+
+<p>In short : all CRUD operations on your Domain Classes (plus full text search) are available for free. Woko generates the User Interface dynamically without you writing any single line of code for it.</p>
+
+<h2 id="rpcandjavascript">RPC and JavaScript</h2>
+
+<p>Woko includes out of the box support for RPC. All default features are available as JSON/HTTP services. Every feature covered by this tutorial so far can be realized using any code that speaks HTTP and JSON, using a simple protocol. </p>
+
+<p>With the app still running, log in as wdevel and try this :</p>
+
+<p><a href="http://localhost:8080/myapp/save/MyEntity?object.id=123&amp;object.myProp=foobar&amp;createTransient=true&amp;isRpc=true">http://localhost:8080/myapp/save/MyEntity?object.id=123&amp;object.myProp=foobar&amp;createTransient=true&amp;isRpc=true</a></p>
+
+<p>The <code>isRpc</code> request parameter tells Woko that the request is to be handled as JSON/HTTP. Woko does the same job as usual, except that it returns the result of the operation as JSON. In this example, it returns the freshly created object :</p>
+
+<pre><code>{
+    "id": 123,
+    "myProp": "foobar",
+    "class": "MyEntity",
+    "_wokoInfo": {
+        "title": "123",
+        "className": "MyEntity",
+        "key": "123"
+    }
+}
+</code></pre>
+
+<p>Again, all the features are available out of the box. For AJAX situations, it’s even simpler using the <code>woko.rpc.Client</code> JavaScript API. It provides all default features, plus arbitrary facet invocation. </p>
+
+<p>Log in again as developer, open firebug and go to :</p>
+
+<p><a href="http://localhost:8080/myapp/save/MyEntity?object.id=123&amp;object.myProp=foobar&amp;createTransient=true">http://localhost:8080/myapp/save/MyEntity?object.id=123&amp;object.myProp=foobar&amp;createTransient=true</a></p>
+
+<p>You have saved the object. Now go to firebug console and play :</p>
+
+<pre><code>// load MyEntity with ID 123 and store to global for the example
+wokoClient.loadObject("MyEntity", 123, { 
+    onSuccess: function(o) { 
+        myEntity = o;
+        console.log(myEntity);
+    }
+});
+</code></pre>
+
+<p>You can even update the object :</p>
+
+<pre><code>myEntity.myProp = "this is funky";
+wokoClient.saveObject({
+    obj:myEntity, 
+    onSuccess:function(savedObject) {
+        console.log(savedObject.myProp); 
+    }
+});
+</code></pre>
+
+<p>And check that it’s been saved :</p>
+
+<pre><code>wokoClient.loadObject("MyEntity", 123, { 
+    onSuccess: function(o) { 
+        console.log(o.myProp);
+    }
+});   
+</code></pre>
+
+<h1 id="overridingthedefaults">Overriding the defaults</h1>
+
+<p>This section explains how the default features can be customized. It shows some typical examples of changing Woko’s behavior when you need it. It also gives a glance of how you can write Resolution Facets in your app to perform various tasks.</p>
+
+<p>TODO explain how you can override the title, properties etc. Show an example in edit mode.</p>
+
+<h1 id="resolutionfacets">Resolution Facets</h1>
+
+<p>TODO explain how to completely override /view, and how to write a sample Resolution Facet that does something</p>
+
+</div><div class="col-sm-3"><div data-spy="affix" data-offset-top="60" data-offset-bottom="200" role="complementary"><ul class="toc">
+<li xmlns:m="http://www.w3.org/1998/Math/MathML"><a id="ToC-wokotutorial" href="#wokotutorial">Woko Tutorial</a>
+<ul>
+<li><a id="ToC-about" href="#about">About</a></li>
+</ul>
+</li>
+<li xmlns:m="http://www.w3.org/1998/Math/MathML"><a id="ToC-environmentsetup" href="#environmentsetup">Environment setup</a>
+<ul>
+</ul>
+</li>
+<li xmlns:m="http://www.w3.org/1998/Math/MathML"><a id="ToC-projectinit" href="#projectinit">Project init</a>
+<ul>
+</ul>
+</li>
+<li xmlns:m="http://www.w3.org/1998/Math/MathML"><a id="ToC-domainclasses" href="#domainclasses">Domain Classes</a>
+<ul>
+</ul>
+</li>
+<li xmlns:m="http://www.w3.org/1998/Math/MathML"><a id="ToC-fulldefaults" href="#fulldefaults">Full Defaults</a>
+<ul>
+<li><a id="ToC-guesthome" href="#guesthome">Guest Home</a></li>
+<li><a id="ToC-thedeveloperrole" href="#thedeveloperrole">The developer role</a></li>
+<li><a id="ToC-zero-loccrud" href="#zero-loccrud">Zero-LOC CRUD</a></li>
+<li><a id="ToC-rpcandjavascript" href="#rpcandjavascript">RPC and JavaScript</a></li>
+</ul>
+</li>
+<li xmlns:m="http://www.w3.org/1998/Math/MathML"><a id="ToC-overridingthedefaults" href="#overridingthedefaults">Overriding the defaults</a></li>
+<li xmlns:m="http://www.w3.org/1998/Math/MathML"><a id="ToC-resolutionfacets" href="#resolutionfacets">Resolution Facets</a></li>
+</ul></div></div></div></div></body>
+</html>

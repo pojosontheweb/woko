@@ -63,21 +63,19 @@
 			<xsl:value-of select="$newline"/>
 			<div class="container">
 				<div class="row">
-					<div class="col-sm-3" id="toc-container">
-						<div class="hidden-print hidden-xs hidden-sm">
+					<div class="col-sm-9" role="main" id="affix">
+						<xsl:apply-templates select="@*|node()"/>
+					</div>
+					<div class="col-sm-3">
+						<div data-spy="affix" data-offset-top="60" data-offset-bottom="200" role="complementary">
 							<ul class="toc">
 								<xsl:apply-templates select="h1" mode="ToC"/>
 								<xsl:value-of select="$newline"/>
 							</ul>					
 						</div>
 					</div>
-					<div class="col-sm-9" id="content">
-						<div id="scrollbox">							
-							<xsl:apply-templates select="@*|node()"/>
-						</div>
-					</div>
 				</div>
-			</div>			
+			</div>	
 		</xsl:copy>
 	</xsl:template>
 	
