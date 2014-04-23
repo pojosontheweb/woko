@@ -2,80 +2,15 @@ Title:  Woko Developer Guide
 Author: Rémi Vankeisbelck 
   Alexis Boissonnat
 CSS: css/bootstrap.css
-CSS: doko.css
+CSS: css/doko.css
 HTML header:  <script type="text/javascript"
-    src="jquery.min.js">
+    src="js/jquery.min.js">
     </script>
 HTML header:  <script type="text/javascript"
-    src="bootstrap.js">
+    src="js/bootstrap.js">
     </script>
 
-<div id="top-nav hidden-print">
-	<ul class="nav nav-pills" id="top-nav">
-		<li>
-			<a href="#">
-				<span class="glyphicon glyphicon-home"> </span>
-				Home
-			</a>
-		</li>
-		<li>
-			<a href="#">
-				<span class="glyphicon glyphicon-save"> </span>
-				Get Woko
-			</a>
-		</li>
-		<li>
-			<a href="#">
-				<span class="glyphicon glyphicon-sort-by-alphabet"> </span>
-				Tutorial
-			</a>
-		</li>
-		<li>
-			<a href="#">
-				<span class="glyphicon glyphicon-film"> </span>
-				Videos
-			</a>
-		</li>
-		<li class="active">
-			<a href="#">
-				<span class="glyphicon glyphicon-wrench"> </span>				
-				Dev. Guide
-			</a>
-		</li>
-		<li class="dropdown links">
-		    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-				<i class="glyphicon glyphicon-link"> </i>
-		      Links <span class="caret"></span>
-		    </a>
-		    <ul class="dropdown-menu">
-				<li>
-					<a href="#">
-						<span class="glyphicon glyphicon-comment"> </span>				
-						Discuss
-					</a>
-				</li>
-				<li>
-					<a href="#">
-						<span class="glyphicon glyphicon-exclamation-sign"> </span>				
-						Issues
-					</a>
-				</li>
-				<li>
-					<a href="#">
-						<span class="glyphicon glyphicon-cog"> </span>				
-						GitHub
-					</a>
-				</li>
-				<li>
-					<a href="#">
-						<span class="glyphicon glyphicon-repeat"> </span>				
-						Jenkins CI
-					</a>
-				</li>
-		    </ul>
-		 </li>
-	</ul>
-</div>
+{{top-nav.html}}
 
 <header class="page-header">
 	Woko Developer Guide
