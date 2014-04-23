@@ -42,24 +42,38 @@ HTML header:  <script type="text/javascript"
 				Dev. Guide
 			</a>
 		</li>
-		<li>
-			<a href="#">
-				<span class="glyphicon glyphicon-comment"> </span>				
-				Discuss
-			</a>
-		</li>
-		<li>
-			<a href="#">
-				<span class="glyphicon glyphicon-exclamation-sign"> </span>				
-				Issues
-			</a>
-		</li>
-		<li>
-			<a href="#">
-				<span class="glyphicon glyphicon-cog"> </span>				
-				GitHub
-			</a>
-		</li>
+		<li class="dropdown links">
+		    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+				<i class="glyphicon glyphicon-link"> </i>
+		      Links <span class="caret"></span>
+		    </a>
+		    <ul class="dropdown-menu">
+				<li>
+					<a href="#">
+						<span class="glyphicon glyphicon-comment"> </span>				
+						Discuss
+					</a>
+				</li>
+				<li>
+					<a href="#">
+						<span class="glyphicon glyphicon-exclamation-sign"> </span>				
+						Issues
+					</a>
+				</li>
+				<li>
+					<a href="#">
+						<span class="glyphicon glyphicon-cog"> </span>				
+						GitHub
+					</a>
+				</li>
+				<li>
+					<a href="#">
+						<span class="glyphicon glyphicon-repeat"> </span>				
+						Jenkins CI
+					</a>
+				</li>
+		    </ul>
+		 </li>
 	</ul>
 </div>
 

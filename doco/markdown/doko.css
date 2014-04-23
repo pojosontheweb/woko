@@ -43,8 +43,11 @@
 }
 
 #top-nav {
-	font-size: 0.8em;
 	margin-top: 20px;
+}
+
+.dropdown.links {
+	
 }
 
 header.page-header {
