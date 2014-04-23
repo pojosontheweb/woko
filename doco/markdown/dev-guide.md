@@ -42,8 +42,6 @@ HTML header:  <script type="text/javascript"
 				Dev. Guide
 			</a>
 		</li>
-	</ul>
-	<ul class="pull-right">
 		<li>
 			<a href="#">
 				<span class="glyphicon glyphicon-comment"> </span>				
