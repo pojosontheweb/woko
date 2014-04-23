@@ -28,21 +28,36 @@ FileUtils.copyDirectory(
 )
 
 String htmlTopNav = new File(srcDir + File.separator + "top-nav.include.html").text
+def topNavXml = new XmlParser().parseText(htmlTopNav)
 
 println "Processing sources..."
 new File(srcDir).listFiles().each { File f ->
     if (!f.isDirectory()) {
         if (f.name.endsWith(".md")) {
             println "=> Processing $f.absolutePath"
+            String nameWithoutExtension = f.name.substring(0, f.name.lastIndexOf("."))
+
+            // patch top nav text in order to select active elem
+            topNavXml.ul.li.each {
+                def page_id = it.'@page-id'
+                if (page_id==nameWithoutExtension) {
+                    it.'@class' = 'active'
+                }
+            }
+            StringWriter sw = new StringWriter()
+            new XmlNodePrinter(
+                new PrintWriter(sw)
+            ).print(topNavXml)
+            sw.close()
+            def patchedTopNav = sw.toString()
 
             // create file with replaced top-nav
             String fileText = f.text
-            String updatedText = fileText.replaceAll(/\{\{top-nav\.html}}/, htmlTopNav)
+            String updatedText = fileText.replaceAll(/\{\{top-nav\.html}}/, htmlTopNav) // patchedTopNav
             println "patched : " + (f.absolutePath + ".patched.md")
             File patchedFile = new File(f.absolutePath + ".patched.md")
             try {
                 patchedFile.text = updatedText
-                String nameWithoutExtension = f.name.substring(0, f.name.lastIndexOf("."))
                 def command = "./doc2html.sh $nameWithoutExtension"
                 println "Command : $command"
                 def p = command.execute()
