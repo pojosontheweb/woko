@@ -1,6 +1,14 @@
 Title:  Woko Developer Guide
 Author: Rémi Vankeisbelck 
   Alexis Boissonnat
+CSS: bootstrap.css
+CSS: doko.css
+HTML header:  <script type="text/javascript"
+    src="jquery.min.js">
+    </script>
+HTML header:  <script type="text/javascript"
+    src="bootstrap.js">
+    </script>
 
 # Architecture
 

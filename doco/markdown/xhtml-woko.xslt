@@ -61,14 +61,16 @@
 	<xsl:template match="body">
 		<xsl:copy>
 			<xsl:value-of select="$newline"/>
+					
+			<!-- main content -->
 			<div class="container">
 				<div class="row">
-					<div class="col-sm-9" role="main" id="affix">
+					<div class="col-xs-12 col-sm-12 col-md-9 col-lg-9" role="main" id="affix">
 						<xsl:apply-templates select="@*|node()"/>
 					</div>
-					<div class="col-sm-3">
-						<div data-spy="affix" data-offset-top="60" data-offset-bottom="200" role="complementary">
-							<ul class="toc nav">
+					<div class="col-md-3 col-lg-3 hidden-sm hidden-xs">
+						<div data-spy="affix" data-offset-top="60" data-offset-bottom="200" role="complementary" id="right-nav">
+							<ul class="nav">
 								<xsl:apply-templates select="h1" mode="ToC"/>
 								<xsl:value-of select="$newline"/>
 							</ul>					
@@ -76,9 +78,35 @@
 					</div>
 				</div>
 			</div>	
+			<div class="container">
+				<footer class="row">
+					<div class="col-sm-12">
+						<div class="copyright pull-left">
+							(c) The Woko Framework. POJOs on the Web ! 
+						</div>
+						<div class="pull-right">
+							<a href="http://pojosontheweb.com">							 
+								<img src="woko-logo-small.png" alt="woko logo"/>
+							</a>
+						</div>
+					</div>
+				</footer>
+			</div>
 		</xsl:copy>
-	</xsl:template>
-	
+		
+		<script type="text/javascript">
+			$(function() {
+				$('body')
+					.scrollspy({ target: '#right-nav' })
+					.on('activate.bs.scrollspy', function (evt) {
+						var target = evt.target;
+						if (target) {
+							console.log(target);							
+						}
+					});
+			});
+		</script>
+	</xsl:template>	
 	
 	<!-- create ToC entry -->
 	<xsl:template match="h1" mode="ToC">
@@ -95,7 +123,7 @@
 			</a>
 			<xsl:if test="following::h2[1][preceding::h1[1]]">
 				<xsl:value-of select="$newline"/>
-				<ul>
+				<ul class="nav subsections">
 					<xsl:apply-templates select="following::h2[preceding::h1[1][generate-id() = $myId]]" mode="ToC"/>
 					<xsl:value-of select="$newline"/>
 				</ul>
@@ -161,5 +189,41 @@
 			</a>
 		</li>
 	</xsl:template>
-		
+	
+	<xsl:template match="h1">
+		<xsl:variable name="link">
+			<xsl:value-of select="@id"/>
+		</xsl:variable>
+		<h1 id="{$link}">
+			<xsl:apply-templates select="@*|node()"/>
+		</h1>
+	</xsl:template>
+
+	<xsl:template match="h2">
+		<xsl:variable name="link">
+			<xsl:value-of select="@id"/>
+		</xsl:variable>
+		<h2 id="{$link}">
+			<xsl:apply-templates select="@*|node()"/>
+		</h2>
+	</xsl:template>
+
+	<xsl:template match="h3">
+		<xsl:variable name="link">
+			<xsl:value-of select="@id"/>
+		</xsl:variable>
+		<h3 id="{$link}">
+			<xsl:apply-templates select="@*|node()"/>
+		</h3>
+	</xsl:template>
+
+	<xsl:template match="h4">
+		<xsl:variable name="link">
+			<xsl:value-of select="@id"/>
+		</xsl:variable>
+		<h4 id="{$link}">
+			<xsl:apply-templates select="@*|node()"/>
+		</h4>
+	</xsl:template>
+	
 </xsl:stylesheet>
