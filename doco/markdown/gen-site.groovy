@@ -5,6 +5,8 @@
 )
 
 import org.apache.commons.io.FileUtils
+import groovy.text.SimpleTemplateEngine
+
 
 String scriptDir = new File(getClass().protectionDomain.codeSource.location.path).parent
 
@@ -27,8 +29,8 @@ FileUtils.copyDirectory(
     new File(targetDir.absolutePath + File.separator + "img")
 )
 
-String htmlTopNav = new File(srcDir + File.separator + "top-nav.include.html").text
-def topNavXml = new XmlParser().parseText(htmlTopNav)
+def templateEngine = new SimpleTemplateEngine()
+String templateText = new File(srcDir + File.separator + "top-nav.include.html").text
 
 println "Processing sources..."
 new File(srcDir).listFiles().each { File f ->
@@ -37,23 +39,16 @@ new File(srcDir).listFiles().each { File f ->
             println "=> Processing $f.absolutePath"
             String nameWithoutExtension = f.name.substring(0, f.name.lastIndexOf("."))
 
-            // patch top nav text in order to select active elem
-            topNavXml.ul.li.each {
-                def page_id = it.'@page-id'
-                if (page_id==nameWithoutExtension) {
-                    it.'@class' = 'active'
-                }
-            }
-            StringWriter sw = new StringWriter()
-            new XmlNodePrinter(
-                new PrintWriter(sw)
-            ).print(topNavXml)
-            sw.close()
-            def patchedTopNav = sw.toString()
+            // patch top nav
+            def binding = [
+                nameWithoutExtension: nameWithoutExtension
+            ]
+            def template = templateEngine.createTemplate(templateText).make(binding)
+            def patchedTopNav = template.toString()
 
             // create file with replaced top-nav
             String fileText = f.text
-            String updatedText = fileText.replaceAll(/\{\{top-nav\.html}}/, htmlTopNav) // patchedTopNav
+            String updatedText = fileText.replaceAll(/\{\{top-nav\.html}}/, patchedTopNav)
             println "patched : " + (f.absolutePath + ".patched.md")
             File patchedFile = new File(f.absolutePath + ".patched.md")
             try {
