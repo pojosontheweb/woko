@@ -19,12 +19,21 @@ package woko.actions;
 import net.sourceforge.stripes.action.ActionBean;
 import net.sourceforge.stripes.action.ActionBeanContext;
 import net.sourceforge.stripes.controller.DefaultActionBeanPropertyBinder;
+import net.sourceforge.stripes.util.bean.Node;
+import net.sourceforge.stripes.util.bean.NodeEvaluation;
+import net.sourceforge.stripes.util.bean.PropertyExpression;
 import net.sourceforge.stripes.util.bean.PropertyExpressionEvaluation;
 import net.sourceforge.stripes.validation.ValidationError;
 import net.sourceforge.stripes.validation.ValidationErrors;
 import woko.Woko;
 import woko.persistence.ObjectStore;
 
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpSession;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -38,6 +47,38 @@ import java.util.List;
  */
 public class WokoActionBeanPropertyBinder extends DefaultActionBeanPropertyBinder {
 
+    // see https://github.com/StripesFramework/stripes/commit/b4c043ce50f3f032abc47878cf70019db0675c7a
+    // TODO remove on stripes updgrate, it's fixed in 1.5.x
+    @SuppressWarnings("unchecked")
+    private static final List<Class<?>> ILLEGAL_NODE_VALUE_TYPES = Arrays.asList(
+            ActionBeanContext.class,
+            Class.class,
+            ClassLoader.class,
+            HttpSession.class,
+            ServletRequest.class,
+            ServletResponse.class);
+
+    // see https://github.com/StripesFramework/stripes/commit/b4c043ce50f3f032abc47878cf70019db0675c7a
+    // TODO remove on stripes updgrate, it's fixed in 1.5.x
+    protected boolean usesIllegalNodeValueType(PropertyExpressionEvaluation eval) {
+        for (NodeEvaluation node = eval.getRootNode(); node != null; node = node.getNext()) {
+            Type type = node.getValueType();
+            if (type instanceof ParameterizedType) {
+                type = ((ParameterizedType) type).getRawType();
+            }
+            if (type instanceof Class) {
+                final Class<?> nodeClass = (Class<?>) type;
+                for (Class<?> protectedClass : ILLEGAL_NODE_VALUE_TYPES) {
+                    if (protectedClass.isAssignableFrom(nodeClass)) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+
     /**
      * Performs the Woko-specific binding checks
      * @param eval the expression to check for
@@ -45,7 +86,7 @@ public class WokoActionBeanPropertyBinder extends DefaultActionBeanPropertyBinde
      */
     @Override
     protected boolean isBindingAllowed(PropertyExpressionEvaluation eval) {
-        if (super.isBindingAllowed(eval)) {
+        if (super.isBindingAllowed(eval) && !usesIllegalNodeValueType(eval)) {
             // do the woko specific binding checks
             Object actionBean = eval.getBean();
             Class<?> beanClass = actionBean.getClass();
