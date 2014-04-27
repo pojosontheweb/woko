@@ -24,17 +24,15 @@ class ArgsInListTest extends WebTestBase {
     @Test
     void testListItem() {
         login()
-
-        // create
         goToPage '/createDummyObjects'
+        try {
+            goToPage '/list/MyEntity?facet.resultsPerPage=2' // use 2 res per page otherwise elem is off screen on FF
+            verifyText 'Should be displayed only on load'
 
-        goToPage '/list/MyEntity'
-        verifyText 'Should be displayed only on load'
-
-        findr().elem(By.xpath("/html/body/div[2]/ul/li[3]/a")).click() // click page 2
-        verifyText 'Should be displayed on each page except on load !'
-
-        // delete
-        goToPage '/removeDummyObjects'
+            findr().elem(By.xpath("/html/body/div[2]/ul/li[3]/a")).click() // click page 2
+            verifyText 'Should be displayed on each page except on load !'
+        } finally {
+            goToPage '/removeDummyObjects'
+        }
     }
 }

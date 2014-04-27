@@ -44,7 +44,7 @@ class RpcTest extends WebTestBase {
 
             // delete
             goToPage '/delete/MyBook/1111?facet.confirm=true&isRpc=true'
-            verifyText '{ "success": true }'
+            verifyText '{"success":true}'
 
             // verify /view doesn't work any more
             not {
