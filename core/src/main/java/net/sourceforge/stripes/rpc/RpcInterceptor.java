@@ -18,7 +18,6 @@ package net.sourceforge.stripes.rpc;
 
 import net.sourceforge.stripes.action.ActionBeanContext;
 import net.sourceforge.stripes.action.Resolution;
-import net.sourceforge.stripes.action.StreamingResolution;
 import net.sourceforge.stripes.ajax.JavaScriptResolution;
 import net.sourceforge.stripes.config.ConfigurableComponent;
 import net.sourceforge.stripes.config.Configuration;
@@ -31,6 +30,7 @@ import net.sourceforge.stripes.validation.ValidationErrors;
 import org.json.JSONObject;
 import woko.Woko;
 import woko.facets.builtin.RenderObjectJson;
+import woko.util.JsonResolution;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -113,6 +113,6 @@ public class RpcInterceptor implements Interceptor, ConfigurableComponent {
             return new JavaScriptResolution(errors);
         }
         JSONObject jsonErrors = roj.objectToJson(abc.getRequest());
-        return new StreamingResolution("text/json", jsonErrors.toString());
+        return new JsonResolution(jsonErrors);
     }
 }

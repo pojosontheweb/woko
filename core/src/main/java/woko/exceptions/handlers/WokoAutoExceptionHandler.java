@@ -18,11 +18,11 @@ package woko.exceptions.handlers;
 
 import net.sourceforge.stripes.action.ForwardResolution;
 import net.sourceforge.stripes.action.Resolution;
-import net.sourceforge.stripes.action.StreamingResolution;
 import net.sourceforge.stripes.exception.AutoExceptionHandler;
 import net.sourceforge.stripes.rpc.RpcInterceptor;
 import org.json.JSONObject;
 import woko.facets.FacetNotFoundException;
+import woko.util.JsonResolution;
 import woko.util.WLogger;
 
 import javax.servlet.http.HttpServletRequest;
@@ -76,7 +76,7 @@ public class WokoAutoExceptionHandler implements AutoExceptionHandler {
         } catch (Exception e1) {
             throw new RuntimeException(e1);
         }
-        return new StreamingResolution("text/json", j.toString());
+        return new JsonResolution(j);
     }
 
     /**
