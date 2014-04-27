@@ -20,7 +20,7 @@
     <parent>
         <groupId>com.pojosontheweb</groupId>
         <artifactId>woko-parent</artifactId>
-        <version>2.3.2</version>
+        <version>2.3.3</version>
     </parent>
     <artifactId>woko-webtests</artifactId>
     <name>Woko - web tests</name>
@@ -70,7 +70,7 @@
                             <!--home>${tomcat6.home}</home-->
 
                             <zipUrlInstaller>
-                                <url>http://wwwftp.ciril.fr/pub/apache/tomcat/tomcat-6/v6.0.37/bin/apache-tomcat-6.0.37.tar.gz</url>
+                                <url>http://mirrors.ircam.fr/pub/apache/tomcat/tomcat-6/v6.0.39/bin/apache-tomcat-6.0.39.tar.gz</url>
                                 <downloadDir>${project.build.directory}/downloads</downloadDir>
                                 <extractDir>${project.build.directory}/extracts</extractDir>
                             </zipUrlInstaller>
