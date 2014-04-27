@@ -5,6 +5,7 @@ import net.sourceforge.jfacets.annotations.FacetKeyList;
 import net.sourceforge.stripes.action.ActionBeanContext;
 import net.sourceforge.stripes.action.ForwardResolution;
 import net.sourceforge.stripes.action.Resolution;
+import net.sourceforge.stripes.action.StrictBinding;
 import woko.facets.BaseResolutionFacet;
 import woko.facets.builtin.WokoFacets;
 
@@ -30,6 +31,7 @@ import javax.servlet.http.HttpServletRequest;
     @FacetKey(name = WokoFacets.search, profileId = "all"),
     @FacetKey(name = WokoFacets.studio, profileId = "guest")
 })
+@StrictBinding
 public class LoginRequiredFacet extends BaseResolutionFacet {
 
   public Resolution getResolution(ActionBeanContext abc) {
