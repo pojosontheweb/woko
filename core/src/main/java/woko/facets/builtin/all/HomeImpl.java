@@ -18,6 +18,7 @@ package woko.facets.builtin.all;
 
 import net.sourceforge.jfacets.IFacetDescriptorManager;
 import net.sourceforge.jfacets.annotations.FacetKey;
+import net.sourceforge.stripes.action.StrictBinding;
 import woko.facets.BaseForwardResolutionFacet;
 import woko.facets.builtin.Home;
 import woko.facets.builtin.WokoFacets;
@@ -31,6 +32,7 @@ import woko.users.UsernameResolutionStrategy;
  * Assigned to profile <code>all</code> so that one can override for default <code>guest</code> easily without
  * using a custom default role (fallback profile).
  */
+@StrictBinding
 @FacetKey(name= WokoFacets.home, profileId="all")
 public class HomeImpl<
         OsType extends ObjectStore,
