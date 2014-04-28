@@ -317,9 +317,6 @@ The command accepts one argument that can be  :
 (groovy,developer,java.lang.Object) [woko.facets.builtin.developer.Groovy] facet.code
 => Found 2 accessible binding(s) in facet (groovy,developer,java.lang.Object) [woko.facets.builtin.developer.Groovy]
 
-(home,all,java.lang.Object) [woko.facets.builtin.all.HomeImpl] object.*
-=> Found 1 accessible binding(s) in facet (home,all,java.lang.Object) [woko.facets.builtin.all.HomeImpl]
-
 (home,developer,java.lang.Object) [woko.facets.builtin.developer.HomeImpl] object.*
 => Found 1 accessible binding(s) in facet (home,developer,java.lang.Object) [woko.facets.builtin.developer.HomeImpl]
 
@@ -330,9 +327,6 @@ The command accepts one argument that can be  :
 (list,developer,java.lang.Object) [woko.facets.builtin.developer.ListImpl] facet.page
 (list,developer,java.lang.Object) [woko.facets.builtin.developer.ListImpl] facet.resultsPerPage
 => Found 3 accessible binding(s) in facet (list,developer,java.lang.Object) [woko.facets.builtin.developer.ListImpl]
-
-(logout,all,java.lang.Object) [woko.facets.builtin.all.LogoutImpl] object.*
-=> Found 1 accessible binding(s) in facet (logout,all,java.lang.Object) [woko.facets.builtin.all.LogoutImpl]
 
 (save,developer,java.lang.Object) [woko.facets.builtin.developer.SaveImpl] object.*
 => Found 1 accessible binding(s) in facet (save,developer,java.lang.Object) [woko.facets.builtin.developer.SaveImpl]
@@ -366,7 +360,7 @@ some.test.pkg.MyAction nestedObjects[]
 some.test.pkg.MyAction nestedObjects[].bar
 => Found 5 accessible binding(s) in action bean some.test.pkg.MyAction
 
-Found 30 accessible bindings in the app.
+Found 28 accessible bindings in the app.
 """)
     }
 

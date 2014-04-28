@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
  * Stripes <code>ActionBean</code> that manages built-in authentication.
 */
 @UrlBinding("/login")
+@StrictBinding
 public class WokoLogin<
         OsType extends ObjectStore,
         UmType extends UserManager,

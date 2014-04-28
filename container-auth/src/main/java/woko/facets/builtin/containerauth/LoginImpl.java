@@ -28,6 +28,7 @@ import woko.facets.builtin.WokoFacets;
  * prompt for authentication before the user can reach this facet.
  */
 @FacetKey(name= WokoFacets.login, profileId="all")
+@StrictBinding
 public class LoginImpl extends BaseResolutionFacet implements Login {
 
   public Resolution getResolution(ActionBeanContext abc) {

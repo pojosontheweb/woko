@@ -30,6 +30,7 @@ import woko.users.UsernameResolutionStrategy;
  * <code>logout</code> facet for use with built-in auth. Simply invalidates the
  * http session and redirects to <code>/home</code>
  */
+@StrictBinding
 @FacetKey(name= WokoFacets.logout, profileId="all")
 public class LogoutImpl<
         OsType extends ObjectStore,
