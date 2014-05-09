@@ -44,7 +44,7 @@
         <dependency>
             <groupId>net.sourceforge.jfacets</groupId>
             <artifactId>jfacets-core</artifactId>
-            <version>3.2.1</version>
+            <version>4.0</version>
         </dependency>
         <dependency>
             <groupId>org.json</groupId>

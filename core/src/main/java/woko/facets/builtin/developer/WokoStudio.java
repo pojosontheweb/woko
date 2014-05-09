@@ -54,8 +54,7 @@ public class WokoStudio<
      */
     public List<FacetDescriptor> getFacetDescriptors() {
         FdmType fdm = getFacetContext().getWoko().getFacetDescriptorManager();
-        FacetDescriptor[] descriptors = fdm.getDescriptors();
-        return Arrays.asList(descriptors);
+        return fdm.getDescriptors();
     }
 
 }

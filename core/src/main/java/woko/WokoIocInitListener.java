@@ -18,7 +18,6 @@ package woko;
 
 import net.sourceforge.jfacets.IFacetDescriptorManager;
 import net.sourceforge.jfacets.annotations.AnnotatedFacetDescriptorManager;
-import net.sourceforge.jfacets.annotations.DuplicatedKeyPolicyType;
 import woko.ioc.WokoIocContainer;
 import woko.persistence.ObjectStore;
 import woko.users.UserManager;
@@ -167,7 +166,6 @@ public abstract class WokoIocInitListener<OsType extends ObjectStore,
      */
     protected AnnotatedFacetDescriptorManager createAnnotatedFdm() {
         return new AnnotatedFacetDescriptorManager(getFacetPackages())
-                .setDuplicatedKeyPolicy(DuplicatedKeyPolicyType.FirstScannedWins)
                 .initialize();
     }
 

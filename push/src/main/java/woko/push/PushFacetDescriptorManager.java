@@ -26,6 +26,7 @@ import woko.util.WLogger;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class PushFacetDescriptorManager implements IFacetDescriptorManager {
@@ -41,9 +42,9 @@ public class PushFacetDescriptorManager implements IFacetDescriptorManager {
         this.delegate = delegate;
     }
 
-    public FacetDescriptor[] getDescriptors() {
+    public List<FacetDescriptor> getDescriptors() {
         List<FacetDescriptor> all = new ArrayList<FacetDescriptor>();
-        all.addAll(Arrays.asList(delegate.getDescriptors()));
+        all.addAll(delegate.getDescriptors());
         // add / replace with pushed descriptors
         List<FacetDescriptor> toBeRemoved = new ArrayList<FacetDescriptor>();
         for (FacetDescriptor fd : pushedDescriptors) {
@@ -56,8 +57,7 @@ public class PushFacetDescriptorManager implements IFacetDescriptorManager {
         for (FacetDescriptor fd : toBeRemoved) {
             all.remove(fd);
         }
-        FacetDescriptor[] result = new FacetDescriptor[all.size()];
-        return all.toArray(result);
+        return Collections.unmodifiableList(all);
     }
 
 
@@ -80,15 +80,22 @@ public class PushFacetDescriptorManager implements IFacetDescriptorManager {
         return null;
     }
 
-    public FacetDescriptor getDescriptor(String name, String profileId, Class targetObjectType) {
+    public List<FacetDescriptor> getDescriptors(String name, String profileId, Class targetObjectType) {
         // lookup pushed descriptors first
+        List<FacetDescriptor> all = new ArrayList<FacetDescriptor>();
         for (FacetDescriptor fd : pushedDescriptors) {
             if (equals(name, profileId, targetObjectType, fd)) {
-                return fd;
+                all.add(fd);
             }
         }
-        // fallback to delegate
-        return delegate.getDescriptor(name, profileId, targetObjectType);
+        // delegated FDs
+        List<FacetDescriptor> delegateDescriptors = delegate.getDescriptors(name, profileId, targetObjectType);
+        for (FacetDescriptor fd : delegateDescriptors) {
+            if (findDescriptorInList(fd, pushedDescriptors)==null) {
+                all.add(fd);
+            }
+        }
+        return all;
     }
 
     public PushResult reload(List<String> sources) {

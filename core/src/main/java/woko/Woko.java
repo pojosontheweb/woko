@@ -21,7 +21,6 @@ import net.sourceforge.jfacets.IFacetDescriptorManager;
 import net.sourceforge.jfacets.JFacets;
 import net.sourceforge.jfacets.JFacetsBuilder;
 import net.sourceforge.jfacets.annotations.AnnotatedFacetDescriptorManager;
-import net.sourceforge.jfacets.annotations.DuplicatedKeyPolicyType;
 import net.sourceforge.stripes.controller.StripesFilter;
 import woko.facets.FacetNotFoundException;
 import woko.facets.WokoFacetContextFactory;
@@ -192,8 +191,8 @@ public class Woko<
         jFacets = new JFacetsBuilder(profileRepository, getFacetDescriptorManager()).
                 setFacetContextFactory(facetContextFactory).
                 build();
-        FacetDescriptor[] descriptors = jFacets.getFacetRepository().getFacetDescriptorManager().getDescriptors();
-        logger.info(descriptors.length + " facets found :");
+        List<FacetDescriptor> descriptors = jFacets.getFacetRepository().getFacetDescriptorManager().getDescriptors();
+        logger.info(descriptors.size() + " facets found :");
         for (FacetDescriptor d : descriptors) {
             logger.info("  * " + d.getName() + ", " + d.getProfileId() + ", " + d.getTargetObjectType() + " -> " + d.getFacetClass());
         }
@@ -408,7 +407,6 @@ public class Woko<
         Util.assertArg("classLoader", classLoader);
         logger.info("Creating Annotated Facets, scanning packages : " + packageNames);
         return new AnnotatedFacetDescriptorManager(packageNames)
-                .setDuplicatedKeyPolicy(DuplicatedKeyPolicyType.FirstScannedWins)
                 .setClassLoader(classLoader)
                 .initialize();
     }

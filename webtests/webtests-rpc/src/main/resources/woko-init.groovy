@@ -1,5 +1,4 @@
 import net.sourceforge.jfacets.annotations.AnnotatedFacetDescriptorManager
-import net.sourceforge.jfacets.annotations.DuplicatedKeyPolicyType
 import woko.Woko
 import woko.groovyinit.GroovyInitListener
 import woko.hbcompass.HibernateCompassStore
@@ -14,7 +13,6 @@ RemoteUserStrategy urs = new RemoteUserStrategy()
 def facetPackages = GroovyInitListener.getFacetPackagesFromWebXml(servletContext)
 
 AnnotatedFacetDescriptorManager fdm = new AnnotatedFacetDescriptorManager(facetPackages)
-    .setDuplicatedKeyPolicy(DuplicatedKeyPolicyType.FirstScannedWins)
     .initialize()
 
 SimpleWokoIocContainer ioc = new SimpleWokoIocContainer(objectStore, userManager, urs, fdm)

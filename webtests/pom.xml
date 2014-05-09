@@ -70,7 +70,7 @@
                             <!--home>${tomcat6.home}</home-->
 
                             <zipUrlInstaller>
-                                <url>http://mirrors.linsrv.net/apache/tomcat/tomcat-6/v6.0.39/bin/apache-tomcat-6.0.39.tar.gz</url>
+                                <url>http://www.eu.apache.org/dist/tomcat/tomcat-6/v6.0.39/bin/apache-tomcat-6.0.39.tar.gz</url>
                                 <downloadDir>${project.build.directory}/downloads</downloadDir>
                                 <extractDir>${project.build.directory}/extracts</extractDir>
                             </zipUrlInstaller>
