@@ -61,7 +61,7 @@ The command accepts one argument that can be  :
                 } else {
                     fdm = getFdm()
                 }
-                def descriptors = fdm.descriptors
+                def descriptors = new ArrayList(fdm.descriptors)
                 logger.log("${descriptors.size()} facets found : ")
                 def mkstr = { FacetDescriptor fd ->
                     return "$fd.name-$fd.profileId-$fd.targetObjectType-$fd.facetClass.name"
@@ -239,7 +239,7 @@ The command accepts one argument that can be  :
             log("  - $p")
         }
         log("")
-        def descriptors = fdm.descriptors
+        def descriptors = new ArrayList(fdm.descriptors)
         int totalPaths = 0
         // sort descriptors before looping for constant ordering
         descriptors.sort { d1,d2 ->
