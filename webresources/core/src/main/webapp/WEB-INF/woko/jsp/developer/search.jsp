@@ -21,7 +21,6 @@
 <%@ page import="woko.facets.builtin.WokoFacets" %>
 <%@ page import="woko.util.Util" %>
 <%@ page import="woko.persistence.ObjectStore" %>
-<%@ page import="woko.util.LinkUtil" %>
 <%@ page import="woko.facets.builtin.View" %>
 <w:facet facetName="<%=WokoFacets.layout%>"/>
 <fmt:message bundle="${wokoBundle}" var="pageTitle" key="woko.devel.search.pageTitle"/>
@@ -115,7 +114,7 @@
                   String resultKey = s.getKey(result);
                   String className = s.getClassMapping(result.getClass());
                   if (woko.getFacet(WokoFacets.view, request, result)!=null) {
-                      href = request.getContextPath() + "/" + LinkUtil.getUrl(woko, result, View.FACET_NAME);
+                      href = request.getContextPath() + woko.facetUrl(View.FACET_NAME, result);
                   }
             %>
                   <li>

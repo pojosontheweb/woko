@@ -2,14 +2,12 @@
 <%@include file="/WEB-INF/woko/jsp/taglibs.jsp"%>
 
 <%@ page import="woko.persistence.ResultIterator" %>
-<%@ page import="woko.facets.builtin.RenderTitle" %>
 <%@ page import="woko.Woko" %>
 <%@ page import="woko.facets.builtin.Search" %>
 <%@ page import="woko.facets.builtin.WokoFacets" %>
 <%@ page import="woko.util.Util" %>
 <%@ page import="woko.facets.builtin.View" %>
 <%@ page import="woko.persistence.ObjectStore" %>
-<%@ page import="woko.util.LinkUtil" %>
 
 <w:facet facetName="<%=WokoFacets.layout%>"/>
 
@@ -76,7 +74,7 @@
                   String resultKey = objectStore.getKey(result);
                   String className = objectStore.getClassMapping(objectStore.getObjectClass(result));
                   if (woko.getFacet(View.FACET_NAME, request, result)!=null) {
-                      href = request.getContextPath() + "/" + LinkUtil.getUrl(woko, result, View.FACET_NAME);
+                      href = request.getContextPath() + woko.facetUrl(View.FACET_NAME, result);
                   }
             %>
                   <li>

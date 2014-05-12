@@ -6,11 +6,9 @@
 <%@ page import="woko.util.Util" %>
 <%@ page import="woko.facets.builtin.*" %>
 <%@ page import="woko.facets.builtin.all.Link" %>
-<%@ page import="woko.util.LinkUtil" %>
 <%@ page import="java.util.*" %>
 <%@ page import="woko.ext.usermanagement.facets.usermanager.Users" %>
 <%@ page import="woko.ext.usermanagement.hibernate.HibernateUserManager" %>
-<%@ page import="woko.ext.usermanagement.facets.usermanager.ListUsers" %>
 <%@ page import="woko.ext.usermanagement.core.User" %>
 <%@ page import="woko.ext.usermanagement.core.AccountStatus" %>
 
@@ -154,7 +152,7 @@
                                 <%
                                     View view = (View)woko.getFacet(View.FACET_NAME, request, result);
                                     if (view!=null) {
-                                        String href = request.getContextPath() + "/" + LinkUtil.getUrl(Woko.getWoko(application), result, "view");
+                                        String href = request.getContextPath() + Woko.getWoko(application).facetUrl("view", result);
                                 %>
                                     <a href="<%=href%>" class="btn view">
                                         <fmt:message bundle="${wokoBundle}" key="woko.links.view"/>

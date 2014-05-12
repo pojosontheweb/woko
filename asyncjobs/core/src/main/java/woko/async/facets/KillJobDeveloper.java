@@ -14,7 +14,6 @@ import woko.ioc.WokoInject;
 import woko.persistence.ObjectStore;
 import woko.users.UserManager;
 import woko.users.UsernameResolutionStrategy;
-import woko.util.LinkUtil;
 
 /**
  * Kills the job associated to target {@link JobDetails} if any. Facet doesn't
@@ -44,7 +43,7 @@ public class KillJobDeveloper<
         JobDetails jd = (JobDetails)getFacetContext().getTargetObject();
         String uuid = jd.getJobUuid();
         Job job = jobManager.getRunningJob(uuid);
-        String viewUrl = "/" + LinkUtil.getUrl(getWoko(), jd, View.FACET_NAME);
+        String viewUrl = getWoko().facetUrl(View.FACET_NAME, jd);
         if (job==null) {
             abc.getValidationErrors().addGlobalError(new LocalizableError("woko.ext.async.job.not.running", uuid));
             return new ForwardResolution(viewUrl);

@@ -14,7 +14,6 @@
   ~ limitations under the License.
   --%>
 <%@ tag import="woko.Woko" %>
-<%@ tag import="woko.util.LinkUtil" %>
 <%@ tag import="woko.persistence.ObjectStore" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ attribute name="object" required="false" type="java.lang.Object" %>
@@ -26,11 +25,10 @@
     Woko<?,?,?,?> woko = Woko.getWoko(application);
     String url = facetName;
     if (object!=null) {
-        url = LinkUtil.getUrl(woko, object, facetName);
+        url = woko.facetUrl(facetName, object);
     } else if (targetObjectClass!=null) {
         ObjectStore s = woko.getObjectStore();
-        url = facetName + "/" + s.getClassMapping(s.getObjectClass(targetObjectClass));
+        url = "/" + facetName + "/" + s.getClassMapping(s.getObjectClass(targetObjectClass));
     }
-    String path = request.getContextPath();
 %>
-<c:set var="daLink"><%=path + "/" + url%></c:set>
+<c:set var="daLink"><%=request.getContextPath() + url%></c:set>

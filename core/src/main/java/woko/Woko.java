@@ -21,6 +21,8 @@ import net.sourceforge.jfacets.IFacetDescriptorManager;
 import net.sourceforge.jfacets.JFacets;
 import net.sourceforge.jfacets.JFacetsBuilder;
 import net.sourceforge.jfacets.annotations.AnnotatedFacetDescriptorManager;
+import net.sourceforge.stripes.action.ForwardResolution;
+import net.sourceforge.stripes.action.RedirectResolution;
 import net.sourceforge.stripes.controller.StripesFilter;
 import woko.facets.FacetNotFoundException;
 import woko.facets.WokoFacetContextFactory;
@@ -488,6 +490,34 @@ public class Woko<
         } catch(MissingResourceException e) {
             return key;
         }
+    }
+
+    /**
+     * Return a new Resolutions helper for this Woko instance.
+     */
+    public Resolutions resolutions() {
+        return new Resolutions(this);
+    }
+
+    /**
+     * Helper class for returning resolutions in a compact fashion.
+     */
+    public class Resolutions {
+
+        private final Woko<?,?,?,?> woko;
+
+        public Resolutions(Woko<?, ?, ?, ?> woko) {
+            this.woko = woko;
+        }
+
+        public RedirectResolution redirect(String facetName, Object targetObject) {
+            return new RedirectResolution(woko.facetUrl(facetName, targetObject));
+        }
+
+        public ForwardResolution forward(String facetName, Object targetObject) {
+            return new ForwardResolution(woko.facetUrl(facetName, targetObject));
+        }
+
     }
 
 }

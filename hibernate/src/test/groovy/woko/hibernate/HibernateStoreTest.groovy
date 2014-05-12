@@ -149,11 +149,11 @@ class HibernateStoreTest extends TestCase {
                     assert e.name == 'foo'
 
                     Woko woko = Woko.getWoko(c)
-                    def link = LinkUtil.getUrl(woko, e, "view")
-                    assert link == "view/MyEntityWithAlternateKey/foo"
+                    def link = woko.facetUrl("view", e)
+                    assert link == "/view/MyEntityWithAlternateKey/foo"
 
                     MyEntityWithAlternateKey e2 = s.load("MyEntityWithAlternateKey", "2")
-                    assert LinkUtil.getUrl(woko, e2, "view") == "view/MyEntityWithAlternateKey/2"
+                    assert woko.facetUrl("view", e2) == "/view/MyEntityWithAlternateKey/2"
                 }
             }
         } finally {
@@ -193,8 +193,8 @@ class HibernateStoreTest extends TestCase {
                     assert e4.id == 2
 
                     Woko woko = Woko.getWoko(c)
-                    assert LinkUtil.getUrl(woko, e1, "view") == "view/MyEntityWithAlternateKey/foo"
-                    assert LinkUtil.getUrl(woko, e2, "view") == "view/MyEntityWithAlternateKey/foo-2"
+                    assert woko.facetUrl("view", e1) == "/view/MyEntityWithAlternateKey/foo"
+                    assert woko.facetUrl("view", e2) == "/view/MyEntityWithAlternateKey/foo-2"
                 }
             }
         } finally {
