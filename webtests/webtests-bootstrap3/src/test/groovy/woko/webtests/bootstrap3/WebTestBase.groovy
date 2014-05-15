@@ -16,10 +16,12 @@
 
 package woko.webtests.bootstrap3
 
+import com.google.common.base.Predicate
 import com.pojosontheweb.selenium.ManagedDriverJunit4TestBase
 import org.junit.Assert
 import org.openqa.selenium.By
 import com.pojosontheweb.selenium.Findr
+import org.openqa.selenium.WebElement
 
 abstract class WebTestBase extends ManagedDriverJunit4TestBase {
 
@@ -79,10 +81,15 @@ abstract class WebTestBase extends ManagedDriverJunit4TestBase {
     // ---------------------------------------
 
     void verifyText(String text) {
-        String pageSource = getWebDriver().getPageSource()
-        if (!pageSource.contains(text)) {
-            throw new RuntimeException("text not found : pageSource =$pageSource, text=$text")
-        }
+        findr().elem(By.tagName("body"))
+            .where(new Predicate<WebElement>() {
+                @Override
+                boolean apply(WebElement input) {
+                    String str = input.getText()
+                    return str!=null && str.contains(text)
+                }
+            })
+            .eval()
     }
 
     void verifyXPath(String xpath) {
