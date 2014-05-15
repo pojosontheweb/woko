@@ -61,9 +61,11 @@
         String pNameFragmentPath = renderPropertyName.getFragmentPath(request);
 
         RenderPropertyValue editPropertyValue;
+        boolean readOnly = false;
         if (readOnlyProps.contains(pName)) {
             // read-only view... use renderPropertyValue !
             editPropertyValue = Util.getRenderPropValueFacet(woko,  request, owningObject, pName, pVal);
+            readOnly = true;
         } else {
             // editable : use Edit facet
             editPropertyValue = Util.getRenderPropValueEditFacet(woko, request, owningObject, pName, pVal);
@@ -72,6 +74,8 @@
         String prefix = "object";
         if (editPropertyValue instanceof RenderPropertyValueEdit) {
             prefix = ((RenderPropertyValueEdit)editPropertyValue).getFieldPrefix();
+        } else if (editPropertyValue instanceof RenderPropertyValue) {
+            readOnly = true;
         }
 
         String fullFieldName = prefix + "." + pName;
@@ -89,7 +93,13 @@
                 <jsp:include page="<%=pNameFragmentPath%>"/>
             </div>
             <div class="w-property-value col-lg-10 col-sm-9">
+                <% if (readOnly) { %>
+                    <p class="form-control-static">
+                <% } %>
                 <jsp:include page="<%=pValFragmentPath%>"/>
+                <% if (readOnly) { %>
+                    </p>
+                <% } %>
                 <s:errors field="<%=fullFieldName%>"/>
             </div>
         </div>
