@@ -90,6 +90,19 @@
         <finalName>woko-webtests</finalName>
         <plugins>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <systemPropertyVariables>
+                        <webtests.browser>firefox</webtests.browser>
+                        <webtests.video.enabled>${webtests.video.enabled}</webtests.video.enabled>
+                        <webtests.video.dir>${project.build.directory}/webtests-videos</webtests.video.dir>
+                        <webtests.video.failures.only>${webtests.video.failures.only}</webtests.video.failures.only>
+                        <webdriver.chrome.driver>${webdriver.chrome.driver}</webdriver.chrome.driver>
+                    </systemPropertyVariables>
+                </configuration>
+            </plugin>
+            <plugin>
                 <groupId>org.codehaus.cargo</groupId>
                 <artifactId>cargo-maven2-plugin</artifactId>
                 <executions>
