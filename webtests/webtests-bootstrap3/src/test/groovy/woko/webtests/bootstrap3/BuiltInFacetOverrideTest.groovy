@@ -23,7 +23,7 @@ class BuiltInFacetOverrideTest extends WebTestBase {
     @Test
     void testOverrideDeveloperNavBar() {
         login()
-        verifyText 'google'
+        verifyText 'upload'
     }
 
 }
