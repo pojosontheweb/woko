@@ -39,7 +39,7 @@
         </dependency>
         <dependency>
           <groupId>com.pojosontheweb</groupId>
-          <artifactId>woko-web-bootstrap</artifactId>
+          <artifactId>woko-web-bootstrap3</artifactId>
           <version>${project.version}</version>
           <type>war</type>
         </dependency>

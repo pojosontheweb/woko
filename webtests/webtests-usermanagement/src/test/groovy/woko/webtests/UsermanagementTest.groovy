@@ -28,9 +28,9 @@ class UsermanagementTest extends WokoWebTestBase {
         webtest("testUserManagement") {
             login()
             goToPage '/list/MyUser'
-            verifyXPath xpath:'/html/body/div/div[2]/div/table/tbody/tr/td[2]/span/span',
+            verifyXPath xpath:'/html/body/div[2]/table/tbody/tr[1]/td[2]/p',
                     text:'.*wdevel.*', regex:true
-            verifyXPath xpath:'/html/body/div/div[2]/div/table/tbody/tr[2]/td[2]/span/span',
+            verifyXPath xpath:'/html/body/div[2]/table/tbody/tr[2]/td[2]/p',
                     text:'.*testuser.*', regex:true
 
             goToPage '/users'
