@@ -13,64 +13,69 @@
 <s:layout-render name="${layout.layoutPath}" layout="${layout}" pageTitle="${pageTitle}">
     <s:layout-component name="body">
 
-        <h1 class="page-header">
-            <fmt:message bundle="${wokoBundle}" key="woko.ext.usermanagement.password.h1.text">
-                <fmt:param value="${p.username}"/>
-            </fmt:message>
-        </h1>
+        <div class="container">
 
-        <div class="row-fluid">
-            <div class="span12">
-                <s:form action="/password" class="form-horizontal">
-                    <s:hidden name="_sourcePage" value="<%=encryptedSourcePage%>"/>
-                    <fieldset>
+            <h1 class="page-header">
+                <fmt:message bundle="${wokoBundle}" key="woko.ext.usermanagement.password.h1.text">
+                    <fmt:param value="${p.username}"/>
+                </fmt:message>
+            </h1>
 
-                        <div class="control-group ${empty(actionBean.context.validationErrors['facet.currentPassword']) ? '' : 'error'} ">
-                            <s:label for="facet.currentPassword" class="control-label">
-                                <fmt:message bundle="${wokoBundle}" key="woko.ext.usermanagement.password.currentPassword"/>
-                            </s:label>
-                            <div class="controls">
-                                <div class="input-prepend">
-                                    <span class="add-on"><i class="icon-lock"> </i></span>
-                                    <s:password name="facet.currentPassword"/>
-                                </div>
-                                <s:errors field="facet.currentPassword"/>
+            <s:form action="/password" class="form-horizontal">
+                <s:hidden name="_sourcePage" value="<%=encryptedSourcePage%>"/>
+                <fieldset>
+
+                    <w:b3-form-group-css fieldName="facet.currentPassword" var="css1"/>
+                    <div class="${css1}">
+                        <s:label for="facet.currentPassword" class="control-label col-sm-3">
+                            <fmt:message bundle="${wokoBundle}" key="woko.ext.usermanagement.password.currentPassword"/>
+                        </s:label>
+                        <div class="col-sm-4">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-lock"> </i></span>
+                                <s:password name="facet.currentPassword" class="form-control"/>
                             </div>
+                            <s:errors field="facet.currentPassword"/>
                         </div>
+                    </div>
 
-                        <div class="control-group ${empty(actionBean.context.validationErrors['facet.newPassword']) ? '' : 'error'} ">
-                            <s:label for="facet.newPassword" class="control-label">
-                                <fmt:message bundle="${wokoBundle}" key="woko.ext.usermanagement.password.newPassword"/>
-                            </s:label>
-                            <div class="controls">
-                                <div class="input-prepend">
-                                    <span class="add-on"><i class="icon-lock"> </i></span>
-                                    <s:password name="facet.newPassword"/>
-                                </div>
-                                <s:errors field="facet.newPassword"/>
+                    <w:b3-form-group-css fieldName="facet.newPassword" var="css2"/>
+                    <div class="${css2}">
+                        <s:label for="facet.newPassword" class="control-label col-sm-3">
+                            <fmt:message bundle="${wokoBundle}" key="woko.ext.usermanagement.password.newPassword"/>
+                        </s:label>
+                        <div class="col-sm-4">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-lock"> </i></span>
+                                <s:password name="facet.newPassword" class="form-control"/>
                             </div>
+                            <s:errors field="facet.newPassword"/>
                         </div>
+                    </div>
 
-                        <div class="control-group ${empty(actionBean.context.validationErrors['facet.newPasswordConfirm']) ? '' : 'error'} ">
-                            <s:label for="facet.newPasswordConfirm" class="control-label">
-                                <fmt:message bundle="${wokoBundle}" key="woko.ext.usermanagement.password.newPasswordConfirm"/>
-                            </s:label>
-                            <div class="controls">
-                                <div class="input-prepend">
-                                    <span class="add-on"><i class="icon-lock"> </i></span>
-                                    <s:password name="facet.newPasswordConfirm"/>
-                                </div>
-                                <s:errors field="facet.newPasswordConfirm"/>
+                    <w:b3-form-group-css fieldName="facet.newPasswordConfirm" var="css3"/>
+                    <div class="${css3}">
+                        <s:label for="facet.newPasswordConfirm" class="control-label col-sm-3">
+                            <fmt:message bundle="${wokoBundle}" key="woko.ext.usermanagement.password.newPasswordConfirm"/>
+                        </s:label>
+                        <div class="col-sm-4">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-lock"> </i></span>
+                                <s:password name="facet.newPasswordConfirm" class="form-control"/>
                             </div>
+                            <s:errors field="facet.newPasswordConfirm"/>
                         </div>
+                    </div>
 
-                        <div class="form-actions">
-                            <s:submit name="changePassword" class="btn btn-primary btn-large"/>
+                    <div class="form-group">
+                        <div class="col-sm-offset-3">
+                            <s:submit name="changePassword" class="btn btn-primary"/>
                         </div>
+                    </div>
 
-                    </fieldset>
-                </s:form>
-            </div>
+                </fieldset>
+            </s:form>
+
         </div>
 
     </s:layout-component>
