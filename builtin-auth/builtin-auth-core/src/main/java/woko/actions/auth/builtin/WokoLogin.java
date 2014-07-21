@@ -2,8 +2,11 @@ package woko.actions.auth.builtin;
 
 import net.sourceforge.jfacets.IFacetDescriptorManager;
 import net.sourceforge.stripes.action.*;
+import net.sourceforge.stripes.rpc.RpcResolutionWrapper;
 import net.sourceforge.stripes.validation.LocalizableError;
 import net.sourceforge.stripes.validation.Validate;
+import org.json.JSONException;
+import org.json.JSONObject;
 import woko.Woko;
 import woko.actions.BaseActionBean;
 import woko.actions.WokoActionBeanContext;
@@ -11,6 +14,7 @@ import woko.facets.builtin.auth.PostLoginFacet;
 import woko.persistence.ObjectStore;
 import woko.users.UserManager;
 import woko.users.UsernameResolutionStrategy;
+import woko.util.JsonResolution;
 import woko.util.WLogger;
 
 import javax.servlet.ServletContext;
@@ -138,7 +142,19 @@ public class WokoLogin<
             // add message and redirect to the target URL
             context.getMessages().add(new LocalizableMessage(KEY_MSG_LOGIN_SUCCESS));
             log.debug(username + " logged in, redirecting to " + targetUrl);
-            return new RedirectResolution(targetUrl);
+            return new RpcResolutionWrapper(new RedirectResolution(targetUrl)) {
+                @Override
+                public Resolution getRpcResolution() {
+                    JSONObject result = new JSONObject();
+                    try {
+                        result.put("success", true);
+                        result.put("username", username);
+                    } catch(JSONException e) {
+                        throw new RuntimeException(e);
+                    }
+                    return new JsonResolution(result);
+                }
+            };
         } else {
             // authentication failed, add messages to context, and redirect to login
             log.warn("Authentication failed for user '" + username + "', redirecting to login form again");
