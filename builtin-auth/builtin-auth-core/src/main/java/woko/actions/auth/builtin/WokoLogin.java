@@ -160,7 +160,18 @@ public class WokoLogin<
             log.warn("Authentication failed for user '" + username + "', redirecting to login form again");
             getContext().getValidationErrors().addGlobalError(new LocalizableError(KEY_MSG_LOGIN_FAILED));
             getContext().getResponse().setStatus(401);
-            return displayForm();
+            return new RpcResolutionWrapper(displayForm()) {
+                @Override
+                public Resolution getRpcResolution() {
+                    JSONObject result = new JSONObject();
+                    try {
+                        result.put("success", false);
+                    } catch(JSONException e) {
+                        throw new RuntimeException(e);
+                    }
+                    return new JsonResolution(result);
+                }
+            };
         }
     }
 
