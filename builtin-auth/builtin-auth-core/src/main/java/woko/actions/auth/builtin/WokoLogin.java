@@ -147,7 +147,6 @@ public class WokoLogin<
                 public Resolution getRpcResolution() {
                     JSONObject result = new JSONObject();
                     try {
-                        result.put("success", true);
                         result.put("username", username);
                     } catch(JSONException e) {
                         throw new RuntimeException(e);

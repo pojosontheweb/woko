@@ -19,12 +19,15 @@ package woko.facets.builtin.all;
 import net.sourceforge.jfacets.IFacetDescriptorManager;
 import net.sourceforge.jfacets.annotations.FacetKey;
 import net.sourceforge.stripes.action.*;
+import net.sourceforge.stripes.rpc.RpcResolutionWrapper;
+import org.json.JSONObject;
 import woko.facets.BaseResolutionFacet;
 import woko.facets.builtin.Logout;
 import woko.facets.builtin.WokoFacets;
 import woko.persistence.ObjectStore;
 import woko.users.UserManager;
 import woko.users.UsernameResolutionStrategy;
+import woko.util.JsonResolution;
 
 /**
  * <code>logout</code> facet for use with built-in auth. Simply invalidates the
@@ -42,7 +45,12 @@ public class LogoutImpl<
   public Resolution getResolution(ActionBeanContext abc) {
     abc.getRequest().getSession().invalidate();
     abc.getMessages().add(new LocalizableMessage("woko.logout.success"));
-    return new RedirectResolution("/home");
+    return new RpcResolutionWrapper(new RedirectResolution("/home")) {
+        @Override
+        public Resolution getRpcResolution() {
+            return new JsonResolution(new JSONObject());
+        }
+    };
   }
 
 }
