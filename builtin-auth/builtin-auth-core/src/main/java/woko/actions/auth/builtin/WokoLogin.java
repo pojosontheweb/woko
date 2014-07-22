@@ -2,6 +2,7 @@ package woko.actions.auth.builtin;
 
 import net.sourceforge.jfacets.IFacetDescriptorManager;
 import net.sourceforge.stripes.action.*;
+import net.sourceforge.stripes.rpc.RpcInterceptor;
 import net.sourceforge.stripes.rpc.RpcResolutionWrapper;
 import net.sourceforge.stripes.validation.LocalizableError;
 import net.sourceforge.stripes.validation.Validate;
@@ -9,6 +10,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import woko.Woko;
 import woko.actions.BaseActionBean;
+import woko.actions.WokoActionBean;
 import woko.actions.WokoActionBeanContext;
 import woko.facets.builtin.auth.PostLoginFacet;
 import woko.persistence.ObjectStore;
@@ -157,8 +159,11 @@ public class WokoLogin<
         } else {
             // authentication failed, add messages to context, and redirect to login
             log.warn("Authentication failed for user '" + username + "', redirecting to login form again");
-            getContext().getValidationErrors().addGlobalError(new LocalizableError(KEY_MSG_LOGIN_FAILED));
-            getContext().getResponse().setStatus(401);
+            WokoActionBeanContext<OsType,UmType,UnsType,FdmType> abc = getContext();
+            abc.getValidationErrors().addGlobalError(new LocalizableError(KEY_MSG_LOGIN_FAILED));
+            if (!RpcInterceptor.isRpcRequest(abc.getRequest())) {
+                abc.getResponse().setStatus(401);
+            }
             return new RpcResolutionWrapper(displayForm()) {
                 @Override
                 public Resolution getRpcResolution() {
