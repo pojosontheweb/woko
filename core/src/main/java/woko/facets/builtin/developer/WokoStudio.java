@@ -68,7 +68,10 @@ public class WokoStudio<
                     result.put("usernameResolutionStrategy", getWoko().getUsernameResolutionStrategy().getClass().getName());
                     JSONArray mappedClasses = new JSONArray();
                     for (Class<?> clazz : store.getMappedClasses()) {
-                        mappedClasses.put(clazz.getName());
+                        JSONObject mappedClass = new JSONObject();
+                        mappedClass.put("className", clazz.getName());
+                        mappedClass.put("classMapping", store.getClassMapping(clazz));
+                        mappedClasses.put(mappedClass);
                     }
                     result.put("mappedClasses", mappedClasses);
                     return new JsonResolution(result);
