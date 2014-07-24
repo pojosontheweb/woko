@@ -19,11 +19,20 @@ package woko.facets.builtin.developer;
 import net.sourceforge.jfacets.FacetDescriptor;
 import net.sourceforge.jfacets.IFacetDescriptorManager;
 import net.sourceforge.jfacets.annotations.FacetKey;
+import net.sourceforge.stripes.action.ActionBeanContext;
+import net.sourceforge.stripes.action.ForwardResolution;
+import net.sourceforge.stripes.action.Resolution;
+import net.sourceforge.stripes.rpc.RpcResolutionWrapper;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import woko.facets.BaseForwardResolutionFacet;
+import woko.facets.BaseResolutionFacet;
 import woko.facets.builtin.WokoFacets;
 import woko.persistence.ObjectStore;
 import woko.users.UserManager;
 import woko.users.UsernameResolutionStrategy;
+import woko.util.JsonResolution;
 
 import java.util.Arrays;
 import java.util.List;
@@ -40,12 +49,34 @@ public class WokoStudio<
         UmType extends UserManager,
         UnsType extends UsernameResolutionStrategy,
         FdmType extends IFacetDescriptorManager
-        > extends BaseForwardResolutionFacet<OsType,UmType,UnsType,FdmType> {
+        > extends BaseResolutionFacet<OsType,UmType,UnsType,FdmType> {
 
     public static final String FRAGMENT_PATH = "/WEB-INF/woko/jsp/developer/studio.jsp";
 
-    public String getPath() {
-        return FRAGMENT_PATH;
+    @Override
+    public Resolution getResolution(ActionBeanContext abc) {
+        return new RpcResolutionWrapper(new ForwardResolution(FRAGMENT_PATH)) {
+            @Override
+            public Resolution getRpcResolution() {
+
+                JSONObject result = new JSONObject();
+                try {
+                    OsType store = getWoko().getObjectStore();
+                    result.put("objectStore", store.getClass().getName());
+                    result.put("userManager", getWoko().getUserManager().getClass().getName());
+                    result.put("fallbackRoles", new JSONArray(getWoko().getFallbackRoles()));
+                    result.put("usernameResolutionStrategy", getWoko().getUsernameResolutionStrategy().getClass().getName());
+                    JSONArray mappedClasses = new JSONArray();
+                    for (Class<?> clazz : store.getMappedClasses()) {
+                        mappedClasses.put(clazz.getName());
+                    }
+                    result.put("mappedClasses", mappedClasses);
+                    return new JsonResolution(result);
+                } catch(JSONException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        };
     }
 
     /**
