@@ -82,6 +82,25 @@ public class WokoStudio<
         };
     }
 
+    public Resolution descriptors() {
+        JSONObject result = new JSONObject();
+        JSONArray descriptors = new JSONArray();
+        try {
+            result.put("descriptors", descriptors);
+            for (FacetDescriptor fd : getFacetDescriptors()) {
+                JSONObject jsonFd = new JSONObject();
+                jsonFd.put("name",fd.getName());
+                jsonFd.put("profileId", fd.getProfileId());
+                jsonFd.put("targetObjectType", fd.getTargetObjectType().getName());
+                jsonFd.put("facetClass", fd.getFacetClass().getName());
+                descriptors.put(jsonFd);
+            }
+            return new JsonResolution(result);
+        }catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     /**
      * Return a list of all <code>FacetDescriptor</code>s for the app.
      * @return a list of all <code>FacetDescriptor</code>s
