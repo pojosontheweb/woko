@@ -49,11 +49,12 @@ public class WokoFacetContextFactory<
      * @param facetDescriptor the facet descriptor
      * @return a freshly created <code>WokoFacetContext</code>
      */
-    public IFacetContext create(String name, IProfile profile, Object targetObject, FacetDescriptor facetDescriptor) {
+    public IFacetContext create(String name, IProfile profile, Object targetObject, Class<?> targetObjectClass, FacetDescriptor facetDescriptor) {
         return new WokoFacetContext<OsType, UmType, UnsType, FdmType>(
                 name,
                 profile,
                 targetObject,
+                targetObjectClass,
                 facetDescriptor,
                 woko,
                 WokoRequestInterceptor.getRequest());
