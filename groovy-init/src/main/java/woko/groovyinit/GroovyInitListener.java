@@ -16,6 +16,7 @@ import javax.servlet.ServletContextListener;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -76,7 +77,12 @@ public class GroovyInitListener<OsType extends ObjectStore,
         } else {
             logger.info("Starting-up using /woko-init.groovy found in classpath");
         }
-        Reader scriptReader = new InputStreamReader(scriptStream);
+        Reader scriptReader;
+        try {
+            scriptReader = new InputStreamReader(scriptStream, "utf-8");
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
 
         Binding binding = new Binding();
         binding.setVariable(SERVLET_CONTEXT_BINDING_VAR, getServletContext());
