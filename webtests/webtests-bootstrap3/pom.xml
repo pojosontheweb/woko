@@ -50,7 +50,12 @@
         </dependency>
         <dependency>
             <groupId>com.pojosontheweb</groupId>
-            <artifactId>woko-container-auth</artifactId>
+            <artifactId>woko-builtin-auth-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.pojosontheweb</groupId>
+            <artifactId>woko-builtin-auth-web</artifactId>
             <version>${project.version}</version>
             <type>war</type>
         </dependency>

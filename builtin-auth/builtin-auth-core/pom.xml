@@ -15,5 +15,11 @@
             <artifactId>woko-core</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.pojosontheweb</groupId>
+            <artifactId>woko-hibernate</artifactId>
+            <version>${project.version}</version>
+            <optional>true</optional>
+        </dependency>
     </dependencies>
 </project>

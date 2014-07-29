@@ -1,6 +1,9 @@
 package test
 
 import woko.WokoIocInitListener
+import woko.actions.auth.rememberme.RmCookieStore
+import woko.actions.auth.rememberme.hibernate.HibernateRmCookieStore
+import woko.auth.builtin.SessionUsernameResolutionStrategy
 import woko.ext.blobs.BlobStore
 import woko.ext.blobs.hibernate.HibernateBlobStore
 import woko.hbcompass.HibernateCompassStore
@@ -12,18 +15,19 @@ import woko.ioc.SimpleWokoIocContainer
 import woko.hibernate.HibernateStore
 
 class BootstrapWebtestsInitListener extends
-        WokoIocInitListener<HibernateCompassStore,InMemoryUserManager,RemoteUserStrategy,AnnotatedFacetDescriptorManager>{
+        WokoIocInitListener{
 
     @Override
-    protected WokoIocContainer<HibernateCompassStore,InMemoryUserManager,RemoteUserStrategy,AnnotatedFacetDescriptorManager> createIocContainer() {
+    protected WokoIocContainer createIocContainer() {
         HibernateStore store = new HibernateCompassStore(getPackageNamesFromConfig(HibernateStore.CTX_PARAM_PACKAGE_NAMES, true));
 
-        return new SimpleWokoIocContainer<HibernateCompassStore,InMemoryUserManager,RemoteUserStrategy,AnnotatedFacetDescriptorManager>(
+        return new SimpleWokoIocContainer(
                 store,
                 new InMemoryUserManager().addUser("wdevel", "wdevel", ["blobmanager", "developer"]),
-                new RemoteUserStrategy(),
+                new SessionUsernameResolutionStrategy(),
                 createAnnotatedFdm()
         ).addComponent(BlobStore.KEY, new HibernateBlobStore(store))
+        .addComponent(RmCookieStore.KEY, new HibernateRmCookieStore(store))
     }
 
 

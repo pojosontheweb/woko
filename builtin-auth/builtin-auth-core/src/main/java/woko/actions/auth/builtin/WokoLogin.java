@@ -12,6 +12,9 @@ import woko.Woko;
 import woko.actions.BaseActionBean;
 import woko.actions.WokoActionBean;
 import woko.actions.WokoActionBeanContext;
+import woko.actions.auth.rememberme.RememberMeInterceptor;
+import woko.actions.auth.rememberme.RmCookie;
+import woko.actions.auth.rememberme.RmCookieStore;
 import woko.facets.builtin.auth.PostLoginFacet;
 import woko.persistence.ObjectStore;
 import woko.users.UserManager;
@@ -20,6 +23,7 @@ import woko.util.JsonResolution;
 import woko.util.WLogger;
 
 import javax.servlet.ServletContext;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -47,7 +51,11 @@ public class WokoLogin<
     @Validate(required = true)
     private String username;
 
+    @Validate
     private String targetUrl = "/home";
+
+    @Validate
+    private Boolean rememberMe;
 
     public String getUsername() {
         return username;
@@ -63,6 +71,14 @@ public class WokoLogin<
 
     public void setTargetUrl(String targetUrl) {
         this.targetUrl = targetUrl;
+    }
+
+    public Boolean getRememberMe() {
+        return rememberMe;
+    }
+
+    public void setRememberMe(Boolean rememberMe) {
+        this.rememberMe = rememberMe;
     }
 
     protected String authenticate() {
@@ -141,6 +157,24 @@ public class WokoLogin<
             if (pl!=null) {
                 pl.execute(user);
             }
+
+            // handle remember me if needed
+            if (rememberMe!=null && rememberMe) {
+                RmCookieStore cookieStore = woko.getIoc().getComponent(RmCookieStore.KEY);
+                if (cookieStore != null) {
+                    cookieStore.deleteAllForUser(user);
+                    RmCookie newRmCookie = cookieStore.createCookie(user);
+                    Cookie newCookie = new Cookie(
+                            RememberMeInterceptor.COOKIE_NAME,
+                            newRmCookie.toPath()
+                    );
+                    newCookie.setMaxAge(3600 * 24 * 30); // 1 month
+                    getContext()
+                            .getResponse()
+                            .addCookie(newCookie);
+                }
+            }
+
             // add message and redirect to the target URL
             context.getMessages().add(new LocalizableMessage(KEY_MSG_LOGIN_SUCCESS));
             log.debug(username + " logged in, redirecting to " + targetUrl);

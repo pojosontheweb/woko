@@ -27,7 +27,7 @@ abstract class WebTestBase extends ManagedDriverJunit4TestBase {
 
     def port = System.getProperty("woko.webtests.port", "9999")
     def homeUrl = "http://localhost:$port/woko-webtests"
-    def useContainerAuth = true
+    def useContainerAuth = false
 
     void goToPage(String url) {
         webDriver.get(homeUrl + url)
