@@ -55,7 +55,7 @@ abstract class WebTestBase extends ManagedDriverJunit4TestBase {
                 .sendKeys(keys)
     }
 
-    void login(String username, String password) {
+    void login(String username, String password, Boolean rememberMe) {
         goToPage '/login'
         if (useContainerAuth) {
             findByNameAndSendKeys("j_username", username)
@@ -64,13 +64,24 @@ abstract class WebTestBase extends ManagedDriverJunit4TestBase {
             findByNameAndSendKeys("username", username)
             findByNameAndSendKeys("password", password)
         }
+
+        if (rememberMe) {
+            findr().elem(By.id("rememberMe")).click()
+        }
+
         findr().elem(By.name("login")).click()
 
         findr()
-                .elem(By.cssSelector("div.alert"))
-                .elem(By.tagName("li"))
-                .where(Findr.textEquals("You have been logged in"))
-                .eval()
+            .elem(By.cssSelector("div.alert"))
+            .elem(By.tagName("li"))
+            .where(Findr.textEquals("You have been logged in"))
+            .eval()
+
+
+    }
+
+    void login(String username, String password) {
+        login(username, password, false)
     }
 
     void logout() {
