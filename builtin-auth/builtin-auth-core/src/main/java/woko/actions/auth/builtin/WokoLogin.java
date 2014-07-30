@@ -132,7 +132,7 @@ public class WokoLogin<
     }
 
     public Boolean getRememberMeEnabled() {
-        return getContext().getWoko().getIoc().getComponent(RmCookieStore.class)!=null;
+        return getContext().getWoko().getIoc().getComponent(RmCookieStore.KEY)!=null;
     }
 
     /**
