@@ -99,7 +99,7 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
                     <systemPropertyVariables>
-                        <webtests.browser>firefox</webtests.browser>
+                        <webtests.browser>${webtests.browser}</webtests.browser>
                         <webtests.video.enabled>${webtests.video.enabled}</webtests.video.enabled>
                         <webtests.video.dir>${project.build.directory}/webtests-videos</webtests.video.dir>
                         <webtests.video.failures.only>${webtests.video.failures.only}</webtests.video.failures.only>
