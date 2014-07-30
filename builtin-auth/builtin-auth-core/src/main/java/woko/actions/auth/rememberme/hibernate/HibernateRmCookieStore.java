@@ -30,62 +30,41 @@ public class HibernateRmCookieStore implements RmCookieStore {
 
     @Override
     public RmCookie getCookie(final String username, final String series) {
-        return store.doInTransactionWithResult(new TransactionCallbackWithResult<RmCookie>() {
-            @Override
-            public RmCookie execute() throws Exception {
-                HibernateRmCookie hbc = getHbCookie(username, series, null);
-                if (hbc==null) {
-                    return null;
-                }
-                return new RmCookie(hbc.getUsername(), hbc.getSeries(), hbc.getToken());
-            }
-        });
+        HibernateRmCookie hbc = getHbCookie(username, series, null);
+        if (hbc==null) {
+            return null;
+        }
+        return new RmCookie(hbc.getUsername(), hbc.getSeries(), hbc.getToken());
     }
 
     @Override
     public RmCookie updateToken(final RmCookie cookie) {
-        return store.doInTransactionWithResult(new TransactionCallbackWithResult<RmCookie>() {
-            @Override
-            public RmCookie execute() throws Exception {
-                HibernateRmCookie hbc = getHbCookie(cookie.getUsername(), cookie.getSeries(), cookie.getToken());
-                if (hbc==null) {
-                    return null;
-                }
-                hbc.setToken(UUID.randomUUID().toString());
-                store.save(hbc);
-                return new RmCookie(hbc.getUsername(), hbc.getSeries(), hbc.getToken());
-            }
-        });
+        HibernateRmCookie hbc = getHbCookie(cookie.getUsername(), cookie.getSeries(), cookie.getToken());
+        if (hbc==null) {
+            return null;
+        }
+        hbc.setToken(UUID.randomUUID().toString());
+        store.save(hbc);
+        return new RmCookie(hbc.getUsername(), hbc.getSeries(), hbc.getToken());
     }
 
     @Override
     public void deleteAllForUser(final String username) {
-        store.doInTransaction(new TransactionCallback() {
-            @Override
-            public void execute() throws Exception {
-                String hql = "delete from HibernateRmCookie where username = :username";
-                store.getSession()
-                        .createQuery(hql)
-                        .setString("username", username)
-                        .executeUpdate();
-            }
-        });
-
+        String hql = "delete from HibernateRmCookie where username = :username";
+        store.getSession()
+                .createQuery(hql)
+                .setString("username", username)
+                .executeUpdate();
     }
 
     @Override
     public RmCookie createCookie(final String user) {
-        return store.doInTransactionWithResult(new TransactionCallbackWithResult<RmCookie>() {
-            @Override
-            public RmCookie execute() throws Exception {
-                HibernateRmCookie hbc = new HibernateRmCookie();
-                hbc.setUsername(user);
-                hbc.setSeries(UUID.randomUUID().toString());
-                hbc.setToken(UUID.randomUUID().toString());
-                store.save(hbc);
-                return new RmCookie(hbc.getUsername(), hbc.getSeries(), hbc.getToken());
-            }
-        });
+        HibernateRmCookie hbc = new HibernateRmCookie();
+        hbc.setUsername(user);
+        hbc.setSeries(UUID.randomUUID().toString());
+        hbc.setToken(UUID.randomUUID().toString());
+        store.save(hbc);
+        return new RmCookie(hbc.getUsername(), hbc.getSeries(), hbc.getToken());
     }
 }
 
