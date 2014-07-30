@@ -131,6 +131,9 @@ public class WokoLogin<
         }
     }
 
+    public Boolean getRememberMeEnabled() {
+        return getContext().getWoko().getIoc().getComponent(RmCookieStore.class)!=null;
+    }
 
     /**
      * <code>login</code> handler : attempts to authenticate using the configured

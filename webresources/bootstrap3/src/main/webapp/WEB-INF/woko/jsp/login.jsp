@@ -32,13 +32,15 @@
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <div class="col-xs-3"></div>
-                    <div class="col-xs-9 col-sm-6 col-md-4">
-                        <s:checkbox name="rememberMe" id="rememberMe"/>
-                        Remember me on this computer.
+                <c:if test="${actionBean.rememberMeEnabled}">
+                    <div class="form-group">
+                        <div class="col-xs-3"></div>
+                        <div class="col-xs-9 col-sm-6 col-md-4">
+                            <s:checkbox name="rememberMe" id="rememberMe"/>
+                            Remember me on this computer.
+                        </div>
                     </div>
-                </div>
+                </c:if>
 
                 <div class="form-group">
                     <div class="col-xs-9 col-xs-offset-3 col-sm-6 col-md-4">
