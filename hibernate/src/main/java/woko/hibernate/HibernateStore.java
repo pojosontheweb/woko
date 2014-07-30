@@ -22,6 +22,7 @@ import org.hibernate.*;
 import org.hibernate.annotations.Entity;
 import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.metadata.ClassMetadata;
 import org.hibernate.proxy.HibernateProxy;
@@ -458,17 +459,20 @@ public class HibernateStore implements ObjectStore, TransactionalStore, Closeabl
         if (clazz == null) {
             return new ListResultIterator<Object>(Collections.emptyList(), s, l, 0);
         } else {
-            Criteria crit = createListCriteria(clazz).setFirstResult(s);
+            Criteria crit = createListCriteria(clazz);
+
+            // count
+            crit.setProjection(Projections.rowCount());
+            Long count = (Long)crit.uniqueResult();
+
+            // sublist
+            crit.setProjection(null);
+            crit.setFirstResult(s);
             if (l != -1) {
                 crit.setMaxResults(l);
             }
             // TODO optimize with scrollable results ?
             List<?> objects = crit.list();
-
-            // compute total count
-            String mappedClassName = getClassMapping(clazz);
-            String query = new StringBuilder("select count(*) from ").append(mappedClassName).toString();
-            Long count = (Long) getSession().createQuery(query).list().get(0);
 
             return new ListResultIterator<Object>(objects, s, l, count.intValue());
         }
