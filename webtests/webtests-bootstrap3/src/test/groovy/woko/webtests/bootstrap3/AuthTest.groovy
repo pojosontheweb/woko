@@ -17,8 +17,9 @@
 package woko.webtests.bootstrap3
 
 import org.junit.Test
+import woko.webtests.SeleniumTestBase
 
-class AuthTest extends WebTestBase {
+class AuthTest extends SeleniumTestBase {
 
     @Test
     void testAuthenticationWithHome() {

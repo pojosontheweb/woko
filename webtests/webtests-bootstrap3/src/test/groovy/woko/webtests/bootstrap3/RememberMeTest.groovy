@@ -19,8 +19,9 @@ package woko.webtests.bootstrap3
 import com.pojosontheweb.selenium.Findr
 import org.junit.Test
 import org.openqa.selenium.By
+import woko.webtests.SeleniumTestBase
 
-class RememberMeTest extends WebTestBase {
+class RememberMeTest extends SeleniumTestBase {
 
     @Test
     void testRememberMe() {

@@ -82,11 +82,10 @@
             <type>war</type>
         </dependency>
 
-        <!-- Use selenium utils for our tests -->
         <dependency>
             <groupId>com.pojosontheweb</groupId>
-            <artifactId>selenium-utils-core</artifactId>
-            <version>1.0.5</version>
+            <artifactId>woko-webtests-common</artifactId>
+            <version>${project.version}</version>
             <scope>test</scope>
         </dependency>
 

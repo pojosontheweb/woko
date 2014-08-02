@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package woko.webtests.bootstrap3
+package woko.webtests
 
 import com.google.common.base.Predicate
 import com.pojosontheweb.selenium.ManagedDriverJunit4TestBase
@@ -23,7 +23,7 @@ import org.openqa.selenium.By
 import com.pojosontheweb.selenium.Findr
 import org.openqa.selenium.WebElement
 
-abstract class WebTestBase extends ManagedDriverJunit4TestBase {
+abstract class SeleniumTestBase extends ManagedDriverJunit4TestBase {
 
     def port = System.getProperty("woko.webtests.port", "9999")
     def homeUrl = "http://localhost:$port/woko-webtests"
@@ -104,7 +104,7 @@ abstract class WebTestBase extends ManagedDriverJunit4TestBase {
     }
 
     void verifyXPath(String xpath) {
-        findr().elem(By.xpath(xpath)).eval()
+        byXpath(xpath).eval()
     }
 
     void not(Closure c) {

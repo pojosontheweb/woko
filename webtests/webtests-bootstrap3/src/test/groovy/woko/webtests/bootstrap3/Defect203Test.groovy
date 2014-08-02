@@ -2,8 +2,9 @@ package woko.webtests.bootstrap3
 
 import org.junit.Test
 import com.pojosontheweb.selenium.formz.Select
+import woko.webtests.SeleniumTestBase
 
-class Defect203Test extends WebTestBase {
+class Defect203Test extends SeleniumTestBase {
 
     @Test
     void testDefect203(){

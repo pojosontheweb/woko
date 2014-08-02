@@ -21,8 +21,9 @@ import org.junit.Ignore
 import org.junit.Test
 import com.pojosontheweb.selenium.Findr
 import com.pojosontheweb.selenium.formz.Select
+import woko.webtests.SeleniumTestBase
 
-class RendererTest extends WebTestBase {
+class RendererTest extends SeleniumTestBase {
 
     @Test
     void testPropertyValueFacetOverrides() {

@@ -17,8 +17,9 @@
 package woko.webtests.bootstrap3
 
 import org.junit.Test
+import woko.webtests.SeleniumTestBase
 
-class CompassCloudTest extends WebTestBase {
+class CompassCloudTest extends SeleniumTestBase {
 
     @Test
     void testCloud() {

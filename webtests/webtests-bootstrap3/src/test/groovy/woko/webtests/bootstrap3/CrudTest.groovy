@@ -20,8 +20,9 @@ import org.junit.Test
 import org.openqa.selenium.By
 import com.pojosontheweb.selenium.Findr
 import com.pojosontheweb.selenium.formz.Select
+import woko.webtests.SeleniumTestBase
 
-class CrudTest extends WebTestBase {
+class CrudTest extends SeleniumTestBase {
 
     @Test
     void testCrud() {
@@ -50,7 +51,7 @@ class CrudTest extends WebTestBase {
         // delete
         goToPage '/delete/MyBook/1'
         verifyText 'Please confirm deletion'
-        findr().elem(By.name("facet.confirm")).click()
+        byName("facet.confirm").click()
         verifyText 'Object deleted'
 
         not {

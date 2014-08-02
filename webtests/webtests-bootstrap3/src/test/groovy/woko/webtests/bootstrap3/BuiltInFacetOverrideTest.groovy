@@ -17,8 +17,9 @@
 package woko.webtests.bootstrap3
 
 import org.junit.Test
+import woko.webtests.SeleniumTestBase
 
-class BuiltInFacetOverrideTest extends WebTestBase {
+class BuiltInFacetOverrideTest extends SeleniumTestBase {
 
     @Test
     void testOverrideDeveloperNavBar() {

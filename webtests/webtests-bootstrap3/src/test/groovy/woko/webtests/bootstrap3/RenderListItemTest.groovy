@@ -17,8 +17,9 @@
 package woko.webtests.bootstrap3
 
 import org.junit.Test
+import woko.webtests.SeleniumTestBase
 
-class RenderListItemTest extends WebTestBase {
+class RenderListItemTest extends SeleniumTestBase {
 
     @Test
     void testListItem() {

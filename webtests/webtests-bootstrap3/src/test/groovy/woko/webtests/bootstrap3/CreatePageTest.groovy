@@ -17,8 +17,9 @@
 package woko.webtests.bootstrap3
 
 import org.junit.Test
+import woko.webtests.SeleniumTestBase
 
-class CreatePageTest  extends WebTestBase{
+class CreatePageTest  extends SeleniumTestBase{
 
     @Test
     void testCreatePage(){

@@ -18,8 +18,9 @@ package woko.webtests.bootstrap3
 
 import org.junit.Test
 import org.openqa.selenium.By
+import woko.webtests.SeleniumTestBase
 
-class ArgsInListTest extends WebTestBase {
+class ArgsInListTest extends SeleniumTestBase {
 
     @Test
     void testListItem() {

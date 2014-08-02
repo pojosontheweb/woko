@@ -17,8 +17,9 @@
 package woko.webtests.bootstrap3
 
 import org.junit.Test
+import woko.webtests.SeleniumTestBase
 
-class FacetValidationTest extends WebTestBase {
+class FacetValidationTest extends SeleniumTestBase {
 
     @Test
     void testFacetValidation() {

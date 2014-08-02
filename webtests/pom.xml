@@ -143,7 +143,7 @@
                 <module>webtests-rpc</module>
                 <module>webtests-bootstrap</module>
                 <module>webtests-bootstrap3</module>
-                <!--module>webtests-usermanagement</module-->
+                <module>webtests-usermanagement</module>
                 <module>webtests-async</module>
             </modules>
         </profile>
