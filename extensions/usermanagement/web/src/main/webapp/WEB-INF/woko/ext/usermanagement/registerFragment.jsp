@@ -89,10 +89,6 @@
         </div>
     </c:if>
 
-    <%--
-    <w:includeFacet targetObject="${registerFragment.user}" facetName="<%=WokoFacets.renderPropertiesEdit%>"/>
-    --%>
-
     <div class="form-group">
         <div class="col-sm-offset-3">
             <s:submit name="doRegister" class="btn btn-primary"/>

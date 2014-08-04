@@ -19,9 +19,11 @@ package woko.webtests.usermanagement
 
 import com.google.common.base.Predicate
 import com.pojosontheweb.selenium.Findr
+import com.pojosontheweb.selenium.Findrs
 import com.pojosontheweb.selenium.formz.Select
 import org.junit.Ignore
 import org.junit.Test
+import org.openqa.selenium.By
 import org.openqa.selenium.WebElement
 import woko.webtests.SeleniumTestBase
 
@@ -47,27 +49,43 @@ class UsermanagementTest extends SeleniumTestBase {
         f.eval()
     }
 
-    @Ignore
     @Test
     void testUserManagement() {
         login()
         goToPage '/list/MyUser'
 
-        verifyXPath('/html/body/div[2]/table/tbody/tr[1]/td[2]/p',
-                '.*wdevel.*', true)
-        verifyXPath('/html/body/div[2]/table/tbody/tr[2]/td[2]/p',
-                '.*testuser.*', true)
+        Findr.ListFindr trs = findr()
+            .elem(By.cssSelector("table.MyUser"))
+            .elem(By.tagName("tbody"))
+            .elemList(By.tagName("tr"))
+
+        trs.at(0)
+            .elemList(By.tagName("td"))
+            .at(1)
+            .where(Findrs.textEquals("wdevel"))
+            .eval()
+
+        trs.at(1)
+            .elemList(By.tagName("td"))
+            .at(1)
+            .where(Findrs.textEquals("testuser0"))
+            .eval()
 
         goToPage '/users'
-        verifyXPath('/html/body/div/div[2]/div/table/tbody/tr/td[2]/span/span',
-                '.*wdevel.*', true)
-        verifyXPath('/html/body/div/div[2]/div/table/tbody/tr[2]/td[2]/span/span',
-                '.*testuser.*', true)
+        trs.at(0)
+            .elemList(By.tagName("td"))
+            .at(1)
+            .where(Findrs.textEquals("wdevel"))
+            .eval()
+        trs.at(1)
+            .elemList(By.tagName("td"))
+            .at(1)
+            .where(Findrs.textEquals("testuser0"))
+            .eval()
     }
 
     // see  https://github.com/pojosontheweb/woko/issues/183
     @Test
-    @Ignore
     void testRegisterValidation() {
         goToPage "/register"
         byName('doRegister').click()
@@ -80,22 +98,22 @@ class UsermanagementTest extends SeleniumTestBase {
     }
 
     @Test
-    @Ignore
     void testRegister() {
         // register a new user
         goToPage "/register"
-        verifyText "email"
-        verifyText "username"
-        verifyXPath "/html/body/div/div[2]/div/div[3]/div/form/fieldset/div/div/div/input"
-        verifyXPath "/html/body/div/div[2]/div/div[3]/div/form/fieldset/div[2]/div/div/input"
-        verifyXPath "/html/body/div/div[2]/div/div[3]/div/form/fieldset/div[3]/div/div/input"
-        verifyXPath "/html/body/div/div[2]/div/div[3]/div/form/fieldset/div[4]/div/div/input"
+        [
+            "facet.username",
+            "facet.email",
+            "facet.password1",
+            "facet.password2"
+        ].each {
+            byName(it).eval()
+        }
 
         byName('facet.username').sendKeys('funkystuff')
         byName('facet.email').sendKeys('funky@stuff.com')
         byName('facet.password1').sendKeys('funkystuff')
         byName('facet.password2').sendKeys('funkystuff')
-        byName('facet.user.prop1').sendKeys('funkystuff')
         byName('doRegister').click()
 
         verifyText 'Account not yet active'
@@ -108,9 +126,13 @@ class UsermanagementTest extends SeleniumTestBase {
         verifyText 'funkystuff'
 
         // edit user
-        byXpath('/html/body/div/div[2]/div/table/tbody/tr[2]/td[6]/div/a[2]').click()
-        Select.selectByVisibleText(byXpath('/html/body/div/div[2]/div/div[3]/div[2]/form/fieldset/div/div/select'), "Active")
-        byXpath('/html/body/div/div[2]/div/div[3]/div[2]/form/fieldset/div[5]/div/input').sendKeys('developer')
+        findr()
+            .elemList(By.cssSelector("a.link-edit"))
+            .at(1)
+            .click();
+        Select.selectByVisibleText(findr().elem(By.name("object.accountStatus")), "Active")
+        byName('facet.roles').clear()
+        byName('facet.roles').sendKeys('developer')
         byName('save').click()
 
         // logout and try to authenticate with new user
@@ -120,7 +142,6 @@ class UsermanagementTest extends SeleniumTestBase {
     }
 
     @Test
-    @Ignore
     void testChangePassword() {
         not {
             goToPage "/password"
@@ -128,7 +149,7 @@ class UsermanagementTest extends SeleniumTestBase {
         login()
         goToPage "/password"
 
-        byXpath('/html/body/div/div[2]/div/div[3]/div/form/fieldset/div[4]/input').click()
+        byName('changePassword').click()
         verifyText "Current Password is a required field"
         verifyText "New Password is a required field"
         verifyText "New Password Confirm is a required field"
@@ -136,7 +157,7 @@ class UsermanagementTest extends SeleniumTestBase {
         byName("facet.currentPassword").sendKeys("wdevel")
         byName("facet.newPassword").sendKeys("foobarbaz")
         byName("facet.newPasswordConfirm").sendKeys("foobarbaz")
-        byXpath('/html/body/div/div[2]/div/div[3]/div/form/fieldset/div[4]/input').click()
+        byName('changePassword').click()
         verifyText "Password changed"
 
         goToPage "/password"
@@ -144,7 +165,7 @@ class UsermanagementTest extends SeleniumTestBase {
         byName("facet.currentPassword").sendKeys("foobarbaz")
         byName("facet.newPassword").sendKeys("wdevel")
         byName("facet.newPasswordConfirm").sendKeys("wdevel")
-        byXpath('/html/body/div/div[2]/div/div[3]/div/form/fieldset/div[4]/input').click()
+        byName('changePassword').click()
         verifyText "Password changed"
     }
 
