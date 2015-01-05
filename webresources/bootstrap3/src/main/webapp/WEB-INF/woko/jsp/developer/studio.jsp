@@ -196,18 +196,20 @@
                             <li><strong><fmt:message bundle="${wokoBundle}" key="woko.devel.studio.groovy.logs"/></strong> <fmt:message bundle="${wokoBundle}" key="woko.devel.studio.groovy.logsType"/></li>
                         </ul>
 
-                        <div class="row">
-                            <div class="col-md-12">
-                                <textarea id="groovyCode" class="form-control">// groovy goes here !
+                        <form action="${cp}/groovy" method="POST" target="_blank">
+                            <textarea id="groovyCode" name="facet.code" class="form-control">// groovy goes here !
 log << "this runs on the server : $woko"</textarea>
-                            </div>
-                        </div>
 
-                        <button id="btnExec" class="btn btn-primary">Execute</button>
+                            <div class="btn-group" role="group" aria-label="...">
+                                <button id="btnExec" class="btn btn-primary">Execute (AJAX)</button>
+                                <button id="btnExecForm" class="btn">Execute (FORM POST)</button>
+                            </div>
+                        </form>
                         <div>
                             <h2><fmt:message bundle="${wokoBundle}" key="woko.devel.studio.log.exec"/></h2>
                             <div id="log" class="well"></div>
                         </div>
+
                     </div>
                 </div>
             </div>
