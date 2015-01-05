@@ -83,7 +83,10 @@ public class Groovy<
         GroovyShell shell = new GroovyShell(b);
         long time = System.currentTimeMillis();
         try {
-            shell.evaluate(code);
+            Object res = shell.evaluate(code);
+            if (res instanceof Resolution) {
+                return (Resolution)res;
+            }
         } catch (Throwable t) {
             out.write("ERROR !\n");
             t.printStackTrace(out);
