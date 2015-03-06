@@ -49,16 +49,23 @@ public class RpcInterceptor implements Interceptor, ConfigurableComponent {
 
     public static final String DEFAULT_RPC_PARAM_NAME = "isRpc";
     public static final String CFG_RPC_INTERCEPTOR_PARAM_NAME = "RpcInterceptor.Param.Name";
+    public static final String DEFAULT_CALLBACK_PARAM_NAME = "callback";
+    public static final String CFG_RPC_CALLBACK_PARAM_NAME = "RpcInterceptor.Callback.Name";
 
     private static String rpcParamName = DEFAULT_RPC_PARAM_NAME;
+    private static String rpcCallbackParamName = DEFAULT_CALLBACK_PARAM_NAME;
 
     public void init(Configuration configuration) throws Exception {
-        // init rpcParamName from config
+        // init rpcParamName & callback from config
         rpcParamName = configuration.getBootstrapPropertyResolver().getProperty(CFG_RPC_INTERCEPTOR_PARAM_NAME);
         if (rpcParamName==null) {
             rpcParamName = DEFAULT_RPC_PARAM_NAME;
         }
-        logger.info("Will handle RPC requests with param name ", rpcParamName);
+        rpcCallbackParamName = configuration.getBootstrapPropertyResolver().getProperty(CFG_RPC_CALLBACK_PARAM_NAME);
+        if (rpcCallbackParamName==null) {
+            rpcCallbackParamName = DEFAULT_CALLBACK_PARAM_NAME;
+        }
+        logger.info("Will handle RPC requests with param name ", rpcParamName, ", callback param ", rpcCallbackParamName);
     }
 
     public static boolean isRpcRequest(HttpServletRequest request) {
@@ -71,7 +78,8 @@ public class RpcInterceptor implements Interceptor, ConfigurableComponent {
         Resolution result = context.proceed();
 
         // activate on special parameter
-        if (isRpcRequest(context.getActionBeanContext().getRequest())) {
+        HttpServletRequest request = context.getActionBeanContext().getRequest();
+        if (isRpcRequest(request)) {
             logger.debug("Request ", context.getActionBeanContext().getRequest().getQueryString(), " considered RPC");
             // do we have errors ?
             ValidationErrors errors =
@@ -100,19 +108,31 @@ public class RpcInterceptor implements Interceptor, ConfigurableComponent {
                 }
             }
         }
-        return result;
+        // is it JSONP ?
+        return makeItJsonP(result, request);
+    }
+
+    private Resolution makeItJsonP(Resolution resolution, HttpServletRequest request) {
+        if (resolution instanceof JsonResolution) {
+            String callback = request.getParameter(rpcCallbackParamName);
+            if (callback != null) {
+                return ((JsonResolution)resolution).setCallbackName(callback);
+            }
+        }
+        return resolution;
     }
 
     protected Resolution serializeErrors(ExecutionContext context) {
         // serialize errors to JavaScript
         ActionBeanContext abc = context.getActionBeanContext();
         ValidationErrors errors = abc.getValidationErrors();
+        HttpServletRequest request = abc.getRequest();
         Woko<?,?,?,?> woko = Woko.getWoko(abc.getServletContext());
-        RenderObjectJson roj = woko.getFacet(RenderObjectJson.FACET_NAME, abc.getRequest(), errors);
+        RenderObjectJson roj = woko.getFacet(RenderObjectJson.FACET_NAME, request, errors);
         if (roj==null) {
             return new JavaScriptResolution(errors);
         }
-        JSONObject jsonErrors = roj.objectToJson(abc.getRequest());
-        return new JsonResolution(jsonErrors);
+        JSONObject jsonErrors = roj.objectToJson(request);
+        return makeItJsonP(new JsonResolution(jsonErrors), request);
     }
 }

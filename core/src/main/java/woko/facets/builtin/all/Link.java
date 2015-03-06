@@ -36,8 +36,15 @@ public class Link {
      * @param text the text
      */
     public Link(String href, String text) {
-        this.href = href;
+        this.href = stripFirstSlash(href);
         this.text = text;
+    }
+
+    private String stripFirstSlash(String href) {
+        if (href!=null && href.startsWith("/")) {
+            return href.substring(0);
+        }
+        return href;
     }
 
     public String getHref() {
