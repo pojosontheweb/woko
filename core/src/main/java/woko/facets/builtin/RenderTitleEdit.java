@@ -22,6 +22,6 @@ package woko.facets.builtin;
  */
 public interface RenderTitleEdit extends RenderTitle {
 
-    static final String FACET_NAME = "renderTitle";
+    static final String FACET_NAME = "renderTitleEdit";
 
 }

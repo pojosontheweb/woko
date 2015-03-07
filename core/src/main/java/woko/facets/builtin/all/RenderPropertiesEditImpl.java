@@ -62,7 +62,7 @@ public class RenderPropertiesEditImpl<
         // all props that have no public setter should be removed !
         List<String> allProps = getPropertyNames();
         Object target = getFacetContext().getTargetObject();
-        Class<?> targetClass = getWoko().getObjectStore().getObjectClass(target);
+        Class<?> targetClass = target!=null ? getWoko().getObjectStore().getObjectClass(target) : getFacetContext().getTargetObjectClass();
         List<String> readOnlyProps = new ArrayList<String>();
         if (allProps!=null) {
             for (String propName : allProps) {

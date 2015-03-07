@@ -28,13 +28,13 @@ class PushFacetDescriptorManagerTest {
         AnnotatedFacetDescriptorManager afdm =
             new AnnotatedFacetDescriptorManager(["woko.push.testfacets"]).
             initialize()
-        assertEquals("invalid initial fd count in @fdm", 1, afdm.descriptors.length)
+        assertEquals("invalid initial fd count in @fdm", 1, afdm.descriptors.size())
         return afdm
     }
 
     PushFacetDescriptorManager createPush() {
         PushFacetDescriptorManager push = new PushFacetDescriptorManager(createAnnotated())
-        assertEquals("invalid initial fd count in push fdm", 1, push.descriptors.length)
+        assertEquals("invalid initial fd count in push fdm", 1, push.descriptors.size())
         return push
     }
 
@@ -49,7 +49,9 @@ class MyNewFacet {
 """
 
     FacetDescriptor assertDescriptor(IFacetDescriptorManager fdm, String name, String profileId) {
-        def fd = fdm.getDescriptor(name, profileId, Object.class)
+        def fds = fdm.getDescriptors(name, profileId, Object.class)
+        assertEquals(1, fds.size())
+        def fd = fds[0]
         assertNotNull("facet descriptor not found for " + name + "," + profileId + ",Object", fd)
         return fd
     }
@@ -60,7 +62,7 @@ class MyNewFacet {
     }
 
     void assertDescriptorCount(IFacetDescriptorManager fdm, int expected) {
-        assertEquals("invalid fd count", expected, fdm.descriptors.length)
+        assertEquals("invalid fd count", expected, fdm.descriptors.size())
     }
 
 

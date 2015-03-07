@@ -30,6 +30,7 @@ import woko.facets.builtin.WokoFacets;
 import woko.persistence.ObjectStore;
 import woko.users.UserManager;
 import woko.users.UsernameResolutionStrategy;
+import woko.util.JsonResolution;
 
 /**
  * <code>json</code> resolution facet, for converting Woko-managed POJOs to JSON.
@@ -49,8 +50,7 @@ public class JsonImpl<
         WokoFacetContext<OsType, UmType, UnsType, FdmType> facetContext = getFacetContext();
         RenderObjectJson roj = facetContext.getWoko().getFacet(WokoFacets.renderObjectJson, abc.getRequest(), facetContext.getTargetObject());
         JSONObject json = roj.objectToJson(abc.getRequest());
-        String jsonStr = json.toString();
-        return new StreamingResolution("text/json", jsonStr);
+        return new JsonResolution(json);
     }
 
 

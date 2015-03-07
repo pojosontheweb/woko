@@ -20,6 +20,7 @@ import net.sourceforge.jfacets.IFacetContext;
 import net.sourceforge.jfacets.IFacetDescriptorManager;
 import net.sourceforge.jfacets.annotations.FacetKey;
 import woko.facets.BaseFragmentFacet;
+import woko.facets.WokoFacetContext;
 import woko.facets.builtin.RenderProperties;
 import woko.facets.builtin.WokoFacets;
 import woko.persistence.ObjectStore;
@@ -77,7 +78,7 @@ public class RenderPropertiesImpl<
     public void setFacetContext(IFacetContext iFacetContext) {
         super.setFacetContext(iFacetContext);
         Object obj = iFacetContext.getTargetObject();
-        Class<?> objType = obj!=null ? obj.getClass() : iFacetContext.getFacetDescriptor().getTargetObjectType();
+        Class<?> objType = obj!=null ? obj.getClass() : iFacetContext.getTargetObjectClass();
         propertyNames = Util.getPropertyNames(objType, Arrays.asList("metaClass"));
         propertyValues = new HashMap<String, Object>();
         if (obj!=null) {

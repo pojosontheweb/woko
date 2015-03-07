@@ -55,10 +55,11 @@ public class WokoFacetContext<
             String facetName,
             IProfile profile,
             Object targetObject,
+            Class<?> targetObjectClass,
             FacetDescriptor facetDescriptor,
             Woko<OsType, UmType, UnsType, FdmType> woko,
             HttpServletRequest request) {
-        super(facetName, profile, targetObject, facetDescriptor);
+        super(facetName, profile, targetObject, targetObjectClass, facetDescriptor);
         this.woko = woko;
         this.request = request;
     }

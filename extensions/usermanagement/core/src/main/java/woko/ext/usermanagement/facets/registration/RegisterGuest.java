@@ -202,6 +202,8 @@ public class RegisterGuest<T extends User,
             user.setPassword(databaseUserManager.encodePassword(password1));
             user.setEmail(email);
 
+            beforeValidate(user);
+
             // use validate facet in order to check the user's validation constraints
             woko.facets.builtin.Validate validateFacet = woko.getFacet(WokoFacets.validate, abc.getRequest(), user, user.getClass());
             if (validateFacet != null) {
@@ -253,6 +255,10 @@ public class RegisterGuest<T extends User,
             return new RedirectResolution("/view/" + regDetailsClassMapping +
                     "/" + regDetailsKey);
         }
+    }
+
+    protected void beforeValidate(T user) {
+        // does nothing in this impl
     }
 
     protected Map<String,Object> createMailBinding() {

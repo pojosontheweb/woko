@@ -20,7 +20,7 @@
     <parent>
         <groupId>com.pojosontheweb</groupId>
         <artifactId>woko-parent</artifactId>
-        <version>2.3.4</version>
+        <version>2.4-beta</version>
     </parent>
     <artifactId>woko-core</artifactId>
     <packaging>jar</packaging>
@@ -44,7 +44,7 @@
         <dependency>
             <groupId>net.sourceforge.jfacets</groupId>
             <artifactId>jfacets-core</artifactId>
-            <version>3.2.1</version>
+            <version>4.1</version>
         </dependency>
         <dependency>
             <groupId>org.json</groupId>

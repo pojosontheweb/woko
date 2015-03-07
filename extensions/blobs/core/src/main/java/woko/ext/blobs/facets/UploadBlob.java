@@ -12,7 +12,6 @@ import woko.ioc.WokoInject;
 import woko.persistence.ObjectStore;
 import woko.users.UserManager;
 import woko.users.UsernameResolutionStrategy;
-import woko.util.LinkUtil;
 
 import java.io.IOException;
 
@@ -95,7 +94,7 @@ public class UploadBlob<
      */
     protected Resolution afterSave(ActionBeanContext abc, BlobObject blobObject) {
         abc.getMessages().add(new LocalizableMessage("woko.ext.blobs.upload.ok"));
-        return new RedirectResolution("/" + LinkUtil.getUrl(getWoko(), blobObject, View.FACET_NAME));
+        return getWoko().resolutions().redirect(View.FACET_NAME, blobObject);
     }
 
 }

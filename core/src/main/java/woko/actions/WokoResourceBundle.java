@@ -23,8 +23,8 @@ import java.util.*;
  */
 public class WokoResourceBundle extends ResourceBundle {
 
-    private Locale locale;
-    private List<String> bundleNames;
+    private final Locale locale;
+    private final List<String> bundleNames;
 
     public WokoResourceBundle(Locale locale, List<String> bundleNames) {
         this.locale = locale;
@@ -54,11 +54,13 @@ public class WokoResourceBundle extends ResourceBundle {
         return result;
     }
 
+    private static final WokoUTF8Control CONTROL = new WokoUTF8Control();
+
     // Just returns null if the bundle or the key is not found,
     // instead of throwing an exception.
     private String getFromBundle(Locale loc, String name, String key) {
         String result = null;
-        ResourceBundle bundle = ResourceBundle.getBundle(name, loc);
+        ResourceBundle bundle = ResourceBundle.getBundle(name, loc, CONTROL);
         if (bundle != null) {
             try { result = bundle.getString(key); }
             catch (MissingResourceException exc) { }

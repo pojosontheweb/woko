@@ -52,7 +52,7 @@
                     - CustomCSS
             ========================================================== --%>
         <c:forEach items="${layout.cssIncludes}" var="cssLink">
-            <link rel="stylesheet" href="${cp}${cssLink}" type="text/css">
+            <link rel="stylesheet" href="${cp}${cssLink}?${cacheTokenParams}" type="text/css">
         </c:forEach>
         <s:layout-component name="customCss"/>
 

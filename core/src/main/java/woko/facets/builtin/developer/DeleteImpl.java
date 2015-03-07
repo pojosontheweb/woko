@@ -20,16 +20,16 @@ import net.sourceforge.jfacets.IFacetDescriptorManager;
 import net.sourceforge.jfacets.annotations.FacetKey;
 import net.sourceforge.stripes.action.*;
 import net.sourceforge.stripes.rpc.RpcResolutionWrapper;
-import woko.Woko;
+import org.json.JSONException;
+import org.json.JSONObject;
 import woko.facets.BaseResolutionFacet;
 import woko.facets.WokoFacetContext;
 import woko.facets.builtin.Delete;
-import woko.facets.builtin.RenderTitle;
 import woko.facets.builtin.WokoFacets;
 import woko.persistence.ObjectStore;
 import woko.users.UserManager;
 import woko.users.UsernameResolutionStrategy;
-import woko.util.Util;
+import woko.util.JsonResolution;
 
 /**
  * Allows to delete any Woko-managed POJO.
@@ -76,7 +76,13 @@ public class DeleteImpl<
     }
 
     private static StreamingResolution createResolution(boolean success) {
-        return new StreamingResolution("text/json", "{ \"success\": " + success + " }");
+        JSONObject result = new JSONObject();
+        try {
+            result.put("success", success);
+        } catch (JSONException e) {
+            throw new RuntimeException(e); // should not happen but who knows...
+        }
+        return new JsonResolution(result);
     }
 
     public Resolution getResolution(final ActionBeanContext abc) {

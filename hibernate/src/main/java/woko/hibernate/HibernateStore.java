@@ -22,6 +22,7 @@ import org.hibernate.*;
 import org.hibernate.annotations.Entity;
 import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.metadata.ClassMetadata;
 import org.hibernate.proxy.HibernateProxy;
@@ -65,15 +66,9 @@ public class HibernateStore implements ObjectStore, TransactionalStore, Closeabl
      */
     public HibernateStore(List<String> packageNames) {
         log.info("Creating with package names : " + packageNames);
-        Configuration cfg = createConfiguration(packageNames);
+        Configuration cfg = configure(createConfiguration(packageNames));
         log.info("Configuration created, building session factory...");
-        URL u = getClass().getResource("/hibernate.cfg.xml");
-        if (u == null) {
-            String hbCfg = getDefaultHibernateCfgXml();
-            log.warn("Using default hibernate settings from " + hbCfg + " : in-memory hsql. Add your own hibernate.cfg.xml to the classpath to change the settings.");
-            u = getClass().getResource(hbCfg);
-        }
-        sessionFactory = cfg.configure(u).buildSessionFactory();
+        sessionFactory = cfg.buildSessionFactory();
         log.info("Created session factory : " + sessionFactory);
         primaryKeyConverter = createPrimaryKeyConverter();
         log.info("Created PK converter : " + primaryKeyConverter);
@@ -83,6 +78,23 @@ public class HibernateStore implements ObjectStore, TransactionalStore, Closeabl
         } else {
             log.warn("No mapped classes found for packages " + packageNames + ". Make sure your @Entity classes are in these packages.");
         }
+    }
+
+    /**
+     * Configures hibernate. This implementation checks for /hibernate.cfg.xml and default hb config
+     * file. Can be overriden in order to configure hb another way.
+     * @param config the freshly created config
+     * @return the config
+     */
+    protected Configuration configure(Configuration config) {
+        log.info("Configuration created, building session factory...");
+        URL u = getClass().getResource("/hibernate.cfg.xml");
+        if (u == null) {
+            String hbCfg = getDefaultHibernateCfgXml();
+            log.warn("Using default hibernate settings from " + hbCfg + " : in-memory hsql. Add your own hibernate.cfg.xml to the classpath to change the settings.");
+            u = getClass().getResource(hbCfg);
+        }
+        return config.configure(u);
     }
 
     /**
@@ -458,17 +470,20 @@ public class HibernateStore implements ObjectStore, TransactionalStore, Closeabl
         if (clazz == null) {
             return new ListResultIterator<Object>(Collections.emptyList(), s, l, 0);
         } else {
-            Criteria crit = createListCriteria(clazz).setFirstResult(s);
+            Criteria crit = createListCriteria(clazz);
+
+            // count
+            crit.setProjection(Projections.rowCount());
+            Long count = (Long)crit.uniqueResult();
+
+            // sublist
+            crit.setProjection(null);
+            crit.setFirstResult(s);
             if (l != -1) {
                 crit.setMaxResults(l);
             }
             // TODO optimize with scrollable results ?
             List<?> objects = crit.list();
-
-            // compute total count
-            String mappedClassName = getClassMapping(clazz);
-            String query = new StringBuilder("select count(*) from ").append(mappedClassName).toString();
-            Long count = (Long) getSession().createQuery(query).list().get(0);
 
             return new ListResultIterator<Object>(objects, s, l, count.intValue());
         }

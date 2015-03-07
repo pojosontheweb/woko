@@ -5,10 +5,7 @@ import woko.util.WLogger;
 
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.*;
 
 /**
  * Top-level component for managing async {@link Job}s.
@@ -20,7 +17,7 @@ public class JobManager implements Closeable {
     private static final WLogger logger = WLogger.getLogger(JobManager.class);
 
     private final ExecutorService pool;
-    private final Map<String,Job> runningJobs = new ConcurrentHashMap<String, Job>();
+    private final Map<String, Job> runningJobs = new ConcurrentHashMap<String, Job>();
 
     /**
      * Create with a single-threaded executor.
@@ -31,6 +28,7 @@ public class JobManager implements Closeable {
 
     /**
      * Create with passed <code>ExecutorService</code>.
+     *
      * @param pool the <code>ExecutorService</code> to be used
      */
     public JobManager(ExecutorService pool) {
@@ -40,7 +38,8 @@ public class JobManager implements Closeable {
 
     /**
      * Submit and execute a new <code>Job</code>, and notify all listeners.
-     * @param job the <code>Job</code> to execute
+     *
+     * @param job       the <code>Job</code> to execute
      * @param listeners a list of the listeners to be notified during job execution
      */
     public void submit(final Job job, final List<JobListener> listeners) {
@@ -64,12 +63,28 @@ public class JobManager implements Closeable {
      */
     public void close() {
         logger.debug("Closing pool : " + pool);
-        pool.shutdown();
+        pool.shutdown(); // Disable new tasks from being submitted
+        try {
+            // Wait a while for existing tasks to terminate
+            if (!pool.awaitTermination(60, TimeUnit.SECONDS)) {
+                pool.shutdownNow(); // Cancel currently executing tasks
+                // Wait a while for tasks to respond to being cancelled
+                if (!pool.awaitTermination(60, TimeUnit.SECONDS)) {
+                    throw new IllegalStateException("pool not shutdown, tasks still running ?");
+                }
+            }
+        } catch (InterruptedException ie) {
+            // (Re-)Cancel if current thread also interrupted
+            pool.shutdownNow();
+            // Preserve interrupt status
+            Thread.currentThread().interrupt();
+        }
     }
 
     /**
      * Return a running <code>Job</code> by its <code>uuid</code>. Returns <code>null</code> if
      * no job is currently running with passed uuid.
+     *
      * @param uuid the uuid of the <code>Job</code> to retrieve
      * @return the <code>Job</code> if any, <code>null</code> otherwise
      */

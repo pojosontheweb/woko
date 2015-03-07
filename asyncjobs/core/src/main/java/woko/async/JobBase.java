@@ -32,13 +32,7 @@ public abstract class JobBase implements Job {
     public void kill() {
     }
 
-    /**
-     * Wraps invocation of <code>doExecute</code> with calls to listeners.
-     * @param listeners a list of job listeners to notify on execution of the job
-     */
-    @Override
-    public void execute(List<JobListener> listeners) {
-        logger.info("Starting " + this);
+    protected final void notifyListenersStart(List<JobListener> listeners) {
         for (JobListener l : listeners) {
             try {
                 l.onStart(this);
@@ -46,25 +40,53 @@ public abstract class JobBase implements Job {
                 logger.error("Caught exception invoking listener " + l, e);
             }
         }
+    }
+
+    protected final void notifyListenersEnd(List<JobListener> listeners) {
+        for (JobListener l : listeners) {
+            try {
+                l.onEnd(this, isKilled());
+            } catch(Exception e) {
+                logger.error("Caught exception invoking listener " + l, e);
+            }
+        }
+    }
+
+    protected final void notifyListenersException(List<JobListener> listeners, Exception e) {
+        for (JobListener l : listeners) {
+            try {
+                l.onException(this, e); // Exception onException... looks pretty ugly but we need to guard against bad code anyway...
+            } catch(Exception e2) {
+                logger.error("Caught exception invoking listener " + l, e2);
+            }
+        }
+    }
+
+    protected final void notifyListenersProgress(List<JobListener> listeners) {
+        for (JobListener l : listeners) {
+            try {
+                l.onProgress(this);
+            } catch(Exception e) {
+                logger.error("Caught exception invoking listener " + l, e);
+            }
+        }
+    }
+
+    /**
+     * Wraps invocation of <code>doExecute</code> with calls to listeners.
+     * @param listeners a list of job listeners to notify on execution of the job
+     */
+    @Override
+    public final void execute(List<JobListener> listeners) {
+        logger.info("Starting " + this);
+        notifyListenersStart(listeners);
         try {
             doExecute(listeners);
             logger.info("Executed " + this);
-            for (JobListener l : listeners) {
-                try {
-                    l.onEnd(this, isKilled());
-                } catch(Exception e) {
-                    logger.error("Caught exception invoking listener " + l, e);
-                }
-            }
+            notifyListenersEnd(listeners);
         } catch(Exception e) {
             logger.error("Caught exception executing " + this, e);
-            for (JobListener l : listeners) {
-                try {
-                    l.onException(this, e); // Exception onException... looks pretty ugly but we need to guard against bad code anyway...
-                } catch(Exception e2) {
-                    logger.error("Caught exception invoking listener " + l, e2);
-                }
-            }
+            notifyListenersException(listeners, e);
         }
     }
 

@@ -52,19 +52,23 @@
             }
         %>
 
-        <h1 class="page-header">
-            <fmt:message bundle="${wokoBundle}" key="woko.ext.usermanagement.post.register.h1.text">
-                <fmt:param value="<%=username%>"/>
+        <div class="container">
+
+            <h1 class="page-header">
+                <fmt:message bundle="${wokoBundle}" key="woko.ext.usermanagement.post.register.h1.text">
+                    <fmt:param value="<%=username%>"/>
+                </fmt:message>
+            </h1>
+
+            <div class="alert <%=alertClass%>">
+                <fmt:message bundle="${wokoBundle}" key="<%=msgKeyAlert%>"/>
+            </div>
+
+            <fmt:message bundle="${wokoBundle}" key="<%=msgKeyPara%>">
+                <fmt:param value="<%=email%>"/>
             </fmt:message>
-        </h1>
 
-        <div class="alert <%=alertClass%>">
-            <fmt:message bundle="${wokoBundle}" key="<%=msgKeyAlert%>"/>
         </div>
-
-        <fmt:message bundle="${wokoBundle}" key="<%=msgKeyPara%>">
-            <fmt:param value="<%=email%>"/>
-        </fmt:message>
 
     </s:layout-component>
 </s:layout-render>

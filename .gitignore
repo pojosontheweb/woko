@@ -9,3 +9,4 @@ target
 classes
 *~
 overlays
+doco/markdown/*.html

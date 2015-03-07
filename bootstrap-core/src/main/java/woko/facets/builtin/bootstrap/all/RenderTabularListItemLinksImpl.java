@@ -57,7 +57,6 @@ public class RenderTabularListItemLinksImpl<
             // display view link if object can be displayed
             Object viewFacet = woko.getFacet(WokoFacets.view, request, o, oc);
             if (viewFacet instanceof View) {
-                String className = store.getClassMapping(oc);
                 String key = store.getKey(o);
                 if (key != null) {
                     String url = LinkUtil.getUrl(woko, o, View.FACET_NAME);

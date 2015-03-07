@@ -19,22 +19,18 @@ package woko.facets.builtin;
 import net.sourceforge.jfacets.IFacetDescriptorManager;
 import net.sourceforge.stripes.action.ActionBeanContext;
 import net.sourceforge.stripes.action.Resolution;
-import net.sourceforge.stripes.action.StreamingResolution;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import woko.Woko;
 import woko.facets.BaseForwardRpcResolutionFacet;
-import woko.facets.WokoFacetContext;
 import woko.persistence.ObjectStore;
 import woko.persistence.ResultIterator;
 import woko.users.UserManager;
 import woko.users.UsernameResolutionStrategy;
+import woko.util.JsonResolution;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -136,7 +132,7 @@ public abstract class BaseResultFacet<
     protected Resolution getRpcResolution(final ActionBeanContext actionBeanContext) {
         ResultIterator resultIterator = getResults();
         JSONObject r = resultIteratorToJson(getFacetContext().getWoko(), actionBeanContext.getRequest(), resultIterator);
-        return new StreamingResolution("text/json", r.toString());
+        return new JsonResolution(r);
     }
 
     /**

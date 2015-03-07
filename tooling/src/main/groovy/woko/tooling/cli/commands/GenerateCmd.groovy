@@ -128,7 +128,7 @@ class GenerateCmd extends Command{
             pomHelper.addDependency(bootStrapDep, false)
             bootStrapDep = new Dependency()
             bootStrapDep.groupId = "com.pojosontheweb"
-            bootStrapDep.artifactId = "woko-web-bootstrap"
+            bootStrapDep.artifactId = "woko-web-bootstrap3"
             bootStrapDep.version = '${woko.version}'
             bootStrapDep.type = "war"
             pomHelper.addDependency(bootStrapDep, false)
@@ -181,7 +181,7 @@ class GenerateCmd extends Command{
                     artifactId: "woko-usermanagement-web",
                     version: '${woko.version}', // NOT a Gstring !!
                     type: "war"
-            ))
+            ), true)
         }
     }
 

@@ -2,18 +2,28 @@ package woko.actions.auth.builtin;
 
 import net.sourceforge.jfacets.IFacetDescriptorManager;
 import net.sourceforge.stripes.action.*;
+import net.sourceforge.stripes.rpc.RpcInterceptor;
+import net.sourceforge.stripes.rpc.RpcResolutionWrapper;
 import net.sourceforge.stripes.validation.LocalizableError;
 import net.sourceforge.stripes.validation.Validate;
+import org.json.JSONException;
+import org.json.JSONObject;
 import woko.Woko;
 import woko.actions.BaseActionBean;
+import woko.actions.WokoActionBean;
 import woko.actions.WokoActionBeanContext;
+import woko.actions.auth.rememberme.RememberMeInterceptor;
+import woko.actions.auth.rememberme.RmCookie;
+import woko.actions.auth.rememberme.RmCookieStore;
 import woko.facets.builtin.auth.PostLoginFacet;
 import woko.persistence.ObjectStore;
 import woko.users.UserManager;
 import woko.users.UsernameResolutionStrategy;
+import woko.util.JsonResolution;
 import woko.util.WLogger;
 
 import javax.servlet.ServletContext;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -41,7 +51,11 @@ public class WokoLogin<
     @Validate(required = true)
     private String username;
 
+    @Validate
     private String targetUrl = "/home";
+
+    @Validate
+    private Boolean rememberMe;
 
     public String getUsername() {
         return username;
@@ -57,6 +71,14 @@ public class WokoLogin<
 
     public void setTargetUrl(String targetUrl) {
         this.targetUrl = targetUrl;
+    }
+
+    public Boolean getRememberMe() {
+        return rememberMe;
+    }
+
+    public void setRememberMe(Boolean rememberMe) {
+        this.rememberMe = rememberMe;
     }
 
     protected String authenticate() {
@@ -109,6 +131,9 @@ public class WokoLogin<
         }
     }
 
+    public Boolean getRememberMeEnabled() {
+        return getContext().getWoko().getIoc().getComponent(RmCookieStore.KEY)!=null;
+    }
 
     /**
      * <code>login</code> handler : attempts to authenticate using the configured
@@ -135,16 +160,59 @@ public class WokoLogin<
             if (pl!=null) {
                 pl.execute(user);
             }
+
+            // handle remember me if needed
+            if (rememberMe!=null && rememberMe) {
+                RmCookieStore cookieStore = woko.getIoc().getComponent(RmCookieStore.KEY);
+                if (cookieStore != null) {
+                    cookieStore.deleteAllForUser(user);
+                    RmCookie newRmCookie = cookieStore.createCookie(user);
+                    Cookie newCookie = new Cookie(
+                            RememberMeInterceptor.COOKIE_NAME,
+                            newRmCookie.toPath()
+                    );
+                    newCookie.setMaxAge(3600 * 24 * 30); // 1 month
+                    getContext()
+                            .getResponse()
+                            .addCookie(newCookie);
+                }
+            }
+
             // add message and redirect to the target URL
             context.getMessages().add(new LocalizableMessage(KEY_MSG_LOGIN_SUCCESS));
             log.debug(username + " logged in, redirecting to " + targetUrl);
-            return new RedirectResolution(targetUrl);
+            return new RpcResolutionWrapper(new RedirectResolution(targetUrl)) {
+                @Override
+                public Resolution getRpcResolution() {
+                    JSONObject result = new JSONObject();
+                    try {
+                        result.put("username", username);
+                    } catch(JSONException e) {
+                        throw new RuntimeException(e);
+                    }
+                    return new JsonResolution(result);
+                }
+            };
         } else {
             // authentication failed, add messages to context, and redirect to login
             log.warn("Authentication failed for user '" + username + "', redirecting to login form again");
-            getContext().getValidationErrors().addGlobalError(new LocalizableError(KEY_MSG_LOGIN_FAILED));
-            getContext().getResponse().setStatus(401);
-            return displayForm();
+            WokoActionBeanContext<OsType,UmType,UnsType,FdmType> abc = getContext();
+            abc.getValidationErrors().addGlobalError(new LocalizableError(KEY_MSG_LOGIN_FAILED));
+            if (!RpcInterceptor.isRpcRequest(abc.getRequest())) {
+                abc.getResponse().setStatus(401);
+            }
+            return new RpcResolutionWrapper(displayForm()) {
+                @Override
+                public Resolution getRpcResolution() {
+                    JSONObject result = new JSONObject();
+                    try {
+                        result.put("success", false);
+                    } catch(JSONException e) {
+                        throw new RuntimeException(e);
+                    }
+                    return new JsonResolution(result);
+                }
+            };
         }
     }
 

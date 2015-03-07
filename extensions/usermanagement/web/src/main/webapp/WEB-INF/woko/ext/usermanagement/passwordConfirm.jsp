@@ -6,13 +6,17 @@
 <s:layout-render name="${layout.layoutPath}" layout="${layout}" pageTitle="${pageTitle}">
     <s:layout-component name="body">
 
-        <h1 class="page-header">
-            <fmt:message bundle="${wokoBundle}" key="woko.ext.usermanagement.password.confirm.h1.text">
-                <fmt:param value="${p.username}"/>
-            </fmt:message>
-        </h1>
+        <div class="container">
 
-        <fmt:message bundle="${wokoBundle}" key="woko.ext.usermanagement.password.confirm.para.text"/>
+            <h1 class="page-header">
+                <fmt:message bundle="${wokoBundle}" key="woko.ext.usermanagement.password.confirm.h1.text">
+                    <fmt:param value="${p.username}"/>
+                </fmt:message>
+            </h1>
+
+            <fmt:message bundle="${wokoBundle}" key="woko.ext.usermanagement.password.confirm.para.text"/>
+        </div>
+
 
     </s:layout-component>
 </s:layout-render>

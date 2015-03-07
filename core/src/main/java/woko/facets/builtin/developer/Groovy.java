@@ -17,19 +17,18 @@
 package woko.facets.builtin.developer;
 
 import groovy.lang.Binding;
-import groovy.lang.Closure;
 import groovy.lang.GroovyShell;
 import net.sourceforge.jfacets.IFacetDescriptorManager;
 import net.sourceforge.jfacets.annotations.FacetKey;
 import net.sourceforge.stripes.action.ActionBeanContext;
 import net.sourceforge.stripes.action.Resolution;
-import net.sourceforge.stripes.action.StreamingResolution;
 import org.json.JSONException;
 import org.json.JSONObject;
 import woko.facets.BaseResolutionFacet;
 import woko.persistence.ObjectStore;
 import woko.users.UserManager;
 import woko.users.UsernameResolutionStrategy;
+import woko.util.JsonResolution;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -84,7 +83,10 @@ public class Groovy<
         GroovyShell shell = new GroovyShell(b);
         long time = System.currentTimeMillis();
         try {
-            shell.evaluate(code);
+            Object res = shell.evaluate(code);
+            if (res instanceof Resolution) {
+                return (Resolution)res;
+            }
         } catch (Throwable t) {
             out.write("ERROR !\n");
             t.printStackTrace(out);
@@ -100,7 +102,7 @@ public class Groovy<
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return new StreamingResolution("text/json", result.toString());
+        return new JsonResolution(result);
     }
 
 

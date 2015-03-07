@@ -7,7 +7,6 @@
 <%@ page import="woko.facets.WokoFacetContext" %>
 <%@ page import="woko.facets.builtin.RenderListItem" %>
 <%@ page import="woko.persistence.ObjectStore" %>
-<%@ page import="woko.util.LinkUtil" %>
 <%@ page import="woko.facets.builtin.View" %>
 
 
@@ -24,7 +23,7 @@
     ObjectStore s = woko.getObjectStore();
     String resultClassName = s.getClassMapping(s.getObjectClass(result));
     if (woko.getFacet(WokoFacets.view, request, result)!=null) {
-        href = request.getContextPath() + "/" + LinkUtil.getUrl(woko, result, View.FACET_NAME);
+        href = request.getContextPath() + woko.facetUrl(View.FACET_NAME, result);
     }
 %>
     <%=resultKey%> -
