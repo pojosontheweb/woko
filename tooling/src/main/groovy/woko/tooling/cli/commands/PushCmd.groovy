@@ -38,7 +38,7 @@ to a running woko application. The url argument defaults to :
 
   http://localhost:8080/<app_name>
 
-One pushed, your local facets will be available in the running application
+Once pushed, your local facets will be available in the running application
 like if they had been created at init-time.
 
 The aim of this command is to speed up development by avoiding useless
