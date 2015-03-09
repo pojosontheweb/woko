@@ -506,7 +506,7 @@ public class Woko<
     /**
      * Helper class for returning resolutions in a compact fashion.
      */
-    class Resolutions {
+    public static class Resolutions {
 
         private final Woko<?,?,?,?> woko;
 
