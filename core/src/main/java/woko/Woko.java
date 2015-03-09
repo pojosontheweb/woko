@@ -493,16 +493,18 @@ public class Woko<
     }
 
     /**
-     * Return a new Resolutions helper for this Woko instance.
+     * Return the Resolutions helper.
      */
     public Resolutions resolutions() {
-        return new Resolutions(this);
+        return RESOLUTIONS;
     }
+
+    private final Resolutions RESOLUTIONS = new Resolutions(this);
 
     /**
      * Helper class for returning resolutions in a compact fashion.
      */
-    public class Resolutions {
+    class Resolutions {
 
         private final Woko<?,?,?,?> woko;
 
