@@ -43,7 +43,7 @@ class GenerateCmd extends Command{
                 runner,
                 "generate",
                 "Generates a new Woko project",
-                "[-use-boostrap {yes|no}] [-use-groovy {yes|no}] [-default-package-name <package name>]",
+                "",
                 """Initialize a new Woko project""")
 
     }

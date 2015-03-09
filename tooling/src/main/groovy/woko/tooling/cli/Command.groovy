@@ -48,13 +48,17 @@ abstract class Command {
     }
 
     protected String getArgAt(List<String> args, int i) {
+        getArgAt(args, i, null)
+    }
+
+    protected String getArgAt(List<String> args, int i, String defaultValue) {
         if (i>args.size()) {
-            return null
+            return defaultValue
         }
         if (i<0) {
-            return null
+            return defaultValue
         }
-        return args[i]
+        return args[i] ?: defaultValue
     }
 
     protected def getWebXml() {
