@@ -235,7 +235,7 @@ abstract class Command {
         if (userFacetPgkList!=null) {
             if (userFacetPgkList.size() > 1) {
                 log('Several facets package found :')
-                int i=1
+                int i=0
                 userFacetPgkList.each {
                     iLog("$i : $it")
                     i++
