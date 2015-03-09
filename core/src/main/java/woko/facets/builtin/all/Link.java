@@ -42,7 +42,7 @@ public class Link {
 
     private String stripFirstSlash(String href) {
         if (href!=null && href.startsWith("/")) {
-            return href.substring(0);
+            return href.substring(1);
         }
         return href;
     }
