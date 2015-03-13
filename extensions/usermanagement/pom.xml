@@ -20,7 +20,7 @@
     <parent>
         <groupId>com.pojosontheweb</groupId>
         <artifactId>woko-extensions</artifactId>
-        <version>2.4-beta2</version>
+        <version>LATEST-SNAPSHOT</version>
     </parent>
     <artifactId>woko-usermanagement</artifactId>
     <name>Woko - user management extension</name>

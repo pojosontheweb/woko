@@ -20,7 +20,7 @@
     <parent>
         <groupId>com.pojosontheweb</groupId>
         <artifactId>woko-webtests</artifactId>
-        <version>2.4-beta2</version>
+        <version>LATEST-SNAPSHOT</version>
     </parent>
     <artifactId>woko-webtests-builtin-auth</artifactId>
     <name>Woko - web tests built-in auth</name>
