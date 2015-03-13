@@ -49,6 +49,10 @@ abstract class SeleniumTestBase extends ManagedDriverJunit4TestBase {
         return findr().elem(By.xpath(xpath))
     }
 
+    Findr byId(String id) {
+        return findr().elem(By.id(id))
+    }
+
     private void findByNameAndSendKeys(String name, CharSequence... keys) {
         findr()
                 .elem(By.name(name))

@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.List;
 import java.util.Locale;
 import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
@@ -42,4 +43,9 @@ public class WokoUTF8Control extends ResourceBundle.Control {
         }
         return bundle;
     }
+
+//    @Override
+//    public List<String> getFormats(String s) {
+//        return super.getFormats(s);
+//    }
 }
