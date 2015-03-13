@@ -1,4 +1,4 @@
-<!--
+<%--
   ~ Copyright 2001-2012 Remi Vankeisbelck
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,20 +12,14 @@
   ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
-  -->
-
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <parent>
-        <groupId>com.pojosontheweb</groupId>
-        <artifactId>woko-parent</artifactId>
-        <version>2.4-beta2</version>
-    </parent>
-    <artifactId>woko-asyncjobs</artifactId>
-    <packaging>pom</packaging>
-    <name>Woko - asynchronous jobs</name>
-    <modules>
-        <module>core</module>
-    </modules>
-</project>
+  --%>
+<%@ tag import="java.util.List" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ attribute name="value" required="true" type="java.lang.Object" %>
+<%
+    List msgParams = (List)request.getAttribute("__woko_msg_params");
+    if (msgParams==null) {
+        throw new RuntimeException("No msg params found ! are you enclosing msg-param with a message tag ?");
+    }
+    msgParams.add(value!=null ? value.toString() : null);
+%>

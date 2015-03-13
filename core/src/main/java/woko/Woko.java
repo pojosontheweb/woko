@@ -27,12 +27,14 @@ import net.sourceforge.stripes.controller.StripesFilter;
 import woko.facets.FacetNotFoundException;
 import woko.facets.WokoFacetContextFactory;
 import woko.facets.WokoProfileRepository;
+import woko.facets.builtin.RenderObjectJson;
 import woko.ioc.SimpleWokoIocContainer;
 import woko.ioc.WokoInjectHelper;
 import woko.ioc.WokoIocContainer;
 import woko.persistence.ObjectStore;
 import woko.users.UserManager;
 import woko.users.UsernameResolutionStrategy;
+import woko.util.JsonResolution;
 import woko.util.LinkUtil;
 import woko.util.Util;
 import woko.util.WLogger;
@@ -104,7 +106,7 @@ public class Woko<
     /**
      * Woko version
      */
-    public static final String VERSION = "2.4-beta";
+    public static final String VERSION = "2.4-beta2";
 
     /**
      * Return the Woko instance for passed servletContext
@@ -493,16 +495,18 @@ public class Woko<
     }
 
     /**
-     * Return a new Resolutions helper for this Woko instance.
+     * Return the Resolutions helper.
      */
     public Resolutions resolutions() {
-        return new Resolutions(this);
+        return RESOLUTIONS;
     }
+
+    private final Resolutions RESOLUTIONS = new Resolutions(this);
 
     /**
      * Helper class for returning resolutions in a compact fashion.
      */
-    public class Resolutions {
+    public static class Resolutions {
 
         private final Woko<?,?,?,?> woko;
 
@@ -516,6 +520,10 @@ public class Woko<
 
         public ForwardResolution forward(String facetName, Object targetObject) {
             return new ForwardResolution(woko.facetUrl(facetName, targetObject));
+        }
+
+        public JsonResolution json(Object targetObject, HttpServletRequest request) {
+            return new JsonResolution(targetObject, request);
         }
 
     }

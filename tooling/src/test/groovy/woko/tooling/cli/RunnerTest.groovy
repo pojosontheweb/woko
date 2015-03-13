@@ -61,17 +61,17 @@ class RunnerTest {
 
 Available commands :
 
-  - list facets|roles|bindings\t\t:\t\tlist various application stuff
-  - create facet|entity\t\t:\t\tcreate project elements
-  - crud [<Entity> [<Role> [quiet]\t\t:\t\tGenerate the CRUD facets for a given role (view/edit/save/delete)
-  - push [resources|quiet]\t\t:\t\tpushes the local facets to a remote application
-  - generate [-use-boostrap {yes|no}] [-use-groovy {yes|no}] [-default-package-name <package name>]\t\t:\t\tGenerates a new Woko project
-  - start \t\t:\t\trun the application in a local jetty container
-  - stop \t\t:\t\tstop the local jetty container (in case started in background process)
-  - build \t\t:\t\trebuilds the whole application
-  - env list|use <env_name>\t\t:\t\tmanage the environments
-  - groovy <file> [url]\t\t:\t\texecute a groovy script on the server
-  - help [command_name]\t\t:\t\tdisplay help about specified command
+  - list      facets|roles|bindings                         : list various application stuff
+  - create    facet|entity                                  : create project elements
+  - crud      [<Entity> [<Role> [quiet]                     : Generate the CRUD facets for a given role (view/edit/save/delete)
+  - push      [resources|quiet][[[url] username] password]  : pushes the local facets to a remote application
+  - generate                                                : Generates a new Woko project
+  - start                                                   : run the application in a local jetty container
+  - stop                                                    : stop the local jetty container (in case started in background process)
+  - build                                                   : rebuilds the whole application
+  - env       list|use <env_name>                           : manage the environments
+  - groovy    <file> [url]                                  : execute a groovy script on the server
+  - help      [command_name]                                : display help about specified command
 
 """
 

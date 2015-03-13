@@ -32,14 +32,13 @@ class PushCmd extends Command {
           runner,
           "push",
           "pushes the local facets to a remote application",
-          "[resources|quiet]",
+          "[resources|quiet][[[url] username] password]",
           """Scans the local facets in your project and pushes them
-to a running woko application. The url argument defaults to :
-
-  http://localhost:8080/<app_name>
-
-One pushed, your local facets will be available in the running application
+to a running woko application. Once pushed, your local facets will be available in the running application
 like if they had been created at init-time.
+
+resources : pushes resources only
+quiet : allows no-prompt, pushes everything with passed args if any
 
 The aim of this command is to speed up development by avoiding useless
 server restarts when you change facet code.
@@ -58,18 +57,23 @@ server restarts when you change facet code.
         if (arg1=="resources") {
             resources = true
         } else {
-            quiet = arg1 == "quiet"
+            int adjustedIndex = 0
+            if (arg1 == "quiet") {
+                quiet = true
+                adjustedIndex++
+            }
 
-            String url = "http://localhost:8080/$pomHelper.model.build.finalName"
-            String username = "wdevel"
-            String password = "wdevel"
-            if (!quiet) {
+            String url = getArgAt(args, adjustedIndex, "http://localhost:8080/$pomHelper.model.build.finalName")
+            String username = getArgAt(args, adjustedIndex+1, "wdevel")
+            String password = getArgAt(args, adjustedIndex+2, "wdevel")
+            if (quiet) {
+                iLog("quiet mode, will not prompt")
+            } else {
                 url = askWithDefault("Application url", url)
                 username = askWithDefault("Developer username", username)
                 password = askWithDefault("          password", password)
-            } else {
-                iLog("quiet mode : pushing all !")
             }
+            iLog("will push at $url with username $username")
 
             // scan the local facet sources
             def baseDir = "$projectDir.absolutePath/src/main/groovy"

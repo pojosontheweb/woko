@@ -67,10 +67,20 @@ class Runner {
         } else {
             log("Usage : woko <command> arg*")
             log("\nAvailable commands :\n")
+            // store lengths of the 1rst 2 cols in order to
+            // pad this correctly
+            int ln0 = 0, ln1 = 0
             commands.each { k, v ->
-                log("  - $k $v.argSpec\t\t:\t\t$v.shortDesc")
+                ln0 = Math.max(ln0, k.length())
+                ln1 = Math.max(ln1, v.argSpec ? v.argSpec.length() : 0)
+//                log("  - $k $v.argSpec\t\t:\t\t$v.shortDesc")
             }
-            log("  - help [command_name]\t\t:\t\tdisplay help about specified command")
+            ln0++
+            ln1++
+            commands.each { k, v ->
+                log("  - ${k.padRight(ln0)} ${v.argSpec.padRight(ln1)} : $v.shortDesc")
+            }
+            log("  - ${'help'.padRight(ln0)} ${'[command_name]'.padRight(ln1)} : display help about specified command")
             log("")
         }
     }
