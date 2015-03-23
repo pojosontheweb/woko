@@ -20,7 +20,7 @@
     <parent>
         <groupId>com.pojosontheweb</groupId>
         <artifactId>woko-builtin-auth</artifactId>
-        <version>2.4-beta3</version>
+        <version>LATEST-SNAPSHOT</version>
     </parent>
     <artifactId>woko-builtin-auth-web</artifactId>
     <name>Woko - builtin auth web</name>
