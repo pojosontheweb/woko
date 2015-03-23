@@ -15,6 +15,7 @@ import woko.users.RemoteUserStrategy;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 public class WokoIocPicoTest extends TestCase {
 
@@ -50,6 +51,13 @@ public class WokoIocPicoTest extends TestCase {
         doCheckClass(wokoPico, WokoIocContainer.FacetDescriptorManager, AnnotatedFacetDescriptorManager.class);
         doCheckClass(wokoPico, WokoIocContainer.UserManager, InMemoryUserManager.class);
         doCheckClass(wokoPico, WokoIocContainer.UsernameResolutionStrategy, RemoteUserStrategy.class);
+
+        Map<?,?> components = wokoPico.getComponents();
+        assertEquals(4, components.size());
+        assertTrue(components.containsKey(WokoIocContainer.ObjectStore));
+        assertTrue(components.containsKey(WokoIocContainer.FacetDescriptorManager));
+        assertTrue(components.containsKey(WokoIocContainer.UserManager));
+        assertTrue(components.containsKey(WokoIocContainer.UsernameResolutionStrategy));
     }
 
     private void doCheckClass(WokoIocPico ioc, Object componentName, Class<?> expectedClass) {

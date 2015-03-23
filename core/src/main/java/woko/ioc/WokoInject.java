@@ -12,6 +12,6 @@ import java.lang.annotation.*;
 @Documented
 public @interface WokoInject {
 
-    String value();
+    String value() default "";
 
 }

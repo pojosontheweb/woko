@@ -7,6 +7,7 @@ import woko.users.UserManager;
 import woko.users.UsernameResolutionStrategy;
 import woko.util.WLogger;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -84,4 +85,8 @@ public class SimpleWokoIocContainer<
         components.clear();
     }
 
+    @Override
+    public Map<?,?> getComponents() {
+        return Collections.unmodifiableMap(components);
+    }
 }
