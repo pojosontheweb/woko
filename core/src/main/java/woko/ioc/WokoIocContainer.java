@@ -5,6 +5,8 @@ import woko.persistence.ObjectStore;
 import woko.users.UserManager;
 import woko.users.UsernameResolutionStrategy;
 
+import java.util.Map;
+
 /**
  * Interface for the Woko IOC container. The <code>Woko</code> instance references an IOC container
  * for accessing the various mandatory components (<code>ObjectStore</code>, <code>UserManager</code> etc.).
@@ -53,5 +55,13 @@ public interface WokoIocContainer<
      * @return the <code>IFacetDescriptorManager</code> for the app
      */
     FdmType getFacetDescriptorManager();
+
+    /**
+     * Return a map of all keys/components in the ioc. This map
+     * should be immutable, and should never be modified. It is
+     * meant to be used read-only.
+     * @return a map of all keys/components
+     */
+    Map<?,?> getComponents();
 
 }

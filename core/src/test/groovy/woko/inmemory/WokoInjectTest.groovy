@@ -31,4 +31,18 @@ class WokoInjectTest extends InMemRoundtripTestBase {
         }
     }
 
+    void testInjectOnField() {
+        doWithMockContext("wdevel") { MockServletContext ctx ->
+            MockRoundtrip t = mockRoundtrip(ctx, "testInjectOnField", null, null, [:])
+            assert t.outputString=="injected"
+        }
+    }
+
+    void testInjectOnFieldAutoWire() {
+        doWithMockContext("wdevel") { MockServletContext ctx ->
+            MockRoundtrip t = mockRoundtrip(ctx, "testInjectOnFieldAutoWire", null, null, [:])
+            assert t.outputString=="injected"
+        }
+    }
+
 }
