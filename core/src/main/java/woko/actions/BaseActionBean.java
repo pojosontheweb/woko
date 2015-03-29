@@ -19,6 +19,7 @@ package woko.actions;
 import net.sourceforge.jfacets.IFacetDescriptorManager;
 import net.sourceforge.stripes.action.ActionBean;
 import net.sourceforge.stripes.action.ActionBeanContext;
+import woko.Woko;
 import woko.persistence.ObjectStore;
 import woko.users.UserManager;
 import woko.users.UsernameResolutionStrategy;
@@ -42,6 +43,10 @@ public abstract class BaseActionBean<
 
     public WokoActionBeanContext<OsType, UmType, UnsType, FdmType> getContext() {
         return context;
+    }
+
+    public Woko<OsType, UmType, UnsType, FdmType> getWoko() {
+        return getContext().getWoko();
     }
 
 }
