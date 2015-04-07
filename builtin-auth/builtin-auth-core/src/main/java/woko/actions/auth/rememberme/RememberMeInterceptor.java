@@ -35,7 +35,7 @@ public class RememberMeInterceptor implements Interceptor, ConfigurableComponent
 
     @Override
     public Resolution intercept(ExecutionContext context) throws Exception {
-        if (cookieStore!=null) {
+        if (cookieStore!=null&& woko!=null) {
             ActionBeanContext abc = context.getActionBeanContext();
             HttpServletRequest request = abc.getRequest();
             String username = woko.getUsername(request);
