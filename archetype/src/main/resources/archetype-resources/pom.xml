@@ -14,7 +14,7 @@
     <packaging>war</packaging>
 
     <properties>
-        <woko.version>2.4-beta3</woko.version>
+        <woko.version>2.4-beta4</woko.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
@@ -120,11 +120,10 @@
                 don't want this in our war !
             -->
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
-                <version>2.3</version>
+                <version>2.6</version>
                 <configuration>
-                    <warSourceExcludes>WEB-INF/lib/servlet-api*.jar</warSourceExcludes>
+                    <packagingExcludes>WEB-INF/lib/servlet-api-*.jar</packagingExcludes>
                 </configuration>
             </plugin>
             <!--

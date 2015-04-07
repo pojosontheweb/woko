@@ -18,8 +18,17 @@ public class WokoTxInterceptor implements net.sourceforge.stripes.controller.Int
     @Override
     public Resolution intercept(ExecutionContext context) throws Exception {
         Woko<?,?,?,?> woko = Woko.getWoko(context.getActionBeanContext().getServletContext());
-        ObjectStore store = woko.getObjectStore();
+        if (woko==null) {
+            // Woko not there do nothing...
+            log.debug("Woko instance not found on servlet context. This might be intended " +
+                " if you configure Woko in a lazy fashion, and you can then safely ignore this log." +
+                " Otherwise, you probably need to define an init listener. See WokoIocInitListener " +
+                "for more info.");
+            return context.proceed();
+        }
 
+        // Woko present, handle transactions for TransactionalStores...
+        ObjectStore store = woko.getObjectStore();
         if (store instanceof TransactionalStore) {
             // store is transactional, check if a transaction is already open...
             TransactionalStore txStore = (TransactionalStore)store;

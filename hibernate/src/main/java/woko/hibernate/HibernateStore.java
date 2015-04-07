@@ -51,10 +51,12 @@ public class HibernateStore implements ObjectStore, TransactionalStore, Closeabl
 
     private static final WLogger log = WLogger.getLogger(HibernateStore.class);
 
-    private final HibernatePrimaryKeyConverter primaryKeyConverter;
-    private final SessionFactory sessionFactory;
+    private HibernatePrimaryKeyConverter primaryKeyConverter;
+    private SessionFactory sessionFactory;
     private static final AlternateKeyConverter DEFAULT_ALTERNATE_KEY_CONVERTER = new DefaultAlternateKeyConverter();
     private List<Class<?>> mappedClasses;
+
+    protected final List<String> packageNames;
 
     /**
      * Create the store with passed packages. Will look for <code>@Entity</code>-annotated classes in specified
@@ -65,6 +67,17 @@ public class HibernateStore implements ObjectStore, TransactionalStore, Closeabl
      * @param packageNames a list of packages to scan entities for
      */
     public HibernateStore(List<String> packageNames) {
+        this(packageNames, true);
+    }
+
+    public HibernateStore(List<String> packageNames, boolean initialize) {
+        this.packageNames = packageNames;
+        if (initialize) {
+            initialize();
+        }
+    }
+
+    protected void initialize() {
         log.info("Creating with package names : " + packageNames);
         Configuration cfg = configure(createConfiguration(packageNames));
         log.info("Configuration created, building session factory...");

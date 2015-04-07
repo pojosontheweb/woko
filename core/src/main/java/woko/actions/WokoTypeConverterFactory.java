@@ -47,25 +47,28 @@ public class WokoTypeConverterFactory extends DefaultTypeConverterFactory {
     public TypeConverter getTypeConverter(Class aClass, Locale locale) throws Exception {
         // check if the class is a Woko mapped class
         TypeConverter tc;
-        ObjectStore store = Woko.getWoko(getConfiguration().getServletContext()).getObjectStore();
-        List<Class<?>> mappedClasses = store.getMappedClasses();
-        for (Class<?> mappedClass : mappedClasses) {
-            if (mappedClass.isAssignableFrom(aClass)) {
-                // class is mapped, return a TC that uses the store to load the object
-                tc = new WokoTypeConverter(store);
+        Woko<?,?,?,?> woko = Woko.getWoko(getConfiguration().getServletContext());
+        if (woko!=null) {
+            ObjectStore store = woko.getObjectStore();
+            List<Class<?>> mappedClasses = store.getMappedClasses();
+            for (Class<?> mappedClass : mappedClasses) {
+                if (mappedClass.isAssignableFrom(aClass)) {
+                    // class is mapped, return a TC that uses the store to load the object
+                    tc = new WokoTypeConverter(store);
+                    tc.setLocale(locale);
+                    return tc;
+                }
+            }
+
+            // special handling for RPC-formatted dates
+            // we don't add the converter to the superclass' converters map
+            // because it doesn't remove the old converter from the map before
+            // putting the new one.
+            if (Date.class.isAssignableFrom(aClass)) {
+                tc = new WokoDateTypeConverter();
                 tc.setLocale(locale);
                 return tc;
             }
-        }
-
-        // special handling for RPC-formatted dates
-        // we don't add the converter to the superclass' converters map
-        // because it doesn't remove the old converter from the map before
-        // putting the new one.
-        if (Date.class.isAssignableFrom(aClass)) {
-            tc = new WokoDateTypeConverter();
-            tc.setLocale(locale);
-            return tc;
         }
 
         // class is not managed by Woko, let Stripes find the converter

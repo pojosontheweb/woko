@@ -160,6 +160,12 @@ public class WokoActionBean<
      */
     @Before(stages = {LifecycleStage.BindingAndValidation})
     public void loadObjectAndFacet() {
+        Woko<OsType,UmType,UnsType,FdmType> woko = getContext().getWoko();
+        if (woko==null) {
+            logger.error("woko instance not found ! you should not invoke WokoActionBean now...");
+            return;
+        }
+
         HttpServletRequest req = getContext().getRequest();
         className = req.getParameter("className");
         facetName = req.getParameter("facetName");
@@ -170,7 +176,6 @@ public class WokoActionBean<
         if (logger.isDebugEnabled()) {
             logger.debug("Loading object for className=" + className + " and key=" + key);
         }
-        Woko<OsType,UmType,UnsType,FdmType> woko = getContext().getWoko();
         OsType objectStore = woko.getObjectStore();
         if (className!=null) {
             if (key!=null) {
@@ -224,6 +229,12 @@ public class WokoActionBean<
      */
     @DefaultHandler
     public Resolution execute() {
+        Woko<OsType,UmType,UnsType,FdmType> woko = getContext().getWoko();
+        if (woko==null) {
+            logger.error("woko not found ! Cannot handle request");
+            return new ErrorResolution(500, "Woko not found !");
+        }
+
         Method handler = getEventHandlerMethod();
         try {
             if (logger.isDebugEnabled()) {
