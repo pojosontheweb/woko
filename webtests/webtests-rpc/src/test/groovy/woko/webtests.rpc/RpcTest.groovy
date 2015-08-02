@@ -24,8 +24,8 @@ import org.junit.Ignore
 @RunWith(JUnit4.class)
 class RpcTest extends WebTestBase {
 
-    static final String RESULT_START = """{"initializedRating":{"_wokoInfo":{"title":"GOOD","className":"test.Rating"}},"_id":"1111","name":"Moby","class":"MyBook","creationTime"""
-    static final String RESULT_END = ""","_wokoInfo":{"title":"Moby","className":"MyBook","key":"1111"},"nbPages":{"nbPagesXXX":123}}"""
+    static final String RESULT_START = "GOOD"
+    static final String RESULT_END = "nbPagesXXX"
 
     @Test
     void createGetDelete() {
