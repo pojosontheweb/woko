@@ -20,7 +20,7 @@
     <parent>
         <groupId>com.pojosontheweb</groupId>
         <artifactId>woko-parent</artifactId>
-        <version>2.4-beta5</version>
+        <version>LATEST-SNAPSHOT</version>
     </parent>
     <artifactId>woko-ioc</artifactId>
     <name>Woko - Inversion of Control / Dependency Injection</name>
