@@ -20,7 +20,7 @@
     <parent>
         <groupId>com.pojosontheweb</groupId>
         <artifactId>woko-webresources</artifactId>
-        <version>LATEST-SNAPSHOT</version>
+        <version>2.4-beta5</version>
     </parent>
     <artifactId>woko-web-bootstrap3</artifactId>
     <name>Woko - web : bootstrap3</name>
