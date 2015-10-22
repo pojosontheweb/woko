@@ -538,7 +538,10 @@ public class HibernateStore implements ObjectStore, TransactionalStore, Closeabl
             return res;
         } catch(Exception e) {
             tx.rollback();
-            throw new RuntimeException(e);
+            if(e instanceof RuntimeException){
+                throw (RuntimeException)e;
+            }
+            else throw new RuntimeException(e);
         } finally {
             if (session.isOpen()) {
                 session.close();
@@ -563,7 +566,10 @@ public class HibernateStore implements ObjectStore, TransactionalStore, Closeabl
             tx.commit();
         } catch(Exception e) {
             tx.rollback();
-            throw new RuntimeException(e);
+            if(e instanceof RuntimeException){
+                throw (RuntimeException)e;
+            }
+            else throw new RuntimeException(e);
         } finally {
             if (session.isOpen()) {
                 session.close();
@@ -584,7 +590,10 @@ public class HibernateStore implements ObjectStore, TransactionalStore, Closeabl
             return res;
         } catch(Exception e) {
             tx.rollback();
-            throw new RuntimeException(e);
+            if(e instanceof RuntimeException){
+                throw (RuntimeException)e;
+            }
+            else throw new RuntimeException(e);
         } finally {
             if (session.isOpen()) {
                 session.close();
@@ -604,7 +613,10 @@ public class HibernateStore implements ObjectStore, TransactionalStore, Closeabl
             tx.commit();
         } catch(Exception e) {
             tx.rollback();
-            throw new RuntimeException(e);
+            if(e instanceof RuntimeException){
+                throw (RuntimeException)e;
+            }
+            else throw new RuntimeException(e);
         } finally {
             if (session.isOpen()) {
                 session.close();
