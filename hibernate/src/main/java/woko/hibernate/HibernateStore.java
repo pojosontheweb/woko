@@ -58,6 +58,8 @@ public class HibernateStore implements ObjectStore, TransactionalStore, Closeabl
 
     protected final List<String> packageNames;
 
+    protected boolean alternateKeysEnabled = true;
+
     /**
      * Create the store with passed packages. Will look for <code>@Entity</code>-annotated classes in specified
      * packaged.
@@ -242,21 +244,23 @@ public class HibernateStore implements ObjectStore, TransactionalStore, Closeabl
         }
 
         // introspect mapped class and check for @WokoAlternateKey
-        Util.PropertyNameAndAnnotation<WokoAlternateKey> alternateKey = checkForAlternateKey(mappedClass);
-        if (alternateKey!=null) {
-            if (log.isDebugEnabled()) {
-                log.debug("@WokoAlternateKey found for mapped class " + mappedClass.getName() + ", querying object.");
-            }
-            // alternate key found, use this to grab the object
-            Object o = loadObjectWithAlternateKey(mappedClass, alternateKey, key);
-            if (o!=null) {
+        if (alternateKeysEnabled) {
+            Util.PropertyNameAndAnnotation<WokoAlternateKey> alternateKey = checkForAlternateKey(mappedClass);
+            if (alternateKey != null) {
                 if (log.isDebugEnabled()) {
-                    log.debug("Found object for " + mappedClass.getName() + " with alternate key property " + alternateKey);
+                    log.debug("@WokoAlternateKey found for mapped class " + mappedClass.getName() + ", querying object.");
                 }
-                return o;
-            } else {
-                if (log.isDebugEnabled()) {
-                    log.debug("Object not found for " + mappedClass.getName() + " using alternate key property " + alternateKey + ", will try with ID");
+                // alternate key found, use this to grab the object
+                Object o = loadObjectWithAlternateKey(mappedClass, alternateKey, key);
+                if (o != null) {
+                    if (log.isDebugEnabled()) {
+                        log.debug("Found object for " + mappedClass.getName() + " with alternate key property " + alternateKey);
+                    }
+                    return o;
+                } else {
+                    if (log.isDebugEnabled()) {
+                        log.debug("Object not found for " + mappedClass.getName() + " using alternate key property " + alternateKey + ", will try with ID");
+                    }
                 }
             }
         }
@@ -279,7 +283,7 @@ public class HibernateStore implements ObjectStore, TransactionalStore, Closeabl
         // alternate key management : we need to set the alternate key on save if
         // @WokoAlternateKey is used
         Class<?> clazz = obj.getClass();
-        Util.PropertyNameAndAnnotation<WokoAlternateKey> alternateKey = checkForAlternateKey(clazz);
+        Util.PropertyNameAndAnnotation<WokoAlternateKey> alternateKey = alternateKeysEnabled ? checkForAlternateKey(clazz) : null;
         if (alternateKey!=null) {
             Object alternateKeyValue = computeAlternateKeyValue(obj, alternateKey);
             if (alternateKeyValue==null) {
@@ -396,14 +400,16 @@ public class HibernateStore implements ObjectStore, TransactionalStore, Closeabl
         Class<?> mappedClass = getObjectClass(obj);
 
         // check for alternate key first...
-        Util.PropertyNameAndAnnotation<WokoAlternateKey> altKey = checkForAlternateKey(mappedClass);
-        if (altKey!=null) {
-            // grab the value of the alt key property
-            String altKeyProp = altKey.getAnnotation().altKeyProperty();
-            Object altKeyVal = Util.getPropertyValue(obj, altKeyProp);
-            if (altKeyVal!=null) {
-                // TODO what happens for non String props ???
-                return altKeyVal.toString();
+        if (alternateKeysEnabled) {
+            Util.PropertyNameAndAnnotation<WokoAlternateKey> altKey = checkForAlternateKey(mappedClass);
+            if (altKey != null) {
+                // grab the value of the alt key property
+                String altKeyProp = altKey.getAnnotation().altKeyProperty();
+                Object altKeyVal = Util.getPropertyValue(obj, altKeyProp);
+                if (altKeyVal != null) {
+                    // TODO what happens for non String props ???
+                    return altKeyVal.toString();
+                }
             }
         }
 
