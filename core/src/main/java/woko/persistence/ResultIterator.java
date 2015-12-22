@@ -18,13 +18,14 @@ package woko.persistence;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 /**
  * ResultIterator allows for paginated lists.
  * @param <T> the type of elements returned by the iterator
  */
-public abstract class ResultIterator<T> {
+public abstract class ResultIterator<T> implements Iterator<T> {
 
     /**
      * Return the next element if any
@@ -68,4 +69,8 @@ public abstract class ResultIterator<T> {
         return Collections.unmodifiableList(result);
     }
 
+    @Override
+    public void remove() {
+        throw new UnsupportedOperationException();
+    }
 }
