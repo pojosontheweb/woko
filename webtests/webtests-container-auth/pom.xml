@@ -70,11 +70,11 @@
             <artifactId>woko-push</artifactId>
             <version>${project.version}</version>
         </dependency>
-        <!-- needed for tooling : TODO filter out from generated war ? -->
         <dependency>
             <groupId>javax.servlet</groupId>
-            <artifactId>servlet-api</artifactId>
-            <version>2.3</version>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>3.1.0</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
     <build>

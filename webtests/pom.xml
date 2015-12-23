@@ -66,11 +66,11 @@
                     <configuration>
                         <wait>false</wait>
                         <container>
-                            <containerId>tomcat6x</containerId>
+                            <containerId>tomcat7x</containerId>
                             <!--home>${tomcat6.home}</home-->
 
                             <zipUrlInstaller>
-                                <url>http://wwwftp.ciril.fr/pub/apache/tomcat/tomcat-6/v6.0.44/bin/apache-tomcat-6.0.44.zip</url>
+                                <url>http://apache.mindstudios.com/tomcat/tomcat-7/v7.0.67/bin/apache-tomcat-7.0.67.zip</url>
                                 <downloadDir>${project.build.directory}/downloads</downloadDir>
                                 <extractDir>${project.build.directory}/extracts</extractDir>
                             </zipUrlInstaller>

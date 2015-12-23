@@ -54,8 +54,8 @@
         </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>
-            <artifactId>servlet-api</artifactId>
-            <version>2.5</version>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>3.1.0</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
@@ -81,7 +81,7 @@
         <module>webtests</module>
     </modules>
     <properties>
-        <stripes.version>1.5.8</stripes.version>
+        <stripes.version>1.7.0-async-beta</stripes.version>
         <groovy.version>2.0.4</groovy.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -92,14 +92,10 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
-                    <version>2.3.2</version>
+                    <version>3.3</version>
                     <configuration>
-                        <source>1.6</source>
-                        <target>1.6</target>
-                        <showWarnings>true</showWarnings>
-                        <compilerArguments>
-                            <Xlint:unchecked/>
-                        </compilerArguments>
+                        <source>1.8</source>
+                        <target>1.8</target>
                     </configuration>
                 </plugin>
                 <plugin>
