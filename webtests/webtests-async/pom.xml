@@ -120,18 +120,6 @@
                     </requestLog>
                 </configuration>
             </plugin>
-            <!--
-                We exclude the servlet API jar that tooling requires, we
-                don't want this in our war !
-            -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-war-plugin</artifactId>
-                <version>2.3</version>
-                <configuration>
-                    <warSourceExcludes>WEB-INF/lib/javax.servlet-api*.jar</warSourceExcludes>
-                </configuration>
-            </plugin>
 
             <plugin>
                 <groupId>com.pojosontheweb</groupId>
