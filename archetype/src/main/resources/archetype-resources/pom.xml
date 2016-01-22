@@ -71,12 +71,13 @@
         </dependency>
         <!--
             this is needed for running the tooling module, but
-            we we exclude it from the generated war (see below)
+            we we exclude it from the generated war (optional)
         -->
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
             <version>3.1.0</version>
+            <optional>true</optional>
         </dependency>
     </dependencies>
 
@@ -91,41 +92,26 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.3</version>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <source>1.7</source>
+                    <target>1.7</target>
                 </configuration>
             </plugin>
+
+            <!--
+                Jetty plugin (for woko start)
+            -->
+
             <plugin>
                 <groupId>org.mortbay.jetty</groupId>
-                <artifactId>maven-jetty-plugin</artifactId>
-                <version>6.1.10</version>
+                <artifactId>jetty-maven-plugin</artifactId>
+                <version>8.1.16.v20140903</version>
                 <configuration>
-                    <scanIntervalSeconds>10</scanIntervalSeconds>
-                    <!-- Configure the webapp -->
-                    <contextPath>/${artifactId}</contextPath>
-                    <tmpDir>target/tmp</tmpDir>
-                    <stopKey>foo</stopKey>
-                    <stopPort>9999</stopPort>
-                    <requestLog implementation="org.mortbay.jetty.NCSARequestLog">
-                        <filename>target/yyyy_mm_dd.request.log</filename>
-                        <retainDays>90</retainDays>
-                        <append>true</append>
-                        <extended>false</extended>
-                        <logTimeZone>GMT</logTimeZone>
-                    </requestLog>
+                    <webAppConfig>
+                        <contextPath>/${artifactId}</contextPath>
+                    </webAppConfig>
                 </configuration>
             </plugin>
-            <!--
-                We exclude the servlet API jar that tooling requires, we
-                don't want this in our war !
-            -->
-            <plugin>
-                <artifactId>maven-war-plugin</artifactId>
-                <version>2.6</version>
-                <configuration>
-                    <packagingExcludes>WEB-INF/lib/javax.servlet-api-*.jar</packagingExcludes>
-                </configuration>
-            </plugin>
+
             <!--
                 The Woko plugin (environments etc.)
             -->
