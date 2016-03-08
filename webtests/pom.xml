@@ -70,7 +70,7 @@
                             <!--home>${tomcat6.home}</home-->
 
                             <zipUrlInstaller>
-                                <url>http://apache.mindstudios.com/tomcat/tomcat-7/v7.0.67/bin/apache-tomcat-7.0.67.zip</url>
+                                <url>http://apache.websitebeheerjd.nl/tomcat/tomcat-7/v7.0.68/bin/apache-tomcat-7.0.68.zip</url>
                                 <downloadDir>${project.build.directory}/downloads</downloadDir>
                                 <extractDir>${project.build.directory}/extracts</extractDir>
                             </zipUrlInstaller>
